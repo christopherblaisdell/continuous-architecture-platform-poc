@@ -1,0 +1,95 @@
+@startuml scheduling-orchestration-flow
+' NovaTrek Adventures - Scheduling Orchestration Flow
+' Admin-driven schedule optimization across guides, trails, and weather
+
+title NovaTrek Adventures - Scheduling Orchestration Flow
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2E86AB
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+}
+
+' ============================================================
+' Participants
+' ============================================================
+actor "Admin Dashboard" as admin
+participant "svc-scheduling-\norchestrator" as scheduler
+participant "svc-guide-management" as guides
+participant "svc-trail-management" as trails
+participant "svc-weather" as weather
+participant "svc-trip-catalog" as catalog
+queue "Kafka" as kafka
+
+' ============================================================
+' Schedule Optimization Request
+' ============================================================
+admin -> scheduler : requestScheduleOptimization(dateRange, region)
+scheduler -> catalog : getScheduledTrips(dateRange, region)
+catalog --> scheduler : list of trips requiring scheduling
+
+' ============================================================
+' Data Gathering Loop
+' ============================================================
+loop for each trip in scheduled trips
+    scheduler -> catalog : getTripRequirements(tripId)
+    catalog --> scheduler : required certifications, group size, difficulty
+
+    scheduler -> guides : getAvailableGuides(date, region, certifications)
+    guides --> scheduler : available guides with qualifications
+
+    scheduler -> trails : getTrailConditions(trailId, date)
+    trails --> scheduler : trail status (open/closed, hazards, maintenance)
+
+    scheduler -> weather : getForecast(region, date)
+    weather --> scheduler : weather forecast (temp, precip, wind, alerts)
+end
+
+' ============================================================
+' Conflict Detection and Resolution
+' ============================================================
+scheduler -> scheduler : run optimization algorithm
+
+alt No conflicts detected
+    scheduler -> scheduler : generate optimal schedule
+else Guide availability conflict
+    scheduler -> scheduler : reassign guides by qualification match
+    scheduler -> guides : checkAlternateGuides(date, certifications)
+    guides --> scheduler : alternate guide options
+    scheduler -> scheduler : resolve with best-fit guide
+else Trail closure or hazard
+    scheduler -> scheduler : identify alternate trails
+    scheduler -> trails : getAlternateTrails(difficulty, region)
+    trails --> scheduler : alternate trail options
+    scheduler -> scheduler : reroute affected trips
+else Severe weather alert
+    scheduler -> scheduler : flag trips for cancellation review
+    scheduler -> scheduler : propose reschedule dates
+end
+
+' ============================================================
+' Proposed Schedule Presentation
+' ============================================================
+scheduler --> admin : proposed optimized schedule\n(assignments, conflicts resolved, alerts)
+admin -> admin : review proposed schedule
+
+alt Admin approves schedule
+    admin -> scheduler : approveSchedule(scheduleId)
+    scheduler -> scheduler : finalize assignments
+    scheduler -> guides : assignTrips(guideId, tripId, date)
+    guides --> scheduler : assignments confirmed
+    scheduler -> kafka : publish schedule.optimized
+    scheduler --> admin : schedule published successfully
+else Admin requests changes
+    admin -> scheduler : requestModification(changes)
+    scheduler -> scheduler : re-optimize with constraints
+    scheduler --> admin : revised schedule proposal
+end
+
+@enduml

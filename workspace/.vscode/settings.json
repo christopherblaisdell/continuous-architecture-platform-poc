@@ -1,0 +1,32 @@
+{
+  "files.exclude": {
+    "**/*.class": true,
+    "**/target": true,
+    "**/.idea": true,
+    "**/*.iml": true,
+    "**/.DS_Store": true
+  },
+  "editor.tabSize": 2,
+  "[java]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "redhat.java"
+  },
+  "[yaml]": {
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/target": true,
+    "**/.gradle": true,
+    "**/.idea": true,
+    "**/build": true
+  },
+  "java.jdt.ls.vmargs": "-Xmx1G",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "editor.formatOnSave": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true
+}

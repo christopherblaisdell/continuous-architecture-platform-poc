@@ -1,0 +1,661 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Scheduling Orchestrator API
+  description: |
+    Central orchestration service for NovaTrek trip scheduling. Coordinates guide
+    availability (svc-guide-management), trail conditions (svc-trail-management),
+    weather forecasts (svc-weather), trip definitions (svc-trip-catalog), and
+    location capacity (svc-location-services) to produce optimized schedules
+    and resolve conflicts.
+
+    This service is the architectural hub for all scheduling decisions and acts
+    as the single source of truth for schedule-related conflict resolution.
+  version: 3.0.1
+  contact:
+    name: NovaTrek Platform Engineering
+    email: platform-eng@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/scheduling/v1
+    description: Production
+  - url: https://api-staging.novatrek.example.com/scheduling/v1
+    description: Staging
+
+security:
+  - bearerAuth: []
+
+paths:
+  /schedule-requests:
+    post:
+      operationId: createScheduleRequest
+      summary: Request optimal schedule for a trip
+      description: |
+        Submits a scheduling request that evaluates preferred dates against
+        guide availability (svc-guide-management), trail conditions
+        (svc-trail-management), weather forecasts (svc-weather), and trip
+        capacity requirements (svc-trip-catalog). Returns a request ID
+        for polling the asynchronous optimization result.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScheduleRequestBody'
+      responses:
+        '202':
+          description: Schedule request accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleRequest'
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URL to poll for request status
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Trip or constraints reference invalid resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /schedule-requests/{request_id}:
+    get:
+      operationId: getScheduleRequest
+      summary: Get schedule request status and result
+      description: |
+        Poll this endpoint to retrieve the status and, once complete, the
+        optimization result for a previously submitted schedule request.
+      parameters:
+        - $ref: '#/components/parameters/ScheduleRequestId'
+      responses:
+        '200':
+          description: Schedule request with current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /schedule-optimization:
+    get:
+      operationId: getScheduleOptimization
+      summary: Run synchronous schedule optimization
+      description: |
+        Performs a real-time scheduling optimization for a specific trip and
+        date range. Evaluates all upstream dependencies: guide rosters from
+        svc-guide-management, trail status from svc-trail-management, weather
+        data from svc-weather, and trip requirements from svc-trip-catalog.
+      parameters:
+        - name: trip_id
+          in: query
+          required: true
+          description: Trip to schedule (cross-ref svc-trip-catalog)
+          schema:
+            type: string
+            format: uuid
+        - name: date_range_start
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: date_range_end
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: guide_ids
+          in: query
+          description: Preferred guide IDs (cross-ref svc-guide-management)
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+          style: form
+          explode: false
+        - name: max_results
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 5
+      responses:
+        '200':
+          description: Optimization results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleOptimizationResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /schedule-conflicts:
+    get:
+      operationId: listScheduleConflicts
+      summary: List scheduling conflicts
+      description: |
+        Returns active scheduling conflicts for a given date and/or region.
+        Conflicts are detected automatically by monitoring upstream services
+        for changes in trail status, weather alerts, guide availability,
+        and capacity thresholds.
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: region_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: severity
+          in: query
+          schema:
+            $ref: '#/components/schemas/ConflictSeverity'
+        - name: type
+          in: query
+          schema:
+            $ref: '#/components/schemas/ConflictType'
+        - name: resolved
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of conflicts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conflicts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScheduleConflict'
+                  next_page_token:
+                    type: string
+                  total_count:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /schedule-conflicts/resolve:
+    post:
+      operationId: resolveScheduleConflict
+      summary: Resolve a scheduling conflict
+      description: |
+        Applies a resolution to an identified scheduling conflict. The resolution
+        may involve reassigning guides, rescheduling trips, adjusting capacity,
+        or marking trails as closed. The orchestrator coordinates changes across
+        affected downstream services.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConflictResolutionRequest'
+      responses:
+        '200':
+          description: Conflict resolved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResolutionResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Conflict already resolved or resolution not applicable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    ScheduleRequestId:
+      name: request_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+    PageToken:
+      name: page_token
+      in: query
+      schema:
+        type: string
+
+  schemas:
+    ConflictType:
+      type: string
+      enum:
+        - GUIDE_DOUBLE_BOOKED
+        - TRAIL_CLOSED
+        - WEATHER_ALERT
+        - CAPACITY_EXCEEDED
+
+    ConflictSeverity:
+      type: string
+      enum: [LOW, MEDIUM, HIGH, CRITICAL]
+
+    ScheduleRequestStatus:
+      type: string
+      enum: [PENDING, PROCESSING, COMPLETED, FAILED]
+
+    ScheduleRequest:
+      type: object
+      required: [id, trip_id, preferred_dates, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        trip_id:
+          type: string
+          format: uuid
+          description: References svc-trip-catalog Trip.id
+        preferred_dates:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: date
+        constraints:
+          $ref: '#/components/schemas/ScheduleConstraints'
+        status:
+          $ref: '#/components/schemas/ScheduleRequestStatus'
+        result:
+          $ref: '#/components/schemas/ScheduleOptimizationResult'
+        created_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ScheduleConstraints:
+      type: object
+      properties:
+        required_guide_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Guide IDs that must be assigned (cross-ref svc-guide-management)
+        excluded_guide_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        min_group_size:
+          type: integer
+          minimum: 1
+        max_group_size:
+          type: integer
+        require_good_weather:
+          type: boolean
+          default: true
+          description: Exclude dates with adverse weather forecasts (cross-ref svc-weather)
+        preferred_trail_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Preferred trail selections (cross-ref svc-trail-management)
+        accessibility_requirements:
+          type: array
+          items:
+            type: string
+            enum: [WHEELCHAIR_ACCESSIBLE, LOW_ALTITUDE, FAMILY_FRIENDLY, NO_WATER_CROSSINGS]
+
+    ScheduleOptimizationResult:
+      type: object
+      required: [recommended_dates, guide_assignments, conflict_warnings]
+      properties:
+        recommended_dates:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendedDate'
+        guide_assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuideAssignment'
+        conflict_warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConflictWarning'
+        optimization_score:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Overall suitability score (100 = perfect conditions)
+        weather_summary:
+          type: object
+          properties:
+            data_source:
+              type: string
+              default: svc-weather
+            forecast_confidence:
+              type: number
+              format: double
+            conditions:
+              type: string
+              example: "Partly cloudy, high of 72F, 10% precipitation chance"
+
+    RecommendedDate:
+      type: object
+      required: [date, score, availability_status]
+      properties:
+        date:
+          type: string
+          format: date
+        score:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+        availability_status:
+          type: string
+          enum: [AVAILABLE, LIMITED, WAITLIST, UNAVAILABLE]
+        trail_condition:
+          type: string
+          enum: [EXCELLENT, GOOD, FAIR, POOR, CLOSED]
+          description: From svc-trail-management
+        weather_outlook:
+          type: string
+          enum: [CLEAR, PARTLY_CLOUDY, OVERCAST, RAIN_LIKELY, STORM_WARNING]
+          description: From svc-weather
+        notes:
+          type: string
+
+    GuideAssignment:
+      type: object
+      required: [guide_id, date, assignment_status]
+      properties:
+        guide_id:
+          type: string
+          format: uuid
+          description: References svc-guide-management Guide.id
+        guide_name:
+          type: string
+        date:
+          type: string
+          format: date
+        assignment_status:
+          type: string
+          enum: [CONFIRMED, TENTATIVE, PENDING_APPROVAL]
+        certifications:
+          type: array
+          items:
+            type: string
+          description: Relevant certifications for this trip type
+
+    ConflictWarning:
+      type: object
+      required: [type, severity, message]
+      properties:
+        type:
+          $ref: '#/components/schemas/ConflictType'
+        severity:
+          $ref: '#/components/schemas/ConflictSeverity'
+        message:
+          type: string
+          example: "Guide Maria Santos is already booked for Cascade Summit Trek on 2026-03-15"
+        affected_date:
+          type: string
+          format: date
+        affected_resource_id:
+          type: string
+          format: uuid
+        source_service:
+          type: string
+          description: The upstream service that reported this conflict
+          example: "svc-guide-management"
+
+    ScheduleConflict:
+      type: object
+      required: [id, type, severity, detected_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/ConflictType'
+        severity:
+          $ref: '#/components/schemas/ConflictSeverity'
+        description:
+          type: string
+        affected_trip_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Trip IDs impacted (cross-ref svc-trip-catalog)
+        affected_guide_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Guide IDs involved (cross-ref svc-guide-management)
+        affected_trail_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Trail IDs involved (cross-ref svc-trail-management)
+        conflict_date:
+          type: string
+          format: date
+        region_id:
+          type: string
+          format: uuid
+        resolution_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResolutionOption'
+        resolved:
+          type: boolean
+          default: false
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        detected_at:
+          type: string
+          format: date-time
+
+    ResolutionOption:
+      type: object
+      required: [id, strategy, description]
+      properties:
+        id:
+          type: string
+          format: uuid
+        strategy:
+          type: string
+          enum:
+            - REASSIGN_GUIDE
+            - RESCHEDULE_TRIP
+            - ADJUST_CAPACITY
+            - CLOSE_TRAIL
+            - ACCEPT_RISK
+            - SPLIT_GROUP
+        description:
+          type: string
+          example: "Reassign to available guide Alex Chen (certified for alpine routes)"
+        impact_assessment:
+          type: string
+        estimated_affected_guests:
+          type: integer
+        requires_guest_notification:
+          type: boolean
+
+    ConflictResolutionRequest:
+      type: object
+      required: [conflict_id, selected_resolution_id]
+      properties:
+        conflict_id:
+          type: string
+          format: uuid
+        selected_resolution_id:
+          type: string
+          format: uuid
+        operator_notes:
+          type: string
+        override_warnings:
+          type: boolean
+          default: false
+          description: Force resolution even if secondary conflicts are detected
+
+    ConflictResolutionResult:
+      type: object
+      required: [conflict_id, resolution_status]
+      properties:
+        conflict_id:
+          type: string
+          format: uuid
+        resolution_status:
+          type: string
+          enum: [RESOLVED, PARTIALLY_RESOLVED, FAILED]
+        applied_strategy:
+          type: string
+        downstream_updates:
+          type: array
+          items:
+            type: object
+            properties:
+              service:
+                type: string
+                example: "svc-guide-management"
+              action:
+                type: string
+                example: "Reassigned guide assignment for 2026-03-15"
+              success:
+                type: boolean
+        new_conflicts_created:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: IDs of any secondary conflicts triggered by this resolution
+        resolved_at:
+          type: string
+          format: date-time
+
+    CreateScheduleRequestBody:
+      type: object
+      required: [trip_id, preferred_dates]
+      properties:
+        trip_id:
+          type: string
+          format: uuid
+          description: References svc-trip-catalog Trip.id
+        preferred_dates:
+          type: array
+          minItems: 1
+          maxItems: 30
+          items:
+            type: string
+            format: date
+        constraints:
+          $ref: '#/components/schemas/ScheduleConstraints'
+        priority:
+          type: string
+          enum: [NORMAL, HIGH, URGENT]
+          default: NORMAL
+        callback_url:
+          type: string
+          format: uri
+          description: Webhook URL to notify when optimization completes
+
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              reason:
+                type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
