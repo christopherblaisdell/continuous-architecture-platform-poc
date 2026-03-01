@@ -1,0 +1,21 @@
+feat: add closing-the-loop analysis and revise cost comparison outcomes
+
+The architecture practice produces excellent artifacts during each project but
+never promotes the target state back to the corporate baseline. This creates
+compounding knowledge destruction where every architect starts from scratch.
+
+New files:
+- CLOSING-THE-LOOP.md: Full analysis of the gap between point-in-time
+  architecture and continuous state management, with concrete plan
+
+Updated files:
+- ADR-001: Added revised workload analysis (38 runs/month including PROMOTE step)
+  which neutralizes Kong AI's cost advantage vs Copilot Business
+- phase-1-copilot-results.md: Updated scalability projection with PROMOTE workload
+- ROADMAP.md: Added milestones 1.8-1.10, 2.7-2.9, 3.8-3.9, 4.8, 5.6-5.7
+  for closing-the-loop integration across all phases
+- README.md: Added references to new documents
+
+Key finding: Adding the PROMOTE step increases realistic workload from 26 to 38
+runs/month, putting Kong AI ($19.40) at cost parity with Copilot Business ($19.00).
+Flat-rate pricing becomes more attractive at realistic volumes.

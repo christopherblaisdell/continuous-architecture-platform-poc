@@ -170,9 +170,13 @@ A **continuous architecture platform** where:
 | Document | Purpose |
 |----------|---------|
 | [Roadmap](roadmap/ROADMAP.md) | Phased timeline with milestones, deliverables, exit criteria, and risk register |
+| [Closing the Loop](CLOSING-THE-LOOP.md) | Analysis of the gap between point-in-time architecture and continuous state management, with a plan to fix it |
 | [ADR-001: AI Toolchain Selection](decisions/ADR-001-ai-toolchain-selection.md) | Formal decision record for Kong AI vs GitHub Copilot |
+| [ADR-002: Documentation Publishing Platform](decisions/ADR-002-documentation-publishing-platform.md) | Decision record for Material for MkDocs on Azure Static Web Apps |
 | [Context Window Utilization Analysis](research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md) | Empirical analysis of Roo Code vs Copilot context window efficiency |
 | [Phase 1 Plan](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) | Detailed plan for AI cost comparison with synthetic workspace |
+| [Phase 1 Results](phase-1-ai-tool-cost-comparison/workspace/phase-1-copilot-results.md) | Copilot execution results — 149/155 quality (96.1%), revised cost model |
+| [Publishing Platform Plan](phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
 
 ---
 
