@@ -240,13 +240,14 @@ Total per execution: ~$2.55
 
 | Usage Level | Monthly Runs | Copilot Business | Copilot Enterprise | Kong AI (est.) |
 |-------------|-------------|------------------|--------------------|----------------|
-| 1x (current) | 26 | $19.00 | $39.00 | $13.26 |
+| 1x (original) | 26 | $19.00 | $39.00 | $13.26 |
+| **1x + PROMOTE** | **38** | **$19.00** | **$39.00** | **$19.40** |
 | 2x | 52 | $19.00 | $39.00 | $26.52 |
 | 3x | 78 | $19.00 | $39.00 | $39.78 |
 | Breakeven vs. Copilot Business | ~37 runs | $19.00 | — | ~$19.00 |
 | Breakeven vs. Copilot Enterprise | ~76 runs | — | $39.00 | ~$39.00 |
 
-**Key finding**: At current projected usage (26 runs/month), Kong AI is ~30% cheaper than Copilot Business. At 2x usage, Kong AI exceeds Copilot Business cost. At ~37 runs/month, Kong AI equals Copilot Business. Copilot Enterprise's breakeven is at ~76 runs/month.
+**Key finding**: At the original 26 runs/month (design-only workflow), Kong AI is ~30% cheaper than Copilot Business. However, this workload calculation omits the critical PROMOTE step — updating corporate architecture baselines after each effort ships (see [CLOSING-THE-LOOP.md](../../CLOSING-THE-LOOP.md)). Adding the PROMOTE step increases the realistic workload to ~38 runs/month, which is right at the Copilot Business breakeven point. At any volume above 38 runs/month (growth, more architects, more services), Copilot Business is cheaper due to its flat-rate model. The PROMOTE step adds ~12 runs/month and is essential for preventing the compounding knowledge destruction documented in the closing-the-loop analysis.
 
 ---
 

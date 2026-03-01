@@ -60,19 +60,27 @@ Mar         Apr         May         Jun         Jul         Aug
 | 1.5 | Cost-per-seat analysis complete | 2026-03-17 | NOT STARTED | 1.3, 1.4 |
 | 1.6 | Quality and compliance comparison complete | 2026-03-19 | NOT STARTED | 1.3, 1.4 |
 | 1.7 | ADR-001 AI Toolchain Selection decision recorded | 2026-03-21 | NOT STARTED | 1.5, 1.6 |
+| 1.8 | Create initial service architecture pages from Phase 1 outputs | 2026-03-22 | NOT STARTED | 1.4 |
+| 1.9 | Create global decision log and promote Phase 1 ADRs (9 ADRs) | 2026-03-22 | NOT STARTED | 1.4 |
+| 1.10 | Closing-the-loop analysis documented | 2026-03-01 | COMPLETE | None |
 
 ### Deliverables
 
 - Monthly cost-per-seat comparison table (Roo+Kong vs Copilot Business vs Copilot Enterprise)
+- **Revised cost model including PROMOTE step** (38 runs/month baseline vs original 26)
 - Quality score comparison across 5 architecture scenarios
 - Standards compliance rate comparison
 - [ADR-001: AI Toolchain Selection](../decisions/ADR-001-ai-toolchain-selection.md)
+- [Closing the Loop: Continuous State Management](../CLOSING-THE-LOOP.md)
+- Initial service architecture pages (6 services touched by Phase 1)
+- Global ADR decision log with 9 promoted ADRs
 
 ### Exit Criteria
 
 - [ ] All 5 scenario playbooks executed on both toolchains
 - [ ] Token usage and cost data collected for all scenarios
 - [ ] Quality scored by at least one architect
+- [ ] Cost model revised to include PROMOTE step workload
 - [ ] ADR-001 records the selected toolchain with rationale
 
 ---
@@ -93,21 +101,26 @@ Mar         Apr         May         Jun         Jul         Aug
 | 2.4 | Pilot: 3 real tickets processed with new workflow | TBD | NOT STARTED | 2.3 |
 | 2.5 | Quality measurement framework validated | TBD | NOT STARTED | 2.4 |
 | 2.6 | Workflow definition finalized | TBD | NOT STARTED | 2.4, 2.5 |
+| 2.7 | PROMOTE step defined in to-be workflow | TBD | NOT STARTED | 2.1 |
+| 2.8 | SC-06 playbook: AI-assisted post-implementation promotion | TBD | NOT STARTED | 2.7 |
+| 2.9 | PROMOTE step tested on Phase 1 scenario outputs | TBD | NOT STARTED | 2.8 |
 
 ### Deliverables
 
 - As-is workflow documentation
-- To-be workflow with AI integration points
+- To-be workflow with AI integration points **including the PROMOTE step**
 - Optimized AI instruction library for the selected toolchain
 - Quality measurement framework
 - Pilot results report
+- **SC-06 playbook: Post-Implementation Promotion** (new scenario type)
 
 ### Exit Criteria
 
-- [ ] End-to-end workflow defined (ticket intake through publication)
+- [ ] End-to-end workflow defined (ticket intake **through promotion** — not just through publication)
 - [ ] AI instructions produce consistently compliant outputs
 - [ ] Quality metrics established with baseline measurements
 - [ ] At least 3 real tickets processed successfully with new workflow
+- [ ] PROMOTE step tested: corporate baselines updated, ADRs promoted, service pages refreshed
 
 ---
 
@@ -128,6 +141,8 @@ Mar         Apr         May         Jun         Jul         Aug
 | 3.5 | Artifact manifest specification | TBD | NOT STARTED | 3.1 |
 | 3.6 | Incremental publishing implemented | TBD | NOT STARTED | 3.3, 3.5 |
 | 3.7 | End-to-end pipeline demonstrated | TBD | NOT STARTED | 3.4, 3.6 |
+| 3.8 | Staleness detection: flag services with stale baselines | TBD | NOT STARTED | 3.4 |
+| 3.9 | Promotion-completeness check in deploy gates | TBD | NOT STARTED | 3.4, 2.7 |
 
 ### Deliverables
 
@@ -136,6 +151,8 @@ Mar         Apr         May         Jun         Jul         Aug
 - Validation rule set (arc42 structure, C4 compliance, ADR completeness)
 - Artifact manifest specification and generator
 - Incremental publish capability
+- **Staleness detection for corporate architecture baselines**
+- **Promotion-completeness gate** (warn/block deploys without baseline updates)
 
 ### Exit Criteria
 
@@ -143,6 +160,7 @@ Mar         Apr         May         Jun         Jul         Aug
 - [ ] Validation gates prevent non-compliant artifacts from publishing
 - [ ] Cross-links resolve correctly in published output
 - [ ] Only changed artifacts are re-published (incremental)
+- [ ] Stale service baselines flagged automatically (>90 days without update)
 
 ---
 
@@ -163,6 +181,7 @@ Mar         Apr         May         Jun         Jul         Aug
 | 4.5 | Clickable diagram components implemented | TBD | NOT STARTED | 4.4 |
 | 4.6 | Search across artifact graph | TBD | NOT STARTED | 4.4 |
 | 4.7 | Migration path from Confluence documented | TBD | NOT STARTED | 4.5, 4.6 |
+| 4.8 | Bidirectional traceability: spec ↔ decision ↔ ticket | TBD | NOT STARTED | 4.3 |
 
 ### Deliverables
 
@@ -171,6 +190,7 @@ Mar         Apr         May         Jun         Jul         Aug
 - Navigable prototype with clickable components
 - Cross-artifact search capability
 - Confluence migration path
+- **Bidirectional traceability** from corporate artifacts back to the decisions/tickets that created them
 
 ### Exit Criteria
 
@@ -196,6 +216,8 @@ Mar         Apr         May         Jun         Jul         Aug
 | 5.3 | Template library with contribution workflow | TBD | NOT STARTED | 5.1 |
 | 5.4 | Architecture health scorecard | TBD | NOT STARTED | 5.1, 5.3 |
 | 5.5 | 3 architecture cycles measured and improved | TBD | NOT STARTED | 5.4 |
+| 5.6 | Measure investigation time reduction vs. pre-promotion baseline | TBD | NOT STARTED | 5.1 |
+| 5.7 | Track architecture freshness scores across all services | TBD | NOT STARTED | 5.4, 3.8 |
 
 ### Deliverables
 
