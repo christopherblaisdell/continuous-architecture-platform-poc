@@ -171,6 +171,7 @@ A **continuous architecture platform** where:
 |----------|---------|
 | [Roadmap](roadmap/ROADMAP.md) | Phased timeline with milestones, deliverables, exit criteria, and risk register |
 | [ADR-001: AI Toolchain Selection](decisions/ADR-001-ai-toolchain-selection.md) | Formal decision record for Kong AI vs GitHub Copilot |
+| [Context Window Utilization Analysis](research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md) | Empirical analysis of Roo Code vs Copilot context window efficiency |
 | [Phase 1 Plan](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) | Detailed plan for AI cost comparison with synthetic workspace |
 
 ---
@@ -184,6 +185,8 @@ continuous-architecture-platform-poc/
     ROADMAP.md                                      # Phased roadmap with milestones and timeline
   decisions/
     ADR-001-ai-toolchain-selection.md               # Kong AI vs GitHub Copilot decision
+  research/
+    CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md           # Roo Code vs Copilot context window efficiency
   phase-1-ai-tool-cost-comparison/                  # AI tool cost comparison (synthetic workspace + plan)
     AI-TOOL-COST-COMPARISON-PLAN.md                 # Detailed Phase 1 plan
     workspace/                                      # Portable synthetic workspace for Phase 1 execution
