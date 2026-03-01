@@ -1,45 +1,170 @@
 # NTK-10002: Architecture Decisions
 
-## ADR-001: Configuration-Driven Classification over Database-Driven
+---
 
-**Status**: ACCEPTED
+## ADR-NTK10002-001: Configuration-Driven Classification over Database-Driven
 
-**Context**: The adventure category classification system requires a mapping from 25 categories to 3 check-in patterns. This mapping needs to be maintainable and performant. Two approaches were considered:
+### Status
 
-- **Option A - Database-driven**: Store the mapping in a database table, build an admin UI for operations staff to edit it, query the table during check-in.
-- **Option B - Configuration-driven**: Define the mapping in a YAML configuration file managed through Spring Cloud Config, loaded into memory at startup.
+Accepted
 
-**Decision**: Use configuration-driven classification (Option B) with YAML config in Spring Cloud Config.
+### Date
 
-**Rationale**:
-- The mapping is expected to change infrequently (less than once per sprint).
-- YAML config files are version-controlled in Git, providing full audit trail and PR-based review.
-- No new database table, schema migration, or admin UI is required, reducing implementation scope.
-- In-memory cache provides sub-millisecond lookup performance with no per-request I/O.
-- Spring `@Cacheable` with configurable TTL provides automatic refresh.
-- The `/actuator/refresh` endpoint enables on-demand reload for urgent changes.
+2024-08-14
 
-**Consequences**:
-- Configuration changes require a commit and push to the config repository followed by a service refresh.
-- Operations staff cannot self-service mapping changes through a UI; they must request changes through the development team.
-- If category changes become frequent (more than once per sprint), this decision should be revisited.
+### Context and Problem Statement
+
+The adventure category classification system requires a mapping from 25 adventure categories to 3 check-in UI patterns. This mapping must be maintainable by the team, performant at runtime (no per-request latency penalty), and auditable over time. How should the category-to-pattern mapping be stored and maintained?
+
+### Decision Drivers
+
+- Change frequency is low (less than once per sprint)
+- Mapping changes must be auditable and reviewable
+- Runtime lookup must add near-zero latency to the check-in request
+- Implementation scope should be minimized
+- Operations team needs visibility into current mapping
+
+### Considered Options
+
+1. **Database-driven** — Store mapping in a database table with an admin UI
+2. **Configuration-driven** — Define mapping in YAML via Spring Cloud Config
+3. **Code-driven** — Hardcode the mapping in the Java source code
+
+### Decision Outcome
+
+**Chosen Option**: "Configuration-driven", because it provides version-controlled, reviewable mapping changes with sub-millisecond runtime performance and minimal implementation scope.
+
+#### Confirmation
+
+- Classification config file exists in Spring Cloud Config repository
+- `ClassificationService` loads config at startup and refreshes on TTL expiry
+- `/actuator/refresh` endpoint triggers immediate reload
+
+### Consequences
+
+#### Positive
+
+- YAML config is version-controlled in Git, providing full audit trail and PR-based review
+- No new database table, schema migration, or admin UI required
+- In-memory `ConcurrentHashMap` provides sub-millisecond lookup performance
+- Spring `@Cacheable` with configurable TTL (default 5 min) handles refresh transparently
+
+#### Negative
+
+- Configuration changes require a commit, push, and service refresh — not self-service
+- Operations staff must request changes through the development team
+- If change frequency increases beyond once per sprint, this approach should be revisited
+
+#### Neutral
+
+- Requires Spring Cloud Config infrastructure (already in place)
+
+### Pros and Cons of the Options
+
+#### Database-driven
+
+- **Good**, because operations can modify mappings through an admin UI without developer involvement
+- **Good**, because changes are immediate (no cache TTL)
+- **Neutral**, because requires database connection for every lookup (mitigated by application-level caching)
+- **Bad**, because introduces new database table, migration, and admin UI development effort
+- **Bad**, because changes bypass code review — no audit trail in Git
+
+#### Configuration-driven
+
+- **Good**, because changes are version-controlled and require PR review
+- **Good**, because no additional infrastructure required
+- **Good**, because sub-millisecond in-memory lookup with automatic refresh
+- **Neutral**, because requires Spring Cloud Config refresh for changes to take effect
+- **Bad**, because not self-service for operations staff
+
+#### Code-driven
+
+- **Good**, because simplest implementation — just a Java Map constant
+- **Bad**, because mapping changes require a code deployment
+- **Bad**, because mixes configuration data with application logic
+
+### More Information
+
+- Solution Design Section 7: Architecture Decision
+- Comment thread: Comments 6-7 in ticket NTK-10002
 
 ---
 
-## ADR-002: Pattern 3 as Default Fallback for Unknown Categories
+## ADR-NTK10002-002: Pattern 3 as Default Fallback for Unknown Categories
 
-**Status**: ACCEPTED
+### Status
 
-**Context**: Edge cases exist where the `adventure_category` field may be null, empty, or contain a value not recognized by the classification table. This could occur with legacy reservations that predate the feature, or when a new category is added to `svc-trip-catalog` before the classification config is updated. The system needs a defined behavior for these cases.
+Accepted
 
-**Decision**: Default to Pattern 3 (Full Service) for any null, empty, or unrecognized adventure category.
+### Date
 
-**Rationale**:
-- **Safety-first principle**: Pattern 3 includes all possible check-in steps including gear verification, safety briefing, and medical clearance. An incorrectly over-serviced guest experiences a few extra minutes of check-in. An incorrectly under-serviced guest may miss critical safety procedures.
-- **Operational alignment**: Operations staff confirmed that providing the full check-in experience is always safe, while skipping steps can create liability.
-- **Guest experience**: A guest who goes through unnecessary steps has a minor inconvenience. A guest who misses necessary steps may face safety risks or arrive at their activity unprepared.
+2024-08-19
 
-**Consequences**:
-- Guests with unmapped categories will experience the longest check-in flow, which may cause minor frustration if their activity is actually low-complexity.
-- Monitoring should track how often the fallback is triggered (metric: `checkin.classification.fallback.count`) to identify categories that need to be added to the mapping.
-- Operations teams should be aware that new categories require a corresponding classification config update to avoid unnecessary Pattern 3 assignments.
+### Context and Problem Statement
+
+Edge cases exist where the `adventure_category` field may be null, empty, or contain a value not recognized by the classification table. This could occur with legacy reservations predating the feature, or when a new category is added to `svc-trip-catalog` before the classification config is updated. What should the system do when it encounters an unknown or missing category?
+
+### Decision Drivers
+
+- Guest safety is the highest priority
+- Operational staff prefer to over-service rather than under-service
+- Unknown categories are expected to occur occasionally during the transition period
+- The fallback must be deterministic and predictable
+
+### Considered Options
+
+1. **Default to Pattern 3 (Full Service)** — safety-first, provide all check-in steps
+2. **Default to Pattern 1 (Basic)** — minimal friction, assume low-complexity
+3. **Return an error** — reject the check-in and require manual classification
+
+### Decision Outcome
+
+**Chosen Option**: "Default to Pattern 3 (Full Service)", because guest safety takes precedence over convenience, and over-servicing creates only minor inconvenience while under-servicing could create safety risks.
+
+#### Confirmation
+
+- Unit tests verify fallback to Pattern 3 for null, empty, and unrecognized category values
+- `checkin.classification.fallback.count` metric is tracked and alerted on
+
+### Consequences
+
+#### Positive
+
+- No guest will miss critical safety steps due to a classification gap
+- Operational alignment: confirmed with operations team as the preferred approach
+- Deterministic behavior: logs and monitoring clearly show when fallback is triggered
+
+#### Negative
+
+- Guests with unmapped low-complexity categories experience an unnecessarily long check-in flow
+- May cause minor guest frustration if fallback occurs frequently
+
+#### Neutral
+
+- Monitoring via `checkin.classification.fallback.count` metric identifies categories needing mapping
+
+### Pros and Cons of the Options
+
+#### Default to Pattern 3 (Full Service)
+
+- **Good**, because no guest misses safety-critical steps
+- **Good**, because aligned with operational safety-first principles
+- **Neutral**, because adds a few minutes to check-in for misclassified guests
+- **Bad**, because may cause minor frustration for simple-activity guests
+
+#### Default to Pattern 1 (Basic)
+
+- **Good**, because minimal friction for guests — fastest possible check-in
+- **Bad**, because could skip gear verification, safety briefing, or medical clearance for high-risk activities
+- **Bad**, because creates safety liability if a guest on a complex activity bypasses safety steps
+
+#### Return an error
+
+- **Good**, because forces correct classification before check-in proceeds
+- **Bad**, because blocks the guest from checking in — creates a hard failure at the kiosk
+- **Bad**, because requires staff intervention for every unmapped category
+
+### More Information
+
+- Ticket comment thread: Comments 11-13 in NTK-10002
+- Product owner confirmation: Morgan Chen, 2024-08-19

@@ -1,0 +1,127 @@
+@startuml NTK-10003 Unregistered Guest Check-in Component View
+' C4 Component Diagram: Unregistered Guest Self-Service Check-In
+' NTK-10003 - Shows new components and cross-service interactions
+
+title NTK-10003: Unregistered Guest Self-Service Check-In\nC4 Component Diagram
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam defaultFontName "Segoe UI"
+
+skinparam rectangle {
+    BorderColor #2E86AB
+    BackgroundColor #FFFFFF
+}
+skinparam component {
+    BackgroundColor #E8F4F8
+    BorderColor #2E86AB
+}
+skinparam database {
+    BackgroundColor #FFF3E0
+    BorderColor #E65100
+}
+
+' ============================================================
+' External Actors
+' ============================================================
+actor "Unregistered\nGuest" as Guest
+rectangle "Kiosk Terminal" as Kiosk #FFF8E1
+
+' ============================================================
+' API Gateway
+' ============================================================
+component "Kong API Gateway" as Kong #FFF3E0 {
+    component "Rate Limiter\n(5 req/15min/kiosk)" as RateLimit #FFE0B2
+}
+
+' ============================================================
+' svc-check-in (Orchestrator) — PRIMARY CHANGES
+' ============================================================
+rectangle "svc-check-in [PRIMARY]" #E8F4F8 {
+    component "CheckInController\n(existing)" as CheckInCtrl
+    component "ReservationLookupController\n[NEW]" as LookupCtrl #B3E5FC
+    component "ReservationLookupService\n[NEW]" as LookupSvc #B3E5FC
+    component "KioskSessionManager\n[NEW]" as SessionMgr #B3E5FC
+    component "LookupRateLimiter\n[NEW]" as AppRateLimit #B3E5FC
+    component "PartnerVerificationClient\n[NEW]" as PartnerClient #B3E5FC
+}
+
+' ============================================================
+' Downstream Services
+' ============================================================
+rectangle "svc-reservations [MODERATE]" #E8F4E8 {
+    component "POST /reservations/search\n[NEW endpoint]" as ResSearch #C8E6C9
+    database "Reservations DB\n+ composite index" as ResDB
+}
+
+rectangle "svc-guest-profiles [MODERATE]" #F0E8F4 {
+    component "POST /guest-profiles/temporary\n[NEW endpoint]" as TempProfile #E1BEE7
+    component "Profile Merge Service" as MergeSvc
+    database "Guest Profiles DB\n+ profile_type column" as ProfileDB
+}
+
+rectangle "svc-safety-compliance [LOW]" #E8F4E8 {
+    component "GET /waivers\n?reservation_id={id}\n[EXTENDED]" as WaiverCheck #C8E6C9
+}
+
+rectangle "svc-gear-inventory [NO CHANGE]" #F5F5F5 {
+    component "GET /assignments\n?reservation_id={id}\n(existing)" as GearCheck
+}
+
+rectangle "svc-partner-integrations [NO CHANGE]" #F5F5F5 {
+    component "POST /verify-booking\n(existing)" as PartnerVerify
+}
+
+' ============================================================
+' Infrastructure
+' ============================================================
+database "Redis\n(sessions + rate limits)" as Redis #FFCDD2
+
+' ============================================================
+' Connections: Guest → Kiosk → Gateway → Orchestrator
+' ============================================================
+Guest --> Kiosk : "Touch: 'Check in with\nConfirmation Code'"
+Kiosk --> Kong : "POST /check-ins/\nlookup-reservation"
+Kong --> RateLimit : "enforce rate limit"
+RateLimit --> LookupCtrl : "if within limit"
+
+' ============================================================
+' Orchestration Flow
+' ============================================================
+LookupCtrl --> AppRateLimit : "app-level\nrate check"
+LookupCtrl --> LookupSvc : "orchestrate\nlookup flow"
+
+' Step 1: Reservation lookup
+LookupSvc --> ResSearch : "1. POST /reservations/search\n{last_name, code, date, count}"
+ResSearch --> ResDB : "composite index query"
+
+' Step 2: Partner fallback (conditional)
+LookupSvc --> PartnerClient : "2. fallback if\nnot found"
+PartnerClient --> PartnerVerify : "POST /verify-booking\n(circuit breaker: 30s)"
+
+' Step 3: Guest profile
+LookupSvc --> TempProfile : "3. POST /guest-profiles/\ntemporary"
+TempProfile --> ProfileDB : "upsert temporary profile"
+
+' Step 4: Parallel checks
+LookupSvc --> WaiverCheck : "4a. GET /waivers\n(parallel)"
+LookupSvc --> GearCheck : "4b. GET /assignments\n(parallel)"
+
+' Step 5: Session
+LookupSvc --> SessionMgr : "5. create JWT session"
+SessionMgr --> Redis : "store session\n(30-min TTL)"
+
+' ============================================================
+' Legend
+' ============================================================
+legend right
+  |= Color |= Meaning |
+  | <#B3E5FC> | New component (svc-check-in) |
+  | <#C8E6C9> | New/extended endpoint |
+  | <#E1BEE7> | New endpoint (guest-profiles) |
+  | <#F5F5F5> | No changes required |
+  | <#FFCDD2> | New infrastructure |
+endlegend
+
+@enduml

@@ -47,6 +47,7 @@ rectangle "Operations Domain" #E8F4E8 {
     component "svc-gear-inventory" as gear
     component "svc-guide-management" as guides
     component "svc-trail-management" as trails
+    note right of trails : "NTK-10001: Now exposes\nelevation_gain_m &\nelevation_loss_m\nin trail responses"
     component "svc-safety-compliance" as safety
 }
 
@@ -96,7 +97,7 @@ checkin --> reservations : "reservation lookup"
 checkin --> safety : "waiver verification"
 checkin --> gear : "gear assignment"
 scheduling --> guides : "guide availability"
-scheduling --> trails : "trail conditions"
+scheduling --> trails : "trail conditions\n+ elevation data"
 scheduling --> weather : "weather forecast"
 scheduling --> trip_catalog : "trip requirements"
 loyalty --> guest_profiles : "guest data"
