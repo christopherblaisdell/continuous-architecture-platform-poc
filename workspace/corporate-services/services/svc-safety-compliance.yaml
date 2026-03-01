@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Safety and Compliance Service
+  description: |
+    Manages guest safety waivers, incident reporting, safety inspections, and
+    emergency protocol documentation for all NovaTrek adventure activities.
+    Ensures regulatory compliance and maintains audit trail for all safety events.
+  version: 1.0.0
+  contact:
+    name: NovaTrek Safety Operations
+    email: safety-ops@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/safety/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /waivers:
+    post:
+      operationId: signWaiver
+      summary: Guest signs a safety waiver
+      tags: [Waivers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaiverSignRequest'
+      responses:
+        '201':
+          description: Waiver signed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waiver'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Waiver already signed for this reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      operationId: listWaivers
+      summary: List waivers by guest
+      tags: [Waivers]
+      parameters:
+        - name: guest_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/WaiverStatus'
+      responses:
+        '200':
+          description: List of waivers for the guest
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Waiver'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /waivers/{waiver_id}:
+    get:
+      operationId: getWaiver
+      summary: Get a specific waiver
+      tags: [Waivers]
+      parameters:
+        - $ref: '#/components/parameters/WaiverIdPath'
+      responses:
+        '200':
+          description: Waiver details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waiver'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /incidents:
+    post:
+      operationId: createIncident
+      summary: File an incident report
+      tags: [Incidents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentReportCreate'
+      responses:
+        '201':
+          description: Incident report created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentReport'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /incidents/{incident_id}:
+    get:
+      operationId: getIncident
+      summary: Get an incident report
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/IncidentIdPath'
+      responses:
+        '200':
+          description: Incident report details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentReport'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      operationId: updateIncident
+      summary: Update an incident report (add follow-up, change status)
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/IncidentIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentReportUpdate'
+      responses:
+        '200':
+          description: Incident report updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentReport'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /safety-inspections:
+    get:
+      operationId: listSafetyInspections
+      summary: List safety inspections for a location
+      tags: [Inspections]
+      parameters:
+        - name: location_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/InspectionStatus'
+      responses:
+        '200':
+          description: List of safety inspections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SafetyInspection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createSafetyInspection
+      summary: Record a safety inspection
+      tags: [Inspections]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SafetyInspectionCreate'
+      responses:
+        '201':
+          description: Safety inspection recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyInspection'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    WaiverIdPath:
+      name: waiver_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    IncidentIdPath:
+      name: incident_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    Waiver:
+      type: object
+      required: [id, guest_id, reservation_id, waiver_type, signed_at, version, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        guest_id:
+          type: string
+          format: uuid
+          description: References guest profile in svc-guest-profiles
+        reservation_id:
+          type: string
+          format: uuid
+          description: References reservation in svc-reservations
+        waiver_type:
+          $ref: '#/components/schemas/WaiverType'
+        signed_at:
+          type: string
+          format: date-time
+        version:
+          type: string
+          example: "2.1"
+          description: Version of the waiver document signed
+        ip_address:
+          type: string
+          format: ipv4
+          example: "203.0.113.42"
+        status:
+          $ref: '#/components/schemas/WaiverStatus'
+        emergency_contact_name:
+          type: string
+        emergency_contact_phone:
+          type: string
+
+    WaiverSignRequest:
+      type: object
+      required: [guest_id, reservation_id, waiver_type, version, ip_address]
+      properties:
+        guest_id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        waiver_type:
+          $ref: '#/components/schemas/WaiverType'
+        version:
+          type: string
+        ip_address:
+          type: string
+          format: ipv4
+        emergency_contact_name:
+          type: string
+        emergency_contact_phone:
+          type: string
+
+    WaiverType:
+      type: string
+      enum: [GENERAL_LIABILITY, HIGH_ALTITUDE, WATER_ACTIVITY, WILDLIFE_PROXIMITY, MINOR_GUARDIAN]
+
+    WaiverStatus:
+      type: string
+      enum: [ACTIVE, EXPIRED, REVOKED]
+
+    IncidentReport:
+      type: object
+      required: [id, reservation_id, guide_id, type, severity, description, reported_at, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+          description: References reservation in svc-reservations
+        guide_id:
+          type: string
+          format: uuid
+          description: References guide in svc-guide-management
+        type:
+          $ref: '#/components/schemas/IncidentType'
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        description:
+          type: string
+          maxLength: 2000
+          example: "Participant twisted ankle on rocky descent near waypoint 7"
+        actions_taken:
+          type: string
+          maxLength: 2000
+        follow_up_required:
+          type: boolean
+          default: false
+        follow_up_notes:
+          type: string
+        reported_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [OPEN, UNDER_REVIEW, RESOLVED, CLOSED]
+        location_coordinates:
+          $ref: '#/components/schemas/GeoCoordinates'
+
+    IncidentReportCreate:
+      type: object
+      required: [reservation_id, guide_id, type, severity, description]
+      properties:
+        reservation_id:
+          type: string
+          format: uuid
+        guide_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/IncidentType'
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        description:
+          type: string
+          maxLength: 2000
+        actions_taken:
+          type: string
+          maxLength: 2000
+        follow_up_required:
+          type: boolean
+        location_coordinates:
+          $ref: '#/components/schemas/GeoCoordinates'
+
+    IncidentReportUpdate:
+      type: object
+      properties:
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        actions_taken:
+          type: string
+        follow_up_required:
+          type: boolean
+        follow_up_notes:
+          type: string
+        status:
+          type: string
+          enum: [OPEN, UNDER_REVIEW, RESOLVED, CLOSED]
+
+    IncidentType:
+      type: string
+      enum: [INJURY, NEAR_MISS, EQUIPMENT_FAILURE, WEATHER_EVENT, WILDLIFE_ENCOUNTER]
+
+    IncidentSeverity:
+      type: string
+      enum: [LOW, MEDIUM, HIGH, CRITICAL]
+
+    SafetyInspection:
+      type: object
+      required: [id, location_id, inspector_id, inspection_date, status, checklist_results]
+      properties:
+        id:
+          type: string
+          format: uuid
+        location_id:
+          type: string
+          format: uuid
+        inspector_id:
+          type: string
+          format: uuid
+        inspection_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/InspectionStatus'
+        checklist_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChecklistItem'
+        notes:
+          type: string
+        next_inspection_due:
+          type: string
+          format: date
+
+    SafetyInspectionCreate:
+      type: object
+      required: [location_id, inspector_id, checklist_results]
+      properties:
+        location_id:
+          type: string
+          format: uuid
+        inspector_id:
+          type: string
+          format: uuid
+        checklist_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChecklistItem'
+        notes:
+          type: string
+
+    ChecklistItem:
+      type: object
+      required: [item_code, description, passed]
+      properties:
+        item_code:
+          type: string
+          example: "TRAIL-001"
+        description:
+          type: string
+          example: "Trail markers visible and intact"
+        passed:
+          type: boolean
+        remediation_notes:
+          type: string
+
+    InspectionStatus:
+      type: string
+      enum: [PASSED, FAILED, CONDITIONAL_PASS, PENDING_REVIEW]
+
+    GeoCoordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+          example: 46.8523
+        longitude:
+          type: number
+          format: double
+          example: -121.7603
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Invalid request payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

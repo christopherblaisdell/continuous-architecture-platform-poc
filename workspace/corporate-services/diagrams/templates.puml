@@ -1,0 +1,31 @@
+@startuml novatrek-templates
+' NovaTrek Adventures - Template Macros
+' Common diagram patterns, headers, and footers
+
+' ============================================================
+' Header / Footer Templates
+' ============================================================
+!define NOVATREK_HEADER(title, version) header\n<b>NovaTrek Adventures</b> | title | Version: version\nendheader
+!define NOVATREK_FOOTER(date) footer\nGenerated: date | NovaTrek Architecture Team\nendfooter
+
+' ============================================================
+' Service Group Templates
+' ============================================================
+!define DOMAIN_BOX(name, color) rectangle "name" <<Domain>> color
+!define BOOKING_DOMAIN() rectangle "Booking Domain" <<Domain>> #E8F4F8
+!define GUEST_DOMAIN() rectangle "Guest Domain" <<Domain>> #F0E8F4
+!define OPERATIONS_DOMAIN() rectangle "Operations Domain" <<Domain>> #E8F4E8
+!define INFRASTRUCTURE_DOMAIN() rectangle "Infrastructure Domain" <<Domain>> #F4F0E8
+
+' ============================================================
+' Common Note Templates
+' ============================================================
+!define ASYNC_NOTE(topic) note right\nAsync via Kafka\nTopic: topic\nend note
+!define SYNC_NOTE() note right\nSynchronous REST call\nend note
+
+' ============================================================
+' Standard Title Block
+' ============================================================
+!define TITLE_BLOCK(title, desc) title title\ncaption desc
+
+@enduml

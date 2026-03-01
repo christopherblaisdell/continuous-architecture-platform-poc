@@ -1,0 +1,319 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Loyalty Rewards Service
+  description: |
+    Manages the NovaTrek Adventures loyalty program including points accrual,
+    tier management, and reward redemptions. Members earn points through
+    adventure bookings and can redeem them for discounts, gear upgrades,
+    and exclusive experiences.
+  version: 1.0.0
+  contact:
+    name: NovaTrek Platform Team
+    email: platform@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/loyalty/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /members/{guest_id}/balance:
+    get:
+      operationId: getMemberBalance
+      summary: Get loyalty member balance and tier info
+      tags: [Members]
+      parameters:
+        - $ref: '#/components/parameters/GuestIdPath'
+      responses:
+        '200':
+          description: Current loyalty member details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyMember'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /members/{guest_id}/earn:
+    post:
+      operationId: earnPoints
+      summary: Award points to a member
+      tags: [Transactions]
+      parameters:
+        - $ref: '#/components/parameters/GuestIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EarnRequest'
+      responses:
+        '201':
+          description: Points earned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /members/{guest_id}/redeem:
+    post:
+      operationId: redeemPoints
+      summary: Redeem points for a reward
+      tags: [Transactions]
+      parameters:
+        - $ref: '#/components/parameters/GuestIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedeemRequest'
+      responses:
+        '201':
+          description: Points redeemed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Insufficient points balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /members/{guest_id}/transactions:
+    get:
+      operationId: getMemberTransactions
+      summary: List point transactions for a member
+      tags: [Transactions]
+      parameters:
+        - $ref: '#/components/parameters/GuestIdPath'
+        - name: type
+          in: query
+          schema:
+            $ref: '#/components/schemas/TransactionType'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Transaction history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionList'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /tiers:
+    get:
+      operationId: listTiers
+      summary: List all loyalty tiers and their thresholds
+      tags: [Tiers]
+      responses:
+        '200':
+          description: All available tiers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tier'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    GuestIdPath:
+      name: guest_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    LoyaltyMember:
+      type: object
+      required: [guest_id, tier, points_balance, lifetime_points]
+      properties:
+        guest_id:
+          type: string
+          format: uuid
+        tier:
+          $ref: '#/components/schemas/TierName'
+        points_balance:
+          type: integer
+          minimum: 0
+          example: 4250
+        lifetime_points:
+          type: integer
+          minimum: 0
+          example: 18700
+        tier_expiry:
+          type: string
+          format: date
+          description: Date the current tier status expires if activity threshold not maintained
+          example: "2027-03-01"
+        enrolled_at:
+          type: string
+          format: date-time
+
+    Transaction:
+      type: object
+      required: [id, type, points, timestamp]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/TransactionType'
+        points:
+          type: integer
+          description: Positive for EARN, negative for REDEEM
+          example: 500
+        source_reservation_id:
+          type: string
+          format: uuid
+          description: References reservation in svc-reservations
+        description:
+          type: string
+          example: "Points earned for Cascade Ridge hiking trip"
+        timestamp:
+          type: string
+          format: date-time
+
+    TransactionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    TransactionType:
+      type: string
+      enum: [EARN, REDEEM]
+
+    Tier:
+      type: object
+      required: [name, min_lifetime_points, multiplier]
+      properties:
+        name:
+          $ref: '#/components/schemas/TierName'
+        min_lifetime_points:
+          type: integer
+          description: Minimum lifetime points to reach this tier
+        multiplier:
+          type: number
+          format: float
+          description: Points earning multiplier for this tier
+          example: 1.5
+        perks:
+          type: array
+          items:
+            type: string
+          example: ["Priority booking", "Free gear upgrade"]
+
+    TierName:
+      type: string
+      enum: [EXPLORER, PATHFINDER, SUMMIT, LEGEND]
+      description: |
+        EXPLORER: 0+ points, PATHFINDER: 5000+, SUMMIT: 15000+, LEGEND: 50000+
+
+    EarnRequest:
+      type: object
+      required: [points, source_reservation_id]
+      properties:
+        points:
+          type: integer
+          minimum: 1
+        source_reservation_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+
+    RedeemRequest:
+      type: object
+      required: [points]
+      properties:
+        points:
+          type: integer
+          minimum: 1
+        reward_code:
+          type: string
+          example: "GEAR_UPGRADE_PREMIUM"
+        description:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Invalid request payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

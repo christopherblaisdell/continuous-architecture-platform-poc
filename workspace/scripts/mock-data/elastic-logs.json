@@ -1,0 +1,146 @@
+[
+  {
+    "timestamp": "2025-02-12T08:14:32.441Z",
+    "level": "ERROR",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Guide enrichment data overwritten during concurrent schedule update for guideId=G-4821. Previous certifications lost: [ROPE_COURSE, ZIPLINE_ADVANCED]",
+    "traceId": "abc-1001-def-2001",
+    "requestPath": "PUT /guides/G-4821/schedule"
+  },
+  {
+    "timestamp": "2025-02-12T08:14:32.489Z",
+    "level": "ERROR",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Guide enrichment data overwritten during concurrent schedule update for guideId=G-4821. Concurrent PUT detected within 47ms window.",
+    "traceId": "abc-1001-def-2002",
+    "requestPath": "PUT /guides/G-4821/schedule"
+  },
+  {
+    "timestamp": "2025-02-12T09:02:15.112Z",
+    "level": "WARN",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Guide G-4821 removed from adventure assignment ADV-302 (ROPE_COURSE) due to missing certification. Manual re-assignment required.",
+    "traceId": "abc-1002-def-3001",
+    "requestPath": "POST /schedules/daily-assignments"
+  },
+  {
+    "timestamp": "2025-02-12T09:15:44.887Z",
+    "level": "ERROR",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Guide enrichment data overwritten during concurrent schedule update for guideId=G-5190. Previous specializations lost: [WILDLIFE_EXPERT, FIRST_AID_CERTIFIED]",
+    "traceId": "abc-1003-def-4001",
+    "requestPath": "PUT /guides/G-5190/schedule"
+  },
+  {
+    "timestamp": "2025-02-12T10:30:00.220Z",
+    "level": "INFO",
+    "service": "svc-check-in",
+    "message": "Check-in completed successfully for reservationId=RES-88412, adventureId=ADV-105, guestCount=4",
+    "traceId": "abc-2001-def-5001",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T10:31:12.553Z",
+    "level": "INFO",
+    "service": "svc-check-in",
+    "message": "Check-in completed successfully for reservationId=RES-88415, adventureId=ADV-210, guestCount=2",
+    "traceId": "abc-2002-def-5002",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T10:45:03.901Z",
+    "level": "WARN",
+    "service": "svc-check-in",
+    "message": "Check-in category classification fallback triggered: adventureId=ADV-318 has no category assigned. Defaulting to SELF_SERVICE.",
+    "traceId": "abc-2003-def-5003",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T10:45:04.115Z",
+    "level": "WARN",
+    "service": "svc-adventure-catalog",
+    "message": "Adventure ADV-318 missing category classification. Category lookup returned null, consumer should handle fallback.",
+    "traceId": "abc-2003-def-5003",
+    "requestPath": "GET /adventures/ADV-318"
+  },
+  {
+    "timestamp": "2025-02-12T11:02:33.678Z",
+    "level": "ERROR",
+    "service": "svc-check-in",
+    "message": "Unregistered guest check-in attempted without reservation lookup. No walk-up flow available. Redirecting to staffed counter. kioskId=K-14",
+    "traceId": "abc-2004-def-6001",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T11:15:22.334Z",
+    "level": "INFO",
+    "service": "svc-guest-identity",
+    "message": "Guest profile retrieved for guestId=GUEST-20441. Profile status=REGISTERED, loyaltyTier=GOLD",
+    "traceId": "abc-3001-def-7001",
+    "requestPath": "GET /guests/GUEST-20441"
+  },
+  {
+    "timestamp": "2025-02-12T11:30:55.219Z",
+    "level": "INFO",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Daily schedule generated for 2025-02-13. Total assignments: 142 guides across 38 adventures.",
+    "traceId": "abc-1004-def-8001",
+    "requestPath": "POST /schedules/generate"
+  },
+  {
+    "timestamp": "2025-02-12T12:00:01.002Z",
+    "level": "INFO",
+    "service": "svc-trail-management",
+    "message": "Trail data refreshed from geo-data service. 24 trails updated, 0 errors.",
+    "traceId": "abc-4001-def-9001",
+    "requestPath": "POST /trails/refresh"
+  },
+  {
+    "timestamp": "2025-02-12T12:15:44.667Z",
+    "level": "WARN",
+    "service": "svc-check-in",
+    "message": "Check-in category classification fallback triggered: adventureId=ADV-422 has no category assigned. Defaulting to SELF_SERVICE.",
+    "traceId": "abc-2005-def-5004",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T13:05:18.441Z",
+    "level": "ERROR",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Guide enrichment data overwritten during concurrent schedule update for guideId=G-3302. Previous language skills lost: [SPANISH, PORTUGUESE]",
+    "traceId": "abc-1005-def-4002",
+    "requestPath": "PUT /guides/G-3302/schedule"
+  },
+  {
+    "timestamp": "2025-02-12T13:20:09.112Z",
+    "level": "WARN",
+    "service": "svc-scheduling-orchestrator",
+    "message": "Guide G-3302 removed from adventure assignment ADV-115 (BILINGUAL_TOUR) due to missing language qualification. Manual re-assignment required.",
+    "traceId": "abc-1006-def-3002",
+    "requestPath": "POST /schedules/daily-assignments"
+  },
+  {
+    "timestamp": "2025-02-12T14:00:45.890Z",
+    "level": "ERROR",
+    "service": "svc-check-in",
+    "message": "Unregistered guest check-in attempted without reservation lookup. No walk-up flow available. Redirecting to staffed counter. kioskId=K-07",
+    "traceId": "abc-2006-def-6002",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T14:22:11.005Z",
+    "level": "INFO",
+    "service": "svc-check-in",
+    "message": "Check-in completed successfully for reservationId=RES-88501, adventureId=ADV-105, guestCount=6",
+    "traceId": "abc-2007-def-5005",
+    "requestPath": "POST /check-ins"
+  },
+  {
+    "timestamp": "2025-02-12T15:10:33.228Z",
+    "level": "INFO",
+    "service": "svc-adventure-catalog",
+    "message": "Adventure catalog sync completed. 52 adventures active, 3 temporarily closed, 1 seasonal.",
+    "traceId": "abc-5001-def-9002",
+    "requestPath": "POST /adventures/sync"
+  }
+]

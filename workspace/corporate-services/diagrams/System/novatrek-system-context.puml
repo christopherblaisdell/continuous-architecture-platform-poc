@@ -1,0 +1,53 @@
+@startuml novatrek-system-context
+' NovaTrek Adventures - System Context Diagram (C4 Style)
+' Shows top-level actors, core platform, and external systems
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title NovaTrek Adventures - System Context
+
+' ============================================================
+' External Actors
+' ============================================================
+Person(guest, "Guest", "Books and participates in outdoor adventures via mobile or web app")
+Person(guide, "Guide", "Leads trips, manages groups, reports trail conditions via mobile app")
+Person(partner, "Partner / OTA", "Third-party booking channels submitting reservations via API")
+Person(admin, "Admin", "Manages operations, schedules, and compliance via internal dashboard")
+
+' ============================================================
+' Core System
+' ============================================================
+System(novatrek, "NovaTrek Platform", "Manages reservations, trip logistics, guest experiences, gear, and guide operations for outdoor recreation adventures")
+
+' ============================================================
+' External Systems
+' ============================================================
+System_Ext(weather_api, "Weather API Provider", "Provides real-time and forecast weather data for trail safety decisions")
+System_Ext(payment_gw, "Payment Gateway", "Processes credit card and digital wallet transactions")
+System_Ext(map_gps, "Map / GPS Provider", "Supplies topographic maps, trail GPS data, and live location tracking")
+System_Ext(sms_gw, "SMS Gateway", "Delivers SMS notifications and emergency alerts to guests and guides")
+System_Ext(email_svc, "Email Service", "Sends booking confirmations, itineraries, and marketing communications")
+
+' ============================================================
+' Relationships - Actors to System
+' ============================================================
+Rel(guest, novatrek, "Searches trips, books reservations, checks in, views itinerary", "HTTPS / Mobile")
+Rel(guide, novatrek, "Views assignments, reports conditions, manages group check-ins", "HTTPS / Mobile")
+Rel(partner, novatrek, "Submits bookings, queries availability, receives confirmations", "REST API")
+Rel(admin, novatrek, "Manages schedules, monitors operations, reviews compliance", "HTTPS / Dashboard")
+
+' ============================================================
+' Relationships - System to External Systems
+' ============================================================
+Rel(novatrek, weather_api, "Fetches weather forecasts and alerts", "REST API")
+Rel(novatrek, payment_gw, "Submits payment authorizations and captures", "REST API / PCI")
+Rel(novatrek, map_gps, "Retrieves trail maps and live GPS coordinates", "REST API / WebSocket")
+Rel(novatrek, sms_gw, "Sends SMS notifications and alerts", "REST API")
+Rel(novatrek, email_svc, "Sends transactional and marketing emails", "SMTP / REST API")
+
+' ============================================================
+' Layout Hints
+' ============================================================
+LAYOUT_WITH_LEGEND()
+
+@enduml
