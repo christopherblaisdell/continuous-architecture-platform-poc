@@ -24,6 +24,9 @@ Mar         Apr         May         Jun         Jul         Aug
 |== Phase 1 ==|                                             
 |  AI Tool    |                                             
 |  Comparison |                                             
+    |== Phase 6 ==|                                         
+    |  Docs        |                                        
+    |  Publishing  |                                        
               |======= Phase 2 =======|                    
               |  AI-Integrated         |                    
               |  Workflow Design       |                    
@@ -210,6 +213,44 @@ Mar         Apr         May         Jun         Jul         Aug
 
 ---
 
+## Phase 6: Documentation Publishing Platform
+
+**Timeline:** March - April 2026 (parallel with Phase 1 completion)
+**Status:** Planned
+**Gate:** Architecture documentation live on Azure Static Web Apps
+**Decision:** [ADR-002: Documentation Publishing Platform](../decisions/ADR-002-documentation-publishing-platform.md)
+
+### Milestones
+
+| ID | Milestone | Target Date | Status | Dependencies |
+|----|-----------|-------------|--------|--------------|
+| 6.1 | MkDocs Material local site rendering all workspace markdown | 2026-03-24 | NOT STARTED | None |
+| 6.2 | Azure Static Web App provisioned | 2026-03-28 | NOT STARTED | None |
+| 6.3 | GitHub Actions CI/CD pipeline deploying on push | 2026-03-31 | NOT STARTED | 6.1, 6.2 |
+| 6.4 | Content enhancement (tags, search, attribution, PDF export) | 2026-04-07 | NOT STARTED | 6.3 |
+| 6.5 | Workflow integration (PR validation, link checking, versioning) | 2026-04-14 | NOT STARTED | 6.4 |
+| 6.6 | ADR-002 Documentation Publishing Platform decision recorded | 2026-03-21 | PROPOSED | None |
+
+### Deliverables
+
+- `mkdocs.yml` site configuration mapping repo structure to navigable documentation
+- `.github/workflows/docs-deploy.yml` CI/CD pipeline
+- Live documentation site on Azure Static Web Apps
+- PlantUML and Mermaid diagram rendering inline
+- Full-text search, tags, git attribution, PDF export
+- [Detailed implementation plan](../phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md)
+
+### Exit Criteria
+
+- [ ] All existing markdown renders correctly on the published site
+- [ ] PlantUML and Mermaid diagrams render inline
+- [ ] Push to main auto-deploys in under 5 minutes
+- [ ] Full-text search works across all documents
+- [ ] PR preview environments generate staging URLs
+- [ ] Site scores >90 on Lighthouse performance
+
+---
+
 ## Decisions Register
 
 Formal architecture decisions are documented using the MADR (Markdown Any Decision Records) format and stored in the [decisions/](../decisions/) directory.
@@ -217,8 +258,9 @@ Formal architecture decisions are documented using the MADR (Markdown Any Decisi
 | ID | Decision | Phase | Status | Date |
 |----|----------|-------|--------|------|
 | ADR-001 | [AI Toolchain Selection](../decisions/ADR-001-ai-toolchain-selection.md) | Phase 1 | PROPOSED | 2026-03-01 |
-| ADR-002 | Publishing Target Selection | Phase 4 | FUTURE | TBD |
-| ADR-003 | Artifact Relationship Model | Phase 4 | FUTURE | TBD |
+| ADR-002 | [Documentation Publishing Platform](../decisions/ADR-002-documentation-publishing-platform.md) | Phase 6 | PROPOSED | 2026-03-21 |
+| ADR-003 | Publishing Target Selection | Phase 4 | FUTURE | TBD |
+| ADR-004 | Artifact Relationship Model | Phase 4 | FUTURE | TBD |
 
 ---
 
