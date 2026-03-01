@@ -433,6 +433,13 @@ components:
           format: double
           minimum: 0
           example: 1240
+        elevation_loss_m:
+          type: number
+          format: double
+          minimum: 0
+          nullable: true
+          description: Total elevation loss in meters. Nullable for loop trails where loss equals gain.
+          example: 980
         estimated_duration_hours:
           type: number
           format: double
@@ -476,6 +483,11 @@ components:
           type: number
           format: double
           minimum: 0
+        elevation_loss_m:
+          type: number
+          format: double
+          minimum: 0
+          nullable: true
         estimated_duration_hours:
           type: number
           format: double
@@ -521,7 +533,14 @@ components:
         elevation_gain_m:
           type: number
           format: double
+          description: Total elevation gain in meters along the trail
           example: 1240
+        elevation_loss_m:
+          type: number
+          format: double
+          nullable: true
+          description: Total elevation loss in meters along the trail. May differ from elevation gain on point-to-point trails.
+          example: 980
         estimated_duration_hours:
           type: number
           format: double

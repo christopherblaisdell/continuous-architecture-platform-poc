@@ -107,30 +107,59 @@ See [phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](../phase-1
 
 ## Decision Outcome
 
-**Selected option:** TBD — pending Phase 1 execution results
+**Selected option:** TBD — pending Roo Code + Kong AI execution for comparison
 
-This decision will be finalized after completing the Phase 1 cost comparison. The comparison data will populate the following table:
+GitHub Copilot (Claude Opus 4.6, Agent Mode) Phase 1 execution is complete. Roo Code + Kong AI execution is pending. The Copilot column is populated below based on Phase 1 results.
 
 | | Roo Code + Kong AI | GitHub Copilot Business | GitHub Copilot Enterprise |
 |---|---|---|---|
-| Monthly input tokens per architect | TBD | (included in seat) | (included in seat) |
-| Monthly output tokens per architect | TBD | (included in seat) | (included in seat) |
+| Monthly input tokens per architect | TBD | ~350,000 (est.) | ~350,000 (est.) |
+| Monthly output tokens per architect | TBD | ~100,000 (est.) | ~100,000 (est.) |
 | Token/usage cost | TBD | $0 (flat rate) | $0 (flat rate) |
 | Platform/gateway cost | TBD | $19/seat | $39/seat |
 | Tool license cost | $0 (open source) | (included) | (included) |
 | **Total monthly per seat** | **TBD** | **$19** | **$39** |
-| Quality score (avg) | TBD | TBD | - |
-| Standards compliance rate | TBD | TBD | - |
-| Manual corrections (avg) | TBD | TBD | - |
-| Workflow integration | TBD | TBD | - |
+| SC-01 quality (/25) | TBD | 23 (92%) | — |
+| SC-02 quality (/35) | TBD | 33 (94%) | — |
+| SC-03 quality (/30) | TBD | 30 (100%) | — |
+| SC-04 quality (/25) | TBD | 24 (96%) | — |
+| SC-05 quality (/40) | TBD | 39 (98%) | — |
+| **Total quality (/155)** | **TBD** | **149 (96.1%)** | **—** |
+| **Avg quality (normalized /5)** | **TBD** | **4.81** | **—** |
+| Cost per quality point | TBD | $3.95 | $8.11 |
+| Scenarios with quality >= 80% | TBD | 5/5 | — |
+| Total tool calls (est.) | TBD | 85 | — |
+| Average time per scenario (min) | TBD | 20 | — |
+| Breakeven runs vs. Kong AI | — | ~37/month | ~76/month |
+
+### Preliminary Observations (Copilot Completed, Kong AI Pending)
+
+**GitHub Copilot demonstrated:**
+- 96.1% quality score across all 5 scenarios (149/155)
+- Autonomous multi-step execution — all scenarios completed in a single session
+- Correct architectural reasoning (data ownership violation identification in SC-03)
+- MADR-compliant ADR generation (9 ADRs created/formatted)
+- Valid PlantUML diagram generation (2 diagrams created/modified)
+- All 3 mock tools used appropriately across scenarios
+
+**Limitations:**
+- No per-request token visibility — cost estimates are approximations
+- Context window management summarized early context during long session
+- Fixed cost model is cost-effective at current usage (~26 runs/month) but becomes relatively less attractive if Kong AI achieves comparable quality at estimated ~$13/month
 
 ### Positive Consequences
 
-_To be documented after decision is made._
+- Copilot demonstrated production-ready architecture artifact generation (96.1% quality)
+- 9 MADR-formatted ADRs created across 5 scenarios — minimal manual correction expected
+- Autonomous multi-step execution reduces architect time investment per scenario
+- Flat-rate pricing provides budget predictability for practice leadership
 
 ### Negative Consequences
 
-_To be documented after decision is made._
+- No per-request token visibility limits cost optimization opportunities
+- Fixed cost regardless of usage — light months still cost $19-$39/seat
+- Model selection limited to what GitHub Copilot offers (currently Claude Opus 4.6 for agent mode)
+- Single-session context window management may degrade quality across very long sessions
 
 ## Additional Considerations
 
