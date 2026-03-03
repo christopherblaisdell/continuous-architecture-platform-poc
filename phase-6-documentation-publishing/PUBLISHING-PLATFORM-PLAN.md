@@ -242,7 +242,7 @@ nav:
       - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
   - Phase 1 - AI Tool Comparison:
     - Overview: phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md
-    - Results: phase-1-ai-tool-cost-comparison/workspace/phase-1-copilot-results.md
+    - Results: phase-1-ai-tool-cost-comparison/outputs/README.md
     - Playbooks:
       - SC-01 Ticket Triage: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-01-new-ticket-triage.md
       - SC-02 Solution Design: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-02-solution-design.md

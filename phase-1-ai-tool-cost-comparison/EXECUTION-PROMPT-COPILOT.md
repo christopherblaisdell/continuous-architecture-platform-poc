@@ -284,13 +284,31 @@ After completing all 5 scenarios, provide a brief summary listing:
 ## Post-Execution Steps (Human)
 
 1. **Record wall-clock time** (start to completion).
-2. **Commit results**: `git add -A && git commit -m 'feat: complete Phase 1 Copilot execution - all 5 scenarios'`
-3. **Score each scenario** using the rubrics in:
+2. **Capture the run** (from repository root):
+   ```bash
+   # Auto-assigns next run number (001, 002, ...)
+   ./phase-1-ai-tool-cost-comparison/scripts/capture-run.sh copilot
+   ```
+   This snapshots all workspace changes into `outputs/copilot/<RUN>/`, including:
+   - `workspace-diff.patch` — full git diff from baseline
+   - `workspace-snapshot/` — copy of all changed/created files
+   - `run-metadata.md` — template for timing and cost data
+   - `results.md` — copy of results file (if present in workspace)
+3. **Fill in `run-metadata.md`** with start time, end time, wall-clock duration, and cost.
+4. **Score each scenario** using the rubrics in:
    - `playbooks/scenario-01-new-ticket-triage.md` (max 25)
    - `playbooks/scenario-02-solution-design.md` (max 35)
    - `playbooks/scenario-03-investigation-analysis.md` (max 30)
    - `playbooks/scenario-04-architecture-update.md` (max 25)
    - `playbooks/scenario-05-complex-cross-service.md` (max 40)
-4. **Create `phase-1-copilot-results.md`** documenting scores, observable metrics, and notes.
-5. **Run data isolation audit**: `../../scripts/audit-data-isolation.sh`
-6. **Reset workspace** before running the Roo Code execution (re-run the reset commands above).
+5. **Create or update `results.md`** in the run folder documenting scores, observable metrics, and notes.
+6. **Run data isolation audit**: `../../scripts/audit-data-isolation.sh`
+7. **Commit the captured run**:
+   ```bash
+   git add -A && git commit -m 'feat: capture Phase 1 Copilot run <RUN>'
+   ```
+8. **Reset workspace** before the next run:
+   ```bash
+   git checkout e83f83e -- phase-1-ai-tool-cost-comparison/workspace/
+   git diff --name-only --diff-filter=A e83f83e..HEAD -- phase-1-ai-tool-cost-comparison/workspace/ | xargs rm -f
+   ```
