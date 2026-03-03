@@ -8,7 +8,7 @@
 | **Created** | 2026-03-01 |
 | **Status** | Active |
 | **Organization** | Architecture Practice |
-| **Related** | [ADR-001: AI Toolchain Selection](decisions/ADR-001-ai-toolchain-selection.md) • [Roadmap](roadmap/ROADMAP.md) • [Phase 1 Results](phase-1-ai-tool-cost-comparison/workspace/phase-1-copilot-results.md) |
+| **Related** | [ADR-001: AI Toolchain Selection](decisions/ADR-001-ai-toolchain-selection.md) • [Roadmap](roadmap/ROADMAP.md) • [Phase 1 Outputs](phase-1-ai-tool-cost-comparison/outputs/README.md) |
 
 ---
 

@@ -177,7 +177,7 @@ A **continuous architecture platform** where:
 | [ADR-002: Documentation Publishing Platform](decisions/ADR-002-documentation-publishing-platform.md) | Decision record for Material for MkDocs on Azure Static Web Apps |
 | [Context Window Utilization Analysis](research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md) | Empirical analysis of Roo Code vs Copilot context window efficiency |
 | [Phase 1 Plan](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) | Detailed plan for AI cost comparison with synthetic workspace |
-| [Phase 1 Results](phase-1-ai-tool-cost-comparison/workspace/phase-1-copilot-results.md) | Copilot execution results — 149/155 quality (96.1%), revised cost model |
+| [Phase 1 Outputs](phase-1-ai-tool-cost-comparison/outputs/README.md) | Run-by-run results for Copilot and Roo Code executions |
 | [Publishing Platform Plan](phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
 | [Architecture Decision Log](decisions/README.md) | Global index of all 11 architecture decisions with service and status views |
 | [Service Architecture Pages](services/README.md) | Living architecture baseline for 6 services touched by Phase 1 |
