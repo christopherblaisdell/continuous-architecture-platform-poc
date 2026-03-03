@@ -63,7 +63,7 @@ Copilot does not expose per-request token counts. Collection methods:
 
 ```
 Kong AI Monthly Cost = SUM over all scenarios:
-  (scenario_input_tokens * input_price_per_token
+  (scenario_cumulative_input_tokens * input_price_per_token
    + scenario_output_tokens * output_price_per_token)
   * scenario_monthly_frequency
 ```
@@ -73,6 +73,18 @@ Current pricing reference (update with actual contracted rates):
 - Claude Sonnet output: $15.00 / 1M tokens
 
 Include Kong Gateway operational cost if applicable (infrastructure, licensing).
+
+> **⚠️ Agentic Re-transmission Tax (Revision 2)**
+>
+> The formula above uses `cumulative_input_tokens`, not `single_pass_input_tokens`. This is critical for accurate cost modeling. Roo Code's client-side architecture re-transmits the **entire conversation history** at every turn of the agentic loop. For a scenario with `T` turns where context grows from `C₀` to `C_T` tokens:
+>
+> ```
+> cumulative_input_tokens = Σ(t=1 to T) C_t   ≈  T × (C₀ + C_T) / 2
+> ```
+>
+> For a 20-turn scenario starting at 10K and growing to 120K context, this yields ~1.3M cumulative input tokens — not the 120K that a single-pass measurement would suggest. This "agentic re-transmission tax" made the original cost estimate **14× too low**. See [COST-MEASUREMENT-METHODOLOGY.md](../../../phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) Revision 2 and [DEEP-RESEARCH-1.md](../../../../research/DEEP-RESEARCH-1.md) for the full analysis.
+>
+> Additionally, Roo Code + Kong AI has a documented failure mode where Kong Gateway obfuscates Anthropic's `context_length_exceeded` error, causing infinite retry loops with unbounded token consumption. See [DEEP-RESEARCH-2.md](../../../../research/DEEP-RESEARCH-2.md) for the root cause analysis.
 
 ### GitHub Copilot (Fixed Cost Model)
 

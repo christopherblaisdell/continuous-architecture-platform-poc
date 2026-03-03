@@ -130,18 +130,21 @@ GitHub Copilot (Claude Opus 4.6, Agent Mode) Phase 1 execution is complete. Roo 
 | Scenarios with quality >= 80% | TBD | 5/5 | — |
 | Total tool calls (est.) | TBD | 85 | — |
 | Average time per scenario (min) | TBD | 20 | — |
-| Breakeven runs vs. Kong AI | — | ~37/month | ~76/month |
+| Breakeven runs vs. Kong AI | — | ~11/month | ~22/month |
 
-### Revised Cost at Realistic Workload (Including PROMOTE Step)
+### Revised Cost at Realistic Workload (Including PROMOTE Step + Agentic Re-transmission Tax)
+
+> **Revision Note (Deep Research):** The original per-run cost of ~$0.51 was derived from a content-delta analysis (git diff output ÷ 5). Deep research into agentic token economics ([DEEP-RESEARCH-1](../research/DEEP-RESEARCH-1.md), [DEEP-RESEARCH-2](../research/DEEP-RESEARCH-2.md)) reveals that Roo Code's client-side architecture re-transmits the entire conversation history at every turn of the agentic loop. The actual per-run variable cost is **~$1.78** — 14× higher than the content-delta estimate. See [COST-MEASUREMENT-METHODOLOGY.md](../phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) Revision 2 for the full analysis.
 
 | Metric | Roo Code + Kong AI | Copilot Business | Copilot Enterprise |
 |--------|-------------------|-----------------|-------------------|
 | Monthly runs (with PROMOTE) | ~38 | ~38 | ~38 |
-| Monthly cost | ~$19.40 | $19.00 | $39.00 |
-| Cost per run | ~$0.51 | ~$0.50 | ~$1.03 |
+| Monthly cost | **~$67.46** | **$19.00** | $39.00 |
+| Cost per run | ~$1.78 | ~$0.50 | ~$1.03 |
 | Cost trend as volume grows | 📈 Increases linearly | 📊 Flat | 📊 Flat |
+| **vs. Copilot Business** | **3.5× more expensive** | — | 2.1× more expensive |
 
-The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/month to the workload. At this revised volume, Copilot Business and Kong AI are cost-equivalent, but Copilot offers budget predictability. See [CLOSING-THE-LOOP.md](../CLOSING-THE-LOOP.md) for the full analysis of why the PROMOTE step is essential.
+The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/month to the workload. At this revised volume, **Copilot Business is 3.5× cheaper** than Kong AI. The gap widens with volume growth. See [CLOSING-THE-LOOP.md](../CLOSING-THE-LOOP.md) for the full analysis of why the PROMOTE step is essential.
 
 ### Preliminary Observations (Copilot Completed, Kong AI Pending)
 
@@ -156,18 +159,22 @@ The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/m
 **Limitations:**
 - No per-request token visibility — cost estimates are approximations
 - Context window management summarized early context during long session
-- Fixed cost model is cost-effective at current usage (~26 runs/month) but becomes relatively less attractive if Kong AI achieves comparable quality at estimated ~$13/month
+- Fixed cost model means light months still cost $19/seat regardless of usage
 
-**Revised Workload Analysis (PROMOTE Step):**
+**Revised Cost Analysis (Deep Research):**
 
-The original 26 runs/month workload calculation only covered ticket intake through solution design. A critical gap analysis (see [CLOSING-THE-LOOP.md](../CLOSING-THE-LOOP.md)) identified that the architecture practice never "closes the loop" — target states documented in solution designs are never promoted back to the corporate architecture baseline. Adding the PROMOTE step (updating corporate artifacts, promoting ADRs to the global log, refreshing service architecture pages) adds ~12 additional AI-assisted runs/month, bringing the realistic workload to **~38 runs/month**.
+Deep research into agentic token economics fundamentally changed the cost comparison. The original content-delta estimate suggested Kong AI would cost ~$13/month — cheaper than Copilot. However, this analysis missed the dominant cost driver: **cumulative re-transmission of the conversation history across agentic turns**.
 
-At 38 runs/month:
-- Kong AI estimated cost: ~$19.40/month (exceeds Copilot Business)
-- Copilot Business: $19.00/month (fixed, unaffected)
-- **The PROMOTE step neutralizes Kong AI's cost advantage and favors flat-rate pricing**
+With 85 tool calls across 5 scenarios, Roo Code's client-side architecture re-transmits ~4M input tokens (not 350K). The revised per-batch variable cost is **$13.42** (not $0.94). At 38 runs/month:
+- Kong AI: **~$67.46/month** (not ~$19.40)
+- Copilot Business: **$19.00/month** (unchanged)
+- **Copilot is 3.5× cheaper** (not cost-equivalent)
 
-This revised workload must be used when making the final tool selection. The original 26 runs/month understates real-world usage by omitting the essential baseline-update workflow.
+The analysis also identified two critical technical risks with the Roo Code + Kong AI stack:
+1. **Infinite retry loop**: Kong AI Gateway obfuscates Anthropic's `context_length_exceeded` error during schema translation. Roo Code's `attemptApiRequest` retries on unrecognized errors, creating a documented runaway cost failure mode.
+2. **Rate limiting race condition**: Kong's `ai-rate-limiting-advanced` uses post-response async token counting, creating a race condition that blocks Context Condensing API calls — the very mechanism needed to prevent context overflow.
+
+See [DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md) and [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md) for the full analysis.
 
 ### Positive Consequences
 
