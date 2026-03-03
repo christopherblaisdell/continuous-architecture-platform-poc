@@ -4,21 +4,21 @@
 |-----------|-------|
 | **Status** | PROPOSED |
 | **Date** | 2026-03-01 |
-| **Decision Makers** | Christopher Blaisdell, UDX Architecture Practice |
+| **Decision Makers** | Christopher Blaisdell, Architecture Practice |
 | **Phase** | Phase 1 - AI Tool Cost Comparison |
 
 ## Context and Problem Statement
 
-The UDX Architecture Practice needs AI-assisted tooling to accelerate solution architecture workflows — from ticket triage and investigation through solution design, review, and publishing. Two viable options exist. We need to select one as the standard toolchain for the practice, balancing cost, quality, standards compliance, and operational fit.
+The Architecture Practice needs AI-assisted tooling to accelerate solution architecture workflows — from ticket triage and investigation through solution design, review, and publishing. Two viable options exist. We need to select one as the standard toolchain for the practice, balancing cost, quality, standards compliance, and operational fit.
 
-**Which AI toolchain should the UDX Architecture Practice adopt for AI-assisted solution architecture work?**
+**Which AI toolchain should the Architecture Practice adopt for AI-assisted solution architecture work?**
 
 ## Decision Drivers
 
 - **Monthly cost per architect seat**: The practice has multiple architects; per-seat cost must be defensible to leadership
 - **Architecture output quality**: AI-generated artifacts must meet arc42, C4, and MADR standards without excessive manual correction
 - **Standards compliance**: The toolchain must be configurable to enforce organizational architecture standards automatically
-- **Workflow integration**: The toolchain must integrate with the existing VS Code-based architecture workflow (UDX VSFlow, PlantUML, Markdown)
+- **Workflow integration**: The toolchain must integrate with the existing VS Code-based architecture workflow (DocFlow, PlantUML, Markdown)
 - **Extensibility**: The toolchain must support future pipeline integration (Phase 3) and custom tooling
 - **Model flexibility**: The ability to select and switch between LLM models as pricing and capabilities evolve
 - **Corporate governance**: The toolchain must operate within corporate security, procurement, and data handling policies

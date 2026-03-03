@@ -7,7 +7,7 @@
 | **Author** | Christopher Blaisdell |
 | **Created** | 2026-02-28 |
 | **Status** | Active |
-| **Organization** | UDX Architecture Practice |
+| **Organization** | Architecture Practice |
 
 ---
 
@@ -75,13 +75,13 @@ A **continuous architecture platform** where:
 
 ---
 
-### Phase 3: UDX VSFlow v5 Pipeline Integration
+### Phase 3: DocFlow v5 Pipeline Integration
 
 **Status:** Planned
 
-**Objective:** Extend UDX VSFlow v5 to support automated publishing pipelines that validate, cross-link, and deliver architecture artifacts without manual intervention.
+**Objective:** Extend DocFlow v5 to support automated publishing pipelines that validate, cross-link, and deliver architecture artifacts without manual intervention.
 
-**Current UDX VSFlow v5 capabilities (foundation to build on):**
+**Current DocFlow v5 capabilities (foundation to build on):**
 - Markdown-to-Confluence publishing with recursive child page support
 - Two-pass cross-link resolution (file references become Confluence page links)
 - Anchor-based in-page navigation (headings become linkable anchors)
@@ -98,7 +98,7 @@ A **continuous architecture platform** where:
 - **Bidirectional sync**: Detect external Confluence edits and merge them back to the source-of-truth workspace
 
 **Deliverables:**
-- UDX VSFlow v5 extensions for pipeline-mode publishing
+- DocFlow v5 extensions for pipeline-mode publishing
 - CI/CD pipeline definitions (GitHub Actions or equivalent)
 - Validation rule set aligned with architecture standards
 - Artifact manifest specification
@@ -204,7 +204,7 @@ continuous-architecture-platform-poc/
       scenario-playbooks/
       ...
   phase-2-ai-workflow/                              # (future) AI-integrated workflow design
-  phase-3-vsflow-pipelines/                         # (future) UDX VSFlow v5 pipeline extensions
+  phase-3-docflow-pipelines/                         # (future) DocFlow v5 pipeline extensions
   phase-4-artifact-graph/                           # (future) Navigable architecture artifact graph
   phase-5-continuous-improvement/                   # (future) Quality metrics and feedback loops
 ```

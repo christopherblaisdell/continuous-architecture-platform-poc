@@ -157,7 +157,7 @@ Material for MkDocs is specifically exceptional for architecture documentation:
 ```yaml
 site_name: Continuous Architecture Platform
 site_url: https://{app-name}.azurestaticapps.net
-site_description: UDX Architecture Practice — Solution Designs, ADRs, and Architecture Documentation
+site_description: Architecture Practice — Solution Designs, ADRs, and Architecture Documentation
 repo_url: https://github.com/christopherblaisdell/continuous-architecture-platform-poc
 repo_name: continuous-architecture-platform-poc
 edit_uri: edit/main/
