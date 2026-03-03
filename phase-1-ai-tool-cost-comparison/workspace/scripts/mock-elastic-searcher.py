@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Mock Elasticsearch Searcher - Simulates production log queries for NovaTrek Architecture Practice.
 
+*** DATA ISOLATION NOTICE ***
+This is a LOCAL MOCK SCRIPT. It makes NO network calls, requires NO credentials,
+and connects to NO corporate systems. All data is read from local JSON files in
+the mock-data/ directory. It exists solely to simulate an Elasticsearch CLI for
+AI tool evaluation purposes.
+
 This script provides a synthetic Elasticsearch query interface that loads log
 entries from a local JSON file. Includes a ProductionElasticSearcher class
 that mirrors the real tool's interface. Used for testing AI coding assistants.

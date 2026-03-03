@@ -1,5 +1,21 @@
 # Copilot Instructions for NovaTrek Adventures Workspace
 
+## ⚠ Data Isolation — READ FIRST
+
+**This workspace contains ZERO corporate data.** Everything is synthetic.
+
+- All services, tickets, and logs belong to the **NovaTrek Adventures** fictional domain
+- JIRA, Elasticsearch, and GitLab are **local mock scripts** — they read JSON files from `scripts/mock-data/`, make no network calls, and require no credentials
+- All 19 microservice OpenAPI specs and source code are synthetic
+- All architecture decisions (ADR-003 through ADR-011) describe synthetic systems
+
+**When referring to tools in documentation or output:**
+- Always identify them as mock/simulated tools (e.g., "mock JIRA client", "simulated Elastic logs")
+- Never imply a real connection to corporate infrastructure
+- Never fabricate data — only use what the mock scripts return
+
+---
+
 ## Workspace Architecture
 
 This is a **multi-root VS Code workspace** for Solution Architecture work at NovaTrek Adventures.
@@ -56,10 +72,11 @@ _[TICKET-ID-BRIEF-TITLE]/
 
 **CRITICAL**: Folder names start with underscore: `_NT-41205-fix-booking-timeout`
 
-## Key Tools
+## Key Tools (All Local Mocks — No Network Access)
+
+All tools below are **local Python scripts** reading from `scripts/mock-data/` JSON files. They simulate corporate tools for evaluation purposes. No credentials, no API keys, no network calls.
 
 | Need | Command |
-|------|---------|
 | Query JIRA tickets | `python scripts/mock-jira-client.py` |
 | Analyze GitLab MR | `python scripts/mock-gitlab-client.py --mr [ID]` |
 | Query production logs | `python scripts/mock-elastic-searcher.py` |

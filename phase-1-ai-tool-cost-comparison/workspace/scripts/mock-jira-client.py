@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Mock JIRA Client - Simulates querying JIRA tickets for NovaTrek Architecture Practice.
 
+*** DATA ISOLATION NOTICE ***
+This is a LOCAL MOCK SCRIPT. It makes NO network calls, requires NO credentials,
+and connects to NO corporate systems. All data is read from local JSON files in
+the mock-data/ directory. It exists solely to simulate a JIRA CLI for AI tool
+evaluation purposes.
+
 This script provides a synthetic JIRA API client that loads ticket data from
 a local JSON file and outputs formatted reports. Used for testing AI coding
 assistants in a controlled environment.

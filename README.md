@@ -9,6 +9,8 @@
 | **Status** | Active |
 | **Organization** | Architecture Practice |
 
+> **DATA ISOLATION NOTICE:** This repository contains **zero corporate data**. All services, tickets, logs, and tools use the **NovaTrek Adventures** synthetic domain. JIRA, Elasticsearch, and GitLab integrations are **local mock scripts** that read from JSON files on disk — no network calls, no credentials, no corporate system access. See [Data Isolation](#data-isolation) below.
+
 ---
 
 ## The Problem
@@ -160,7 +162,7 @@ A **continuous architecture platform** where:
 | **Source of truth in code** | Architecture artifacts live in version-controlled workspaces, not in Confluence. Confluence is a publishing target, not the authoring environment. |
 | **Standards as guardrails, not gatekeeping** | Public frameworks (arc42, C4, MADR) provide structure. AI enforces compliance automatically. Architects focus on decisions, not formatting. |
 | **Incremental value** | Each phase delivers standalone value. Phase 1 produces a cost comparison even if later phases are never executed. |
-| **Zero proprietary data in POC** | All proof-of-concept work uses synthetic data (NovaTrek Adventures domain). No company data leaves the corporate environment. |
+| **Zero proprietary data in POC** | All proof-of-concept work uses synthetic data (NovaTrek Adventures domain). No corporate data exists in this repository. See [Data Isolation](#data-isolation). |
 | **Measure everything** | Every phase defines measurable outcomes. Progress is tracked with data, not opinions. |
 
 ---
@@ -179,6 +181,29 @@ A **continuous architecture platform** where:
 | [Publishing Platform Plan](phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
 | [Architecture Decision Log](decisions/README.md) | Global index of all 11 architecture decisions with service and status views |
 | [Service Architecture Pages](services/README.md) | Living architecture baseline for 6 services touched by Phase 1 |
+
+---
+
+## Data Isolation
+
+This repository is designed to contain **absolutely no corporate data**. Every artifact is synthetic.
+
+| Component | What It Looks Like | What It Actually Is |
+|-----------|-------------------|--------------------|
+| JIRA tickets | `python scripts/mock-jira-client.py --ticket NTK-10005` | Local Python script reading `mock-data/tickets.json` — no network, no credentials |
+| Elasticsearch logs | `python scripts/mock-elastic-searcher.py --service svc-scheduling-orchestrator` | Local Python script reading `mock-data/elastic-logs.json` — no network, no credentials |
+| GitLab merge requests | `python scripts/mock-gitlab-client.py --mr 5001` | Local Python script reading `mock-data/merge-requests.json` — no network, no credentials |
+| Microservices (19) | OpenAPI specs + Java source code | 100% synthetic NovaTrek Adventures domain |
+| Architecture decisions | ADR-003 through ADR-011 | Decisions about synthetic services, not real systems |
+| Service pages | `services/svc-check-in.md` etc. | Architecture baselines for synthetic services |
+
+**All three mock tools:**
+- Use **Python stdlib only** (no `requests`, no API clients)
+- Read from **local JSON files** in `scripts/mock-data/`
+- Require **no credentials, tokens, or network access**
+- Are designed so the AI under test cannot distinguish them from real CLI tools
+
+**Pre-commit audit:** Run `./scripts/audit-data-isolation.sh` to verify no corporate data has leaked in. This script checks all tracked files against a pattern list of known corporate identifiers.
 
 ---
 
