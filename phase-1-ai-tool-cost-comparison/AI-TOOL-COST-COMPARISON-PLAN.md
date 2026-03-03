@@ -1,6 +1,6 @@
 # Phase 1: AI Tool Cost Comparison Plan
 
-## Roo Code plus Kong AI vs GitHub Copilot for UDX Architecture Practice
+## Roo Code plus Kong AI vs GitHub Copilot for Architecture Practice
 
 > This is **Phase 1** of the [Continuous Architecture Platform POC](README.md). It establishes the AI toolchain selection that will power all subsequent phases.
 
@@ -27,13 +27,13 @@ The key question: **What does it cost per month to give one solution architect A
 
 GitHub Copilot has a simple per-seat monthly price. Roo Code + Kong AI has a usage-based cost model (per-token LLM charges routed through Kong AI) that depends on actual usage volume. To compare them fairly, we need to measure what a typical architecture month looks like in terms of token consumption, then price that against both models.
 
-The comparison must be performed on a **separate computer** using **entirely synthetic data** so that no Universal Destinations and Experiences proprietary information leaves the corporate environment.
+The comparison must be performed on a **separate computer** using **entirely synthetic data** so that no the enterprise proprietary information leaves the corporate environment.
 
 ---
 
 ## 2 Approach Summary
 
-**Phase 1 (This Computer)**: Use real UDX architecture data to create a synthetic dataset that is structurally representative but contains zero company data.
+**Phase 1 (This Computer)**: Use real corporate architecture data to create a synthetic dataset that is structurally representative but contains zero company data.
 
 **Phase 2 (Separate Computer)**: Use the synthetic dataset on a clean machine to execute a representative month of architecture work against both toolchains, measuring token usage and quality to calculate monthly cost per seat.
 
@@ -45,7 +45,7 @@ These rules apply to ALL synthetic data produced in Phase 1:
 
 | Rule | Description |
 |------|-------------|
-| **No Real Service Names** | Replace all microservice names (ms-acp, ms-hotel-stays, etc.) with fictional equivalents |
+| **No Real Service Names** | Replace all microservice names (ms-xxx, ms-yyy, etc.) with fictional equivalents |
 | **No Real Endpoints** | Replace all API paths, URLs, hostnames with synthetic equivalents |
 | **No Real Ticket IDs** | Replace all JIRA ticket IDs (UPT-XXXXXX) with fictional project keys |
 | **No Real People** | Replace all team member names, email addresses, Slack handles |
@@ -59,11 +59,11 @@ These rules apply to ALL synthetic data produced in Phase 1:
 
 ## 4 What Needs to Be Synthesized
 
-The UDX architecture workflow involves the following artifacts and activities. Each must be recreated in synthetic form.
+The architecture workflow involves the following artifacts and activities. Each must be recreated in synthetic form.
 
-### 4.1 Corporate Service Registry (Synthetic upr-services Equivalent)
+### 4.1 Corporate Service Registry (Synthetic corporate-services Equivalent)
 
-**Source on this machine**: `upr-services/services/` (120+ OpenAPI/Swagger specs)
+**Source on this machine**: `corporate-services/services/` (120+ OpenAPI/Swagger specs)
 
 **Synthetic equivalent to produce**:
 - 15-20 fictional microservice Swagger/OpenAPI YAML specs
@@ -75,7 +75,7 @@ The UDX architecture workflow involves the following artifacts and activities. E
 
 ### 4.2 Corporate Architecture Diagrams (Synthetic Diagrams Equivalent)
 
-**Source on this machine**: `upr-services/diagrams/` (PlantUML component, sequence, system diagrams)
+**Source on this machine**: `corporate-services/diagrams/` (PlantUML component, sequence, system diagrams)
 
 **Synthetic equivalent to produce**:
 - 8-12 PlantUML component diagrams showing the synthetic microservice ecosystem
@@ -122,15 +122,15 @@ _SYN-XXXXX-brief-title/
 
 **Synthesis Mapping: Real Tickets to Synthetic Equivalents**
 
-Each synthetic ticket is structurally based on a real UDX ticket. The domain, names, services, business rules, and all identifiable content are fully replaced, but the structural complexity, artifact count, comment thread depth, and iterative clarification patterns are preserved.
+Each synthetic ticket is structurally based on a real internal ticket. The domain, names, services, business rules, and all identifiable content are fully replaced, but the structural complexity, artifact count, comment thread depth, and iterative clarification patterns are preserved.
 
 | Synthetic ID | Tier | Stage | Based On (Real) | What Is Preserved (Structure Only) |
 |-------------|------|-------|-----------------|-----------------------------------|
-| SYN-10001 | Simple | Complete | UPT-186062 (postal address optional) | Single-service field change, simple impact, 1 decision, minimal stakeholder discussion |
-| SYN-10002 | Medium | Complete | **UPT-182780 (market code linking)** | Classification table with conditional logic, 3 behavioral patterns, booking source overrides mapped to a synthetic domain equivalent, 18-comment stakeholder thread with iterative clarification, multiple PlantUML activity/sequence diagrams, v1.0 to v1.6 solution evolution |
-| SYN-10003 | Complex | Complete | UPT-193355 (unregistered MCI) | New end-to-end feature across 4+ services, orchestrator pattern with fallback, security review gate, UI wireframes, developer-verified current-state diagrams, 10+ PlantUML files, corporate Swagger MR |
-| SYN-10004 | Medium | Investigation | UPT-196012 (windsurfer traveler overwrite) | Data ownership conflict investigation, field-level merge vs full-replacement analysis, race condition discovery, Elasticsearch validation queries, partial assumptions |
-| SYN-10005 | Simple | Intake | UPT-186501 (express pass VID field) | Schema change request, just classified and workspace created, ticket report only |
+| SYN-10001 | Simple | Complete | REDACTED-001 (single-field change) | Single-service field change, simple impact, 1 decision, minimal stakeholder discussion |
+| SYN-10002 | Medium | Complete | **REDACTED-002 (classification with conditional logic)** | Classification table with conditional logic, 3 behavioral patterns, booking source overrides mapped to a synthetic domain equivalent, 18-comment stakeholder thread with iterative clarification, multiple PlantUML activity/sequence diagrams, v1.0 to v1.6 solution evolution |
+| SYN-10003 | Complex | Complete | REDACTED-003 (unregistered guest check-in) | New end-to-end feature across 4+ services, orchestrator pattern with fallback, security review gate, UI wireframes, developer-verified current-state diagrams, 10+ PlantUML files, corporate Swagger MR |
+| SYN-10004 | Medium | Investigation | REDACTED-004 (data overwrite bug) | Data ownership conflict investigation, field-level merge vs full-replacement analysis, race condition discovery, Elasticsearch validation queries, partial assumptions |
+| SYN-10005 | Simple | Intake | REDACTED-005 (schema field addition) | Schema change request, just classified and workspace created, ticket report only |
 
 ### 4.4 Architecture Standards Framework (Public, Pre-existing)
 
@@ -140,7 +140,7 @@ Each synthetic ticket is structurally based on a real UDX ticket. The domain, na
 
 arc42 is an open-source, Creative Commons licensed architecture documentation template used industry-wide. It provides:
 
-| arc42 Section | Maps to UDX Equivalent | Standards Complexity |
+| arc42 Section | Maps to Internal Equivalent | Standards Complexity |
 |--------------|----------------------|---------------------|
 | 1. Introduction and Goals | Ticket requirements, quality goals | Stakeholder tables, quality scenarios |
 | 2. Constraints | Business/technical constraints | Constraint classification |
@@ -407,7 +407,7 @@ Before transferring the synthetic workspace to the separate computer, run these 
 
 ```bash
 # Search for any real microservice names
-grep -ri "ms-acp\|ms-hotel\|ms-checkout\|ms-guest\|ms-orders\|ms-biometrics\|ms-ohip\|ms-presence\|ms-entitlements" .
+grep -ri "REAL-SVC-1\|REAL-SVC-2\|REAL-SVC-3" .  # Replace with actual internal service name patterns
 
 # Search for any real ticket IDs
 grep -ri "UPT-\|ARCH-\|UDX-" .
@@ -452,7 +452,7 @@ ai-tool-cost-comparison-workspace/
     madr/                                          # MADR template and examples
     c4-model/                                      # C4 model diagramming rules and notation
     quality-model/                                 # arc42 Quality Model properties
-  corporate-services/                              # Synthetic service registry (equivalent of upr-services)
+  corporate-services/                              # Synthetic service registry (equivalent of corporate-services)
     services/                                      # 15-20 synthetic OpenAPI/Swagger YAML specs
     diagrams/                                      # 8-12 synthetic PlantUML diagrams
       Components/
@@ -514,11 +514,11 @@ ai-tool-cost-comparison-workspace/
 
 | Ticket | Tier | Stage | Based On | Artifacts Included |
 |--------|------|-------|----------|---------------------|
-| SYN-10001 | Simple | Complete | UPT-186062 pattern | Solution design, ticket report, simple explanation, 1 impact, assumptions, 1 decision, user stories |
-| SYN-10002 | Medium | Complete | **UPT-182780 pattern** | Solution design (v1.6 equivalent), ticket report with 18-comment thread, simple explanation, 2 impacts with PlantUML activity/sequence diagrams, classification table with conditional patterns, assumptions, 2 decisions, guidance, user stories, risks |
-| SYN-10003 | Complex | Complete | UPT-193355 pattern | Solution design (v1.11 equivalent), ticket report, simple explanation, 4+ impacts with diagrams, assumptions, 3+ decisions, guidance, history, user stories, risks, functional requirements, security review request, UI wireframes |
-| SYN-10004 | Medium | Investigation | UPT-196012 pattern | Ticket report, simple explanation, current state investigations (2-3), data ownership analysis, race condition analysis, Elasticsearch validation queries, partial assumptions |
-| SYN-10005 | Simple | Intake | UPT-186501 pattern | Ticket report only (just classified, workspace created) |
+| SYN-10001 | Simple | Complete | REDACTED-001 pattern | Solution design, ticket report, simple explanation, 1 impact, assumptions, 1 decision, user stories |
+| SYN-10002 | Medium | Complete | **REDACTED-002 pattern** | Solution design (v1.6 equivalent), ticket report with 18-comment thread, simple explanation, 2 impacts with PlantUML activity/sequence diagrams, classification table with conditional patterns, assumptions, 2 decisions, guidance, user stories, risks |
+| SYN-10003 | Complex | Complete | REDACTED-003 pattern | Solution design (v1.11 equivalent), ticket report, simple explanation, 4+ impacts with diagrams, assumptions, 3+ decisions, guidance, history, user stories, risks, functional requirements, security review request, UI wireframes |
+| SYN-10004 | Medium | Investigation | REDACTED-004 pattern | Ticket report, simple explanation, current state investigations (2-3), data ownership analysis, race condition analysis, Elasticsearch validation queries, partial assumptions |
+| SYN-10005 | Simple | Intake | REDACTED-005 pattern | Ticket report only (just classified, workspace created) |
 
 Each complete ticket follows this structure:
 ```
@@ -626,7 +626,7 @@ The synthetic data needs a plausible domain that is complex enough to mimic them
 | **AquaVista Resorts** - Fictional resort chain (NOT theme parks) | Hotel stays, dining, activities, spa, loyalty program. Closest structural match but must avoid theme park overlap. |
 | **MetroFleet Logistics** - Fictional delivery/logistics company | Route optimization, fleet management, warehouse operations, customer tracking, carrier integration. Different enough domain. |
 
-**Recommendation**: **NovaTrek Adventures** or **MetroFleet Logistics** - different enough from UDX to avoid any accidental overlap, but complex enough to exercise all the architecture patterns.
+**Recommendation**: **NovaTrek Adventures** or **MetroFleet Logistics** - different enough from the original domain to avoid any accidental overlap, but complex enough to exercise all the architecture patterns.
 
 ---
 

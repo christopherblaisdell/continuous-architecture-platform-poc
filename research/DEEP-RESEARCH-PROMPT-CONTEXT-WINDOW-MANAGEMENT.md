@@ -2,7 +2,7 @@
 
 ## Instructions for the Research Agent
 
-You are conducting exhaustive technical research to inform a critical enterprise tooling decision. The UDX Architecture Practice at a Fortune 500 entertainment company needs to select between two AI coding toolchains: **Roo Code + Kong AI Gateway** (open-source, usage-based pricing) and **GitHub Copilot** (proprietary, flat-rate pricing). A key differentiator we have identified — but not yet fully quantified — is how each tool manages the LLM context window.
+You are conducting exhaustive technical research to inform a critical enterprise tooling decision. The Architecture Practice at a Fortune 500 company needs to select between two AI coding toolchains: **Roo Code + Kong AI Gateway** (open-source, usage-based pricing) and **GitHub Copilot** (proprietary, flat-rate pricing). A key differentiator we have identified — but not yet fully quantified — is how each tool manages the LLM context window.
 
 This research will feed directly into an Architecture Decision Record (ADR) that leadership will use to make a procurement decision affecting multiple architect seats. The research must be comprehensive, evidence-based, and cite specific sources. Do not speculate — if you cannot find evidence for a claim, state that clearly.
 

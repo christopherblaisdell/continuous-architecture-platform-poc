@@ -7,7 +7,7 @@
 | **Author** | Christopher Blaisdell |
 | **Created** | 2026-03-01 |
 | **Status** | Active |
-| **Organization** | UDX Architecture Practice |
+| **Organization** | Architecture Practice |
 | **Related** | [ADR-001: AI Toolchain Selection](decisions/ADR-001-ai-toolchain-selection.md) • [Roadmap](roadmap/ROADMAP.md) • [Phase 1 Results](phase-1-ai-tool-cost-comparison/workspace/phase-1-copilot-results.md) |
 
 ---
@@ -16,7 +16,7 @@
 
 ### 1.1 What We Do Today
 
-The UDX Architecture Practice runs a well-structured workflow for each architectural effort:
+The Architecture Practice runs a well-structured workflow for each architectural effort:
 
 1. **Ticket intake** → classify complexity, scaffold a workspace
 2. **Investigation** → analyze current state (logs, source code, APIs, dependencies)

@@ -11,7 +11,7 @@
 
 ## Overview
 
-This roadmap tracks the phased delivery of the Continuous Architecture Platform POC. Each phase builds on the previous one, but delivers standalone value. The roadmap is organized as a sequence of decisions, implementations, and validations that progressively transform the UDX Architecture Practice from point-in-time documentation to a living, navigable architecture platform.
+This roadmap tracks the phased delivery of the Continuous Architecture Platform POC. Each phase builds on the previous one, but delivers standalone value. The roadmap is organized as a sequence of decisions, implementations, and validations that progressively transform the Architecture Practice from point-in-time documentation to a living, navigable architecture platform.
 
 ---
 
@@ -31,7 +31,7 @@ Mar         Apr         May         Jun         Jul         Aug
               |  AI-Integrated         |                    
               |  Workflow Design       |                    
                         |======= Phase 3 =======|         
-                        |  VSFlow Pipeline       |         
+                        |  DocFlow Pipeline       |         
                         |  Integration           |         
                                     |======= Phase 4 =======|
                                     |  Navigable Artifact    |
@@ -124,7 +124,7 @@ Mar         Apr         May         Jun         Jul         Aug
 
 ---
 
-## Phase 3: UDX VSFlow v5 Pipeline Integration
+## Phase 3: DocFlow v5 Pipeline Integration
 
 **Timeline:** May - June 2026
 **Status:** Planned
@@ -136,7 +136,7 @@ Mar         Apr         May         Jun         Jul         Aug
 |----|-----------|-------------|--------|--------------|
 | 3.1 | Pipeline-mode publishing specification | TBD | NOT STARTED | Phase 2 complete |
 | 3.2 | Validation gate rules defined | TBD | NOT STARTED | 2.3 |
-| 3.3 | VSFlow headless mode implemented | TBD | NOT STARTED | 3.1 |
+| 3.3 | DocFlow headless mode implemented | TBD | NOT STARTED | 3.1 |
 | 3.4 | Pre-publish validation integrated | TBD | NOT STARTED | 3.2, 3.3 |
 | 3.5 | Artifact manifest specification | TBD | NOT STARTED | 3.1 |
 | 3.6 | Incremental publishing implemented | TBD | NOT STARTED | 3.3, 3.5 |
@@ -146,7 +146,7 @@ Mar         Apr         May         Jun         Jul         Aug
 
 ### Deliverables
 
-- UDX VSFlow v5 pipeline-mode extensions
+- DocFlow v5 pipeline-mode extensions
 - CI/CD pipeline definition (publish on merge to main)
 - Validation rule set (arc42 structure, C4 compliance, ADR completeness)
 - Artifact manifest specification and generator
@@ -293,6 +293,6 @@ Formal architecture decisions are documented using the MADR (Markdown Any Decisi
 | R1 | Kong AI pricing changes during evaluation | Cost comparison becomes outdated | Medium | Document pricing snapshot date; re-validate before final recommendation | 1 |
 | R2 | GitHub Copilot premium model limits too restrictive for architecture work | Cannot complete scenarios within included quota | Medium | Track overage costs separately; include in comparison | 1 |
 | R3 | AI output quality insufficient for architecture standards | Architects reject AI-assisted workflow | Low | Quality measurement framework in Phase 2 catches this early | 2 |
-| R4 | VSFlow pipeline mode requires significant refactoring | Phase 3 timeline extends | Medium | Evaluate scope during Phase 2; adjust timeline if needed | 3 |
+| R4 | DocFlow pipeline mode requires significant refactoring | Phase 3 timeline extends | Medium | Evaluate scope during Phase 2; adjust timeline if needed | 3 |
 | R5 | Confluence limitations cannot be overcome for artifact graph | Phase 4 must use alternative target | High | Phase 4 explicitly evaluates alternatives; this is not a surprise | 4 |
 | R6 | Adoption resistance from architecture practice | Platform built but not used | Medium | Involve architects from Phase 2 onward; demonstrate value with real tickets | 2-5 |

@@ -12,7 +12,7 @@ PROPOSED
 
 The Continuous Architecture Platform POC produces extensive markdown-based architecture documentation including arc42 templates, MADR decision records, C4 model descriptions, PlantUML diagrams, solution designs, investigation reports, and quality assessments. These documents currently exist only as raw markdown files in a git repository, accessible only to users who clone the repository and navigate the file system.
 
-The UDX Architecture Practice needs to publish this documentation as a rich, searchable, professionally styled web experience that:
+The Architecture Practice needs to publish this documentation as a rich, searchable, professionally styled web experience that:
 
 - Renders markdown with full formatting, tables, and code highlighting
 - Displays PlantUML and Mermaid diagrams inline
@@ -129,4 +129,4 @@ The UDX Architecture Practice needs to publish this documentation as a rich, sea
 - [Material for MkDocs Documentation](https://squidfunk.github.io/mkdocs-material/)
 - [Azure Static Web Apps Documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/)
 - Implementation plan: [PUBLISHING-PLATFORM-PLAN.md](../phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md)
-- This ADR follows the MADR format adopted by the UDX Architecture Practice
+- This ADR follows the MADR format adopted by the Architecture Practice
