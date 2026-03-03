@@ -4,7 +4,7 @@
 |-----------|-------|
 | **Author** | Christopher Blaisdell |
 | **Created** | 2026-03-01 |
-| **Last Updated** | 2026-03-01 |
+| **Last Updated** | 2026-03-03 |
 | **Status** | Active |
 
 ---
@@ -54,14 +54,14 @@ Mar         Apr         May         Jun         Jul         Aug
 | ID | Milestone | Target Date | Status | Dependencies |
 |----|-----------|-------------|--------|--------------|
 | 1.1 | Synthetic workspace complete | 2026-03-01 | COMPLETE | None |
-| 1.2 | Workspace transferred to evaluation environment | 2026-03-01 | IN PROGRESS | 1.1 |
+| 1.2 | Workspace transferred to evaluation environment | 2026-03-01 | COMPLETE | 1.1 |
 | 1.3 | Roo Code + Kong AI scenario execution | 2026-03-07 | NOT STARTED | 1.2 |
-| 1.4 | GitHub Copilot scenario execution | 2026-03-14 | NOT STARTED | 1.2 |
+| 1.4 | GitHub Copilot scenario execution | 2026-03-03 | COMPLETE | 1.2 |
 | 1.5 | Cost-per-seat analysis complete | 2026-03-17 | NOT STARTED | 1.3, 1.4 |
 | 1.6 | Quality and compliance comparison complete | 2026-03-19 | NOT STARTED | 1.3, 1.4 |
 | 1.7 | ADR-001 AI Toolchain Selection decision recorded | 2026-03-21 | NOT STARTED | 1.5, 1.6 |
-| 1.8 | Create initial service architecture pages from Phase 1 outputs | 2026-03-22 | NOT STARTED | 1.4 |
-| 1.9 | Create global decision log and promote Phase 1 ADRs (9 ADRs) | 2026-03-22 | NOT STARTED | 1.4 |
+| 1.8 | Create initial service architecture pages from Phase 1 outputs | 2026-03-03 | COMPLETE | 1.4 |
+| 1.9 | Create global decision log and promote Phase 1 ADRs (9 ADRs) | 2026-03-03 | COMPLETE | 1.4 |
 | 1.10 | Closing-the-loop analysis documented | 2026-03-01 | COMPLETE | None |
 
 ### Deliverables
@@ -72,8 +72,8 @@ Mar         Apr         May         Jun         Jul         Aug
 - Standards compliance rate comparison
 - [ADR-001: AI Toolchain Selection](../decisions/ADR-001-ai-toolchain-selection.md)
 - [Closing the Loop: Continuous State Management](../CLOSING-THE-LOOP.md)
-- Initial service architecture pages (6 services touched by Phase 1)
-- Global ADR decision log with 9 promoted ADRs
+- [Initial service architecture pages](../services/README.md) (6 services touched by Phase 1)
+- [Global ADR decision log](../decisions/README.md) with 9 promoted ADRs (ADR-003 through ADR-011)
 
 ### Exit Criteria
 
