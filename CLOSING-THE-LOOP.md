@@ -443,24 +443,22 @@ This is significant: the promote step adds ~12 runs/month, pushing the workload 
 |------|----------------------|-------|
 | **Copilot Business** | $19.00 | Fixed — unaffected by volume increase |
 | **Copilot Enterprise** | $39.00 | Fixed — unaffected by volume increase |
-| **Kong AI (revised)** | **~$67.46** | 38 runs × ~$1.78/run — **3.5× Copilot Business** |
+| **Kong AI** | **~$67.46** | 38 runs × ~$1.78/run — **3.5× Copilot Business** |
 
-> **Revision Note (Deep Research):** The original estimate of ~$0.51/run treated the AI's input as a single workspace read. Deep research into agentic token economics ([DEEP-RESEARCH-1](research/DEEP-RESEARCH-1.md)) reveals that Roo Code's client-side architecture re-transmits the **entire conversation history** at every turn of the agentic loop. With an average of 17 tool calls per scenario and cumulative context growth from ~10K to ~60-120K tokens per turn, the actual per-run variable cost is **~$1.78** — not $0.51. See [COST-MEASUREMENT-METHODOLOGY.md](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) Revision 2 for the full analysis.
+The actual per-run variable cost of ~$1.78 accounts for the agentic re-transmission tax: Roo Code's client-side architecture re-transmits the entire conversation history at every turn of the agentic loop. With an average of 17 tool calls per scenario and cumulative context growth from ~10K to ~60-120K tokens per turn, the process cost far exceeds the content cost. See [COST-MEASUREMENT-METHODOLOGY.md](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) for the full analysis.
 
-**Key finding**: When the agentic re-transmission tax is properly accounted for, **Copilot Business is 3.5× cheaper** than Kong AI at the realistic 38 runs/month workload ($19 vs $67). This advantage grows with volume — the PROMOTE step doesn't neutralize a Kong AI cost advantage; it amplifies Copilot's existing advantage.
+**Key finding**: **Copilot Business is 3.5× cheaper** than Kong AI at the realistic 38 runs/month workload ($19 vs $67). This advantage grows with volume — the PROMOTE step amplifies Copilot's cost advantage.
 
-### 5.4 Updated Breakeven Analysis (Revised)
+### 5.4 Updated Breakeven Analysis
 
 ```
-Original breakeven (Copilot Business vs Kong AI):     ~112 runs/month  (Rev 0, content-delta estimate)
-Rev 1 breakeven (after PROMOTE reframe):              ~37 runs/month   (still used content-delta costs)
-Rev 2 breakeven (with agentic re-transmission tax):   ~11 runs/month   ← Current best estimate
-Revised workload with PROMOTE step:                   ~38 runs/month   (3.5× past breakeven)
+Breakeven (Copilot Business vs Kong AI):   ~11 runs/month
+Revised workload with PROMOTE step:        ~38 runs/month   (3.5× past breakeven)
 ```
 
-The breakeven analysis has **inverted**. At an average variable cost of ~$1.78/run, Kong AI exceeds Copilot Business ($19/month) at just ~11 runs/month. Our realistic workload of 38 runs/month is **3.5× past the breakeven point**. This is not a close call — Copilot's flat-rate model dominates for any architecture practice doing more than minimal work.
+At an average variable cost of ~$1.78/run, Kong AI exceeds Copilot Business ($19/month) at just ~11 runs/month. Our realistic workload of 38 runs/month is **3.5× past the breakeven point**. This is not a close call — Copilot's flat-rate model dominates for any architecture practice doing more than minimal work.
 
-### 5.5 Updated Recommendation Factors (Revised)
+### 5.5 Updated Recommendation Factors
 
 | Factor | Kong AI + Roo Code | Copilot Business | Impact of PROMOTE |
 |--------|-------------------|-----------------|-------------------|

@@ -4,13 +4,13 @@
 > 
 > Last Updated: 2026-03-03
 >
-> **Revision 2**: Incorporates deep research findings on agentic token economics, the ReAct re-transmission tax, and Copilot's semantic retrieval architecture. See [DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md) and [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md).
+> Incorporates deep research findings on agentic token economics, the ReAct re-transmission tax, and Copilot's semantic retrieval architecture. See [DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md) and [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md).
 
 ## Purpose
 
 This document describes how we **autonomously measure the exact cost** of running architecture scenarios through each AI toolchain. It covers what we can measure, what we cannot, the methodology behind our estimates, and the full cost analysis of the GitHub Copilot execution.
 
-**Key finding (Revision 2):** Our original analysis underestimated Kong AI variable costs by **10-15×** because it measured only the content delta (git diff output), not the cumulative re-transmission cost of the agentic loop. When the ReAct re-transmission tax is properly accounted for, **GitHub Copilot Business is approximately 3× cheaper** than Kong AI + Roo Code at projected workloads.
+**Key finding:** When the agentic re-transmission tax is properly accounted for, **GitHub Copilot Business is approximately 3× cheaper** than Kong AI + Roo Code at projected workloads. The dominant cost driver for usage-based agentic tools is cumulative re-transmission of the conversation history across turns, not the content produced.
 
 ## The Fundamental Asymmetry
 
@@ -86,13 +86,7 @@ We systematically tested every known GitHub API endpoint that could provide Copi
 
 ## The Agentic Re-transmission Tax
 
-### Why Our Original Estimate Was Wrong
-
-Our original analysis (Revision 1) estimated Kong AI variable cost by measuring the **git diff output** (~80K bytes = ~20K output tokens) and treating the **workspace file inventory** (~834K bytes = ~213K input tokens) as the input cost. This produced a deceptively low variable cost of **$0.94 per batch** and **$4.41/month**.
-
-This was wrong by an order of magnitude because it measured only the **content delta** — what was produced — and completely ignored the **process cost** — how many tokens the agentic loop consumed to produce it.
-
-### How Agentic Loops Actually Work
+### How Agentic Loops Drive Cost
 
 Deep research ([DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md), [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md)) reveals that the dominant cost driver in usage-based agentic tools is **cumulative re-transmission of the conversation history**:
 
@@ -162,18 +156,6 @@ Using the agentic re-transmission model from the deep research, we estimate the 
 | SC-05 | NTK-10003 | 20 | 14 | ~55K | ~1,100K | ~20K | **$3.60** |
 | **TOTAL** | | **85** | **40** | | **4,055K** | **83K** | **$13.42** |
 
-### Comparison with Original Estimate
-
-| Metric | Original (Rev 1) | Revised (Rev 2) | Multiplier |
-|--------|------------------|-----------------|-----------|
-| SC-01 variable cost | $0.15 | $1.05 | **7×** |
-| SC-02 variable cost | $0.15 | $2.66 | **18×** |
-| SC-03 variable cost | $0.27 | $5.33 | **20×** |
-| SC-04 variable cost | $0.13 | $0.78 | **6×** |
-| SC-05 variable cost | $0.17 | $3.60 | **21×** |
-| **Batch of 5** | **$0.94** | **$13.42** | **14×** |
-
-The original estimate was **14× too low** because it treated input tokens as a one-time workspace read rather than a cumulative re-transmission across 85 agentic turns.
 
 ### Monthly Cost Projection
 
@@ -195,7 +177,7 @@ Using the measurement protocol's monthly frequency (26 base runs + 12 PROMOTE ru
 | **GitHub Copilot Business (fixed)** | **$19.00** | **$19.00** |
 | **GitHub Copilot Enterprise (fixed)** | **$39.00** | **$39.00** |
 
-### Break-Even Analysis (Revised)
+### Break-Even Analysis
 
 The break-even question is now inverted: at what usage volume would Kong AI become cheaper than Copilot?
 
@@ -210,7 +192,7 @@ Average variable cost per run: $67.46 ÷ 38 = **$1.78/run**
 
 Kong AI would only be cheaper if the team ran **fewer than 11 architecture scenarios per month** — far below the minimum viable workload for a functioning architecture practice.
 
-### Cost Per Quality Point (Revised)
+### Cost Per Quality Point
 
 | Metric | Kong AI (variable) | Copilot Business | Copilot Enterprise |
 |--------|-------------------|-----------------|-------------------|
@@ -285,14 +267,14 @@ python3 scripts/cost-measurement.py analyze e83f83e 34150d9
 
 ## Summary
 
-| Finding | Original (Rev 1) | Revised (Rev 2) |
-|---------|------------------|-----------------|
-| **Kong AI cost (5 scenarios)** | $0.94 | **$13.42** |
-| **Kong AI monthly (38 runs)** | $19.40 | **$67.46** |
-| **Copilot Business monthly** | $19.00 | **$19.00** (unchanged) |
-| **Copilot Enterprise monthly** | $39.00 | **$39.00** (unchanged) |
-| **Cost ratio (Copilot Biz vs Kong)** | Kong 30% cheaper | **Copilot 3.5× cheaper** |
-| **Break-even (Copilot Biz)** | ~112 runs/month | **~11 runs/month** |
-| **What changed** | Measured only content delta (git diff) | Modeled cumulative re-transmission across agentic loop turns |
-| **Key source** | Git diff analysis | Deep research on token economics + context architecture |
-| **Recommendation** | Wait for Kong AI execution | **Strong preliminary advantage for Copilot Business** |
+| Finding | Value |
+|---------|-------|
+| **Kong AI cost (5 scenarios)** | **$13.42** |
+| **Kong AI monthly (38 runs)** | **$67.46** |
+| **Copilot Business monthly** | **$19.00** |
+| **Copilot Enterprise monthly** | **$39.00** |
+| **Cost ratio (Copilot Biz vs Kong)** | **Copilot 3.5× cheaper** |
+| **Break-even (Copilot Biz)** | **~11 runs/month** |
+| **Methodology** | Cumulative re-transmission modeling across agentic loop turns |
+| **Key sources** | Deep research on token economics + context architecture |
+| **Recommendation** | **Strong preliminary advantage for Copilot Business** |
