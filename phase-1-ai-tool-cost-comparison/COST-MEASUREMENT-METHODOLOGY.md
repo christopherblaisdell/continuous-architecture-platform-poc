@@ -204,9 +204,16 @@ A more realistic input token estimate for 5 scenarios in an extended agent sessi
 
 Even at the aggressive 5× multiplier, variable pricing ($15.70/month) still undercuts Copilot Business ($19.00/month).
 
-### 2. Copilot's Fixed Cost Already Includes Other Use
+### 2. Architecture Is the Heavier Use Case
 
-The $19/month subscription covers **all** Copilot usage — not just architecture scenarios. If the seat is already provisioned for daily coding work, the **marginal cost of architecture scenarios is $0.00**. The break-even analysis above only applies to a seat purchased exclusively for architecture work.
+The $19/month subscription covers **all** Copilot usage — code completions, chat, and agent sessions alike. However, architecture work is likely the **dominant token consumer**, not a marginal addition to a coding seat:
+
+- A typical inline code completion is 10-50 tokens. A single architecture scenario averaged **~47K tokens** (233K ÷ 5) — roughly 1,000-5,000× a code completion.
+- Architecture sessions read dozens of files as context (service specs, decisions, tickets, source code) and re-read them across iterative tool calls, amplifying input token volume.
+- Architecture solutions undergo more **iterative refactoring** than code — drafting decisions, reconsidering tradeoffs, restructuring sections — with each revision cycle re-sending the growing conversation context.
+- SC-03 alone produced 38K bytes of structured output (investigations, decisions, guidance, risks, user stories, impacts) — far more net content than a comparable duration of coding.
+
+This means a Copilot seat provisioned for architecture work would likely consume more tokens than one used purely for coding. The break-even analysis compares the fixed subscription against variable pricing **for the architecture workload itself**, which is the appropriate framing.
 
 ### 3. Kong AI Gateway Has Infrastructure Costs
 
