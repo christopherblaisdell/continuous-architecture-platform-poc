@@ -177,6 +177,8 @@ A **continuous architecture platform** where:
 | [Phase 1 Plan](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) | Detailed plan for AI cost comparison with synthetic workspace |
 | [Phase 1 Results](phase-1-ai-tool-cost-comparison/workspace/phase-1-copilot-results.md) | Copilot execution results — 149/155 quality (96.1%), revised cost model |
 | [Publishing Platform Plan](phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
+| [Architecture Decision Log](decisions/README.md) | Global index of all 11 architecture decisions with service and status views |
+| [Service Architecture Pages](services/README.md) | Living architecture baseline for 6 services touched by Phase 1 |
 
 ---
 
@@ -188,7 +190,18 @@ continuous-architecture-platform-poc/
   roadmap/
     ROADMAP.md                                      # Phased roadmap with milestones and timeline
   decisions/
+    README.md                                       # Global decision log (index of all ADRs)
     ADR-001-ai-toolchain-selection.md               # Kong AI vs GitHub Copilot decision
+    ADR-002-documentation-publishing-platform.md    # Material for MkDocs selection
+    ADR-003 through ADR-011                         # 9 promoted Phase 1 service decisions
+  services/
+    README.md                                       # Service index (6 services)
+    svc-check-in.md                                 # 6 ADRs, 3 tickets
+    svc-guest-profiles.md                           # 2 ADRs
+    svc-reservations.md                             # 2 ADRs
+    svc-scheduling-orchestrator.md                  # 2 ADRs
+    svc-trail-management.md                         # 1 ADR
+    svc-trip-catalog.md                             # 1 ADR
   research/
     CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md           # Roo Code vs Copilot context window efficiency
   phase-1-ai-tool-cost-comparison/                  # AI tool cost comparison (synthetic workspace + plan)
