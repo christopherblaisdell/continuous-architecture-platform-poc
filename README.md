@@ -181,6 +181,7 @@ A **continuous architecture platform** where:
 | [Publishing Platform Plan](phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
 | [Architecture Decision Log](decisions/README.md) | Global index of all 11 architecture decisions with service and status views |
 | [Service Architecture Pages](services/README.md) | Living architecture baseline for 6 services touched by Phase 1 |
+| [Cost Measurement Methodology](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) | Autonomous cost measurement approach, tool, and Copilot execution analysis |
 
 ---
 
@@ -229,8 +230,12 @@ continuous-architecture-platform-poc/
     svc-trip-catalog.md                             # 1 ADR
   research/
     CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md           # Roo Code vs Copilot context window efficiency
+  scripts/
+    cost-measurement.py                             # Autonomous cost measurement tool (stdlib only)
+    audit-data-isolation.sh                         # Pre-commit data isolation audit
   phase-1-ai-tool-cost-comparison/                  # AI tool cost comparison (synthetic workspace + plan)
     AI-TOOL-COST-COMPARISON-PLAN.md                 # Detailed Phase 1 plan
+    COST-MEASUREMENT-METHODOLOGY.md                 # Cost measurement approach, analysis, and results
     workspace/                                      # Portable synthetic workspace for Phase 1 execution
       novatrek-workspace.code-workspace
       architecture-standards/

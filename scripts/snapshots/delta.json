@@ -1,0 +1,11 @@
+{
+  "baseline_sha": "e83f83e",
+  "current_sha": "2cef60f",
+  "files_changed": 54,
+  "lines_added": 4285,
+  "lines_removed": 238,
+  "added_content_bytes": 214214,
+  "removed_content_bytes": 24746,
+  "est_output_tokens": 53553,
+  "est_input_tokens": 213244
+}
