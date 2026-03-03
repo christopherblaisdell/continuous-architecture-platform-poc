@@ -31,7 +31,9 @@ Compare AI toolchains (GitHub Copilot vs Roo Code + Kong AI) by executing 5 arch
 |------|---------|
 | `decisions/` | Global architecture decision log (11 ADRs) |
 | `services/` | Service architecture baseline pages (6 services) |
-| `phase-1-ai-tool-cost-comparison/workspace/` | Synthetic workspace for Phase 1 evaluation |
+| `phase-1-ai-tool-cost-comparison/workspace/` | Synthetic workspace for Phase 1 evaluation (reset between runs) |
 | `phase-1-ai-tool-cost-comparison/workspace/scripts/` | Mock JIRA, Elastic, GitLab tools (local JSON, no network) |
+| `phase-1-ai-tool-cost-comparison/outputs/` | Run-by-run results for Copilot and Roo Code executions |
+| `phase-1-ai-tool-cost-comparison/scripts/capture-run.sh` | Script to snapshot workspace into outputs after a run |
 | `scripts/audit-data-isolation.sh` | Pre-commit audit for corporate data leakage |
 | `roadmap/ROADMAP.md` | Phased delivery roadmap |
