@@ -14,7 +14,7 @@ Accepted
 
 ### Context and Problem Statement
 
-The unregistered guest reservation lookup flow requires coordination across 4-5 downstream services (svc-reservations, svc-guest-profiles, svc-safety-compliance, svc-gear-inventory, and optionally svc-partner-integrations). The flow includes conditional branching (partner fallback), parallel execution (safety + gear checks), and session creation. Where should this orchestration logic live?
+The unregistered guest reservation lookup flow requires coordination across 4-5 downstream services (svc-reservations, svc-guest-profiles, svc-safety-compliance, svc-gear-inventory, and optionally svc-partner-integrations). The flow includes conditional branching (partner fallback), parallel execution (safety + gear checks), and session creation. What coordination pattern should be used?
 
 ### Decision Drivers
 
@@ -22,15 +22,18 @@ The unregistered guest reservation lookup flow requires coordination across 4-5 
 - Testability: orchestration logic with branching and parallelism must be unit-testable
 - Separation of concerns: API gateway should handle cross-cutting concerns, not business logic
 - Team ownership: svc-check-in team already owns the registered guest check-in flow
+- Conditional logic complexity: partner fallback requires sequential decision branching
+- Response time budget: 8-second end-to-end target requires deterministic flow control
 
 ### Considered Options
 
-1. **Orchestration in svc-check-in** — Service-level orchestrator
-2. **Orchestration at API gateway** — Gateway composition
+1. **Orchestration in svc-check-in** — Central orchestrator coordinates all downstream calls with explicit flow control
+2. **Choreography via events** — Each service reacts to events published by the previous step; no central coordinator
+3. **Hybrid** — Event-driven for async steps (profile creation, analytics), orchestrated for synchronous verification flow
 
 ### Decision Outcome
 
-**Chosen Option**: "Orchestration in svc-check-in", because it keeps domain logic cohesive within the service that owns the check-in flow, enables proper unit testing of conditional branching and parallel execution, and keeps the API gateway focused on cross-cutting concerns.
+**Chosen Option**: "Orchestration in svc-check-in", because the flow requires conditional branching (partner fallback), sequential dependency resolution (reservation must be found before profile lookup), strict response time budgets (8 seconds), and synchronous request-response semantics for the kiosk interaction.
 
 ### Consequences
 
@@ -39,12 +42,38 @@ The unregistered guest reservation lookup flow requires coordination across 4-5 
 - Domain logic remains cohesive in the service that already owns registered guest check-in
 - Complex branching (partner fallback) and parallel execution (safety + gear) are expressed in application code, making them testable and debuggable
 - API gateway remains clean — handles only rate limiting, authentication, and routing
+- Deterministic flow control enables precise timeout budgets per step and predictable end-to-end latency
 
 #### Negative
 
 - svc-check-in takes on additional complexity and 5 new downstream dependencies
 - Circuit breaker patterns must be implemented in application code for partner integration fallback
 - The svc-check-in team must maintain knowledge of downstream service contracts
+
+### Pros and Cons of the Options
+
+#### Orchestration in svc-check-in
+
+- **Good**, because explicit flow control supports conditional branching (partner fallback) and parallel execution
+- **Good**, because synchronous request-response matches kiosk interaction model (guest waits for result)
+- **Good**, because per-step timeouts enable precise response budget management (2s + 1s + 3s + 1s + 1s buffer = 8s)
+- **Neutral**, because adds 5 downstream dependencies to svc-check-in
+- **Bad**, because single point of failure if svc-check-in is down
+
+#### Choreography via events
+
+- **Good**, because services are fully decoupled; no central coordinator to maintain
+- **Good**, because adding new steps does not require changes to a central orchestrator
+- **Bad**, because conditional branching (partner fallback) is difficult to express in event chains
+- **Bad**, because response time is unpredictable — each event hop adds latency and the kiosk requires synchronous response
+- **Bad**, because error handling and compensation logic is distributed across services, making debugging difficult
+- **Bad**, because the kiosk guest cannot wait for eventual consistency — they need an immediate answer
+
+#### Hybrid (orchestrated verification + event-driven async)
+
+- **Good**, because separates synchronous verification from asynchronous post-processing
+- **Neutral**, because adds infrastructure complexity (event bus for post-processing, HTTP for verification)
+- **Bad**, because the verification flow (the critical path) still requires orchestration, so the hybrid adds complexity without simplifying the core problem
 
 ---
 

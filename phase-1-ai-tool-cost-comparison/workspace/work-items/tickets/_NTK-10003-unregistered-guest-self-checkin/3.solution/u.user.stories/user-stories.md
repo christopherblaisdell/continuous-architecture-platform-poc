@@ -44,18 +44,18 @@
 
 ---
 
-## US-4: Security Reviewer Rate Limiting Verification
+## US-4: Protection Against Misuse
 
-**As a** security reviewer,
-**I want to** verify that reservation lookup attempts are rate-limited and logged,
-**So that** the system is protected against enumeration attacks and unauthorized access attempts.
+**As a** base camp manager,
+**I want** the self-service kiosk to limit repeated failed verification attempts,
+**So that** the system is protected against misuse and guests who cannot verify are directed to staff assistance.
 
 ### Acceptance Criteria
 
-- Given a kiosk has made 5 failed lookup attempts within 15 minutes, when a 6th attempt is made from the same kiosk, then the request is rejected with a 429 status code and a message directing the guest to the service desk
-- Given a lookup attempt fails, when the response is returned, then a 2-second artificial delay is applied before the response reaches the kiosk
-- Given any lookup attempt (successful or failed), when the attempt is processed, then it is logged with a timestamp, kiosk device ID, and masked input fields (PII redacted)
-- Given rate limiting is applied, when I review the API gateway and application logs, then I see rate limiting enforced at both layers (defense in depth)
+- Given a kiosk has received multiple failed lookup attempts, when further attempts are made, then the kiosk displays a message directing the guest to the service desk for assistance
+- Given a lookup attempt fails, when the response is returned, then there is a brief delay before the failure is displayed to discourage rapid repeated attempts
+- Given a guest has difficulty verifying, when they reach the attempt limit, then they know exactly where to go for in-person help
+- Given any lookup activity occurs, when reviewed by operations, then all attempts are traceable for security audit purposes
 
 ---
 

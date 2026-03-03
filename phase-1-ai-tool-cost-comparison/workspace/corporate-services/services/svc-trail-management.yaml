@@ -5,7 +5,7 @@ info:
     Manages trail definitions, waypoints, difficulty ratings, closures, and real-time
     condition status for all NovaTrek Adventures trail networks. Serves as the system
     of record for trail geography and operational state.
-  version: 1.0.0
+  version: 1.1.0
   contact:
     name: NovaTrek Platform Team
     email: platform@novatrek.example.com
@@ -533,7 +533,8 @@ components:
         elevation_gain_m:
           type: number
           format: double
-          description: Total elevation gain in meters along the trail
+          nullable: true
+          description: Total elevation gain in meters along the trail. Nullable for trails where elevation data has not yet been surveyed.
           example: 1240
         elevation_loss_m:
           type: number
