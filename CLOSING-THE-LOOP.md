@@ -443,30 +443,35 @@ This is significant: the promote step adds ~12 runs/month, pushing the workload 
 |------|----------------------|-------|
 | **Copilot Business** | $19.00 | Fixed — unaffected by volume increase |
 | **Copilot Enterprise** | $39.00 | Fixed — unaffected by volume increase |
-| **Kong AI (est.)** | ~$19.40 | 38 runs × ~$0.51/run — now essentially equal to Copilot Business |
+| **Kong AI (revised)** | **~$67.46** | 38 runs × ~$1.78/run — **3.5× Copilot Business** |
 
-**Key finding**: Adding the PROMOTE step to the workflow neutralizes Kong AI's cost advantage. At 38 runs/month, Kong AI and Copilot Business cost essentially the same (~$19/month). Copilot's predictable flat rate becomes more attractive when the AI workload increases to include promotion.
+> **Revision Note (Deep Research):** The original estimate of ~$0.51/run treated the AI's input as a single workspace read. Deep research into agentic token economics ([DEEP-RESEARCH-1](research/DEEP-RESEARCH-1.md)) reveals that Roo Code's client-side architecture re-transmits the **entire conversation history** at every turn of the agentic loop. With an average of 17 tool calls per scenario and cumulative context growth from ~10K to ~60-120K tokens per turn, the actual per-run variable cost is **~$1.78** — not $0.51. See [COST-MEASUREMENT-METHODOLOGY.md](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) Revision 2 for the full analysis.
 
-### 5.4 Updated Breakeven Analysis
+**Key finding**: When the agentic re-transmission tax is properly accounted for, **Copilot Business is 3.5× cheaper** than Kong AI at the realistic 38 runs/month workload ($19 vs $67). This advantage grows with volume — the PROMOTE step doesn't neutralize a Kong AI cost advantage; it amplifies Copilot's existing advantage.
+
+### 5.4 Updated Breakeven Analysis (Revised)
 
 ```
-Original breakeven (Copilot Business vs Kong AI):    ~37 runs/month
-Revised workload with PROMOTE step:                   ~38 runs/month  ← Right at breakeven
-Original breakeven (Copilot Enterprise vs Kong AI):   ~76 runs/month
+Original breakeven (Copilot Business vs Kong AI):     ~112 runs/month  (Rev 0, content-delta estimate)
+Rev 1 breakeven (after PROMOTE reframe):              ~37 runs/month   (still used content-delta costs)
+Rev 2 breakeven (with agentic re-transmission tax):   ~11 runs/month   ← Current best estimate
+Revised workload with PROMOTE step:                   ~38 runs/month   (3.5× past breakeven)
 ```
 
-With the PROMOTE step, we are at the Copilot Business breakeven point. If the practice grows at all (more tickets, more services, more architects), Copilot Business becomes cheaper than Kong AI. This changes the recommendation calculus.
+The breakeven analysis has **inverted**. At an average variable cost of ~$1.78/run, Kong AI exceeds Copilot Business ($19/month) at just ~11 runs/month. Our realistic workload of 38 runs/month is **3.5× past the breakeven point**. This is not a close call — Copilot's flat-rate model dominates for any architecture practice doing more than minimal work.
 
-### 5.5 Updated Recommendation Factors
+### 5.5 Updated Recommendation Factors (Revised)
 
 | Factor | Kong AI + Roo Code | Copilot Business | Impact of PROMOTE |
 |--------|-------------------|-----------------|-------------------|
-| Cost at 26 runs/mo | $13.26 ✅ | $19.00 | Irrelevant — 26 runs ignores promotion |
-| Cost at 38 runs/mo | $19.40 | $19.00 ✅ | Copilot wins at realistic workload |
-| Cost at 50 runs/mo (growth) | $25.50 | $19.00 ✅ | Copilot advantage grows with volume |
+| Cost at 26 runs/mo | ~$58.10 | $19.00 ✅ | Copilot **3× cheaper** even without promotion |
+| Cost at 38 runs/mo | **~$67.46** | **$19.00** ✅ | Copilot **3.5× cheaper** at realistic workload |
+| Cost at 50 runs/mo (growth) | ~$89.00 | $19.00 ✅ | Copilot **4.7× cheaper** — gap widens with volume |
 | Promotion quality | TBD | 24/25 (SC-04) ✅ | Both tools can promote; Copilot proven |
 | Baseline context utilization | TBD | Strong (40 files read across scenarios) | Both benefit from maintained baselines |
 | Budget predictability | Variable ❌ | Fixed ✅ | PROMOTE adds volume uncertainty — fixed rate is safer |
+| Infrastructure risk | Kong Gateway + Qdrant + API keys ❌ | GitHub-managed ✅ | Custom stack adds 15-20% annual drift tax |
+| Failure mode risk | Infinite retry loop (documented) ❌ | Server-side compaction ✅ | Roo+Kong error obfuscation creates runaway cost risk |
 
 ### 5.6 Net Impact on ADR-001
 

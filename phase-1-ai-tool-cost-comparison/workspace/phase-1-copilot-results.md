@@ -207,47 +207,54 @@ Based on observable interactions and typical context window utilization:
 | Total input tokens (5 scenarios) | ~300,000-400,000 | Conservative estimate |
 | Total output tokens (5 scenarios) | ~75,000-125,000 | Conservative estimate |
 
-### Kong AI Equivalent Cost Estimate
+### Kong AI Equivalent Cost Estimate (Revised)
 
-If these 5 scenarios were executed via Kong AI + Bedrock with Claude Sonnet pricing:
+> **Revision Note:** The original estimate below ($2.55/batch) treated input tokens as a single workspace read. Deep research ([DEEP-RESEARCH-1](../../../research/DEEP-RESEARCH-1.md), [DEEP-RESEARCH-2](../../../research/DEEP-RESEARCH-2.md)) reveals that Roo Code's client-side architecture re-transmits the **entire conversation history** at every turn of the agentic loop. With 85 tool calls across 5 scenarios, the cumulative re-transmitted input volume is ~4M tokens, not 350K.
 
-```
-Input:  350,000 tokens × $3.00/1M  = $1.05
-Output: 100,000 tokens × $15.00/1M = $1.50
-Total per execution: ~$2.55
-```
+| Scenario | Tool Calls | Cumulative Input Tokens | Output Tokens | Variable Cost |
+|----------|-----------|------------------------|--------------|---------------|
+| SC-01 | 12 | ~300K | ~10K | **$1.05** |
+| SC-02 | 18 | ~810K | ~15K | **$2.66** |
+| SC-03 | 25 | ~1,625K | ~30K | **$5.33** |
+| SC-04 | 10 | ~220K | ~8K | **$0.78** |
+| SC-05 | 20 | ~1,100K | ~20K | **$3.60** |
+| **TOTAL** | **85** | **~4,055K** | **~83K** | **$13.42** |
 
-### Monthly Cost Projection
+This is **14× higher** than the original single-pass estimate of $0.94. The difference is the agentic re-transmission tax: each turn re-sends the entire growing conversation history.
 
-| Scenario | Monthly Freq | Copilot Business | Copilot Enterprise | Kong AI (est.) |
-|----------|-------------|------------------|--------------------|----------------|
-| SC-01: Ticket Triage | 10 | — | — | $5.10 |
-| SC-02: Solution Design | 6 | — | — | $3.06 |
-| SC-03: Investigation | 4 | — | — | $2.04 |
-| SC-04: Architecture Update | 4 | — | — | $2.04 |
-| SC-05: Cross-Service | 2 | — | — | $1.02 |
-| **Total Monthly** | **26 runs** | **$19.00** | **$39.00** | **~$13.26** |
+### Monthly Cost Projection (Revised)
 
-### Cost Per Quality Point
+| Scenario | Monthly Freq | Copilot Business | Copilot Enterprise | Kong AI (revised) |
+|----------|-------------|------------------|--------------------|-------------------|
+| SC-01: Ticket Triage | 10 | — | — | $10.50 |
+| SC-02: Solution Design | 6 | — | — | $15.96 |
+| SC-03: Investigation | 4 | — | — | $21.32 |
+| SC-04: Architecture Update | 4 | — | — | $3.12 |
+| SC-05: Cross-Service | 2 | — | — | $7.20 |
+| **Total Monthly** | **26 runs** | **$19.00** | **$39.00** | **~$58.10** |
 
-| Tool | Monthly Cost | Quality Score | Cost per Quality Point |
-|------|-------------|---------------|----------------------|
-| Kong AI (est.) | $13.26 | TBD (not yet tested) | TBD |
+### Cost Per Quality Point (Revised)
+
+| Tool | Monthly Cost (26 runs) | Quality Score | Cost per Quality Point |
+|------|----------------------|---------------|----------------------|
+| Kong AI (revised) | $58.10 | TBD (not yet tested) | TBD |
 | Copilot Business | $19.00 | 4.81/5.0 | $3.95 |
 | Copilot Enterprise | $39.00 | 4.81/5.0 | $8.11 |
 
-### Scalability Projection
+> **Note:** Even if Kong AI matches Copilot quality, its cost per quality point would be ~$12.08 — **3× higher** than Copilot Business.
 
-| Usage Level | Monthly Runs | Copilot Business | Copilot Enterprise | Kong AI (est.) |
-|-------------|-------------|------------------|--------------------|----------------|
-| 1x (original) | 26 | $19.00 | $39.00 | $13.26 |
-| **1x + PROMOTE** | **38** | **$19.00** | **$39.00** | **$19.40** |
-| 2x | 52 | $19.00 | $39.00 | $26.52 |
-| 3x | 78 | $19.00 | $39.00 | $39.78 |
-| Breakeven vs. Copilot Business | ~37 runs | $19.00 | — | ~$19.00 |
-| Breakeven vs. Copilot Enterprise | ~76 runs | — | $39.00 | ~$39.00 |
+### Scalability Projection (Revised)
 
-**Key finding**: At the original 26 runs/month (design-only workflow), Kong AI is ~30% cheaper than Copilot Business. However, this workload calculation omits the critical PROMOTE step — updating corporate architecture baselines after each effort ships (see [CLOSING-THE-LOOP.md](../../CLOSING-THE-LOOP.md)). Adding the PROMOTE step increases the realistic workload to ~38 runs/month, which is right at the Copilot Business breakeven point. At any volume above 38 runs/month (growth, more architects, more services), Copilot Business is cheaper due to its flat-rate model. The PROMOTE step adds ~12 runs/month and is essential for preventing the compounding knowledge destruction documented in the closing-the-loop analysis.
+| Usage Level | Monthly Runs | Copilot Business | Copilot Enterprise | Kong AI (revised) |
+|-------------|-------------|------------------|--------------------|-------------------|
+| 1x (original) | 26 | $19.00 | $39.00 | $58.10 |
+| **1x + PROMOTE** | **38** | **$19.00** | **$39.00** | **$67.46** |
+| 2x | 52 | $19.00 | $39.00 | $92.32 |
+| 3x | 78 | $19.00 | $39.00 | $138.48 |
+| Breakeven vs. Copilot Business | ~11 runs | $19.00 | — | ~$19.00 |
+| Breakeven vs. Copilot Enterprise | ~22 runs | — | $39.00 | ~$39.00 |
+
+**Key finding (revised):** When the agentic re-transmission tax is properly accounted for, **Copilot Business is 3.5× cheaper** than Kong AI at the realistic 38 runs/month workload ($19 vs $67). This advantage grows with volume — at 3× workload, Copilot is **7.3× cheaper** ($19 vs $138). The original analysis ($13.26/month for Kong AI) was a content-delta measurement that missed the dominant cost driver: cumulative re-transmission of the conversation history across 85+ agentic turns per batch. See [COST-MEASUREMENT-METHODOLOGY.md](../../phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) for the full revised analysis and [DEEP-RESEARCH-1.md](../../../research/DEEP-RESEARCH-1.md) for the underlying token economics research.
 
 ---
 
