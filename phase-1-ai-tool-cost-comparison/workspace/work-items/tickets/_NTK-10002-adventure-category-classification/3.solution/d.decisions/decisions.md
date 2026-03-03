@@ -168,3 +168,86 @@ Edge cases exist where the `adventure_category` field may be null, empty, or con
 
 - Ticket comment thread: Comments 11-13 in NTK-10002
 - Product owner confirmation: Morgan Chen, 2024-08-19
+
+---
+
+## ADR-NTK10002-003: Additive API Contract Changes for Classification Response
+
+### Status
+
+Accepted
+
+### Date
+
+2026-03-03
+
+### Context and Problem Statement
+
+The check-in API must convey the determined classification pattern to the calling client (kiosk, mobile app) so the client can render the correct UI flow. How should the classification result be communicated in the API response, and how should the svc-trip-catalog schema be extended to carry the adventure category?
+
+### Decision Drivers
+
+- Backward compatibility with existing API consumers
+- Client applications need to know which UI flow to render
+- The adventure category must originate from svc-trip-catalog and flow through svc-reservations
+- Existing consumers of svc-trip-catalog Trip responses must not break
+
+### Considered Options
+
+1. **Additive fields on existing schemas** -- Add `determined_pattern` and `pattern_name` to the CheckIn response; add `adventure_category` to the Trip schema
+2. **New dedicated endpoint** -- Create a separate `GET /check-ins/{id}/classification` endpoint
+3. **Header-based response** -- Return classification data in custom HTTP response headers
+
+### Decision Outcome
+
+**Chosen Option**: "Additive fields on existing schemas", because it minimizes API surface area growth, maintains backward compatibility through optional fields, and aligns with the tolerant reader pattern already used across NovaTrek services.
+
+#### Confirmation
+
+- `POST /check-ins` response includes `determined_pattern` (integer) and `pattern_name` (string)
+- svc-trip-catalog `Trip` schema includes `adventure_category` (nullable string enum)
+- Both additions are optional/nullable fields that do not break existing consumers
+
+### Consequences
+
+#### Positive
+
+- No new endpoints required -- existing API surface remains stable
+- Backward compatible -- consumers ignoring the new fields continue to work
+- Classification result is co-located with the check-in data, avoiding extra lookups
+- adventure_category on Trip schema enables future features beyond check-in classification
+
+#### Negative
+
+- CheckIn response grows slightly larger (two additional fields)
+- Consumers must be updated to read the new fields if they want classification-aware behavior
+
+#### Neutral
+
+- Swagger specification updates required for both svc-check-in and svc-trip-catalog
+
+### Pros and Cons of the Options
+
+#### Additive fields on existing schemas
+
+- **Good**, because minimal API changes and backward compatible
+- **Good**, because follows existing tolerant reader pattern
+- **Good**, because classification data is immediately available in the check-in response
+- **Neutral**, because requires Swagger spec updates for documentation
+
+#### New dedicated endpoint
+
+- **Good**, because separates classification concerns from check-in data
+- **Bad**, because requires an additional API call from clients to get classification
+- **Bad**, because increases API surface area and maintenance burden
+
+#### Header-based response
+
+- **Good**, because does not modify the response body at all
+- **Bad**, because headers are harder to discover, document, and debug
+- **Bad**, because violates NovaTrek API design conventions (data in response body, not headers)
+
+### More Information
+
+- Source code analysis: `CheckInRecord.java` already has `uiPattern` field (line 43), confirming the entity is ready for this data
+- svc-trip-catalog Swagger spec: `Trip` schema to be extended with `adventure_category` field

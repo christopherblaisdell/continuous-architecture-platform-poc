@@ -6,35 +6,21 @@
 
 ## Pre-Execution Checklist (Human Steps)
 
-### 1. Reset Workspace to Baseline
-
-Run from the **repository root** (`continuous-architecture-platform-poc-2/`):
-
-```bash
-# Restore all modified workspace files to baseline state
-git checkout e83f83e -- phase-1-ai-tool-cost-comparison/workspace/
-
-# Remove all files that were added after baseline
-git diff --name-only --diff-filter=A e83f83e..HEAD -- phase-1-ai-tool-cost-comparison/workspace/ | xargs rm -f
-
-# Verify clean state
-git diff --stat e83f83e -- phase-1-ai-tool-cost-comparison/workspace/
-# Should show 0 files changed
-```
-
-### 2. Open Workspace
+### 1. Open Workspace
 
 Open `phase-1-ai-tool-cost-comparison/workspace/novatrek-workspace.code-workspace` in VS Code. Copilot will auto-load `.github/copilot-instructions.md`.
 
-### 3. Start Fresh Chat
+> **Note**: No workspace reset is needed between runs. The workspace is read-only input. All AI-generated output goes to a uniquely numbered run folder under `outputs/copilot/`.
+
+### 2. Start Fresh Chat
 
 Open a **new** Copilot Agent Mode chat. Do NOT reuse an existing conversation. Ensure Claude Opus 4.6 is the selected model.
 
-### 4. Record Start Time
+### 3. Record Start Time
 
 Note the wall-clock time before pasting the prompt.
 
-### 5. Paste Everything Below the Line
+### 4. Paste Everything Below the Line
 
 Copy from `BEGIN PROMPT` to `END PROMPT` and paste as a single message.
 
@@ -98,8 +84,75 @@ _[TICKET-ID-BRIEF-TITLE]/
 6. **NO unvalidated quantified claims.** Use "significant improvement" not "99.9% cost reduction".
 7. **NO special characters in Markdown headers** — letters, numbers, spaces only.
 8. **Content separation**: impacts = WHAT changes architecturally; guidance = HOW to implement; user stories = user perspective only (no technical details).
-9. If a file already exists, **read it first**, then update or enhance it. Do not create a duplicate.
+9. When a scenario says to "update" or "enhance" an existing file, **read the original from the workspace**, incorporate and improve its content, and **write the enhanced version to the output folder**. The workspace directory is read-only.
 10. Use impact subdirectories (`impact.1/impact.1.md`, `impact.2/impact.2.md`) when there are multiple affected services.
+
+---
+
+## Output Isolation — Every Run is Fresh
+
+**CRITICAL**: Every execution of this prompt MUST produce a completely new set of artifacts in a new, uniquely numbered run folder. NEVER reuse, skip, or declare that output "already exists from a prior run." ALWAYS generate fresh content from scratch.
+
+### Step 0 — Determine Run Number
+
+Before starting Scenario 1, determine the next available run number:
+
+1. List existing run folders:
+   ```bash
+   ls -d phase-1-ai-tool-cost-comparison/outputs/copilot/[0-9][0-9][0-9] 2>/dev/null || echo "none"
+   ```
+2. If none exist, use `001`. Otherwise, increment the highest number by 1 (e.g., `001` becomes `002`).
+3. Set this as your **RUN_NUMBER** for the entire session (e.g., `002`).
+4. Create the run folder:
+   ```bash
+   mkdir -p phase-1-ai-tool-cost-comparison/outputs/copilot/<RUN_NUMBER>
+   ```
+
+### Output Root
+
+All files you create or modify go under:
+```
+phase-1-ai-tool-cost-comparison/outputs/copilot/<RUN_NUMBER>/
+```
+
+### Path Mapping
+
+| Action | Path prefix |
+|--------|-------------|
+| **Read** source files, specs, templates, ticket reports | `phase-1-ai-tool-cost-comparison/workspace/` |
+| **Run** mock scripts | `cd phase-1-ai-tool-cost-comparison/workspace && python3 scripts/...` |
+| **Write** all generated artifacts | `phase-1-ai-tool-cost-comparison/outputs/copilot/<RUN_NUMBER>/` |
+
+When a scenario says:
+> **Working directory**: `work-items/tickets/_NTK-10005-wristband-rfid-field/`
+
+**Read** existing input files (ticket reports, existing content to enhance) from:
+```
+phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10005-wristband-rfid-field/
+```
+
+**Write** all generated or enhanced artifacts to:
+```
+phase-1-ai-tool-cost-comparison/outputs/copilot/<RUN_NUMBER>/work-items/tickets/_NTK-10005-wristband-rfid-field/
+```
+
+When a scenario says to modify a corporate artifact (e.g., Swagger spec, PlantUML diagram), read the original from the workspace and write the modified version to the output folder. **Do NOT modify files in the workspace directory.**
+
+### Run Folder Structure
+
+```
+outputs/copilot/<RUN_NUMBER>/
++-- work-items/tickets/
+|   +-- _NTK-10005-wristband-rfid-field/     (Scenario 1)
+|   +-- _NTK-10002-adventure-category.../     (Scenario 2)
+|   +-- _NTK-10004-guide-schedule.../         (Scenario 3)
+|   +-- _NTK-10001-add-elevation.../          (Scenario 4)
+|   +-- _NTK-10003-unregistered-guest.../     (Scenario 5)
++-- corporate-services/                        (Scenario 4 modified artifacts)
+|   +-- services/svc-trail-management.yaml
+|   +-- diagrams/Components/novatrek-component-overview.puml
++-- run-summary.md                             (Post-execution summary)
+```
 
 ---
 
@@ -284,31 +337,18 @@ After completing all 5 scenarios, provide a brief summary listing:
 ## Post-Execution Steps (Human)
 
 1. **Record wall-clock time** (start to completion).
-2. **Capture the run** (from repository root):
-   ```bash
-   # Auto-assigns next run number (001, 002, ...)
-   ./phase-1-ai-tool-cost-comparison/scripts/capture-run.sh copilot
-   ```
-   This snapshots all workspace changes into `outputs/copilot/<RUN>/`, including:
-   - `workspace-diff.patch` — full git diff from baseline
-   - `workspace-snapshot/` — copy of all changed/created files
-   - `run-metadata.md` — template for timing and cost data
-   - `results.md` — copy of results file (if present in workspace)
-3. **Fill in `run-metadata.md`** with start time, end time, wall-clock duration, and cost.
-4. **Score each scenario** using the rubrics in:
+2. **Create `run-metadata.md`** in the run folder (`outputs/copilot/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, and cost.
+3. **Score each scenario** using the rubrics in:
    - `playbooks/scenario-01-new-ticket-triage.md` (max 25)
    - `playbooks/scenario-02-solution-design.md` (max 35)
    - `playbooks/scenario-03-investigation-analysis.md` (max 30)
    - `playbooks/scenario-04-architecture-update.md` (max 25)
    - `playbooks/scenario-05-complex-cross-service.md` (max 40)
-5. **Create or update `results.md`** in the run folder documenting scores, observable metrics, and notes.
-6. **Run data isolation audit**: `../../scripts/audit-data-isolation.sh`
-7. **Commit the captured run**:
+4. **Create `results.md`** in the run folder documenting scores, observable metrics, and notes.
+5. **Run data isolation audit**: `./scripts/audit-data-isolation.sh`
+6. **Commit the run**:
    ```bash
-   git add -A && git commit -m 'feat: capture Phase 1 Copilot run <RUN>'
+   git add -A && git commit -m 'feat: Phase 1 Copilot run <RUN>'
    ```
-8. **Reset workspace** before the next run:
-   ```bash
-   git checkout e83f83e -- phase-1-ai-tool-cost-comparison/workspace/
-   git diff --name-only --diff-filter=A e83f83e..HEAD -- phase-1-ai-tool-cost-comparison/workspace/ | xargs rm -f
-   ```
+
+> **Note**: No workspace reset is needed between runs. The workspace is read-only — all output goes to the numbered run folder. Each run is fully self-contained and independently reviewable.

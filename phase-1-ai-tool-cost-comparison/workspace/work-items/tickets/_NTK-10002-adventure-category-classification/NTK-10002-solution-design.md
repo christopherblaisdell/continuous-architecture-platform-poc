@@ -152,7 +152,56 @@ Override evaluation occurs BEFORE category classification. If a booking source h
 - **Integration tests**: Verify that config refresh updates the classification mapping without restart.
 - **Performance tests**: Validate that classification lookup adds less than 1ms to check-in request latency.
 
-## 11. Version History
+## 11. Source Code Analysis
+
+Analysis of the current [`AdventureCategoryClassifier.java`](../../source-code/svc-check-in/src/main/java/com/novatrek/checkin/service/AdventureCategoryClassifier.java) reveals several critical gaps that this solution addresses:
+
+### Current Code Issues
+
+| Issue | Current Behavior | Required Behavior |
+|-------|-----------------|-------------------|
+| Hardcoded categories | Categories defined in static `Set` constants (`PATTERN_1_CATEGORIES`, `PATTERN_2_CATEGORIES`, `PATTERN_3_CATEGORIES`) | Configuration-driven via Spring Cloud Config YAML |
+| Category mismatch | Code uses categories like `SCENIC_OVERLOOK`, `BIRD_WATCHING`, `FISHING_BASIC`, `ZIP_LINE` that do not match the 25 approved adventure categories | Must use the 25 categories defined in the classification table (Section 3) |
+| Unsafe default | Unknown categories default to `PATTERN_1` (Basic) -- line 74 of `AdventureCategoryClassifier.java` | Unknown categories MUST default to `PATTERN_3` (Full Service) per ADR-NTK10002-002 |
+| No caching | No caching mechanism; categories are read from memory constants | Spring `@Cacheable` with configurable TTL for config-driven lookups |
+| No feature flag | No ability to toggle between legacy and new classification | Feature flag `novatrek.checkin.use-category-classification` required |
+
+### CRITICAL Safety Concern
+
+The current default to Pattern 1 for unknown categories means that a guest booked for an unrecognized high-risk activity (such as a newly added `ICE_CLIMBING` category not yet in the classifier) would receive only a confirmation screen -- bypassing gear verification, safety briefing, guide meetup, and medical clearance. This is the primary motivator for ADR-NTK10002-002 mandating Pattern 3 as the fallback.
+
+### Data Model Readiness
+
+The [`CheckInRecord.java`](../../source-code/svc-check-in/src/main/java/com/novatrek/checkin/model/CheckInRecord.java) entity already has `adventureCategory` (line 40) and `uiPattern` (line 43) fields, confirming partial readiness for the classification feature. The remaining work is replacing the hardcoded classifier with the config-driven `ClassificationService`.
+
+## 12. Service Interaction Changes
+
+### Current Service Interactions
+
+```
+Guest -> svc-check-in: POST /check-ins (reservation_id)
+svc-check-in -> svc-reservations: GET reservation (to read activity_type)
+svc-check-in: Hardcoded two-tier classification by activity_type
+svc-check-in -> Guest: Check-in response (no pattern info)
+```
+
+### Proposed Service Interactions
+
+```
+Guest -> svc-check-in: POST /check-ins (reservation_id)
+svc-check-in -> svc-reservations: GET reservation (to read booking_source + adventure_category)
+svc-check-in -> ClassificationService: determinePattern(bookingSource, adventureCategory)
+ClassificationService -> Spring Cloud Config: Load classification mapping (cached, TTL 5 min)
+svc-check-in -> Guest: Check-in response (includes determined_pattern, pattern_name)
+```
+
+No new service-to-service network calls are introduced. The `ClassificationService` is an internal component within `svc-check-in`. The `svc-reservations` call already exists; the only change is reading `adventure_category` in addition to `activity_type`.
+
+### svc-trip-catalog Data Model Addition
+
+The `Trip` schema in `svc-trip-catalog` must be extended with an `adventure_category` field (string enum, nullable). This field is populated when trips are created or updated and flows through `svc-reservations` to `svc-check-in` at check-in time.
+
+## 13. Version History
 
 | Version | Date       | Changes                                                              |
 |---------|------------|----------------------------------------------------------------------|
@@ -163,3 +212,4 @@ Override evaluation occurs BEFORE category classification. If a booking source h
 | 1.4     | 2024-08-29 | Added booking source override table and decision flow diagram        |
 | 1.5     | 2024-09-01 | Added data flow section, refined pattern definitions                 |
 | 1.6     | 2024-09-03 | Final editorial corrections, product owner approval                  |
+| 1.7     | 2026-03-03 | Added source code analysis, service interaction changes, API contract ADR |
