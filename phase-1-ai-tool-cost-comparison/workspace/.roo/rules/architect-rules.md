@@ -319,3 +319,54 @@ When reviewing existing architecture or proposing solutions, always flag these a
 - If a scenario requires information not available in the workspace, document it as an assumption — do not invent data
 - Prioritize accuracy over comprehensiveness — it is better to produce fewer, well-grounded findings than many speculative ones
 - When updating existing documents, preserve all existing content and add to it — never silently remove sections
+---
+
+## Cost Measurement and Toolchain Pricing
+
+This workspace tracks exact costs for both AI toolchains used in Phase 1 evaluation.
+
+### GitHub Copilot Pro+ (Current Plan)
+
+| Parameter | Value |
+|-----------|-------|
+| Base subscription | $39.00 / month |
+| Included premium requests | 1,500 / month |
+| Overage rate | $0.04 per premium request beyond allowance |
+| Model used | Claude Opus 4.6 (premium model) |
+| Token-level visibility | None -- no per-request billing data exposed |
+
+Copilot Pro+ is NOT purely fixed-cost. Assumption: all included premium requests are consumed and overage pricing applies.
+
+Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) x $0.04
+
+### OpenRouter (Roo Code Backend)
+
+| Parameter | Value |
+|-----------|-------|
+| Pricing model | Pay-per-token, variable |
+| Model used | Claude Opus 4.6 |
+| Token-level visibility | Full -- exact per-request costs via API |
+| Cost retrieval | `python3 scripts/openrouter-cost.py` (automated API queries) |
+| Activity dashboard | https://openrouter.ai/activity |
+
+OpenRouter provides exact costs. Use `scripts/openrouter-cost.py` to retrieve:
+
+```bash
+# Check credit balance
+python3 scripts/openrouter-cost.py balance
+
+# Cost for a specific generation
+python3 scripts/openrouter-cost.py generation gen-xxxxxxxxxxxxxxxx
+
+# Bulk cost summary from a file of generation IDs
+python3 scripts/openrouter-cost.py summary --file generation-ids.txt --format json
+```
+
+### Cost Measurement Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/openrouter-cost.py` | Queries OpenRouter API for exact per-request costs |
+| `scripts/cost-measurement.py` | Content-based estimation from git diffs + cost comparison reports |
+
+See [COST-MEASUREMENT-METHODOLOGY.md](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) for the full methodology.

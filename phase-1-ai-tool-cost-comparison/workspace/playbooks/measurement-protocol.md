@@ -85,14 +85,17 @@ Check https://openrouter.ai/models for current model pricing.
 >
 > For a 20-turn scenario starting at 10K and growing to 120K context, this yields ~1.3M cumulative input tokens -- not the 120K that a single-pass measurement would suggest. See [COST-MEASUREMENT-METHODOLOGY.md](../../COST-MEASUREMENT-METHODOLOGY.md) for the full analysis.
 
-### GitHub Copilot (Fixed Cost Model)
+### GitHub Copilot Pro+ (Subscription + Overage Model)
 
 ```
-Copilot Business Monthly Cost  = $19 / seat / month
-Copilot Enterprise Monthly Cost = $39 / seat / month
+Copilot Pro+ Base Cost = $39 / month
+Included Premium Requests = 1500 / month
+Overage Cost = $0.04 per premium request beyond 1500
+
+Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) * $0.04
 ```
 
-Fixed cost regardless of usage volume.
+Copilot Pro+ is NOT purely fixed-cost. When included premium requests (1500/month) are exhausted, each additional request using models like Claude Opus 4.6 costs $0.04. The user assumes all included requests are consumed and overage pricing applies.
 
 ## Quality Scoring
 
@@ -125,19 +128,19 @@ Each scenario has a quality rubric with specific criteria. Score each criterion 
 
 ## Final Comparison Table
 
-| Metric | Roo+OpenRouter | Copilot Business | Copilot Enterprise |
-|--------|----------|-------------------|---------------------|
-| Monthly cost per seat | *From OpenRouter Activity* | $19 | $39 |
-| SC-01 quality (/25) | | | |
-| SC-02 quality (/35) | | | |
-| SC-03 quality (/30) | | | |
-| SC-04 quality (/25) | | | |
-| SC-05 quality (/40) | | | |
-| Average quality (normalized /5) | | | |
-| Cost per quality point | | | |
-| Scenarios with quality >= 80% | /5 | /5 | /5 |
-| Total tool calls successful | | | |
-| Average time per scenario (min) | | | |
+| Metric | Roo+OpenRouter | Copilot Pro+ |
+|--------|----------|-------------------|
+| Monthly cost per seat | *From OpenRouter Activity* | $39 base + $0.04/request overage |
+| SC-01 quality (/25) | | |
+| SC-02 quality (/35) | | |
+| SC-03 quality (/30) | | |
+| SC-04 quality (/25) | | |
+| SC-05 quality (/40) | | |
+| Average quality (normalized /5) | | |
+| Cost per quality point | | |
+| Scenarios with quality >= 80% | /5 | /5 |
+| Total tool calls successful | | |
+| Average time per scenario (min) | | |
 
 ## Weighted Monthly Cost-Quality Score
 

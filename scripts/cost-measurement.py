@@ -40,8 +40,10 @@ WORKSPACE_SUBDIR = "phase-1-ai-tool-cost-comparison/workspace"
 CHARS_PER_TOKEN = 4
 
 # Pricing models
-COPILOT_BUSINESS_MONTHLY = 19.00   # USD / seat / month
-COPILOT_ENTERPRISE_MONTHLY = 39.00  # USD / seat / month
+# GitHub Copilot Pro+ ($39/month, 1500 premium requests included, $0.04/request overage)
+COPILOT_PRO_PLUS_MONTHLY = 39.00           # USD / month base subscription
+COPILOT_PRO_PLUS_INCLUDED_REQUESTS = 1500  # Premium requests included per month
+COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST = 0.04  # USD per additional premium request
 
 # OpenRouter pricing (Claude Opus 4.6 via OpenRouter, as of 2026)
 # NOTE: These are estimates. Actual costs come from OpenRouter Activity page.
@@ -189,8 +191,20 @@ def estimate_tokens(char_count):
 # ---------------------------------------------------------------------------
 
 def copilot_cost_per_run(monthly_price, runs_per_month):
-    """Amortized cost per scenario run under fixed pricing."""
+    """Amortized base cost per scenario run under fixed pricing (excludes overages)."""
     return monthly_price / runs_per_month if runs_per_month > 0 else 0.0
+
+
+def copilot_overage_cost(premium_requests_used, included=COPILOT_PRO_PLUS_INCLUDED_REQUESTS,
+                         rate=COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST):
+    """Calculate Copilot Pro+ overage cost for premium requests beyond included allowance."""
+    overage = max(0, premium_requests_used - included)
+    return overage * rate
+
+
+def copilot_total_monthly_cost(premium_requests_used):
+    """Total Copilot Pro+ cost: base subscription + overage."""
+    return COPILOT_PRO_PLUS_MONTHLY + copilot_overage_cost(premium_requests_used)
 
 
 def openrouter_cost(input_tokens, output_tokens):
@@ -373,8 +387,7 @@ def _produce_report(delta, fmt="text"):
         per_sc = per_scenario_added_bytes(sha_from, sha_to)
 
     # --- Cost calculations ---
-    copilot_biz_per_run = copilot_cost_per_run(COPILOT_BUSINESS_MONTHLY, TOTAL_MONTHLY_RUNS)
-    copilot_ent_per_run = copilot_cost_per_run(COPILOT_ENTERPRISE_MONTHLY, TOTAL_MONTHLY_RUNS)
+    copilot_base_per_run = copilot_cost_per_run(COPILOT_PRO_PLUS_MONTHLY, TOTAL_MONTHLY_RUNS)
 
     # Variable cost for the whole batch (all 5 scenarios once)
     variable_total = openrouter_cost(input_tokens, output_tokens)
@@ -394,15 +407,15 @@ def _produce_report(delta, fmt="text"):
 
     # --- Output ---
     if fmt == "csv":
-        _report_csv(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
-                     copilot_ent_per_run, variable_total, variable_monthly)
+        _report_csv(delta, per_sc, sc_variable_costs, copilot_base_per_run,
+                     variable_total, variable_monthly)
     else:
-        _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
-                      copilot_ent_per_run, variable_total, variable_monthly)
+        _report_text(delta, per_sc, sc_variable_costs, copilot_base_per_run,
+                      variable_total, variable_monthly)
 
 
-def _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
-                  copilot_ent_per_run, variable_total, variable_monthly):
+def _report_text(delta, per_sc, sc_variable_costs, copilot_base_per_run,
+                  variable_total, variable_monthly):
     """Print human-readable cost report."""
     output_tokens = delta["est_output_tokens"]
     input_tokens = delta["est_input_tokens"]
@@ -422,14 +435,14 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
     print("\n" + "-" * 72)
     print("  PER-SCENARIO BREAKDOWN")
     print("-" * 72)
-    print(f"  {'Scenario':<10} {'Ticket':<12} {'Output Bytes':>13} {'Est Tokens':>11} {'Variable $':>11} {'Fixed Biz $':>12}")
+    print(f"  {'Scenario':<10} {'Ticket':<12} {'Output Bytes':>13} {'Est Tokens':>11} {'Variable $':>11} {'Copilot $':>12}")
     print(f"  {'─' * 10} {'─' * 12} {'─' * 13} {'─' * 11} {'─' * 11} {'─' * 12}")
 
     for sc_id, meta in SCENARIOS.items():
         sc_bytes = per_sc.get(sc_id, 0)
         sc_tokens = estimate_tokens(sc_bytes)
         sc_var = sc_variable_costs.get(sc_id, 0.0)
-        print(f"  {sc_id:<10} {meta['ticket']:<12} {sc_bytes:>13,} {sc_tokens:>11,} ${sc_var:>10.4f} ${copilot_biz_per_run:>11.4f}")
+        print(f"  {sc_id:<10} {meta['ticket']:<12} {sc_bytes:>13,} {sc_tokens:>11,} ${sc_var:>10.4f} ${copilot_base_per_run:>11.4f}")
 
     # Overhead (results doc, ADR updates, etc.)
     accounted = sum(per_sc.values())
@@ -444,18 +457,19 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
     print("  MONTHLY COST PROJECTION (26 runs/month)")
     print("-" * 72)
     print(f"  OpenRouter (variable):          ${variable_monthly:>8.2f} /month")
-    print(f"  GitHub Copilot Business (fixed): ${COPILOT_BUSINESS_MONTHLY:>8.2f} /month")
-    print(f"  GitHub Copilot Enterprise (fixed):${COPILOT_ENTERPRISE_MONTHLY:>7.2f} /month")
-    print(f"\n  Copilot Business per-run amortized:  ${copilot_biz_per_run:.4f}")
-    print(f"  Copilot Enterprise per-run amortized: ${copilot_ent_per_run:.4f} (per {TOTAL_MONTHLY_RUNS} runs)")
+    print(f"  Copilot Pro+ base subscription:  ${COPILOT_PRO_PLUS_MONTHLY:>8.2f} /month")
+    print(f"  Copilot Pro+ included requests:  {COPILOT_PRO_PLUS_INCLUDED_REQUESTS}")
+    print(f"  Copilot Pro+ overage rate:       ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f} /request")
+    print(f"\n  Copilot Pro+ base per-run amortized:  ${copilot_base_per_run:.4f} (per {TOTAL_MONTHLY_RUNS} runs)")
+    print(f"  NOTE: Copilot per-run cost above is base subscription only.")
+    print(f"  When included requests are exhausted, add ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f}/request overage.")
 
     # Break-even analysis
     if variable_total > 0:
-        break_even_biz = COPILOT_BUSINESS_MONTHLY / (variable_monthly / TOTAL_MONTHLY_RUNS) if variable_monthly > 0 else float("inf")
-        break_even_ent = COPILOT_ENTERPRISE_MONTHLY / (variable_monthly / TOTAL_MONTHLY_RUNS) if variable_monthly > 0 else float("inf")
-        print(f"\n  Break-even runs/month (Copilot vs Variable):")
-        print(f"    Business:   {break_even_biz:>6.1f} runs (current: {TOTAL_MONTHLY_RUNS})")
-        print(f"    Enterprise: {break_even_ent:>6.1f} runs (current: {TOTAL_MONTHLY_RUNS})")
+        break_even = COPILOT_PRO_PLUS_MONTHLY / (variable_monthly / TOTAL_MONTHLY_RUNS) if variable_monthly > 0 else float("inf")
+        print(f"\n  Break-even runs/month (Copilot Pro+ base vs OpenRouter variable):")
+        print(f"    Pro+ base:  {break_even:>6.1f} runs (current: {TOTAL_MONTHLY_RUNS})")
+        print(f"    NOTE: Break-even uses base subscription only; overage shifts it lower.")
 
     print("\n" + "=" * 72)
     print("  PRICING ASSUMPTIONS")
@@ -463,22 +477,23 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
     print(f"  Token estimation:     ~{CHARS_PER_TOKEN} characters per token")
     print(f"  OpenRouter input pricing:   ${OPENROUTER_INPUT_PRICE_PER_1M:.2f} / 1M tokens")
     print(f"  OpenRouter output pricing:  ${OPENROUTER_OUTPUT_PRICE_PER_1M:.2f} / 1M tokens")
-    print(f"  Copilot Business:     ${COPILOT_BUSINESS_MONTHLY:.2f} / seat / month")
-    print(f"  Copilot Enterprise:   ${COPILOT_ENTERPRISE_MONTHLY:.2f} / seat / month")
+    print(f"  Copilot Pro+ base:          ${COPILOT_PRO_PLUS_MONTHLY:.2f} / month")
+    print(f"  Copilot Pro+ included:      {COPILOT_PRO_PLUS_INCLUDED_REQUESTS} premium requests/month")
+    print(f"  Copilot Pro+ overage:       ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f} / request")
     print(f"  Monthly run volume:   {TOTAL_MONTHLY_RUNS} runs across {len(SCENARIOS)} scenarios")
     print()
 
 
-def _report_csv(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
-                 copilot_ent_per_run, variable_total, variable_monthly):
+def _report_csv(delta, per_sc, sc_variable_costs, copilot_base_per_run,
+                 variable_total, variable_monthly):
     """Print CSV cost report."""
-    print("scenario,ticket,complexity,monthly_freq,output_bytes,est_output_tokens,variable_cost_usd,copilot_biz_amortized_usd,copilot_ent_amortized_usd")
+    print("scenario,ticket,complexity,monthly_freq,output_bytes,est_output_tokens,variable_cost_usd,copilot_base_amortized_usd")
     for sc_id, meta in SCENARIOS.items():
         sc_bytes = per_sc.get(sc_id, 0)
         sc_tokens = estimate_tokens(sc_bytes)
         sc_var = sc_variable_costs.get(sc_id, 0.0)
-        print(f"{sc_id},{meta['ticket']},{meta['complexity']},{meta['monthly_freq']},{sc_bytes},{sc_tokens},{sc_var:.6f},{copilot_biz_per_run:.6f},{copilot_ent_per_run:.6f}")
-    print(f"TOTAL,,,,{delta['added_content_bytes']},{delta['est_output_tokens']},{variable_total:.6f},{COPILOT_BUSINESS_MONTHLY:.2f},{COPILOT_ENTERPRISE_MONTHLY:.2f}")
+        print(f"{sc_id},{meta['ticket']},{meta['complexity']},{meta['monthly_freq']},{sc_bytes},{sc_tokens},{sc_var:.6f},{copilot_base_per_run:.6f}")
+    print(f"TOTAL,,,,{delta['added_content_bytes']},{delta['est_output_tokens']},{variable_total:.6f},{COPILOT_PRO_PLUS_MONTHLY:.2f}")
 
 
 # ---------------------------------------------------------------------------
