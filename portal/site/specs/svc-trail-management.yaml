@@ -1,0 +1,854 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Trail Management Service
+  description: |
+    Manages trail definitions, waypoints, difficulty ratings, closures, and real-time
+    condition status for all NovaTrek Adventures trail networks. Serves as the system
+    of record for trail geography and operational state.
+  version: 1.1.0
+  contact:
+    name: NovaTrek Platform Team
+    email: platform@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/trails/v1
+    description: Production
+  - url: https://api-staging.novatrek.example.com/trails/v1
+    description: Staging
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Trails
+    description: Trail definitions and search
+  - name: Waypoints
+    description: Trail waypoint management
+  - name: Closures
+    description: Trail closure records
+  - name: Conditions
+    description: Real-time trail conditions
+
+paths:
+  /trails:
+    get:
+      operationId: searchTrails
+      summary: Search trails
+      description: |
+        Search and filter trails by region, difficulty, activity type, and status.
+        Results are paginated and sorted by name by default.
+      tags: [Trails]
+      parameters:
+        - name: region_id
+          in: query
+          description: Filter by region (cross-ref svc-trip-catalog)
+          schema:
+            type: string
+            format: uuid
+        - name: difficulty
+          in: query
+          description: Filter by difficulty rating
+          schema:
+            $ref: '#/components/schemas/DifficultyRating'
+        - name: activity_type
+          in: query
+          description: Filter by supported activity type
+          schema:
+            $ref: '#/components/schemas/ActivityType'
+        - name: status
+          in: query
+          description: Filter by trail operational status
+          schema:
+            $ref: '#/components/schemas/TrailStatus'
+        - name: min_distance_km
+          in: query
+          description: Minimum trail distance in kilometers
+          schema:
+            type: number
+            format: double
+        - name: max_distance_km
+          in: query
+          description: Maximum trail distance in kilometers
+          schema:
+            type: number
+            format: double
+        - name: sort_by
+          in: query
+          description: Sort field
+          schema:
+            type: string
+            enum: [name, distance_km, elevation_gain_m, difficulty]
+            default: name
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Paginated trail list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      operationId: createTrail
+      summary: Create a new trail
+      description: Registers a new trail in the system. Requires operations or admin role.
+      tags: [Trails]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTrailRequest'
+      responses:
+        '201':
+          description: Trail created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Trail with same name already exists in region
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /trails/{trail_id}:
+    get:
+      operationId: getTrail
+      summary: Get trail details
+      description: Returns complete trail information including metadata, geography, and current status.
+      tags: [Trails]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+      responses:
+        '200':
+          description: Trail details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    patch:
+      operationId: updateTrail
+      summary: Update trail details
+      description: Partially updates trail metadata. Does not modify waypoints or closures.
+      tags: [Trails]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTrailRequest'
+      responses:
+        '200':
+          description: Trail updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /trails/{trail_id}/waypoints:
+    get:
+      operationId: getTrailWaypoints
+      summary: List waypoints for a trail
+      description: Returns all waypoints along the trail in sequence order.
+      tags: [Waypoints]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+        - name: type
+          in: query
+          description: Filter by waypoint type
+          schema:
+            $ref: '#/components/schemas/WaypointType'
+      responses:
+        '200':
+          description: Waypoint list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaypointListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      operationId: addWaypoint
+      summary: Add a waypoint to a trail
+      description: Appends a new waypoint to the trail. Position in sequence can be specified.
+      tags: [Waypoints]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWaypointRequest'
+      responses:
+        '201':
+          description: Waypoint added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waypoint'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /trails/{trail_id}/closures:
+    get:
+      operationId: getTrailClosures
+      summary: List closures for a trail
+      description: Returns all current and scheduled closures for the specified trail.
+      tags: [Closures]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+        - name: include_past
+          in: query
+          description: Include expired closures
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Closure list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClosureListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      operationId: createTrailClosure
+      summary: Create a trail closure
+      description: |
+        Records a closure for the trail. Automatically updates trail status to
+        CLOSED or PARTIALLY_CLOSED depending on severity. May trigger notifications
+        to affected reservations via svc-notifications.
+      tags: [Closures]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClosureRequest'
+      responses:
+        '201':
+          description: Closure created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailClosure'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /trails/{trail_id}/conditions:
+    get:
+      operationId: getTrailCurrentConditions
+      summary: Get current trail conditions
+      description: |
+        Returns the latest condition assessment for the trail, combining data from
+        svc-weather and ranger reports. Refreshed automatically every 30 minutes.
+      tags: [Conditions]
+      parameters:
+        - $ref: '#/components/parameters/TrailId'
+      responses:
+        '200':
+          description: Current trail conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrailConditionReport'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    TrailId:
+      name: trail_id
+      in: path
+      required: true
+      description: Unique trail identifier
+      schema:
+        type: string
+        format: uuid
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  schemas:
+    DifficultyRating:
+      type: string
+      enum:
+        - EASY
+        - MODERATE
+        - DIFFICULT
+        - EXPERT
+        - EXTREME
+
+    ActivityType:
+      type: string
+      enum:
+        - HIKING
+        - TRAIL_RUNNING
+        - MOUNTAIN_BIKING
+        - ROCK_CLIMBING
+        - KAYAKING
+        - SNOWSHOEING
+        - CROSS_COUNTRY_SKIING
+
+    TrailStatus:
+      type: string
+      enum:
+        - OPEN
+        - PARTIALLY_CLOSED
+        - CLOSED
+        - SEASONAL_CLOSURE
+
+    SeasonalAvailability:
+      type: object
+      properties:
+        open_from:
+          type: string
+          format: date
+          description: Typical opening date (month-day)
+          example: "2026-04-15"
+        open_until:
+          type: string
+          format: date
+          description: Typical closing date (month-day)
+          example: "2026-10-31"
+        year_round:
+          type: boolean
+          default: false
+
+    CreateTrailRequest:
+      type: object
+      required: [name, region_id, activity_types, distance_km, difficulty]
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          example: "Cascade Ridge Loop"
+        description:
+          type: string
+          maxLength: 2000
+          example: "A challenging loop trail with panoramic views of the Cascade Valley and alpine meadows."
+        region_id:
+          type: string
+          format: uuid
+          description: Region this trail belongs to (cross-ref svc-trip-catalog)
+        activity_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityType'
+          minItems: 1
+          example: [HIKING, TRAIL_RUNNING]
+        distance_km:
+          type: number
+          format: double
+          minimum: 0.1
+          example: 18.7
+        elevation_gain_m:
+          type: number
+          format: double
+          minimum: 0
+          example: 1240
+        elevation_loss_m:
+          type: number
+          format: double
+          minimum: 0
+          nullable: true
+          description: Total elevation loss in meters. Nullable for loop trails where loss equals gain.
+          example: 980
+        estimated_duration_hours:
+          type: number
+          format: double
+          minimum: 0.25
+          example: 7.5
+        difficulty:
+          $ref: '#/components/schemas/DifficultyRating'
+        max_group_size:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 12
+        seasonal_availability:
+          $ref: '#/components/schemas/SeasonalAvailability'
+        permit_required:
+          type: boolean
+          default: false
+        dogs_allowed:
+          type: boolean
+          default: false
+
+    UpdateTrailRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        activity_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityType'
+          minItems: 1
+        distance_km:
+          type: number
+          format: double
+          minimum: 0.1
+        elevation_gain_m:
+          type: number
+          format: double
+          minimum: 0
+        elevation_loss_m:
+          type: number
+          format: double
+          minimum: 0
+          nullable: true
+        estimated_duration_hours:
+          type: number
+          format: double
+          minimum: 0.25
+        difficulty:
+          $ref: '#/components/schemas/DifficultyRating'
+        max_group_size:
+          type: integer
+          minimum: 1
+          maximum: 50
+        seasonal_availability:
+          $ref: '#/components/schemas/SeasonalAvailability'
+        status:
+          $ref: '#/components/schemas/TrailStatus'
+        permit_required:
+          type: boolean
+        dogs_allowed:
+          type: boolean
+
+    Trail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: "Cascade Ridge Loop"
+        description:
+          type: string
+        region_id:
+          type: string
+          format: uuid
+          description: Parent region (cross-ref svc-trip-catalog)
+        activity_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityType'
+        distance_km:
+          type: number
+          format: double
+          example: 18.7
+        elevation_gain_m:
+          type: number
+          format: double
+          nullable: true
+          description: Total elevation gain in meters along the trail. Nullable for trails where elevation data has not yet been surveyed.
+          example: 1240
+        elevation_loss_m:
+          type: number
+          format: double
+          nullable: true
+          description: Total elevation loss in meters along the trail. May differ from elevation gain on point-to-point trails.
+          example: 980
+        estimated_duration_hours:
+          type: number
+          format: double
+          example: 7.5
+        difficulty:
+          $ref: '#/components/schemas/DifficultyRating'
+        max_group_size:
+          type: integer
+          example: 12
+        seasonal_availability:
+          $ref: '#/components/schemas/SeasonalAvailability'
+        status:
+          $ref: '#/components/schemas/TrailStatus'
+        permit_required:
+          type: boolean
+        dogs_allowed:
+          type: boolean
+        waypoint_count:
+          type: integer
+          description: Total number of waypoints on the trail
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TrailListResponse:
+      type: object
+      properties:
+        trails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trail'
+        total_count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    WaypointType:
+      type: string
+      enum:
+        - TRAILHEAD
+        - VIEWPOINT
+        - CAMPSITE
+        - WATER_SOURCE
+        - EMERGENCY_SHELTER
+        - JUNCTION
+        - HAZARD_MARKER
+        - REST_AREA
+
+    CreateWaypointRequest:
+      type: object
+      required: [latitude, longitude, name, type]
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+          example: 47.6062
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          example: -122.3321
+        altitude_m:
+          type: number
+          format: double
+          description: Altitude in meters above sea level
+          example: 2150.0
+        name:
+          type: string
+          maxLength: 100
+          example: "Eagle's Nest Viewpoint"
+        type:
+          $ref: '#/components/schemas/WaypointType'
+        description:
+          type: string
+          maxLength: 500
+          example: "Panoramic 360-degree views of the valley. Exposed ridge—avoid in lightning."
+        sequence_order:
+          type: integer
+          minimum: 0
+          description: Position in the trail sequence (0-based)
+        distance_from_start_km:
+          type: number
+          format: double
+          description: Distance along the trail from the trailhead
+
+    Waypoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        trail_id:
+          type: string
+          format: uuid
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        altitude_m:
+          type: number
+          format: double
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/WaypointType'
+        description:
+          type: string
+        sequence_order:
+          type: integer
+        distance_from_start_km:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+
+    WaypointListResponse:
+      type: object
+      properties:
+        waypoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/Waypoint'
+        total_count:
+          type: integer
+
+    ClosureSeverity:
+      type: string
+      enum:
+        - MINOR
+        - MODERATE
+        - SEVERE
+        - CRITICAL
+
+    CreateClosureRequest:
+      type: object
+      required: [reason, start_date, severity]
+      properties:
+        reason:
+          type: string
+          maxLength: 500
+          example: "Rockslide between mile markers 4.2 and 4.8"
+        start_date:
+          type: string
+          format: date
+          example: "2026-03-01"
+        end_date:
+          type: string
+          format: date
+          description: Omit for indefinite closures
+          example: "2026-04-15"
+        severity:
+          $ref: '#/components/schemas/ClosureSeverity'
+        affected_section:
+          type: string
+          description: Description of the specific trail section affected
+          example: "Mile markers 4.2 to 4.8, North Fork junction to Eagle's Nest"
+        alternate_route_available:
+          type: boolean
+          default: false
+        weather_alert_id:
+          type: string
+          format: uuid
+          description: Related weather alert if closure is weather-driven (cross-ref svc-weather)
+
+    TrailClosure:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        trail_id:
+          type: string
+          format: uuid
+        reason:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        severity:
+          $ref: '#/components/schemas/ClosureSeverity'
+        affected_section:
+          type: string
+        alternate_route_available:
+          type: boolean
+        weather_alert_id:
+          type: string
+          format: uuid
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          description: User or system that created the closure
+
+    ClosureListResponse:
+      type: object
+      properties:
+        closures:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrailClosure'
+        total_count:
+          type: integer
+
+    TrailConditionReport:
+      type: object
+      properties:
+        trail_id:
+          type: string
+          format: uuid
+        trail_name:
+          type: string
+        assessed_at:
+          type: string
+          format: date-time
+        trail_status:
+          $ref: '#/components/schemas/TrailStatus'
+        surface_condition:
+          type: string
+          enum: [DRY, WET, MUDDY, ICY, SNOW_COVERED, FLOODED]
+        current_temperature_c:
+          type: number
+          format: double
+          description: Latest reading from nearest weather station (cross-ref svc-weather)
+        wind_speed_kmh:
+          type: number
+          format: double
+        precipitation_last_24h_mm:
+          type: number
+          format: double
+        active_closures:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrailClosure'
+        active_weather_alerts:
+          type: integer
+          description: Count of active weather alerts affecting this trail
+        recommended_gear:
+          type: array
+          items:
+            type: string
+          example: ["trekking poles", "rain shell", "microspikes"]
+        ranger_notes:
+          type: string
+          example: "Creek crossing at mile 6 is knee-deep. Use caution."
+
+    ErrorResponse:
+      type: object
+      properties:
+        error_code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              issue:
+                type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
