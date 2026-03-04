@@ -151,4 +151,25 @@ nav:
     - svc-guest-profiles: diagrams/svc-guest-profiles.md
     - svc-trip-catalog: diagrams/svc-trip-catalog.md
     - svc-trail-management: diagrams/svc-trail-management.md
+  - Microservice Pages:
+    - microservices/index.md
+    - svc-analytics: microservices/svc-analytics.md
+    - svc-check-in: microservices/svc-check-in.md
+    - svc-gear-inventory: microservices/svc-gear-inventory.md
+    - svc-guest-profiles: microservices/svc-guest-profiles.md
+    - svc-guide-management: microservices/svc-guide-management.md
+    - svc-inventory-procurement: microservices/svc-inventory-procurement.md
+    - svc-location-services: microservices/svc-location-services.md
+    - svc-loyalty-rewards: microservices/svc-loyalty-rewards.md
+    - svc-media-gallery: microservices/svc-media-gallery.md
+    - svc-notifications: microservices/svc-notifications.md
+    - svc-partner-integrations: microservices/svc-partner-integrations.md
+    - svc-payments: microservices/svc-payments.md
+    - svc-reservations: microservices/svc-reservations.md
+    - svc-safety-compliance: microservices/svc-safety-compliance.md
+    - svc-scheduling-orchestrator: microservices/svc-scheduling-orchestrator.md
+    - svc-trail-management: microservices/svc-trail-management.md
+    - svc-transport-logistics: microservices/svc-transport-logistics.md
+    - svc-trip-catalog: microservices/svc-trip-catalog.md
+    - svc-weather: microservices/svc-weather.md
   - Tags: tags.md
