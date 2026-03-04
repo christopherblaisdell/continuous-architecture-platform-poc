@@ -2,11 +2,11 @@
 
 ## Status
 
-PROPOSED
+ACCEPTED
 
 ## Date
 
-2025-01-27
+2026-03-04
 
 ## Context and Problem Statement
 
