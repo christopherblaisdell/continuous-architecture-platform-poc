@@ -25,8 +25,8 @@ The two toolchains have incompatible cost models **and** incompatible context ma
 | **Input tokens per turn** | 50K-180K (full history payload, growing each turn) | <5K (only top-k relevant code chunks via RAG) |
 | **Token visibility** | **Full — exact counts in API response and activity dashboard** | None — no per-request token API |
 | **Billing API** | **OpenRouter Activity page + API response `usage` object** | Not accessible for individual accounts* |
-| **Cost per scenario** | **Directly measurable with exact precision** | Base: amortized from $39/mo subscription + $0.04/request overage |
-| **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | $0.04/request overage once 1500 included premium requests exhausted |
+| **Cost per scenario** | **Directly measurable with exact precision** | Turns x $0.028 x model_multiplier (e.g., x3 for Claude Opus 4.6 = $0.084/turn) |
+| **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | Scales linearly with model turns at $0.028 x multiplier per turn |
 | **Infrastructure required** | None (fully managed SaaS) | None (fully managed SaaS) |
 
 \* *We tested all known GitHub APIs — see [API Availability](#github-api-availability) below.*
@@ -186,7 +186,7 @@ All 5 scenarios were executed in a single Copilot Agent session on 2026-03-01, c
 | **Files created** | 16 |
 | **Files modified** | 5 |
 | **Wall-clock time** | ~100 minutes |
-| **Copilot cost** | **$39.00/month (Pro+)** -- base subscription + $0.04/request overage beyond 1500 included premium requests |
+| **Copilot cost** | **model_turns x $0.028 x 3** (Claude Opus 4.6 multiplier) -- see Model Multipliers below |
 
 ### What Would This Cost via OpenRouter + Roo Code?
 
@@ -226,7 +226,7 @@ Using the measurement protocol's monthly frequency (26 base runs + 12 PROMOTE ru
 | **GitHub Copilot Pro+ (base)** | **$39.00** | **$39.00** |
 | **GitHub Copilot Pro+ (base + overage)** | **$39.00 + overage** | **$39.00 + overage** |
 
-> **NOTE**: OpenRouter costs above are estimates based on Sonnet pricing. Actual OpenRouter costs for Claude Opus 4.6 will be higher -- replace with measured values after execution. Copilot Pro+ overage depends on premium requests consumed; each request beyond 1500/month costs $0.04.
+> **NOTE**: OpenRouter costs above are estimates based on Sonnet pricing. Actual OpenRouter costs for Claude Opus 4.6 will be higher -- replace with measured values after execution. Copilot cost = model_turns x $0.028 x model_multiplier (x3 for Claude Opus 4.6 = $0.084/turn).
 
 ### Break-Even Analysis
 
@@ -241,7 +241,7 @@ Average variable cost per run (estimated): $67.46 / 38 = **$1.78/run**
 | Copilot Pro+ base ($39) | ~22 runs/month | 38 runs/month | **Copilot base wins by 1.7x** |
 | Copilot Pro+ with overage | Depends on premium request consumption | 38 runs/month | **Measure actual overage** |
 
-> **NOTE**: Break-even uses base subscription only. Once included premium requests (1500/month) are exhausted, each additional request costs $0.04. The true Copilot cost = $39 + (requests_used - 1500) x $0.04. Use `scripts/openrouter-cost.py` to get exact OpenRouter costs for comparison.
+> **NOTE**: Break-even uses base subscription only. Once included premium requests (1500/month) are exhausted, each additional request costs $0.028 x model_multiplier effective (e.g., $0.084/turn for Claude Opus 4.6). Use `scripts/openrouter-cost.py` to get exact OpenRouter costs for comparison.
 
 > **NOTE**: These break-even calculations use estimated OpenRouter costs. After collecting actual costs from OpenRouter Activity, recalculate.
 
@@ -295,9 +295,18 @@ In practice, all of these add 20-50% overhead. The deep research documents a **5
 
 Claude Opus 4.6 via OpenRouter has different pricing than Claude Sonnet. The estimates in the Monthly Cost Projection section use Sonnet pricing as a baseline — actual Opus 4.6 costs will be higher. Always use the measured OpenRouter Activity data rather than these estimates.
 
-### 5. Copilot Pro+ Overage Pricing
+### 5. Copilot Pro+ Overage Pricing and Model Multipliers
 
-GitHub Copilot Pro+ ($39/month) includes 1500 premium requests/month. When the included allowance is exhausted, additional premium requests cost **$0.04 each**. Claude Opus 4.6 is a premium model. At our projected 38 runs/month, the number of premium requests consumed depends on how many API calls each scenario generates internally -- this is not directly measurable since Copilot does not expose per-request data. However, the overage cost structure means Copilot is no longer purely fixed-cost once the included allowance is exceeded.
+GitHub Copilot Pro+ ($39/month) includes 1500 premium requests/month. When the included allowance is exhausted, additional premium requests cost **$0.028 each** (Pro+ discount). Different models consume different numbers of premium requests per turn:
+
+| Model | Multiplier | Effective Cost per Turn |
+|-------|-----------|-------------------------|
+| Claude Opus 4.6 | x3 | $0.084 |
+| Claude Opus 4.6 fast (preview) | x30 | $0.84 |
+
+**Per-session cost formula**: `model_turns x $0.028 x model_multiplier`
+
+The AI self-reports its model turn count in `run-summary.md` at the end of each execution. This is our primary Copilot cost metric -- it is deterministic and requires no external API access (which GitHub does not provide for personal accounts).
 
 ### 6. OpenRouter Cost Retrieval Script
 
@@ -332,11 +341,11 @@ python3 scripts/cost-measurement.py analyze e83f83e 34150d9
 | **OpenRouter cost (5 scenarios, estimated)** | **~$13.42** (to be replaced with actuals) |
 | **OpenRouter monthly (38 runs, estimated)** | **~$67.46** (to be replaced with actuals) |
 | **Copilot Pro+ monthly (base)** | **$39.00** |
-| **Copilot Pro+ overage rate** | **$0.04/request beyond 1500 included** |
+| **Copilot Pro+ overage rate** | **$0.028/request x model_multiplier (x3 for Claude Opus 4.6 = $0.084/turn)** |
 | **Cost ratio (estimated, base only)** | **Copilot ~1.7x cheaper** (pending actual data) |
 | **Break-even (Copilot Pro+ base, estimated)** | **~22 runs/month** |
 | **OpenRouter measurement precision** | **Exact** — per-request token counts and costs |
-| **Copilot measurement precision** | **Estimated** — content-based proxy from git diffs |
+| **Copilot measurement precision** | **Deterministic** — model turns x $0.028 x multiplier |
 | **Methodology** | Direct measurement (OpenRouter) + cumulative re-transmission modeling (Copilot) |
 | **Key sources** | Deep research on token economics + context architecture |
 | **Recommendation** | **Collect actual OpenRouter costs before drawing conclusions** |

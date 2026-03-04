@@ -40,10 +40,17 @@ WORKSPACE_SUBDIR = "phase-1-ai-tool-cost-comparison/workspace"
 CHARS_PER_TOKEN = 4
 
 # Pricing models
-# GitHub Copilot Pro+ ($39/month, 1500 premium requests included, $0.04/request overage)
+# GitHub Copilot Pro+ ($39/month, 1500 premium requests included, $0.028/request overage with Pro+ discount)
 COPILOT_PRO_PLUS_MONTHLY = 39.00           # USD / month base subscription
 COPILOT_PRO_PLUS_INCLUDED_REQUESTS = 1500  # Premium requests included per month
-COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST = 0.04  # USD per additional premium request
+COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST = 0.028  # USD per additional premium request (Pro+ discount)
+
+# Model multipliers (premium requests consumed per model turn)
+COPILOT_MODEL_MULTIPLIERS = {
+    "claude-opus-4-6": 3,              # Claude Opus 4.6: 3 premium requests per turn
+    "claude-opus-4-6-fast": 30,        # Claude Opus 4.6 fast (preview): 30 premium requests per turn
+}
+COPILOT_DEFAULT_MULTIPLIER = 3  # Default to Claude Opus 4.6
 
 # OpenRouter pricing (Claude Opus 4.6 via OpenRouter, as of 2026)
 # NOTE: These are estimates. Actual costs come from OpenRouter Activity page.
@@ -193,6 +200,16 @@ def estimate_tokens(char_count):
 def copilot_cost_per_run(monthly_price, runs_per_month):
     """Amortized base cost per scenario run under fixed pricing (excludes overages)."""
     return monthly_price / runs_per_month if runs_per_month > 0 else 0.0
+
+
+def copilot_session_cost(model_turns, multiplier=COPILOT_DEFAULT_MULTIPLIER,
+                         rate=COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST):
+    """Calculate Copilot session cost from model turns and multiplier.
+
+    Formula: model_turns x $0.028 x model_multiplier
+    Example: 85 turns x $0.028 x 3 (Claude Opus 4.6) = $7.14
+    """
+    return model_turns * rate * multiplier
 
 
 def copilot_overage_cost(premium_requests_used, included=COPILOT_PRO_PLUS_INCLUDED_REQUESTS,
@@ -460,9 +477,11 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_base_per_run,
     print(f"  Copilot Pro+ base subscription:  ${COPILOT_PRO_PLUS_MONTHLY:>8.2f} /month")
     print(f"  Copilot Pro+ included requests:  {COPILOT_PRO_PLUS_INCLUDED_REQUESTS}")
     print(f"  Copilot Pro+ overage rate:       ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f} /request")
+    print(f"  Copilot model multiplier:        x{COPILOT_DEFAULT_MULTIPLIER} (Claude Opus 4.6)")
+    print(f"  Copilot effective cost/turn:     ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST * COPILOT_DEFAULT_MULTIPLIER:.2f}")
     print(f"\n  Copilot Pro+ base per-run amortized:  ${copilot_base_per_run:.4f} (per {TOTAL_MONTHLY_RUNS} runs)")
     print(f"  NOTE: Copilot per-run cost above is base subscription only.")
-    print(f"  When included requests are exhausted, add ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f}/request overage.")
+    print(f"  Per-session cost = model_turns x ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f} x {COPILOT_DEFAULT_MULTIPLIER} (multiplier)")
 
     # Break-even analysis
     if variable_total > 0:
@@ -480,6 +499,7 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_base_per_run,
     print(f"  Copilot Pro+ base:          ${COPILOT_PRO_PLUS_MONTHLY:.2f} / month")
     print(f"  Copilot Pro+ included:      {COPILOT_PRO_PLUS_INCLUDED_REQUESTS} premium requests/month")
     print(f"  Copilot Pro+ overage:       ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST:.2f} / request")
+    print(f"  Copilot model multiplier:   x{COPILOT_DEFAULT_MULTIPLIER} (Claude Opus 4.6) = ${COPILOT_PRO_PLUS_OVERAGE_PER_REQUEST * COPILOT_DEFAULT_MULTIPLIER:.2f}/turn")
     print(f"  Monthly run volume:   {TOTAL_MONTHLY_RUNS} runs across {len(SCENARIOS)} scenarios")
     print()
 

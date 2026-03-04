@@ -331,13 +331,22 @@ This workspace tracks exact costs for both AI toolchains used in Phase 1 evaluat
 |-----------|-------|
 | Base subscription | $39.00 / month |
 | Included premium requests | 1,500 / month |
-| Overage rate | $0.04 per premium request beyond allowance |
+| Overage rate | $0.028 per premium request beyond allowance (Pro+ discount) |
 | Model used | Claude Opus 4.6 (premium model) |
 | Token-level visibility | None -- no per-request billing data exposed |
 
+**Model Multipliers** (premium requests consumed per model turn):
+
+| Model | Multiplier | Effective Cost per Turn |
+|-------|-----------|-------------------------|
+| Claude Opus 4.6 | x3 | $0.084 |
+| Claude Opus 4.6 fast (preview) | x30 | $0.84 |
+
 Copilot Pro+ is NOT purely fixed-cost. Assumption: all included premium requests are consumed and overage pricing applies.
 
-Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) x $0.04
+Per-Session Cost = model_turns x $0.028 x model_multiplier
+
+Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) x $0.028
 
 ### OpenRouter (Roo Code Backend)
 

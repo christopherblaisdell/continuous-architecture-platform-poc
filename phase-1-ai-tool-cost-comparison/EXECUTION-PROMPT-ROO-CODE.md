@@ -323,6 +323,7 @@ outputs/roo-code/<RUN_NUMBER>/
 ## Post-Execution Summary
 
 After completing all 5 scenarios, create `run-summary.md` in your run folder (`outputs/roo-code/<RUN_NUMBER>/run-summary.md`) containing:
+- **Total model turns** — count each time you generate a response (including responses that only contain tool calls). This is needed for cost comparison with Copilot.
 - Total files created and modified
 - Total mock script executions (count each `python3 scripts/mock-*.py` invocation)
 - Total tool calls (file reads, file creates, terminal commands)
@@ -352,7 +353,8 @@ After completing all 5 scenarios, create `run-summary.md` in your run folder (`o
    - Go to https://openrouter.ai/activity to find generation IDs for this session
    - Save generation IDs to `outputs/roo-code/<RUN>/generation-ids.txt` (one per line)
    - Cost data includes exact input/output tokens and dollar amounts per request
-3. **Create `run-metadata.md`** in the run folder (`outputs/roo-code/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, exact cost from OpenRouter, and generation IDs.
+3. **Create `run-metadata.md`** in the run folder (`outputs/roo-code/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, exact cost from OpenRouter, generation IDs, and model turn count.
+   - For Copilot cross-comparison: equivalent Copilot cost = model_turns x $0.028 x 3 (Claude Opus 4.6 multiplier)
 4. **Score each scenario** using the rubrics in:
    - `playbooks/scenario-01-new-ticket-triage.md` (max 25)
    - `playbooks/scenario-02-solution-design.md` (max 35)
