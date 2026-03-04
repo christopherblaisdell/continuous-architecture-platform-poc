@@ -1,0 +1,215 @@
+/* NovaTrek Architecture Portal — Corporate Theme
+   A professional, restrained palette built on deep navy and warm accents.
+   Designed for readability and executive presentation. */
+
+/* ── Light scheme overrides ── */
+[data-md-color-scheme="novatrek"] {
+  /* Primary navy */
+  --md-primary-fg-color: #1a2744;
+  --md-primary-fg-color--light: #2c3e6b;
+  --md-primary-fg-color--dark: #0f1a30;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: #f8f9fb;
+
+  /* Accent — warm copper/amber for CTAs and links */
+  --md-accent-fg-color: #c77b30;
+  --md-accent-fg-color--transparent: rgba(199, 123, 48, 0.12);
+  --md-accent-bg-color: #fdf3e7;
+
+  /* Default text and surfaces */
+  --md-default-fg-color: #1e293b;
+  --md-default-fg-color--light: #475569;
+  --md-default-fg-color--lighter: #94a3b8;
+  --md-default-fg-color--lightest: #cbd5e1;
+  --md-default-bg-color: #ffffff;
+  --md-default-bg-color--light: #f8fafc;
+  --md-default-bg-color--lighter: #f1f5f9;
+  --md-default-bg-color--lightest: #e2e8f0;
+
+  /* Code blocks */
+  --md-code-fg-color: #1e293b;
+  --md-code-bg-color: #f1f5f9;
+
+  /* Footer */
+  --md-footer-fg-color: #e2e8f0;
+  --md-footer-fg-color--light: #94a3b8;
+  --md-footer-fg-color--lighter: #64748b;
+  --md-footer-bg-color: #0f172a;
+  --md-footer-bg-color--dark: #020617;
+
+  /* Typeset links */
+  --md-typeset-a-color: #1a2744;
+}
+
+/* ── Dark scheme overrides ── */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #1e3a5f;
+  --md-primary-fg-color--light: #2c5282;
+  --md-primary-fg-color--dark: #0f1a30;
+  --md-accent-fg-color: #d4945a;
+  --md-accent-fg-color--transparent: rgba(212, 148, 90, 0.12);
+  --md-default-bg-color: #0f172a;
+  --md-default-bg-color--light: #1e293b;
+  --md-code-bg-color: #1e293b;
+  --md-typeset-a-color: #93c5fd;
+}
+
+/* ── Header bar ── */
+.md-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1a2744 60%, #1e3a5f 100%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.md-header__title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Tabs bar ── */
+.md-tabs {
+  background: #1a2744;
+  border-bottom: 2px solid #c77b30;
+}
+
+/* ── Hero / landing page ── */
+.hero {
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  background: linear-gradient(160deg, #0f172a 0%, #1a2744 40%, #1e3a5f 100%);
+  color: #f8fafc;
+  border-radius: 0 0 1.5rem 1.5rem;
+  margin: -1rem -0.8rem 2rem;
+}
+
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.hero .subtitle {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.hero .version-badge {
+  display: inline-block;
+  background: rgba(199, 123, 48, 0.2);
+  border: 1px solid rgba(199, 123, 48, 0.4);
+  color: #d4945a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Card grid for portal sections ── */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.portal-card {
+  background: var(--md-default-bg-color--light);
+  border: 1px solid var(--md-default-bg-color--lightest);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.portal-card:hover {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.portal-card .card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.portal-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-primary-fg-color);
+}
+
+.portal-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--md-default-fg-color--light);
+  line-height: 1.5;
+}
+
+/* ── Status indicators ── */
+.status {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.status--active { background: #dcfce7; color: #166534; }
+.status--draft { background: #fef3c7; color: #92400e; }
+.status--deprecated { background: #fee2e2; color: #991b1b; }
+.status--review { background: #dbeafe; color: #1e40af; }
+
+/* ── Breadcrumb path styling ── */
+.md-path {
+  font-size: 0.8rem;
+}
+
+/* ── Content width ── */
+.md-content {
+  max-width: 52rem;
+}
+
+/* ── Admonition overrides for corporate feel ── */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 0.5rem;
+  border-left-width: 4px;
+}
+
+/* ── Table styling ── */
+.md-typeset table:not([class]) {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color);
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Footer ── */
+.md-footer {
+  border-top: 2px solid #c77b30;
+}
+
+/* ── Print-friendly ── */
+@media print {
+  .hero { background: #1a2744 !important; -webkit-print-color-adjust: exact; }
+  .portal-card { break-inside: avoid; }
+}
