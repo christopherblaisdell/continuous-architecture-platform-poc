@@ -18,12 +18,43 @@
 
 | Metric | Copilot | Roo Code |
 |--------|---------|----------|
-| Cost model | $0.04 per premium request (actual billing) | OpenRouter exact (per-token) |
-| Day-total cost | $3.12 (78 requests, entire day, all projects) | pending (no run-metadata.md) |
-| Session-isolated cost | Not available (no per-session breakdown) | pending |
-| Overage charges | $0 (within 1,500 included Pro+ allowance) | N/A |
+| Cost model | $0.04 per premium request (actual billing) | OpenRouter per-token (auto-top-up) |
+| Day-total cost (Mar 4) | $4.80 (120 requests, entire day, all projects) | $100+ (4 x $25 auto-top-ups in 26 min) |
+| Estimated session cost | ~$2.80 (est. 70 requests x $0.04) | ~$75-$100 (bulk of Mar 4 top-ups) |
+| Actual overage charged | $0 (within 1,500 included Pro+ allowance) | $100 (pay-per-token, no allowance) |
+| Cost ratio | 1x (baseline) | ~25x-35x more expensive |
 
-NOTE: GitHub Copilot does not provide per-session cost isolation. The $3.12 represents the full day of Copilot usage across multiple projects and VS Code instances. The execution prompt's x30 multiplier and $0.028 rate were incorrect — actual billing shows $0.04 per premium request and only 78 total requests for the day (inconsistent with a x30 multiplier on 55 model turns). Roo Code cost requires `run-metadata.md` which has not been created yet for run 001.
+### OpenRouter Transaction Evidence (Roo Code)
+
+OpenRouter auto-top-up charges on March 4, 2026:
+
+| Time | Amount |
+|------|--------|
+| 10:11 AM | $25 |
+| 10:27 AM | $25 |
+| 10:32 AM | $25 |
+| 10:37 AM | $25 |
+| **Total** | **$100** |
+
+These 4 charges occurred within a 26-minute window starting 5 minutes after the Copilot run 002 first file was created (10:06 AM). The Roo Code run 002 was executing concurrently. Each $25 top-up triggers when the OpenRouter balance drops below a threshold, meaning credits were being consumed continuously at a high rate.
+
+Additional OpenRouter charges on March 3 ($75 across 3 top-ups) likely correspond to Roo Code run 001 and related work.
+
+### Copilot Billing Details
+
+GitHub Copilot Pro+ billing for March 4, 2026:
+- 120 premium requests at $0.04 each = $4.80 notional
+- $0 overage (within 1,500/month included allowance)
+- No per-session isolation available
+- The $4.80 includes ALL Copilot usage across all projects and VS Code instances for the day
+
+### Key Cost Finding
+
+For equivalent architecture work (5 identical scenarios, both producing 37 files), Roo Code via OpenRouter cost approximately **$75-$100** in direct API charges, while GitHub Copilot consumed approximately **$2.80 notional** ($0 actual overage). Even at overage rates, Copilot would be ~25-35x cheaper per run.
+
+However, Copilot has a $39/month fixed subscription cost. At $2.80 notional per run, the subscription covers ~14 equivalent runs per month at no additional cost. Beyond that, overage at $0.04/request remains significantly cheaper than OpenRouter.
+
+NOTE: OpenRouter exact per-generation costs should be retrieved using `python3 scripts/openrouter-cost.py` for precise figures. The $100 figure is based on auto-top-up charges and represents an upper bound for March 4 usage.
 
 ## Quality Comparison (if scores available)
 
@@ -40,7 +71,9 @@ NOTE: GitHub Copilot does not provide per-session cost isolation. The $3.12 repr
 
 | Metric | Copilot | Roo Code |
 |--------|---------|----------|
-| Cost per quality point | pending | pending |
+| Cost per quality point | pending (need scores) | pending (need scores) |
+| Cost per file created | ~$0.08 ($2.80 / 37) | ~$2.70 ($100 / 37) |
+| Cost per scenario | ~$0.56 ($2.80 / 5) | ~$20.00 ($100 / 5) |
 
 ## Observations
 
@@ -69,7 +102,16 @@ Both runs produced 37 files across 5 scenarios with identical scenario coverage.
 The following data is required from the human reviewer to complete this comparison:
 
 - Copilot wall-clock time (start to completion)
-- Roo Code `run-metadata.md` (OpenRouter cost, wall-clock time)
+- Roo Code wall-clock time (from Roo Code terminal history or run-metadata.md)
 - Quality scores for both runs using scenario playbook rubrics
 - Verified model turn count for Copilot (review chat interaction count)
-- Confirmed model multiplier (x3 for Claude Opus 4.6 or x30 for fast preview — impacts cost significantly)
+- Exact OpenRouter per-generation costs via `python3 scripts/openrouter-cost.py`
+
+### Methodology Implications
+
+The cost comparison methodology in `COST-MEASUREMENT-METHODOLOGY.md` and `EXECUTION-PROMPT-COPILOT.md` needs revision:
+
+1. **Copilot formula is invalid**: The formula `model_turns x $0.028 x multiplier` produced a $46.20 estimate; actual cost was ~$2.80 (notional) or $0 (overage). The formula was wrong by 16x.
+2. **OpenRouter is transparent but expensive**: Per-token billing provides exact costs but Claude Opus 4.6 via OpenRouter costs ~25-35x more than the same model via Copilot for equivalent agent work.
+3. **Per-session isolation**: OpenRouter provides exact per-request costs via generation IDs. Copilot provides only daily aggregate premium request counts with no session-level breakdown.
+4. **Fixed vs variable**: Copilot's $39/month subscription absorbs most usage at no marginal cost (1,500 premium requests included). OpenRouter is purely pay-per-token with no discount floor.

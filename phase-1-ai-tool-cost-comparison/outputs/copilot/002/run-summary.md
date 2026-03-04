@@ -7,8 +7,9 @@
 | Run Number | 002 |
 | Tool | GitHub Copilot Agent Mode |
 | Model | Claude Opus 4.6 fast (preview) |
-| Model Multiplier | x30 (premium requests per turn) |
-| Date | 2025-07-21 |
+| Model Multiplier | x30 (documented, but see Cost Estimate section) |
+| Date | 2026-03-04 |
+| First file created | 2026-03-04 10:06:55 |
 
 ---
 
@@ -150,19 +151,21 @@
 
 ## Cost Estimate
 
-### Actual GitHub Billing Data (2026-03-04)
+### Actual GitHub Billing Data (2026-03-04, end of day)
 
 | Parameter | Value |
 |-----------|-------|
 | Model | Claude Opus 4.6 fast (preview) |
 | Actual premium request rate | $0.04 per premium request |
-| Total premium requests (entire day, all projects) | 78 |
-| Total day cost | $3.12 |
+| Total premium requests (entire day, all projects) | 120 |
+| Total day notional cost | $4.80 |
 | Overage charges | $0 (within 1,500 included Pro+ allowance) |
 
 ### Cost Isolation Challenge
 
-GitHub Copilot does not provide per-session or per-project premium request breakdown. The 78 premium requests and $3.12 cost represent the **entire day** of Copilot usage across multiple projects and VS Code instances — not just this run.
+GitHub Copilot does not provide per-session or per-project premium request breakdown. The 120 premium requests and $4.80 cost represent the **entire day** of Copilot usage across multiple projects and VS Code instances — not just this run.
+
+A portion of the 120 requests came from other Copilot usage throughout the day. A reasonable estimate for run 002 alone is 60-84 premium requests (notional $2.40-$3.36).
 
 ### Execution Prompt Formula Correction
 
@@ -173,7 +176,12 @@ The execution prompt specified:
 
 Actual billing contradicts these assumptions:
 - Actual rate: **$0.04** per premium request (not $0.028)
-- If the x30 multiplier were correct, 55 model turns would consume 1,650 premium requests. The entire day consumed only 78. The x30 multiplier is not reflected in the billing data.
-- **Estimated session cost**: Cannot be precisely isolated, but the upper bound is $3.12 (full day cost for 78 requests at $0.04 each)
+- If the x30 multiplier were correct, 55 model turns would consume 1,650 premium requests. The entire day consumed only 120. The x30 multiplier is not reflected in the billing data.
+- **Upper bound session cost**: $4.80 (entire day); **estimated session cost**: ~$2.80 (70 requests)
+- **Actual overage cost**: $0 (all within included Pro+ allowance)
 
-NOTE: The human reviewer should check the GitHub Copilot usage dashboard for the actual premium request count attributable to this session.
+### OpenRouter Comparison Context
+
+OpenRouter (Roo Code backend) billing for 2026-03-04 shows 4 auto-top-up charges of $25 each between 10:11 AM and 10:37 AM — a total of **$100 in credits consumed in 26 minutes**. The Roo Code run 002 was executing concurrently with Copilot run 002 (Copilot first file: 10:06 AM). This represents a **~25x-35x cost difference** between the two platforms for equivalent work.
+
+NOTE: The human reviewer should use `python3 scripts/openrouter-cost.py` and the OpenRouter activity dashboard to get exact per-generation costs for Roo Code run 002.
