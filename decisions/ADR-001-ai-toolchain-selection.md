@@ -4,6 +4,7 @@
 |-----------|-------|
 | **Status** | PROPOSED |
 | **Date** | 2026-03-01 |
+| **Last Updated** | 2026-03-04 |
 | **Decision Makers** | Christopher Blaisdell, Architecture Practice |
 | **Phase** | Phase 1 - AI Tool Cost Comparison |
 
@@ -107,44 +108,50 @@ See [phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](../phase-1
 
 ## Decision Outcome
 
-**Selected option:** TBD — pending Roo Code + Kong AI execution for comparison
+**Selected option:** TBD — pending Roo Code quality scoring for final comparison
 
-GitHub Copilot (Claude Opus 4.6, Agent Mode) Phase 1 execution is complete. Roo Code + Kong AI execution is pending. The Copilot column is populated below based on Phase 1 results.
+GitHub Copilot (Claude Opus 4.6, Agent Mode) and Roo Code (Claude Opus 4.6, OpenRouter) Phase 1 executions are complete. Actual billing data has been collected. The table below is populated with actual costs and run 001 Copilot quality scores.
 
-| | Roo Code + Kong AI | GitHub Copilot Business | GitHub Copilot Enterprise |
+| | Roo Code + OpenRouter | GitHub Copilot Business | GitHub Copilot Pro+ |
 |---|---|---|---|
-| Monthly input tokens per architect | TBD | ~350,000 (est.) | ~350,000 (est.) |
-| Monthly output tokens per architect | TBD | ~100,000 (est.) | ~100,000 (est.) |
-| Token/usage cost | TBD | $0 (flat rate) | $0 (flat rate) |
-| Platform/gateway cost | TBD | $19/seat | $39/seat |
+| Actual run cost (5 scenarios) | ~$100 (auto-top-up data, Mar 4) | N/A (not tested) | ~$2.80 est. ($4.80 full day / shared usage) |
+| Monthly run cost (38 runs) | ~$507 (extrapolated) | $19/seat (flat) | $39/seat (flat, 1500 req included) |
+| Actual overage charged | $100 (pay-per-token) | N/A | $0 (within 1500 included requests) |
+| Token/usage cost model | Per-token via OpenRouter | Flat subscription | Flat subscription + $0.04/premium request overage |
+| Platform cost | $0 (SaaS, no gateway) | $19/seat | $39/seat |
 | Tool license cost | $0 (open source) | (included) | (included) |
-| **Total monthly per seat** | **TBD** | **$19** | **$39** |
-| SC-01 quality (/25) | TBD | 23 (92%) | — |
-| SC-02 quality (/35) | TBD | 33 (94%) | — |
-| SC-03 quality (/30) | TBD | 30 (100%) | — |
-| SC-04 quality (/25) | TBD | 24 (96%) | — |
-| SC-05 quality (/40) | TBD | 39 (98%) | — |
-| **Total quality (/155)** | **TBD** | **149 (96.1%)** | **—** |
-| **Avg quality (normalized /5)** | **TBD** | **4.81** | **—** |
-| Cost per quality point | TBD | $3.95 | $8.11 |
-| Scenarios with quality >= 80% | TBD | 5/5 | — |
-| Total tool calls (est.) | TBD | 85 | — |
-| Average time per scenario (min) | TBD | 20 | — |
-| Breakeven runs vs. Kong AI | — | ~11/month | ~22/month |
+| **Total monthly per seat** | **~$507** | **$19** | **$39** |
+| **Cost ratio vs cheapest** | **~27x** | **1x (baseline)** | **2x** |
+| SC-01 quality (/25) | TBD | — | 23 (92%) |
+| SC-02 quality (/35) | TBD | — | 33 (94%) |
+| SC-03 quality (/30) | TBD | — | 30 (100%) |
+| SC-04 quality (/25) | TBD | — | 24 (96%) |
+| SC-05 quality (/40) | TBD | — | 39 (98%) |
+| **Total quality (/155)** | **TBD** | **—** | **149 (96.1%)** |
+| Cost per quality point (monthly) | ~$507/TBD = TBD | $19/TBD | $39/149 = **$0.26** |
+| Scenarios with quality >= 80% | TBD | — | 5/5 |
 
-### Revised Cost at Realistic Workload (Including PROMOTE Step)
+### Revised Cost at Realistic Workload (Actual Billing Data)
 
-The per-run variable cost of ~$1.78 accounts for the agentic re-transmission tax: Roo Code's client-side architecture re-transmits the entire conversation history at every turn of the agentic loop. See [COST-MEASUREMENT-METHODOLOGY.md](../phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) and the deep research ([DEEP-RESEARCH-1](../research/DEEP-RESEARCH-1.md), [DEEP-RESEARCH-2](../research/DEEP-RESEARCH-2.md)) for the full analysis.
+The per-run cost estimates from the deep research used Claude Sonnet pricing ($3.00/1M input, $15.00/1M output), projecting ~$1.78/run. **Actual billing data from run 002 (March 4, 2026) reveals the true cost of Claude Opus 4.6 via OpenRouter is ~$100/run** — roughly 7.5x higher than the Sonnet-based estimate. This dramatically changes the cost comparison.
 
-| Metric | Roo Code + Kong AI | Copilot Business | Copilot Enterprise |
-|--------|-------------------|-----------------|-------------------|
+| Metric | Roo Code + OpenRouter | Copilot Business | Copilot Pro+ |
+|--------|----------------------|-----------------|-------------|
+| Actual per-run cost | **~$100** | ~$0.50 (est.) | ~$0.04 x ~70 req = **~$2.80** |
 | Monthly runs (with PROMOTE) | ~38 | ~38 | ~38 |
-| Monthly cost | **~$67.46** | **$19.00** | $39.00 |
-| Cost per run | ~$1.78 | ~$0.50 | ~$1.03 |
-| Cost trend as volume grows | 📈 Increases linearly | 📊 Flat | 📊 Flat |
-| **vs. Copilot Business** | **3.5× more expensive** | — | 2.1× more expensive |
+| Monthly cost | **~$507** | **$19.00** | **$39.00** |
+| Cost per run | ~$13.35 avg | ~$0.50 | ~$1.03 |
+| Cost trend as volume grows | Increases linearly | Flat | Flat (until 1500 req/month exceeded) |
+| **vs. Copilot Business** | **~27x more expensive** | — | 2x more expensive |
+| **vs. Copilot Pro+** | **~13x more expensive** | 0.5x cheaper | — |
 
-The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/month to the workload. At this revised volume, **Copilot Business is 3.5× cheaper** than Kong AI. The gap widens with volume growth. See [CLOSING-THE-LOOP.md](../CLOSING-THE-LOOP.md) for the full analysis of why the PROMOTE step is essential.
+#### Billing Evidence (March 4, 2026)
+
+**OpenRouter (Roo Code):** 4 auto-top-up charges of $25 each between 10:11 AM and 10:37 AM = $100 consumed in 26 minutes during run 002 execution.
+
+**GitHub Copilot Pro+:** 120 premium requests at $0.04 each = $4.80 notional for the entire day across all projects. $0 overage (within 1,500 included monthly allowance).
+
+The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/month to the workload. At this revised volume, **Copilot Business is ~27x cheaper** than OpenRouter. The gap is so large that quality scores would need to be dramatically different (Roo Code achieving near-perfect scores while Copilot scored below 15%) for OpenRouter to be cost-effective on a per-quality-point basis.
 
 ### Preliminary Observations (Copilot Completed, Kong AI Pending)
 
@@ -161,18 +168,19 @@ The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/m
 - Context window management summarized early context during long session
 - Fixed cost model means light months still cost $19/seat regardless of usage
 
-**Revised Cost Analysis (Deep Research):**
+**Revised Cost Analysis (Actual Billing Data, 2026-03-04):**
 
-The cost comparison accounts for the agentic re-transmission tax — the dominant cost driver for usage-based agentic tools. Roo Code's client-side architecture re-transmits the entire conversation history at every turn, and with 85 tool calls across 5 scenarios, cumulative input is ~4M tokens. The per-batch variable cost is **$13.42**. At 38 runs/month:
-- Kong AI: **~$67.46/month**
-- Copilot Business: **$19.00/month**
-- **Copilot is 3.5× cheaper**
+Actual billing data from run 002 execution replaces the previous estimates:
+- OpenRouter (Claude Opus 4.6): **~$100/run** (4 x $25 auto-top-ups in 26 minutes)
+- Copilot Pro+: **$4.80 notional for the full day** (120 premium requests x $0.04), **$0 overage**
+- At 38 runs/month: OpenRouter = **~$507/month**, Copilot Pro+ = **$39/month**
+- **Copilot is ~13x cheaper than OpenRouter** (previously estimated at 3.5x)
 
-The analysis also identified two critical technical risks with the Roo Code + Kong AI stack:
-1. **Infinite retry loop**: Kong AI Gateway obfuscates Anthropic's `context_length_exceeded` error during schema translation. Roo Code's `attemptApiRequest` retries on unrecognized errors, creating a documented runaway cost failure mode.
-2. **Rate limiting race condition**: Kong's `ai-rate-limiting-advanced` uses post-response async token counting, creating a race condition that blocks Context Condensing API calls — the very mechanism needed to prevent context overflow.
+The previous deep research estimated ~$1.78/run via OpenRouter using Sonnet pricing. Actual Opus 4.6 pricing is ~56x higher per run. The re-transmission tax model was directionally correct but massively undercounted due to the Sonnet/Opus pricing gap.
 
-See [DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md) and [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md) for the full analysis.
+Two critical risks with the OpenRouter stack remain from the deep research:
+1. **Infinite retry loop**: Context-length errors may trigger uncontrolled retries
+2. **Rate limiting race condition**: Post-response async token counting blocks context condensing
 
 ### Positive Consequences
 
