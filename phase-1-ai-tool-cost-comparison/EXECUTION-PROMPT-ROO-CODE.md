@@ -152,6 +152,7 @@ outputs/roo-code/<RUN_NUMBER>/
 |   +-- services/svc-trail-management.yaml
 |   +-- diagrams/Components/novatrek-component-overview.puml
 +-- run-summary.md                             (Post-execution summary)
++-- cross-platform-comparison.md                (Comparison with latest Copilot run)
 ```
 
 ---
@@ -328,6 +329,74 @@ After completing all 5 scenarios, create `run-summary.md` in your run folder (`o
 - Total mock script executions (count each `python3 scripts/mock-*.py` invocation)
 - Total tool calls (file reads, file creates, terminal commands)
 - Any scenarios where you encountered issues, retried, or made corrections
+
+---
+
+## Cross-Platform Comparison
+
+After creating `run-summary.md`, generate a comparison report against the latest Copilot run.
+
+### Steps
+
+1. Find the latest Copilot run folder:
+   ```bash
+   ls -d phase-1-ai-tool-cost-comparison/outputs/copilot/[0-9][0-9][0-9] 2>/dev/null | tail -1
+   ```
+2. If no Copilot run exists, create `cross-platform-comparison.md` in your run folder with a note that no Copilot run is available for comparison yet, then skip to END PROMPT.
+3. If a run exists, read these files from the latest Copilot run folder (some may not exist yet — note which are missing):
+   - `run-summary.md` (AI-generated: model turns, files, tool calls, Copilot cost estimate)
+   - `run-metadata.md` (human-created: wall-clock time, model multiplier, calculated session cost)
+   - `results.md` (human-created: quality scores per scenario)
+4. Read your own `run-summary.md` that you just created.
+5. Create `cross-platform-comparison.md` in your run folder (`outputs/roo-code/<RUN_NUMBER>/cross-platform-comparison.md`) with:
+
+### Report Structure
+
+```markdown
+# Cross-Platform Comparison: Roo Code Run <RUN> vs Copilot Run <RUN>
+
+## Execution Metrics
+| Metric | Roo Code (this run) | Copilot (run <N>) |
+|--------|--------------------|-----------------|
+| Model turns | ... | ... |
+| Files created/modified | ... | ... |
+| Mock script executions | ... | ... |
+| Total tool calls | ... | ... |
+| Wall-clock time | (pending human entry) | ... or pending |
+
+## Cost Comparison
+| Metric | Roo Code | Copilot |
+|--------|----------|--------|
+| Cost model | OpenRouter exact | turns x $0.028 x 3 |
+| Session cost | (pending OpenRouter data) | $X.XX or pending |
+| Cost per model turn | (pending) | $0.084 |
+
+## Quality Comparison (if scores available)
+| Scenario | Roo Code Score | Copilot Score | Max |
+|----------|---------------|--------------|-----|
+| SC-01 NTK-10005 | pending | ... | 25 |
+| SC-02 NTK-10002 | pending | ... | 35 |
+| SC-03 NTK-10004 | pending | ... | 30 |
+| SC-04 NTK-10001 | pending | ... | 25 |
+| SC-05 NTK-10003 | pending | ... | 40 |
+| TOTAL | pending | ... | 155 |
+
+## Cost Efficiency
+| Metric | Roo Code | Copilot |
+|--------|----------|--------|
+| Cost per quality point | pending | pending |
+
+## Observations
+- (Note any differences in approach, thoroughness, or output quality)
+- (Note which metrics are pending human entry)
+```
+
+**Rules for the comparison:**
+- Use ONLY data from `run-summary.md`, `run-metadata.md`, and `results.md`. Do NOT fabricate scores or costs.
+- Mark any unavailable data as "pending" or "not available" — never guess.
+- For your own quality scores, mark as "pending human scoring".
+- For your own cost, mark as "pending OpenRouter data" (exact cost comes from the human post-execution step).
+- The Copilot cost comes from their `run-summary.md` (model_turns x $0.028 x 3) or `run-metadata.md`. If those files are missing, mark as "pending".
 
 <!-- ============================================================ -->
 <!-- END PROMPT -->
