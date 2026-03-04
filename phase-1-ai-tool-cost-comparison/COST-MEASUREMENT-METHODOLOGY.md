@@ -8,7 +8,7 @@
 >
 > Updated for OpenRouter (replacing Kong AI Gateway) — OpenRouter provides exact per-request token counts and costs.
 >
-> **REVISED 2026-03-04**: Updated with actual billing data from run 002 execution on both platforms. Previous estimates were significantly wrong — OpenRouter actual cost was ~7.5x higher than projected; Copilot formula ($0.028 x multiplier) does not match observed billing.
+> **REVISED 2026-03-04**: Updated with actual billing data from run 002 execution on both platforms and deep research findings on Copilot billing mechanics. Previous estimates were significantly wrong — OpenRouter actual cost was ~7.5x higher than projected; Copilot bills per **user prompt** (not per model turn), making the original formula irrelevant. See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](../research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md) for the definitive billing analysis with 39 cited sources.
 
 ## Purpose
 
@@ -28,7 +28,7 @@ The two toolchains have incompatible cost models **and** incompatible context ma
 | **Token visibility** | **Full — exact counts in API response and activity dashboard** | None — no per-request token API |
 | **Billing API** | **OpenRouter Activity page + API response `usage` object** | Not accessible for individual accounts* |
 | **Cost per scenario** | **Directly measurable with exact precision** | Premium requests x $0.04 (actual billing rate) |
-| **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | Scales linearly with premium requests; absorbed by flat subscription up to 1,500/month |
+| **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | Scales linearly with user prompts only; autonomous tool calls are free; absorbed by flat subscription up to 1,500 premium requests/month |
 | **Infrastructure required** | None (fully managed SaaS) | None (fully managed SaaS) |
 
 \* *We tested all known GitHub APIs — see [API Availability](#github-api-availability) below.*
@@ -188,7 +188,7 @@ All 5 scenarios were executed in a single Copilot Agent session on 2026-03-01, c
 | **Files created** | 16 |
 | **Files modified** | 5 |
 | **Wall-clock time** | ~100 minutes |
-| **Copilot cost** | **model_turns x $0.028 x 3** (Claude Opus 4.6 multiplier) -- see Model Multipliers below |
+| **Copilot cost** | **4 user prompts x 3x multiplier x $0.04 = $0.48** (see Copilot Billing below) |
 
 ### What Would This Cost via OpenRouter + Roo Code?
 
@@ -260,7 +260,7 @@ Average variable cost per run (actual): ~$100 / 5 scenarios full run = **~$100/r
 | Copilot Pro+ ($39/month) | <1 run/month | 38 runs/month | **Copilot wins by ~13x** |
 | Copilot Pro+ with full overage | ~5 runs/month (at $8/run est.) | 38 runs/month | **Copilot still wins dramatically** |
 
-> **REVISED (2026-03-04):** With actual Opus 4.6 pricing, OpenRouter never breaks even against Copilot at any reasonable volume. A single OpenRouter run (~$100) costs more than an entire month of Copilot Pro+ ($39). Even with Copilot overage (120 premium requests/day = $4.80 notional), Copilot is ~20x cheaper per run.
+> **REVISED (2026-03-04):** With actual Opus 4.6 pricing, OpenRouter never breaks even against Copilot at any reasonable volume. A single OpenRouter run (~$100) costs more than an entire month of Copilot Pro+ ($39). Deep research confirmed that Copilot's per-session cost is $0.48 (4 user prompts x 3x x $0.04), making the gap even wider: **~208x cheaper per session**.
 
 ### Cost Per Quality Point
 
@@ -312,25 +312,39 @@ In practice, all of these add 20-50% overhead. The deep research documents a **5
 
 Claude Opus 4.6 via OpenRouter has different pricing than Claude Sonnet. The estimates in the Monthly Cost Projection section use Sonnet pricing as a baseline — actual Opus 4.6 costs will be higher. Always use the measured OpenRouter Activity data rather than these estimates.
 
-### 5. Copilot Pro+ Billing: Actual vs Documented
+### 5. Copilot Pro+ Billing: Resolved via Deep Research
 
-GitHub Copilot Pro+ ($39/month) includes 1,500 premium requests/month. Actual billing data from March 4, 2026:
+GitHub Copilot Pro+ ($39/month) includes 1,500 premium requests/month. Deep research ([DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](../research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md)) definitively resolved the billing mechanics:
 
-| Parameter | Documented | Actual |
-|-----------|-----------|--------|
-| Rate per premium request | $0.028 (Pro+ discount) | **$0.04** |
-| Claude Opus 4.6 fast multiplier | x30 | **Not observed** (120 requests for heavy day, not 1,650+) |
-| Per-turn cost formula | turns x $0.028 x 30 = $0.84/turn | **~$0.04/premium request** |
-| Monthly included requests | 1,500 | 1,500 (confirmed) |
+**Billing unit = user prompt, NOT model invocation.** In Agent Mode, the autonomous loop (tool calls, file reads, terminal commands, sub-agents, context summarization) is entirely free — absorbed by GitHub's infrastructure. Only explicit human-typed prompts consume premium requests.
 
-The documented $0.028 rate and x30 multiplier for Claude Opus 4.6 fast (preview) do not match observed billing. Either:
-- (A) The multiplier is applied differently than documented (not per-invocation)
-- (B) The model is not actually billed as "fast (preview)" despite what the system prompt states
-- (C) The billing dashboard shows post-multiplier request counts
+| Parameter | Original (WRONG) | Corrected (Deep Research) |
+|-----------|------------------|---------------------------|
+| Billing unit | Per model turn/invocation | **Per user prompt** |
+| Rate per premium request | $0.028 ("Pro+ discount") | **$0.04** (actual, no discount) |
+| Model multiplier | x30 ("fast preview") | **x3** (standard Opus 4.6) |
+| Formula | turns x $0.028 x 30 | **User Prompts x Model Multiplier x $0.04** |
+| Run 002 session cost | $46.20 (estimate) | **$0.48** (4 prompts x 3 x $0.04) |
+| Autonomous tool calls | Assumed billed | **Free** |
 
-A deep research investigation has been prepared to resolve this discrepancy. See [DEEP-RESEARCH-PROMPT-COPILOT-BILLING.md](../research/DEEP-RESEARCH-PROMPT-COPILOT-BILLING.md).
+**Origin of the $0.028 error:** The $0.028 rate was a per-million-token cache-hit rate from DeepSeek/Azure OpenAI API pricing — a completely different billing model and unit. It was never a valid Copilot rate.
 
-**Practical impact**: Regardless of the multiplier mechanics, actual Copilot cost for a full 5-scenario run was **$4.80 notional** ($0 overage) for the entire day. This is the empirical data point that matters for the cost comparison.
+**Model multipliers (applied per user prompt):**
+
+| Model | Multiplier | Cost per User Prompt |
+|-------|-----------|---------------------|
+| GPT-4.1, GPT-4o | x0 | $0 (included, unlimited) |
+| Claude Opus 4.6 (standard) | x3 | $0.12 |
+| Claude Opus 4.6 fast (preview) | x30 | $1.20 |
+
+**Run 002 verification:** 4 user prompts x 3x (standard Opus) = 12 premium requests = $0.48. The daily total of 120 premium requests ($4.80) included all other Copilot usage across projects. At 3x multiplier, 120 requests = ~40 user prompts across all VS Code instances for the day.
+
+**Additional findings:**
+- Sub-agents: Intended to be free, but a known VS Code bug in early 2026 caused some to be billed. Frequently fall back to 0x models.
+- Context summarization: Free — uses cheaper/free models.
+- 1,500 allowance resets on calendar month at 00:00 UTC (not billing cycle).
+- Quota exhaustion: Silent fallback to 0x models (GPT-4.1).
+- Auto-model selection: 10% multiplier discount when enabled.
 
 ### 6. OpenRouter Cost Retrieval Script
 
@@ -365,10 +379,10 @@ python3 scripts/cost-measurement.py analyze e83f83e 34150d9
 | **OpenRouter cost (5 scenarios)** | ~$13.42 (Sonnet pricing) | **~$100** (Opus 4.6 actuals) |
 | **OpenRouter monthly (38 runs)** | ~$67.46 (Sonnet pricing) | **~$507** (extrapolated) |
 | **Copilot Pro+ monthly (base)** | $39.00 | **$39.00** (confirmed) |
-| **Copilot Pro+ full-day cost** | $0.084/turn x ~55 turns = $4.62 | **$4.80** (120 req x $0.04, $0 overage) |
-| **Cost ratio** | Copilot ~1.7x cheaper (est.) | **Copilot ~13x cheaper** (actuals) |
+| **Copilot Pro+ full-day cost** | $0.084/turn x ~55 turns = $4.62 | **$4.80** (120 req x $0.04 all day); **$0.48** for run 002 (4 prompts x 3 x $0.04) |
+| **Cost ratio** | Copilot ~1.7x cheaper (est.) | **Copilot ~13x cheaper** (full day) / **~208x cheaper** (per session) |
 | **Break-even** | ~22 runs/month (est.) | **<1 run/month** (Copilot always wins) |
 | **OpenRouter measurement precision** | Exact (confirmed) | **Exact** (auto-top-ups observable) |
-| **Copilot measurement precision** | Deterministic formula | **Formula incorrect**; use billing dashboard |
-| **Key correction** | Sonnet pricing undercounted OpenRouter by ~7.5x | Opus 4.6 is the actual model used |
+| **Copilot measurement precision** | Deterministic formula | **Resolved** — user prompts x multiplier x $0.04 |
+| **Key correction** | Sonnet pricing undercounted OpenRouter by ~7.5x | Copilot bills per user prompt, not per turn; $0.028 was never valid |
 | **Recommendation** | Collect actual OpenRouter costs | **Data collected; Copilot is decisively cheaper** |

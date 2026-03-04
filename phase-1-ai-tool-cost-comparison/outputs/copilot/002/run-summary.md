@@ -6,8 +6,8 @@
 |-------|-------|
 | Run Number | 002 |
 | Tool | GitHub Copilot Agent Mode |
-| Model | Claude Opus 4.6 fast (preview) |
-| Model Multiplier | x30 (documented, but see Cost Estimate section) |
+| Model | Claude Opus 4.6 (standard, 3x multiplier) |
+| Model Multiplier | x3 (verified via deep research -- see below) |
 | Date | 2026-03-04 |
 | First file created | 2026-03-04 10:06:55 |
 
@@ -155,30 +155,29 @@
 
 | Parameter | Value |
 |-----------|-------|
-| Model | Claude Opus 4.6 fast (preview) |
+| Model | Claude Opus 4.6 (standard, 3x multiplier) |
 | Actual premium request rate | $0.04 per premium request |
 | Total premium requests (entire day, all projects) | 120 |
 | Total day notional cost | $4.80 |
 | Overage charges | $0 (within 1,500 included Pro+ allowance) |
 
-### Cost Isolation Challenge
+### Corrected Billing Model (Deep Research, 2026-03-04)
 
-GitHub Copilot does not provide per-session or per-project premium request breakdown. The 120 premium requests and $4.80 cost represent the **entire day** of Copilot usage across multiple projects and VS Code instances — not just this run.
+Deep research ([DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](../../../../research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md)) established that GitHub Copilot bills per **user prompt**, not per model invocation. In Agent Mode, the autonomous loop (tool calls, file reads, terminal commands, sub-agents, context summarization) is entirely free -- absorbed by GitHub's infrastructure.
 
-A portion of the 120 requests came from other Copilot usage throughout the day. A reasonable estimate for run 002 alone is 60-84 premium requests (notional $2.40-$3.36).
+**Corrected formula:** `Session Cost = (User Prompts x Model Multiplier) x $0.04`
 
-### Execution Prompt Formula Correction
+| Parameter | Old (WRONG) | Corrected |
+|-----------|------------|----------|
+| Billing unit | Per model turn | **Per user prompt** |
+| Rate | $0.028 (Pro+ discount) | **$0.04** (actual) |
+| Multiplier | x30 (fast preview) | **x3** (standard Opus 4.6) |
+| Formula | 55 turns x $0.028 x 30 = $46.20 | **4 prompts x 3 x $0.04 = $0.48** |
+| Autonomous tool calls billed? | Assumed yes | **No -- free** |
 
-The execution prompt specified:
-- Overage rate: $0.028 per premium request (Pro+ discount)
-- Claude Opus 4.6 fast (preview) multiplier: x30
-- Formula: model_turns x $0.028 x 30 = $46.20
+**Run 002 session cost: $0.48** (4 user prompts x 3x multiplier x $0.04)
 
-Actual billing contradicts these assumptions:
-- Actual rate: **$0.04** per premium request (not $0.028)
-- If the x30 multiplier were correct, 55 model turns would consume 1,650 premium requests. The entire day consumed only 120. The x30 multiplier is not reflected in the billing data.
-- **Upper bound session cost**: $4.80 (entire day); **estimated session cost**: ~$2.80 (70 requests)
-- **Actual overage cost**: $0 (all within included Pro+ allowance)
+The remaining 108 premium requests from the daily total of 120 ($4.32) came from other Copilot usage across VS Code instances and projects throughout the day. At 3x multiplier, this implies approximately 36 additional user prompts (108/3 = 36).
 
 ### OpenRouter Comparison Context
 
