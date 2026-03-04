@@ -1,0 +1,147 @@
+# ---------------------------------------------------------------------------
+# MkDocs Material Configuration — Continuous Architecture Platform
+# ---------------------------------------------------------------------------
+# Local preview:  mkdocs serve
+# Build:          mkdocs build --strict
+# Output:         site/
+# ---------------------------------------------------------------------------
+
+site_name: Continuous Architecture Platform
+site_url: https://swa-cap-docs-prod.azurestaticapps.net
+site_description: >-
+  Living architecture documentation for NovaTrek Adventures —
+  ADRs, solution designs, service pages, and architecture standards.
+site_author: Christopher Blaisdell
+repo_url: https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2
+repo_name: continuous-architecture-platform-poc-2
+edit_uri: edit/main/
+
+# ---------------------------------------------------------------------------
+# Theme
+# ---------------------------------------------------------------------------
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+# ---------------------------------------------------------------------------
+# Plugins
+# ---------------------------------------------------------------------------
+plugins:
+  - search
+  - tags
+  - git-revision-date-localized:
+      enable_creation_date: true
+      fallback_to_build_date: true
+  - git-committers:
+      repository: christopherblaisdell/continuous-architecture-platform-poc-2
+      branch: main
+  - minify:
+      minify_html: true
+
+# ---------------------------------------------------------------------------
+# Markdown Extensions
+# ---------------------------------------------------------------------------
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - attr_list
+  - md_in_html
+  - tables
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+
+# ---------------------------------------------------------------------------
+# Navigation
+# ---------------------------------------------------------------------------
+nav:
+  - Home: index.md
+  - Project:
+      - Overview: README.md
+      - Roadmap: roadmap/ROADMAP.md
+      - Closing the Loop: CLOSING-THE-LOOP.md
+  - Decisions:
+      - Decision Log: decisions/README.md
+      - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
+      - ADR-002 Documentation Publishing: decisions/ADR-002-documentation-publishing-platform.md
+      - ADR-003 Nullable Elevation Fields: decisions/ADR-003-nullable-elevation-fields.md
+      - ADR-004 Config-Driven Classification: decisions/ADR-004-configuration-driven-classification.md
+      - ADR-005 Pattern 3 Default Fallback: decisions/ADR-005-pattern3-default-fallback.md
+      - ADR-006 Orchestrator Pattern Check-in: decisions/ADR-006-orchestrator-pattern-checkin.md
+      - ADR-007 Four-Field Identity Verification: decisions/ADR-007-four-field-identity-verification.md
+      - ADR-008 Temporary Guest Profile: decisions/ADR-008-temporary-guest-profile.md
+      - ADR-009 Session-Scoped Kiosk Access: decisions/ADR-009-session-scoped-kiosk-access.md
+      - ADR-010 PATCH Semantics Schedule Updates: decisions/ADR-010-patch-semantics-schedule-updates.md
+      - ADR-011 Optimistic Locking Daily Schedule: decisions/ADR-011-optimistic-locking-daily-schedule.md
+  - Services:
+      - Service Index: services/README.md
+      - svc-check-in: services/svc-check-in.md
+      - svc-guest-profiles: services/svc-guest-profiles.md
+      - svc-reservations: services/svc-reservations.md
+      - svc-scheduling-orchestrator: services/svc-scheduling-orchestrator.md
+      - svc-trail-management: services/svc-trail-management.md
+      - svc-trip-catalog: services/svc-trip-catalog.md
+  - Phase 1 - AI Tool Comparison:
+      - Comparison Plan: phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md
+      - Cost Methodology: phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md
+      - Results: phase-1-ai-tool-cost-comparison/outputs/README.md
+      - Playbooks:
+          - SC-01 Ticket Triage: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-01-new-ticket-triage.md
+          - SC-02 Solution Design: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-02-solution-design.md
+          - SC-03 Investigation: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-03-investigation-analysis.md
+          - SC-04 Architecture Update: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-04-architecture-update.md
+          - SC-05 Cross-Service: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-05-complex-cross-service.md
+          - Measurement Protocol: phase-1-ai-tool-cost-comparison/workspace/playbooks/measurement-protocol.md
+  - Phase 6 - Documentation Publishing:
+      - Publishing Plan: phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md
+  - Research:
+      - Context Window Analysis: research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md
+      - Deep Research 1: research/DEEP-RESEARCH-1.md
+      - Deep Research 2: research/DEEP-RESEARCH-2.md
+      - Copilot Billing Research: research/DEEP-RESEARCH-PROMPT-COPILOT-BILLING.md

@@ -1,0 +1,17 @@
+# ---------------------------------------------------------------------------
+# MkDocs Material Dependencies
+# ---------------------------------------------------------------------------
+# Install: pip install -r requirements-docs.txt
+# ---------------------------------------------------------------------------
+
+mkdocs-material>=9.5,<10
+mkdocs-git-revision-date-localized-plugin>=1.2,<2
+mkdocs-git-committers-plugin-2>=2.3,<3
+mkdocs-minify-plugin>=0.8,<1
+mkdocs-material-extensions>=1.3,<2
+
+# Optional — uncomment as needed:
+# mkdocs-with-pdf>=0.9          # PDF export
+# mkdocs-redirects>=1.2         # URL redirects for moved pages
+# mkdocs-glightbox>=0.3         # Image lightbox
+# mike>=2.0                     # Documentation versioning
