@@ -90,12 +90,12 @@ Check https://openrouter.ai/models for current model pricing.
 ```
 Copilot Pro+ Base Cost = $39 / month
 Included Premium Requests = 1500 / month
-Overage Cost = $0.04 per premium request beyond 1500
+Overage Cost = $0.028 per premium request beyond 1500 (Pro+ discount)
 
-Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) * $0.04
+Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) * $0.028
 ```
 
-Copilot Pro+ is NOT purely fixed-cost. When included premium requests (1500/month) are exhausted, each additional request using models like Claude Opus 4.6 costs $0.04. The user assumes all included requests are consumed and overage pricing applies.
+Copilot Pro+ is NOT purely fixed-cost. When included premium requests (1500/month) are exhausted, each additional request using models like Claude Opus 4.6 costs $0.028 (Pro+ discount). The user assumes all included requests are consumed and overage pricing applies.
 
 ## Quality Scoring
 
@@ -130,7 +130,7 @@ Each scenario has a quality rubric with specific criteria. Score each criterion 
 
 | Metric | Roo+OpenRouter | Copilot Pro+ |
 |--------|----------|-------------------|
-| Monthly cost per seat | *From OpenRouter Activity* | $39 base + $0.04/request overage |
+| Monthly cost per seat | *From OpenRouter Activity* | $39 base + $0.028/request overage (Pro+) |
 | SC-01 quality (/25) | | |
 | SC-02 quality (/35) | | |
 | SC-03 quality (/30) | | |

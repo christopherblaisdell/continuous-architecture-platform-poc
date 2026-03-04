@@ -16,15 +16,11 @@ Open `phase-1-ai-tool-cost-comparison/workspace/novatrek-workspace.code-workspac
 
 Open a **new** Copilot Agent Mode chat. Do NOT reuse an existing conversation. Ensure Claude Opus 4.6 is the selected model.
 
-### 3. Record Starting Premium Request Count
-
-Go to your GitHub Copilot settings page and note the current premium request count for the billing cycle. You will check this again after the run to calculate the delta (requests consumed by this session).
-
-### 4. Record Start Time
+### 3. Record Start Time
 
 Note the wall-clock time before pasting the prompt.
 
-### 5. Paste Everything Below the Line
+### 4. Paste Everything Below the Line
 
 Copy from `BEGIN PROMPT` to `END PROMPT` and paste as a single message.
 
@@ -327,10 +323,12 @@ outputs/copilot/<RUN_NUMBER>/
 ## Post-Execution Summary
 
 After completing all 5 scenarios, create `run-summary.md` in your run folder (`outputs/copilot/<RUN_NUMBER>/run-summary.md`) containing:
+- **Total model turns** — count each time you generate a response (including responses that only contain tool calls). Each model turn consumes premium requests.
 - Total files created and modified
 - Total mock script executions (count each `python3 scripts/mock-*.py` invocation)
 - Total tool calls (file reads, file creates, terminal commands)
 - Any scenarios where you encountered issues, retried, or made corrections
+- **Cost estimate**: total_model_turns x $0.028 x 3 (Claude Opus 4.6 multiplier) = estimated session cost
 
 <!-- ============================================================ -->
 <!-- END PROMPT -->
@@ -341,12 +339,18 @@ After completing all 5 scenarios, create `run-summary.md` in your run folder (`o
 ## Post-Execution Steps (Human)
 
 1. **Record wall-clock time** (start to completion).
-2. **Record Copilot Pro+ premium request usage**:
-   - Check your GitHub Copilot settings page for the current premium request count
-   - Calculate the delta from the count recorded in Pre-Execution Step 3
-   - Note: GitHub does not expose per-request cost data. The delta is approximate — other Copilot usage during the run would inflate it.
-   - Cost model: $39.00/month base + $0.04/request overage beyond 1500 included requests
-3. **Create `run-metadata.md`** in the run folder (`outputs/copilot/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, premium requests consumed, and cost estimate.
+2. **Calculate Copilot session cost** using the model turn count from the AI's `run-summary.md`:
+   ```
+   Session cost = model_turns x $0.028 x model_multiplier
+   ```
+   Model multipliers (premium requests consumed per turn):
+   | Model | Multiplier | Cost per Turn |
+   |-------|-----------|---------------|
+   | Claude Opus 4.6 | x3 | $0.084 |
+   | Claude Opus 4.6 fast (preview) | x30 | $0.84 |
+   - This assumes overage pricing (all 1500 included premium requests already consumed)
+   - The AI self-reports its turn count; verify by reviewing the chat interaction count if needed
+3. **Create `run-metadata.md`** in the run folder (`outputs/copilot/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, model used, model multiplier, model turn count, and calculated session cost.
 4. **Score each scenario** using the rubrics in:
    - `playbooks/scenario-01-new-ticket-triage.md` (max 25)
    - `playbooks/scenario-02-solution-design.md` (max 35)
