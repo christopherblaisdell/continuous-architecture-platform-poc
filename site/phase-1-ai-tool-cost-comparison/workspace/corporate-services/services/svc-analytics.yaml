@@ -1,0 +1,419 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Analytics Service
+  description: |
+    Provides operational analytics, reporting dashboards, and key performance
+    indicators across NovaTrek Adventures. Aggregates data from reservations,
+    revenue, safety, and staffing systems for business intelligence.
+  version: 1.3.0
+  contact:
+    name: NovaTrek Data & Insights Team
+    email: analytics@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/analytics/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /analytics/bookings:
+    get:
+      operationId: getBookingAnalytics
+      summary: Get booking analytics for a period
+      tags: [Bookings]
+      parameters:
+        - $ref: '#/components/parameters/Period'
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Booking analytics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingAnalytics'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/revenue:
+    get:
+      operationId: getRevenueAnalytics
+      summary: Get revenue analytics for a period
+      tags: [Revenue]
+      parameters:
+        - $ref: '#/components/parameters/Period'
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Revenue analytics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueAnalytics'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/utilization:
+    get:
+      operationId: getUtilizationAnalytics
+      summary: Get resource utilization analytics
+      tags: [Utilization]
+      parameters:
+        - $ref: '#/components/parameters/Period'
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Utilization analytics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtilizationAnalytics'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/guest-satisfaction:
+    get:
+      operationId: getGuestSatisfaction
+      summary: Get guest satisfaction metrics
+      tags: [Guest Experience]
+      parameters:
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Guest satisfaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestSatisfaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/safety-metrics:
+    get:
+      operationId: getSafetyMetrics
+      summary: Get safety and incident metrics
+      description: Aggregates data from svc-safety-compliance incident reports.
+      tags: [Safety]
+      parameters:
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Safety metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafetyMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/guide-performance/{guide_id}:
+    get:
+      operationId: getGuidePerformance
+      summary: Get performance metrics for a specific guide
+      tags: [Staff]
+      parameters:
+        - name: guide_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Guide performance metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuidePerformance'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Period:
+      name: period
+      in: query
+      required: true
+      schema:
+        type: string
+        enum: [DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY]
+    StartDate:
+      name: start_date
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+    EndDate:
+      name: end_date
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+
+  schemas:
+    BookingAnalytics:
+      type: object
+      required: [period, total_bookings]
+      properties:
+        period:
+          type: string
+        total_bookings:
+          type: integer
+        by_activity_type:
+          type: array
+          items:
+            type: object
+            properties:
+              activity_type:
+                type: string
+                example: "rock_climbing"
+              count:
+                type: integer
+        by_region:
+          type: array
+          items:
+            type: object
+            properties:
+              region:
+                type: string
+                example: "Pacific Northwest"
+              count:
+                type: integer
+        cancellation_rate:
+          type: number
+          format: float
+          example: 0.042
+        average_group_size:
+          type: number
+          format: float
+          example: 4.2
+        booking_lead_time_days:
+          type: number
+          format: float
+          description: Average days between booking and trip date
+
+    RevenueAnalytics:
+      type: object
+      required: [period, total_revenue]
+      properties:
+        period:
+          type: string
+        total_revenue:
+          type: number
+          format: float
+          example: 284750.00
+        by_activity:
+          type: array
+          items:
+            type: object
+            properties:
+              activity_type:
+                type: string
+              revenue:
+                type: number
+                format: float
+        by_source:
+          type: array
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+                enum: [DIRECT, PARTNER, CORPORATE]
+              revenue:
+                type: number
+                format: float
+        gear_rental_revenue:
+          type: number
+          format: float
+        average_revenue_per_booking:
+          type: number
+          format: float
+
+    UtilizationAnalytics:
+      type: object
+      required: [period]
+      properties:
+        period:
+          type: string
+        trip_fill_rate:
+          type: number
+          format: float
+          description: Percentage of available trip slots that were booked
+          example: 0.78
+        guide_utilization:
+          type: number
+          format: float
+          description: Percentage of guide capacity used
+          example: 0.85
+        gear_utilization:
+          type: number
+          format: float
+          description: Percentage of gear inventory in active use
+          example: 0.62
+        peak_days:
+          type: array
+          items:
+            type: string
+            format: date
+
+    GuestSatisfaction:
+      type: object
+      properties:
+        average_rating:
+          type: number
+          format: float
+          minimum: 1
+          maximum: 5
+          example: 4.6
+        total_reviews:
+          type: integer
+        nps_score:
+          type: integer
+          minimum: -100
+          maximum: 100
+          description: Net Promoter Score
+        by_activity:
+          type: array
+          items:
+            type: object
+            properties:
+              activity_type:
+                type: string
+              average_rating:
+                type: number
+                format: float
+              review_count:
+                type: integer
+        common_praise:
+          type: array
+          items:
+            type: string
+          example: ["knowledgeable guides", "beautiful scenery", "well-organized"]
+        common_complaints:
+          type: array
+          items:
+            type: string
+          example: ["parking availability", "gear sizing"]
+
+    SafetyMetrics:
+      type: object
+      required: [total_trips, total_incidents]
+      properties:
+        total_trips:
+          type: integer
+        total_incidents:
+          type: integer
+        incidents_per_1000_trips:
+          type: number
+          format: float
+          example: 2.3
+        by_severity:
+          type: object
+          properties:
+            LOW:
+              type: integer
+            MEDIUM:
+              type: integer
+            HIGH:
+              type: integer
+            CRITICAL:
+              type: integer
+        by_activity:
+          type: array
+          items:
+            type: object
+            properties:
+              activity_type:
+                type: string
+              incident_count:
+                type: integer
+              incident_rate:
+                type: number
+                format: float
+        waiver_compliance_rate:
+          type: number
+          format: float
+          description: Percentage of participants with valid signed waivers
+
+    GuidePerformance:
+      type: object
+      required: [guide_id]
+      properties:
+        guide_id:
+          type: string
+          format: uuid
+        trips_led:
+          type: integer
+        total_participants:
+          type: integer
+        average_guest_rating:
+          type: number
+          format: float
+          minimum: 1
+          maximum: 5
+        incident_count:
+          type: integer
+        cancellation_rate:
+          type: number
+          format: float
+        certifications:
+          type: array
+          items:
+            type: string
+          example: ["Wilderness First Responder", "Rock Climbing Level 3"]
+
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+  responses:
+    BadRequest:
+      description: Invalid request payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
