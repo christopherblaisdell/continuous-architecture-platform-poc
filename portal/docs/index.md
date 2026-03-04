@@ -30,13 +30,13 @@ Inventory of all NovaTrek microservices with ownership, API contracts, dependenc
 MADR-formatted decision records tracking every significant architectural choice and its rationale.
 </div>
 
-<div class="portal-card" markdown>
+<a href="standards/" class="portal-card" markdown>
 <span class="card-icon">:material-draw:</span>
 
 ### Design Standards
 
 arc42 templates, C4 model guidelines, quality attributes, and naming conventions for consistent architecture documentation.
-</div>
+</a>
 
 <div class="portal-card" markdown>
 <span class="card-icon">:material-magnify:</span>
