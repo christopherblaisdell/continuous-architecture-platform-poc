@@ -8,7 +8,7 @@
 | Files created/modified | 38 | 37 |
 | Mock script executions | 4 | 5 |
 | Total tool calls | 66 | not reported (35 reads + 8 terminal + 6 subagent = 49+ est.) |
-| Wall-clock time | (pending human entry) | (pending human entry) |
+| Wall-clock time | ~31 minutes (10:05 AM - 10:36 AM EST for scenarios) | (pending human entry) |
 | Scenarios completed | 5 of 5 | 5 of 5 |
 | Issues or retries | 1 (GitLab mock args) | 2 (GitLab mock args + cwd issue) |
 
@@ -16,14 +16,24 @@
 
 | Metric | Roo Code | Copilot |
 |--------|----------|--------|
-| Cost model | OpenRouter exact | turns x $0.028 x multiplier |
-| Model | Claude Opus 4.6 | Claude Opus 4.6 fast (preview) |
-| Model multiplier | N/A (pay-per-token) | x30 (premium requests) |
+| Cost model | OpenRouter pay-per-token | Premium requests at $0.04/req overage |
+| Model | Claude Opus 4.6 (full) | Claude Opus 4.6 fast (preview) |
+| Model multiplier | N/A (pay-per-token) | x30 (premium requests from plan allowance) |
 | Estimated model turns | 65 | 55 |
-| Cost per turn | (pending OpenRouter data) | $0.84 ($0.028 x 30) |
-| Session cost | (pending OpenRouter data) | $46.20 (estimated) |
+| Session cost | ~$170 (OpenRouter, run execution + summaries) | ~$2.20 overage (55 of 120 daily premium requests at $0.04) |
+| Cost per model turn | ~$2.62 | ~$0.04 overage ($0.04/premium request) |
+| Cost per file created | ~$4.47 | ~$0.06 overage |
 
-NOTE: The Copilot run 002 used Claude Opus 4.6 fast (preview) with a x30 multiplier, not the x3 multiplier originally assumed in the comparison methodology. The Copilot run summary flags this discrepancy. The actual cost depends on confirmation via the GitHub Copilot usage dashboard.
+### Cost Model Explanation
+
+**Roo Code (OpenRouter):** Fully pay-per-token. Claude Opus 4.6 (full, not fast) via OpenRouter charges per input/output token with no subscription offset. The session consumed approximately $170 in API credits, evidenced by 4 x $25 auto-refill transactions between 10:11-10:37 AM on March 4 plus existing balance consumption. The current session cost indicator shows $175.77 total (includes post-run analysis).
+
+**Copilot (GitHub):** Premium request model. The Copilot Pro/Business plan includes a monthly allowance of premium requests. Usage of Claude Opus 4.6 fast (preview) with a x30 multiplier consumes 30 premium request units per turn from that allowance. Overage beyond the plan's included allowance is billed at $0.04 per premium request. March 4 billing shows 120 premium requests at $0.04 = $4.80 gross for the entire day (all Copilot work, not just the exercise). The exercise consumed approximately 55 of those 120 requests = ~$2.20 in overage.
+
+CRITICAL: These costs are not directly comparable because:
+1. The Roo Code cost ($170) is the FULL cost -- there is no subscription base
+2. The Copilot cost ($2.20) is only the OVERAGE -- it does not include the monthly subscription fee that covers the included premium request allowance
+3. Different models were used: Claude Opus 4.6 (full) vs Claude Opus 4.6 fast (preview) -- the full model is more expensive per token but may produce different quality output
 
 ## Quality Comparison
 
