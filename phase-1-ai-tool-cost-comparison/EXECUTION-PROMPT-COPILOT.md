@@ -337,16 +337,20 @@ After completing all 5 scenarios, provide a brief summary listing:
 ## Post-Execution Steps (Human)
 
 1. **Record wall-clock time** (start to completion).
-2. **Create `run-metadata.md`** in the run folder (`outputs/copilot/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, and cost.
-3. **Score each scenario** using the rubrics in:
+2. **Record Copilot Pro+ premium request usage**:
+   - Check your GitHub Copilot settings page for premium request count consumed during this session
+   - Note: GitHub does not expose per-request cost data. Record the premium request count if visible.
+   - Cost model: $39.00/month base + $0.04/request overage beyond 1500 included requests
+3. **Create `run-metadata.md`** in the run folder (`outputs/copilot/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, premium requests consumed, and cost estimate.
+4. **Score each scenario** using the rubrics in:
    - `playbooks/scenario-01-new-ticket-triage.md` (max 25)
    - `playbooks/scenario-02-solution-design.md` (max 35)
    - `playbooks/scenario-03-investigation-analysis.md` (max 30)
    - `playbooks/scenario-04-architecture-update.md` (max 25)
    - `playbooks/scenario-05-complex-cross-service.md` (max 40)
-4. **Create `results.md`** in the run folder documenting scores, observable metrics, and notes.
-5. **Run data isolation audit**: `./scripts/audit-data-isolation.sh`
-6. **Commit the run**:
+5. **Create `results.md`** in the run folder documenting scores, observable metrics, and notes.
+6. **Run data isolation audit**: `./scripts/audit-data-isolation.sh`
+7. **Commit the run**:
    ```bash
    git add -A && git commit -m 'feat: Phase 1 Copilot run <RUN>'
    ```

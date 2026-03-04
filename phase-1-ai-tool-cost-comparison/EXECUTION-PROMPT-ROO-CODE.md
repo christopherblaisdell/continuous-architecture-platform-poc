@@ -337,16 +337,31 @@ After completing all 5 scenarios, provide a brief summary listing:
 ## Post-Execution Steps (Human)
 
 1. **Record wall-clock time** (start to completion).
-2. **Create `run-metadata.md`** in the run folder (`outputs/roo-code/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, and cost.
-3. **Score each scenario** using the rubrics in:
+2. **Collect exact OpenRouter costs**:
+   ```bash
+   # Check current credit usage
+   export OPENROUTER_API_KEY='sk-or-v1-...'
+   python3 scripts/openrouter-cost.py balance
+
+   # Get cost for specific generations (IDs from OpenRouter Activity page)
+   python3 scripts/openrouter-cost.py generations gen-xxx1 gen-xxx2 gen-xxx3
+
+   # Or save generation IDs to a file and get a summary
+   python3 scripts/openrouter-cost.py summary --file outputs/roo-code/<RUN>/generation-ids.txt --format json
+   ```
+   - Go to https://openrouter.ai/activity to find generation IDs for this session
+   - Save generation IDs to `outputs/roo-code/<RUN>/generation-ids.txt` (one per line)
+   - Cost data includes exact input/output tokens and dollar amounts per request
+3. **Create `run-metadata.md`** in the run folder (`outputs/roo-code/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, exact cost from OpenRouter, and generation IDs.
+4. **Score each scenario** using the rubrics in:
    - `playbooks/scenario-01-new-ticket-triage.md` (max 25)
    - `playbooks/scenario-02-solution-design.md` (max 35)
    - `playbooks/scenario-03-investigation-analysis.md` (max 30)
    - `playbooks/scenario-04-architecture-update.md` (max 25)
    - `playbooks/scenario-05-complex-cross-service.md` (max 40)
-4. **Create `results.md`** in the run folder documenting scores, observable metrics, and notes.
-5. **Run data isolation audit**: `./scripts/audit-data-isolation.sh`
-6. **Commit the run**:
+5. **Create `results.md`** in the run folder documenting scores, observable metrics, and notes.
+6. **Run data isolation audit**: `./scripts/audit-data-isolation.sh`
+7. **Commit the run**:
    ```bash
    git add -A && git commit -m 'feat: Phase 1 Roo Code run <RUN>'
    ```
