@@ -9,7 +9,7 @@ Cost Measurement Tool for Continuous Architecture Platform
 ==========================================================
 Captures baseline/post-execution workspace snapshots, calculates content
 deltas, estimates token consumption, and produces cost reports comparing
-fixed (GitHub Copilot) and variable (Kong AI Gateway) pricing models.
+fixed (GitHub Copilot) and variable (OpenRouter) pricing models.
 
 Usage:
     python scripts/cost-measurement.py baseline              # Before scenarios
@@ -43,9 +43,11 @@ CHARS_PER_TOKEN = 4
 COPILOT_BUSINESS_MONTHLY = 19.00   # USD / seat / month
 COPILOT_ENTERPRISE_MONTHLY = 39.00  # USD / seat / month
 
-# Kong AI / AWS Bedrock pricing (Claude Sonnet via Bedrock, as of 2025)
-KONG_INPUT_PRICE_PER_1M = 3.00    # USD per 1M input tokens
-KONG_OUTPUT_PRICE_PER_1M = 15.00   # USD per 1M output tokens
+# OpenRouter pricing (Claude Opus 4.6 via OpenRouter, as of 2026)
+# NOTE: These are estimates. Actual costs come from OpenRouter Activity page.
+# Check https://openrouter.ai/models for current pricing.
+OPENROUTER_INPUT_PRICE_PER_1M = 15.00    # USD per 1M input tokens (Claude Opus 4.6)
+OPENROUTER_OUTPUT_PRICE_PER_1M = 75.00   # USD per 1M output tokens (Claude Opus 4.6)
 
 # Scenario metadata from measurement protocol
 SCENARIOS = {
@@ -191,14 +193,14 @@ def copilot_cost_per_run(monthly_price, runs_per_month):
     return monthly_price / runs_per_month if runs_per_month > 0 else 0.0
 
 
-def kong_ai_cost(input_tokens, output_tokens):
-    """Variable cost for a single run through Kong AI / Bedrock."""
-    input_cost = (input_tokens / 1_000_000) * KONG_INPUT_PRICE_PER_1M
-    output_cost = (output_tokens / 1_000_000) * KONG_OUTPUT_PRICE_PER_1M
+def openrouter_cost(input_tokens, output_tokens):
+    """Variable cost estimate for a single run through OpenRouter."""
+    input_cost = (input_tokens / 1_000_000) * OPENROUTER_INPUT_PRICE_PER_1M
+    output_cost = (output_tokens / 1_000_000) * OPENROUTER_OUTPUT_PRICE_PER_1M
     return input_cost + output_cost
 
 
-def kong_ai_monthly_cost(scenario_costs):
+def openrouter_monthly_cost(scenario_costs):
     """Total monthly variable cost across all scenarios."""
     total = 0.0
     for sc_id, cost in scenario_costs.items():
@@ -375,7 +377,7 @@ def _produce_report(delta, fmt="text"):
     copilot_ent_per_run = copilot_cost_per_run(COPILOT_ENTERPRISE_MONTHLY, TOTAL_MONTHLY_RUNS)
 
     # Variable cost for the whole batch (all 5 scenarios once)
-    variable_total = kong_ai_cost(input_tokens, output_tokens)
+    variable_total = openrouter_cost(input_tokens, output_tokens)
 
     # Per-scenario variable costs (proportional to output bytes)
     sc_variable_costs = {}
@@ -385,10 +387,10 @@ def _produce_report(delta, fmt="text"):
         # Input tokens proportional to output (each scenario reads similar context)
         sc_input = input_tokens // len(SCENARIOS)
         sc_output = estimate_tokens(sc_bytes)
-        sc_variable_costs[sc_id] = kong_ai_cost(sc_input, sc_output)
+        sc_variable_costs[sc_id] = openrouter_cost(sc_input, sc_output)
 
     # Monthly projections
-    variable_monthly = kong_ai_monthly_cost(sc_variable_costs)
+    variable_monthly = openrouter_monthly_cost(sc_variable_costs)
 
     # --- Output ---
     if fmt == "csv":
@@ -441,7 +443,7 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
     print("\n" + "-" * 72)
     print("  MONTHLY COST PROJECTION (26 runs/month)")
     print("-" * 72)
-    print(f"  Kong AI Gateway (variable):     ${variable_monthly:>8.2f} /month")
+    print(f"  OpenRouter (variable):          ${variable_monthly:>8.2f} /month")
     print(f"  GitHub Copilot Business (fixed): ${COPILOT_BUSINESS_MONTHLY:>8.2f} /month")
     print(f"  GitHub Copilot Enterprise (fixed):${COPILOT_ENTERPRISE_MONTHLY:>7.2f} /month")
     print(f"\n  Copilot Business per-run amortized:  ${copilot_biz_per_run:.4f}")
@@ -459,8 +461,8 @@ def _report_text(delta, per_sc, sc_variable_costs, copilot_biz_per_run,
     print("  PRICING ASSUMPTIONS")
     print("=" * 72)
     print(f"  Token estimation:     ~{CHARS_PER_TOKEN} characters per token")
-    print(f"  Kong input pricing:   ${KONG_INPUT_PRICE_PER_1M:.2f} / 1M tokens")
-    print(f"  Kong output pricing:  ${KONG_OUTPUT_PRICE_PER_1M:.2f} / 1M tokens")
+    print(f"  OpenRouter input pricing:   ${OPENROUTER_INPUT_PRICE_PER_1M:.2f} / 1M tokens")
+    print(f"  OpenRouter output pricing:  ${OPENROUTER_OUTPUT_PRICE_PER_1M:.2f} / 1M tokens")
     print(f"  Copilot Business:     ${COPILOT_BUSINESS_MONTHLY:.2f} / seat / month")
     print(f"  Copilot Enterprise:   ${COPILOT_ENTERPRISE_MONTHLY:.2f} / seat / month")
     print(f"  Monthly run volume:   {TOTAL_MONTHLY_RUNS} runs across {len(SCENARIOS)} scenarios")

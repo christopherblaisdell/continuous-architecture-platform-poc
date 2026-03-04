@@ -2,30 +2,32 @@
 
 > **Continuous Architecture Platform — Phase 1 AI Tool Comparison**
 > 
-> Last Updated: 2026-03-03
+> Last Updated: 2026-03-04
 >
 > Incorporates deep research findings on agentic token economics, the ReAct re-transmission tax, and Copilot's semantic retrieval architecture. See [DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md) and [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md).
+>
+> Updated for OpenRouter (replacing Kong AI Gateway) — OpenRouter provides exact per-request token counts and costs.
 
 ## Purpose
 
-This document describes how we **autonomously measure the exact cost** of running architecture scenarios through each AI toolchain. It covers what we can measure, what we cannot, the methodology behind our estimates, and the full cost analysis of the GitHub Copilot execution.
+This document describes how we **measure the exact cost** of running architecture scenarios through each AI toolchain. It covers what we can measure, what we cannot, the methodology behind our estimates, and the full cost analysis.
 
-**Key finding:** When the agentic re-transmission tax is properly accounted for, **GitHub Copilot Business is approximately 3× cheaper** than Kong AI + Roo Code at projected workloads. The dominant cost driver for usage-based agentic tools is cumulative re-transmission of the conversation history across turns, not the content produced.
+**Key finding:** The two toolchains have fundamentally different cost visibility. **OpenRouter provides exact per-request token counts and costs**, while GitHub Copilot provides zero token-level data. This creates an asymmetric measurement challenge that we address through a combination of direct measurement (OpenRouter) and content-based estimation (Copilot).
 
 ## The Fundamental Asymmetry
 
 The two toolchains have incompatible cost models **and** incompatible context management architectures:
 
-| Dimension | Kong AI Gateway (Roo Code) | GitHub Copilot |
+| Dimension | OpenRouter (Roo Code) | GitHub Copilot |
 |-----------|---------------------------|----------------|
 | **Cost model** | Variable — pay per token | Fixed — flat monthly subscription |
 | **Context management** | Client-side — entire conversation history re-sent every turn | Server-side — @workspace semantic retrieval + sliding window compaction |
 | **Input tokens per turn** | 50K-180K (full history payload, growing each turn) | <5K (only top-k relevant code chunks via RAG) |
-| **Token visibility** | Full — response headers report input/output counts | None — no per-request token API |
-| **Billing API** | AWS Bedrock CloudWatch + Kong Admin API | Not accessible for individual accounts* |
-| **Cost per scenario** | Directly measurable, but compounds with each turn | Must be amortized from subscription |
+| **Token visibility** | **Full — exact counts in API response and activity dashboard** | None — no per-request token API |
+| **Billing API** | **OpenRouter Activity page + API response `usage` object** | Not accessible for individual accounts* |
+| **Cost per scenario** | **Directly measurable with exact precision** | Must be amortized from subscription |
 | **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | Zero marginal cost per additional run |
-| **Infrastructure required** | Kong Gateway + Qdrant vector DB + API key management | None (fully managed SaaS) |
+| **Infrastructure required** | None (fully managed SaaS) | None (fully managed SaaS) |
 
 \* *We tested all known GitHub APIs — see [API Availability](#github-api-availability) below.*
 
@@ -33,9 +35,55 @@ The two toolchains have incompatible cost models **and** incompatible context ma
 
 ## Measurement Approach
 
-### What We Measure
+### OpenRouter: Exact Measurement
 
-Since GitHub Copilot provides no token-level billing data, we use **content-based estimation** from git history:
+OpenRouter provides **exact per-request token counts and costs** through multiple channels:
+
+| Source | Data Available | Collection Method |
+|--------|---------------|-------------------|
+| **API response `usage` object** | `prompt_tokens`, `completion_tokens`, `total_tokens` | Logged by Roo Code in request/response cycle |
+| **OpenRouter Activity page** | Per-request cost breakdown, model used, timestamps | Manual export from https://openrouter.ai/activity |
+| **OpenRouter API** | Programmatic access to usage history | `GET https://openrouter.ai/api/v1/auth/key` for credit balance |
+
+For each Roo Code run, we collect:
+
+| Metric | Source | Precision |
+|--------|--------|-----------|
+| **Input tokens (cumulative)** | OpenRouter Activity page | Exact |
+| **Output tokens** | OpenRouter Activity page | Exact |
+| **Cost per request** | OpenRouter Activity page | Exact (to $0.0001) |
+| **Model used** | OpenRouter Activity page | Exact |
+| **Request count** | OpenRouter Activity page | Exact |
+| **Total run cost** | Sum of per-request costs | Exact |
+
+#### OpenRouter Pricing (Claude Opus 4.6)
+
+OpenRouter pricing varies by model. For Claude Opus 4.6 (the model used in this comparison):
+
+| Parameter | Value |
+|-----------|-------|
+| Input price | Check https://openrouter.ai/models for current pricing |
+| Output price | Check https://openrouter.ai/models for current pricing |
+| Context window | 200K tokens |
+
+Pricing should be captured at the time of each run from the OpenRouter Activity page, which shows the exact dollar amount charged.
+
+#### Measuring the Re-transmission Tax
+
+Because OpenRouter reports per-request token counts, we can directly observe the **re-transmission tax** — the growing input token count across successive turns in an agentic session:
+
+```
+Turn 1:  prompt_tokens = 12,000   (system prompt + tools + initial context)
+Turn 5:  prompt_tokens = 45,000   (+ file reads + previous outputs)
+Turn 10: prompt_tokens = 95,000   (cumulative growth)
+Turn 15: prompt_tokens = 140,000  (approaching context limit)
+```
+
+The **total billed input** is the sum across all turns, not the final context size. This is the dominant cost driver.
+
+### GitHub Copilot: Content-Based Estimation
+
+Since GitHub Copilot provides no token-level billing data, we use **content-based estimation** from git history as a secondary metric:
 
 | Metric | Source | Purpose |
 |--------|--------|---------|
@@ -46,7 +94,6 @@ Since GitHub Copilot provides no token-level billing data, we use **content-base
 | **Token estimate** | Character count ÷ 4 | Industry-standard approximation for English/code mix |
 
 ### What We Cannot Measure (Copilot)
-
 | Metric | Why Unavailable |
 |--------|----------------|
 | Exact input/output token counts | Copilot does not expose per-request token data |
@@ -99,13 +146,13 @@ This creates a **quadratic cost curve**: doubling the number of turns more than 
 
 ### The Two Architectures
 
-| | Roo Code + Kong AI | GitHub Copilot |
+| | Roo Code + OpenRouter | GitHub Copilot |
 |---|---|---|
 | **Context model** | Client-side state machine — full history re-serialized and transmitted every turn | Server-side @workspace RAG — semantic search retrieves only top-k relevant chunks (<5K tokens/turn) |
 | **Input per turn** | 50K-180K tokens (cumulative, growing) | <5K tokens (bounded, stable) |
 | **Re-transmission** | Entire history repeated at every turn | Backend manages state; only deltas sent |
 | **Context limit handling** | Client-side "Intelligent Context Condensing" — halts loop, sends secondary API call to summarize (itself billable) | Server-side sliding window + auto-compaction — invisible to user, no additional API cost |
-| **Failure mode** | Kong obfuscates context-length errors → infinite retry loop → 300KB+ diagnostic dumps | Aggressive truncation → precision loss on early instructions (mitigable with /compact) |
+| **Failure mode** | Context-length errors may cause retry loops | Aggressive truncation → precision loss on early instructions (mitigable with /compact) |
 
 ### Copilot's @workspace Semantic Retrieval
 
@@ -141,11 +188,13 @@ All 5 scenarios were executed in a single Copilot Agent session on 2026-03-01, c
 | **Wall-clock time** | ~100 minutes |
 | **Copilot cost** | **$19.00/month (fixed)** — $0.00 marginal for these scenarios |
 
-### What Would This Cost via Kong AI + Roo Code?
+### What Would This Cost via OpenRouter + Roo Code?
 
-Using the agentic re-transmission model from the deep research, we estimate the **true variable cost** for each scenario if executed through the Roo Code + Kong AI stack:
+Using the agentic re-transmission model from the deep research, we estimate the **true variable cost** for each scenario if executed through the Roo Code + OpenRouter stack. These estimates will be **validated against actual OpenRouter Activity data** once the Roo Code execution completes.
 
-**Methodology**: For each scenario, model the context window growing from an initial ~10K tokens (system prompt + tools) through N turns, with each file read and tool output adding to the cumulative payload. Total input = sum of context size at each turn. Pricing: Claude Sonnet at $3.00/1M input, $15.00/1M output.
+**Methodology**: For each scenario, model the context window growing from an initial ~10K tokens (system prompt + tools) through N turns, with each file read and tool output adding to the cumulative payload. Total input = sum of context size at each turn. Pricing: Claude Opus 4.6 via OpenRouter (see OpenRouter pricing page for current rates).
+
+> **NOTE**: The estimates below use Claude Sonnet pricing ($3.00/1M input, $15.00/1M output) as a baseline. Actual costs will differ based on the model and OpenRouter's current pricing. After each Roo Code run, replace these estimates with exact costs from the OpenRouter Activity page.
 
 | Scenario | Ticket | Tool Calls | Files Read | Avg Context/Turn | Cumulative Input | Output Est. | **Variable Cost** |
 |----------|--------|-----------|------------|-----------------|-----------------|------------|-------------------|
@@ -173,17 +222,19 @@ Using the measurement protocol's monthly frequency (26 base runs + 12 PROMOTE ru
 
 | Cost Model | Monthly (26 runs) | Monthly (38 runs) |
 |-----------|-------------------|-------------------|
-| **Kong AI Gateway (variable)** | **$58.10** | **$67.46** |
+| **OpenRouter (variable, estimated)** | **$58.10** | **$67.46** |
 | **GitHub Copilot Business (fixed)** | **$19.00** | **$19.00** |
 | **GitHub Copilot Enterprise (fixed)** | **$39.00** | **$39.00** |
 
+> **NOTE**: OpenRouter costs above are estimates based on Sonnet pricing. Actual OpenRouter costs for Claude Opus 4.6 will be higher — replace with measured values after execution.
+
 ### Break-Even Analysis
 
-The break-even question is now inverted: at what usage volume would Kong AI become cheaper than Copilot?
+The break-even question: at what usage volume would OpenRouter become cheaper than Copilot?
 
 $$\text{Break-even runs} = \frac{\text{Copilot Monthly Cost}}{\text{Average Variable Cost per Run}}$$
 
-Average variable cost per run: $67.46 ÷ 38 = **$1.78/run**
+Average variable cost per run (estimated): $67.46 ÷ 38 = **$1.78/run**
 
 | Tier | Break-Even Point | Current Volume | Verdict |
 |------|-----------------|----------------|---------|
@@ -192,40 +243,35 @@ Average variable cost per run: $67.46 ÷ 38 = **$1.78/run**
 
 Kong AI would only be cheaper if the team ran **fewer than 11 architecture scenarios per month** — far below the minimum viable workload for a functioning architecture practice.
 
+> **NOTE**: These break-even calculations use estimated OpenRouter costs. After collecting actual costs from OpenRouter Activity, recalculate.
+
 ### Cost Per Quality Point
 
-| Metric | Kong AI (variable) | Copilot Business | Copilot Enterprise |
+| Metric | OpenRouter (variable, est.) | Copilot Business | Copilot Enterprise |
 |--------|-------------------|-----------------|-------------------|
-| Monthly cost (38 runs) | $67.46 | $19.00 | $39.00 |
-| Quality score | TBD* | 149/155 | 149/155 |
-| Cost per quality point | TBD | $0.128 | $0.262 |
-| Monthly cost per quality % | TBD | $0.198 | $0.406 |
-
-\* *Kong AI quality score pending execution. Even if quality matches Copilot, the cost per quality point would be $0.453 — 3.5× higher than Copilot Business.*
+| Monthly cost (38 runs) | ~$67.46 (estimated) | $19.00 | $39.00 |
+| Quality score | TBD | TBD | TBD |
+| Cost per quality point | TBD | TBD | TBD |
 
 ### Total Cost of Ownership (Beyond Token Costs)
 
-The deep research identifies significant **hidden costs** that apply only to the Kong AI + Roo Code stack:
+Both tools now operate as fully managed SaaS — OpenRouter replaces the self-hosted Kong AI Gateway, eliminating most infrastructure overhead. Remaining TCO differences:
 
-| Hidden Cost | Impact | Source |
-|------------|--------|--------|
-| **Kong Gateway infrastructure** | Self-hosted or Konnect SaaS operational costs | DEEP-RESEARCH-1 |
-| **Qdrant vector database** | Must be provisioned and maintained (Docker or Cloud) for codebase indexing | DEEP-RESEARCH-2 |
-| **API key management** | Decentralized BYOK model requires continuous credit-refill workflows, usage monitoring per developer | DEEP-RESEARCH-1 (Forrester) |
-| **Shadow AI risk** | Developers may route proprietary code through unvetted endpoints without centralized oversight | DEEP-RESEARCH-1 (Gartner) |
-| **Drift Tax (~15-20%/year)** | Continuous prompt updates, tool chain refactoring, and hallucination remediation as foundation models evolve | DEEP-RESEARCH-1 |
-| **Infinite retry loop risk** | Kong obfuscates context-length HTTP 400 errors → Roo Code enters unbreakable retry loop → workflow paralysis | DEEP-RESEARCH-2 (root cause analysis) |
-| **Context condensing race condition** | Kong's post-response rate limiting blocks Roo Code's context condensing API calls → unrecoverable context explosion | DEEP-RESEARCH-2 |
-
-None of these costs apply to GitHub Copilot, which operates as a fully managed SaaS with centralized billing, server-side context management, and no infrastructure provisioning.
-
-Gartner projects that **>40% of enterprise agentic AI projects will be canceled before production** due to these hidden costs (Predicts 2026 research). IDC reports that scaling unmanaged AI consumes up to **48% of an organization's IT workforce** for monitoring and stitching together fragmented tools.
+| Factor | OpenRouter + Roo Code | GitHub Copilot |
+|--------|----------------------|----------------|
+| **Infrastructure** | None (SaaS) | None (SaaS) |
+| **API key management** | Single OpenRouter API key | GitHub OAuth (managed) |
+| **Token cost visibility** | Full — exact per-request costs | None — fixed subscription |
+| **Budget predictability** | Variable — depends on usage volume and model | Fixed — known monthly cost |
+| **Context management** | Client-side (Roo Code manages history) | Server-side (Copilot manages internally) |
+| **Model flexibility** | Any model on OpenRouter | Limited to Copilot-supported models |
+| **Rate limiting** | OpenRouter rate limits apply | Copilot premium request limits apply |
 
 ## Important Caveats
 
-### 1. Kong AI Quality Score Is Pending
+### 1. OpenRouter Provides Exact Costs — Estimates Will Be Replaced
 
-With only the Copilot execution complete (149/155 = 96.1%), the Kong AI quality score is unknown. If Kong AI produces lower quality — which the deep research suggests is likely due to context pollution and the Token Tax degrading reasoning — the cost-per-quality-point disparity would widen further.
+The variable cost estimates in this document are **preliminary** based on the agentic re-transmission model. After each Roo Code execution, the estimates will be replaced with **exact costs** from the OpenRouter Activity page. This is a significant advantage over the previous Kong AI setup, which required infrastructure-level monitoring.
 
 ### 2. Copilot Has Its Own Weakness: Precision Loss
 
@@ -242,11 +288,14 @@ The per-scenario variable cost estimates above assume:
 - Each scenario runs as a **separate session** (context resets between scenarios)
 - No error correction loops or self-correction retries
 - No context condensing overhead (secondary API calls to summarize)
-- No Kong rate-limiting interference with condensing
 
 In practice, all of these add 20-50% overhead. The deep research documents a **5-9× iteration tax** for agentic systems vs. standard chat, driven by multi-step planning and self-correction loops. Our estimates do not apply this multiplier, making them a floor, not a ceiling.
 
-### 4. Premium Request Model Further Favors Copilot
+### 4. Model Pricing Differences Matter
+
+Claude Opus 4.6 via OpenRouter has different pricing than Claude Sonnet. The estimates in the Monthly Cost Projection section use Sonnet pricing as a baseline — actual Opus 4.6 costs will be higher. Always use the measured OpenRouter Activity data rather than these estimates.
+
+### 5. Premium Request Model Further Favors Copilot
 
 GitHub Copilot Enterprise's pricing ($39/month) includes 1,500 premium requests/month. Standard models (GPT-5 mini, GPT-4.1) consume **0 premium requests** — zero cost regardless of token volume. Claude Sonnet costs only 0.33× per session. Only Claude Opus 4.6 uses a 3× multiplier. At our 38 runs/month, even using exclusively premium models, the allocation is never exhausted.
 
@@ -269,12 +318,14 @@ python3 scripts/cost-measurement.py analyze e83f83e 34150d9
 
 | Finding | Value |
 |---------|-------|
-| **Kong AI cost (5 scenarios)** | **$13.42** |
-| **Kong AI monthly (38 runs)** | **$67.46** |
+| **OpenRouter cost (5 scenarios, estimated)** | **~$13.42** (to be replaced with actuals) |
+| **OpenRouter monthly (38 runs, estimated)** | **~$67.46** (to be replaced with actuals) |
 | **Copilot Business monthly** | **$19.00** |
 | **Copilot Enterprise monthly** | **$39.00** |
-| **Cost ratio (Copilot Biz vs Kong)** | **Copilot 3.5× cheaper** |
-| **Break-even (Copilot Biz)** | **~11 runs/month** |
-| **Methodology** | Cumulative re-transmission modeling across agentic loop turns |
+| **Cost ratio (estimated)** | **Copilot ~3.5× cheaper** (pending actual OpenRouter data) |
+| **Break-even (Copilot Biz, estimated)** | **~11 runs/month** |
+| **OpenRouter measurement precision** | **Exact** — per-request token counts and costs |
+| **Copilot measurement precision** | **Estimated** — content-based proxy from git diffs |
+| **Methodology** | Direct measurement (OpenRouter) + cumulative re-transmission modeling (Copilot) |
 | **Key sources** | Deep research on token economics + context architecture |
-| **Recommendation** | **Strong preliminary advantage for Copilot Business** |
+| **Recommendation** | **Collect actual OpenRouter costs before drawing conclusions** |
