@@ -106,4 +106,5 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Service Catalog: services/index.md
   - Tags: tags.md

@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaTrek Inventory Procurement API — API Reference</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css">
+  <style>
+    /* ── NovaTrek Corporate Theme for Swagger UI ── */
+    :root {
+      --nt-navy: #1a2744;
+      --nt-navy-light: #2c3e6b;
+      --nt-copper: #c77b30;
+      --nt-copper-light: #d4945a;
+      --nt-slate: #f8fafc;
+      --nt-text: #1e293b;
+      --nt-text-light: #475569;
+      --nt-border: #e2e8f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--nt-slate);
+      color: var(--nt-text);
+    }
+
+    /* Top bar */
+    .nt-header {
+      background: linear-gradient(135deg, #0f172a 0%, var(--nt-navy) 60%, #1e3a5f 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-bottom: 3px solid var(--nt-copper);
+    }
+    .nt-header a {
+      color: #f8fafc;
+      text-decoration: none;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .nt-header a:hover { opacity: 1; }
+    .nt-header-title {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .nt-header-title span {
+      color: var(--nt-copper-light);
+      font-weight: 400;
+    }
+    .nt-header-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nt-badge {
+      background: rgba(199, 123, 48, 0.2);
+      border: 1px solid rgba(199, 123, 48, 0.4);
+      color: var(--nt-copper-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    /* Meta bar under header */
+    .nt-meta {
+      background: #ffffff;
+      border-bottom: 1px solid var(--nt-border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      gap: 2rem;
+      font-size: 0.8rem;
+      color: var(--nt-text-light);
+      flex-wrap: wrap;
+    }
+    .nt-meta strong { color: var(--nt-text); font-weight: 600; }
+    .nt-meta-item { display: flex; gap: 0.4rem; align-items: center; }
+
+    /* Swagger UI container */
+    .swagger-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ── Swagger UI Overrides ── */
+
+    /* Top bar hidden (we have our own) */
+    .swagger-ui .topbar { display: none !important; }
+
+    /* Info section */
+    .swagger-ui .info { margin: 2rem 0 1rem; }
+    .swagger-ui .info .title { color: var(--nt-navy) !important; font-size: 1.8rem !important; }
+    .swagger-ui .info .description p { color: var(--nt-text-light); line-height: 1.6; }
+
+    /* Operation blocks */
+    .swagger-ui .opblock.opblock-get {
+      border-color: #2563eb;
+      background: rgba(37, 99, 235, 0.04);
+    }
+    .swagger-ui .opblock.opblock-get .opblock-summary-method {
+      background: #2563eb;
+    }
+    .swagger-ui .opblock.opblock-post {
+      border-color: #059669;
+      background: rgba(5, 150, 105, 0.04);
+    }
+    .swagger-ui .opblock.opblock-post .opblock-summary-method {
+      background: #059669;
+    }
+    .swagger-ui .opblock.opblock-put {
+      border-color: var(--nt-copper);
+      background: rgba(199, 123, 48, 0.04);
+    }
+    .swagger-ui .opblock.opblock-put .opblock-summary-method {
+      background: var(--nt-copper);
+    }
+    .swagger-ui .opblock.opblock-patch {
+      border-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.04);
+    }
+    .swagger-ui .opblock.opblock-patch .opblock-summary-method {
+      background: #7c3aed;
+    }
+    .swagger-ui .opblock.opblock-delete {
+      border-color: #dc2626;
+      background: rgba(220, 38, 38, 0.04);
+    }
+    .swagger-ui .opblock.opblock-delete .opblock-summary-method {
+      background: #dc2626;
+    }
+
+    .swagger-ui .opblock .opblock-summary-method {
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .swagger-ui .opblock .opblock-summary-path {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+    }
+
+    /* Models section */
+    .swagger-ui section.models {
+      border: 1px solid var(--nt-border);
+      border-radius: 8px;
+    }
+    .swagger-ui section.models h4 {
+      color: var(--nt-navy);
+      font-size: 1.1rem;
+    }
+
+    /* Tags */
+    .swagger-ui .opblock-tag {
+      color: var(--nt-navy) !important;
+      font-size: 1.2rem !important;
+      border-bottom: 2px solid var(--nt-border);
+    }
+
+    /* Buttons — authorize, execute */
+    .swagger-ui .btn.authorize {
+      color: var(--nt-copper) !important;
+      border-color: var(--nt-copper) !important;
+    }
+    .swagger-ui .btn.execute {
+      background: var(--nt-navy) !important;
+      border-color: var(--nt-navy) !important;
+    }
+
+    /* Scheme container */
+    .swagger-ui .scheme-container {
+      background: #ffffff;
+      border: 1px solid var(--nt-border);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      padding: 1rem;
+    }
+
+    /* Response codes */
+    .swagger-ui .responses-table .response-col_status {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .nt-footer {
+      background: #0f172a;
+      border-top: 3px solid var(--nt-copper);
+      color: #94a3b8;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      margin-top: 3rem;
+    }
+    .nt-footer a { color: var(--nt-copper-light); text-decoration: none; }
+    .nt-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .nt-header { padding: 0.75rem 1rem; flex-direction: column; gap: 0.5rem; }
+      .nt-meta { padding: 0.5rem 1rem; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nt-header">
+    <div class="nt-header-title">
+      NovaTrek Architecture Portal <span>/ API Reference</span>
+    </div>
+    <div class="nt-header-links">
+      <span class="nt-badge">v2.1.0</span>
+      <a href="../">Service Catalog</a>
+      <a href="../../">Portal Home</a>
+      <a href="../../specs/svc-inventory-procurement.yaml" download>Download YAML</a>
+    </div>
+  </div>
+
+  <div class="nt-meta">
+    <div class="nt-meta-item"><strong>Service:</strong> svc-inventory-procurement</div>
+    <div class="nt-meta-item"><strong>Owner:</strong> NovaTrek Platform Engineering</div>
+    <div class="nt-meta-item"><strong>Version:</strong> 2.1.0</div>
+    <div class="nt-meta-item"><strong>Domain:</strong> Support</div>
+  </div>
+
+  <div class="swagger-container">
+    <div id="swagger-ui"></div>
+  </div>
+
+  <div class="nt-footer">
+    &copy; 2026 NovaTrek Adventures &mdash; Architecture Practice
+    &nbsp;|&nbsp;
+    <a href="../../">Portal Home</a>
+    &nbsp;|&nbsp;
+    <a href="../">Service Catalog</a>
+  </div>
+
+  <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js"></script>
+  <script>
+    const spec = {
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NovaTrek Inventory Procurement API",
+    "description": "Manages purchasing workflows, supplier relationships, and stock replenishment\nfor gear and supplies across all NovaTrek locations. Integrates with\nsvc-location-services for warehouse/shop inventory tracking and\nsvc-gear-inventory for item category definitions.\n",
+    "version": "2.1.0",
+    "contact": {
+      "name": "NovaTrek Platform Engineering",
+      "email": "platform-eng@novatrek.example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.novatrek.example.com/procurement/v1",
+      "description": "Production"
+    },
+    {
+      "url": "https://api-staging.novatrek.example.com/procurement/v1",
+      "description": "Staging"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/purchase-orders": {
+      "post": {
+        "operationId": "createPurchaseOrder",
+        "summary": "Create a new purchase order",
+        "description": "Initiates a purchase order in DRAFT status. Items reference gear categories from svc-gear-inventory.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePurchaseOrderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Purchase order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/purchase-orders/{po_id}": {
+      "get": {
+        "operationId": "getPurchaseOrder",
+        "summary": "Get purchase order details",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PurchaseOrderId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchase order details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrder"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updatePurchaseOrder",
+        "summary": "Update purchase order status or line items",
+        "description": "Supports status transitions: DRAFT->SUBMITTED->APPROVED->SHIPPED->RECEIVED.\nOrders can be CANCELLED from DRAFT or SUBMITTED states only.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PurchaseOrderId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePurchaseOrderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Purchase order updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/suppliers": {
+      "get": {
+        "operationId": "listSuppliers",
+        "summary": "List all suppliers",
+        "parameters": [
+          {
+            "name": "rating_min",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "minimum": 0,
+              "maximum": 5
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by supply category",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of suppliers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "suppliers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Supplier"
+                      }
+                    },
+                    "next_page_token": {
+                      "type": "string"
+                    },
+                    "total_count": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSupplier",
+        "summary": "Register a new supplier",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSupplierRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Supplier created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Supplier"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/stock-levels": {
+      "get": {
+        "operationId": "getStockLevels",
+        "summary": "Query current stock levels",
+        "description": "Returns stock levels filtered by location and/or item category.\nLocation references svc-location-services; categories reference svc-gear-inventory.\n",
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "query",
+            "description": "Filter by location (cross-ref svc-location-services)",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "item_category",
+            "in": "query",
+            "description": "Filter by gear category (cross-ref svc-gear-inventory)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "below_reorder_point",
+            "in": "query",
+            "description": "Only return items below reorder threshold",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock level data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stock_levels": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/StockLevel"
+                      }
+                    },
+                    "next_page_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/stock-adjustments": {
+      "post": {
+        "operationId": "createStockAdjustment",
+        "summary": "Record a stock adjustment",
+        "description": "Used for manual corrections, damage write-offs, or receiving shipments outside PO flow.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockAdjustmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Adjustment recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockAdjustment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/reorder-alerts": {
+      "get": {
+        "operationId": "listReorderAlerts",
+        "summary": "Get active reorder alerts",
+        "description": "Returns items that have fallen below their configured reorder point and need replenishment.",
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "CRITICAL"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reorder alerts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "alerts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ReorderAlert"
+                      }
+                    },
+                    "next_page_token": {
+                      "type": "string"
+                    },
+                    "total_count": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "PurchaseOrderId": {
+        "name": "po_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "PageSize": {
+        "name": "page_size",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        }
+      },
+      "PageToken": {
+        "name": "page_token",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "PurchaseOrderStatus": {
+        "type": "string",
+        "enum": [
+          "DRAFT",
+          "SUBMITTED",
+          "APPROVED",
+          "SHIPPED",
+          "RECEIVED",
+          "CANCELLED"
+        ]
+      },
+      "PurchaseOrder": {
+        "type": "object",
+        "required": [
+          "id",
+          "supplier_id",
+          "items",
+          "status",
+          "total_amount"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "supplier_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/PurchaseOrderItem"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/PurchaseOrderStatus"
+          },
+          "total_amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "default": "USD"
+          },
+          "delivery_location_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Delivery destination (cross-ref svc-location-services)"
+          },
+          "expected_delivery_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PurchaseOrderItem": {
+        "type": "object",
+        "required": [
+          "item_category",
+          "description",
+          "quantity",
+          "unit_price"
+        ],
+        "properties": {
+          "item_category": {
+            "type": "string",
+            "description": "Gear category (cross-ref svc-gear-inventory)",
+            "example": "CLIMBING_HARNESS"
+          },
+          "description": {
+            "type": "string",
+            "example": "Black Diamond Momentum Harness - Medium"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "unit_price": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0
+          },
+          "line_total": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Supplier": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "contact",
+          "lead_time_days"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alpine Gear Distributors"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/SupplierContact"
+          },
+          "lead_time_days": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Average days from order to delivery"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Supply categories this vendor fulfills"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SupplierContact": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "representative_name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "StockLevel": {
+        "type": "object",
+        "required": [
+          "item_category",
+          "location_id",
+          "on_hand",
+          "reorder_point"
+        ],
+        "properties": {
+          "item_category": {
+            "type": "string",
+            "description": "Gear category (cross-ref svc-gear-inventory)"
+          },
+          "location_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Storage location (cross-ref svc-location-services)"
+          },
+          "on_hand": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "on_order": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          "reorder_point": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reorder_quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "last_count_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "unit_cost": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "StockAdjustmentRequest": {
+        "type": "object",
+        "required": [
+          "item_category",
+          "location_id",
+          "quantity_change",
+          "reason"
+        ],
+        "properties": {
+          "item_category": {
+            "type": "string"
+          },
+          "location_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity_change": {
+            "type": "integer",
+            "description": "Positive for additions, negative for removals"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "DAMAGE",
+              "LOSS",
+              "CORRECTION",
+              "TRANSFER",
+              "OTHER"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "StockAdjustment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "item_category": {
+            "type": "string"
+          },
+          "location_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity_change": {
+            "type": "integer"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "adjusted_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ReorderAlert": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "item_category": {
+            "type": "string"
+          },
+          "location_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "current_on_hand": {
+            "type": "integer"
+          },
+          "reorder_point": {
+            "type": "integer"
+          },
+          "recommended_order_quantity": {
+            "type": "integer"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "CRITICAL"
+            ]
+          },
+          "preferred_supplier_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreatePurchaseOrderRequest": {
+        "type": "object",
+        "required": [
+          "supplier_id",
+          "items",
+          "delivery_location_id"
+        ],
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/PurchaseOrderItem"
+            }
+          },
+          "delivery_location_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_delivery_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdatePurchaseOrderRequest": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/PurchaseOrderStatus"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PurchaseOrderItem"
+            }
+          },
+          "expected_delivery_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateSupplierRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "contact",
+          "lead_time_days"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/SupplierContact"
+          },
+          "lead_time_days": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid authentication",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Resource conflict or invalid state transition",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+    SwaggerUIBundle({
+      spec: spec,
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+      ],
+      layout: "BaseLayout",
+      defaultModelsExpandDepth: 1,
+      defaultModelExpandDepth: 2,
+      docExpansion: "list",
+      filter: true,
+      showExtensions: true,
+      showCommonExtensions: true,
+      tryItOutEnabled: false
+    });
+  </script>
+</body>
+</html>

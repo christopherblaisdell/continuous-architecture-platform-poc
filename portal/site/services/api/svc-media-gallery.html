@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaTrek Media Gallery Service — API Reference</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css">
+  <style>
+    /* ── NovaTrek Corporate Theme for Swagger UI ── */
+    :root {
+      --nt-navy: #1a2744;
+      --nt-navy-light: #2c3e6b;
+      --nt-copper: #c77b30;
+      --nt-copper-light: #d4945a;
+      --nt-slate: #f8fafc;
+      --nt-text: #1e293b;
+      --nt-text-light: #475569;
+      --nt-border: #e2e8f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--nt-slate);
+      color: var(--nt-text);
+    }
+
+    /* Top bar */
+    .nt-header {
+      background: linear-gradient(135deg, #0f172a 0%, var(--nt-navy) 60%, #1e3a5f 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-bottom: 3px solid var(--nt-copper);
+    }
+    .nt-header a {
+      color: #f8fafc;
+      text-decoration: none;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .nt-header a:hover { opacity: 1; }
+    .nt-header-title {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .nt-header-title span {
+      color: var(--nt-copper-light);
+      font-weight: 400;
+    }
+    .nt-header-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nt-badge {
+      background: rgba(199, 123, 48, 0.2);
+      border: 1px solid rgba(199, 123, 48, 0.4);
+      color: var(--nt-copper-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    /* Meta bar under header */
+    .nt-meta {
+      background: #ffffff;
+      border-bottom: 1px solid var(--nt-border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      gap: 2rem;
+      font-size: 0.8rem;
+      color: var(--nt-text-light);
+      flex-wrap: wrap;
+    }
+    .nt-meta strong { color: var(--nt-text); font-weight: 600; }
+    .nt-meta-item { display: flex; gap: 0.4rem; align-items: center; }
+
+    /* Swagger UI container */
+    .swagger-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ── Swagger UI Overrides ── */
+
+    /* Top bar hidden (we have our own) */
+    .swagger-ui .topbar { display: none !important; }
+
+    /* Info section */
+    .swagger-ui .info { margin: 2rem 0 1rem; }
+    .swagger-ui .info .title { color: var(--nt-navy) !important; font-size: 1.8rem !important; }
+    .swagger-ui .info .description p { color: var(--nt-text-light); line-height: 1.6; }
+
+    /* Operation blocks */
+    .swagger-ui .opblock.opblock-get {
+      border-color: #2563eb;
+      background: rgba(37, 99, 235, 0.04);
+    }
+    .swagger-ui .opblock.opblock-get .opblock-summary-method {
+      background: #2563eb;
+    }
+    .swagger-ui .opblock.opblock-post {
+      border-color: #059669;
+      background: rgba(5, 150, 105, 0.04);
+    }
+    .swagger-ui .opblock.opblock-post .opblock-summary-method {
+      background: #059669;
+    }
+    .swagger-ui .opblock.opblock-put {
+      border-color: var(--nt-copper);
+      background: rgba(199, 123, 48, 0.04);
+    }
+    .swagger-ui .opblock.opblock-put .opblock-summary-method {
+      background: var(--nt-copper);
+    }
+    .swagger-ui .opblock.opblock-patch {
+      border-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.04);
+    }
+    .swagger-ui .opblock.opblock-patch .opblock-summary-method {
+      background: #7c3aed;
+    }
+    .swagger-ui .opblock.opblock-delete {
+      border-color: #dc2626;
+      background: rgba(220, 38, 38, 0.04);
+    }
+    .swagger-ui .opblock.opblock-delete .opblock-summary-method {
+      background: #dc2626;
+    }
+
+    .swagger-ui .opblock .opblock-summary-method {
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .swagger-ui .opblock .opblock-summary-path {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+    }
+
+    /* Models section */
+    .swagger-ui section.models {
+      border: 1px solid var(--nt-border);
+      border-radius: 8px;
+    }
+    .swagger-ui section.models h4 {
+      color: var(--nt-navy);
+      font-size: 1.1rem;
+    }
+
+    /* Tags */
+    .swagger-ui .opblock-tag {
+      color: var(--nt-navy) !important;
+      font-size: 1.2rem !important;
+      border-bottom: 2px solid var(--nt-border);
+    }
+
+    /* Buttons — authorize, execute */
+    .swagger-ui .btn.authorize {
+      color: var(--nt-copper) !important;
+      border-color: var(--nt-copper) !important;
+    }
+    .swagger-ui .btn.execute {
+      background: var(--nt-navy) !important;
+      border-color: var(--nt-navy) !important;
+    }
+
+    /* Scheme container */
+    .swagger-ui .scheme-container {
+      background: #ffffff;
+      border: 1px solid var(--nt-border);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      padding: 1rem;
+    }
+
+    /* Response codes */
+    .swagger-ui .responses-table .response-col_status {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .nt-footer {
+      background: #0f172a;
+      border-top: 3px solid var(--nt-copper);
+      color: #94a3b8;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      margin-top: 3rem;
+    }
+    .nt-footer a { color: var(--nt-copper-light); text-decoration: none; }
+    .nt-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .nt-header { padding: 0.75rem 1rem; flex-direction: column; gap: 0.5rem; }
+      .nt-meta { padding: 0.5rem 1rem; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nt-header">
+    <div class="nt-header-title">
+      NovaTrek Architecture Portal <span>/ API Reference</span>
+    </div>
+    <div class="nt-header-links">
+      <span class="nt-badge">v1.0.2</span>
+      <a href="../">Service Catalog</a>
+      <a href="../../">Portal Home</a>
+      <a href="../../specs/svc-media-gallery.yaml" download>Download YAML</a>
+    </div>
+  </div>
+
+  <div class="nt-meta">
+    <div class="nt-meta-item"><strong>Service:</strong> svc-media-gallery</div>
+    <div class="nt-meta-item"><strong>Owner:</strong> NovaTrek Digital Experience Team</div>
+    <div class="nt-meta-item"><strong>Version:</strong> 1.0.2</div>
+    <div class="nt-meta-item"><strong>Domain:</strong> Support</div>
+  </div>
+
+  <div class="swagger-container">
+    <div id="swagger-ui"></div>
+  </div>
+
+  <div class="nt-footer">
+    &copy; 2026 NovaTrek Adventures &mdash; Architecture Practice
+    &nbsp;|&nbsp;
+    <a href="../../">Portal Home</a>
+    &nbsp;|&nbsp;
+    <a href="../">Service Catalog</a>
+  </div>
+
+  <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js"></script>
+  <script>
+    const spec = {
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NovaTrek Media Gallery Service",
+    "description": "Manages trip photos, videos, and media content captured during NovaTrek adventures.\nSupports uploads from guides, guests, and drone footage systems. Provides shareable\nlinks and gallery views tied to reservations and trips.\n",
+    "version": "1.0.2",
+    "contact": {
+      "name": "NovaTrek Digital Experience Team",
+      "email": "digital@novatrek.example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.novatrek.example.com/media/v1",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/media": {
+      "post": {
+        "operationId": "uploadMedia",
+        "summary": "Upload a media item",
+        "description": "Uploads a new photo, video, or panorama. The media is associated with a\nreservation (from svc-reservations) and optionally a specific trip.\n",
+        "tags": [
+          "Media"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Media uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "413": {
+            "description": "Media file exceeds size limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listMedia",
+        "summary": "List media by reservation or trip",
+        "tags": [
+          "Media"
+        ],
+        "parameters": [
+          {
+            "name": "reservation_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reference to svc-reservations reservation"
+          },
+          {
+            "name": "trip_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "media_type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MediaType"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 200
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of media items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MediaItem"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/media/{media_id}": {
+      "get": {
+        "operationId": "getMedia",
+        "summary": "Get media item details",
+        "tags": [
+          "Media"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MediaIdPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Media item details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteMedia",
+        "summary": "Delete a media item",
+        "description": "Soft-deletes the media item. Underlying storage is purged after 30 days.",
+        "tags": [
+          "Media"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MediaIdPath"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Media item deleted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/media/{media_id}/share": {
+      "post": {
+        "operationId": "createShareLink",
+        "summary": "Create a shareable link for a media item",
+        "description": "Generates a time-limited, tokenized URL for sharing with non-authenticated users.",
+        "tags": [
+          "Sharing"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MediaIdPath"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShareLinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Share link created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShareLink"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "MediaIdPath": {
+        "name": "media_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "schemas": {
+      "MediaItem": {
+        "type": "object",
+        "required": [
+          "id",
+          "reservation_id",
+          "uploader_type",
+          "media_type",
+          "url",
+          "captured_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reservation_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Reference to svc-reservations reservation"
+          },
+          "trip_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uploader_type": {
+            "$ref": "#/components/schemas/UploaderType"
+          },
+          "uploader_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Guide or guest ID who uploaded"
+          },
+          "media_type": {
+            "$ref": "#/components/schemas/MediaType"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://cdn.novatrek.example.com/media/2026/02/IMG_4821.jpg"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://cdn.novatrek.example.com/media/2026/02/thumb/IMG_4821.jpg"
+          },
+          "file_size_bytes": {
+            "type": "integer"
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "summit",
+              "group-photo",
+              "wildlife"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MediaUploadRequest": {
+        "type": "object",
+        "required": [
+          "reservation_id",
+          "uploader_type",
+          "media_type",
+          "url",
+          "captured_at"
+        ],
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trip_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uploader_type": {
+            "$ref": "#/components/schemas/UploaderType"
+          },
+          "uploader_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "media_type": {
+            "$ref": "#/components/schemas/MediaType"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UploaderType": {
+        "type": "string",
+        "enum": [
+          "GUIDE",
+          "GUEST",
+          "DRONE"
+        ]
+      },
+      "MediaType": {
+        "type": "string",
+        "enum": [
+          "PHOTO",
+          "VIDEO",
+          "PANORAMA"
+        ]
+      },
+      "GeoLocation": {
+        "type": "object",
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "altitude_meters": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ShareLink": {
+        "type": "object",
+        "required": [
+          "media_id",
+          "token",
+          "share_url",
+          "expires_at"
+        ],
+        "properties": {
+          "media_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "token": {
+            "type": "string",
+            "example": "shr_a8f3b2c1d4e5"
+          },
+          "share_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://share.novatrek.example.com/m/shr_a8f3b2c1d4e5"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "download_count": {
+            "type": "integer",
+            "default": 0
+          },
+          "max_downloads": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "ShareLinkRequest": {
+        "type": "object",
+        "properties": {
+          "expires_in_hours": {
+            "type": "integer",
+            "default": 168,
+            "minimum": 1,
+            "maximum": 8760,
+            "description": "Link validity in hours (default 7 days)"
+          },
+          "max_downloads": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Maximum number of downloads (null for unlimited)"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request payload",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid JWT token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+    SwaggerUIBundle({
+      spec: spec,
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+      ],
+      layout: "BaseLayout",
+      defaultModelsExpandDepth: 1,
+      defaultModelExpandDepth: 2,
+      docExpansion: "list",
+      filter: true,
+      showExtensions: true,
+      showCommonExtensions: true,
+      tryItOutEnabled: false
+    });
+  </script>
+</body>
+</html>
