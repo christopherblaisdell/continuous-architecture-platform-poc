@@ -16,11 +16,15 @@ Open `phase-1-ai-tool-cost-comparison/workspace/novatrek-workspace.code-workspac
 
 Open a **new** Copilot Agent Mode chat. Do NOT reuse an existing conversation. Ensure Claude Opus 4.6 is the selected model.
 
-### 3. Record Start Time
+### 3. Record Starting Premium Request Count
+
+Go to your GitHub Copilot settings page and note the current premium request count for the billing cycle. You will check this again after the run to calculate the delta (requests consumed by this session).
+
+### 4. Record Start Time
 
 Note the wall-clock time before pasting the prompt.
 
-### 4. Paste Everything Below the Line
+### 5. Paste Everything Below the Line
 
 Copy from `BEGIN PROMPT` to `END PROMPT` and paste as a single message.
 
@@ -322,7 +326,7 @@ outputs/copilot/<RUN_NUMBER>/
 
 ## Post-Execution Summary
 
-After completing all 5 scenarios, provide a brief summary listing:
+After completing all 5 scenarios, create `run-summary.md` in your run folder (`outputs/copilot/<RUN_NUMBER>/run-summary.md`) containing:
 - Total files created and modified
 - Total mock script executions (count each `python3 scripts/mock-*.py` invocation)
 - Total tool calls (file reads, file creates, terminal commands)
@@ -338,8 +342,9 @@ After completing all 5 scenarios, provide a brief summary listing:
 
 1. **Record wall-clock time** (start to completion).
 2. **Record Copilot Pro+ premium request usage**:
-   - Check your GitHub Copilot settings page for premium request count consumed during this session
-   - Note: GitHub does not expose per-request cost data. Record the premium request count if visible.
+   - Check your GitHub Copilot settings page for the current premium request count
+   - Calculate the delta from the count recorded in Pre-Execution Step 3
+   - Note: GitHub does not expose per-request cost data. The delta is approximate — other Copilot usage during the run would inflate it.
    - Cost model: $39.00/month base + $0.04/request overage beyond 1500 included requests
 3. **Create `run-metadata.md`** in the run folder (`outputs/copilot/<RUN>/run-metadata.md`) with start time, end time, wall-clock duration, premium requests consumed, and cost estimate.
 4. **Score each scenario** using the rubrics in:
