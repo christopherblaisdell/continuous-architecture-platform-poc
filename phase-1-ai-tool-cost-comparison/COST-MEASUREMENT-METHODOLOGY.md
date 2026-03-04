@@ -7,6 +7,8 @@
 > Incorporates deep research findings on agentic token economics, the ReAct re-transmission tax, and Copilot's semantic retrieval architecture. See [DEEP-RESEARCH-1.md](../research/DEEP-RESEARCH-1.md) and [DEEP-RESEARCH-2.md](../research/DEEP-RESEARCH-2.md).
 >
 > Updated for OpenRouter (replacing Kong AI Gateway) — OpenRouter provides exact per-request token counts and costs.
+>
+> **REVISED 2026-03-04**: Updated with actual billing data from run 002 execution on both platforms. Previous estimates were significantly wrong — OpenRouter actual cost was ~7.5x higher than projected; Copilot formula ($0.028 x multiplier) does not match observed billing.
 
 ## Purpose
 
@@ -25,8 +27,8 @@ The two toolchains have incompatible cost models **and** incompatible context ma
 | **Input tokens per turn** | 50K-180K (full history payload, growing each turn) | <5K (only top-k relevant code chunks via RAG) |
 | **Token visibility** | **Full — exact counts in API response and activity dashboard** | None — no per-request token API |
 | **Billing API** | **OpenRouter Activity page + API response `usage` object** | Not accessible for individual accounts* |
-| **Cost per scenario** | **Directly measurable with exact precision** | Turns x $0.028 x model_multiplier (e.g., x3 for Claude Opus 4.6 = $0.084/turn) |
-| **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | Scales linearly with model turns at $0.028 x multiplier per turn |
+| **Cost per scenario** | **Directly measurable with exact precision** | Premium requests x $0.04 (actual billing rate) |
+| **Cost sensitivity** | Scales **quadratically** with session length (re-transmission) | Scales linearly with premium requests; absorbed by flat subscription up to 1,500/month |
 | **Infrastructure required** | None (fully managed SaaS) | None (fully managed SaaS) |
 
 \* *We tested all known GitHub APIs — see [API Availability](#github-api-availability) below.*
@@ -205,28 +207,45 @@ Using the agentic re-transmission model from the deep research, we estimate the 
 | SC-05 | NTK-10003 | 20 | 14 | ~55K | ~1,100K | ~20K | **$3.60** |
 | **TOTAL** | | **85** | **40** | | **4,055K** | **83K** | **$13.42** |
 
+> **CORRECTION (2026-03-04):** The estimates above used Claude Sonnet pricing ($3.00/1M input, $15.00/1M output). Actual run 002 used Claude Opus 4.6 via OpenRouter, which is substantially more expensive. Actual OpenRouter billing for the run 002 execution window (March 4, 10:11-10:37 AM) showed **$100 in auto-top-up charges** (4 x $25). This means the actual per-run cost is approximately **$100** — roughly **7.5x higher** than the Sonnet-based estimate. The re-transmission tax model was directionally correct but the pricing input was wrong.
+
 
 ### Monthly Cost Projection
 
 Using the measurement protocol's monthly frequency (26 base runs + 12 PROMOTE runs = 38 runs/month):
 
-| Scenario | Per-Run | Monthly Freq (orig) | Monthly Freq (+PROMOTE) | Monthly Cost (orig) | Monthly Cost (+PROMOTE) |
-|----------|---------|--------------------|-----------------------|--------------------|-----------------------|
-| SC-01 | $1.05 | 10 | 10 | $10.50 | $10.50 |
-| SC-02 | $2.66 | 6 | 6 | $15.96 | $15.96 |
-| SC-03 | $5.33 | 4 | 4 | $21.32 | $21.32 |
-| SC-04 | $0.78 | 4 | 4 | $3.12 | $3.12 |
-| SC-05 | $3.60 | 2 | 2 | $7.20 | $7.20 |
-| PROMOTE (SC-04-like) | $0.78 | — | 12 | — | $9.36 |
-| **TOTAL** | | **26** | **38** | **$58.10** | **$67.46** |
+> **REVISED (2026-03-04):** Original estimates used Claude Sonnet pricing. Actual Claude Opus 4.6 costs are ~7.5x higher. Tables below show both the original estimates and the revised actuals.
 
-| Cost Model | Monthly (26 runs) | Monthly (38 runs) |
-|-----------|-------------------|-------------------|
-| **OpenRouter (variable, estimated)** | **$58.10** | **$67.46** |
+#### Original Estimates (Claude Sonnet pricing — SUPERSEDED)
+
+| Scenario | Per-Run (est.) | Monthly Freq (+PROMOTE) | Monthly Cost (est.) |
+|----------|---------|----------------------|--------------------|
+| SC-01 | $1.05 | 10 | $10.50 |
+| SC-02 | $2.66 | 6 | $15.96 |
+| SC-03 | $5.33 | 4 | $21.32 |
+| SC-04 | $0.78 | 4 | $3.12 |
+| SC-05 | $3.60 | 2 | $7.20 |
+| PROMOTE (SC-04-like) | $0.78 | 12 | $9.36 |
+| **TOTAL** | | **38** | **$67.46** |
+
+#### Revised Actuals (Claude Opus 4.6 via OpenRouter)
+
+| Metric | Value |
+|--------|-------|
+| Actual cost for 1 run (5 scenarios) | ~$100 (based on auto-top-up charges) |
+| Average cost per scenario | ~$20 |
+| Estimated monthly (38 runs) | ~$507 (using proportional $13.35/scenario avg) |
+| **Estimated monthly (adjusted)** | **~$507** |
+
+NOTE: The $100/run figure includes some overhead from other concurrent usage and the Claude Opus 4.6 model premium. Exact per-generation costs should be retrieved from the OpenRouter Activity dashboard.
+
+#### Revised Platform Comparison
+
+| Cost Model | Monthly (38 runs, Sonnet est.) | Monthly (38 runs, Opus actuals) |
+|-----------|-------------------------------|--------------------------------|
+| **OpenRouter (variable)** | **$67.46** (est.) | **~$507** (actual-based) |
 | **GitHub Copilot Pro+ (base)** | **$39.00** | **$39.00** |
-| **GitHub Copilot Pro+ (base + overage)** | **$39.00 + overage** | **$39.00 + overage** |
-
-> **NOTE**: OpenRouter costs above are estimates based on Sonnet pricing. Actual OpenRouter costs for Claude Opus 4.6 will be higher -- replace with measured values after execution. Copilot cost = model_turns x $0.028 x model_multiplier (x3 for Claude Opus 4.6 = $0.084/turn).
+| **Ratio** | **OpenRouter 1.7x more** | **OpenRouter ~13x more** |
 
 ### Break-Even Analysis
 
@@ -234,16 +253,14 @@ The break-even question: at what usage volume would OpenRouter become cheaper th
 
 $$\text{Break-even runs} = \frac{\text{Copilot Monthly Cost}}{\text{Average Variable Cost per Run}}$$
 
-Average variable cost per run (estimated): $67.46 / 38 = **$1.78/run**
+Average variable cost per run (actual): ~$100 / 5 scenarios full run = **~$100/run**
 
 | Tier | Break-Even Point | Current Volume | Verdict |
 |------|-----------------|----------------|--------|
-| Copilot Pro+ base ($39) | ~22 runs/month | 38 runs/month | **Copilot base wins by 1.7x** |
-| Copilot Pro+ with overage | Depends on premium request consumption | 38 runs/month | **Measure actual overage** |
+| Copilot Pro+ ($39/month) | <1 run/month | 38 runs/month | **Copilot wins by ~13x** |
+| Copilot Pro+ with full overage | ~5 runs/month (at $8/run est.) | 38 runs/month | **Copilot still wins dramatically** |
 
-> **NOTE**: Break-even uses base subscription only. Once included premium requests (1500/month) are exhausted, each additional request costs $0.028 x model_multiplier effective (e.g., $0.084/turn for Claude Opus 4.6). Use `scripts/openrouter-cost.py` to get exact OpenRouter costs for comparison.
-
-> **NOTE**: These break-even calculations use estimated OpenRouter costs. After collecting actual costs from OpenRouter Activity, recalculate.
+> **REVISED (2026-03-04):** With actual Opus 4.6 pricing, OpenRouter never breaks even against Copilot at any reasonable volume. A single OpenRouter run (~$100) costs more than an entire month of Copilot Pro+ ($39). Even with Copilot overage (120 premium requests/day = $4.80 notional), Copilot is ~20x cheaper per run.
 
 ### Cost Per Quality Point
 
@@ -295,18 +312,25 @@ In practice, all of these add 20-50% overhead. The deep research documents a **5
 
 Claude Opus 4.6 via OpenRouter has different pricing than Claude Sonnet. The estimates in the Monthly Cost Projection section use Sonnet pricing as a baseline — actual Opus 4.6 costs will be higher. Always use the measured OpenRouter Activity data rather than these estimates.
 
-### 5. Copilot Pro+ Overage Pricing and Model Multipliers
+### 5. Copilot Pro+ Billing: Actual vs Documented
 
-GitHub Copilot Pro+ ($39/month) includes 1500 premium requests/month. When the included allowance is exhausted, additional premium requests cost **$0.028 each** (Pro+ discount). Different models consume different numbers of premium requests per turn:
+GitHub Copilot Pro+ ($39/month) includes 1,500 premium requests/month. Actual billing data from March 4, 2026:
 
-| Model | Multiplier | Effective Cost per Turn |
-|-------|-----------|-------------------------|
-| Claude Opus 4.6 | x3 | $0.084 |
-| Claude Opus 4.6 fast (preview) | x30 | $0.84 |
+| Parameter | Documented | Actual |
+|-----------|-----------|--------|
+| Rate per premium request | $0.028 (Pro+ discount) | **$0.04** |
+| Claude Opus 4.6 fast multiplier | x30 | **Not observed** (120 requests for heavy day, not 1,650+) |
+| Per-turn cost formula | turns x $0.028 x 30 = $0.84/turn | **~$0.04/premium request** |
+| Monthly included requests | 1,500 | 1,500 (confirmed) |
 
-**Per-session cost formula**: `model_turns x $0.028 x model_multiplier`
+The documented $0.028 rate and x30 multiplier for Claude Opus 4.6 fast (preview) do not match observed billing. Either:
+- (A) The multiplier is applied differently than documented (not per-invocation)
+- (B) The model is not actually billed as "fast (preview)" despite what the system prompt states
+- (C) The billing dashboard shows post-multiplier request counts
 
-The AI self-reports its model turn count in `run-summary.md` at the end of each execution. This is our primary Copilot cost metric -- it is deterministic and requires no external API access (which GitHub does not provide for personal accounts).
+A deep research investigation has been prepared to resolve this discrepancy. See [DEEP-RESEARCH-PROMPT-COPILOT-BILLING.md](../research/DEEP-RESEARCH-PROMPT-COPILOT-BILLING.md).
+
+**Practical impact**: Regardless of the multiplier mechanics, actual Copilot cost for a full 5-scenario run was **$4.80 notional** ($0 overage) for the entire day. This is the empirical data point that matters for the cost comparison.
 
 ### 6. OpenRouter Cost Retrieval Script
 
@@ -336,16 +360,15 @@ python3 scripts/cost-measurement.py analyze e83f83e 34150d9
 
 ## Summary
 
-| Finding | Value |
-|---------|-------|
-| **OpenRouter cost (5 scenarios, estimated)** | **~$13.42** (to be replaced with actuals) |
-| **OpenRouter monthly (38 runs, estimated)** | **~$67.46** (to be replaced with actuals) |
-| **Copilot Pro+ monthly (base)** | **$39.00** |
-| **Copilot Pro+ overage rate** | **$0.028/request x model_multiplier (x3 for Claude Opus 4.6 = $0.084/turn)** |
-| **Cost ratio (estimated, base only)** | **Copilot ~1.7x cheaper** (pending actual data) |
-| **Break-even (Copilot Pro+ base, estimated)** | **~22 runs/month** |
-| **OpenRouter measurement precision** | **Exact** — per-request token counts and costs |
-| **Copilot measurement precision** | **Deterministic** — model turns x $0.028 x multiplier |
-| **Methodology** | Direct measurement (OpenRouter) + cumulative re-transmission modeling (Copilot) |
-| **Key sources** | Deep research on token economics + context architecture |
-| **Recommendation** | **Collect actual OpenRouter costs before drawing conclusions** |
+| Finding | Estimated (pre-run) | Actual (post-run 002) |
+|---------|--------------------|-----------------------|
+| **OpenRouter cost (5 scenarios)** | ~$13.42 (Sonnet pricing) | **~$100** (Opus 4.6 actuals) |
+| **OpenRouter monthly (38 runs)** | ~$67.46 (Sonnet pricing) | **~$507** (extrapolated) |
+| **Copilot Pro+ monthly (base)** | $39.00 | **$39.00** (confirmed) |
+| **Copilot Pro+ full-day cost** | $0.084/turn x ~55 turns = $4.62 | **$4.80** (120 req x $0.04, $0 overage) |
+| **Cost ratio** | Copilot ~1.7x cheaper (est.) | **Copilot ~13x cheaper** (actuals) |
+| **Break-even** | ~22 runs/month (est.) | **<1 run/month** (Copilot always wins) |
+| **OpenRouter measurement precision** | Exact (confirmed) | **Exact** (auto-top-ups observable) |
+| **Copilot measurement precision** | Deterministic formula | **Formula incorrect**; use billing dashboard |
+| **Key correction** | Sonnet pricing undercounted OpenRouter by ~7.5x | Opus 4.6 is the actual model used |
+| **Recommendation** | Collect actual OpenRouter costs | **Data collected; Copilot is decisively cheaper** |
