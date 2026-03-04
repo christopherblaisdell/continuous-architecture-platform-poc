@@ -38,6 +38,16 @@ Central registry for all bookable adventure experiences. Manages the full lifecy
 
 ---
 
+## Sequence Diagrams
+
+### Reservation Booking Flow
+
+Shows how the trip catalog is queried during the booking process for trip search, details, and eligibility validation.
+
+<object data="diagrams/reservation-booking-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Reservation Booking Flow diagram</object>
+
+---
+
 ## Key Patterns
 
 - **Adventure Category as Classification Key**: The `adventure_category` field on trip definitions is the input to the check-in classification system. New categories added here must have corresponding entries in the check-in classification config — otherwise, guests default to Pattern 3 (Full Service) per [ADR-005](../decisions/ADR-005-pattern3-default-fallback.md).

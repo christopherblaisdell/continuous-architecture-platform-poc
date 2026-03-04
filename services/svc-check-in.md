@@ -43,10 +43,22 @@ Handles day-of-adventure check-in workflow including wristband assignment, gear 
 
 ---
 
+## Sequence Diagrams
+
+### Check-In Process Flow
+
+<object data="diagrams/check-in-process-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Check-In Process Flow diagram</object>
+
+### Unregistered Guest Lookup Orchestration
+
+<object data="diagrams/lookup-orchestration.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Lookup Orchestration diagram</object>
+
+---
+
 ## Key Patterns
 
 - **Adventure Category Classification**: Maps 25 adventure categories to 3 check-in UI patterns (Basic, Guided, Full Service) via configuration-driven YAML. See [ADR-004](../decisions/ADR-004-configuration-driven-classification.md).
-- **Unregistered Guest Orchestration**: Multi-service fan-out pattern with conditional partner fallback and parallel safety/gear checks. See [ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md) and [orchestration diagram](../phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/i.impacts/impact.1/lookup-orchestration.puml).
+- **Unregistered Guest Orchestration**: Multi-service fan-out pattern with conditional partner fallback and parallel safety/gear checks. See [ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md).
 - **Kiosk Session Management**: JWT-based 30-minute sessions with one-active-per-device enforcement.
 
 ---

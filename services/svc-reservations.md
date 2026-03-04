@@ -36,6 +36,18 @@ Manages the full lifecycle of adventure reservations — creation, modification,
 
 ---
 
+## Sequence Diagrams
+
+### Reservation Booking Flow
+
+<object data="diagrams/reservation-booking-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Reservation Booking Flow diagram</object>
+
+### Partner Booking Flow
+
+<object data="diagrams/partner-booking-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Partner Booking Flow diagram</object>
+
+---
+
 ## Key Patterns
 
 - **Multi-Source Bookings**: Reservations originate from direct bookings, partner integrations (travel agents), and gift card redemptions. All booking sources populate the four verification fields required by [ADR-007](../decisions/ADR-007-four-field-identity-verification.md).

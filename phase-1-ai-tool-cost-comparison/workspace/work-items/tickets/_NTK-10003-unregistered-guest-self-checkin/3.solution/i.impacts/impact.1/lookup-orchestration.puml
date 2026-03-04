@@ -8,10 +8,10 @@ skinparam sequenceParticipant underline
 
 actor "Guest" as Guest
 participant "Kiosk UI" as Kiosk
-participant "svc-check-in\n(Orchestrator)" as CheckIn
-participant "svc-reservations" as Reservations
+participant "svc-check-in\n(Orchestrator)" as CheckIn [[/services/svc-check-in/]]
+participant "svc-reservations" as Reservations [[/services/svc-reservations/]]
 participant "svc-partner-\nintegrations" as Partners
-participant "svc-guest-\nprofiles" as Profiles
+participant "svc-guest-\nprofiles" as Profiles [[/services/svc-guest-profiles/]]
 participant "svc-safety-\ncompliance" as Safety
 participant "svc-gear-\ninventory" as Gear
 
@@ -22,13 +22,13 @@ Kiosk -> Kiosk : Display verification form
 
 Guest -> Kiosk : Enter last_name,\nconfirmation_code,\nadventure_date,\nparticipant_count
 
-Kiosk -> CheckIn : POST /check-ins/lookup-reservation\n{last_name, confirmation_code,\nadventure_date, participant_count,\nkiosk_device_id}
+Kiosk -> CheckIn : [[/services/svc-check-in/ POST /check-ins/lookup-reservation]]\n{last_name, confirmation_code,\nadventure_date, participant_count,\nkiosk_device_id}
 
 CheckIn -> CheckIn : Validate input\nNormalize confirmation_code\nCheck rate limit
 
 == Reservation Lookup ==
 
-CheckIn -> Reservations : POST /reservations/search\n{last_name, confirmation_code,\nadventure_date, participant_count}
+CheckIn -> Reservations : [[/services/svc-reservations/ POST /reservations/search]]\n{last_name, confirmation_code,\nadventure_date, participant_count}
 
 alt Reservation Found
     Reservations --> CheckIn : 200 OK\n{reservation_id, adventure_name,\nparticipants[], booking_source}
@@ -45,7 +45,7 @@ else Reservation Not Found
 
         alt Partner Confirms Booking
             Partners --> CheckIn : 200 OK\n{booking_details}
-            CheckIn -> Reservations : POST /reservations\n(create synced reservation)
+        CheckIn -> Reservations : [[/services/svc-reservations/ POST /reservations]]\n(create synced reservation)
             Reservations --> CheckIn : 201 Created\n{reservation_id}
 
         else Partner Booking Not Found
@@ -65,13 +65,13 @@ end
 
 == Guest Profile ==
 
-CheckIn -> Profiles : GET /guest-profiles\n?reservation_id={id}
+CheckIn -> Profiles : [[/services/svc-guest-profiles/ GET /guest-profiles]]\n?reservation_id={id}
 
 alt Profile Exists
     Profiles --> CheckIn : 200 OK\n{guest_profile_id, profile_type}
 
 else No Profile
-    CheckIn -> Profiles : POST /guest-profiles/temporary\n{last_name, reservation_id}
+    CheckIn -> Profiles : [[/services/svc-guest-profiles/ POST /guest-profiles/temporary]]\n{last_name, reservation_id}
     Profiles --> CheckIn : 201 Created\n{guest_profile_id,\nprofile_type: TEMPORARY}
 end
 

@@ -39,6 +39,14 @@ Central orchestration service for NovaTrek trip scheduling. Coordinates guide av
 
 ---
 
+## Sequence Diagrams
+
+### Scheduling Orchestration Flow
+
+<object data="diagrams/scheduling-orchestration-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Scheduling Orchestration Flow diagram</object>
+
+---
+
 ## Key Patterns
 
 - **Data Ownership Boundary**: The scheduling orchestrator owns schedule optimization fields (assigned guide, trip slot, route). Guide-owned fields (guideNotes, guidePreferences, medical restrictions) must never be modified by the orchestrator. Enforced via PATCH semantics with `PatchScheduleDto`. See [ADR-010](../decisions/ADR-010-patch-semantics-schedule-updates.md).
