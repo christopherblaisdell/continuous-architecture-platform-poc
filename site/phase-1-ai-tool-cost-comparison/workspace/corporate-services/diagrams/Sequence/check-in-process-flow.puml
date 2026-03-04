@@ -21,8 +21,8 @@ skinparam sequence {
 ' ============================================================
 actor "Guest" as guest
 participant "Check-in Kiosk" as kiosk
-participant "svc-check-in" as checkin
-participant "svc-reservations" as reservations
+participant "svc-check-in" as checkin [[/services/svc-check-in/]]
+participant "svc-reservations" as reservations [[/services/svc-reservations/]]
 participant "svc-safety-compliance" as safety
 participant "svc-gear-inventory" as gear
 participant "svc-guide-management" as guides
@@ -32,8 +32,8 @@ queue "Kafka" as kafka
 ' QR Code Scan and Reservation Validation
 ' ============================================================
 guest -> kiosk : scan QR code from booking confirmation
-kiosk -> checkin : initiateCheckIn(qrCodeData)
-checkin -> reservations : getReservation(reservationId)
+kiosk -> checkin : [[/services/svc-check-in/ initiateCheckIn(qrCodeData)]]
+checkin -> reservations : [[/services/svc-reservations/ getReservation(reservationId)]]
 
 alt Reservation found and valid for today
     reservations --> checkin : reservation details (status=CONFIRMED, date=today)
@@ -57,7 +57,7 @@ else Waiver missing or expired
     guest -> kiosk : sign digital waiver
     kiosk -> safety : submitWaiver(guestId, signature, tripType)
     safety --> kiosk : waiver recorded
-    kiosk -> checkin : waiverCompleted(guestId)
+    kiosk -> checkin : [[/services/svc-check-in/ waiverCompleted(guestId)]]
 end
 
 ' ============================================================

@@ -35,6 +35,16 @@ Manages guest identity records including full registered accounts and temporary 
 
 ---
 
+## Sequence Diagrams
+
+### Unregistered Guest Lookup Orchestration
+
+Shows the guest profile lookup and temporary profile creation flow during self-service check-in.
+
+<object data="diagrams/lookup-orchestration.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Lookup Orchestration diagram</object>
+
+---
+
 ## Key Patterns
 
 - **Temporary Profile Lifecycle**: `TEMPORARY` profiles are created with minimal data (last name + reservation ID) and auto-anonymized after 90 days. If the guest later registers, the temporary profile is merged into the full account, preserving check-in history.

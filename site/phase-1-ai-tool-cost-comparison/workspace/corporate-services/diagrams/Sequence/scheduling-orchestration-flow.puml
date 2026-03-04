@@ -20,31 +20,31 @@ skinparam sequence {
 ' Participants
 ' ============================================================
 actor "Admin Dashboard" as admin
-participant "svc-scheduling-\norchestrator" as scheduler
+participant "svc-scheduling-\norchestrator" as scheduler [[/services/svc-scheduling-orchestrator/]]
 participant "svc-guide-management" as guides
-participant "svc-trail-management" as trails
+participant "svc-trail-management" as trails [[/services/svc-trail-management/]]
 participant "svc-weather" as weather
-participant "svc-trip-catalog" as catalog
+participant "svc-trip-catalog" as catalog [[/services/svc-trip-catalog/]]
 queue "Kafka" as kafka
 
 ' ============================================================
 ' Schedule Optimization Request
 ' ============================================================
-admin -> scheduler : requestScheduleOptimization(dateRange, region)
-scheduler -> catalog : getScheduledTrips(dateRange, region)
+admin -> scheduler : [[/services/svc-scheduling-orchestrator/ requestScheduleOptimization(dateRange, region)]]
+scheduler -> catalog : [[/services/svc-trip-catalog/ getScheduledTrips(dateRange, region)]]
 catalog --> scheduler : list of trips requiring scheduling
 
 ' ============================================================
 ' Data Gathering Loop
 ' ============================================================
 loop for each trip in scheduled trips
-    scheduler -> catalog : getTripRequirements(tripId)
+    scheduler -> catalog : [[/services/svc-trip-catalog/ getTripRequirements(tripId)]]
     catalog --> scheduler : required certifications, group size, difficulty
 
     scheduler -> guides : getAvailableGuides(date, region, certifications)
     guides --> scheduler : available guides with qualifications
 
-    scheduler -> trails : getTrailConditions(trailId, date)
+    scheduler -> trails : [[/services/svc-trail-management/ getTrailConditions(trailId, date)]]
     trails --> scheduler : trail status (open/closed, hazards, maintenance)
 
     scheduler -> weather : getForecast(region, date)
@@ -65,7 +65,7 @@ else Guide availability conflict
     scheduler -> scheduler : resolve with best-fit guide
 else Trail closure or hazard
     scheduler -> scheduler : identify alternate trails
-    scheduler -> trails : getAlternateTrails(difficulty, region)
+    scheduler -> trails : [[/services/svc-trail-management/ getAlternateTrails(difficulty, region)]]
     trails --> scheduler : alternate trail options
     scheduler -> scheduler : reroute affected trips
 else Severe weather alert
@@ -80,7 +80,7 @@ scheduler --> admin : proposed optimized schedule\n(assignments, conflicts resol
 admin -> admin : review proposed schedule
 
 alt Admin approves schedule
-    admin -> scheduler : approveSchedule(scheduleId)
+    admin -> scheduler : [[/services/svc-scheduling-orchestrator/ approveSchedule(scheduleId)]]
     scheduler -> scheduler : finalize assignments
     scheduler -> guides : assignTrips(guideId, tripId, date)
     guides --> scheduler : assignments confirmed

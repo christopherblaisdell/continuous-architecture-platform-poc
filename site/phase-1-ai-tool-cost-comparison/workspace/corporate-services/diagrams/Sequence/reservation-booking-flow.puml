@@ -21,9 +21,9 @@ skinparam sequence {
 ' ============================================================
 actor "Guest App" as guest
 participant "API Gateway" as gateway
-participant "svc-reservations" as reservations
-participant "svc-trip-catalog" as catalog
-participant "svc-guest-profiles" as profiles
+participant "svc-reservations" as reservations [[/services/svc-reservations/]]
+participant "svc-trip-catalog" as catalog [[/services/svc-trip-catalog/]]
+participant "svc-guest-profiles" as profiles [[/services/svc-guest-profiles/]]
 participant "svc-gear-inventory" as gear
 participant "svc-payments" as payments
 participant "svc-notifications" as notifications
@@ -32,24 +32,24 @@ queue "Kafka" as kafka
 ' ============================================================
 ' Trip Search and Selection
 ' ============================================================
-guest -> gateway : GET /trips?region=rockies&date=2026-06-15
-gateway -> catalog : searchTrips(criteria)
+guest -> gateway : [[/services/svc-trip-catalog/ GET /trips?region=rockies&date=2026-06-15]]
+gateway -> catalog : [[/services/svc-trip-catalog/ searchTrips(criteria)]]
 catalog --> gateway : available trips list
 gateway --> guest : display trip options
 
-guest -> gateway : GET /trips/{tripId}/details
-gateway -> catalog : getTripDetails(tripId)
+guest -> gateway : [[/services/svc-trip-catalog/ GET /trips/{tripId}/details]]
+gateway -> catalog : [[/services/svc-trip-catalog/ getTripDetails(tripId)]]
 catalog --> gateway : trip details + available dates
 gateway --> guest : trip detail view
 
 ' ============================================================
 ' Guest Eligibility Validation
 ' ============================================================
-guest -> gateway : POST /reservations/validate
-gateway -> reservations : validateBooking(tripId, guestId)
-reservations -> profiles : getGuestProfile(guestId)
+guest -> gateway : [[/services/svc-reservations/ POST /reservations/validate]]
+gateway -> reservations : [[/services/svc-reservations/ validateBooking(tripId, guestId)]]
+reservations -> profiles : [[/services/svc-guest-profiles/ getGuestProfile(guestId)]]
 profiles --> reservations : guest profile + certifications
-reservations -> catalog : getTripRequirements(tripId)
+reservations -> catalog : [[/services/svc-trip-catalog/ getTripRequirements(tripId)]]
 catalog --> reservations : required certifications + fitness level
 
 alt Guest meets all requirements
@@ -68,8 +68,8 @@ gateway -> gear : getAvailablePackages(tripId, date)
 gear --> gateway : gear package options
 gateway --> guest : display gear packages
 
-guest -> gateway : POST /reservations/gear-selection
-gateway -> reservations : selectGearPackage(reservationDraft, packageId)
+guest -> gateway : [[/services/svc-reservations/ POST /reservations/gear-selection]]
+gateway -> reservations : [[/services/svc-reservations/ selectGearPackage(reservationDraft, packageId)]]
 reservations -> gear : reserveGear(packageId, date)
 gear --> reservations : gear hold confirmation (15 min TTL)
 reservations --> gateway : gear reserved
@@ -78,8 +78,8 @@ gateway --> guest : proceed to payment
 ' ============================================================
 ' Reservation Creation and Payment
 ' ============================================================
-guest -> gateway : POST /reservations
-gateway -> reservations : createReservation(guestId, tripId, gearPackageId)
+guest -> gateway : [[/services/svc-reservations/ POST /reservations]]
+gateway -> reservations : [[/services/svc-reservations/ createReservation(guestId, tripId, gearPackageId)]]
 reservations -> reservations : calculate total (trip + gear + fees)
 reservations -> payments : processPayment(amount, paymentMethod)
 

@@ -22,8 +22,8 @@ skinparam sequence {
 participant "Partner System" as partner
 participant "API Gateway" as gateway
 participant "svc-partner-\nintegrations" as integrations
-participant "svc-reservations" as reservations
-participant "svc-trip-catalog" as catalog
+participant "svc-reservations" as reservations [[/services/svc-reservations/]]
+participant "svc-trip-catalog" as catalog [[/services/svc-trip-catalog/]]
 participant "svc-payments" as payments
 queue "Kafka" as kafka
 
@@ -43,7 +43,7 @@ end
 ' ============================================================
 ' Trip Availability Check
 ' ============================================================
-integrations -> catalog : checkAvailability(tripId, date, partySize)
+integrations -> catalog : [[/services/svc-trip-catalog/ checkAvailability(tripId, date, partySize)]]
 
 alt Trip available
     catalog --> integrations : available (spotsRemaining, pricing)
@@ -56,7 +56,7 @@ end
 ' ============================================================
 ' Reservation Creation
 ' ============================================================
-integrations -> reservations : createPartnerReservation(\n  tripId, guestDetails, partnerId)
+integrations -> reservations : [[/services/svc-reservations/ createPartnerReservation(\n  tripId, guestDetails, partnerId)]]
 reservations -> reservations : create reservation (source=PARTNER)
 reservations --> integrations : reservationId, totalAmount
 
@@ -68,7 +68,7 @@ integrations -> payments : processPartnerPayment(\n  amount, commissionRate, par
 
 alt Payment processed successfully
     payments --> integrations : payment confirmed (txnId, netAmount)
-    integrations -> reservations : confirmReservation(reservationId)
+    integrations -> reservations : [[/services/svc-reservations/ confirmReservation(reservationId)]]
     reservations -> kafka : publish reservation.created
     reservations --> integrations : reservation CONFIRMED
 
@@ -76,7 +76,7 @@ alt Payment processed successfully
     gateway --> partner : booking confirmation response
 else Payment processing failed
     payments --> integrations : payment failed (errorCode, message)
-    integrations -> reservations : cancelReservation(reservationId)
+    integrations -> reservations : [[/services/svc-reservations/ cancelReservation(reservationId)]]
     reservations --> integrations : reservation CANCELLED
     integrations --> gateway : 402 Payment Required
     gateway --> partner : payment error response

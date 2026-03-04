@@ -34,6 +34,16 @@ Manages trail definitions, waypoints, difficulty ratings, closures, and real-tim
 
 ---
 
+## Sequence Diagrams
+
+### Scheduling Orchestration Flow
+
+Shows how trail conditions data is consumed by the scheduling orchestrator during schedule optimization.
+
+<object data="diagrams/scheduling-orchestration-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Scheduling Orchestration Flow diagram</object>
+
+---
+
 ## Key Patterns
 
 - **Nullable Data Fields**: New data fields added to trail responses use nullable semantics to avoid blocking deployment on data backfill. Consumers must handle `null` explicitly. See [ADR-003](../decisions/ADR-003-nullable-elevation-fields.md).
