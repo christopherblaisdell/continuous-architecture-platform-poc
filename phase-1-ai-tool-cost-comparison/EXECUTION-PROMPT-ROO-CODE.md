@@ -14,7 +14,7 @@ Open `phase-1-ai-tool-cost-comparison/workspace/novatrek-workspace.code-workspac
 
 ### 2. Start Fresh Chat
 
-Open a **new** Roo Code Architect Mode chat. Do NOT reuse an existing conversation. Ensure the model is routed through OpenRouter as configured.
+Open a **new** Roo Code Architect Mode chat. Do NOT reuse an existing conversation. Ensure Claude Opus 4.6 is selected and routed through OpenRouter as configured.
 
 ### 3. Record Start Time
 
@@ -322,7 +322,7 @@ outputs/roo-code/<RUN_NUMBER>/
 
 ## Post-Execution Summary
 
-After completing all 5 scenarios, provide a brief summary listing:
+After completing all 5 scenarios, create `run-summary.md` in your run folder (`outputs/roo-code/<RUN_NUMBER>/run-summary.md`) containing:
 - Total files created and modified
 - Total mock script executions (count each `python3 scripts/mock-*.py` invocation)
 - Total tool calls (file reads, file creates, terminal commands)
