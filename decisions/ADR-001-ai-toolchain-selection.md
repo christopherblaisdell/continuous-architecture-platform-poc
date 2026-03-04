@@ -114,14 +114,15 @@ GitHub Copilot (Claude Opus 4.6, Agent Mode) and Roo Code (Claude Opus 4.6, Open
 
 | | Roo Code + OpenRouter | GitHub Copilot Business | GitHub Copilot Pro+ |
 |---|---|---|---|
-| Actual run cost (5 scenarios) | ~$100 (auto-top-up data, Mar 4) | N/A (not tested) | ~$2.80 est. ($4.80 full day / shared usage) |
+| Actual run cost (5 scenarios) | ~$100 (auto-top-up data, Mar 4) | N/A (not tested) | **$0.48** (4 user prompts x 3x x $0.04) |
 | Monthly run cost (38 runs) | ~$507 (extrapolated) | $19/seat (flat) | $39/seat (flat, 1500 req included) |
 | Actual overage charged | $100 (pay-per-token) | N/A | $0 (within 1500 included requests) |
-| Token/usage cost model | Per-token via OpenRouter | Flat subscription | Flat subscription + $0.04/premium request overage |
+| Token/usage cost model | Per-token via OpenRouter | Flat subscription | Per user prompt x model multiplier x $0.04 |
 | Platform cost | $0 (SaaS, no gateway) | $19/seat | $39/seat |
 | Tool license cost | $0 (open source) | (included) | (included) |
 | **Total monthly per seat** | **~$507** | **$19** | **$39** |
 | **Cost ratio vs cheapest** | **~27x** | **1x (baseline)** | **2x** |
+| **Per-run cost ratio (Copilot as baseline)** | **~208x** | — | **1x** |
 | SC-01 quality (/25) | TBD | — | 23 (92%) |
 | SC-02 quality (/35) | TBD | — | 33 (94%) |
 | SC-03 quality (/30) | TBD | — | 30 (100%) |
@@ -131,19 +132,22 @@ GitHub Copilot (Claude Opus 4.6, Agent Mode) and Roo Code (Claude Opus 4.6, Open
 | Cost per quality point (monthly) | ~$507/TBD = TBD | $19/TBD | $39/149 = **$0.26** |
 | Scenarios with quality >= 80% | TBD | — | 5/5 |
 
-### Revised Cost at Realistic Workload (Actual Billing Data)
+### Revised Cost at Realistic Workload (Actual Billing Data, Deep Research Corrected)
 
-The per-run cost estimates from the deep research used Claude Sonnet pricing ($3.00/1M input, $15.00/1M output), projecting ~$1.78/run. **Actual billing data from run 002 (March 4, 2026) reveals the true cost of Claude Opus 4.6 via OpenRouter is ~$100/run** — roughly 7.5x higher than the Sonnet-based estimate. This dramatically changes the cost comparison.
+The per-run cost estimates from the deep research used Claude Sonnet pricing ($3.00/1M input, $15.00/1M output), projecting ~$1.78/run. **Actual billing data from run 002 (March 4, 2026) reveals the true cost of Claude Opus 4.6 via OpenRouter is ~$100/run** — roughly 7.5x higher than the Sonnet-based estimate.
+
+Deep research on Copilot billing ([DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](../research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md)) resolved that GitHub Copilot bills per **user prompt**, not per model turn. Autonomous tool calls are free. The correct session cost is **$0.48** (4 user prompts x 3x multiplier x $0.04).
 
 | Metric | Roo Code + OpenRouter | Copilot Business | Copilot Pro+ |
 |--------|----------------------|-----------------|-------------|
-| Actual per-run cost | **~$100** | ~$0.50 (est.) | ~$0.04 x ~70 req = **~$2.80** |
+| Actual per-run cost | **~$100** | ~$0.50 (est.) | **$0.48** (4 prompts x 3 x $0.04) |
 | Monthly runs (with PROMOTE) | ~38 | ~38 | ~38 |
-| Monthly cost | **~$507** | **$19.00** | **$39.00** |
-| Cost per run | ~$13.35 avg | ~$0.50 | ~$1.03 |
-| Cost trend as volume grows | Increases linearly | Flat | Flat (until 1500 req/month exceeded) |
-| **vs. Copilot Business** | **~27x more expensive** | — | 2x more expensive |
-| **vs. Copilot Pro+** | **~13x more expensive** | 0.5x cheaper | — |
+| Monthly notional cost (38 runs) | **~$507** | **$19.00** | **$39.00** ($18.24 notional usage, within included allowance) |
+| Cost per run | ~$13.35 avg | ~$0.50 | ~$0.48 |
+| Runs per month within included allowance | N/A | N/A | ~125 (1,500 / 12 req per run) |
+| Cost trend as volume grows | Increases linearly | Flat | Flat until ~125 runs/month |
+| **vs. Copilot Pro+ (per run)** | **~208x more expensive** | ~1x | — |
+| **vs. Copilot Business** | **~27x more expensive (monthly)** | — | 2x more expensive |
 
 #### Billing Evidence (March 4, 2026)
 
@@ -151,7 +155,7 @@ The per-run cost estimates from the deep research used Claude Sonnet pricing ($3
 
 **GitHub Copilot Pro+:** 120 premium requests at $0.04 each = $4.80 notional for the entire day across all projects. $0 overage (within 1,500 included monthly allowance).
 
-The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/month to the workload. At this revised volume, **Copilot Business is ~27x cheaper** than OpenRouter. The gap is so large that quality scores would need to be dramatically different (Roo Code achieving near-perfect scores while Copilot scored below 15%) for OpenRouter to be cost-effective on a per-quality-point basis.
+The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/month to the workload. At this revised volume, **Copilot Pro+ is ~208x cheaper per run** than OpenRouter. Even at the monthly subscription level, **Copilot is ~13x cheaper**. The gap is so large that quality scores would need to be dramatically different (Roo Code achieving near-perfect scores while Copilot scored below 5%) for OpenRouter to be cost-effective on a per-quality-point basis.
 
 ### Preliminary Observations (Copilot Completed, Kong AI Pending)
 
@@ -168,15 +172,16 @@ The PROMOTE step (updating corporate baselines after deployment) adds ~12 runs/m
 - Context window management summarized early context during long session
 - Fixed cost model means light months still cost $19/seat regardless of usage
 
-**Revised Cost Analysis (Actual Billing Data, 2026-03-04):**
+**Revised Cost Analysis (Actual Billing Data + Deep Research, 2026-03-04):**
 
-Actual billing data from run 002 execution replaces the previous estimates:
+Actual billing data from run 002 execution, corrected by deep research findings:
 - OpenRouter (Claude Opus 4.6): **~$100/run** (4 x $25 auto-top-ups in 26 minutes)
-- Copilot Pro+: **$4.80 notional for the full day** (120 premium requests x $0.04), **$0 overage**
-- At 38 runs/month: OpenRouter = **~$507/month**, Copilot Pro+ = **$39/month**
-- **Copilot is ~13x cheaper than OpenRouter** (previously estimated at 3.5x)
+- Copilot Pro+: **$0.48 per run** (4 user prompts x 3x multiplier x $0.04); **$4.80 notional for the full day** (120 premium requests across all projects); **$0 overage**
+- At 38 runs/month: OpenRouter = **~$507/month**, Copilot Pro+ = **$39/month** (all 38 runs within included 1,500 req allowance)
+- **Copilot is ~208x cheaper per run** ($0.48 vs ~$100)
+- **Copilot is ~13x cheaper monthly** ($39 vs ~$507)
 
-The previous deep research estimated ~$1.78/run via OpenRouter using Sonnet pricing. Actual Opus 4.6 pricing is ~56x higher per run. The re-transmission tax model was directionally correct but massively undercounted due to the Sonnet/Opus pricing gap.
+The previous estimates of ~$2.80/run for Copilot were based on dividing the daily total (120 requests) by assumed per-turn billing. Deep research confirmed billing is per **user prompt** only — the entire autonomous tool-call loop is free. See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](../research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md) for the full analysis with 39 cited sources.
 
 Two critical risks with the OpenRouter stack remain from the deep research:
 1. **Infinite retry loop**: Context-length errors may trigger uncontrolled retries

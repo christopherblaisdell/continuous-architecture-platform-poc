@@ -330,23 +330,30 @@ This workspace tracks exact costs for both AI toolchains used in Phase 1 evaluat
 | Parameter | Value |
 |-----------|-------|
 | Base subscription | $39.00 / month |
-| Included premium requests | 1,500 / month |
-| Overage rate | $0.028 per premium request beyond allowance (Pro+ discount) |
-| Model used | Claude Opus 4.6 (premium model) |
+| Included premium requests | 1,500 / month (resets 1st of calendar month at 00:00 UTC) |
+| Overage rate | $0.04 per premium request beyond allowance |
+| Model used | Claude Opus 4.6 (3x multiplier) |
 | Token-level visibility | None -- no per-request billing data exposed |
 
-**Model Multipliers** (premium requests consumed per model turn):
+**CRITICAL: Intent-Based Billing (Verified via Deep Research 2026-03-04)**
 
-| Model | Multiplier | Effective Cost per Turn |
-|-------|-----------|-------------------------|
-| Claude Opus 4.6 | x3 | $0.084 |
-| Claude Opus 4.6 fast (preview) | x30 | $0.84 |
+GitHub Copilot bills per **user prompt**, NOT per model invocation. In Agent Mode, the autonomous loop (tool calls, file reads, terminal commands, sub-agents, context summarization) is entirely FREE -- absorbed by GitHub's infrastructure. Only explicit human-typed prompts consume premium requests.
 
-Copilot Pro+ is NOT purely fixed-cost. Assumption: all included premium requests are consumed and overage pricing applies.
+**Model Multipliers** (applied per user prompt, NOT per tool call):
 
-Per-Session Cost = model_turns x $0.028 x model_multiplier
+| Model | Multiplier | Cost per User Prompt |
+|-------|-----------|------------------------|
+| GPT-4.1, GPT-4o | x0 | $0 (included, unlimited) |
+| Claude Opus 4.6 | x3 | $0.12 |
+| Claude Opus 4.6 fast (preview) | x30 | $1.20 |
 
-Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) x $0.028
+Per-Session Cost = user_prompts x model_multiplier x $0.04
+
+Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) x $0.04
+
+Example: A 4-prompt Agent Mode session on Claude Opus 4.6 (3x) = 4 x 3 x $0.04 = $0.48, regardless of how many autonomous tool calls the agent executes.
+
+See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md) for full analysis.
 
 ### OpenRouter (Roo Code Backend)
 
