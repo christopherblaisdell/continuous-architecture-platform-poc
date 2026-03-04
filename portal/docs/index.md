@@ -14,13 +14,13 @@ Welcome to the **NovaTrek Adventures Architecture Portal** — the single source
 
 <div class="portal-grid" markdown>
 
-<div class="portal-card" markdown>
+<a href="services/" class="portal-card" markdown>
 <span class="card-icon">:material-file-tree:</span>
 
 ### Service Catalog
 
 Inventory of all NovaTrek microservices with ownership, API contracts, dependencies, and health status.
-</div>
+</a>
 
 <div class="portal-card" markdown>
 <span class="card-icon">:material-scale-balance:</span>
