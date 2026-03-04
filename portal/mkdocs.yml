@@ -143,4 +143,12 @@ nav:
     - Quality Model:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
+  - Architecture Diagrams:
+    - diagrams/index.md
+    - svc-check-in: diagrams/svc-check-in.md
+    - svc-reservations: diagrams/svc-reservations.md
+    - svc-scheduling-orchestrator: diagrams/svc-scheduling-orchestrator.md
+    - svc-guest-profiles: diagrams/svc-guest-profiles.md
+    - svc-trip-catalog: diagrams/svc-trip-catalog.md
+    - svc-trail-management: diagrams/svc-trail-management.md
   - Tags: tags.md
