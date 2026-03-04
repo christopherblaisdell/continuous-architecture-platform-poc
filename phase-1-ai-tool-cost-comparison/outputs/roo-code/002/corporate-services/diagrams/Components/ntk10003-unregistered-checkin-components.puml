@@ -1,0 +1,42 @@
+@startuml ntk10003-unregistered-checkin-components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title NTK-10003: Unregistered Guest Self-Service Check-in - Component Diagram
+
+Person(guest, "Unregistered Guest", "Guest without a NovaTrek account,\narriving at a base camp kiosk")
+
+System_Boundary(checkin, "svc-check-in") {
+    Component(lookup_controller, "LookupReservationController", "Spring REST Controller", "POST /check-ins/lookup-reservation\nHandles kiosk verification requests")
+    Component(orchestrator, "ReservationLookupOrchestrator", "Spring Service", "Coordinates the multi-service\nverification and session creation flow")
+    Component(session_mgr, "KioskSessionManager", "Spring Service", "Creates and manages JWT sessions\nscoped to kiosk device IDs")
+    Component(rate_limiter, "RateLimitFilter", "Spring Filter", "5 attempts per kiosk per\n15-minute window")
+}
+
+System_Boundary(reservations, "svc-reservations") {
+    Component(res_search, "ReservationSearchService", "Spring Service", "POST /reservations/search\nComposite lookup by last name,\nconfirmation code, date, count")
+}
+
+System_Boundary(guest_profiles, "svc-guest-profiles") {
+    Component(temp_profile, "TemporaryProfileService", "Spring Service", "POST /guest-profiles/temporary\nCreates minimal guest profiles\nwith 90-day TTL")
+}
+
+System_Boundary(safety, "svc-safety-compliance") {
+    Component(waiver_check, "WaiverService", "Spring Service", "GET /safety-compliance/waivers\nChecks waiver completion status\nby reservation ID")
+}
+
+System_Boundary(partner, "svc-partner-integrations") {
+    Component(partner_verify, "PartnerVerificationService", "Spring Service", "POST /partner-integrations/verify-booking\nVerifies bookings with ExploreMore,\nTrailFinder, WildPass")
+}
+
+Rel(guest, lookup_controller, "Enters verification fields", "HTTPS")
+Rel(lookup_controller, rate_limiter, "Rate check")
+Rel(lookup_controller, orchestrator, "Delegates to orchestrator")
+Rel(orchestrator, res_search, "Step 2: Lookup reservation", "HTTPS/JSON")
+Rel(orchestrator, partner_verify, "Step 2a: Partner fallback\n(if direct lookup fails)", "HTTPS/JSON")
+Rel(orchestrator, temp_profile, "Step 3: Find or create\ntemporary guest profile", "HTTPS/JSON")
+Rel(orchestrator, waiver_check, "Step 4: Check waiver status\n(parallel)", "HTTPS/JSON")
+Rel(orchestrator, session_mgr, "Step 5: Create kiosk session")
+Rel(session_mgr, guest, "Returns JWT session token\n+ reservation details", "HTTPS/JSON")
+
+SHOW_LEGEND()
+@enduml

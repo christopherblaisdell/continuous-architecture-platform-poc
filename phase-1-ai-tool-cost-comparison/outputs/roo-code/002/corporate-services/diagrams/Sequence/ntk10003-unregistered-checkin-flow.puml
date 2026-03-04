@@ -1,0 +1,82 @@
+@startuml ntk10003-unregistered-checkin-flow
+
+title NTK-10003: Unregistered Guest Self-Service Check-in - Sequence Diagram
+
+actor "Guest at Kiosk" as guest
+participant "svc-check-in\nOrchestrator" as checkin
+participant "svc-reservations" as reservations
+participant "svc-partner-integrations" as partner
+participant "svc-guest-profiles" as profiles
+participant "svc-safety-compliance" as safety
+participant "Redis\nSession Store" as redis
+
+== Step 1: Guest Initiates Check-in ==
+
+guest -> checkin : POST /check-ins/lookup-reservation\n{last_name, confirmation_code,\nadventure_date, participant_count,\nkiosk_device_id}
+
+checkin -> checkin : Rate limit check\n(5 attempts / 15 min / kiosk)
+
+alt Rate limit exceeded
+    checkin --> guest : 429 Too Many Requests\n{retry_after_seconds}
+end
+
+checkin -> checkin : Validate and normalize input\n(uppercase confirmation_code,\nvalidate date is today or tomorrow)
+
+== Step 2: Reservation Lookup ==
+
+checkin -> reservations : POST /reservations/search\n{last_name, confirmation_code,\nadventure_date, participant_count}
+
+alt Reservation found
+    reservations --> checkin : 200 OK {reservation_id, adventure_name, ...}
+else Reservation not found
+    reservations --> checkin : 404 Not Found
+
+    == Step 2a: Partner Fallback ==
+
+    checkin -> checkin : Extract partner prefix\nfrom confirmation code\n(EM-, TF-, WP-)
+
+    checkin -> partner : POST /partner-integrations/verify-booking\n{confirmation_code, last_name}
+
+    alt Partner confirms booking
+        partner --> checkin : 200 OK {booking_details}
+        checkin -> reservations : POST /reservations\n(sync partner booking)
+        reservations --> checkin : 201 Created {reservation_id}
+    else Partner lookup fails or unavailable
+        partner --> checkin : 404 or timeout (circuit breaker)
+        checkin -> checkin : Add 2-second artificial delay
+        checkin --> guest : 404 Not Found\n"Please visit the service desk\nfor assistance"
+    end
+end
+
+== Step 3: Find or Create Guest Profile ==
+
+checkin -> profiles : GET /guest-profiles?reservation_id={id}
+
+alt Profile exists
+    profiles --> checkin : 200 OK {guest_profile_id}
+else No profile found
+    checkin -> profiles : POST /guest-profiles/temporary\n{last_name, reservation_id}
+    profiles --> checkin : 201 Created {guest_profile_id, profile_type: TEMPORARY}
+end
+
+== Step 4: Parallel Safety and Gear Checks ==
+
+par Safety Compliance Check
+    checkin -> safety : GET /safety-compliance/waivers?reservation_id={id}
+    safety --> checkin : 200 OK {waiver_complete, waiver_url}
+end
+
+== Step 5: Create Kiosk Session ==
+
+checkin -> redis : Store session\n{guest_profile_id, reservation_id,\nkiosk_device_id, expiry: 30min}
+redis --> checkin : Session stored
+
+checkin -> checkin : Generate JWT\n{guest_profile_id, reservation_id,\nkiosk_device_id, exp: 30min}
+
+checkin --> guest : 200 OK\n{session_token, reservation_id,\nguest_profile_id, adventure_name,\ncheck_in_status, participants}
+
+== Guest Proceeds with Standard Kiosk Flow ==
+
+note over guest : Guest completes waiver signing,\ngear confirmation, and\nadventure briefing using\nthe standard kiosk workflow\nwith the JWT session token
+
+@enduml
