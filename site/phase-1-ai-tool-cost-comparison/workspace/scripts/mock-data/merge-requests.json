@@ -1,0 +1,200 @@
+[
+  {
+    "id": 5001,
+    "title": "feat: Add elevation data to trail response",
+    "ticket_key": "NTK-10001",
+    "status": "merged",
+    "author": "alex.chen",
+    "source_branch": "feat/NTK-10001-elevation-data",
+    "target_branch": "develop",
+    "created_at": "2025-01-28T10:00:00Z",
+    "updated_at": "2025-02-01T14:00:00Z",
+    "merged_at": "2025-02-01T14:00:00Z",
+    "description": "Adds elevation gain, elevation loss, and elevation profile array to the trail response.\n\nCloses NTK-10001",
+    "approvals": {
+      "required": 2,
+      "received": 2,
+      "approved_by": ["jordan.blake", "sam.patel"]
+    },
+    "changes": [
+      {
+        "path": "src/trails/trail.controller.ts",
+        "action": "modified",
+        "additions": 18,
+        "deletions": 3
+      },
+      {
+        "path": "src/trails/trail.service.ts",
+        "action": "modified",
+        "additions": 42,
+        "deletions": 5
+      },
+      {
+        "path": "src/trails/dto/trail-response.dto.ts",
+        "action": "modified",
+        "additions": 24,
+        "deletions": 0
+      }
+    ]
+  },
+  {
+    "id": 5002,
+    "title": "feat: Adventure category classification system",
+    "ticket_key": "NTK-10002",
+    "status": "open",
+    "author": "maya.rodriguez",
+    "source_branch": "feat/NTK-10002-adventure-categories",
+    "target_branch": "develop",
+    "created_at": "2025-02-05T09:00:00Z",
+    "updated_at": "2025-02-10T16:30:00Z",
+    "merged_at": null,
+    "description": "Implements adventure category classification to drive different check-in UI patterns.\n\nAdds category enum (GUIDED_TOUR, SELF_SERVICE, EQUIPMENT_REQUIRED) to the adventure catalog and updates the check-in service to consume it.\n\nRelates to NTK-10002",
+    "approvals": {
+      "required": 2,
+      "received": 1,
+      "approved_by": ["jordan.blake"]
+    },
+    "changes": [
+      {
+        "path": "src/adventures/adventure.entity.ts",
+        "action": "modified",
+        "additions": 15,
+        "deletions": 2
+      },
+      {
+        "path": "src/adventures/adventure.service.ts",
+        "action": "modified",
+        "additions": 38,
+        "deletions": 8
+      },
+      {
+        "path": "src/adventures/dto/adventure-response.dto.ts",
+        "action": "modified",
+        "additions": 12,
+        "deletions": 0
+      },
+      {
+        "path": "src/adventures/enums/adventure-category.enum.ts",
+        "action": "added",
+        "additions": 22,
+        "deletions": 0
+      },
+      {
+        "path": "src/check-in/check-in.service.ts",
+        "action": "modified",
+        "additions": 45,
+        "deletions": 12
+      },
+      {
+        "path": "src/check-in/strategies/guided-tour-check-in.strategy.ts",
+        "action": "added",
+        "additions": 55,
+        "deletions": 0
+      },
+      {
+        "path": "src/check-in/strategies/equipment-check-in.strategy.ts",
+        "action": "added",
+        "additions": 48,
+        "deletions": 0
+      },
+      {
+        "path": "test/check-in/check-in.service.spec.ts",
+        "action": "modified",
+        "additions": 72,
+        "deletions": 15
+      }
+    ]
+  },
+  {
+    "id": 5003,
+    "title": "feat: Unregistered guest self-service check-in",
+    "ticket_key": "NTK-10003",
+    "status": "open",
+    "author": "alex.chen",
+    "source_branch": "feat/NTK-10003-walk-up-check-in",
+    "target_branch": "develop",
+    "created_at": "2025-02-08T14:00:00Z",
+    "updated_at": "2025-02-12T09:00:00Z",
+    "merged_at": null,
+    "description": "Enables walk-up guests without prior reservations to self-service check-in.\n\nImplements the full walk-up flow: temporary identity creation, adventure selection, just-in-time reservation, and check-in completion.\n\nRelates to NTK-10003",
+    "approvals": {
+      "required": 2,
+      "received": 0,
+      "approved_by": []
+    },
+    "changes": [
+      {
+        "path": "src/check-in/check-in.controller.ts",
+        "action": "modified",
+        "additions": 32,
+        "deletions": 4
+      },
+      {
+        "path": "src/check-in/check-in.service.ts",
+        "action": "modified",
+        "additions": 85,
+        "deletions": 10
+      },
+      {
+        "path": "src/check-in/dto/walk-up-check-in.dto.ts",
+        "action": "added",
+        "additions": 28,
+        "deletions": 0
+      },
+      {
+        "path": "src/guest-identity/temporary-guest.service.ts",
+        "action": "added",
+        "additions": 64,
+        "deletions": 0
+      },
+      {
+        "path": "src/guest-identity/dto/temporary-guest.dto.ts",
+        "action": "added",
+        "additions": 18,
+        "deletions": 0
+      },
+      {
+        "path": "src/reservations/just-in-time-reservation.service.ts",
+        "action": "added",
+        "additions": 72,
+        "deletions": 0
+      },
+      {
+        "path": "src/scheduling/availability.service.ts",
+        "action": "modified",
+        "additions": 25,
+        "deletions": 3
+      },
+      {
+        "path": "test/check-in/walk-up-check-in.e2e-spec.ts",
+        "action": "added",
+        "additions": 120,
+        "deletions": 0
+      },
+      {
+        "path": "test/guest-identity/temporary-guest.service.spec.ts",
+        "action": "added",
+        "additions": 45,
+        "deletions": 0
+      },
+      {
+        "path": "test/reservations/just-in-time-reservation.spec.ts",
+        "action": "added",
+        "additions": 58,
+        "deletions": 0
+      },
+      {
+        "path": "src/check-in/events/walk-up-check-in.event.ts",
+        "action": "added",
+        "additions": 15,
+        "deletions": 0
+      },
+      {
+        "path": "src/check-in/check-in.module.ts",
+        "action": "modified",
+        "additions": 8,
+        "deletions": 2
+      }
+    ]
+  }
+]

@@ -1,0 +1,499 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Notifications Service
+  description: |
+    Sends notifications to guests and guides via email, SMS, push, and in-app channels.
+    Supports templated messages, bulk delivery, and delivery status tracking.
+  version: 1.0.0
+  contact:
+    name: NovaTrek Platform Team
+    email: platform@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/notifications/v1
+    description: Production
+  - url: https://api-staging.novatrek.example.com/notifications/v1
+    description: Staging
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Notifications
+    description: Send and query notifications
+  - name: Templates
+    description: Notification template management
+
+paths:
+  /notifications:
+    post:
+      operationId: sendNotification
+      summary: Send a notification
+      description: |
+        Queues a notification for delivery via the specified channel.
+        Uses a template with variable substitution. Optionally links to
+        a reservation (cross-ref svc-reservations).
+      tags: [Notifications]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendNotificationRequest'
+      responses:
+        '202':
+          description: Notification accepted for delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    get:
+      operationId: listNotifications
+      summary: List notifications
+      description: Returns notifications filtered by recipient and/or channel, ordered most-recent first.
+      tags: [Notifications]
+      parameters:
+        - name: recipient_id
+          in: query
+          required: true
+          description: Recipient identifier (guest or guide)
+          schema:
+            type: string
+            format: uuid
+        - name: channel
+          in: query
+          description: Filter by delivery channel
+          schema:
+            $ref: '#/components/schemas/NotificationChannel'
+        - name: status
+          in: query
+          description: Filter by delivery status
+          schema:
+            $ref: '#/components/schemas/NotificationStatus'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Paginated notification list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /notifications/{notification_id}:
+    get:
+      operationId: getNotification
+      summary: Retrieve notification details
+      description: Returns full details and delivery status of a single notification.
+      tags: [Notifications]
+      parameters:
+        - $ref: '#/components/parameters/NotificationId'
+      responses:
+        '200':
+          description: Notification details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /notifications/bulk:
+    post:
+      operationId: sendBulkNotifications
+      summary: Send bulk notifications
+      description: |
+        Sends the same templated notification to multiple recipients.
+        Useful for weather alerts, trip reminders, and announcements.
+      tags: [Notifications]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkNotificationRequest'
+      responses:
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkNotificationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /templates:
+    get:
+      operationId: listTemplates
+      summary: List notification templates
+      description: Returns all available notification templates, optionally filtered by channel.
+      tags: [Templates]
+      parameters:
+        - name: channel
+          in: query
+          description: Filter templates by channel
+          schema:
+            $ref: '#/components/schemas/NotificationChannel'
+      responses:
+        '200':
+          description: Template list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      operationId: createTemplate
+      summary: Create a notification template
+      description: Registers a new notification template with variable placeholders for dynamic content.
+      tags: [Templates]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+      responses:
+        '201':
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Template with same name and channel already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    NotificationId:
+      name: notification_id
+      in: path
+      required: true
+      description: Unique notification identifier
+      schema:
+        type: string
+        format: uuid
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  schemas:
+    NotificationChannel:
+      type: string
+      enum:
+        - EMAIL
+        - SMS
+        - PUSH
+        - IN_APP
+
+    NotificationStatus:
+      type: string
+      enum:
+        - QUEUED
+        - SENT
+        - DELIVERED
+        - FAILED
+        - BOUNCED
+
+    SendNotificationRequest:
+      type: object
+      required: [recipient_id, channel, template_id]
+      properties:
+        recipient_id:
+          type: string
+          format: uuid
+          description: Target guest or guide identifier
+        channel:
+          $ref: '#/components/schemas/NotificationChannel'
+        template_id:
+          type: string
+          format: uuid
+          description: Template to render
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value pairs substituted into the template
+          example:
+            guest_name: "Alex Rivera"
+            trip_name: "Cascade Ridge 3-Day Trek"
+            departure_date: "2026-03-15"
+        reservation_id:
+          type: string
+          format: uuid
+          description: Related reservation (cross-ref svc-reservations)
+        priority:
+          type: string
+          enum: [LOW, NORMAL, HIGH, URGENT]
+          default: NORMAL
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        recipient_id:
+          type: string
+          format: uuid
+        channel:
+          $ref: '#/components/schemas/NotificationChannel'
+        template_id:
+          type: string
+          format: uuid
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+        reservation_id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        priority:
+          type: string
+          enum: [LOW, NORMAL, HIGH, URGENT]
+        rendered_subject:
+          type: string
+          description: Final rendered subject line (EMAIL only)
+        error_message:
+          type: string
+          description: Delivery failure reason if status is FAILED or BOUNCED
+        queued_at:
+          type: string
+          format: date-time
+        sent_at:
+          type: string
+          format: date-time
+        delivered_at:
+          type: string
+          format: date-time
+
+    NotificationListResponse:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        total_count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    BulkNotificationRequest:
+      type: object
+      required: [recipient_ids, channel, template_id]
+      properties:
+        recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 1000
+        channel:
+          $ref: '#/components/schemas/NotificationChannel'
+        template_id:
+          type: string
+          format: uuid
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+        priority:
+          type: string
+          enum: [LOW, NORMAL, HIGH, URGENT]
+          default: NORMAL
+
+    BulkNotificationResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        total_recipients:
+          type: integer
+        status:
+          type: string
+          enum: [ACCEPTED, PARTIALLY_ACCEPTED]
+        accepted_count:
+          type: integer
+        rejected_count:
+          type: integer
+
+    CreateTemplateRequest:
+      type: object
+      required: [name, channel, body_template]
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          example: "trip_reminder_24h"
+        channel:
+          $ref: '#/components/schemas/NotificationChannel'
+        subject:
+          type: string
+          maxLength: 200
+          description: Subject line template (required for EMAIL channel)
+          example: "Reminder: {{trip_name}} departs tomorrow!"
+        body_template:
+          type: string
+          maxLength: 5000
+          description: Message body with {{variable}} placeholders
+          example: "Hi {{guest_name}}, your adventure {{trip_name}} departs on {{departure_date}}. Check weather conditions and pack accordingly."
+        variables_schema:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [string, number, date, boolean]
+              required:
+                type: boolean
+          description: Schema defining expected template variables
+
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        channel:
+          $ref: '#/components/schemas/NotificationChannel'
+        subject:
+          type: string
+        body_template:
+          type: string
+        variables_schema:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              type:
+                type: string
+              required:
+                type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TemplateListResponse:
+      type: object
+      properties:
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTemplate'
+        total_count:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error_code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              issue:
+                type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnprocessableEntity:
+      description: Request understood but cannot be processed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

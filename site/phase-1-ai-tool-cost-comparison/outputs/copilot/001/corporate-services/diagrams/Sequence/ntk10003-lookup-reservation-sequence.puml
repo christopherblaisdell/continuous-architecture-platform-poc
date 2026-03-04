@@ -1,0 +1,139 @@
+@startuml ntk10003-lookup-reservation-sequence
+
+title NTK-10003: Unregistered Guest Self-Service Check-in\nReservation Lookup Orchestration Sequence
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam sequenceParticipant underline
+
+actor "Guest" as Guest
+participant "Kiosk UI" as Kiosk
+participant "Kong API\nGateway" as Gateway
+participant "svc-check-in\n(Orchestrator)" as CheckIn
+participant "Redis" as Redis
+participant "svc-reservations" as Reservations
+participant "svc-partner-\nintegrations" as Partners
+participant "svc-guest-\nprofiles" as Profiles
+participant "svc-safety-\ncompliance" as Safety
+participant "svc-gear-\ninventory" as Gear
+
+== Identity Verification ==
+
+Guest -> Kiosk : Select "Check in with\nConfirmation Code"
+Kiosk -> Kiosk : Display 4-field verification form
+
+Guest -> Kiosk : Enter last_name,\nconfirmation_code,\nadventure_date,\nparticipant_count
+
+Kiosk -> Gateway : POST /check-ins/lookup-reservation\n{last_name, confirmation_code,\nadventure_date, participant_count,\nkiosk_device_id}
+
+Gateway -> Gateway : Check gateway-level rate limit\n(5 per 15min per kiosk_device_id)
+
+alt Rate Limit Exceeded at Gateway
+    Gateway --> Kiosk : 429 Too Many Requests\n{retry_after_seconds}
+    Kiosk -> Guest : "Too many attempts.\nPlease visit the service desk."
+    note right : No artificial delay needed\nfor 429 responses
+    return
+end
+
+Gateway -> CheckIn : Route request
+
+== Step 1: Validate and Check App-Level Rate Limit ==
+
+CheckIn -> Redis : Check app-level rate limit\nratelimit:lookup:{kiosk_device_id}
+Redis --> CheckIn : {count, window_remaining}
+
+alt Rate Limit Exceeded at App Level
+    CheckIn --> Kiosk : 429 RATE_LIMIT_EXCEEDED
+    return
+end
+
+CheckIn -> CheckIn : Normalize confirmation_code\nto uppercase, strip hyphens\nValidate adventure_date\nValidate participant_count 1-20
+
+== Step 2: Reservation Lookup ==
+
+CheckIn -> Reservations : POST /reservations/search\n{last_name, confirmation_code,\nadventure_date, participant_count}
+note right : 2-second timeout\nNew composite index query
+
+alt Reservation Found
+    Reservations --> CheckIn : 200 OK\n{reservation_id, adventure_name,\nparticipants[], booking_source}
+
+else Reservation Not Found (404)
+    Reservations --> CheckIn : 404 Not Found
+
+    == Step 2a: Partner Fallback ==
+
+    CheckIn -> CheckIn : Extract partner prefix\nfrom confirmation_code\n(EM-, TF-, WP-)
+
+    alt Partner Identified
+        CheckIn -> Partners : POST /partner-integrations/verify-booking\n{partner_id, confirmation_code, last_name}
+        note right : 30-second timeout\nCircuit breaker: 50% error threshold
+
+        alt Partner Confirms Booking
+            Partners --> CheckIn : 200 OK\n{booking_details}
+            CheckIn -> Reservations : POST /reservations\n(create synced reservation)
+            Reservations --> CheckIn : 201 Created\n{reservation_id}
+
+        else Partner Booking Not Found
+            Partners --> CheckIn : 404 Not Found
+            CheckIn -> CheckIn : Apply 2-second\nartificial delay
+            CheckIn -> Redis : Increment failure counter
+            CheckIn --> Kiosk : 404 RESERVATION_NOT_FOUND\n"Visit service desk"
+            Kiosk -> Guest : Display generic error\n"We couldn't find a\nmatching reservation."
+            return
+
+        else Circuit Breaker Open
+            Partners --> CheckIn : 503 (circuit open)
+            CheckIn -> CheckIn : Apply 2-second\nartificial delay
+            CheckIn --> Kiosk : 404 RESERVATION_NOT_FOUND\n"Visit service desk\nwith priority queuing"
+            Kiosk -> Guest : Display error + staff direction
+            return
+        end
+
+    else No Partner Prefix / Unknown Partner
+        CheckIn -> CheckIn : Apply 2-second\nartificial delay
+        CheckIn -> Redis : Increment failure counter
+        CheckIn --> Kiosk : 404 RESERVATION_NOT_FOUND
+        Kiosk -> Guest : Display generic error
+        return
+    end
+end
+
+== Step 3: Guest Profile ==
+
+CheckIn -> Profiles : GET /guest-profiles\n?reservation_id={id}
+
+alt Profile Exists
+    Profiles --> CheckIn : 200 OK\n{guest_profile_id, profile_type}
+
+else No Profile Found
+    CheckIn -> Profiles : POST /guest-profiles/temporary\n{last_name, reservation_id}
+    note right : 1-second timeout\nNew endpoint: minimal fields\nBypasses email/DOB requirements
+    Profiles --> CheckIn : 201 Created\n{guest_profile_id,\nprofile_type: TEMPORARY}
+end
+
+== Step 4: Parallel Status Checks ==
+
+par Safety Compliance Check (3s timeout)
+    CheckIn -> Safety : GET /waivers\n?reservation_id={id}
+    note right : Extended endpoint:\npreviously required guest_id only
+    Safety --> CheckIn : 200 OK\n{waiver_complete, waiver_url}
+
+else Gear Assignment Check (3s timeout)
+    CheckIn -> Gear : GET /gear-inventory/assignments\n?reservation_id={id}
+    note right : Existing endpoint:\nalready supports reservation_id
+    Gear --> CheckIn : 200 OK\n{gear_items[], pickup_location}
+end
+
+note over CheckIn : Graceful degradation:\nIf safety or gear call fails,\nproceed with null status fields.\nGuest completes manually.
+
+== Step 5: Session Creation ==
+
+CheckIn -> CheckIn : Generate JWT session token\n{guest_profile_id, reservation_id,\nkiosk_device_id, exp: +30min}
+CheckIn -> Redis : Store session\nkey: session:{session_id}\nsecondary: kiosk:{device_id}\nTTL: 30 minutes
+
+CheckIn --> Gateway : 200 OK
+Gateway --> Kiosk : {session_token, reservation_id,\nguest_profile_id, adventure_name,\ncheck_in_status{waiver, gear},\nparticipants[]}
+
+Kiosk -> Guest : Display check-in summary\nProceed with standard kiosk flow\n(waiver signing, gear confirmation,\nadventure briefing)
+
+@enduml

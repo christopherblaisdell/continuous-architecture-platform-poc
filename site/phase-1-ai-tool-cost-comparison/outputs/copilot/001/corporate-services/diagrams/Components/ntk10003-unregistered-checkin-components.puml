@@ -1,0 +1,63 @@
+@startuml ntk10003-unregistered-checkin-components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title NTK-10003: Unregistered Guest Self-Service Check-in - C4 Component Diagram
+
+Person(guest, "Unregistered Guest", "Guest without NovaTrek account\n(partner booking, gift card, companion)")
+
+System_Boundary(kioskSystem, "Self-Service Kiosk") {
+    Container(kioskUI, "Kiosk UI", "React", "Touch-screen check-in interface\nwith confirmation code entry form")
+}
+
+System_Boundary(apiLayer, "API Gateway") {
+    Container(kong, "Kong API Gateway", "Kong", "Rate limiting (5 per 15min per kiosk),\nrouting, JWT validation")
+}
+
+Container_Boundary(checkInService, "svc-check-in") {
+    Component(lookupController, "ReservationLookupController", "Spring MVC", "POST /check-ins/lookup-reservation\nInput validation, response mapping")
+    Component(lookupService, "ReservationLookupService", "Spring Bean", "Orchestration: sequential reservation lookup,\nparallel safety+gear checks, session creation")
+    Component(sessionManager, "KioskSessionManager", "Spring Bean", "JWT generation with kiosk_device_id claim,\nRedis session storage, 30-min expiry")
+    Component(rateLimiter, "LookupRateLimiter", "Spring Bean", "Application-level rate limiting\n(defense in depth with gateway)")
+}
+
+Container_Boundary(reservationsService, "svc-reservations") {
+    Component(reservationSearch, "ReservationSearchEndpoint", "Spring MVC", "NEW: POST /reservations/search\nComposite 4-field verification query")
+}
+
+Container_Boundary(guestProfilesService, "svc-guest-profiles") {
+    Component(tempProfileEndpoint, "TemporaryProfileEndpoint", "Spring MVC", "NEW: POST /guest-profiles/temporary\nMinimal fields: last_name + reservation_id")
+}
+
+Container_Boundary(safetyService, "svc-safety-compliance") {
+    Component(waiverLookup, "WaiverLookupEndpoint", "Spring MVC", "EXTENDED: GET /waivers\nAdded reservation_id query parameter")
+}
+
+Container_Boundary(gearService, "svc-gear-inventory") {
+    Component(gearAssignments, "GearAssignmentsEndpoint", "Spring MVC", "EXISTING: GET /assignments\nAlready supports reservation_id")
+}
+
+Container_Boundary(partnerService, "svc-partner-integrations") {
+    Component(partnerVerify, "PartnerVerificationEndpoint", "Spring MVC", "EXISTING: POST /verify-booking\nFallback for partner-prefixed codes")
+}
+
+ContainerDb(redis, "Redis", "Redis 7", "Rate limit counters,\nkiosk session storage")
+ContainerDb(reservationsDb, "Reservations DB", "PostgreSQL", "New composite index on\n(confirmation_code, adventure_date,\nparticipant_count, LOWER(last_name))")
+
+Rel(guest, kioskUI, "Enters last name, confirmation code,\nadventure date, participant count")
+Rel(kioskUI, kong, "POST /check-ins/lookup-reservation", "HTTPS")
+Rel(kong, lookupController, "Routes after rate limit check", "HTTP")
+Rel(lookupController, rateLimiter, "Check device rate limit")
+Rel(rateLimiter, redis, "Increment/check counter", "Redis protocol")
+Rel(lookupController, lookupService, "Delegates orchestration")
+Rel(lookupService, reservationSearch, "Step 2: Search by 4 fields", "HTTP, 2s timeout")
+Rel(lookupService, partnerVerify, "Step 2a: Fallback if not found", "HTTP, 30s timeout\nCircuit breaker")
+Rel(lookupService, tempProfileEndpoint, "Step 3: Find or create profile", "HTTP, 1s timeout")
+Rel(lookupService, waiverLookup, "Step 4a: Parallel waiver check", "HTTP, 3s timeout")
+Rel(lookupService, gearAssignments, "Step 4b: Parallel gear check", "HTTP, 3s timeout")
+Rel(lookupService, sessionManager, "Step 5: Create kiosk session")
+Rel(sessionManager, redis, "Store session (30-min TTL)", "Redis protocol")
+Rel(reservationSearch, reservationsDb, "Composite index query", "JDBC")
+
+LAYOUT_WITH_LEGEND()
+
+@enduml

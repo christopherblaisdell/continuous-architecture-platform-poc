@@ -1,0 +1,69 @@
+@startuml novatrek-include
+' NovaTrek Adventures - Shared Include File
+' Standard skinparam definitions, colors, and participant macros
+
+' ============================================================
+' Color Definitions
+' ============================================================
+!define PRIMARY_COLOR #2E86AB
+!define SECONDARY_COLOR #A23B72
+!define ACCENT_COLOR #F18F01
+!define BACKGROUND_COLOR #C73E1D
+!define SUCCESS_COLOR #3B1F2B
+
+' ============================================================
+' Participant Macros
+' ============================================================
+!define SERVICE(name) participant name as name << Service >>
+!define EXTERNAL(name) participant name as name << External >>
+!define DATABASE(name) database name as name << DB >>
+!define QUEUE(name) queue name as name << Queue >>
+
+' ============================================================
+' Skinparam - General
+' ============================================================
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam titleFontSize 16
+skinparam titleFontStyle bold
+
+' ============================================================
+' Skinparam - Sequence Diagrams
+' ============================================================
+skinparam sequence {
+    ArrowColor PRIMARY_COLOR
+    ActorBorderColor PRIMARY_COLOR
+    LifeLineBorderColor SECONDARY_COLOR
+    ParticipantBorderColor PRIMARY_COLOR
+    ParticipantBackgroundColor #E8F4F8
+    ParticipantFontColor #333333
+    BoxBorderColor ACCENT_COLOR
+    BoxBackgroundColor #FFF8F0
+    DividerBackgroundColor #F0F0F0
+}
+
+' ============================================================
+' Skinparam - Component Diagrams
+' ============================================================
+skinparam component {
+    BackgroundColor #E8F4F8
+    BorderColor PRIMARY_COLOR
+    FontColor #333333
+    ArrowColor SECONDARY_COLOR
+}
+
+' ============================================================
+' Skinparam - Class Diagrams
+' ============================================================
+skinparam class {
+    BackgroundColor #E8F4F8
+    BorderColor PRIMARY_COLOR
+    HeaderBackgroundColor PRIMARY_COLOR
+    FontColor #333333
+    ArrowColor SECONDARY_COLOR
+}
+
+@enduml
