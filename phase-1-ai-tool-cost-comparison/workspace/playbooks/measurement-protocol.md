@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Standardized methodology for comparing **Roo Code + Kong AI Gateway** vs **GitHub Copilot** for solution architecture tasks. This protocol ensures fair, repeatable measurements that produce actionable cost and quality comparisons.
+Standardized methodology for comparing **Roo Code + OpenRouter** vs **GitHub Copilot** for solution architecture tasks. This protocol ensures fair, repeatable measurements that produce actionable cost and quality comparisons.
 
 ## Test Environment Requirements
 
@@ -26,24 +26,22 @@ Before each scenario run:
 
 ## Token Cost Collection
 
-### Kong AI Gateway (Roo Code)
+### OpenRouter (Roo Code)
 
-Kong AI Gateway provides per-request token counts in response headers:
+OpenRouter provides exact per-request token counts and costs through multiple channels:
 
-```
-X-Kong-LLM-Input-Tokens: <count>
-X-Kong-LLM-Output-Tokens: <count>
-X-Kong-LLM-Model: <model_name>
-```
+1. **API response `usage` object**: Each response includes `prompt_tokens`, `completion_tokens`, and `total_tokens`
+2. **OpenRouter Activity page**: https://openrouter.ai/activity shows per-request cost breakdown, model used, and timestamps
+3. **OpenRouter API**: `GET https://openrouter.ai/api/v1/auth/key` for credit balance
 
 Collect for each scenario:
-- `input_tokens` -- total input tokens across all requests
-- `output_tokens` -- total output tokens across all requests
+- `input_tokens` -- total input tokens across all requests (exact from Activity page)
+- `output_tokens` -- total output tokens across all requests (exact from Activity page)
 - `model_used` -- which model handled the request
-- `latency_ms` -- total latency across all requests
+- `total_cost` -- exact dollar amount from Activity page
 - `request_count` -- number of API calls made
 
-**Backup**: AWS Bedrock CloudWatch metrics (per-invocation token counts)
+**NOTE**: OpenRouter provides exact costs. No estimation needed.
 
 ### GitHub Copilot
 
@@ -59,32 +57,33 @@ Copilot does not expose per-request token counts. Collection methods:
 
 ## Monthly Cost Calculation
 
-### Kong AI (Variable Cost Model)
+### OpenRouter (Variable Cost Model)
+
+OpenRouter provides exact per-request token counts and costs. Use the Activity page for actual costs.
 
 ```
-Kong AI Monthly Cost = SUM over all scenarios:
-  (scenario_cumulative_input_tokens * input_price_per_token
-   + scenario_output_tokens * output_price_per_token)
+OpenRouter Monthly Cost = SUM over all scenarios:
+  (scenario_total_cost_from_activity_page)
   * scenario_monthly_frequency
 ```
 
-Current pricing reference (update with actual contracted rates):
-- Claude Sonnet input: $3.00 / 1M tokens
-- Claude Sonnet output: $15.00 / 1M tokens
+For estimation before runs are complete, use the token-based formula:
+```
+Estimated Cost = (cumulative_input_tokens * input_price_per_token
+                 + output_tokens * output_price_per_token)
+```
 
-Include Kong Gateway operational cost if applicable (infrastructure, licensing).
+Check https://openrouter.ai/models for current model pricing.
 
-> **⚠️ Agentic Re-transmission Tax**
+> **Agentic Re-transmission Tax**
 >
-> The formula above uses `cumulative_input_tokens`, not `single_pass_input_tokens`. This is critical for accurate cost modeling. Roo Code's client-side architecture re-transmits the **entire conversation history** at every turn of the agentic loop. For a scenario with `T` turns where context grows from `C₀` to `C_T` tokens:
+> The formula above uses `cumulative_input_tokens`, not `single_pass_input_tokens`. This is critical for accurate cost modeling. Roo Code's client-side architecture re-transmits the **entire conversation history** at every turn of the agentic loop. For a scenario with `T` turns where context grows from `C_0` to `C_T` tokens:
 >
 > ```
-> cumulative_input_tokens = Σ(t=1 to T) C_t   ≈  T × (C₀ + C_T) / 2
+> cumulative_input_tokens = SUM(t=1 to T) C_t   approximately  T * (C_0 + C_T) / 2
 > ```
 >
-> For a 20-turn scenario starting at 10K and growing to 120K context, this yields ~1.3M cumulative input tokens — not the 120K that a single-pass measurement would suggest. See [COST-MEASUREMENT-METHODOLOGY.md](../../../phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) and [DEEP-RESEARCH-1.md](../../../../research/DEEP-RESEARCH-1.md) for the full analysis.
->
-> Additionally, Roo Code + Kong AI has a documented failure mode where Kong Gateway obfuscates Anthropic's `context_length_exceeded` error, causing infinite retry loops with unbounded token consumption. See [DEEP-RESEARCH-2.md](../../../../research/DEEP-RESEARCH-2.md) for the root cause analysis.
+> For a 20-turn scenario starting at 10K and growing to 120K context, this yields ~1.3M cumulative input tokens -- not the 120K that a single-pass measurement would suggest. See [COST-MEASUREMENT-METHODOLOGY.md](../../COST-MEASUREMENT-METHODOLOGY.md) for the full analysis.
 
 ### GitHub Copilot (Fixed Cost Model)
 
@@ -126,9 +125,9 @@ Each scenario has a quality rubric with specific criteria. Score each criterion 
 
 ## Final Comparison Table
 
-| Metric | Roo+Kong | Copilot Business | Copilot Enterprise |
+| Metric | Roo+OpenRouter | Copilot Business | Copilot Enterprise |
 |--------|----------|-------------------|---------------------|
-| Monthly cost per seat | *Calculated* | $19 | $39 |
+| Monthly cost per seat | *From OpenRouter Activity* | $19 | $39 |
 | SC-01 quality (/25) | | | |
 | SC-02 quality (/35) | | | |
 | SC-03 quality (/30) | | | |

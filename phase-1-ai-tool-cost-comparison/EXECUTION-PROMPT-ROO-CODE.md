@@ -14,7 +14,7 @@ Open `phase-1-ai-tool-cost-comparison/workspace/novatrek-workspace.code-workspac
 
 ### 2. Start Fresh Chat
 
-Open a **new** Roo Code Architect Mode chat. Do NOT reuse an existing conversation. Ensure the model is routed through Kong AI Gateway as configured.
+Open a **new** Roo Code Architect Mode chat. Do NOT reuse an existing conversation. Ensure the model is routed through OpenRouter as configured.
 
 ### 3. Record Start Time
 
