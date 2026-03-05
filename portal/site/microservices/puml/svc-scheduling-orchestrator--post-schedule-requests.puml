@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-scheduling-orchestrator/#integration-context ⬆ svc-scheduling-orchestrator Integration Context]]
+
 title POST /schedule-requests\nRequest optimal schedule for a trip
 
 participant "Client" as Client

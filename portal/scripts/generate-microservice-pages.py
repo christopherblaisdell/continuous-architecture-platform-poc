@@ -688,6 +688,8 @@ def build_c4_context_puml(svc_name):
     L.append("LAYOUT_WITH_LEGEND()")
     L.append("LAYOUT_TOP_DOWN()")
     L.append("")
+    L.append(f'header [[/microservices/ \u2B06 All Microservices]]')
+    L.append("")
     L.append(f'title {svc_name} — Integration Context')
     L.append("")
 
@@ -903,6 +905,10 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     L.append("    NoteBorderColor #c77b30")
     L.append("    NoteBackgroundColor #FEF3E7")
     L.append("}")
+    L.append("")
+
+    # Parent breadcrumb
+    L.append(f'header [[/microservices/{svc_name}/#integration-context \u2B06 {svc_name} Integration Context]]')
     L.append("")
 
     # Title

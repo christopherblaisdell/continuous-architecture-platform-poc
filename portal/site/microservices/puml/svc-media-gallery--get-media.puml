@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-media-gallery/#integration-context ⬆ svc-media-gallery Integration Context]]
+
 title GET /media\nList media by reservation or trip
 
 participant "Client" as Client

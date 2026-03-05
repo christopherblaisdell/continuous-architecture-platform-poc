@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-guest-profiles/#integration-context ⬆ svc-guest-profiles Integration Context]]
+
 title GET /guests/{guest_id}/medical-info\nGet guest medical information
 
 participant "Client" as Client

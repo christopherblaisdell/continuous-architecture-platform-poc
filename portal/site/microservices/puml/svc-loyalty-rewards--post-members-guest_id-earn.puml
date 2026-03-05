@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty-rewards Integration Context]]
+
 title POST /members/{guest_id}/earn\nAward points to a member
 
 participant "Client" as Client
