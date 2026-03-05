@@ -365,6 +365,16 @@ def generate_swagger_page(spec_path, svc_name):
     with open(spec_path, 'r') as f:
         spec_data = yaml.safe_load(f)
 
+    # Rewrite .example.com URLs that Swagger UI renders as clickable links.
+    # These point to non-existent domains; replace with portal-relative paths.
+    info = spec_data.get("info", {})
+    contact = info.get("contact", {})
+    if contact.get("url", "").endswith(".example.com") or "example.com" in contact.get("url", ""):
+        contact["url"] = "../../"
+    license_info = info.get("license", {})
+    if "example.com" in license_info.get("url", ""):
+        del license_info["url"]
+
     import json
     spec_json = json.dumps(spec_data, indent=2)
 
