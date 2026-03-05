@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> Gear : [[/microservices/svc-gear-inventory/ Verify gear assignment]]
+Svc -> Gear : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details Verify gear assignment]]
 activate Gear #DBEAFE
 Gear --> Svc : OK
 deactivate Gear

@@ -42,7 +42,7 @@ deactivate DB
 
 == Async Events ==
 
-Svc ->> Ntfy : Send safety alert
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send safety alert]]
 
 Svc --> GW : 201 Created
 deactivate Svc

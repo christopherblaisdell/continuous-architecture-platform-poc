@@ -38,22 +38,22 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> GM : [[/microservices/svc-guide-management/ Check guide availability]]
+Svc -> GM : [[/microservices/svc-guide-management/#get-guidesguide_idavailability-get-guide-availability-windows Check guide availability]]
 activate GM #DBEAFE
 GM --> Svc : OK
 deactivate GM
 
-Svc -> TM : [[/microservices/svc-trail-management/ Verify trail conditions]]
+Svc -> TM : [[/microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions Verify trail conditions]]
 activate TM #DBEAFE
 TM --> Svc : OK
 deactivate TM
 
-Svc -> WX : [[/microservices/svc-weather/ Get forecast]]
+Svc -> WX : [[/microservices/svc-weather/#get-weatherforecast-get-weather-forecast Get forecast]]
 activate WX #DBEAFE
 WX --> Svc : OK
 deactivate WX
 
-Svc -> TC : [[/microservices/svc-trip-catalog/ Get trip details]]
+Svc -> TC : [[/microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details Get trip details]]
 activate TC #DBEAFE
 TC --> Svc : OK
 deactivate TC

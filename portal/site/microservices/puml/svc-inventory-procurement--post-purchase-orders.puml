@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> GI : [[/microservices/svc-gear-inventory/ Verify item catalog]]
+Svc -> GI : [[/microservices/svc-gear-inventory/#get-gear-items-search-gear-inventory Verify item catalog]]
 activate GI #DBEAFE
 GI --> Svc : OK
 deactivate GI

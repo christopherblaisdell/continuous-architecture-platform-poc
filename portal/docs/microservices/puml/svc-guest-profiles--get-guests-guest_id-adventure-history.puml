@@ -33,7 +33,7 @@ activate Svc #2563eb
 
 == Cross-Service Integration ==
 
-Svc -> Res : [[/microservices/svc-reservations/ Query past bookings]]
+Svc -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations Query past bookings]]
 activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res

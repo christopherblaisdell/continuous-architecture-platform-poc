@@ -13,7 +13,9 @@ Usage:
 """
 
 import os
+import re
 import subprocess
+import unicodedata
 import yaml
 from urllib.parse import quote
 
@@ -298,120 +300,141 @@ DATA_STORES = {
     },
 }
 
+# Pre-loaded endpoint summaries: (svc_name, METHOD, /path) -> summary
+ALL_ENDPOINT_SUMMARIES = {}
+
+
+def heading_slug(method, path, summary):
+    """Reproduce MkDocs heading anchor from: ### METHOD `/path` -- Summary"""
+    text = f"{method} {path} -- {summary}"
+    text = unicodedata.normalize('NFKD', text)
+    text = re.sub(r'[^\w\s-]', '', text).strip().lower()
+    return re.sub(r'[-\s]+', '-', text)
+
+
+def endpoint_anchor(target_svc, target_method, target_path):
+    """Get the MkDocs heading anchor for a specific endpoint on a target service."""
+    summary = ALL_ENDPOINT_SUMMARIES.get((target_svc, target_method, target_path), "")
+    if not summary:
+        return ""
+    return "#" + heading_slug(target_method, target_path, summary)
+
+
 # Cross-Service Integration Map
+# Each entry: (alias, label, action, is_async, (target_method, target_path) or None)
 CROSS_SERVICE_CALLS = {}
 
 CROSS_SERVICE_CALLS[("svc-check-in", "POST", "/check-ins")] = [
-    ("Res", "Reservations", "Verify reservation exists", False),
-    ("Safety", "Safety Compliance", "Validate active waiver", False),
+    ("Res", "Reservations", "Verify reservation exists", False, ("GET", "/reservations/{reservation_id}")),
+    ("Safety", "Safety Compliance", "Validate active waiver", False, ("GET", "/waivers")),
 ]
 CROSS_SERVICE_CALLS[("svc-check-in", "POST", "/check-ins/{check_in_id}/gear-verification")] = [
-    ("Gear", "Gear Inventory", "Verify gear assignment", False),
+    ("Gear", "Gear Inventory", "Verify gear assignment", False, ("GET", "/gear-assignments/{assignment_id}")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-reservations", "POST", "/reservations")] = [
-    ("GP", "Guest Profiles", "Validate guest identity", False),
-    ("TC", "Trip Catalog", "Check trip availability", False),
-    ("Kafka", "Event Bus", "reservation.created", True),
+    ("GP", "Guest Profiles", "Validate guest identity", False, ("GET", "/guests/{guest_id}")),
+    ("TC", "Trip Catalog", "Check trip availability", False, ("GET", "/trips/{trip_id}")),
+    ("Kafka", "Event Bus", "reservation.created", True, None),
 ]
 CROSS_SERVICE_CALLS[("svc-reservations", "PUT", "/reservations/{reservation_id}")] = [
-    ("TC", "Trip Catalog", "Verify availability", False),
+    ("TC", "Trip Catalog", "Verify availability", False, ("GET", "/trips/{trip_id}")),
 ]
 CROSS_SERVICE_CALLS[("svc-reservations", "POST", "/reservations/{reservation_id}/participants")] = [
-    ("GP", "Guest Profiles", "Validate participant", False),
+    ("GP", "Guest Profiles", "Validate participant", False, ("GET", "/guests/{guest_id}")),
 ]
 CROSS_SERVICE_CALLS[("svc-reservations", "PUT", "/reservations/{reservation_id}/status")] = [
-    ("Kafka", "Event Bus", "reservation.status_changed", True),
+    ("Kafka", "Event Bus", "reservation.status_changed", True, None),
 ]
 
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-requests")] = [
-    ("GM", "Guide Mgmt", "Check guide availability", False),
-    ("TM", "Trail Mgmt", "Verify trail conditions", False),
-    ("WX", "Weather Svc", "Get forecast", False),
-    ("TC", "Trip Catalog", "Get trip details", False),
+    ("GM", "Guide Mgmt", "Check guide availability", False, ("GET", "/guides/{guide_id}/availability")),
+    ("TM", "Trail Mgmt", "Verify trail conditions", False, ("GET", "/trails/{trail_id}/conditions")),
+    ("WX", "Weather Svc", "Get forecast", False, ("GET", "/weather/forecast")),
+    ("TC", "Trip Catalog", "Get trip details", False, ("GET", "/trips/{trip_id}")),
 ]
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-optimization")] = [
-    ("GM", "Guide Mgmt", "Get all available guides", False),
-    ("LS", "Location Svc", "Check location capacity", False),
+    ("GM", "Guide Mgmt", "Get all available guides", False, ("GET", "/guides/available")),
+    ("LS", "Location Svc", "Check location capacity", False, ("GET", "/locations/{location_id}/capacity")),
 ]
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-conflicts/resolve")] = [
-    ("GM", "Guide Mgmt", "Reassign guide", False),
+    ("GM", "Guide Mgmt", "Reassign guide", False, ("PATCH", "/guides/{guide_id}")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-partner-integrations", "POST", "/partner-bookings")] = [
-    ("Res", "Reservations", "Create reservation", False),
+    ("Res", "Reservations", "Create reservation", False, ("POST", "/reservations")),
 ]
 CROSS_SERVICE_CALLS[("svc-partner-integrations", "POST", "/partner-bookings/{booking_id}/confirm")] = [
-    ("Res", "Reservations", "Confirm reservation", False),
-    ("Pay", "Payments Svc", "Process commission", False),
+    ("Res", "Reservations", "Confirm reservation", False, ("PUT", "/reservations/{reservation_id}/status")),
+    ("Pay", "Payments Svc", "Process commission", False, ("POST", "/payments")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-guest-profiles", "POST", "/guests")] = [
-    ("Kafka", "Event Bus", "guest.registered", True),
+    ("Kafka", "Event Bus", "guest.registered", True, None),
 ]
 CROSS_SERVICE_CALLS[("svc-guest-profiles", "GET", "/guests/{guest_id}/adventure-history")] = [
-    ("Res", "Reservations", "Query past bookings", False),
+    ("Res", "Reservations", "Query past bookings", False, ("GET", "/reservations")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments")] = [
-    ("ExtPay", "Payment Gateway", "Process payment", False),
+    ("ExtPay", "Payment Gateway", "Process payment", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments/{payment_id}/refund")] = [
-    ("ExtPay", "Payment Gateway", "Process refund", False),
+    ("ExtPay", "Payment Gateway", "Process refund", False, None),
 ]
 
 CROSS_SERVICE_CALLS[("svc-notifications", "POST", "/notifications")] = [
-    ("ExtMsg", "Email/SMS Provider", "Deliver message", True),
+    ("ExtMsg", "Email/SMS Provider", "Deliver message", True, None),
 ]
 CROSS_SERVICE_CALLS[("svc-notifications", "POST", "/notifications/bulk")] = [
-    ("ExtMsg", "Email/SMS Provider", "Deliver bulk messages", True),
+    ("ExtMsg", "Email/SMS Provider", "Deliver bulk messages", True, None),
 ]
 
 CROSS_SERVICE_CALLS[("svc-safety-compliance", "POST", "/waivers")] = [
-    ("GP", "Guest Profiles", "Validate guest identity", False),
+    ("GP", "Guest Profiles", "Validate guest identity", False, ("GET", "/guests/{guest_id}")),
 ]
 CROSS_SERVICE_CALLS[("svc-safety-compliance", "POST", "/incidents")] = [
-    ("Ntfy", "Notifications", "Send safety alert", True),
+    ("Ntfy", "Notifications", "Send safety alert", True, ("POST", "/notifications")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-gear-inventory", "POST", "/gear-assignments")] = [
-    ("GP", "Guest Profiles", "Validate guest", False),
+    ("GP", "Guest Profiles", "Validate guest", False, ("GET", "/guests/{guest_id}")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-transport-logistics", "POST", "/transport-requests")] = [
-    ("LS", "Location Svc", "Validate pickup location", False),
+    ("LS", "Location Svc", "Validate pickup location", False, ("GET", "/locations/{location_id}")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-loyalty-rewards", "POST", "/members/{guest_id}/earn")] = [
-    ("Res", "Reservations", "Verify completed booking", False),
+    ("Res", "Reservations", "Verify completed booking", False, ("GET", "/reservations/{reservation_id}")),
 ]
 CROSS_SERVICE_CALLS[("svc-loyalty-rewards", "POST", "/members/{guest_id}/redeem")] = [
-    ("Pay", "Payments Svc", "Process reward credit", False),
+    ("Pay", "Payments Svc", "Process reward credit", False, ("POST", "/payments")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-media-gallery", "POST", "/media")] = [
-    ("S3", "Object Store", "Upload binary file", False),
+    ("S3", "Object Store", "Upload binary file", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-media-gallery", "POST", "/media/{media_id}/share")] = [
-    ("Ntfy", "Notifications", "Send share link", True),
+    ("Ntfy", "Notifications", "Send share link", True, ("POST", "/notifications")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-inventory-procurement", "POST", "/purchase-orders")] = [
-    ("GI", "Gear Inventory", "Verify item catalog", False),
+    ("GI", "Gear Inventory", "Verify item catalog", False, ("GET", "/gear-items")),
 ]
 
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/current")] = [
-    ("ExtWx", "Weather API", "Fetch current conditions", False),
+    ("ExtWx", "Weather API", "Fetch current conditions", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/forecast")] = [
-    ("ExtWx", "Weather API", "Fetch multi-day forecast", False),
+    ("ExtWx", "Weather API", "Fetch multi-day forecast", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/alerts")] = [
-    ("ExtWx", "Weather API", "Fetch active alerts", False),
+    ("ExtWx", "Weather API", "Fetch active alerts", False, None),
 ]
 
 CROSS_SERVICE_CALLS[("svc-trail-management", "POST", "/trails/{trail_id}/conditions")] = [
-    ("WX", "Weather Svc", "Correlate weather data", False),
+    ("WX", "Weather Svc", "Correlate weather data", False, ("GET", "/weather/current")),
 ]
 
 
@@ -557,7 +580,9 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] #E8F4F8')
 
     declared = set()
-    for alias, label, action, is_async in (ext_calls or []):
+    for call in (ext_calls or []):
+        alias, label, action = call[0], call[1], call[2]
+        target_ep = call[4] if len(call) > 4 else None
         if alias in declared:
             continue
         declared.add(alias)
@@ -599,10 +624,15 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     if sync_calls:
         L.append("== Cross-Service Integration ==")
         L.append("")
-        for alias, label, action, _ in sync_calls:
+        for call in sync_calls:
+            alias, label, action = call[0], call[1], call[2]
+            target_ep = call[4] if len(call) > 4 else None
             target_svc = label_to_svc_name(label)
             if target_svc:
-                L.append(f"Svc -> {alias} : [[/microservices/{target_svc}/ {action}]]")
+                anchor = ""
+                if target_ep:
+                    anchor = endpoint_anchor(target_svc, target_ep[0], target_ep[1])
+                L.append(f"Svc -> {alias} : [[/microservices/{target_svc}/{anchor} {action}]]")
             else:
                 L.append(f"Svc -> {alias} : {action}")
             L.append(f"activate {alias} #DBEAFE")
@@ -676,8 +706,15 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     if async_calls:
         L.append("== Async Events ==")
         L.append("")
-        for alias, label, action, _ in async_calls:
-            L.append(f"Svc ->> {alias} : {action}")
+        for call in async_calls:
+            alias, label, action = call[0], call[1], call[2]
+            target_ep = call[4] if len(call) > 4 else None
+            target_svc = label_to_svc_name(label)
+            if target_svc and target_ep:
+                anchor = endpoint_anchor(target_svc, target_ep[0], target_ep[1])
+                L.append(f"Svc ->> {alias} : [[/microservices/{target_svc}/{anchor} {action}]]")
+            else:
+                L.append(f"Svc ->> {alias} : {action}")
         L.append("")
 
     # Response
@@ -900,6 +937,17 @@ def main():
     os.makedirs(SVG_DIR, exist_ok=True)
 
     spec_files = sorted(f for f in os.listdir(SPECS_DIR) if f.endswith(".yaml"))
+
+    # Pre-load all endpoint summaries for cross-service deep linking
+    for spec_file in spec_files:
+        svc_name = spec_file.replace(".yaml", "")
+        with open(os.path.join(SPECS_DIR, spec_file)) as f:
+            spec = yaml.safe_load(f)
+        for path, path_item in spec.get("paths", {}).items():
+            for method in ["get", "post", "put", "patch", "delete"]:
+                if method in path_item:
+                    summary = path_item[method].get("summary", "")
+                    ALL_ENDPOINT_SUMMARIES[(svc_name, method.upper(), path)] = summary
 
     all_pumls = []
     all_services = []

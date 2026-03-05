@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> Res : [[/microservices/svc-reservations/ Verify completed booking]]
+Svc -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Verify completed booking]]
 activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res

@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> GM : [[/microservices/svc-guide-management/ Reassign guide]]
+Svc -> GM : [[/microservices/svc-guide-management/#patch-guidesguide_id-update-guide-profile Reassign guide]]
 activate GM #DBEAFE
 GM --> Svc : OK
 deactivate GM

@@ -36,12 +36,12 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> Res : [[/microservices/svc-reservations/ Verify reservation exists]]
+Svc -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Verify reservation exists]]
 activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res
 
-Svc -> Safety : [[/microservices/svc-safety-compliance/ Validate active waiver]]
+Svc -> Safety : [[/microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest Validate active waiver]]
 activate Safety #DBEAFE
 Safety --> Svc : OK
 deactivate Safety
