@@ -21,13 +21,83 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-loyalty-rewards C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | Couchbase 7 |
 | **Schema** | `loyalty` |
-| **Primary Tables** | `members`, `point_transactions`, `tiers`, `redemptions` |
-| **Key Features** | Document-oriented member profiles with flexible reward schemas | N1QL queries for tier recalculation and point aggregation | Sub-document operations for atomic point balance updates |
+| **Tables** | `members`, `point_transactions`, `tiers`, `redemptions` |
 | **Estimated Volume** | ~1,000 transactions/day |
+| **Connection Pool** | min 5 / max 15 / idle timeout 30s |
+| **Backup Strategy** | XDCR to standby cluster, daily cbbackupmgr |
+
+### Key Features
+
+- Document-oriented member profiles with flexible reward schemas
+- N1QL queries for tier recalculation and point aggregation
+- Sub-document operations for atomic point balance updates
+
+### Table Reference
+
+#### `members`
+
+*Loyalty member documents with point balances and tier status*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `document_key` | `String` | members::{guest_id} |
+| `guest_id` | `String` | NOT NULL |
+| `tier` | `String` | NOT NULL (bronze/silver/gold/platinum) |
+| `points_balance` | `Number` | NOT NULL |
+| `lifetime_points` | `Number` | NOT NULL |
+| `tier_qualified_at` | `ISO8601 String` | NOT NULL |
+| `enrolled_at` | `ISO8601 String` | NOT NULL |
+
+**Indexes:**
+
+- `idx_member_tier` on `tier` (N1QL GSI)
+- `idx_member_points` on `points_balance DESC` (N1QL GSI)
+
+#### `point_transactions`
+
+*Point earn and redeem transaction ledger*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `document_key` | `String` | txn::{transaction_id} |
+| `transaction_id` | `String` | NOT NULL |
+| `guest_id` | `String` | NOT NULL |
+| `type` | `String` | NOT NULL (earn/redeem/expire/adjust) |
+| `points` | `Number` | NOT NULL |
+| `description` | `String` | NOT NULL |
+| `reference_id` | `String` | NULL (reservation or trip ID) |
+| `created_at` | `ISO8601 String` | NOT NULL |
+
+**Indexes:**
+
+- `idx_txn_guest` on `guest_id, created_at DESC` (N1QL GSI)
+
+#### `redemptions`
+
+*Reward redemption records against point balances*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `document_key` | `String` | redemption::{redemption_id} |
+| `redemption_id` | `String` | NOT NULL |
+| `guest_id` | `String` | NOT NULL |
+| `reward_type` | `String` | NOT NULL |
+| `points_spent` | `Number` | NOT NULL |
+| `status` | `String` | NOT NULL |
+| `redeemed_at` | `ISO8601 String` | NOT NULL |
+
+**Indexes:**
+
+- `idx_redeem_guest` on `guest_id` (N1QL GSI)
+
 
 ---
 

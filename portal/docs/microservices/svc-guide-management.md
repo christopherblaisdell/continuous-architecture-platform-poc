@@ -21,13 +21,102 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-guide-management C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `guides` |
-| **Primary Tables** | `guides`, `certifications`, `guide_schedules`, `availability_windows`, `ratings` |
-| **Key Features** | Certification expiry tracking with automated alerts | Availability window overlap detection constraints | Weighted rating aggregation with recency bias |
+| **Tables** | `guides`, `certifications`, `guide_schedules`, `availability_windows`, `ratings` |
 | **Estimated Volume** | ~100 schedule updates/day, ~500 availability queries/day |
+| **Connection Pool** | min 3 / max 15 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 30-day retention |
+
+### Key Features
+
+- Certification expiry tracking with automated alerts
+- Availability window overlap detection constraints
+- Weighted rating aggregation with recency bias
+
+### Table Reference
+
+#### `guides`
+
+*Adventure guide profiles and qualifications*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `guide_id` | `UUID` | PK |
+| `first_name` | `VARCHAR(100)` | NOT NULL |
+| `last_name` | `VARCHAR(100)` | NOT NULL |
+| `email` | `VARCHAR(255)` | NOT NULL, UNIQUE |
+| `phone` | `VARCHAR(30)` | NOT NULL |
+| `hire_date` | `DATE` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'active' |
+| `avg_rating` | `DECIMAL(3,2)` | NULL |
+| `total_trips` | `INTEGER` | NOT NULL, DEFAULT 0 |
+
+**Indexes:**
+
+- `idx_guide_email` on `email` (UNIQUE)
+- `idx_guide_status` on `status`
+- `idx_guide_rating` on `avg_rating DESC NULLS LAST`
+
+#### `certifications`
+
+*Guide adventure certifications with expiry tracking*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `cert_id` | `UUID` | PK |
+| `guide_id` | `UUID` | NOT NULL, FK -> guides |
+| `cert_type` | `VARCHAR(50)` | NOT NULL |
+| `level` | `VARCHAR(20)` | NOT NULL |
+| `issued_date` | `DATE` | NOT NULL |
+| `expiry_date` | `DATE` | NOT NULL |
+| `verified` | `BOOLEAN` | NOT NULL, DEFAULT FALSE |
+
+**Indexes:**
+
+- `idx_gcert_guide` on `guide_id`
+- `idx_gcert_expiry` on `expiry_date`
+
+#### `availability_windows`
+
+*Time blocks when a guide is available for scheduling*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `window_id` | `UUID` | PK |
+| `guide_id` | `UUID` | NOT NULL, FK -> guides |
+| `start_time` | `TIMESTAMPTZ` | NOT NULL |
+| `end_time` | `TIMESTAMPTZ` | NOT NULL |
+| `recurrence` | `VARCHAR(20)` | NULL |
+
+**Indexes:**
+
+- `idx_avail_guide_time` on `guide_id, start_time`
+
+#### `ratings`
+
+*Guest ratings and reviews for guides*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `rating_id` | `UUID` | PK |
+| `guide_id` | `UUID` | NOT NULL, FK -> guides |
+| `guest_id` | `UUID` | NOT NULL |
+| `trip_id` | `UUID` | NOT NULL |
+| `score` | `SMALLINT` | NOT NULL, CHECK (1-5) |
+| `comment` | `TEXT` | NULL |
+| `rated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_rating_guide` on `guide_id, rated_at DESC`
+
 
 ---
 

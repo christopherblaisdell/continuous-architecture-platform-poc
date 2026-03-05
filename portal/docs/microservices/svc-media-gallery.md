@@ -21,13 +21,84 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-media-gallery--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-media-gallery--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-media-gallery C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 + S3-Compatible Object Store |
 | **Schema** | `media` |
-| **Primary Tables** | `media_items`, `share_links`, `albums` |
-| **Key Features** | S3-compatible storage for photos and videos | Presigned URLs for secure direct upload and download | Automatic thumbnail generation on upload |
+| **Tables** | `media_items`, `share_links`, `albums` |
 | **Estimated Volume** | ~500 uploads/day peak season |
+| **Connection Pool** | min 3 / max 15 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, S3 cross-region replication |
+
+### Key Features
+
+- S3-compatible storage for photos and videos
+- Presigned URLs for secure direct upload and download
+- Automatic thumbnail generation on upload
+
+### Table Reference
+
+#### `media_items`
+
+*Metadata for uploaded photos and videos (binary stored in S3)*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `media_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL |
+| `trip_id` | `UUID` | NULL |
+| `media_type` | `VARCHAR(20)` | NOT NULL (photo/video) |
+| `s3_key` | `VARCHAR(512)` | NOT NULL |
+| `thumbnail_key` | `VARCHAR(512)` | NULL |
+| `file_size_bytes` | `BIGINT` | NOT NULL |
+| `width` | `INTEGER` | NULL |
+| `height` | `INTEGER` | NULL |
+| `gps_lat` | `DECIMAL(9,6)` | NULL |
+| `gps_lng` | `DECIMAL(9,6)` | NULL |
+| `uploaded_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_media_guest` on `guest_id, uploaded_at DESC`
+- `idx_media_trip` on `trip_id`
+
+#### `share_links`
+
+*Shareable links for media items with expiry*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `link_id` | `UUID` | PK |
+| `media_id` | `UUID` | NOT NULL, FK -> media_items |
+| `token` | `VARCHAR(128)` | NOT NULL, UNIQUE |
+| `expires_at` | `TIMESTAMPTZ` | NOT NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_share_token` on `token` (UNIQUE)
+- `idx_share_expiry` on `expires_at`
+
+#### `albums`
+
+*Guest-created photo albums grouping media items*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `album_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL |
+| `name` | `VARCHAR(200)` | NOT NULL |
+| `cover_media_id` | `UUID` | NULL, FK -> media_items |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_album_guest` on `guest_id`
+
 
 ---
 

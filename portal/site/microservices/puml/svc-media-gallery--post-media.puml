@@ -23,7 +23,7 @@ participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-media-gallery" as Svc [[/microservices/svc-media-gallery/]] #E8F4F8
 participant "Object Store" as S3 [[/actors/#object-store]] #F5F5F5
 participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F5F5F5
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-media-gallery/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-media-gallery.html#/Media/uploadMedia View in Swagger UI]]

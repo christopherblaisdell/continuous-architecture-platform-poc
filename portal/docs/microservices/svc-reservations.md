@@ -21,13 +21,89 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-reservations--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-reservations C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `reservations` |
-| **Primary Tables** | `reservations`, `participants`, `status_history` |
-| **Key Features** | Optimistic locking via _rev field | Composite index on (guest_id, trip_date) | Monthly partitioning by reservation_date |
+| **Tables** | `reservations`, `participants`, `status_history` |
 | **Estimated Volume** | ~2,000 new reservations/day |
+| **Connection Pool** | min 10 / max 40 / idle timeout 10min |
+| **Backup Strategy** | Continuous WAL archiving, daily base backup, 30-day PITR |
+
+### Key Features
+
+- Optimistic locking via _rev field
+- Composite index on (guest_id, trip_date)
+- Monthly partitioning by reservation_date
+
+### Table Reference
+
+#### `reservations`
+
+*Core reservation records for adventure bookings*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `reservation_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL |
+| `trip_id` | `UUID` | NOT NULL |
+| `confirmation_code` | `VARCHAR(12)` | NOT NULL, UNIQUE |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'confirmed' |
+| `trip_date` | `DATE` | NOT NULL |
+| `party_size` | `INTEGER` | NOT NULL, CHECK (> 0) |
+| `total_amount` | `DECIMAL(10,2)` | NOT NULL |
+| `currency` | `CHAR(3)` | NOT NULL, DEFAULT 'USD' |
+| `_rev` | `INTEGER` | NOT NULL, DEFAULT 1 |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_res_guest_date` on `guest_id, trip_date`
+- `idx_res_trip_date` on `trip_id, trip_date`
+- `idx_res_confirmation` on `confirmation_code` (UNIQUE)
+- `idx_res_status` on `status`
+
+#### `participants`
+
+*Individual participants linked to a reservation*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `participant_id` | `UUID` | PK |
+| `reservation_id` | `UUID` | NOT NULL, FK -> reservations |
+| `guest_id` | `UUID` | NOT NULL |
+| `role` | `VARCHAR(20)` | NOT NULL, DEFAULT 'guest' |
+| `waiver_signed` | `BOOLEAN` | NOT NULL, DEFAULT FALSE |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_part_reservation` on `reservation_id`
+- `idx_part_guest` on `guest_id`
+
+#### `status_history`
+
+*Audit trail of reservation status transitions*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `history_id` | `UUID` | PK |
+| `reservation_id` | `UUID` | NOT NULL, FK -> reservations |
+| `old_status` | `VARCHAR(20)` | NULL |
+| `new_status` | `VARCHAR(20)` | NOT NULL |
+| `changed_by` | `VARCHAR(100)` | NOT NULL |
+| `reason` | `TEXT` | NULL |
+| `changed_at` | `TIMESTAMPTZ` | NOT NULL, DEFAULT NOW() |
+
+**Indexes:**
+
+- `idx_hist_reservation` on `reservation_id, changed_at DESC`
+
 
 ---
 

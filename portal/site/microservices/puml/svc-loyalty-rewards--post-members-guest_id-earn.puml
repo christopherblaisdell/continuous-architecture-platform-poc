@@ -24,7 +24,7 @@ participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]]
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "Couchbase" as DB #FCE4EC
+database "Couchbase" as DB [[/microservices/svc-loyalty-rewards/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-loyalty-rewards.html#/Transactions/earnPoints View in Swagger UI]]

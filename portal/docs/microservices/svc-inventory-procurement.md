@@ -21,13 +21,84 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-inventory-procurement C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `procurement` |
-| **Primary Tables** | `purchase_orders`, `po_line_items`, `suppliers`, `stock_levels`, `stock_adjustments`, `reorder_alerts` |
-| **Key Features** | Purchase order approval workflow with state machine | Automatic reorder point calculation based on consumption | Supplier lead time tracking for delivery estimates |
+| **Tables** | `purchase_orders`, `po_line_items`, `suppliers`, `stock_levels`, `stock_adjustments`, `reorder_alerts` |
 | **Estimated Volume** | ~50 POs/day, ~200 stock adjustments/day |
+| **Connection Pool** | min 3 / max 10 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 30-day retention |
+
+### Key Features
+
+- Purchase order approval workflow with state machine
+- Automatic reorder point calculation based on consumption
+- Supplier lead time tracking for delivery estimates
+
+### Table Reference
+
+#### `purchase_orders`
+
+*Purchase orders with approval state machine*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `po_id` | `UUID` | PK |
+| `supplier_id` | `UUID` | NOT NULL, FK -> suppliers |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'draft' |
+| `total_amount` | `DECIMAL(10,2)` | NOT NULL |
+| `currency` | `CHAR(3)` | NOT NULL, DEFAULT 'USD' |
+| `approved_by` | `VARCHAR(100)` | NULL |
+| `submitted_at` | `TIMESTAMPTZ` | NULL |
+| `approved_at` | `TIMESTAMPTZ` | NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_po_supplier` on `supplier_id`
+- `idx_po_status` on `status`
+
+#### `suppliers`
+
+*Approved suppliers with performance tracking*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `supplier_id` | `UUID` | PK |
+| `name` | `VARCHAR(200)` | NOT NULL |
+| `contact_email` | `VARCHAR(255)` | NOT NULL |
+| `lead_time_days` | `INTEGER` | NOT NULL |
+| `rating` | `DECIMAL(3,2)` | NULL |
+| `active` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+
+**Indexes:**
+
+- `idx_supplier_active` on `active`
+
+#### `stock_levels`
+
+*Current stock quantities with reorder thresholds*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `stock_id` | `UUID` | PK |
+| `item_type` | `VARCHAR(50)` | NOT NULL |
+| `location_id` | `UUID` | NOT NULL |
+| `quantity_on_hand` | `INTEGER` | NOT NULL |
+| `reorder_point` | `INTEGER` | NOT NULL |
+| `reorder_quantity` | `INTEGER` | NOT NULL |
+| `last_counted_at` | `TIMESTAMPTZ` | NULL |
+
+**Indexes:**
+
+- `idx_stock_item_loc` on `item_type, location_id` (UNIQUE)
+- `idx_stock_reorder` on `quantity_on_hand` (WHERE quantity_on_hand <= reorder_point)
+
 
 ---
 

@@ -26,7 +26,7 @@ participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F
 participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
 participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FFF8F0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-check-in/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-check-in.html#/Check-Ins/createCheckIn View in Swagger UI]]

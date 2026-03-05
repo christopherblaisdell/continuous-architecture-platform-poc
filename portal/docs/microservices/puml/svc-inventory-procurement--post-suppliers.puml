@@ -21,7 +21,7 @@ title POST /suppliers\nRegister a new supplier
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-inventory-procurement" as Svc [[/microservices/svc-inventory-procurement/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-inventory-procurement/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-inventory-procurement.html View in Swagger UI]]

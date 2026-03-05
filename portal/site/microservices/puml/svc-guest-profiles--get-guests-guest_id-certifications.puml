@@ -21,7 +21,7 @@ title GET /guests/{guest_id}/certifications\nList guest certifications
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-guest-profiles/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-guest-profiles.html#/Certifications/listGuestCertifications View in Swagger UI]]

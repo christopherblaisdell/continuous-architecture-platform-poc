@@ -21,13 +21,86 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-gear-inventory--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-gear-inventory--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-gear-inventory C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `gear` |
-| **Primary Tables** | `gear_items`, `gear_packages`, `gear_assignments`, `maintenance_records`, `inventory_levels` |
-| **Key Features** | RFID tag tracking via unique identifiers | Scheduled maintenance alerts with cron triggers | Location-based inventory partitioning |
+| **Tables** | `gear_items`, `gear_packages`, `gear_assignments`, `maintenance_records`, `inventory_levels` |
 | **Estimated Volume** | ~1,500 assignments/day peak season |
+| **Connection Pool** | min 5 / max 20 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 30-day retention |
+
+### Key Features
+
+- RFID tag tracking via unique identifiers
+- Scheduled maintenance alerts with cron triggers
+- Location-based inventory partitioning
+
+### Table Reference
+
+#### `gear_items`
+
+*Individual gear items tracked by RFID tag*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `item_id` | `UUID` | PK |
+| `rfid_tag` | `VARCHAR(64)` | NOT NULL, UNIQUE |
+| `gear_type` | `VARCHAR(50)` | NOT NULL |
+| `size` | `VARCHAR(20)` | NULL |
+| `condition` | `VARCHAR(20)` | NOT NULL, DEFAULT 'good' |
+| `location_id` | `UUID` | NOT NULL |
+| `last_inspected` | `DATE` | NULL |
+| `acquired_date` | `DATE` | NOT NULL |
+
+**Indexes:**
+
+- `idx_gear_rfid` on `rfid_tag` (UNIQUE)
+- `idx_gear_type_loc` on `gear_type, location_id`
+- `idx_gear_condition` on `condition`
+
+#### `gear_assignments`
+
+*Gear lent to guests for specific check-ins*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `assignment_id` | `UUID` | PK |
+| `check_in_id` | `UUID` | NOT NULL |
+| `item_id` | `UUID` | NOT NULL, FK -> gear_items |
+| `assigned_at` | `TIMESTAMPTZ` | NOT NULL |
+| `returned_at` | `TIMESTAMPTZ` | NULL |
+| `condition_on_return` | `VARCHAR(20)` | NULL |
+
+**Indexes:**
+
+- `idx_assign_checkin` on `check_in_id`
+- `idx_assign_item` on `item_id`
+- `idx_assign_outstanding` on `returned_at` (WHERE returned_at IS NULL)
+
+#### `maintenance_records`
+
+*Maintenance and inspection history for gear items*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `record_id` | `UUID` | PK |
+| `item_id` | `UUID` | NOT NULL, FK -> gear_items |
+| `maintenance_type` | `VARCHAR(30)` | NOT NULL |
+| `performed_by` | `VARCHAR(100)` | NOT NULL |
+| `notes` | `TEXT` | NULL |
+| `performed_at` | `TIMESTAMPTZ` | NOT NULL |
+| `next_due` | `DATE` | NULL |
+
+**Indexes:**
+
+- `idx_maint_item` on `item_id, performed_at DESC`
+- `idx_maint_due` on `next_due`
+
 
 ---
 

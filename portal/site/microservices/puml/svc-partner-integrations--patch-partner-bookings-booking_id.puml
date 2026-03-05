@@ -21,7 +21,7 @@ title PATCH /partner-bookings/{booking_id}\nUpdate a partner booking
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-partner-integrations/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-partner-integrations.html#/Partner%20Bookings/updatePartnerBooking View in Swagger UI]]

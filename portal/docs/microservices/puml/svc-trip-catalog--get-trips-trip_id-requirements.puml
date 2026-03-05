@@ -21,7 +21,7 @@ title GET /trips/{trip_id}/requirements\nGet trip requirements
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-trip-catalog" as Svc [[/microservices/svc-trip-catalog/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-trip-catalog/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-trip-catalog.html#/Requirements/getTripRequirements View in Swagger UI]]

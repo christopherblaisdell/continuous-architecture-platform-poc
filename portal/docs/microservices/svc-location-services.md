@@ -21,13 +21,63 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-location-services--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-location-services--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-location-services C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostGIS (PostgreSQL 15) |
 | **Schema** | `locations` |
-| **Primary Tables** | `locations`, `capacity_records`, `operating_hours` |
-| **Key Features** | PostGIS geometry for geofencing and proximity queries | Real-time capacity tracking with threshold alerts | Timezone-aware operating hours management |
+| **Tables** | `locations`, `capacity_records`, `operating_hours` |
 | **Estimated Volume** | ~100 updates/day, ~2K reads/day |
+| **Connection Pool** | min 3 / max 10 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 14-day retention |
+
+### Key Features
+
+- PostGIS geometry for geofencing and proximity queries
+- Real-time capacity tracking with threshold alerts
+- Timezone-aware operating hours management
+
+### Table Reference
+
+#### `locations`
+
+*Adventure locations and facilities with geospatial boundaries*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `location_id` | `UUID` | PK |
+| `name` | `VARCHAR(200)` | NOT NULL |
+| `location_type` | `VARCHAR(30)` | NOT NULL |
+| `boundary` | `GEOMETRY(Polygon, 4326)` | NOT NULL |
+| `center_point` | `GEOMETRY(Point, 4326)` | NOT NULL |
+| `max_capacity` | `INTEGER` | NOT NULL |
+| `timezone` | `VARCHAR(50)` | NOT NULL |
+| `active` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+
+**Indexes:**
+
+- `idx_loc_boundary` on `boundary` (GiST spatial)
+- `idx_loc_center` on `center_point` (GiST spatial)
+- `idx_loc_type` on `location_type`
+
+#### `capacity_records`
+
+*Real-time occupancy tracking for locations*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `record_id` | `UUID` | PK |
+| `location_id` | `UUID` | NOT NULL, FK -> locations |
+| `current_count` | `INTEGER` | NOT NULL |
+| `recorded_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_cap_loc_time` on `location_id, recorded_at DESC`
+
 
 ---
 

@@ -21,7 +21,7 @@ title GET /members/{guest_id}/transactions\nList point transactions for a member
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
-database "Couchbase" as DB #FCE4EC
+database "Couchbase" as DB [[/microservices/svc-loyalty-rewards/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-loyalty-rewards.html#/Transactions/getMemberTransactions View in Swagger UI]]

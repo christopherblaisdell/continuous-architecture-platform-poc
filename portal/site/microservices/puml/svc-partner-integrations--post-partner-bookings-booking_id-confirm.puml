@@ -24,7 +24,7 @@ participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integ
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-partner-integrations/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-partner-integrations.html#/Partner%20Bookings/confirmPartnerBooking View in Swagger UI]]

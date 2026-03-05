@@ -24,7 +24,7 @@ participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #E8
 participant "SendGrid API" as SG [[/actors/#sendgrid-api]] #F5F5F5
 participant "Twilio API" as TW [[/actors/#twilio-api]] #F5F5F5
 participant "Firebase Cloud Messaging" as FCM [[/actors/#firebase-cloud-messaging]] #F5F5F5
-database "PG + Valkey" as DB #FCE4EC
+database "PG + Valkey" as DB [[/microservices/svc-notifications/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-notifications.html#/Notifications/sendBulkNotifications View in Swagger UI]]

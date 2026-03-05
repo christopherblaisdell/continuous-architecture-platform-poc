@@ -21,13 +21,88 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-safety-compliance C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `safety` |
-| **Primary Tables** | `waivers`, `incidents`, `safety_inspections`, `audit_log` |
-| **Key Features** | Immutable audit log (append-only) | Digital signature verification for waivers | Regulatory compliance retention (7 years) |
+| **Tables** | `waivers`, `incidents`, `safety_inspections`, `audit_log` |
 | **Estimated Volume** | ~3,000 waiver checks/day |
+| **Connection Pool** | min 5 / max 20 / idle timeout 10min |
+| **Backup Strategy** | Continuous WAL archiving, daily base backup, 7-year retention (regulatory) |
+
+### Key Features
+
+- Immutable audit log (append-only)
+- Digital signature verification for waivers
+- Regulatory compliance retention (7 years)
+
+### Table Reference
+
+#### `waivers`
+
+*Signed liability waivers with digital signature verification*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `waiver_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL |
+| `trip_id` | `UUID` | NOT NULL |
+| `waiver_type` | `VARCHAR(50)` | NOT NULL |
+| `signed_at` | `TIMESTAMPTZ` | NULL |
+| `signature_ref` | `VARCHAR(255)` | NULL (DocuSign envelope ID) |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'pending' |
+| `expires_at` | `TIMESTAMPTZ` | NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_waiver_guest_trip` on `guest_id, trip_id`
+- `idx_waiver_status` on `status`
+
+#### `incidents`
+
+*Safety incident reports with severity classification*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `incident_id` | `UUID` | PK |
+| `trip_id` | `UUID` | NULL |
+| `location_id` | `UUID` | NULL |
+| `severity` | `VARCHAR(20)` | NOT NULL |
+| `description` | `TEXT` | NOT NULL |
+| `reported_by` | `VARCHAR(100)` | NOT NULL |
+| `reported_at` | `TIMESTAMPTZ` | NOT NULL |
+| `resolved_at` | `TIMESTAMPTZ` | NULL |
+| `resolution_notes` | `TEXT` | NULL |
+
+**Indexes:**
+
+- `idx_incident_severity` on `severity, reported_at DESC`
+- `idx_incident_trip` on `trip_id`
+
+#### `audit_log`
+
+*Immutable append-only audit trail for regulatory compliance*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `log_id` | `BIGSERIAL` | PK |
+| `entity_type` | `VARCHAR(50)` | NOT NULL |
+| `entity_id` | `UUID` | NOT NULL |
+| `action` | `VARCHAR(20)` | NOT NULL |
+| `actor` | `VARCHAR(100)` | NOT NULL |
+| `details` | `JSONB` | NOT NULL |
+| `logged_at` | `TIMESTAMPTZ` | NOT NULL, DEFAULT NOW() |
+
+**Indexes:**
+
+- `idx_audit_entity` on `entity_type, entity_id`
+- `idx_audit_time` on `logged_at`
+
 
 ---
 

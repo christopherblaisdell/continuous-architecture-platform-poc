@@ -21,13 +21,68 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-transport-logistics C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `transport` |
-| **Primary Tables** | `routes`, `route_schedules`, `transport_requests`, `vehicles` |
-| **Key Features** | Time-window optimization for route scheduling | Vehicle capacity tracking with overbooking prevention | GPS coordinate storage for pickup and dropoff points |
+| **Tables** | `routes`, `route_schedules`, `transport_requests`, `vehicles` |
 | **Estimated Volume** | ~300 transport requests/day |
+| **Connection Pool** | min 3 / max 10 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 14-day retention |
+
+### Key Features
+
+- Time-window optimization for route scheduling
+- Vehicle capacity tracking with overbooking prevention
+- GPS coordinate storage for pickup and dropoff points
+
+### Table Reference
+
+#### `vehicles`
+
+*Fleet vehicles with capacity and maintenance status*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `vehicle_id` | `UUID` | PK |
+| `registration` | `VARCHAR(20)` | NOT NULL, UNIQUE |
+| `vehicle_type` | `VARCHAR(30)` | NOT NULL |
+| `capacity` | `INTEGER` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'available' |
+| `current_location` | `POINT` | NULL |
+| `last_service_date` | `DATE` | NULL |
+
+**Indexes:**
+
+- `idx_vehicle_status` on `status`
+- `idx_vehicle_type` on `vehicle_type`
+
+#### `transport_requests`
+
+*Guest and staff transport requests with pickup windows*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `request_id` | `UUID` | PK |
+| `route_id` | `UUID` | NOT NULL, FK -> routes |
+| `vehicle_id` | `UUID` | NULL, FK -> vehicles |
+| `passenger_count` | `INTEGER` | NOT NULL |
+| `pickup_time` | `TIMESTAMPTZ` | NOT NULL |
+| `pickup_location` | `POINT` | NOT NULL |
+| `dropoff_location` | `POINT` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_treq_route` on `route_id`
+- `idx_treq_pickup` on `pickup_time`
+- `idx_treq_vehicle` on `vehicle_id`
+
 
 ---
 

@@ -21,13 +21,85 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-trail-management--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trail-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-trail-management C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostGIS (PostgreSQL 15) |
 | **Schema** | `trails` |
-| **Primary Tables** | `trails`, `waypoints`, `closures`, `condition_reports` |
-| **Key Features** | PostGIS geometry columns for trail routes and waypoints | Spatial indexes (GiST) for proximity queries | Time-series condition data with hypertable extension |
+| **Tables** | `trails`, `waypoints`, `closures`, `condition_reports` |
 | **Estimated Volume** | ~200 condition updates/day, ~5K trail reads/day |
+| **Connection Pool** | min 5 / max 15 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump with PostGIS extensions, 14-day retention |
+
+### Key Features
+
+- PostGIS geometry columns for trail routes and waypoints
+- Spatial indexes (GiST) for proximity queries
+- Time-series condition data with hypertable extension
+
+### Table Reference
+
+#### `trails`
+
+*Trail definitions with geospatial route geometry*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `trail_id` | `UUID` | PK |
+| `name` | `VARCHAR(200)` | NOT NULL |
+| `difficulty` | `VARCHAR(20)` | NOT NULL |
+| `length_km` | `DECIMAL(6,2)` | NOT NULL |
+| `elevation_gain_m` | `INTEGER` | NULL |
+| `route` | `GEOMETRY(LineString, 4326)` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'open' |
+| `region_id` | `UUID` | NOT NULL |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_trail_route` on `route` (GiST spatial)
+- `idx_trail_status` on `status`
+- `idx_trail_region` on `region_id`
+
+#### `waypoints`
+
+*Points of interest and navigation markers along trails*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `waypoint_id` | `UUID` | PK |
+| `trail_id` | `UUID` | NOT NULL, FK -> trails |
+| `name` | `VARCHAR(100)` | NOT NULL |
+| `location` | `GEOMETRY(Point, 4326)` | NOT NULL |
+| `waypoint_type` | `VARCHAR(30)` | NOT NULL |
+| `elevation_m` | `INTEGER` | NULL |
+| `sequence_order` | `INTEGER` | NOT NULL |
+
+**Indexes:**
+
+- `idx_wp_trail` on `trail_id, sequence_order`
+- `idx_wp_location` on `location` (GiST spatial)
+
+#### `condition_reports`
+
+*Time-series trail condition observations from guides and sensors*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `report_id` | `UUID` | PK |
+| `trail_id` | `UUID` | NOT NULL, FK -> trails |
+| `condition` | `VARCHAR(30)` | NOT NULL |
+| `details` | `TEXT` | NULL |
+| `reported_by` | `VARCHAR(100)` | NOT NULL |
+| `reported_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_cond_trail_time` on `trail_id, reported_at DESC`
+
 
 ---
 

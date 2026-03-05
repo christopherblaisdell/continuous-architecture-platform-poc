@@ -21,13 +21,64 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-weather--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-weather--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-weather C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | Valkey 8 + PostgreSQL 15 |
 | **Schema** | `weather` |
-| **Primary Tables** | `weather_stations`, `forecast_cache`, `alert_history` |
-| **Key Features** | Valkey TTL cache for current conditions (5-min TTL) | External weather API response caching and aggregation | Severe weather alert deduplication |
+| **Tables** | `weather_stations`, `forecast_cache`, `alert_history` |
 | **Estimated Volume** | ~10K weather reads/day, ~100 external API fetches/day |
+| **Connection Pool** | min 3 / max 10 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 7-day retention (cache data is ephemeral) |
+
+### Key Features
+
+- Valkey TTL cache for current conditions (5-min TTL)
+- External weather API response caching and aggregation
+- Severe weather alert deduplication
+
+### Table Reference
+
+#### `weather_stations`
+
+*Registered weather station locations for data sourcing*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `station_id` | `UUID` | PK |
+| `name` | `VARCHAR(100)` | NOT NULL |
+| `latitude` | `DECIMAL(9,6)` | NOT NULL |
+| `longitude` | `DECIMAL(9,6)` | NOT NULL |
+| `provider` | `VARCHAR(50)` | NOT NULL |
+| `active` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+
+**Indexes:**
+
+- `idx_ws_provider` on `provider`
+
+#### `alert_history`
+
+*Archived severe weather alerts with deduplication*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `alert_id` | `UUID` | PK |
+| `station_id` | `UUID` | NOT NULL, FK -> weather_stations |
+| `alert_type` | `VARCHAR(50)` | NOT NULL |
+| `severity` | `VARCHAR(20)` | NOT NULL |
+| `message` | `TEXT` | NOT NULL |
+| `external_id` | `VARCHAR(100)` | NOT NULL, UNIQUE (dedup key) |
+| `issued_at` | `TIMESTAMPTZ` | NOT NULL |
+| `expires_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_alert_station` on `station_id, issued_at DESC`
+- `idx_alert_dedup` on `external_id` (UNIQUE)
+
 
 ---
 

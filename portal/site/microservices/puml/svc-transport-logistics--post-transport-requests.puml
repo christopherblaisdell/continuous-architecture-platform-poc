@@ -25,7 +25,7 @@ participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 participant "Location Svc" as LS [[/microservices/svc-location-services/]] #FFF8F0
 participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F5F5F5
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-transport-logistics/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-transport-logistics.html View in Swagger UI]]
