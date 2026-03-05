@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /trips/{trip_id}
 activate GW #7c3aed
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-trip-catalog/#patch-tripstrip_id-update-trip-details route request]]
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

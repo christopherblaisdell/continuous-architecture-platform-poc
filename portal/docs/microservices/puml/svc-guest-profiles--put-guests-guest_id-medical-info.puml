@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PUT /guests/{guest_id}/medical-info
 activate GW #c77b30
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-guest-profiles/#put-guestsguest_idmedical-info-update-guest-medical-information route request]]
 activate Svc #c77b30
 
 note right of Svc : Validate request body

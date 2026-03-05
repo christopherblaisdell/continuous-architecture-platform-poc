@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /templates
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-notifications/#post-templates-create-a-notification-template route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body

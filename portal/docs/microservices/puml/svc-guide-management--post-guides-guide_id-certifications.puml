@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /guides/{guide_id}/certifications
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-guide-management/#post-guidesguide_idcertifications-add-a-certification-to-a-guide route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body

@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /incidents
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-safety-compliance/#post-incidents-file-an-incident-report route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body

@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /trails/{trail_id}
 activate GW #7c3aed
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-trail-management/#patch-trailstrail_id-update-trail-details route request]]
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

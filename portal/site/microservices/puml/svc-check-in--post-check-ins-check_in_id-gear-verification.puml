@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /check-ins/{check_in_id}/gear-verification
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-check-in/#post-check-inscheck_in_idgear-verification-verify-gear-has-been-picked-up-and-fitted route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body

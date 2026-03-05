@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /routes
 activate GW #2563eb
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-transport-logistics/#get-routes-list-transport-routes route request]]
 activate Svc #2563eb
 
 == Database ==

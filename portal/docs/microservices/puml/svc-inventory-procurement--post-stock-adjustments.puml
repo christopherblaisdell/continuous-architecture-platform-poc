@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /stock-adjustments
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-inventory-procurement/#post-stock-adjustments-record-a-stock-adjustment route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body
