@@ -1,0 +1,65 @@
+@startuml app-guest-mobile--self-check-in
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Self Check-In\nNovaTrek Adventure App
+
+actor "Guest" as User
+participant "Mobile App" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+participant "svc-guest-profiles" as GP [[/microservices/svc-guest-profiles/]] #E8F4F8
+participant "svc-safety-compliance" as SC [[/microservices/svc-safety-compliance/]] #E8F4F8
+participant "svc-check-in" as CI [[/microservices/svc-check-in/]] #E8F4F8
+participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
+
+User -> App : Open Self Check-In
+activate App #059669
+App -> GW : API request
+activate GW #059669
+
+== Backend Integration ==
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Lookup reservation by QR]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Verify guest identity]]
+activate GP #DBEAFE
+GP --> GW : OK
+deactivate GP
+
+GW -> SC : [[/microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest Validate waiver status]]
+activate SC #DBEAFE
+SC --> GW : OK
+deactivate SC
+
+GW -> CI : [[/microservices/svc-check-in/#post-check-ins-initiate-check-in-for-a-participant Create check-in record]]
+activate CI #DBEAFE
+CI --> GW : OK
+deactivate CI
+
+GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details Confirm gear assignment]]
+activate GI #DBEAFE
+GI --> GW : OK
+deactivate GI
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

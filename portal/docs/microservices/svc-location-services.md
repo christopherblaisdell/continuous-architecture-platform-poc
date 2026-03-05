@@ -79,3 +79,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id-operating-hours.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/operating-hours sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Daily Schedule Board, Transport Dispatch |
+| [Adventure App](../applications/app-guest-mobile/) | Live Trip Map |

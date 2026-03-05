@@ -1,0 +1,64 @@
+@startuml web-ops-dashboard--safety-incident-board
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #dc2626
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Safety Incident Board\nNovaTrek Operations Dashboard
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-safety-compliance" as SC [[/microservices/svc-safety-compliance/]] #E8F4F8
+participant "svc-guest-profiles" as GP [[/microservices/svc-guest-profiles/]] #E8F4F8
+participant "svc-guide-management" as GM [[/microservices/svc-guide-management/]] #E8F4F8
+participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #E8F4F8
+
+User -> App : Open Safety Incident Board
+activate App #dc2626
+App -> GW : API request
+activate GW #dc2626
+
+== Backend Integration ==
+
+GW -> SC : [[/microservices/svc-safety-compliance/ List active incidents]]
+activate SC #DBEAFE
+SC --> GW : OK
+deactivate SC
+
+GW -> SC : [[/microservices/svc-safety-compliance/#post-incidents-file-an-incident-report Log new incident]]
+activate SC #DBEAFE
+SC --> GW : OK
+deactivate SC
+
+GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get guest contact info]]
+activate GP #DBEAFE
+GP --> GW : OK
+deactivate GP
+
+GW -> GM : [[/microservices/svc-guide-management/#get-guidesguide_id-get-guide-by-id Get assigned guide]]
+activate GM #DBEAFE
+GM --> GW : OK
+deactivate GM
+
+GW ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send safety alerts]]
+activate Ntfy #DBEAFE
+Ntfy -->> GW : OK
+deactivate Ntfy
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

@@ -79,3 +79,13 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Reporting/getDailySummary){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-payments-daily-summary.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/daily-summary sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Booking Flow, Reservation Management |
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Analytics Dashboard, Partner Bookings |
+| [Adventure App](../applications/app-guest-mobile/) | My Reservations |

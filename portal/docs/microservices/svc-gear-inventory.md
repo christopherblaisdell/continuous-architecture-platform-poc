@@ -149,3 +149,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Inventory%20Levels/getInventoryLevels){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-inventory-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /inventory-levels sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station, Inventory Management |
+| [Adventure App](../applications/app-guest-mobile/) | Self Check-In, Digital Wristband |

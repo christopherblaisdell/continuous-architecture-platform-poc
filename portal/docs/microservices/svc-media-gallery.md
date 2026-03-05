@@ -75,3 +75,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Sharing/createShareLink){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--post-media-media_id-share.svg" type="image/svg+xml" style="max-width: 100%;">POST /media/{media_id}/share sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Trip Browser, Trip Gallery |
+| [Adventure App](../applications/app-guest-mobile/) | Photo Upload |

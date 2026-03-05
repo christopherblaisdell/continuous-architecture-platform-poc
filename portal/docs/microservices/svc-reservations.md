@@ -101,3 +101,13 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservation%20Status/transitionStatus){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--put-reservations-reservation_id-status.svg" type="image/svg+xml" style="max-width: 100%;">PUT /reservations/{reservation_id}/status sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Booking Flow, Guest Profile, Reservation Management, Trip Gallery |
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station, Transport Dispatch, Analytics Dashboard, Partner Bookings |
+| [Adventure App](../applications/app-guest-mobile/) | Self Check-In, My Reservations, Earn Loyalty Points |

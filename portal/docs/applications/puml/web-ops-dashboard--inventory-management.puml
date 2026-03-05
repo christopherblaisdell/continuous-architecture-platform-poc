@@ -1,0 +1,52 @@
+@startuml web-ops-dashboard--inventory-management
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #dc2626
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Inventory Management\nNovaTrek Operations Dashboard
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
+participant "svc-inventory-procurement" as IP [[/microservices/svc-inventory-procurement/]] #E8F4F8
+
+User -> App : Open Inventory Management
+activate App #dc2626
+App -> GW : API request
+activate GW #dc2626
+
+== Backend Integration ==
+
+GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-items-search-gear-inventory Get inventory levels]]
+activate GI #DBEAFE
+GI --> GW : OK
+deactivate GI
+
+GW -> GI : [[/microservices/svc-gear-inventory/ Check gear assignments]]
+activate GI #DBEAFE
+GI --> GW : OK
+deactivate GI
+
+GW -> IP : [[/microservices/svc-inventory-procurement/#post-purchase-orders-create-a-new-purchase-order Create purchase order]]
+activate IP #DBEAFE
+IP --> GW : OK
+deactivate IP
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

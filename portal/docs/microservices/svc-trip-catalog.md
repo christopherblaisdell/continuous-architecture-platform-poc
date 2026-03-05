@@ -139,3 +139,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trip-catalog.html#/Reference%20Data/listActivityTypes){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trip-catalog--get-activity-types.svg" type="image/svg+xml" style="max-width: 100%;">GET /activity-types sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Trip Browser, Booking Flow |
+| [Adventure App](../applications/app-guest-mobile/) | My Reservations |

@@ -89,3 +89,13 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Templates/createTemplate){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-templates.svg" type="image/svg+xml" style="max-width: 100%;">POST /templates sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Reservation Management, Waiver Signing, Trip Gallery |
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Safety Incident Board |
+| [Adventure App](../applications/app-guest-mobile/) | Photo Upload, Weather and Trail Alerts |

@@ -1,0 +1,58 @@
+@startuml web-guest-portal--guest-profile
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2563eb
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Guest Profile\nNovaTrek Guest Portal
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-guest-profiles" as GP [[/microservices/svc-guest-profiles/]] #E8F4F8
+participant "svc-loyalty-rewards" as LR [[/microservices/svc-loyalty-rewards/]] #E8F4F8
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+
+User -> App : Open Guest Profile
+activate App #2563eb
+App -> GW : API request
+activate GW #2563eb
+
+== Backend Integration ==
+
+GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get guest profile]]
+activate GP #DBEAFE
+GP --> GW : OK
+deactivate GP
+
+GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_idadventure-history-get-guest-adventure-history Get adventure history]]
+activate GP #DBEAFE
+GP --> GW : OK
+deactivate GP
+
+GW -> LR : [[/microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info Get loyalty balance]]
+activate LR #DBEAFE
+LR --> GW : OK
+deactivate LR
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations Get upcoming bookings]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

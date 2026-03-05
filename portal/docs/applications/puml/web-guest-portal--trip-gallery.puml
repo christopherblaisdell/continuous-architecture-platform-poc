@@ -1,0 +1,58 @@
+@startuml web-guest-portal--trip-gallery
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2563eb
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Trip Gallery\nNovaTrek Guest Portal
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-media-gallery" as MG [[/microservices/svc-media-gallery/]] #E8F4F8
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #E8F4F8
+
+User -> App : Open Trip Gallery
+activate App #2563eb
+App -> GW : API request
+activate GW #2563eb
+
+== Backend Integration ==
+
+GW -> MG : [[/microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip List trip media]]
+activate MG #DBEAFE
+MG --> GW : OK
+deactivate MG
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Get reservation details]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> MG : [[/microservices/svc-media-gallery/#post-mediamedia_idshare-create-a-shareable-link-for-a-media-item Create share link]]
+activate MG #DBEAFE
+MG --> GW : OK
+deactivate MG
+
+GW ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send share notification]]
+activate Ntfy #DBEAFE
+Ntfy -->> GW : OK
+deactivate Ntfy
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

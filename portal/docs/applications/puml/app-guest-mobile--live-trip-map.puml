@@ -1,0 +1,64 @@
+@startuml app-guest-mobile--live-trip-map
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Live Trip Map\nNovaTrek Adventure App
+
+actor "Guest" as User
+participant "Mobile App" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #E8F4F8
+participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
+participant "svc-weather" as WX [[/microservices/svc-weather/]] #E8F4F8
+participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
+
+User -> App : Open Live Trip Map
+activate App #059669
+App -> GW : API request
+activate GW #059669
+
+== Backend Integration ==
+
+GW -> LS : [[/microservices/svc-location-services/#get-locations-list-all-locations Get nearby locations]]
+activate LS #DBEAFE
+LS --> GW : OK
+deactivate LS
+
+GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_id-get-trail-details Get trail waypoints]]
+activate TM #DBEAFE
+TM --> GW : OK
+deactivate TM
+
+GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions Get trail conditions]]
+activate TM #DBEAFE
+TM --> GW : OK
+deactivate TM
+
+GW -> WX : [[/microservices/svc-weather/#get-weathercurrent-get-current-weather-conditions Get current weather]]
+activate WX #DBEAFE
+WX --> GW : OK
+deactivate WX
+
+GW -> SO : [[/microservices/svc-scheduling-orchestrator/ Get group schedule]]
+activate SO #DBEAFE
+SO --> GW : OK
+deactivate SO
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

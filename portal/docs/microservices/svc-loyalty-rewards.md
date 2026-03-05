@@ -69,3 +69,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Tiers/listTiers){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-loyalty-rewards--get-tiers.svg" type="image/svg+xml" style="max-width: 100%;">GET /tiers sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Guest Profile, Loyalty Dashboard |
+| [Adventure App](../applications/app-guest-mobile/) | Earn Loyalty Points |

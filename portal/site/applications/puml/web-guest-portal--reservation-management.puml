@@ -1,0 +1,63 @@
+@startuml web-guest-portal--reservation-management
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2563eb
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Reservation Management\nNovaTrek Guest Portal
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+participant "svc-payments" as Pay [[/microservices/svc-payments/]] #E8F4F8
+participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #E8F4F8
+
+User -> App : Open Reservation Management
+activate App #2563eb
+App -> GW : API request
+activate GW #2563eb
+
+== Backend Integration ==
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations List reservations]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Get reservation details]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> Res : [[/microservices/svc-reservations/#put-reservationsreservation_idstatus-transition-reservation-status Update reservation status]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> Pay : [[/microservices/svc-payments/#post-paymentspayment_idrefund-initiate-a-refund Process refund]]
+activate Pay #DBEAFE
+Pay --> GW : OK
+deactivate Pay
+
+GW ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send cancellation notice]]
+activate Ntfy #DBEAFE
+Ntfy -->> GW : OK
+deactivate Ntfy
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

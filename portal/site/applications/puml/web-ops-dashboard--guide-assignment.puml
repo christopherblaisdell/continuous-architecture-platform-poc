@@ -1,0 +1,58 @@
+@startuml web-ops-dashboard--guide-assignment
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #dc2626
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Guide Assignment\nNovaTrek Operations Dashboard
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-guide-management" as GM [[/microservices/svc-guide-management/]] #E8F4F8
+participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
+participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
+
+User -> App : Open Guide Assignment
+activate App #dc2626
+App -> GW : API request
+activate GW #dc2626
+
+== Backend Integration ==
+
+GW -> GM : [[/microservices/svc-guide-management/#get-guides-search-guides-with-filters List certified guides]]
+activate GM #DBEAFE
+GM --> GW : OK
+deactivate GM
+
+GW -> GM : [[/microservices/svc-guide-management/#get-guidesguide_idavailability-get-guide-availability-windows Check availability]]
+activate GM #DBEAFE
+GM --> GW : OK
+deactivate GM
+
+GW -> SO : [[/microservices/svc-scheduling-orchestrator/#post-schedule-requests-request-optimal-schedule-for-a-trip Submit schedule request]]
+activate SO #DBEAFE
+SO --> GW : OK
+deactivate SO
+
+GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_id-get-trail-details Verify trail status]]
+activate TM #DBEAFE
+TM --> GW : OK
+deactivate TM
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

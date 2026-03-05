@@ -91,3 +91,11 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /vehicles/{vehicle_id} sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Transport Dispatch |
