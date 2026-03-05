@@ -1589,16 +1589,12 @@ def generate_service_page(svc_name, spec, svg_files):
         lines.append("## :material-map: Integration Context")
         lines.append("")
         lines.append(
-            f'<div style="overflow-x: auto; width: 100%;">'
+            f'<div class="diagram-wrap">'
+            f'<a href="../svg/{c4_svg}" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
             f'<object data="../svg/{c4_svg}" type="image/svg+xml" '
             f'style="max-width: 100%;">{svc_name} C4 context diagram</object></div>'
         )
         lines.append("")
-        lines.append(
-            f'<p style="text-align: right; margin-top: -0.5em;">'
-            f'<a href="../svg/{c4_svg}" target="_blank" title="Open diagram in full screen">'
-            f':material-fullscreen: View full screen</a></p>'
-        )
         lines.append("")
     if ds:
         tables_fmt = ", ".join(f"`{t}`" for t in ds.get("tables", []))
@@ -1650,17 +1646,12 @@ def generate_service_page(svc_name, spec, svg_files):
         svg_filename = make_puml_filename(svc_name, method, path) + ".svg"
         if svg_filename in svg_files:
             lines.append(
-                f'<div style="overflow-x: auto; width: 100%;">'
+                f'<div class="diagram-wrap">'
+                f'<a href="../svg/{svg_filename}" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
                 f'<object data="../svg/{svg_filename}" type="image/svg+xml" '
                 f'style="max-width: 100%;">'
                 f'{method} {path} sequence diagram</object>'
                 f'</div>'
-            )
-            lines.append("")
-            lines.append(
-                f'<p style="text-align: right; margin-top: -0.5em;">'
-                f'<a href="../svg/{svg_filename}" target="_blank" title="Open diagram in full screen">'
-                f':material-fullscreen: View full screen</a></p>'
             )
         else:
             lines.append(f"*Diagram not available for {method} {path}*")
@@ -1783,14 +1774,10 @@ def generate_index_page(all_services):
     lines.append("## Enterprise Architecture")
     lines.append("")
     lines.append(
+        '<div class="diagram-wrap">'
+        '<a href="svg/enterprise-c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
         '<object data="svg/enterprise-c4-context.svg" type="image/svg+xml" '
-        'style="width:100%;max-width:1400px"></object>'
-    )
-    lines.append("")
-    lines.append(
-        '<p style="text-align: right; margin-top: -0.5em;">'
-        '<a href="svg/enterprise-c4-context.svg" target="_blank">'
-        ':material-fullscreen: View full screen</a></p>'
+        'style="width:100%;max-width:1400px"></object></div>'
     )
     lines.append("")
     lines.append("---")
@@ -1942,14 +1929,10 @@ def generate_event_catalog_page():
     lines.append("## Event Flow Overview")
     lines.append("")
     lines.append(
+        '<div class="diagram-wrap">'
+        '<a href="../microservices/svg/event-flow.svg" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
         '<object data="../microservices/svg/event-flow.svg" type="image/svg+xml" '
-        'style="width:100%;max-width:1400px"></object>'
-    )
-    lines.append("")
-    lines.append(
-        '<p style="text-align: right; margin-top: -0.5em;">'
-        '<a href="../microservices/svg/event-flow.svg" target="_blank">'
-        ':material-fullscreen: View full screen</a></p>'
+        'style="width:100%;max-width:1400px"></object></div>'
     )
     lines.append("")
 

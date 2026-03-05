@@ -19,9 +19,7 @@ tags:
 
 ## :material-map: Service Dependencies
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-guest-portal C4 context diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-guest-portal C4 context diagram</object></div>
 
 ---
 
@@ -57,9 +55,7 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/weather/forecast`](../../microservices/svc-weather/#get-weatherforecast-get-weather-forecast) | `svc-weather` | Get weather forecast |
 | GET | [GET `/media`](../../microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip) | `svc-media-gallery` | Load trip photos |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--trip-browser.svg" type="image/svg+xml" style="max-width: 100%;">Trip Browser user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--trip-browser.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--trip-browser.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--trip-browser.svg" type="image/svg+xml" style="max-width: 100%;">Trip Browser user journey diagram</object></div>
 
 ---
 
@@ -77,9 +73,7 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/payments`](../../microservices/svc-payments/#post-payments-process-a-payment) | `svc-payments` | Process payment |
 | -- | *Stripe API* | External | Charge card |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--booking-flow.svg" type="image/svg+xml" style="max-width: 100%;">Booking Flow user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--booking-flow.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--booking-flow.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--booking-flow.svg" type="image/svg+xml" style="max-width: 100%;">Booking Flow user journey diagram</object></div>
 
 ---
 
@@ -96,9 +90,7 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/members/{guest_id}/balance`](../../microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info) | `svc-loyalty-rewards` | Get loyalty balance |
 | GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get upcoming bookings |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--guest-profile.svg" type="image/svg+xml" style="max-width: 100%;">Guest Profile user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--guest-profile.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--guest-profile.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--guest-profile.svg" type="image/svg+xml" style="max-width: 100%;">Guest Profile user journey diagram</object></div>
 
 ---
 
@@ -116,9 +108,7 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/payments/{payment_id}/refund`](../../microservices/svc-payments/#post-paymentspayment_idrefund-initiate-a-refund) | `svc-payments` | Process refund |
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send cancellation notice |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--reservation-management.svg" type="image/svg+xml" style="max-width: 100%;">Reservation Management user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--reservation-management.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--reservation-management.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--reservation-management.svg" type="image/svg+xml" style="max-width: 100%;">Reservation Management user journey diagram</object></div>
 
 ---
 
@@ -134,9 +124,7 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/members/{guest_id}/transactions`](../../microservices/svc-loyalty-rewards/#get-membersguest_idtransactions-list-point-transactions-for-a-member) | `svc-loyalty-rewards` | Get transaction history |
 | GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--loyalty-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Loyalty Dashboard user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--loyalty-dashboard.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--loyalty-dashboard.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--loyalty-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Loyalty Dashboard user journey diagram</object></div>
 
 ---
 
@@ -154,9 +142,7 @@ This application interacts with **10 microservices** across 7 screens.
 | -- | *DocuSign API* | External | Verify digital signature |
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send waiver copy |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--waiver-signing.svg" type="image/svg+xml" style="max-width: 100%;">Waiver Signing user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--waiver-signing.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--waiver-signing.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--waiver-signing.svg" type="image/svg+xml" style="max-width: 100%;">Waiver Signing user journey diagram</object></div>
 
 ---
 
@@ -173,6 +159,4 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/media/{media_id}/share`](../../microservices/svc-media-gallery/#post-mediamedia_idshare-create-a-shareable-link-for-a-media-item) | `svc-media-gallery` | Create share link |
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send share notification |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--trip-gallery.svg" type="image/svg+xml" style="max-width: 100%;">Trip Gallery user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--trip-gallery.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/web-guest-portal--trip-gallery.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--trip-gallery.svg" type="image/svg+xml" style="max-width: 100%;">Trip Gallery user journey diagram</object></div>

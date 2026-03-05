@@ -18,9 +18,8 @@ tags:
 
 ## :material-map: Integration Context
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-guide-management C4 context diagram</object></div>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-guide-management C4 context diagram</object></div>
 
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -42,9 +41,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/searchGuides){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides sequence diagram</object></div>
 
 ---
 
@@ -54,9 +51,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/createGuide){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--post-guides.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--post-guides.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides sequence diagram</object></div>
 
 ---
 
@@ -66,9 +61,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/getGuide){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides-guide_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id} sequence diagram</object></div>
 
 ---
 
@@ -78,9 +71,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/updateGuide){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--patch-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guides/{guide_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--patch-guides-guide_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--patch-guides-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--patch-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guides/{guide_id} sequence diagram</object></div>
 
 ---
 
@@ -90,9 +81,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Certifications/getGuideCertifications){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/certifications sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/certifications sequence diagram</object></div>
 
 ---
 
@@ -102,9 +91,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Certifications/addGuideCertification){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/certifications sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/certifications sequence diagram</object></div>
 
 ---
 
@@ -114,9 +101,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Scheduling/getGuideSchedule){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/schedule sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/schedule sequence diagram</object></div>
 
 ---
 
@@ -126,9 +111,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Availability/getGuideAvailability){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/availability sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides-guide_id-availability.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-availability.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/availability sequence diagram</object></div>
 
 ---
 
@@ -138,9 +121,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Availability/setGuideAvailability){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--post-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/availability sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--post-guides-guide_id-availability.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-availability.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/availability sequence diagram</object></div>
 
 ---
 
@@ -150,9 +131,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Ratings/getGuideRatings){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/ratings sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/ratings sequence diagram</object></div>
 
 ---
 
@@ -162,9 +141,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Ratings/submitGuideRating){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/ratings sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/ratings sequence diagram</object></div>
 
 ---
 
@@ -174,9 +151,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Availability/findAvailableGuides){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guide-management--get-guides-available.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/available sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-guide-management--get-guides-available.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-available.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-available.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/available sequence diagram</object></div>
 
 ---
 

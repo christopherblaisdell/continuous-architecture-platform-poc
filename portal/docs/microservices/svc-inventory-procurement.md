@@ -18,9 +18,8 @@ tags:
 
 ## :material-map: Integration Context
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-inventory-procurement C4 context diagram</object></div>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-inventory-procurement C4 context diagram</object></div>
 
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -42,9 +41,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--post-purchase-orders.svg" type="image/svg+xml" style="max-width: 100%;">POST /purchase-orders sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--post-purchase-orders.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-purchase-orders.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-purchase-orders.svg" type="image/svg+xml" style="max-width: 100%;">POST /purchase-orders sequence diagram</object></div>
 
 ---
 
@@ -52,9 +49,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /purchase-orders/{po_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /purchase-orders/{po_id} sequence diagram</object></div>
 
 ---
 
@@ -64,9 +59,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /purchase-orders/{po_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /purchase-orders/{po_id} sequence diagram</object></div>
 
 ---
 
@@ -74,9 +67,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">GET /suppliers sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--get-suppliers.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-suppliers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">GET /suppliers sequence diagram</object></div>
 
 ---
 
@@ -84,9 +75,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--post-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">POST /suppliers sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--post-suppliers.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-suppliers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">POST /suppliers sequence diagram</object></div>
 
 ---
 
@@ -96,9 +85,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-stock-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /stock-levels sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--get-stock-levels.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-stock-levels.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-stock-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /stock-levels sequence diagram</object></div>
 
 ---
 
@@ -108,9 +95,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--post-stock-adjustments.svg" type="image/svg+xml" style="max-width: 100%;">POST /stock-adjustments sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--post-stock-adjustments.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-stock-adjustments.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-stock-adjustments.svg" type="image/svg+xml" style="max-width: 100%;">POST /stock-adjustments sequence diagram</object></div>
 
 ---
 
@@ -120,9 +105,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-reorder-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /reorder-alerts sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-inventory-procurement--get-reorder-alerts.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-reorder-alerts.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-reorder-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /reorder-alerts sequence diagram</object></div>
 
 ---
 

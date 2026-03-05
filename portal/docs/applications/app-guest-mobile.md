@@ -19,9 +19,7 @@ tags:
 
 ## :material-map: Service Dependencies
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">app-guest-mobile C4 context diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">app-guest-mobile C4 context diagram</object></div>
 
 ---
 
@@ -57,9 +55,7 @@ This application interacts with **14 microservices** across 7 screens.
 | POST | [POST `/check-ins`](../../microservices/svc-check-in/#post-check-ins-initiate-check-in-for-a-participant) | `svc-check-in` | Create check-in record |
 | GET | [GET `/gear-assignments/{assignment_id}`](../../microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details) | `svc-gear-inventory` | Confirm gear assignment |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--self-check-in.svg" type="image/svg+xml" style="max-width: 100%;">Self Check-In user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--self-check-in.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--self-check-in.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--self-check-in.svg" type="image/svg+xml" style="max-width: 100%;">Self Check-In user journey diagram</object></div>
 
 ---
 
@@ -77,9 +73,7 @@ This application interacts with **14 microservices** across 7 screens.
 | GET | [GET `/weather/current`](../../microservices/svc-weather/#get-weathercurrent-get-current-weather-conditions) | `svc-weather` | Get current weather |
 | GET | [GET `/schedule-requests/{request_id}`](../../microservices/svc-scheduling-orchestrator/#get-schedule-requestsrequest_id-get-schedule-request-status-and-result) | `svc-scheduling-orchestrator` | Get group schedule |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--live-trip-map.svg" type="image/svg+xml" style="max-width: 100%;">Live Trip Map user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--live-trip-map.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--live-trip-map.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--live-trip-map.svg" type="image/svg+xml" style="max-width: 100%;">Live Trip Map user journey diagram</object></div>
 
 ---
 
@@ -97,9 +91,7 @@ This application interacts with **14 microservices** across 7 screens.
 | POST | [POST `/media/{media_id}/share`](../../microservices/svc-media-gallery/#post-mediamedia_idshare-create-a-shareable-link-for-a-media-item) | `svc-media-gallery` | Create share link |
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send share notification |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--photo-upload.svg" type="image/svg+xml" style="max-width: 100%;">Photo Upload user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--photo-upload.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--photo-upload.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--photo-upload.svg" type="image/svg+xml" style="max-width: 100%;">Photo Upload user journey diagram</object></div>
 
 ---
 
@@ -115,9 +107,7 @@ This application interacts with **14 microservices** across 7 screens.
 | GET | [GET `/trips/{trip_id}`](../../microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details) | `svc-trip-catalog` | Get trip details |
 | GET | [GET `/payments/{payment_id}`](../../microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details) | `svc-payments` | Get payment details |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--my-reservations.svg" type="image/svg+xml" style="max-width: 100%;">My Reservations user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--my-reservations.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--my-reservations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--my-reservations.svg" type="image/svg+xml" style="max-width: 100%;">My Reservations user journey diagram</object></div>
 
 ---
 
@@ -134,9 +124,7 @@ This application interacts with **14 microservices** across 7 screens.
 | -- | *OpenWeather API* | External | Fetch severe alerts |
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Receive push notification |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--weather-and-trail-alerts.svg" type="image/svg+xml" style="max-width: 100%;">Weather and Trail Alerts user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--weather-and-trail-alerts.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--weather-and-trail-alerts.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--weather-and-trail-alerts.svg" type="image/svg+xml" style="max-width: 100%;">Weather and Trail Alerts user journey diagram</object></div>
 
 ---
 
@@ -151,9 +139,7 @@ This application interacts with **14 microservices** across 7 screens.
 | GET | [GET `/check-ins/{check_in_id}`](../../microservices/svc-check-in/#get-check-inscheck_in_id-get-check-in-details) | `svc-check-in` | Get check-in status |
 | GET | [GET `/gear-assignments/{assignment_id}`](../../microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details) | `svc-gear-inventory` | Verify gear assignment |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--digital-wristband.svg" type="image/svg+xml" style="max-width: 100%;">Digital Wristband user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--digital-wristband.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--digital-wristband.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--digital-wristband.svg" type="image/svg+xml" style="max-width: 100%;">Digital Wristband user journey diagram</object></div>
 
 ---
 
@@ -170,6 +156,4 @@ This application interacts with **14 microservices** across 7 screens.
 | GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get completed bookings |
 | GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--earn-loyalty-points.svg" type="image/svg+xml" style="max-width: 100%;">Earn Loyalty Points user journey diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/app-guest-mobile--earn-loyalty-points.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/app-guest-mobile--earn-loyalty-points.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/app-guest-mobile--earn-loyalty-points.svg" type="image/svg+xml" style="max-width: 100%;">Earn Loyalty Points user journey diagram</object></div>

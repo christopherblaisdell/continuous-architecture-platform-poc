@@ -18,9 +18,8 @@ tags:
 
 ## :material-map: Integration Context
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-reservations C4 context diagram</object></div>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-reservations C4 context diagram</object></div>
 
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -42,9 +41,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservation%20Search/searchReservations){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--get-reservations.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--get-reservations.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--get-reservations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--get-reservations.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations sequence diagram</object></div>
 
 ---
 
@@ -54,9 +51,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservations/createReservation){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--post-reservations.svg" type="image/svg+xml" style="max-width: 100%;">POST /reservations sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--post-reservations.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--post-reservations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--post-reservations.svg" type="image/svg+xml" style="max-width: 100%;">POST /reservations sequence diagram</object></div>
 
 ---
 
@@ -64,9 +59,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservations/getReservation){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--get-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations/{reservation_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--get-reservations-reservation_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--get-reservations-reservation_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--get-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations/{reservation_id} sequence diagram</object></div>
 
 ---
 
@@ -76,9 +69,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservations/updateReservation){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--patch-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /reservations/{reservation_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--patch-reservations-reservation_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--patch-reservations-reservation_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--patch-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /reservations/{reservation_id} sequence diagram</object></div>
 
 ---
 
@@ -86,9 +77,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservations/cancelReservation){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--delete-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /reservations/{reservation_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--delete-reservations-reservation_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--delete-reservations-reservation_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--delete-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /reservations/{reservation_id} sequence diagram</object></div>
 
 ---
 
@@ -96,9 +85,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservations/getParticipants){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--get-reservations-reservation_id-participants.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations/{reservation_id}/participants sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--get-reservations-reservation_id-participants.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--get-reservations-reservation_id-participants.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--get-reservations-reservation_id-participants.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations/{reservation_id}/participants sequence diagram</object></div>
 
 ---
 
@@ -106,9 +93,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservations/addParticipant){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--post-reservations-reservation_id-participants.svg" type="image/svg+xml" style="max-width: 100%;">POST /reservations/{reservation_id}/participants sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--post-reservations-reservation_id-participants.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--post-reservations-reservation_id-participants.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--post-reservations-reservation_id-participants.svg" type="image/svg+xml" style="max-width: 100%;">POST /reservations/{reservation_id}/participants sequence diagram</object></div>
 
 ---
 
@@ -118,9 +103,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-reservations.html#/Reservation%20Status/transitionStatus){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-reservations--put-reservations-reservation_id-status.svg" type="image/svg+xml" style="max-width: 100%;">PUT /reservations/{reservation_id}/status sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-reservations--put-reservations-reservation_id-status.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-reservations--put-reservations-reservation_id-status.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--put-reservations-reservation_id-status.svg" type="image/svg+xml" style="max-width: 100%;">PUT /reservations/{reservation_id}/status sequence diagram</object></div>
 
 ---
 

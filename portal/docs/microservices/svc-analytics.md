@@ -18,9 +18,8 @@ tags:
 
 ## :material-map: Integration Context
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-analytics C4 context diagram</object></div>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-analytics C4 context diagram</object></div>
 
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -40,9 +39,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Bookings/getBookingAnalytics){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-bookings.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/bookings sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--get-analytics-bookings.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-bookings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-bookings.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/bookings sequence diagram</object></div>
 
 ---
 
@@ -50,9 +47,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Revenue/getRevenueAnalytics){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-revenue.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/revenue sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--get-analytics-revenue.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-revenue.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-revenue.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/revenue sequence diagram</object></div>
 
 ---
 
@@ -60,9 +55,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Utilization/getUtilizationAnalytics){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-utilization.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/utilization sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--get-analytics-utilization.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-utilization.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-utilization.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/utilization sequence diagram</object></div>
 
 ---
 
@@ -70,9 +63,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Guest%20Experience/getGuestSatisfaction){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-guest-satisfaction.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guest-satisfaction sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--get-analytics-guest-satisfaction.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-guest-satisfaction.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-guest-satisfaction.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guest-satisfaction sequence diagram</object></div>
 
 ---
 
@@ -82,9 +73,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Safety/getSafetyMetrics){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-safety-metrics.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/safety-metrics sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--get-analytics-safety-metrics.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-safety-metrics.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-safety-metrics.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/safety-metrics sequence diagram</object></div>
 
 ---
 
@@ -92,9 +81,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Staff/getGuidePerformance){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guide-performance/{guide_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guide-performance/{guide_id} sequence diagram</object></div>
 
 ---
 
