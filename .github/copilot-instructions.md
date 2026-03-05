@@ -35,6 +35,11 @@ Compare AI toolchains (GitHub Copilot vs Roo Code + OpenRouter) by executing 5 a
 |------|---------|
 | `decisions/` | Global architecture decision log (11 ADRs) |
 | `services/` | Service architecture baseline pages (6 services) |
+| `portal/` | MkDocs Material documentation portal (source + build output) |
+| `portal/scripts/generate-microservice-pages.py` | Generates all 19 microservice pages with PlantUML SVG sequence diagrams |
+| `portal/docs/specs/` | OpenAPI YAML specs for all 19 services |
+| `portal/docs/microservices/` | Generated microservice pages, PUML source files, and SVG output |
+| `portal/staticwebapp.config.json` | Azure Static Web App configuration (routes, headers, CSP) |
 | `phase-1-ai-tool-cost-comparison/workspace/` | Synthetic workspace for Phase 1 evaluation |
 | `phase-1-ai-tool-cost-comparison/workspace/scripts/` | Mock JIRA, Elastic, GitLab tools (local JSON, no network) |
 | `phase-1-ai-tool-cost-comparison/outputs/` | Run-by-run results for Copilot and Roo Code executions |
@@ -319,6 +324,98 @@ When reviewing existing architecture or proposing solutions, always flag these a
 - If a scenario requires information not available in the workspace, document it as an assumption — do not invent data
 - Prioritize accuracy over comprehensiveness — it is better to produce fewer, well-grounded findings than many speculative ones
 - When updating existing documents, preserve all existing content and add to it — never silently remove sections
+---
+
+## Documentation Portal (MkDocs Material)
+
+The NovaTrek Architecture Portal is a MkDocs Material site deployed to Azure Static Web Apps.
+
+### Deployment Targets
+
+| Site | URL | Deploy Token |
+|------|-----|--------------|
+| Portal (primary) | `https://mango-sand-083b8ce0f.4.azurestaticapps.net` | `6fc5e62f8594941f108fcd3721dbf65135eb17cce39bb6a9f9905bab73fb4d3604-14c7af52-ae80-4684-8db0-719829c14c8500f0731083b8ce0f` |
+| Docs site | `https://victorious-mud-06704740f.4.azurestaticapps.net` | `91924f1a91d99cefaaaa12b01684c854c9b4d1a49ef3ae4d2dd1ac1ddb24738a04-de4c54e1-f90d-4b5d-b7aa-dac46842447300f283206704740f` |
+
+### Build and Deploy Workflow
+
+```bash
+cd portal
+/usr/bin/python3 -m mkdocs build
+cp -r docs/services/api site/services/
+cp -r docs/specs site/
+cp -r docs/microservices/svg site/microservices/
+cp staticwebapp.config.json site/
+swa deploy site --deployment-token "<token>" --env production
+```
+
+The `cp` commands are required because MkDocs does not copy non-markdown assets automatically. The SVG files, Swagger UI HTML pages, OpenAPI specs, and `staticwebapp.config.json` must be copied into the `site/` output directory after `mkdocs build`.
+
+### Microservice Pages Generator
+
+`portal/scripts/generate-microservice-pages.py` generates all 19 microservice deep-dive pages with:
+
+- Service metadata and data store documentation
+- PlantUML sequence diagrams for every endpoint (139 total), rendered as clickable SVGs
+- Cross-service integration flows with deep links to target endpoints
+- Direct links to Swagger UI for each endpoint
+
+**To regenerate all pages and diagrams:**
+
+```bash
+python3 portal/scripts/generate-microservice-pages.py
+```
+
+This reads OpenAPI specs from `portal/docs/specs/`, generates PUML files in `portal/docs/microservices/puml/`, renders SVGs to `portal/docs/microservices/svg/`, and writes Markdown pages to `portal/docs/microservices/`.
+
+**Key data structures in the generator:**
+
+| Structure | Purpose |
+|-----------|---------|
+| `DOMAINS` | Maps services to domain groups with colors |
+| `DATA_STORES` | Database engine, schema, tables, features per service |
+| `CROSS_SERVICE_CALLS` | Cross-service integration map with target endpoint references |
+| `LABEL_TO_SVC` | Maps display labels (e.g., "Reservations") to service names (e.g., "svc-reservations") |
+| `ALL_ENDPOINT_SUMMARIES` | Pre-loaded `(svc, METHOD, /path) -> summary` lookup for anchor generation |
+
+### SVG Sequence Diagram Embedding Rules
+
+1. **Use `<object>` tags, NOT `<img>` tags** — `<object>` tags allow clickable hyperlinks inside SVGs; `<img>` tags render SVGs as flat images with no interactivity
+2. **X-Frame-Options MUST be `SAMEORIGIN`** — the `staticwebapp.config.json` global header `X-Frame-Options` must be `SAMEORIGIN`, not `DENY`. `DENY` blocks browsers from rendering content inside `<object>` tags entirely, causing all SVG diagrams to disappear silently
+3. **Relative paths must account for MkDocs subdirectories** — MkDocs builds each page into its own directory (e.g., `svc-check-in/index.html`), so SVG references from a page at `/microservices/svc-check-in/` must use `../svg/filename.svg` (not `svg/filename.svg`) to reach `/microservices/svg/`
+4. **PlantUML `[[url]]` syntax** creates clickable links in SVGs — these render as `xlink:href` attributes in the output SVG
+
+### Deep Linking vs Service Page Linking
+
+When creating links in sequence diagrams or documentation that reference another microservice:
+
+**Use a deep link to a specific endpoint** when the context identifies a specific API call:
+
+- Cross-service integration arrows in sequence diagrams (e.g., "Create reservation" links to `POST /reservations`)
+- Format: `/microservices/{svc-name}/#{anchor}`
+- Example: `/microservices/svc-reservations/#post-reservations-create-a-new-reservation`
+
+**Use a service page link** when referencing the service in general:
+
+- Participant boxes in sequence diagrams
+- Service references in architectural descriptions
+- Format: `/microservices/{svc-name}/`
+- Example: `/microservices/svc-reservations/`
+
+### MkDocs Heading Anchor Format
+
+MkDocs generates heading anchors by:
+
+1. Taking the full heading text: `GET /members/{guest_id}/balance -- Get loyalty member balance and tier info`
+2. Lowercasing everything
+3. Removing all characters except letters, numbers, spaces, and hyphens
+4. Replacing spaces with hyphens
+5. Collapsing multiple hyphens
+
+Result: `get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info`
+
+The generator's `heading_slug()` function reproduces this transformation to compute deep-link anchors at generation time.
+
 ---
 
 ## Cost Measurement and Toolchain Pricing
