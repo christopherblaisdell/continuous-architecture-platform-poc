@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> GP : [[/microservices/svc-guest-profiles/ Validate participant]]
+Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Validate participant]]
 activate GP #DBEAFE
 GP --> Svc : OK
 deactivate GP

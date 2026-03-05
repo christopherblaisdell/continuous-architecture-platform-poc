@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> LS : [[/microservices/svc-location-services/ Validate pickup location]]
+Svc -> LS : [[/microservices/svc-location-services/#get-locationslocation_id-get-location-details Validate pickup location]]
 activate LS #DBEAFE
 LS --> Svc : OK
 deactivate LS

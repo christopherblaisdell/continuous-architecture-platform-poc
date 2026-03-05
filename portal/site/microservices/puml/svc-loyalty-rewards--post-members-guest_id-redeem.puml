@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> Pay : [[/microservices/svc-payments/ Process reward credit]]
+Svc -> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process reward credit]]
 activate Pay #DBEAFE
 Pay --> Svc : OK
 deactivate Pay

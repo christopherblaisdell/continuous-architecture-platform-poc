@@ -35,7 +35,7 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> Res : [[/microservices/svc-reservations/ Create reservation]]
+Svc -> Res : [[/microservices/svc-reservations/#post-reservations-create-a-new-reservation Create reservation]]
 activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res

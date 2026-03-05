@@ -36,12 +36,12 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> Res : [[/microservices/svc-reservations/ Confirm reservation]]
+Svc -> Res : [[/microservices/svc-reservations/#put-reservationsreservation_idstatus-transition-reservation-status Confirm reservation]]
 activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res
 
-Svc -> Pay : [[/microservices/svc-payments/ Process commission]]
+Svc -> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process commission]]
 activate Pay #DBEAFE
 Pay --> Svc : OK
 deactivate Pay
