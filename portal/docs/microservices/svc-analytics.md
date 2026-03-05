@@ -86,4 +86,4 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Analytics Dashboard |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Analytics Dashboard |

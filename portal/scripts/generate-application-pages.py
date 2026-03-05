@@ -545,9 +545,9 @@ def generate_app_page(app_name, app_info, svg_files):
                 seen.add(key)
                 anchor = endpoint_anchor(svc, method, path)
                 if anchor:
-                    link = f"[{method} `{path}`](../microservices/{svc}/{anchor})"
+                    link = f"[{method} `{path}`](../../microservices/{svc}/{anchor})"
                 else:
-                    link = f"[{method} `{path}`](../microservices/{svc}/)"
+                    link = f"[{method} `{path}`](../../microservices/{svc}/)"
                 lines.append(f"| {method} | {link} | `{svc}` | {action} |")
             elif not svc:
                 lines.append(f"| -- | *{label}* | External | {action} |")
@@ -641,7 +641,7 @@ def generate_index_page():
     lines.append("|---------|" + "|".join(["------" for _ in app_names]) + "|")
 
     for svc in all_svcs:
-        row = f"| [`{svc}`](../microservices/{svc}/) |"
+        row = f"| [`{svc}`](../../microservices/{svc}/) |"
         for app_name in app_names:
             screens = [s for a, s in APP_CONSUMERS[svc] if a == app_name]
             if screens:

@@ -146,5 +146,5 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Trip Browser, Booking Flow |
-| [Adventure App](../applications/app-guest-mobile/) | My Reservations |
+| [Guest Portal](../../applications/web-guest-portal/) | Trip Browser, Booking Flow |
+| [Adventure App](../../applications/app-guest-mobile/) | My Reservations |

@@ -96,6 +96,6 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Reservation Management, Waiver Signing, Trip Gallery |
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Safety Incident Board |
-| [Adventure App](../applications/app-guest-mobile/) | Photo Upload, Weather and Trail Alerts |
+| [Guest Portal](../../applications/web-guest-portal/) | Reservation Management, Waiver Signing, Trip Gallery |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Safety Incident Board |
+| [Adventure App](../../applications/app-guest-mobile/) | Photo Upload, Weather and Trail Alerts |

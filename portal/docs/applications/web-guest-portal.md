@@ -43,11 +43,11 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/trips`](../microservices/svc-trip-catalog/#get-trips-search-trips-with-filters) | `svc-trip-catalog` | Search available trips |
-| GET | [GET `/trips/{trip_id}`](../microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details) | `svc-trip-catalog` | Get trip details |
-| GET | [GET `/trails/{trail_id}/conditions`](../microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions) | `svc-trail-management` | Get trail conditions |
-| GET | [GET `/weather/forecast`](../microservices/svc-weather/#get-weatherforecast-get-weather-forecast) | `svc-weather` | Get weather forecast |
-| GET | [GET `/media`](../microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip) | `svc-media-gallery` | Load trip photos |
+| GET | [GET `/trips`](../../microservices/svc-trip-catalog/#get-trips-search-trips-with-filters) | `svc-trip-catalog` | Search available trips |
+| GET | [GET `/trips/{trip_id}`](../../microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details) | `svc-trip-catalog` | Get trip details |
+| GET | [GET `/trails/{trail_id}/conditions`](../../microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions) | `svc-trail-management` | Get trail conditions |
+| GET | [GET `/weather/forecast`](../../microservices/svc-weather/#get-weatherforecast-get-weather-forecast) | `svc-weather` | Get weather forecast |
+| GET | [GET `/media`](../../microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip) | `svc-media-gallery` | Load trip photos |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--trip-browser.svg" type="image/svg+xml" style="max-width: 100%;">Trip Browser user journey diagram</object></div>
 
@@ -61,10 +61,10 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/trips/{trip_id}`](../microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details) | `svc-trip-catalog` | Check trip availability |
-| GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
-| POST | [POST `/reservations`](../microservices/svc-reservations/#post-reservations-create-a-new-reservation) | `svc-reservations` | Create reservation |
-| POST | [POST `/payments`](../microservices/svc-payments/#post-payments-process-a-payment) | `svc-payments` | Process payment |
+| GET | [GET `/trips/{trip_id}`](../../microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details) | `svc-trip-catalog` | Check trip availability |
+| GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
+| POST | [POST `/reservations`](../../microservices/svc-reservations/#post-reservations-create-a-new-reservation) | `svc-reservations` | Create reservation |
+| POST | [POST `/payments`](../../microservices/svc-payments/#post-payments-process-a-payment) | `svc-payments` | Process payment |
 | -- | *Stripe API* | External | Charge card |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--booking-flow.svg" type="image/svg+xml" style="max-width: 100%;">Booking Flow user journey diagram</object></div>
@@ -79,10 +79,10 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
-| GET | [GET `/guests/{guest_id}/adventure-history`](../microservices/svc-guest-profiles/#get-guestsguest_idadventure-history-get-guest-adventure-history) | `svc-guest-profiles` | Get adventure history |
-| GET | [GET `/members/{guest_id}/balance`](../microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info) | `svc-loyalty-rewards` | Get loyalty balance |
-| GET | [GET `/reservations`](../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get upcoming bookings |
+| GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
+| GET | [GET `/guests/{guest_id}/adventure-history`](../../microservices/svc-guest-profiles/#get-guestsguest_idadventure-history-get-guest-adventure-history) | `svc-guest-profiles` | Get adventure history |
+| GET | [GET `/members/{guest_id}/balance`](../../microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info) | `svc-loyalty-rewards` | Get loyalty balance |
+| GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get upcoming bookings |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--guest-profile.svg" type="image/svg+xml" style="max-width: 100%;">Guest Profile user journey diagram</object></div>
 
@@ -96,11 +96,11 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/reservations`](../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | List reservations |
-| GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
-| PUT | [PUT `/reservations/{reservation_id}/status`](../microservices/svc-reservations/#put-reservationsreservation_idstatus-transition-reservation-status) | `svc-reservations` | Update reservation status |
-| POST | [POST `/payments/{payment_id}/refund`](../microservices/svc-payments/#post-paymentspayment_idrefund-initiate-a-refund) | `svc-payments` | Process refund |
-| POST | [POST `/notifications`](../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send cancellation notice |
+| GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | List reservations |
+| GET | [GET `/reservations/{reservation_id}`](../../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
+| PUT | [PUT `/reservations/{reservation_id}/status`](../../microservices/svc-reservations/#put-reservationsreservation_idstatus-transition-reservation-status) | `svc-reservations` | Update reservation status |
+| POST | [POST `/payments/{payment_id}/refund`](../../microservices/svc-payments/#post-paymentspayment_idrefund-initiate-a-refund) | `svc-payments` | Process refund |
+| POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send cancellation notice |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--reservation-management.svg" type="image/svg+xml" style="max-width: 100%;">Reservation Management user journey diagram</object></div>
 
@@ -114,9 +114,9 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/members/{guest_id}/balance`](../microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info) | `svc-loyalty-rewards` | Get member balance |
-| GET | [GET `/members/{guest_id}/transactions`](../microservices/svc-loyalty-rewards/#get-membersguest_idtransactions-list-point-transactions-for-a-member) | `svc-loyalty-rewards` | Get transaction history |
-| GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
+| GET | [GET `/members/{guest_id}/balance`](../../microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info) | `svc-loyalty-rewards` | Get member balance |
+| GET | [GET `/members/{guest_id}/transactions`](../../microservices/svc-loyalty-rewards/#get-membersguest_idtransactions-list-point-transactions-for-a-member) | `svc-loyalty-rewards` | Get transaction history |
+| GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--loyalty-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Loyalty Dashboard user journey diagram</object></div>
 
@@ -130,11 +130,11 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/waivers`](../microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest) | `svc-safety-compliance` | Get required waivers |
-| GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
-| POST | [POST `/waivers`](../microservices/svc-safety-compliance/#post-waivers-guest-signs-a-safety-waiver) | `svc-safety-compliance` | Submit signed waiver |
+| GET | [GET `/waivers`](../../microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest) | `svc-safety-compliance` | Get required waivers |
+| GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
+| POST | [POST `/waivers`](../../microservices/svc-safety-compliance/#post-waivers-guest-signs-a-safety-waiver) | `svc-safety-compliance` | Submit signed waiver |
 | -- | *DocuSign API* | External | Verify digital signature |
-| POST | [POST `/notifications`](../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send waiver copy |
+| POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send waiver copy |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--waiver-signing.svg" type="image/svg+xml" style="max-width: 100%;">Waiver Signing user journey diagram</object></div>
 
@@ -148,9 +148,9 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/media`](../microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip) | `svc-media-gallery` | List trip media |
-| GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
-| POST | [POST `/media/{media_id}/share`](../microservices/svc-media-gallery/#post-mediamedia_idshare-create-a-shareable-link-for-a-media-item) | `svc-media-gallery` | Create share link |
-| POST | [POST `/notifications`](../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send share notification |
+| GET | [GET `/media`](../../microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip) | `svc-media-gallery` | List trip media |
+| GET | [GET `/reservations/{reservation_id}`](../../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
+| POST | [POST `/media/{media_id}/share`](../../microservices/svc-media-gallery/#post-mediamedia_idshare-create-a-shareable-link-for-a-media-item) | `svc-media-gallery` | Create share link |
+| POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send share notification |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--trip-gallery.svg" type="image/svg+xml" style="max-width: 100%;">Trip Gallery user journey diagram</object></div>

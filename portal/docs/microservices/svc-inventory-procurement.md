@@ -110,4 +110,4 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Inventory Management |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Inventory Management |

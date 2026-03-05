@@ -156,4 +156,4 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Daily Schedule Board, Guide Assignment, Safety Incident Board |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Daily Schedule Board, Guide Assignment, Safety Incident Board |

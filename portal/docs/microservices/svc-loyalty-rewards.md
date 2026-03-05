@@ -76,5 +76,5 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Guest Profile, Loyalty Dashboard |
-| [Adventure App](../applications/app-guest-mobile/) | Earn Loyalty Points |
+| [Guest Portal](../../applications/web-guest-portal/) | Guest Profile, Loyalty Dashboard |
+| [Adventure App](../../applications/app-guest-mobile/) | Earn Loyalty Points |

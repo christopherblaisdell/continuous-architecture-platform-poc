@@ -82,5 +82,5 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Trip Browser, Trip Gallery |
-| [Adventure App](../applications/app-guest-mobile/) | Photo Upload |
+| [Guest Portal](../../applications/web-guest-portal/) | Trip Browser, Trip Gallery |
+| [Adventure App](../../applications/app-guest-mobile/) | Photo Upload |

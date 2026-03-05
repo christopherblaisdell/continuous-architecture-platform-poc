@@ -108,6 +108,6 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Booking Flow, Guest Profile, Reservation Management, Trip Gallery |
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station, Transport Dispatch, Analytics Dashboard, Partner Bookings |
-| [Adventure App](../applications/app-guest-mobile/) | Self Check-In, My Reservations, Earn Loyalty Points |
+| [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Guest Profile, Reservation Management, Trip Gallery |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station, Transport Dispatch, Analytics Dashboard, Partner Bookings |
+| [Adventure App](../../applications/app-guest-mobile/) | Self Check-In, My Reservations, Earn Loyalty Points |

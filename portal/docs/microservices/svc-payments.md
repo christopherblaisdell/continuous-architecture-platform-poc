@@ -86,6 +86,6 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Booking Flow, Reservation Management |
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Analytics Dashboard, Partner Bookings |
-| [Adventure App](../applications/app-guest-mobile/) | My Reservations |
+| [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Reservation Management |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Analytics Dashboard, Partner Bookings |
+| [Adventure App](../../applications/app-guest-mobile/) | My Reservations |
