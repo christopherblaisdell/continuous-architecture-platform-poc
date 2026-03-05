@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-weather.html#/Weather/getCurrentWeather){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-weather--get-weather-current.svg" type="image/svg+xml" style="max-width: 100%;">GET /weather/current sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-weather--get-weather-current.svg" type="image/svg+xml" style="max-width: 100%;">GET /weather/current sequence diagram</object></div>
 
 ---
 
@@ -48,7 +48,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-weather.html#/Weather/getWeatherForecast){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-weather--get-weather-forecast.svg" type="image/svg+xml" style="max-width: 100%;">GET /weather/forecast sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-weather--get-weather-forecast.svg" type="image/svg+xml" style="max-width: 100%;">GET /weather/forecast sequence diagram</object></div>
 
 ---
 
@@ -58,7 +58,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-weather.html#/Alerts/getWeatherAlerts){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-weather--get-weather-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /weather/alerts sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-weather--get-weather-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /weather/alerts sequence diagram</object></div>
 
 ---
 
@@ -68,7 +68,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-weather.html#/Alerts/createWeatherAlert){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-weather--post-weather-alerts.svg" type="image/svg+xml" style="max-width: 100%;">POST /weather/alerts sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-weather--post-weather-alerts.svg" type="image/svg+xml" style="max-width: 100%;">POST /weather/alerts sequence diagram</object></div>
 
 ---
 
@@ -78,4 +78,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-weather.html#/Trail%20Conditions/getTrailConditions){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-weather--get-trail-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trail-conditions sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-weather--get-trail-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trail-conditions sequence diagram</object></div>

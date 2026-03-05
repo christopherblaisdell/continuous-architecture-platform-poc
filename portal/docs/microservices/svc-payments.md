@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/processPayment){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-payments--post-payments.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--post-payments.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments sequence diagram</object></div>
 
 ---
 
@@ -48,7 +48,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/getPayment){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-payments--get-payments-payment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/{payment_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-payments-payment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/{payment_id} sequence diagram</object></div>
 
 ---
 
@@ -58,7 +58,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Refunds/refundPayment){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-payments--post-payments-payment_id-refund.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments/{payment_id}/refund sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--post-payments-payment_id-refund.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments/{payment_id}/refund sequence diagram</object></div>
 
 ---
 
@@ -68,7 +68,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/getGuestPaymentHistory){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-payments--get-guests-guest_id-payment-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/payment-history sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-guests-guest_id-payment-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/payment-history sequence diagram</object></div>
 
 ---
 
@@ -78,4 +78,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Reporting/getDailySummary){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-payments--get-payments-daily-summary.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/daily-summary sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-payments-daily-summary.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/daily-summary sequence diagram</object></div>

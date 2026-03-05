@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Guests/searchGuests){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--get-guests.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--get-guests.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests sequence diagram</object></div>
 
 ---
 
@@ -48,7 +48,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Guests/createGuest){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--post-guests.svg" type="image/svg+xml" style="max-width: 100%;">POST /guests sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--post-guests.svg" type="image/svg+xml" style="max-width: 100%;">POST /guests sequence diagram</object></div>
 
 ---
 
@@ -58,7 +58,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Guests/getGuest){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--get-guests-guest_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--get-guests-guest_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id} sequence diagram</object></div>
 
 ---
 
@@ -68,7 +68,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Guests/updateGuest){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--patch-guests-guest_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guests/{guest_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--patch-guests-guest_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guests/{guest_id} sequence diagram</object></div>
 
 ---
 
@@ -78,7 +78,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Certifications/listGuestCertifications){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--get-guests-guest_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/certifications sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--get-guests-guest_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/certifications sequence diagram</object></div>
 
 ---
 
@@ -88,7 +88,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Certifications/addGuestCertification){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--post-guests-guest_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guests/{guest_id}/certifications sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--post-guests-guest_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guests/{guest_id}/certifications sequence diagram</object></div>
 
 ---
 
@@ -98,7 +98,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Medical/getGuestMedicalInfo){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--get-guests-guest_id-medical-info.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/medical-info sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--get-guests-guest_id-medical-info.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/medical-info sequence diagram</object></div>
 
 ---
 
@@ -108,7 +108,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/Medical/updateGuestMedicalInfo){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--put-guests-guest_id-medical-info.svg" type="image/svg+xml" style="max-width: 100%;">PUT /guests/{guest_id}/medical-info sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--put-guests-guest_id-medical-info.svg" type="image/svg+xml" style="max-width: 100%;">PUT /guests/{guest_id}/medical-info sequence diagram</object></div>
 
 ---
 
@@ -118,4 +118,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guest-profiles.html#/History/getGuestAdventureHistory){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-guest-profiles--get-guests-guest_id-adventure-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/adventure-history sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-guest-profiles--get-guests-guest_id-adventure-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/adventure-history sequence diagram</object></div>

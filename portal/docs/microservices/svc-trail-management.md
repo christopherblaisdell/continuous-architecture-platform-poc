@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/searchTrails){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails sequence diagram</object></div>
 
 ---
 
@@ -48,7 +48,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/createTrail){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--post-trails.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--post-trails.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails sequence diagram</object></div>
 
 ---
 
@@ -58,7 +58,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/getTrail){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id} sequence diagram</object></div>
 
 ---
 
@@ -68,7 +68,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/updateTrail){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--patch-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /trails/{trail_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--patch-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /trails/{trail_id} sequence diagram</object></div>
 
 ---
 
@@ -78,7 +78,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Waypoints/getTrailWaypoints){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/waypoints sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/waypoints sequence diagram</object></div>
 
 ---
 
@@ -88,7 +88,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Waypoints/addWaypoint){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--post-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/waypoints sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--post-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/waypoints sequence diagram</object></div>
 
 ---
 
@@ -98,7 +98,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Closures/getTrailClosures){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/closures sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/closures sequence diagram</object></div>
 
 ---
 
@@ -108,7 +108,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Closures/createTrailClosure){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--post-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/closures sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--post-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/closures sequence diagram</object></div>
 
 ---
 
@@ -118,4 +118,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Conditions/getTrailCurrentConditions){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/conditions sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/conditions sequence diagram</object></div>

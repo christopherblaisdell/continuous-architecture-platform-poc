@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-location-services--get-locations.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations sequence diagram</object></div>
 
 ---
 
@@ -46,7 +46,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-location-services--post-locations.svg" type="image/svg+xml" style="max-width: 100%;">POST /locations sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--post-locations.svg" type="image/svg+xml" style="max-width: 100%;">POST /locations sequence diagram</object></div>
 
 ---
 
@@ -54,7 +54,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-location-services--get-locations-location_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id} sequence diagram</object></div>
 
 ---
 
@@ -62,7 +62,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-location-services--patch-locations-location_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /locations/{location_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--patch-locations-location_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /locations/{location_id} sequence diagram</object></div>
 
 ---
 
@@ -70,7 +70,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-location-services--get-locations-location_id-capacity.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/capacity sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id-capacity.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/capacity sequence diagram</object></div>
 
 ---
 
@@ -78,4 +78,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-location-services--get-locations-location_id-operating-hours.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/operating-hours sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id-operating-hours.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/operating-hours sequence diagram</object></div>

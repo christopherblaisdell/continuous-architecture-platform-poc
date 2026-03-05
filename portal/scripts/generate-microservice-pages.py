@@ -802,7 +802,7 @@ def generate_service_page(svc_name, spec, svg_files):
         if svg_filename in svg_files:
             lines.append(
                 f'<div style="overflow-x: auto; width: 100%;">'
-                f'<object data="svg/{svg_filename}" type="image/svg+xml" '
+                f'<object data="../svg/{svg_filename}" type="image/svg+xml" '
                 f'style="max-width: 100%;">'
                 f'{method} {path} sequence diagram</object>'
                 f'</div>'

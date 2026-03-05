@@ -36,7 +36,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Media/listMedia){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-media-gallery--get-media.svg" type="image/svg+xml" style="max-width: 100%;">GET /media sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--get-media.svg" type="image/svg+xml" style="max-width: 100%;">GET /media sequence diagram</object></div>
 
 ---
 
@@ -46,7 +46,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Media/uploadMedia){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-media-gallery--post-media.svg" type="image/svg+xml" style="max-width: 100%;">POST /media sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--post-media.svg" type="image/svg+xml" style="max-width: 100%;">POST /media sequence diagram</object></div>
 
 ---
 
@@ -54,7 +54,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Media/getMedia){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-media-gallery--get-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /media/{media_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--get-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /media/{media_id} sequence diagram</object></div>
 
 ---
 
@@ -64,7 +64,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Media/deleteMedia){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-media-gallery--delete-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /media/{media_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--delete-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /media/{media_id} sequence diagram</object></div>
 
 ---
 
@@ -74,4 +74,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Sharing/createShareLink){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-media-gallery--post-media-media_id-share.svg" type="image/svg+xml" style="max-width: 100%;">POST /media/{media_id}/share sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--post-media-media_id-share.svg" type="image/svg+xml" style="max-width: 100%;">POST /media/{media_id}/share sequence diagram</object></div>
