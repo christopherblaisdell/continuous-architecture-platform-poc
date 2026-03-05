@@ -6,18 +6,18 @@ LAYOUT_TOP_DOWN()
 
 title svc-check-in — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Check In Service", $link="/microservices/svc-check-in/")
     ContainerDb(svc_check_in_db, "PostgreSQL 15", "checkin schema", "Primary data store", $link="/microservices/svc-check-in/#data-store")
-    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics", $link="/microservices/svc-gear-inventory/")
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
-    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/")
-    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/")
-    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics", $link="/microservices/svc-gear-inventory/#integration-context")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/#integration-context")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/#integration-context")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
 }
 
 

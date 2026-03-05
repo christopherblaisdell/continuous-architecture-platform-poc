@@ -6,16 +6,16 @@ LAYOUT_TOP_DOWN()
 
 title svc-weather — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather Service", $link="/microservices/svc-weather/")
     ContainerDb(svc_weather_db, "Valkey 8 + PostgreSQL 15", "weather schema", "Primary data store", $link="/microservices/svc-weather/#data-store")
-    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/")
-    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
 System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service")

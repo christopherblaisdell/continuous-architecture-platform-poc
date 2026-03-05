@@ -500,7 +500,7 @@ def build_c4_app_puml(app_name, app_info):
     L.append('System_Boundary(platform, "NovaTrek Platform") {')
     for svc in sorted(all_svcs.keys()):
         screen_count = len(all_svcs[svc])
-        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens", $link="/microservices/{svc}/")')
+        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens", $link="/microservices/{svc}/#integration-context")')
     L.append("}")
     L.append("")
 

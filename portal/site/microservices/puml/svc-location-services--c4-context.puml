@@ -6,15 +6,15 @@ LAYOUT_TOP_DOWN()
 
 title svc-location-services — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services Service", $link="/microservices/svc-location-services/")
     ContainerDb(svc_location_services_db, "PostGIS (PostgreSQL 15)", "locations schema", "Primary data store", $link="/microservices/svc-location-services/#data-store")
-    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/")
-    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/")
-    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Logistics", $link="/microservices/svc-transport-logistics/")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/#integration-context")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Logistics", $link="/microservices/svc-transport-logistics/#integration-context")
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")

@@ -6,18 +6,18 @@ LAYOUT_TOP_DOWN()
 
 title svc-payments — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments Service", $link="/microservices/svc-payments/")
     ContainerDb(svc_payments_db, "PostgreSQL 15", "payments schema", "Primary data store", $link="/microservices/svc-payments/#data-store")
-    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Support", $link="/microservices/svc-inventory-procurement/")
-    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Support", $link="/microservices/svc-loyalty-rewards/")
-    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "External", $link="/microservices/svc-partner-integrations/")
-    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Support", $link="/microservices/svc-inventory-procurement/#integration-context")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Support", $link="/microservices/svc-loyalty-rewards/#integration-context")
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "External", $link="/microservices/svc-partner-integrations/#integration-context")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
 System_Ext(Fraud_Detection_API, "Fraud Detection API", "Third-party service")
