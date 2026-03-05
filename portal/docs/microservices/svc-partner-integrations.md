@@ -96,4 +96,4 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Partner Bookings |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Partner Bookings |

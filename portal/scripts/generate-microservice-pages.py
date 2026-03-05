@@ -1088,7 +1088,7 @@ def generate_service_page(svc_name, spec, svg_files):
         for app_name, screen_list in by_app.items():
             title = APP_TITLES.get(app_name, app_name)
             screens_str = ", ".join(screen_list)
-            lines.append(f"| [{title}](../applications/{app_name}/) | {screens_str} |")
+            lines.append(f"| [{title}](../../applications/{app_name}/) | {screens_str} |")
         lines.append("")
 
     return "\n".join(lines)

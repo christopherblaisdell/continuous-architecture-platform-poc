@@ -44,11 +44,11 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/schedule-optimization`](../microservices/svc-scheduling-orchestrator/#get-schedule-optimization-run-synchronous-schedule-optimization) | `svc-scheduling-orchestrator` | Get daily schedules |
-| GET | [GET `/guides/available`](../microservices/svc-guide-management/#get-guidesavailable-find-available-guides-for-a-date-activity-and-region) | `svc-guide-management` | Get available guides |
-| GET | [GET `/weather/forecast`](../microservices/svc-weather/#get-weatherforecast-get-weather-forecast) | `svc-weather` | Get weather forecast |
-| GET | [GET `/trails/{trail_id}/conditions`](../microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions) | `svc-trail-management` | Get trail conditions |
-| GET | [GET `/locations/{location_id}/capacity`](../microservices/svc-location-services/#get-locationslocation_idcapacity-get-current-capacity-utilization) | `svc-location-services` | Get location capacity |
+| GET | [GET `/schedule-optimization`](../../microservices/svc-scheduling-orchestrator/#get-schedule-optimization-run-synchronous-schedule-optimization) | `svc-scheduling-orchestrator` | Get daily schedules |
+| GET | [GET `/guides/available`](../../microservices/svc-guide-management/#get-guidesavailable-find-available-guides-for-a-date-activity-and-region) | `svc-guide-management` | Get available guides |
+| GET | [GET `/weather/forecast`](../../microservices/svc-weather/#get-weatherforecast-get-weather-forecast) | `svc-weather` | Get weather forecast |
+| GET | [GET `/trails/{trail_id}/conditions`](../../microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions) | `svc-trail-management` | Get trail conditions |
+| GET | [GET `/locations/{location_id}/capacity`](../../microservices/svc-location-services/#get-locationslocation_idcapacity-get-current-capacity-utilization) | `svc-location-services` | Get location capacity |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--daily-schedule-board.svg" type="image/svg+xml" style="max-width: 100%;">Daily Schedule Board user journey diagram</object></div>
 
@@ -62,11 +62,11 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Lookup reservation |
-| GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Verify guest identity |
-| GET | [GET `/waivers`](../microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest) | `svc-safety-compliance` | Check waiver status |
-| POST | [POST `/check-ins`](../microservices/svc-check-in/#post-check-ins-initiate-check-in-for-a-participant) | `svc-check-in` | Create check-in |
-| POST | [POST `/gear-assignments`](../microservices/svc-gear-inventory/#post-gear-assignments-assign-gear-to-a-participant) | `svc-gear-inventory` | Assign gear package |
+| GET | [GET `/reservations/{reservation_id}`](../../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Lookup reservation |
+| GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Verify guest identity |
+| GET | [GET `/waivers`](../../microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest) | `svc-safety-compliance` | Check waiver status |
+| POST | [POST `/check-ins`](../../microservices/svc-check-in/#post-check-ins-initiate-check-in-for-a-participant) | `svc-check-in` | Create check-in |
+| POST | [POST `/gear-assignments`](../../microservices/svc-gear-inventory/#post-gear-assignments-assign-gear-to-a-participant) | `svc-gear-inventory` | Assign gear package |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--check-in-station.svg" type="image/svg+xml" style="max-width: 100%;">Check-In Station user journey diagram</object></div>
 
@@ -80,10 +80,10 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/guides`](../microservices/svc-guide-management/#get-guides-search-guides-with-filters) | `svc-guide-management` | List certified guides |
-| GET | [GET `/guides/{guide_id}/availability`](../microservices/svc-guide-management/#get-guidesguide_idavailability-get-guide-availability-windows) | `svc-guide-management` | Check availability |
-| POST | [POST `/schedule-requests`](../microservices/svc-scheduling-orchestrator/#post-schedule-requests-request-optimal-schedule-for-a-trip) | `svc-scheduling-orchestrator` | Submit schedule request |
-| GET | [GET `/trails/{trail_id}`](../microservices/svc-trail-management/#get-trailstrail_id-get-trail-details) | `svc-trail-management` | Verify trail status |
+| GET | [GET `/guides`](../../microservices/svc-guide-management/#get-guides-search-guides-with-filters) | `svc-guide-management` | List certified guides |
+| GET | [GET `/guides/{guide_id}/availability`](../../microservices/svc-guide-management/#get-guidesguide_idavailability-get-guide-availability-windows) | `svc-guide-management` | Check availability |
+| POST | [POST `/schedule-requests`](../../microservices/svc-scheduling-orchestrator/#post-schedule-requests-request-optimal-schedule-for-a-trip) | `svc-scheduling-orchestrator` | Submit schedule request |
+| GET | [GET `/trails/{trail_id}`](../../microservices/svc-trail-management/#get-trailstrail_id-get-trail-details) | `svc-trail-management` | Verify trail status |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--guide-assignment.svg" type="image/svg+xml" style="max-width: 100%;">Guide Assignment user journey diagram</object></div>
 
@@ -97,11 +97,11 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/incidents/{incident_id}`](../microservices/svc-safety-compliance/#get-incidentsincident_id-get-an-incident-report) | `svc-safety-compliance` | List active incidents |
-| POST | [POST `/incidents`](../microservices/svc-safety-compliance/#post-incidents-file-an-incident-report) | `svc-safety-compliance` | Log new incident |
-| GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest contact info |
-| GET | [GET `/guides/{guide_id}`](../microservices/svc-guide-management/#get-guidesguide_id-get-guide-by-id) | `svc-guide-management` | Get assigned guide |
-| POST | [POST `/notifications`](../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send safety alerts |
+| GET | [GET `/incidents/{incident_id}`](../../microservices/svc-safety-compliance/#get-incidentsincident_id-get-an-incident-report) | `svc-safety-compliance` | List active incidents |
+| POST | [POST `/incidents`](../../microservices/svc-safety-compliance/#post-incidents-file-an-incident-report) | `svc-safety-compliance` | Log new incident |
+| GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest contact info |
+| GET | [GET `/guides/{guide_id}`](../../microservices/svc-guide-management/#get-guidesguide_id-get-guide-by-id) | `svc-guide-management` | Get assigned guide |
+| POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send safety alerts |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--safety-incident-board.svg" type="image/svg+xml" style="max-width: 100%;">Safety Incident Board user journey diagram</object></div>
 
@@ -115,9 +115,9 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/gear-items`](../microservices/svc-gear-inventory/#get-gear-items-search-gear-inventory) | `svc-gear-inventory` | Get inventory levels |
-| GET | [GET `/gear-assignments/{assignment_id}`](../microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details) | `svc-gear-inventory` | Check gear assignments |
-| POST | [POST `/purchase-orders`](../microservices/svc-inventory-procurement/#post-purchase-orders-create-a-new-purchase-order) | `svc-inventory-procurement` | Create purchase order |
+| GET | [GET `/gear-items`](../../microservices/svc-gear-inventory/#get-gear-items-search-gear-inventory) | `svc-gear-inventory` | Get inventory levels |
+| GET | [GET `/gear-assignments/{assignment_id}`](../../microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details) | `svc-gear-inventory` | Check gear assignments |
+| POST | [POST `/purchase-orders`](../../microservices/svc-inventory-procurement/#post-purchase-orders-create-a-new-purchase-order) | `svc-inventory-procurement` | Create purchase order |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--inventory-management.svg" type="image/svg+xml" style="max-width: 100%;">Inventory Management user journey diagram</object></div>
 
@@ -131,10 +131,10 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/transport-requests/{request_id}`](../microservices/svc-transport-logistics/#get-transport-requestsrequest_id-get-transport-request-details) | `svc-transport-logistics` | List transport requests |
-| POST | [POST `/transport-requests`](../microservices/svc-transport-logistics/#post-transport-requests-request-transport-for-a-reservation) | `svc-transport-logistics` | Create transport request |
-| GET | [GET `/locations/{location_id}`](../microservices/svc-location-services/#get-locationslocation_id-get-location-details) | `svc-location-services` | Get pickup locations |
-| GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get booking details |
+| GET | [GET `/transport-requests/{request_id}`](../../microservices/svc-transport-logistics/#get-transport-requestsrequest_id-get-transport-request-details) | `svc-transport-logistics` | List transport requests |
+| POST | [POST `/transport-requests`](../../microservices/svc-transport-logistics/#post-transport-requests-request-transport-for-a-reservation) | `svc-transport-logistics` | Create transport request |
+| GET | [GET `/locations/{location_id}`](../../microservices/svc-location-services/#get-locationslocation_id-get-location-details) | `svc-location-services` | Get pickup locations |
+| GET | [GET `/reservations/{reservation_id}`](../../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get booking details |
 | -- | *Google Maps Platform* | External | Calculate optimal route |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--transport-dispatch.svg" type="image/svg+xml" style="max-width: 100%;">Transport Dispatch user journey diagram</object></div>
@@ -149,9 +149,9 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/analytics/bookings`](../microservices/svc-analytics/#get-analyticsbookings-get-booking-analytics-for-a-period) | `svc-analytics` | Get booking metrics |
-| GET | [GET `/reservations`](../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get reservation stats |
-| GET | [GET `/payments/daily-summary`](../microservices/svc-payments/#get-paymentsdaily-summary-get-daily-payment-summary) | `svc-payments` | Get revenue summary |
+| GET | [GET `/analytics/bookings`](../../microservices/svc-analytics/#get-analyticsbookings-get-booking-analytics-for-a-period) | `svc-analytics` | Get booking metrics |
+| GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get reservation stats |
+| GET | [GET `/payments/daily-summary`](../../microservices/svc-payments/#get-paymentsdaily-summary-get-daily-payment-summary) | `svc-payments` | Get revenue summary |
 | -- | *Snowflake Data Cloud* | External | Query data warehouse |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--analytics-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Analytics Dashboard user journey diagram</object></div>
@@ -166,9 +166,9 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/partner-bookings/{booking_id}`](../microservices/svc-partner-integrations/#get-partner-bookingsbooking_id-get-partner-booking-details) | `svc-partner-integrations` | List partner bookings |
-| POST | [POST `/partner-bookings/{booking_id}/confirm`](../microservices/svc-partner-integrations/#post-partner-bookingsbooking_idconfirm-confirm-a-pending-partner-booking) | `svc-partner-integrations` | Confirm booking |
-| GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
-| GET | [GET `/payments/{payment_id}`](../microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details) | `svc-payments` | Get payment status |
+| GET | [GET `/partner-bookings/{booking_id}`](../../microservices/svc-partner-integrations/#get-partner-bookingsbooking_id-get-partner-booking-details) | `svc-partner-integrations` | List partner bookings |
+| POST | [POST `/partner-bookings/{booking_id}/confirm`](../../microservices/svc-partner-integrations/#post-partner-bookingsbooking_idconfirm-confirm-a-pending-partner-booking) | `svc-partner-integrations` | Confirm booking |
+| GET | [GET `/reservations/{reservation_id}`](../../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
+| GET | [GET `/payments/{payment_id}`](../../microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details) | `svc-payments` | Get payment status |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--partner-bookings.svg" type="image/svg+xml" style="max-width: 100%;">Partner Bookings user journey diagram</object></div>

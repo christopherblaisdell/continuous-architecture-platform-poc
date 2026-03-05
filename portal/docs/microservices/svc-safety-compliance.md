@@ -100,6 +100,6 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../applications/web-guest-portal/) | Waiver Signing |
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station, Safety Incident Board |
-| [Adventure App](../applications/app-guest-mobile/) | Self Check-In |
+| [Guest Portal](../../applications/web-guest-portal/) | Waiver Signing |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station, Safety Incident Board |
+| [Adventure App](../../applications/app-guest-mobile/) | Self Check-In |

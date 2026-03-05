@@ -82,5 +82,5 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station |
-| [Adventure App](../applications/app-guest-mobile/) | Self Check-In, Digital Wristband |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station |
+| [Adventure App](../../applications/app-guest-mobile/) | Self Check-In, Digital Wristband |
