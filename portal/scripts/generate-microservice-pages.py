@@ -695,35 +695,34 @@ def build_c4_context_puml(svc_name):
     for app in app_names:
         app_title = APP_TITLES.get(app, app)
         app_type = "Web App" if app.startswith("web-") else "Mobile App"
-        tech = "React" if "guest-portal" in app else "Angular" if "ops-dashboard" in app else "React Native"
         a = _safe_alias(app)
-        L.append(f'Person({a}, "{app_title}", "{app_type}")')
+        L.append(f'Person({a}, "{app_title}", "{app_type}", $link="/applications/{app}/")')
 
     L.append("")
 
     # The service itself (center)
     svc_title = svc_name.replace("svc-", "").replace("-", " ").title()
     L.append(f'System_Boundary(boundary, "NovaTrek Platform") {{')
-    L.append(f'    Container({_safe_alias(svc_name)}, "{svc_name}", "Java / Spring Boot", "{svc_title} Service")')
+    L.append(f'    Container({_safe_alias(svc_name)}, "{svc_name}", "Java / Spring Boot", "{svc_title} Service", $link="/microservices/{svc_name}/")')
 
     # Database
     if ds:
         engine = ds.get("engine", "PostgreSQL 15")
         schema = ds.get("schema", "")
         db_alias = f"{_safe_alias(svc_name)}_db"
-        L.append(f'    ContainerDb({db_alias}, "{engine}", "{schema} schema", "Primary data store")')
+        L.append(f'    ContainerDb({db_alias}, "{engine}", "{schema} schema", "Primary data store", $link="/microservices/{svc_name}/#data-store")')
 
     # Inbound peer services inside the boundary
     for peer in sorted(inbound_svcs.keys()):
         peer_domain, _ = get_domain_info(peer)
-        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}")')
+        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}", $link="/microservices/{peer}/")')
 
     # Outbound peer services inside the boundary
     for peer in sorted(outbound_svcs.keys()):
         if peer in inbound_svcs:
             continue  # already added
         peer_domain, _ = get_domain_info(peer)
-        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}")')
+        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}", $link="/microservices/{peer}/")')
 
     L.append("}")
     L.append("")

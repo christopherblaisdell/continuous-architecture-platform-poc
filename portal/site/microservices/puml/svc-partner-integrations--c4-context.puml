@@ -6,16 +6,16 @@ LAYOUT_TOP_DOWN()
 
 title svc-partner-integrations — Integration Context
 
-Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
 
 System_Boundary(boundary, "NovaTrek Platform") {
-    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations Service")
-    ContainerDb(svc_partner_integrations_db, "PostgreSQL 15", "partners schema", "Primary data store")
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
-    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support")
-    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
-    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog")
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations Service", $link="/microservices/svc-partner-integrations/")
+    ContainerDb(svc_partner_integrations_db, "PostgreSQL 15", "partners schema", "Primary data store", $link="/microservices/svc-partner-integrations/#data-store")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support", $link="/microservices/svc-payments/")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/")
 }
 
 

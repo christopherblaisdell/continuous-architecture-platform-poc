@@ -493,17 +493,14 @@ def build_c4_app_puml(app_name, app_info):
     L.append("")
 
     # The application itself
-    if app_type == "Web":
-        L.append(f'Container({_safe_alias(app_name)}, "{title}", "{tech}", "{app_type} application")')
-    else:
-        L.append(f'Container({_safe_alias(app_name)}, "{title}", "{tech}", "{app_type} application")')
+    L.append(f'Container({_safe_alias(app_name)}, "{title}", "{tech}", "{app_type} application", $link="/applications/{app_name}/")')
     L.append("")
 
     # Backend services inside platform boundary
     L.append('System_Boundary(platform, "NovaTrek Platform") {')
     for svc in sorted(all_svcs.keys()):
         screen_count = len(all_svcs[svc])
-        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens")')
+        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens", $link="/microservices/{svc}/")')
     L.append("}")
     L.append("")
 

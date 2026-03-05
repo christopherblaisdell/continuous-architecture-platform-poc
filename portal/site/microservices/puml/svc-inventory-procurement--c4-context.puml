@@ -6,14 +6,14 @@ LAYOUT_TOP_DOWN()
 
 title svc-inventory-procurement — Integration Context
 
-Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
 
 System_Boundary(boundary, "NovaTrek Platform") {
-    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement Service")
-    ContainerDb(svc_inventory_procurement_db, "PostgreSQL 15", "procurement schema", "Primary data store")
-    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
-    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support")
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement Service", $link="/microservices/svc-inventory-procurement/")
+    ContainerDb(svc_inventory_procurement_db, "PostgreSQL 15", "procurement schema", "Primary data store", $link="/microservices/svc-inventory-procurement/#data-store")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics", $link="/microservices/svc-gear-inventory/")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support", $link="/microservices/svc-payments/")
 }
 
 
