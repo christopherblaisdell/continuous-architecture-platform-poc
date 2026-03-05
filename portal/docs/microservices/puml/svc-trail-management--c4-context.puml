@@ -6,18 +6,18 @@ LAYOUT_TOP_DOWN()
 
 title svc-trail-management — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Trail Management Service", $link="/microservices/svc-trail-management/")
     ContainerDb(svc_trail_management_db, "PostGIS (PostgreSQL 15)", "trails schema", "Primary data store", $link="/microservices/svc-trail-management/#data-store")
-    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/")
-    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support", $link="/microservices/svc-location-services/")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
-    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/")
-    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support", $link="/microservices/svc-weather/")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support", $link="/microservices/svc-location-services/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/#integration-context")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support", $link="/microservices/svc-weather/#integration-context")
 }
 
 

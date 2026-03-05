@@ -696,7 +696,7 @@ def build_c4_context_puml(svc_name):
         app_title = APP_TITLES.get(app, app)
         app_type = "Web App" if app.startswith("web-") else "Mobile App"
         a = _safe_alias(app)
-        L.append(f'Person({a}, "{app_title}", "{app_type}", $link="/applications/{app}/")')
+        L.append(f'Person({a}, "{app_title}", "{app_type}", $link="/applications/{app}/#service-dependencies")')
 
     L.append("")
 
@@ -715,14 +715,14 @@ def build_c4_context_puml(svc_name):
     # Inbound peer services inside the boundary
     for peer in sorted(inbound_svcs.keys()):
         peer_domain, _ = get_domain_info(peer)
-        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}", $link="/microservices/{peer}/")')
+        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}", $link="/microservices/{peer}/#integration-context")')
 
     # Outbound peer services inside the boundary
     for peer in sorted(outbound_svcs.keys()):
         if peer in inbound_svcs:
             continue  # already added
         peer_domain, _ = get_domain_info(peer)
-        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}", $link="/microservices/{peer}/")')
+        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}", $link="/microservices/{peer}/#integration-context")')
 
     L.append("}")
     L.append("")

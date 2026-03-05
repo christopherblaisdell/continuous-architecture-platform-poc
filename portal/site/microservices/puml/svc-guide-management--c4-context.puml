@@ -6,13 +6,13 @@ LAYOUT_TOP_DOWN()
 
 title svc-guide-management — Integration Context
 
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management Service", $link="/microservices/svc-guide-management/")
     ContainerDb(svc_guide_management_db, "PostgreSQL 15", "guides schema", "Primary data store", $link="/microservices/svc-guide-management/#data-store")
-    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/")
-    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/#integration-context")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
 }
 
 

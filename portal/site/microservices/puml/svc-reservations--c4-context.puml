@@ -6,22 +6,22 @@ LAYOUT_TOP_DOWN()
 
 title svc-reservations — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Reservations Service", $link="/microservices/svc-reservations/")
     ContainerDb(svc_reservations_db, "PostgreSQL 15", "reservations schema", "Primary data store", $link="/microservices/svc-reservations/#data-store")
-    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations", $link="/microservices/svc-check-in/")
-    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics", $link="/microservices/svc-gear-inventory/")
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/")
-    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Support", $link="/microservices/svc-loyalty-rewards/")
-    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "External", $link="/microservices/svc-partner-integrations/")
-    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Logistics", $link="/microservices/svc-transport-logistics/")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
-    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support", $link="/microservices/svc-payments/")
-    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations", $link="/microservices/svc-check-in/#integration-context")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics", $link="/microservices/svc-gear-inventory/#integration-context")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/#integration-context")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Support", $link="/microservices/svc-loyalty-rewards/#integration-context")
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "External", $link="/microservices/svc-partner-integrations/#integration-context")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Logistics", $link="/microservices/svc-transport-logistics/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support", $link="/microservices/svc-payments/#integration-context")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
 }
 
 

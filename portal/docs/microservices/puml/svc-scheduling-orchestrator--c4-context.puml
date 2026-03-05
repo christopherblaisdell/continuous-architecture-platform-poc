@@ -6,19 +6,19 @@ LAYOUT_TOP_DOWN()
 
 title svc-scheduling-orchestrator — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/#service-dependencies")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")
 
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator Service", $link="/microservices/svc-scheduling-orchestrator/")
     ContainerDb(svc_scheduling_orchestrator_db, "PostgreSQL 15 + Valkey 8", "scheduling schema", "Primary data store", $link="/microservices/svc-scheduling-orchestrator/#data-store")
-    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Support", $link="/microservices/svc-analytics/")
-    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management", $link="/microservices/svc-guide-management/")
-    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support", $link="/microservices/svc-location-services/")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
-    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/")
-    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/")
-    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support", $link="/microservices/svc-weather/")
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Support", $link="/microservices/svc-analytics/#integration-context")
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management", $link="/microservices/svc-guide-management/#integration-context")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support", $link="/microservices/svc-location-services/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/#integration-context")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support", $link="/microservices/svc-weather/#integration-context")
 }
 
 
