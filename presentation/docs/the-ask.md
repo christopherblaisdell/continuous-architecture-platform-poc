@@ -1,8 +1,8 @@
 # The Ask: What We Need to Move Forward
 
-## Low Cost. Low Risk. High Return.
+## Build on Our Existing Strengths
 
-We've proven the platform works. We've measured the cost and quality. We've built a live demonstration. Here's what we need to adopt it.
+We already source-control specs and diagrams in Git with production gating. We've proven the platform works by building on that foundation. We've measured the cost and quality. We've built a live demonstration. Here's what we need to adopt it.
 
 ---
 
@@ -24,26 +24,26 @@ We've proven the platform works. We've measured the cost and quality. We've buil
 
 ---
 
-### 2. Markdown-First Authoring for New Designs
+### 2. Solution Designs in Markdown (Extending Our Git-First Practice)
 
-No disruption to existing workflows. The change is:
+We already author specs and diagrams in text formats and check them into Git. This extends that practice:
 
-- **New** solution designs are authored in Markdown (in the VS Code workspace)
-- **Existing** Confluence content stays where it is (no migration required)
+- **New** solution designs and ADRs are authored in Markdown in the same architecture repo
+- **Existing** specs, diagrams, and Confluence content stay exactly where they are
 - The AI generates correctly formatted Markdown automatically — architects don't need to learn syntax
 
-**What this enables:** Version-controlled designs, pull request reviews, AI context for future sessions, automated publishing.
+**What this enables:** Version-controlled designs alongside specs, pull request reviews on architecture decisions, AI context for future sessions, automated publishing that replaces the manual Confluence step.
 
 ---
 
-### 3. CI/CD Pipeline for Architecture Publishing
+### 3. Automated Publishing Pipeline
 
 - Azure Static Web Apps deployment (free tier — $0/month)
 - GitHub Actions workflow triggered on push to main
 - Builds MkDocs site + copies non-Markdown assets
 - Deploys in under 30 seconds
 
-**What this replaces:** Manual copy-paste to Confluence, screenshot updates, broken cross-links.
+**What this replaces:** The voluntary manual Confluence update step — the one that gets skipped, causing documentation to fall behind the artifacts already in Git.
 
 ---
 
@@ -79,7 +79,7 @@ For organizations that require Confluence:
 |---------|--------|
 | "What if the AI quality isn't good enough?" | 96.1% measured across 5 scenarios. Start with a 1-month pilot. |
 | "What if costs increase?" | Fixed $39/month subscription. Even at 2x, cheaper than alternatives. |
-| "What if architects don't adopt it?" | The AI handles Markdown formatting. The workflow is the same — just in VS Code instead of Confluence. |
+| "What if architects don't adopt it?" | Architects already work in Git with text-format specs. The AI handles Markdown formatting. The workflow extends what they already do. |
 | "What if we need to go back?" | Markdown is portable. Export to any format. No vendor lock-in. |
 | "What about existing Confluence content?" | Stays in place. Only new work moves to Markdown-first. |
 | "Is the data secure?" | All data stays in the git repository. Copilot processes context server-side. No data leaves the GitHub/Azure ecosystem. |

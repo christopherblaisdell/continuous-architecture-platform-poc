@@ -89,29 +89,28 @@ flowchart TD
 
 And with Copilot's **fixed pricing**, richer context costs nothing extra. The AI reads more files, analyzes more specs, cross-references more decisions — all for $39/month.
 
-!!! warning "This Is Impossible with Confluence-First Authoring"
-    If architecture designs live in Confluence, the AI cannot read them during a design session. The architect must manually copy-paste relevant context. The workspace-first approach eliminates this friction entirely — the AI reads everything automatically.
+!!! warning "This Is Why the Manual Confluence Step Fails"
+    Confluence pages are what architects and stakeholders actually browse — but they fall behind because updating them is manual and voluntary. The workspace-first approach automates publishing: the artifacts in Git generate a browsable portal automatically. No manual step to skip.
 
 ---
 
-## Comparison: Workspace-First vs Confluence-First
+## Comparison: Current Process vs Enhanced Workspace
 
-| Capability | Workspace-First | Confluence-First |
+| Capability | Current (Git + Manual Confluence) | Enhanced (Git + AI + Auto-Publish) |
 |-----------|:---:|:---:|
-| AI reads previous designs | Automatic | Manual copy-paste |
-| AI reads API specs | Automatic | Not available |
-| AI reads source code | Automatic | Not available |
-| AI reads decision history | Automatic | Manual copy-paste |
-| Version-controlled changes | Yes (git) | Limited (page history) |
-| Pull request reviews | Yes | No |
-| Cross-reference accuracy | High (real files) | Low (stale links) |
-| Context cost (per-token models) | Grows with workspace | Grows with copy-paste |
-| Context cost (Copilot) | **$0** | **$0** (but less context available) |
+| Specs & diagrams in version control | Yes (already in place) | Yes (same foundation) |
+| AI reads specs and diagrams | Not utilized | Automatic — AI reads existing Git repo |
+| AI reads previous designs | Not available | Automatic — solution designs in workspace |
+| Browsable documentation | Manual Confluence updates (often skipped) | Auto-published portal from Git |
+| Pull request reviews on designs | Specs only | Specs + solution designs + ADRs |
+| Cross-service links maintained | Manually (break constantly) | Auto-generated from dependency graph |
+| Design-to-reality reconciliation | None | PROMOTE step closes the loop |
+| Context cost (Copilot) | N/A | **$0** (fixed subscription) |
 
 <div class="cta-box" markdown>
 
-### Why Markdown specifically?
+### How do we extend what we already do?
 
-[Markdown-First: Write Once, Publish Everywhere](markdown-first.md)
+[Markdown-First: Extending Our Git-First Practice](markdown-first.md)
 
 </div>

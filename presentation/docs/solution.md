@@ -1,8 +1,10 @@
 # The Solution: Continuous Architecture Platform
 
-## Replace Point-in-Time Documentation with Living Architecture
+## Build on What We Already Have
 
-The Continuous Architecture Platform rests on **four pillars** — each proven independently in this proof of concept, and each reinforcing the others.
+We already source-control our OpenAPI specs and PlantUML diagrams in Git. We already gate production deployments through the architecture repository. **That foundation is the hardest part — and it's already in place.**
+
+The Continuous Architecture Platform adds four capabilities on top of that foundation, closing the two gaps that erode its value today.
 
 ---
 
@@ -10,7 +12,7 @@ The Continuous Architecture Platform rests on **four pillars** — each proven i
 
 ### 1. AI-Assisted Architecture Workflows
 
-An AI assistant in VS Code that understands your architecture standards, your service contracts, your decision history, and your domain model — and produces compliant artifacts automatically.
+An AI assistant in VS Code that reads the architecture Git repo — the same specs, diagrams, and source code architects already maintain — and produces compliant artifacts automatically.
 
 **What it does:**
 
@@ -25,35 +27,35 @@ An AI assistant in VS Code that understands your architecture standards, your se
 
 ---
 
-### 2. Shared Architecture Workspace
+### 2. Enhanced Architecture Workspace
 
-Everything the architect needs — OpenAPI specs, ADRs, service pages, source code, diagrams — lives in a **single VS Code workspace**. The AI model sees the same context the architect sees.
+Architects already maintain specs and diagrams in Git. The platform enhances that repo with **AI-readable context** — architecture standards, domain knowledge, anti-pattern checklists, and a growing library of solution designs — so the AI operates with the same expertise as a senior architect.
 
 **Why this matters:**
 
-- The AI reads your actual Swagger specs when updating API contracts (no hallucination)
-- Cross-service impacts are identified by analyzing real dependency graphs
-- Previous architectural decisions inform new ones automatically
+- The AI reads the actual Swagger specs already checked into Git (no hallucination)
+- A `copilot-instructions.md` file encodes 500+ lines of domain knowledge, loaded into every AI session
+- Previous architectural decisions inform new ones — automatically
 - The workspace gets richer with every project — and Copilot's fixed pricing means richer context costs nothing extra
 
 ---
 
-### 3. Markdown-First Authoring
+### 3. Solution Designs in Markdown (Extending Git-First)
 
-Solution designs, ADRs, impact assessments, and guidance documents are written in **Markdown** instead of Word or Confluence pages.
+We already source-control specs and diagrams. The platform extends this practice to **solution designs, ADRs, impact assessments, and service documentation** — all authored in Markdown, all version-controlled in the same repo.
 
 **What this enables:**
 
-- **Version control** — every change tracked in git with diffs
-- **AI-readable** — the model can analyze, cross-reference, and update designs
-- **Reviewable** — pull request reviews on architecture changes
-- **Publishable everywhere** — MkDocs, Confluence API, PDF export from one source
+- **Pull request reviews** on architecture decisions, not just specs
+- **AI-readable history** — the model can analyze and cross-reference past designs
+- **Searchable decision log** — ADRs indexed and discoverable, not buried in ticket branches
+- **Publishable everywhere** — MkDocs portal, Confluence API sync, PDF export from one source
 
 ---
 
-### 4. CI/CD Publishing Pipeline
+### 4. Automated Publishing (Replacing the Manual Confluence Step)
 
-A `git push` to main triggers an automated build that publishes architecture documentation to a browsable website — with no manual copy-paste, no screenshot updates, no broken cross-links.
+The voluntary Confluence update — the step that gets skipped — is replaced by a `git push` that automatically publishes a browsable architecture portal. No manual copy-paste. No "I'll update Confluence later."
 
 **What gets published automatically:**
 
@@ -70,9 +72,9 @@ A `git push` to main triggers an automated build that publishes architecture doc
 ``` mermaid
 flowchart LR
     A[Architecture Ticket] --> B[AI-Assisted Design\nin VS Code]
-    B --> C[Markdown Artifacts\nin Git Workspace]
+    B --> C[Markdown Artifacts +\nUpdated Specs in Git]
     C --> D[git push]
-    D --> E[MkDocs Build\n+ CI/CD Pipeline]
+    D --> E[Automated Build\n+ Publishing Pipeline]
     E --> F[Living Architecture\nPortal]
     E --> G[Confluence Sync\noptional]
     F --> H[Next AI Session\nricher context]
@@ -84,7 +86,7 @@ flowchart LR
 ```
 
 <div class="key-insight" markdown>
-**The flywheel effect:** Every artifact the AI produces becomes context for the next session. The workspace grows richer. The AI gets more accurate. The documentation stays current. And the cost stays flat at $39/month.
+**The flywheel effect:** Every artifact the AI produces becomes context for the next session. The workspace grows richer. The AI gets more accurate. The documentation stays current — not because someone remembers to update Confluence, but because publishing is automated. And the cost stays flat at $39/month.
 </div>
 
 ---
@@ -96,9 +98,9 @@ This is not a slide deck about a future state. Everything described here **alrea
 | Component | Status | Evidence |
 |-----------|--------|----------|
 | AI-assisted workflow | Proven | 5 scenarios executed, 96.1% quality |
-| Shared workspace | Built | 19 OpenAPI specs, 11 ADRs, 6 service pages |
+| Enhanced architecture workspace | Built | Existing specs + AI instructions + standards + domain model |
 | Markdown-first artifacts | Produced | 39 files across 5 scenarios |
-| CI/CD publishing | Live | Architecture portal deployed at Azure Static Web Apps |
+| Automated publishing pipeline | Live | Architecture portal deployed at Azure Static Web Apps |
 | Cost comparison | Definitive | Actual billing data from both toolchains |
 
 <div class="cta-box" markdown>

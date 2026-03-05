@@ -1,61 +1,58 @@
-# Markdown-First: Write Once, Publish Everywhere
+# Markdown-First: Extending What We Already Do
 
-## Why Markdown Instead of Word or Confluence?
+## We Already Author in Text Formats — Now We Complete the Picture
 
-The format you author in determines what you can do with the output. Markdown unlocks capabilities that Word and Confluence cannot match.
-
----
-
-## The Comparison
-
-| Capability | Markdown (git) | Word | Confluence |
-|-----------|:---:|:---:|:---:|
-| **Version control** | Full git history with diffs | Binary file — no meaningful diffs | Page history (limited) |
-| **AI-readable** | Native — AI reads and writes Markdown directly | Requires doc parsing | Requires API + HTML conversion |
-| **Pull request reviews** | Line-by-line review on architecture changes | File-level comments | Comment threads |
-| **Diffable** | Character-level diffs in git | "Track changes" mode | Side-by-side page comparison |
-| **Publish to website** | MkDocs, Hugo, Docusaurus | Manual export | Already in Confluence |
-| **Publish to Confluence** | API sync from Markdown source | Copy-paste or upload | Native |
-| **Publish to PDF** | Automated via build pipeline | Native | Plugin required |
-| **Searchable in IDE** | Full-text search across all designs | Not in IDE | Not in IDE |
-| **AI can update** | Direct file edit | Complex doc manipulation | API calls required |
-| **Works offline** | Yes | Yes | No |
+Our architects already author OpenAPI specs in YAML and diagrams in PlantUML — text formats checked into Git. The platform extends this practice to **solution designs, ADRs, and impact assessments** in Markdown, completing the set of version-controlled architecture artifacts.
 
 ---
 
-## What Markdown-First Looks Like in Practice
+## What We Have vs What We Add
 
-### Before: Confluence-First Workflow
+| Artifact | Today | With the Platform |
+|----------|:---:|:---:|
+| **OpenAPI specs** | In Git (gated) | In Git (same) + AI-assisted updates |
+| **PlantUML diagrams** | In Git | In Git (same) + auto-rendered to portal |
+| **Solution designs** | Confluence (manual) or ticket attachments | Markdown in Git + auto-published |
+| **Architecture Decision Records** | In ticket branches (not discoverable) | Markdown in Git + global searchable log |
+| **Impact assessments** | Confluence or email | Markdown in Git + version-controlled |
+| **Service documentation** | Confluence (voluntary updates) | Auto-generated from specs in Git |
+| **Cross-service links** | Manually maintained in Confluence | Auto-generated from dependency graph |
+
+---
+
+## What Changes in Practice
+
+### Current Workflow
 
 ```
-1. Open Confluence → Create page from template
-2. Write solution design in the browser editor
-3. Copy-paste diagrams as screenshots
-4. Share link for review via comments
-5. Design is now locked in Confluence
-6. AI cannot access it for future sessions
-7. Nobody updates it after deployment
+1. Architect updates OpenAPI specs and PlantUML diagrams in Git
+2. Changes are checked into master (governance gate — this works well)
+3. Architect is supposed to update Confluence service pages manually
+4. Sometimes this happens, often it doesn't
+5. Solution design lives in a ticket branch or Confluence — not discoverable later
+6. ADRs stay in ticket context, never promoted to a global log
+7. After deployment, nobody reconciles design intent vs actual implementation
 ```
 
-### After: Markdown-First Workflow
+### Enhanced Workflow
 
 ```
-1. AI scaffolds solution design from template in VS Code
-2. Architect reviews and refines (with AI assistance)
-3. Diagrams generated as PlantUML code (version-controlled)
-4. Pull request for architecture review with line-by-line diffs
-5. Merge to main triggers automated publishing
-6. Published to MkDocs site (always current)
-7. Optionally synced to Confluence via API
+1. AI reads the existing Git repo (specs, diagrams, previous designs)
+2. AI scaffolds solution design from template in VS Code
+3. Architect reviews and refines (with AI assistance)
+4. Specs, diagrams, and solution design committed together
+5. Pull request for architecture review with line-by-line diffs
+6. Merge to main triggers automated publishing to browsable portal
+7. Optionally synced to Confluence via API (no manual step)
 8. AI reads the design in future sessions (full context)
-9. PROMOTE step updates baselines after deployment
+9. PROMOTE step reconciles design intent with actual implementation
 ```
 
 ---
 
-## Every Artifact in This POC is Markdown
+## Every Design Artifact in This POC is Markdown
 
-The proof of concept produced 39 files across 5 scenarios. Every one is Markdown:
+The proof of concept produced 39 files across 5 scenarios — all in Markdown, all version-controlled alongside the specs and diagrams already in Git:
 
 - **Solution designs** — arc42-structured Markdown with embedded PlantUML
 - **Architecture Decision Records** — MADR format (Markdown Any Decision Record)
@@ -71,8 +68,8 @@ None of these required Word. None required Confluence. All are version-controlle
 
 ## Confluence Compatibility
 
-!!! info "Markdown-first does not mean Confluence-never"
-    For organizations that require Confluence as the architecture documentation platform, Markdown-first authoring is fully compatible. The pipeline publishes to **both** MkDocs and Confluence from the same source.
+!!! info "This replaces the manual Confluence step — not Confluence itself"
+    The platform can publish to **both** MkDocs and Confluence from the same source. The difference: updates happen automatically on `git push` instead of relying on a voluntary manual step.
 
 ``` mermaid
 flowchart LR
@@ -86,34 +83,35 @@ flowchart LR
     style E fill:#1565c0,color:#fff
 ```
 
-The key difference: **git is the source of truth**, not Confluence. Confluence becomes a read-only mirror. This means:
+The key difference: **publishing is automated**, not voluntary. Git remains the source of truth (as it already is for specs), and Confluence becomes a read-only mirror. This means:
 
-- Architecture changes go through pull request review (not Confluence comment threads)
-- The AI reads the git version (always available, always current)
-- Confluence stays up to date automatically (no manual publishing step)
-- You never lose content because "someone edited the Confluence page directly"
+- Architecture changes go through pull request review (extending what we already do for specs)
+- The AI reads the Git version (always available, always current)
+- Confluence stays up to date automatically (no manual step to skip)
+- Browsable documentation always reflects the latest checked-in artifacts
 
 ---
 
 ## Migration Path
 
-Moving to Markdown-first is **incremental, not disruptive**:
+This builds on what architects already do — **no disruption required**:
 
 | Phase | Action | Disruption |
 |-------|--------|:---:|
-| **Start** | New solution designs written in Markdown | None — same content, different format |
-| **Gradual** | Existing Confluence templates recreated as Markdown templates | None — templates already exist in workspace |
-| **Optional** | High-value existing designs exported from Confluence to Markdown | Low — export tools available |
+| **Already done** | Specs and diagrams are in Git | None — this is the existing process |
+| **Start** | New solution designs and ADRs authored in Markdown in the same repo | None — same content, text format |
+| **Automatic** | Browsable portal generated from Git on every push | None — replaces a manual step that was often skipped |
+| **Optional** | Confluence sync from the same Markdown source | None — additive, not replacement |
 | **Never required** | Converting all historical Confluence content | Not needed — only active designs matter |
 
 <div class="key-insight" markdown>
-**The migration cost is near zero.** Architects already write structured text with tables and code blocks. Markdown is the same skill with a different syntax. The AI handles formatting automatically.
+**The migration cost is near zero.** Architects already author in text formats (YAML specs, PlantUML). Markdown is the same skill. And the AI handles formatting automatically.
 </div>
 
 <div class="cta-box" markdown>
 
 ### How does publishing work?
 
-[CI/CD Publishing: Living Documentation](publishing-pipeline.md)
+[Automated Publishing: Replace the Manual Confluence Step](publishing-pipeline.md)
 
 </div>

@@ -24,7 +24,7 @@
     
     
       
-        <title>CI/CD Publishing - Continuous Architecture Platform — The Case for Adoption</title>
+        <title>Automated Publishing - Continuous Architecture Platform — The Case for Adoption</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cicd-publishing-living-documentation" class="md-skip">
+        <a href="#automated-publishing-replace-the-manual-confluence-step" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CI/CD Publishing
+              Automated Publishing
             
           </span>
         </div>
@@ -623,7 +623,7 @@
   
   
   <span class="md-ellipsis">
-    Shared Workspace
+    Enhanced Workspace
     
   </span>
   
@@ -678,7 +678,7 @@
   
   
   <span class="md-ellipsis">
-    CI/CD Publishing
+    Automated Publishing
     
   </span>
   
@@ -691,7 +691,7 @@
   
   
   <span class="md-ellipsis">
-    CI/CD Publishing
+    Automated Publishing
     
   </span>
   
@@ -944,9 +944,9 @@
 
 
 
-<h1 id="cicd-publishing-living-documentation">CI/CD Publishing: Living Documentation</h1>
+<h1 id="automated-publishing-replace-the-manual-confluence-step">Automated Publishing: Replace the Manual Confluence Step</h1>
 <h2 id="git-push-to-main-documentation-updates-automatically">git push to Main. Documentation Updates Automatically.</h2>
-<p>No manual copy-paste. No screenshot updates. No broken cross-links. A <code>git push</code> triggers a build pipeline that publishes the entire architecture portal.</p>
+<p>Today, updating Confluence after checking specs into Git is a voluntary manual step — and it gets skipped. The platform replaces that step with an automated pipeline: a <code>git push</code> triggers a build that publishes the entire architecture portal. No manual copy-paste. No "I'll update Confluence later."</p>
 <hr />
 <h2 id="the-pipeline">The Pipeline</h2>
 <pre class="mermaid"><code>flowchart LR
@@ -1116,24 +1116,24 @@
 <thead>
 <tr>
 <th>Aspect</th>
-<th style="text-align: center;">Before (Manual)</th>
-<th style="text-align: center;">After (CI/CD)</th>
+<th style="text-align: center;">Before (Manual Confluence Step)</th>
+<th style="text-align: center;">After (Automated Pipeline)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Publish a design update</td>
-<td style="text-align: center;">15-30 min copy-paste to Confluence</td>
-<td style="text-align: center;"><code>git push</code> (0 min manual)</td>
+<td style="text-align: center;">Voluntary Confluence update (often skipped)</td>
+<td style="text-align: center;"><code>git push</code> (automatic, never skipped)</td>
 </tr>
 <tr>
 <td>Update a diagram</td>
-<td style="text-align: center;">Re-export from draw.io, upload screenshot</td>
-<td style="text-align: center;">Edit PlantUML text, push (auto-renders)</td>
+<td style="text-align: center;">PlantUML in Git, then manually re-render for Confluence</td>
+<td style="text-align: center;">Edit PlantUML in Git, push (auto-renders to portal)</td>
 </tr>
 <tr>
 <td>Cross-service links</td>
-<td style="text-align: center;">Manually maintained (break constantly)</td>
+<td style="text-align: center;">Manually maintained in Confluence (break constantly)</td>
 <td style="text-align: center;">Auto-generated from dependency graph</td>
 </tr>
 <tr>
@@ -1142,14 +1142,14 @@
 <td style="text-align: center;">MkDocs search (full-text, instant)</td>
 </tr>
 <tr>
-<td>Verify spec matches docs</td>
+<td>Verify spec matches rendered docs</td>
 <td style="text-align: center;">Manual comparison</td>
-<td style="text-align: center;">Same source file generates both</td>
+<td style="text-align: center;">Same spec file generates the portal page</td>
 </tr>
 <tr>
 <td>Add a new service</td>
-<td style="text-align: center;">Create pages manually in 3 places</td>
-<td style="text-align: center;">Add spec, run generator, push</td>
+<td style="text-align: center;">Check spec into Git + create Confluence pages manually</td>
+<td style="text-align: center;">Add spec to Git, push (portal page auto-generated)</td>
 </tr>
 </tbody>
 </table>

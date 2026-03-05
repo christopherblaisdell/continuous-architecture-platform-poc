@@ -25,11 +25,9 @@
 
 ## The Pitch in 60 Seconds
 
-We can give every architect an AI assistant that produces **standards-compliant architecture artifacts** — solution designs, ADRs, Swagger specs, C4 diagrams — for **$39/month per seat**.
+Our architecture practice already source-controls OpenAPI specs and PlantUML diagrams in Git, with production gating. The **Continuous Architecture Platform** builds on that foundation — adding an AI assistant that reads those artifacts, produces standards-compliant designs, and **automatically publishes a browsable architecture portal** — for **$39/month per seat**.
 
-We've already **proven it works**. Five complex architecture scenarios. Same AI model as the competition. 96.1% quality score. 208x cheaper per run.
-
-And the platform gets smarter over time: every artifact we produce becomes context for the next session, at **zero additional cost**.
+No more manual Confluence updates that get skipped. No more design-to-reality drift that compounds with every project. Five complex scenarios. 96.1% quality score. 208x cheaper per run than per-token alternatives.
 
 <div class="key-insight" markdown>
 **This is not a proposal.** This is a demonstration. The evidence on the following pages comes from actual billing data, actual execution results, and an actual live architecture portal — all built during this proof of concept.
@@ -45,9 +43,9 @@ And the platform gets smarter over time: every artifact we produce becomes conte
 | [The Solution](solution.md) | What replaces point-in-time documentation? |
 | [Cost Evidence](cost-evidence.md) | How do we know it's 208x cheaper? |
 | [Quality Evidence](quality-evidence.md) | How do we know it produces quality work? |
-| [Shared Workspace](shared-workspace.md) | Why does the AI need to see everything? |
-| [Markdown-First](markdown-first.md) | Why not keep using Word and Confluence? |
-| [CI/CD Publishing](publishing-pipeline.md) | How does documentation stay alive? |
+| [Enhanced Workspace](shared-workspace.md) | How does the AI leverage our existing Git repo? |
+| [Markdown-First](markdown-first.md) | How do we extend our Git-first practice? |
+| [Automated Publishing](publishing-pipeline.md) | How do we replace the manual Confluence step? |
 | [Live Demo](live-demo.md) | What does the end result look like? |
 | [Closing the Loop](closing-the-loop.md) | What's the innovation that makes this continuous? |
 | [Roadmap](roadmap.md) | What comes next? |

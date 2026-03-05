@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-problem-architecture-documentation-decays" class="md-skip">
+        <a href="#the-problem-the-last-mile-of-architecture-documentation" class="md-skip">
           Skip to content
         </a>
       
@@ -480,18 +480,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#every-architecture-practice-has-this-problem" class="md-nav__link">
+  <a href="#we-already-did-the-hard-part" class="md-nav__link">
     <span class="md-ellipsis">
-      Every Architecture Practice Has This Problem
+      We Already Did the Hard Part
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-concrete-evidence" class="md-nav__link">
+  <a href="#gap-1-confluence-is-manual-and-voluntary" class="md-nav__link">
     <span class="md-ellipsis">
-      The Concrete Evidence
+      Gap 1: Confluence Is Manual and Voluntary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gap-2-design-intent-vs-production-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gap 2: Design Intent vs Production Reality
     </span>
   </a>
   
@@ -711,7 +720,7 @@
   
   
   <span class="md-ellipsis">
-    Shared Workspace
+    Enhanced Workspace
     
   </span>
   
@@ -757,7 +766,7 @@
   
   
   <span class="md-ellipsis">
-    CI/CD Publishing
+    Automated Publishing
     
   </span>
   
@@ -879,61 +888,87 @@
 
 
 
-<h1 id="the-problem-architecture-documentation-decays">The Problem: Architecture Documentation Decays</h1>
-<h2 id="every-architecture-practice-has-this-problem">Every Architecture Practice Has This Problem</h2>
-<p>Architecture designs document a <strong>moment in time</strong>. They describe a current state, propose a target state, and get published to Confluence. Then they rot.</p>
-<p>The next architect who touches the same service starts from scratch — reading source code, running queries, tracing API contracts — because no one updated the documentation after the last project shipped.</p>
-<div class="key-insight">
-<p><strong>This is the architecture equivalent of developing software where you write code, deploy it, then delete the source and start over next sprint.</strong></p>
-</div>
+<h1 id="the-problem-the-last-mile-of-architecture-documentation">The Problem: The Last Mile of Architecture Documentation</h1>
+<h2 id="we-already-did-the-hard-part">We Already Did the Hard Part</h2>
+<p>Our architecture practice does what most organizations struggle to achieve:</p>
+<ul>
+<li><strong>OpenAPI specs are source-controlled</strong> in Git — our central architecture repository</li>
+<li><strong>PlantUML diagrams</strong> (component and sequence) are version-controlled alongside specs</li>
+<li><strong>No Swagger goes to production</strong> without being checked into master — a governance gate</li>
+<li>Architects work from authoritative, version-controlled artifacts</li>
+</ul>
+<p>This is a strong foundation. But two critical gaps erode its value over time.</p>
 <hr />
-<h2 id="the-concrete-evidence">The Concrete Evidence</h2>
-<p>During our proof of concept, we executed 5 real-world architecture scenarios. Here's what happened to every artifact produced:</p>
+<h2 id="gap-1-confluence-is-manual-and-voluntary">Gap 1: Confluence Is Manual and Voluntary</h2>
+<p>We maintain Confluence pages for each microservice — the browsable reference that architects, developers, and stakeholders consult when they need to understand a service.</p>
+<p><strong>Updating those pages is completely voluntary.</strong></p>
+<ol>
+<li>An architect designs a solution, updates specs and diagrams</li>
+<li>Changes are checked into master in the architecture Git repo (the gate works)</li>
+<li>The architect is <em>supposed to</em> go to Confluence and update the service pages</li>
+<li>Sometimes they do. Often they don't.</li>
+</ol>
+<p>The result: <strong>Confluence falls behind the source-controlled artifacts.</strong> When the next architect goes to assess the current state of a service, the Confluence pages may reflect a state from two or three projects ago.</p>
 <table>
 <thead>
 <tr>
-<th>What Was Created</th>
-<th>What Happened After</th>
+<th>What's Source-Controlled (Current)</th>
+<th>What's Manual and Voluntary (Falls Behind)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>9 Architecture Decision Records</td>
-<td>0 promoted to the global decision log</td>
+<td>OpenAPI/Swagger specs (gated)</td>
+<td>Confluence service pages</td>
 </tr>
 <tr>
-<td>6 service impact assessments</td>
-<td>0 used to update service architecture pages</td>
+<td>PlantUML component diagrams</td>
+<td>Rendered diagram updates in Confluence</td>
 </tr>
 <tr>
-<td>4 Swagger spec modifications</td>
-<td>0 linked back to the design that drove them</td>
+<td>PlantUML sequence diagrams</td>
+<td>Cross-service navigation and linking</td>
 </tr>
 <tr>
-<td>3 PlantUML component diagrams</td>
-<td>0 updated to show the new current state</td>
+<td>Architecture decision rationale (in branches)</td>
+<td>ADR promotion to a discoverable global log</td>
 </tr>
 </tbody>
 </table>
-<div class="big-number red">95%+</div>
+<div class="key-insight">
+<p><strong>The artifacts are current in Git. The documentation that people actually browse is not.</strong></p>
+</div>
+<hr />
+<h2 id="gap-2-design-intent-vs-production-reality">Gap 2: Design Intent vs Production Reality</h2>
+<p>Architecture designs describe <strong>intent</strong> — how a solution <em>should</em> be built. But developers sometimes deviate from the design during implementation. When that happens:</p>
+<ul>
+<li>The spec in Git reflects the <strong>approved design</strong>, not the actual production behavior</li>
+<li>Nobody goes back to update the architecture artifacts to reflect what was <strong>actually built</strong></li>
+<li>The next architect finds artifacts that describe a version of the system that <strong>may never have existed in production</strong></li>
+</ul>
+<p>There is no step in the current workflow that compares what was designed against what was deployed and reconciles the difference.</p>
+<div class="big-number red">0%</div>
 
-<p><strong>of architecture knowledge produced during a project is abandoned the moment the project ships.</strong></p>
+<p><strong>of architecture knowledge is reconciled against reality after deployment.</strong></p>
 <hr />
 <h2 id="the-compounding-effect">The Compounding Effect</h2>
-<p>This isn't just inefficiency. It's <strong>compounding knowledge destruction</strong>:</p>
-<div class="highlight"><pre><span></span><code>Project 1:  State A  --&gt;  State B   (documented, designed, shipped)
-                                     State B is NEVER recorded as the new baseline
+<p>These two gaps compound with every project:</p>
+<div class="highlight"><pre><span></span><code>Project 1:  Design A checked in  →  Implemented (with deviations)
+                                      Confluence NOT updated
+                                      Deviations NOT recorded
 
-Project 2:  ???  --&gt;  State C        (architect must rediscover &quot;A modified by B&quot;
-                                      from source code + tribal knowledge)
+Project 2:  Architect reads stale Confluence + specs that may not match reality
+            Re-investigates from source code + tribal knowledge
+            Designs B  →  Implemented (with deviations)
 
-Project 3:  ???  --&gt;  State D        (architect must rediscover A+B+C
-                                      — compounding uncertainty)
+Project 3:  THREE layers of drift have accumulated
+            Confluence still reflects a pre-Project-1 state
+            Specs show designed intent (not reality) from Projects 1 and 2
 </code></pre></div>
-<p>By Project 5, no one knows the current state of the system with confidence. Swagger specs may or may not reflect reality. Component diagrams may or may not include the last 3 changes. Architects work from a blend of <strong>stale documentation, source code reading, tribal knowledge, and guesswork</strong>.</p>
+<p>By Project 5, finding the <strong>actual current state</strong> of a service requires reading production source code, interviewing developers, and guessing at which artifacts are still accurate. The source-controlled specs — which should be the authoritative baseline — describe what was <em>designed</em>, not necessarily what <em>exists</em>.</p>
 <hr />
 <h2 id="what-it-costs">What It Costs</h2>
-<p>Every architecture effort requires <strong>20-100 minutes of AI-assisted investigation and design work</strong>. That investment produces high-quality artifacts — but the value is discarded by never promoting the target state to become the new baseline.</p>
+<p>The Git gating gives us authoritative API contracts at design time. But the <strong>documentation people actually browse</strong> — Confluence pages, rendered diagrams, the searchable service catalog — falls further behind with every project.</p>
 <table>
 <thead>
 <tr>
@@ -944,23 +979,27 @@ Project 3:  ???  --&gt;  State D        (architect must rediscover A+B+C
 <tbody>
 <tr>
 <td>Re-investigation</td>
-<td>Every architect re-reads source code that a previous architect already analyzed</td>
+<td>Architects re-read source code because Confluence pages are stale</td>
 </tr>
 <tr>
-<td>Stale specs</td>
-<td>API consumers build against documentation that may not match reality</td>
+<td>Stale browsable docs</td>
+<td>Stakeholders consult Confluence pages that no longer reflect the current state</td>
 </tr>
 <tr>
 <td>Lost decisions</td>
-<td>Architectural rationale for "why it's built this way" vanishes into ticket folders</td>
+<td>ADRs stay in ticket branches, never promoted to a searchable global log</td>
 </tr>
 <tr>
 <td>Knowledge silos</td>
 <td>The architect who did the last project is the only one who knows what changed</td>
 </tr>
+<tr>
+<td>Design-reality gap</td>
+<td>Specs describe intended design, not necessarily what was built and deployed</td>
+</tr>
 </tbody>
 </table>
-<p>The platform we've built solves every one of these problems. And it costs <strong>$39/month</strong>.</p>
+<p>The platform we've built solves every one of these problems — and it builds directly on the Git-based foundation we already have.</p>
 <div class="cta-box">
 <h3 id="ready-to-see-the-solution">Ready to see the solution?</h3>
 <p><a href="../solution/">The Solution: Continuous Architecture Platform</a></p>

@@ -1,8 +1,8 @@
-# CI/CD Publishing: Living Documentation
+# Automated Publishing: Replace the Manual Confluence Step
 
 ## git push to Main. Documentation Updates Automatically.
 
-No manual copy-paste. No screenshot updates. No broken cross-links. A `git push` triggers a build pipeline that publishes the entire architecture portal.
+Today, updating Confluence after checking specs into Git is a voluntary manual step — and it gets skipped. The platform replaces that step with an automated pipeline: a `git push` triggers a build that publishes the entire architecture portal. No manual copy-paste. No "I'll update Confluence later."
 
 ---
 
@@ -128,14 +128,14 @@ The Confluence sync publishes the same Markdown content as Confluence pages via 
 
 ## Before and After
 
-| Aspect | Before (Manual) | After (CI/CD) |
+| Aspect | Before (Manual Confluence Step) | After (Automated Pipeline) |
 |--------|:---:|:---:|
-| Publish a design update | 15-30 min copy-paste to Confluence | `git push` (0 min manual) |
-| Update a diagram | Re-export from draw.io, upload screenshot | Edit PlantUML text, push (auto-renders) |
-| Cross-service links | Manually maintained (break constantly) | Auto-generated from dependency graph |
+| Publish a design update | Voluntary Confluence update (often skipped) | `git push` (automatic, never skipped) |
+| Update a diagram | PlantUML in Git, then manually re-render for Confluence | Edit PlantUML in Git, push (auto-renders to portal) |
+| Cross-service links | Manually maintained in Confluence (break constantly) | Auto-generated from dependency graph |
 | Search across all designs | Confluence search (often miss results) | MkDocs search (full-text, instant) |
-| Verify spec matches docs | Manual comparison | Same source file generates both |
-| Add a new service | Create pages manually in 3 places | Add spec, run generator, push |
+| Verify spec matches rendered docs | Manual comparison | Same spec file generates the portal page |
+| Add a new service | Check spec into Git + create Confluence pages manually | Add spec to Git, push (portal page auto-generated) |
 
 <div class="cta-box" markdown>
 
