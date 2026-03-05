@@ -34,11 +34,11 @@ Compare AI toolchains (GitHub Copilot vs Roo Code + OpenRouter) by executing 5 a
 | Path | Purpose |
 |------|---------|
 | `decisions/` | Global architecture decision log (11 ADRs) |
-| `services/` | Service architecture baseline pages (6 services) |
 | `portal/` | MkDocs Material documentation portal (source + build output) |
-| `portal/scripts/generate-microservice-pages.py` | Generates all 19 microservice pages with PlantUML SVG sequence diagrams |
-| `portal/docs/specs/` | OpenAPI YAML specs for all 19 services |
+| `portal/docs/specs/` | OpenAPI YAML specs for all 19 services (single source of truth) |
+| `portal/docs/events/` | AsyncAPI YAML specs for event schemas (6 producers, 7 events) |
 | `portal/docs/microservices/` | Generated microservice pages, PUML source files, and SVG output |
+| `portal/scripts/generate-microservice-pages.py` | Generates all 19 microservice pages with PlantUML SVG sequence diagrams |
 | `portal/staticwebapp.config.json` | Azure Static Web App configuration (routes, headers, CSP) |
 | `phase-1-ai-tool-cost-comparison/workspace/` | Synthetic workspace for Phase 1 evaluation |
 | `phase-1-ai-tool-cost-comparison/workspace/scripts/` | Mock JIRA, Elastic, GitLab tools (local JSON, no network) |

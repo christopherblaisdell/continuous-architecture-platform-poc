@@ -13,20 +13,7 @@ continuous-architecture-platform-poc-2/
 │   ├── ...ADR-003 through ADR-011...
 │   └── README.md
 │
-├── services/                               # LEGACY service baseline pages
-│   ├── svc-check-in.md                         # 6 hand-written service pages (pre-portal)
-│   ├── svc-guest-profiles.md
-│   ├── svc-reservations.md
-│   ├── svc-scheduling-orchestrator.md
-│   ├── svc-trail-management.md
-│   ├── svc-trip-catalog.md
-│   ├── README.md
-│   └── diagrams/                               # 5 SVGs (no PUML source here — orphaned rendered output)
-│       ├── check-in-process-flow.svg
-│       ├── lookup-orchestration.svg
-│       ├── partner-booking-flow.svg
-│       ├── reservation-booking-flow.svg
-│       └── scheduling-orchestration-flow.svg
+├── (services/ removed — legacy content archived to phase-1/.../baseline-pages/)
 │
 ├── docs/                                   # GitHub Pages root (minimal — redirects to portal)
 │   └── index.md
@@ -117,9 +104,12 @@ continuous-architecture-platform-poc-2/
 ├── phase-1-ai-tool-cost-comparison/
 │   └── workspace/
 │       └── corporate-services/
-│           ├── services/                           # DUPLICATE — 19 OpenAPI YAML specs (identical to portal/docs/specs/)
-│           │   ├── svc-check-in.yaml
-│           │   └── ...(19 total)
+│           ├── services/                           # Symlinks to portal/docs/specs/ (single source of truth)
+│           │   ├── svc-check-in.yaml -> ../../../../portal/docs/specs/svc-check-in.yaml
+│           │   └── ...(19 symlinks)
+│           ├── baseline-pages/                     # ARCHIVED legacy service pages (pre-portal)
+│           │   ├── svc-check-in.md                     # 6 original hand-written pages
+│           │   └── README.md
 │           └── diagrams/                           # ORIGINAL hand-crafted diagrams (pre-generator)
 │               ├── include.puml                        # Shared PlantUML includes
 │               ├── templates.puml                      # Template definitions
@@ -137,7 +127,7 @@ continuous-architecture-platform-poc-2/
 |---------------|-------|----------|-----------------|--------|
 | ADRs | 11 | `decisions/` | Hand-written | Markdown |
 | OpenAPI specs | 19 | `portal/docs/specs/` | Hand-written | YAML |
-| OpenAPI specs (duplicate) | 19 | `phase-1/.../services/` | Copy | YAML |
+| OpenAPI specs (symlinks) | 19 | `phase-1/.../services/` | Symlink to portal/docs/specs/ | YAML |
 | AsyncAPI specs | 6 | `portal/docs/events/` | Hand-written | YAML |
 | Sequence diagrams (PUML) | 139 | `portal/docs/microservices/puml/` | Generated | PlantUML |
 | Sequence diagrams (SVG) | 139 | `portal/docs/microservices/svg/` | Generated | SVG |
@@ -154,22 +144,23 @@ continuous-architecture-platform-poc-2/
 | Swagger UI pages | 19 | `portal/docs/services/api/` | Generated | HTML |
 | AsyncAPI UI pages | 6 | `portal/docs/events-ui/` | Generated | HTML |
 | Standards reference | 29 | `portal/docs/standards/` | Hand-written | Markdown |
-| Legacy service pages | 6 | `services/` | Hand-written (stale) | Markdown |
-| Legacy diagrams (SVG only) | 5 | `services/diagrams/` | Orphaned renders | SVG |
+| Legacy service pages | 6 | `phase-1/.../baseline-pages/` | Archived | Markdown |
 | Hand-crafted diagrams | 9+2 | `phase-1/.../diagrams/` | Hand-written | PlantUML/SVG |
 | **TOTAL** | **~480** | | | |
 
 ## Analysis: Is This Layout Ideal?
 
-### VERDICT: Mostly good, but 4 issues need fixing
+### VERDICT: RESOLVED — all issues fixed (2026-03-05)
 
 The portal layout itself (`portal/docs/`) is **well-organized**. Generated content is cleanly separated by artifact type, specs are adjacent to what consumes them, and the generator scripts share a consistent pattern. However, there are problems with **artifact duplication**, **orphaned legacy content**, and **generated output mixing with source**.
 
 ---
 
-### ISSUE 1: OpenAPI Specs Are Duplicated (19 files, 100% identical)
+### ISSUE 1: OpenAPI Specs Are Duplicated — RESOLVED
 
-**Problem:** The 19 OpenAPI YAML specs exist in two places:
+**Resolution:** Phase-1 specs replaced with symlinks to `portal/docs/specs/`. Single source of truth established.
+
+~~**Problem:** The 19 OpenAPI YAML specs exist in two places:~~
 
 - `portal/docs/specs/` (used by generators, served on portal)
 - `phase-1-ai-tool-cost-comparison/workspace/corporate-services/services/` (original location)
@@ -180,9 +171,11 @@ Both copies are byte-for-byte identical. This creates a maintenance risk — if 
 
 **Root cause:** The specs were originally authored in the Phase 1 workspace for AI tool evaluation. When the portal was built, they were copied to `portal/docs/specs/` so generators could find them and the portal could serve them for download. Neither location was deprecated.
 
-### ISSUE 2: Legacy `services/` Directory is Stale and Redundant
+### ISSUE 2: Legacy `services/` Directory is Stale and Redundant — RESOLVED
 
-**Problem:** The root `services/` directory contains:
+**Resolution:** Legacy pages archived to `phase-1/.../baseline-pages/`. Orphaned SVGs reunited with PUML sources. Root `services/` directory removed. Copilot instructions updated.
+
+~~**Problem:** The root `services/` directory contains:~~
 
 - 6 hand-written service pages (svc-check-in.md, etc.) — **superseded** by the 19 generated microservice pages in `portal/docs/microservices/`
 - 5 SVG files in `services/diagrams/` with **no corresponding PUML source** — orphaned rendered output

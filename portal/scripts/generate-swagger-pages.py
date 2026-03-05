@@ -502,7 +502,11 @@ def copy_specs():
     os.makedirs(SPECS_OUTPUT, exist_ok=True)
     for filename in os.listdir(SPECS_DIR):
         if filename.endswith(".yaml"):
-            shutil.copy2(os.path.join(SPECS_DIR, filename), SPECS_OUTPUT)
+            src = os.path.join(SPECS_DIR, filename)
+            dst = os.path.join(SPECS_OUTPUT, filename)
+            if os.path.realpath(src) == os.path.realpath(dst):
+                continue
+            shutil.copy2(src, dst)
 
 
 def main():
