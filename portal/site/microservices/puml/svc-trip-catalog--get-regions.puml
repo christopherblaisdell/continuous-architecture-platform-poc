@@ -18,7 +18,7 @@ header [[/microservices/svc-trip-catalog/#integration-context ⬆ svc-trip-catal
 
 title GET /regions\nList operating regions
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-trip-catalog" as Svc [[/microservices/svc-trip-catalog/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC

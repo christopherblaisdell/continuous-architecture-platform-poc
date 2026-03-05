@@ -18,7 +18,7 @@ header [[/microservices/svc-safety-compliance/#integration-context ⬆ svc-safet
 
 title POST /safety-inspections\nRecord a safety inspection
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-safety-compliance" as Svc [[/microservices/svc-safety-compliance/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC

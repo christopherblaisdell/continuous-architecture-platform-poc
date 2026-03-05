@@ -18,7 +18,7 @@ header [[/microservices/svc-payments/#integration-context ⬆ svc-payments Integ
 
 title POST /payments\nProcess a payment
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
 participant "Fraud Detection API" as FD #F5F5F5

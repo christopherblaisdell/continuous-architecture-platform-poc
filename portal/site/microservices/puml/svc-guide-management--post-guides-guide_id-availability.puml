@@ -18,7 +18,7 @@ header [[/microservices/svc-guide-management/#integration-context ⬆ svc-guide-
 
 title POST /guides/{guide_id}/availability\nSet availability windows
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-guide-management" as Svc [[/microservices/svc-guide-management/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC

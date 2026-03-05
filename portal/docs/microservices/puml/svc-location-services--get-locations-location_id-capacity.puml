@@ -18,7 +18,7 @@ header [[/microservices/svc-location-services/#integration-context ⬆ svc-locat
 
 title GET /locations/{location_id}/capacity\nGet current capacity utilization
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-location-services" as Svc [[/microservices/svc-location-services/]] #E8F4F8
 database "PostGIS" as DB #FCE4EC

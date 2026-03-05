@@ -18,7 +18,7 @@ header [[/microservices/svc-analytics/#integration-context ⬆ svc-analytics Int
 
 title GET /analytics/guide-performance/{guide_id}\nGet performance metrics for a specific guide
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-analytics" as Svc [[/microservices/svc-analytics/]] #E8F4F8
 database "Oracle" as DB #FCE4EC
