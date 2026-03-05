@@ -2,33 +2,38 @@
 
 ## The Innovation That Makes Architecture Continuous
 
-Every architecture practice in the world has the same gap: projects produce high-quality design artifacts, then abandon them after deployment. The target state becomes reality — but nobody records it as the new baseline.
+Our architecture practice has two gaps that compound over time: Confluence pages that fall behind Git because updating them is voluntary, and a design-to-reality divergence that no one reconciles after deployment. The first gap is closed by automated publishing. The second requires something new.
 
-**We identified this gap. We designed the fix. And we've proven the AI can automate it.**
+**The PROMOTE step closes the design-to-reality gap — verifying what was built matches what was designed, and recording the actual state as the new baseline.**
 
 ---
 
-## The Gap
+## The Two Gaps
 
-Our Phase 1 execution produced 9 Architecture Decision Records across 5 scenarios. Here's what happened to them:
+### Gap 1: Browsable Documentation Falls Behind (Solved by Automated Publishing)
 
-| Metric | Count |
+Specs and diagrams are checked into Git — but the browsable Confluence pages that architects and stakeholders actually consult are updated manually and voluntarily. The automated publishing pipeline (Pillar 4) closes this gap: a `git push` generates an always-current portal.
+
+### Gap 2: Design Intent vs Production Reality (Solved by PROMOTE)
+
+This is the harder problem. Architecture designs describe *intent*. But developers sometimes deviate during implementation. After deployment:
+
+| Metric | Current State |
 |--------|:-----:|
-| ADRs created during projects | 9 |
-| ADRs promoted to global decision log | 0 |
-| Service architecture pages updated | 0 |
-| Solution designs marked as "promoted" | 0 |
-| Swagger specs linked back to the design that drove them | 0 |
+| ADRs created during projects | Created in ticket branches |
+| ADRs promoted to a discoverable global log | 0 |
+| Specs reconciled against actual production behavior | 0 |
+| Service documentation updated to reflect what was actually built | 0 |
 
 <div class="big-number red">0%</div>
 
-**of architecture knowledge produced during projects was promoted to the corporate baseline.**
+**of architecture knowledge is reconciled against reality after deployment.**
 
-This isn't unique to us. It's industry-wide. Architecture practices invest heavily in the "design" step and completely skip the "record the result" step.
+This isn't a discipline failure — it's a structural one. There is no step in the workflow for it.
 
 ---
 
-## What Gets Lost
+## What Gets Lost Without PROMOTE
 
 Consider a real scenario from our proof of concept — the guide schedule overwrite bug (NTK-10004):
 
@@ -42,11 +47,12 @@ Consider a real scenario from our proof of concept — the guide schedule overwr
 
 **After the fix ships:**
 
-- Nobody records that the scheduling service now uses PATCH semantics with optimistic locking
+- Nobody verifies whether the developer actually implemented PATCH semantics as designed
+- Nobody records what was *actually built* vs what was *designed*
+- The ADRs sit in a ticket branch, never promoted to a searchable global log
 - The next architect investigating a scheduling issue **starts from scratch**
-- The ADRs sit in a ticket folder, never indexed, never searchable
 
-This happens for **every project**. Multiply by 26 architecture efforts per month, and the knowledge destruction is enormous.
+This happens for **every project**. The specs in Git describe intended designs. Confluence (when updated at all) describes an older state. And the actual production code may differ from both.
 
 ---
 
@@ -62,7 +68,8 @@ The PROMOTE step, executed by the same AI assistant that did the design work:
 
 | Action | What It Does |
 |--------|-------------|
-| **Update OpenAPI specs** | Reflects implemented changes in the authoritative API contracts |
+| **Reconcile specs against reality** | Compares designed API contracts with actual implementation and records the true state |
+| **Update OpenAPI specs** | Reflects what was *actually built*, not just what was designed |
 | **Promote ADRs** | Copies ticket-level decisions to the global decision log with cross-references |
 | **Refresh service pages** | Updates service architecture baselines with new integration points and current state |
 | **Mark design as PROMOTED** | Adds date, version, and status to the solution design — closing the loop |
@@ -74,12 +81,13 @@ The PROMOTE step, executed by the same AI assistant that did the design work:
 
 The PROMOTE step wasn't practical before AI assistance because it required:
 
-1. Reading the solution design to understand what changed
-2. Cross-referencing with current Swagger specs to identify what needs updating
-3. Updating multiple files across the workspace
-4. Maintaining consistency across ADRs, service pages, and specs
+1. Reading the solution design to understand what was intended
+2. Comparing against actual production code or behavior to find deviations
+3. Cross-referencing with current specs to identify what needs updating
+4. Updating multiple files across the workspace consistently
+5. Promoting ADRs from ticket branches to the global log
 
-This is exactly the kind of work the AI excels at — reading context, cross-referencing files, and producing consistent updates. And with Copilot's fixed pricing, the PROMOTE step adds **zero marginal cost**.
+This is exactly the kind of work the AI excels at — reading context, cross-referencing files, identifying discrepancies, and producing consistent updates. And with Copilot's fixed pricing, the PROMOTE step adds **zero marginal cost**.
 
 ---
 
@@ -101,23 +109,23 @@ Adding the PROMOTE step increases the architecture practice's workload from 26 t
 
 ## The Compounding Value
 
-Without PROMOTE, each project starts from zero context:
+Without PROMOTE, specs describe design intent but not reality:
 
 ```
-Project 1:  State A → State B   (designed, shipped, forgotten)
-Project 2:  ??? → State C       (re-investigate from scratch)
-Project 3:  ??? → State D       (compounding uncertainty)
+Project 1:  Design A checked in  →  Built with deviations  →  Drift begins
+Project 2:  Architect reads specs that may not match production  →  More drift
+Project 3:  Three layers of design-vs-reality gap accumulated
 ```
 
-With PROMOTE, each project builds on the last:
+With PROMOTE, each project records what was actually built:
 
 ```
-Project 1:  State A → State B   (designed, shipped, PROMOTED)
-Project 2:  State B → State C   (full context from previous PROMOTE)
-Project 3:  State C → State D   (rich baseline, accurate analysis)
+Project 1:  Design A  →  Built  →  PROMOTED (actual state recorded)
+Project 2:  Actual State 1  →  Design B  →  Built  →  PROMOTED
+Project 3:  Accurate baseline  →  Confident design  →  Accurate result
 ```
 
-After 10 projects, the architecture workspace contains a comprehensive, accurate, up-to-date picture of the system. Every AI session benefits from this accumulated knowledge — at zero additional cost.
+After 10 projects, the architecture workspace contains a comprehensive picture of how the system **actually exists in production** — not just how it was designed. Every AI session benefits from this accumulated knowledge — at zero additional cost.
 
 <div class="cta-box" markdown>
 

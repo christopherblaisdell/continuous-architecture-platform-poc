@@ -502,9 +502,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#replace-point-in-time-documentation-with-living-architecture" class="md-nav__link">
+  <a href="#build-on-what-we-already-have" class="md-nav__link">
     <span class="md-ellipsis">
-      Replace Point-in-Time Documentation with Living Architecture
+      Build on What We Already Have
     </span>
   </a>
   
@@ -530,27 +530,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-shared-architecture-workspace" class="md-nav__link">
+  <a href="#2-enhanced-architecture-workspace" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Shared Architecture Workspace
+      2. Enhanced Architecture Workspace
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-markdown-first-authoring" class="md-nav__link">
+  <a href="#3-solution-designs-in-markdown-extending-git-first" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Markdown-First Authoring
+      3. Solution Designs in Markdown (Extending Git-First)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-cicd-publishing-pipeline" class="md-nav__link">
+  <a href="#4-automated-publishing-replacing-the-manual-confluence-step" class="md-nav__link">
     <span class="md-ellipsis">
-      4. CI/CD Publishing Pipeline
+      4. Automated Publishing (Replacing the Manual Confluence Step)
     </span>
   </a>
   
@@ -753,7 +753,7 @@
   
   
   <span class="md-ellipsis">
-    Shared Workspace
+    Enhanced Workspace
     
   </span>
   
@@ -799,7 +799,7 @@
   
   
   <span class="md-ellipsis">
-    CI/CD Publishing
+    Automated Publishing
     
   </span>
   
@@ -922,12 +922,13 @@
 
 
 <h1 id="the-solution-continuous-architecture-platform">The Solution: Continuous Architecture Platform</h1>
-<h2 id="replace-point-in-time-documentation-with-living-architecture">Replace Point-in-Time Documentation with Living Architecture</h2>
-<p>The Continuous Architecture Platform rests on <strong>four pillars</strong> — each proven independently in this proof of concept, and each reinforcing the others.</p>
+<h2 id="build-on-what-we-already-have">Build on What We Already Have</h2>
+<p>We already source-control our OpenAPI specs and PlantUML diagrams in Git. We already gate production deployments through the architecture repository. <strong>That foundation is the hardest part — and it's already in place.</strong></p>
+<p>The Continuous Architecture Platform adds four capabilities on top of that foundation, closing the two gaps that erode its value today.</p>
 <hr />
 <h2 id="the-four-pillars">The Four Pillars</h2>
 <h3 id="1-ai-assisted-architecture-workflows">1. AI-Assisted Architecture Workflows</h3>
-<p>An AI assistant in VS Code that understands your architecture standards, your service contracts, your decision history, and your domain model — and produces compliant artifacts automatically.</p>
+<p>An AI assistant in VS Code that reads the architecture Git repo — the same specs, diagrams, and source code architects already maintain — and produces compliant artifacts automatically.</p>
 <p><strong>What it does:</strong></p>
 <ul>
 <li>Triages tickets for architectural significance</li>
@@ -939,28 +940,28 @@
 </ul>
 <p><strong>What it costs:</strong> $39/month per seat (GitHub Copilot Pro+, fixed subscription)</p>
 <hr />
-<h3 id="2-shared-architecture-workspace">2. Shared Architecture Workspace</h3>
-<p>Everything the architect needs — OpenAPI specs, ADRs, service pages, source code, diagrams — lives in a <strong>single VS Code workspace</strong>. The AI model sees the same context the architect sees.</p>
+<h3 id="2-enhanced-architecture-workspace">2. Enhanced Architecture Workspace</h3>
+<p>Architects already maintain specs and diagrams in Git. The platform enhances that repo with <strong>AI-readable context</strong> — architecture standards, domain knowledge, anti-pattern checklists, and a growing library of solution designs — so the AI operates with the same expertise as a senior architect.</p>
 <p><strong>Why this matters:</strong></p>
 <ul>
-<li>The AI reads your actual Swagger specs when updating API contracts (no hallucination)</li>
-<li>Cross-service impacts are identified by analyzing real dependency graphs</li>
-<li>Previous architectural decisions inform new ones automatically</li>
+<li>The AI reads the actual Swagger specs already checked into Git (no hallucination)</li>
+<li>A <code>copilot-instructions.md</code> file encodes 500+ lines of domain knowledge, loaded into every AI session</li>
+<li>Previous architectural decisions inform new ones — automatically</li>
 <li>The workspace gets richer with every project — and Copilot's fixed pricing means richer context costs nothing extra</li>
 </ul>
 <hr />
-<h3 id="3-markdown-first-authoring">3. Markdown-First Authoring</h3>
-<p>Solution designs, ADRs, impact assessments, and guidance documents are written in <strong>Markdown</strong> instead of Word or Confluence pages.</p>
+<h3 id="3-solution-designs-in-markdown-extending-git-first">3. Solution Designs in Markdown (Extending Git-First)</h3>
+<p>We already source-control specs and diagrams. The platform extends this practice to <strong>solution designs, ADRs, impact assessments, and service documentation</strong> — all authored in Markdown, all version-controlled in the same repo.</p>
 <p><strong>What this enables:</strong></p>
 <ul>
-<li><strong>Version control</strong> — every change tracked in git with diffs</li>
-<li><strong>AI-readable</strong> — the model can analyze, cross-reference, and update designs</li>
-<li><strong>Reviewable</strong> — pull request reviews on architecture changes</li>
-<li><strong>Publishable everywhere</strong> — MkDocs, Confluence API, PDF export from one source</li>
+<li><strong>Pull request reviews</strong> on architecture decisions, not just specs</li>
+<li><strong>AI-readable history</strong> — the model can analyze and cross-reference past designs</li>
+<li><strong>Searchable decision log</strong> — ADRs indexed and discoverable, not buried in ticket branches</li>
+<li><strong>Publishable everywhere</strong> — MkDocs portal, Confluence API sync, PDF export from one source</li>
 </ul>
 <hr />
-<h3 id="4-cicd-publishing-pipeline">4. CI/CD Publishing Pipeline</h3>
-<p>A <code>git push</code> to main triggers an automated build that publishes architecture documentation to a browsable website — with no manual copy-paste, no screenshot updates, no broken cross-links.</p>
+<h3 id="4-automated-publishing-replacing-the-manual-confluence-step">4. Automated Publishing (Replacing the Manual Confluence Step)</h3>
+<p>The voluntary Confluence update — the step that gets skipped — is replaced by a <code>git push</code> that automatically publishes a browsable architecture portal. No manual copy-paste. No "I'll update Confluence later."</p>
 <p><strong>What gets published automatically:</strong></p>
 <ul>
 <li>Microservice deep-dive pages with endpoint sequence diagrams</li>
@@ -973,9 +974,9 @@
 <h2 id="how-it-all-fits-together">How It All Fits Together</h2>
 <pre class="mermaid"><code>flowchart LR
     A[Architecture Ticket] --&gt; B[AI-Assisted Design\nin VS Code]
-    B --&gt; C[Markdown Artifacts\nin Git Workspace]
+    B --&gt; C[Markdown Artifacts +\nUpdated Specs in Git]
     C --&gt; D[git push]
-    D --&gt; E[MkDocs Build\n+ CI/CD Pipeline]
+    D --&gt; E[Automated Build\n+ Publishing Pipeline]
     E --&gt; F[Living Architecture\nPortal]
     E --&gt; G[Confluence Sync\noptional]
     F --&gt; H[Next AI Session\nricher context]
@@ -985,7 +986,7 @@
     style F fill:#ff8f00,color:#fff
     style H fill:#37474f,color:#fff</code></pre>
 <div class="key-insight">
-<p><strong>The flywheel effect:</strong> Every artifact the AI produces becomes context for the next session. The workspace grows richer. The AI gets more accurate. The documentation stays current. And the cost stays flat at $39/month.</p>
+<p><strong>The flywheel effect:</strong> Every artifact the AI produces becomes context for the next session. The workspace grows richer. The AI gets more accurate. The documentation stays current — not because someone remembers to update Confluence, but because publishing is automated. And the cost stays flat at $39/month.</p>
 </div>
 <hr />
 <h2 id="what-weve-already-built">What We've Already Built</h2>
@@ -1005,9 +1006,9 @@
 <td>5 scenarios executed, 96.1% quality</td>
 </tr>
 <tr>
-<td>Shared workspace</td>
+<td>Enhanced architecture workspace</td>
 <td>Built</td>
-<td>19 OpenAPI specs, 11 ADRs, 6 service pages</td>
+<td>Existing specs + AI instructions + standards + domain model</td>
 </tr>
 <tr>
 <td>Markdown-first artifacts</td>
@@ -1015,7 +1016,7 @@
 <td>39 files across 5 scenarios</td>
 </tr>
 <tr>
-<td>CI/CD publishing</td>
+<td>Automated publishing pipeline</td>
 <td>Live</td>
 <td>Architecture portal deployed at Azure Static Web Apps</td>
 </tr>

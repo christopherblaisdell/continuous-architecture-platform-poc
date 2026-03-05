@@ -616,7 +616,7 @@
   
   
   <span class="md-ellipsis">
-    Shared Workspace
+    Enhanced Workspace
     
   </span>
   
@@ -662,7 +662,7 @@
   
   
   <span class="md-ellipsis">
-    CI/CD Publishing
+    Automated Publishing
     
   </span>
   
@@ -803,9 +803,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#low-cost-low-risk-high-return" class="md-nav__link">
+  <a href="#build-on-our-existing-strengths" class="md-nav__link">
     <span class="md-ellipsis">
-      Low Cost. Low Risk. High Return.
+      Build on Our Existing Strengths
     </span>
   </a>
   
@@ -831,18 +831,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-markdown-first-authoring-for-new-designs" class="md-nav__link">
+  <a href="#2-solution-designs-in-markdown-extending-our-git-first-practice" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Markdown-First Authoring for New Designs
+      2. Solution Designs in Markdown (Extending Our Git-First Practice)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-cicd-pipeline-for-architecture-publishing" class="md-nav__link">
+  <a href="#3-automated-publishing-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      3. CI/CD Pipeline for Architecture Publishing
+      3. Automated Publishing Pipeline
     </span>
   </a>
   
@@ -947,8 +947,8 @@
 
 
 <h1 id="the-ask-what-we-need-to-move-forward">The Ask: What We Need to Move Forward</h1>
-<h2 id="low-cost-low-risk-high-return">Low Cost. Low Risk. High Return.</h2>
-<p>We've proven the platform works. We've measured the cost and quality. We've built a live demonstration. Here's what we need to adopt it.</p>
+<h2 id="build-on-our-existing-strengths">Build on Our Existing Strengths</h2>
+<p>We already source-control specs and diagrams in Git with production gating. We've proven the platform works by building on that foundation. We've measured the cost and quality. We've built a live demonstration. Here's what we need to adopt it.</p>
 <hr />
 <h2 id="four-approvals">Four Approvals</h2>
 <h3 id="1-github-copilot-pro-licenses">1. GitHub Copilot Pro+ Licenses</h3>
@@ -964,23 +964,23 @@
 </ul>
 <p><strong>Pilot scope:</strong> Start with the architecture practice team. Measure quality and adoption for 1 month before expanding.</p>
 <hr />
-<h3 id="2-markdown-first-authoring-for-new-designs">2. Markdown-First Authoring for New Designs</h3>
-<p>No disruption to existing workflows. The change is:</p>
+<h3 id="2-solution-designs-in-markdown-extending-our-git-first-practice">2. Solution Designs in Markdown (Extending Our Git-First Practice)</h3>
+<p>We already author specs and diagrams in text formats and check them into Git. This extends that practice:</p>
 <ul>
-<li><strong>New</strong> solution designs are authored in Markdown (in the VS Code workspace)</li>
-<li><strong>Existing</strong> Confluence content stays where it is (no migration required)</li>
+<li><strong>New</strong> solution designs and ADRs are authored in Markdown in the same architecture repo</li>
+<li><strong>Existing</strong> specs, diagrams, and Confluence content stay exactly where they are</li>
 <li>The AI generates correctly formatted Markdown automatically — architects don't need to learn syntax</li>
 </ul>
-<p><strong>What this enables:</strong> Version-controlled designs, pull request reviews, AI context for future sessions, automated publishing.</p>
+<p><strong>What this enables:</strong> Version-controlled designs alongside specs, pull request reviews on architecture decisions, AI context for future sessions, automated publishing that replaces the manual Confluence step.</p>
 <hr />
-<h3 id="3-cicd-pipeline-for-architecture-publishing">3. CI/CD Pipeline for Architecture Publishing</h3>
+<h3 id="3-automated-publishing-pipeline">3. Automated Publishing Pipeline</h3>
 <ul>
 <li>Azure Static Web Apps deployment (free tier — $0/month)</li>
 <li>GitHub Actions workflow triggered on push to main</li>
 <li>Builds MkDocs site + copies non-Markdown assets</li>
 <li>Deploys in under 30 seconds</li>
 </ul>
-<p><strong>What this replaces:</strong> Manual copy-paste to Confluence, screenshot updates, broken cross-links.</p>
+<p><strong>What this replaces:</strong> The voluntary manual Confluence update step — the one that gets skipped, causing documentation to fall behind the artifacts already in Git.</p>
 <hr />
 <h3 id="4-optional-confluence-api-access">4. Optional: Confluence API Access</h3>
 <p>For organizations that require Confluence:</p>
@@ -1054,7 +1054,7 @@
 </tr>
 <tr>
 <td>"What if architects don't adopt it?"</td>
-<td>The AI handles Markdown formatting. The workflow is the same — just in VS Code instead of Confluence.</td>
+<td>Architects already work in Git with text-format specs. The AI handles Markdown formatting. The workflow extends what they already do.</td>
 </tr>
 <tr>
 <td>"What if we need to go back?"</td>

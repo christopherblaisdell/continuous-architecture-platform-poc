@@ -29,9 +29,9 @@ nav:
     - "Cost: 208x Cheaper": cost-evidence.md
     - "Quality: 96.1%": quality-evidence.md
   - How It Works:
-    - Shared Workspace: shared-workspace.md
+    - Enhanced Workspace: shared-workspace.md
     - Markdown-First: markdown-first.md
-    - CI/CD Publishing: publishing-pipeline.md
+    - Automated Publishing: publishing-pipeline.md
   - Live Demo: live-demo.md
   - Closing the Loop: closing-the-loop.md
   - Roadmap: roadmap.md

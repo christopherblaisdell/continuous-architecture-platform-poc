@@ -1,65 +1,95 @@
-# The Problem: Architecture Documentation Decays
+# The Problem: The Last Mile of Architecture Documentation
 
-## Every Architecture Practice Has This Problem
+## We Already Did the Hard Part
 
-Architecture designs document a **moment in time**. They describe a current state, propose a target state, and get published to Confluence. Then they rot.
+Our architecture practice does what most organizations struggle to achieve:
 
-The next architect who touches the same service starts from scratch — reading source code, running queries, tracing API contracts — because no one updated the documentation after the last project shipped.
+- **OpenAPI specs are source-controlled** in Git — our central architecture repository
+- **PlantUML diagrams** (component and sequence) are version-controlled alongside specs
+- **No Swagger goes to production** without being checked into master — a governance gate
+- Architects work from authoritative, version-controlled artifacts
+
+This is a strong foundation. But two critical gaps erode its value over time.
+
+---
+
+## Gap 1: Confluence Is Manual and Voluntary
+
+We maintain Confluence pages for each microservice — the browsable reference that architects, developers, and stakeholders consult when they need to understand a service.
+
+**Updating those pages is completely voluntary.**
+
+1. An architect designs a solution, updates specs and diagrams
+2. Changes are checked into master in the architecture Git repo (the gate works)
+3. The architect is *supposed to* go to Confluence and update the service pages
+4. Sometimes they do. Often they don't.
+
+The result: **Confluence falls behind the source-controlled artifacts.** When the next architect goes to assess the current state of a service, the Confluence pages may reflect a state from two or three projects ago.
+
+| What's Source-Controlled (Current) | What's Manual and Voluntary (Falls Behind) |
+|-----------------------------------|-------------------------------------------|
+| OpenAPI/Swagger specs (gated) | Confluence service pages |
+| PlantUML component diagrams | Rendered diagram updates in Confluence |
+| PlantUML sequence diagrams | Cross-service navigation and linking |
+| Architecture decision rationale (in branches) | ADR promotion to a discoverable global log |
 
 <div class="key-insight" markdown>
-**This is the architecture equivalent of developing software where you write code, deploy it, then delete the source and start over next sprint.**
+**The artifacts are current in Git. The documentation that people actually browse is not.**
 </div>
 
 ---
 
-## The Concrete Evidence
+## Gap 2: Design Intent vs Production Reality
 
-During our proof of concept, we executed 5 real-world architecture scenarios. Here's what happened to every artifact produced:
+Architecture designs describe **intent** — how a solution *should* be built. But developers sometimes deviate from the design during implementation. When that happens:
 
-| What Was Created | What Happened After |
-|-----------------|-------------------|
-| 9 Architecture Decision Records | 0 promoted to the global decision log |
-| 6 service impact assessments | 0 used to update service architecture pages |
-| 4 Swagger spec modifications | 0 linked back to the design that drove them |
-| 3 PlantUML component diagrams | 0 updated to show the new current state |
+- The spec in Git reflects the **approved design**, not the actual production behavior
+- Nobody goes back to update the architecture artifacts to reflect what was **actually built**
+- The next architect finds artifacts that describe a version of the system that **may never have existed in production**
 
-<div class="big-number red">95%+</div>
+There is no step in the current workflow that compares what was designed against what was deployed and reconciles the difference.
 
-**of architecture knowledge produced during a project is abandoned the moment the project ships.**
+<div class="big-number red">0%</div>
+
+**of architecture knowledge is reconciled against reality after deployment.**
 
 ---
 
 ## The Compounding Effect
 
-This isn't just inefficiency. It's **compounding knowledge destruction**:
+These two gaps compound with every project:
 
 ```
-Project 1:  State A  -->  State B   (documented, designed, shipped)
-                                     State B is NEVER recorded as the new baseline
+Project 1:  Design A checked in  →  Implemented (with deviations)
+                                      Confluence NOT updated
+                                      Deviations NOT recorded
 
-Project 2:  ???  -->  State C        (architect must rediscover "A modified by B"
-                                      from source code + tribal knowledge)
+Project 2:  Architect reads stale Confluence + specs that may not match reality
+            Re-investigates from source code + tribal knowledge
+            Designs B  →  Implemented (with deviations)
 
-Project 3:  ???  -->  State D        (architect must rediscover A+B+C
-                                      — compounding uncertainty)
+Project 3:  THREE layers of drift have accumulated
+            Confluence still reflects a pre-Project-1 state
+            Specs show designed intent (not reality) from Projects 1 and 2
 ```
 
-By Project 5, no one knows the current state of the system with confidence. Swagger specs may or may not reflect reality. Component diagrams may or may not include the last 3 changes. Architects work from a blend of **stale documentation, source code reading, tribal knowledge, and guesswork**.
+By Project 5, finding the **actual current state** of a service requires reading production source code, interviewing developers, and guessing at which artifacts are still accurate. The source-controlled specs — which should be the authoritative baseline — describe what was *designed*, not necessarily what *exists*.
 
 ---
 
 ## What It Costs
 
-Every architecture effort requires **20-100 minutes of AI-assisted investigation and design work**. That investment produces high-quality artifacts — but the value is discarded by never promoting the target state to become the new baseline.
+The Git gating gives us authoritative API contracts at design time. But the **documentation people actually browse** — Confluence pages, rendered diagrams, the searchable service catalog — falls further behind with every project.
 
 | Hidden Cost | Impact |
 |------------|--------|
-| Re-investigation | Every architect re-reads source code that a previous architect already analyzed |
-| Stale specs | API consumers build against documentation that may not match reality |
-| Lost decisions | Architectural rationale for "why it's built this way" vanishes into ticket folders |
+| Re-investigation | Architects re-read source code because Confluence pages are stale |
+| Stale browsable docs | Stakeholders consult Confluence pages that no longer reflect the current state |
+| Lost decisions | ADRs stay in ticket branches, never promoted to a searchable global log |
 | Knowledge silos | The architect who did the last project is the only one who knows what changed |
+| Design-reality gap | Specs describe intended design, not necessarily what was built and deployed |
 
-The platform we've built solves every one of these problems. And it costs **$39/month**.
+The platform we've built solves every one of these problems — and it builds directly on the Git-based foundation we already have.
 
 <div class="cta-box" markdown>
 

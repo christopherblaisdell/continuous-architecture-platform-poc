@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markdown-first-write-once-publish-everywhere" class="md-skip">
+        <a href="#markdown-first-extending-what-we-already-do" class="md-skip">
           Skip to content
         </a>
       
@@ -623,7 +623,7 @@
   
   
   <span class="md-ellipsis">
-    Shared Workspace
+    Enhanced Workspace
     
   </span>
   
@@ -691,46 +691,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-markdown-instead-of-word-or-confluence" class="md-nav__link">
+  <a href="#we-already-author-in-text-formats-now-we-complete-the-picture" class="md-nav__link">
     <span class="md-ellipsis">
-      Why Markdown Instead of Word or Confluence?
+      We Already Author in Text Formats — Now We Complete the Picture
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-comparison" class="md-nav__link">
+  <a href="#what-we-have-vs-what-we-add" class="md-nav__link">
     <span class="md-ellipsis">
-      The Comparison
+      What We Have vs What We Add
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-markdown-first-looks-like-in-practice" class="md-nav__link">
+  <a href="#what-changes-in-practice" class="md-nav__link">
     <span class="md-ellipsis">
-      What Markdown-First Looks Like in Practice
+      What Changes in Practice
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="What Markdown-First Looks Like in Practice">
+    <nav class="md-nav" aria-label="What Changes in Practice">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#before-confluence-first-workflow" class="md-nav__link">
+  <a href="#current-workflow" class="md-nav__link">
     <span class="md-ellipsis">
-      Before: Confluence-First Workflow
+      Current Workflow
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#after-markdown-first-workflow" class="md-nav__link">
+  <a href="#enhanced-workflow" class="md-nav__link">
     <span class="md-ellipsis">
-      After: Markdown-First Workflow
+      Enhanced Workflow
     </span>
   </a>
   
@@ -742,9 +742,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#every-artifact-in-this-poc-is-markdown" class="md-nav__link">
+  <a href="#every-design-artifact-in-this-poc-is-markdown" class="md-nav__link">
     <span class="md-ellipsis">
-      Every Artifact in This POC is Markdown
+      Every Design Artifact in This POC is Markdown
     </span>
   </a>
   
@@ -804,7 +804,7 @@
   
   
   <span class="md-ellipsis">
-    CI/CD Publishing
+    Automated Publishing
     
   </span>
   
@@ -926,108 +926,82 @@
 
 
 
-<h1 id="markdown-first-write-once-publish-everywhere">Markdown-First: Write Once, Publish Everywhere</h1>
-<h2 id="why-markdown-instead-of-word-or-confluence">Why Markdown Instead of Word or Confluence?</h2>
-<p>The format you author in determines what you can do with the output. Markdown unlocks capabilities that Word and Confluence cannot match.</p>
+<h1 id="markdown-first-extending-what-we-already-do">Markdown-First: Extending What We Already Do</h1>
+<h2 id="we-already-author-in-text-formats-now-we-complete-the-picture">We Already Author in Text Formats — Now We Complete the Picture</h2>
+<p>Our architects already author OpenAPI specs in YAML and diagrams in PlantUML — text formats checked into Git. The platform extends this practice to <strong>solution designs, ADRs, and impact assessments</strong> in Markdown, completing the set of version-controlled architecture artifacts.</p>
 <hr />
-<h2 id="the-comparison">The Comparison</h2>
+<h2 id="what-we-have-vs-what-we-add">What We Have vs What We Add</h2>
 <table>
 <thead>
 <tr>
-<th>Capability</th>
-<th style="text-align: center;">Markdown (git)</th>
-<th style="text-align: center;">Word</th>
-<th style="text-align: center;">Confluence</th>
+<th>Artifact</th>
+<th style="text-align: center;">Today</th>
+<th style="text-align: center;">With the Platform</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Version control</strong></td>
-<td style="text-align: center;">Full git history with diffs</td>
-<td style="text-align: center;">Binary file — no meaningful diffs</td>
-<td style="text-align: center;">Page history (limited)</td>
+<td><strong>OpenAPI specs</strong></td>
+<td style="text-align: center;">In Git (gated)</td>
+<td style="text-align: center;">In Git (same) + AI-assisted updates</td>
 </tr>
 <tr>
-<td><strong>AI-readable</strong></td>
-<td style="text-align: center;">Native — AI reads and writes Markdown directly</td>
-<td style="text-align: center;">Requires doc parsing</td>
-<td style="text-align: center;">Requires API + HTML conversion</td>
+<td><strong>PlantUML diagrams</strong></td>
+<td style="text-align: center;">In Git</td>
+<td style="text-align: center;">In Git (same) + auto-rendered to portal</td>
 </tr>
 <tr>
-<td><strong>Pull request reviews</strong></td>
-<td style="text-align: center;">Line-by-line review on architecture changes</td>
-<td style="text-align: center;">File-level comments</td>
-<td style="text-align: center;">Comment threads</td>
+<td><strong>Solution designs</strong></td>
+<td style="text-align: center;">Confluence (manual) or ticket attachments</td>
+<td style="text-align: center;">Markdown in Git + auto-published</td>
 </tr>
 <tr>
-<td><strong>Diffable</strong></td>
-<td style="text-align: center;">Character-level diffs in git</td>
-<td style="text-align: center;">"Track changes" mode</td>
-<td style="text-align: center;">Side-by-side page comparison</td>
+<td><strong>Architecture Decision Records</strong></td>
+<td style="text-align: center;">In ticket branches (not discoverable)</td>
+<td style="text-align: center;">Markdown in Git + global searchable log</td>
 </tr>
 <tr>
-<td><strong>Publish to website</strong></td>
-<td style="text-align: center;">MkDocs, Hugo, Docusaurus</td>
-<td style="text-align: center;">Manual export</td>
-<td style="text-align: center;">Already in Confluence</td>
+<td><strong>Impact assessments</strong></td>
+<td style="text-align: center;">Confluence or email</td>
+<td style="text-align: center;">Markdown in Git + version-controlled</td>
 </tr>
 <tr>
-<td><strong>Publish to Confluence</strong></td>
-<td style="text-align: center;">API sync from Markdown source</td>
-<td style="text-align: center;">Copy-paste or upload</td>
-<td style="text-align: center;">Native</td>
+<td><strong>Service documentation</strong></td>
+<td style="text-align: center;">Confluence (voluntary updates)</td>
+<td style="text-align: center;">Auto-generated from specs in Git</td>
 </tr>
 <tr>
-<td><strong>Publish to PDF</strong></td>
-<td style="text-align: center;">Automated via build pipeline</td>
-<td style="text-align: center;">Native</td>
-<td style="text-align: center;">Plugin required</td>
-</tr>
-<tr>
-<td><strong>Searchable in IDE</strong></td>
-<td style="text-align: center;">Full-text search across all designs</td>
-<td style="text-align: center;">Not in IDE</td>
-<td style="text-align: center;">Not in IDE</td>
-</tr>
-<tr>
-<td><strong>AI can update</strong></td>
-<td style="text-align: center;">Direct file edit</td>
-<td style="text-align: center;">Complex doc manipulation</td>
-<td style="text-align: center;">API calls required</td>
-</tr>
-<tr>
-<td><strong>Works offline</strong></td>
-<td style="text-align: center;">Yes</td>
-<td style="text-align: center;">Yes</td>
-<td style="text-align: center;">No</td>
+<td><strong>Cross-service links</strong></td>
+<td style="text-align: center;">Manually maintained in Confluence</td>
+<td style="text-align: center;">Auto-generated from dependency graph</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="what-markdown-first-looks-like-in-practice">What Markdown-First Looks Like in Practice</h2>
-<h3 id="before-confluence-first-workflow">Before: Confluence-First Workflow</h3>
-<div class="highlight"><pre><span></span><code>1. Open Confluence → Create page from template
-2. Write solution design in the browser editor
-3. Copy-paste diagrams as screenshots
-4. Share link for review via comments
-5. Design is now locked in Confluence
-6. AI cannot access it for future sessions
-7. Nobody updates it after deployment
+<h2 id="what-changes-in-practice">What Changes in Practice</h2>
+<h3 id="current-workflow">Current Workflow</h3>
+<div class="highlight"><pre><span></span><code>1. Architect updates OpenAPI specs and PlantUML diagrams in Git
+2. Changes are checked into master (governance gate — this works well)
+3. Architect is supposed to update Confluence service pages manually
+4. Sometimes this happens, often it doesn&#39;t
+5. Solution design lives in a ticket branch or Confluence — not discoverable later
+6. ADRs stay in ticket context, never promoted to a global log
+7. After deployment, nobody reconciles design intent vs actual implementation
 </code></pre></div>
-<h3 id="after-markdown-first-workflow">After: Markdown-First Workflow</h3>
-<div class="highlight"><pre><span></span><code>1. AI scaffolds solution design from template in VS Code
-2. Architect reviews and refines (with AI assistance)
-3. Diagrams generated as PlantUML code (version-controlled)
-4. Pull request for architecture review with line-by-line diffs
-5. Merge to main triggers automated publishing
-6. Published to MkDocs site (always current)
-7. Optionally synced to Confluence via API
+<h3 id="enhanced-workflow">Enhanced Workflow</h3>
+<div class="highlight"><pre><span></span><code>1. AI reads the existing Git repo (specs, diagrams, previous designs)
+2. AI scaffolds solution design from template in VS Code
+3. Architect reviews and refines (with AI assistance)
+4. Specs, diagrams, and solution design committed together
+5. Pull request for architecture review with line-by-line diffs
+6. Merge to main triggers automated publishing to browsable portal
+7. Optionally synced to Confluence via API (no manual step)
 8. AI reads the design in future sessions (full context)
-9. PROMOTE step updates baselines after deployment
+9. PROMOTE step reconciles design intent with actual implementation
 </code></pre></div>
 <hr />
-<h2 id="every-artifact-in-this-poc-is-markdown">Every Artifact in This POC is Markdown</h2>
-<p>The proof of concept produced 39 files across 5 scenarios. Every one is Markdown:</p>
+<h2 id="every-design-artifact-in-this-poc-is-markdown">Every Design Artifact in This POC is Markdown</h2>
+<p>The proof of concept produced 39 files across 5 scenarios — all in Markdown, all version-controlled alongside the specs and diagrams already in Git:</p>
 <ul>
 <li><strong>Solution designs</strong> — arc42-structured Markdown with embedded PlantUML</li>
 <li><strong>Architecture Decision Records</strong> — MADR format (Markdown Any Decision Record)</li>
@@ -1041,8 +1015,8 @@
 <hr />
 <h2 id="confluence-compatibility">Confluence Compatibility</h2>
 <div class="admonition info">
-<p class="admonition-title">Markdown-first does not mean Confluence-never</p>
-<p>For organizations that require Confluence as the architecture documentation platform, Markdown-first authoring is fully compatible. The pipeline publishes to <strong>both</strong> MkDocs and Confluence from the same source.</p>
+<p class="admonition-title">This replaces the manual Confluence step — not Confluence itself</p>
+<p>The platform can publish to <strong>both</strong> MkDocs and Confluence from the same source. The difference: updates happen automatically on <code>git push</code> instead of relying on a voluntary manual step.</p>
 </div>
 <pre class="mermaid"><code>flowchart LR
     A[Markdown in Git\nsingle source of truth] --&gt; B[MkDocs Build]
@@ -1053,16 +1027,16 @@
     style A fill:#00897b,color:#fff
     style D fill:#ff8f00,color:#fff
     style E fill:#1565c0,color:#fff</code></pre>
-<p>The key difference: <strong>git is the source of truth</strong>, not Confluence. Confluence becomes a read-only mirror. This means:</p>
+<p>The key difference: <strong>publishing is automated</strong>, not voluntary. Git remains the source of truth (as it already is for specs), and Confluence becomes a read-only mirror. This means:</p>
 <ul>
-<li>Architecture changes go through pull request review (not Confluence comment threads)</li>
-<li>The AI reads the git version (always available, always current)</li>
-<li>Confluence stays up to date automatically (no manual publishing step)</li>
-<li>You never lose content because "someone edited the Confluence page directly"</li>
+<li>Architecture changes go through pull request review (extending what we already do for specs)</li>
+<li>The AI reads the Git version (always available, always current)</li>
+<li>Confluence stays up to date automatically (no manual step to skip)</li>
+<li>Browsable documentation always reflects the latest checked-in artifacts</li>
 </ul>
 <hr />
 <h2 id="migration-path">Migration Path</h2>
-<p>Moving to Markdown-first is <strong>incremental, not disruptive</strong>:</p>
+<p>This builds on what architects already do — <strong>no disruption required</strong>:</p>
 <table>
 <thead>
 <tr>
@@ -1073,19 +1047,24 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>Start</strong></td>
-<td>New solution designs written in Markdown</td>
-<td style="text-align: center;">None — same content, different format</td>
+<td><strong>Already done</strong></td>
+<td>Specs and diagrams are in Git</td>
+<td style="text-align: center;">None — this is the existing process</td>
 </tr>
 <tr>
-<td><strong>Gradual</strong></td>
-<td>Existing Confluence templates recreated as Markdown templates</td>
-<td style="text-align: center;">None — templates already exist in workspace</td>
+<td><strong>Start</strong></td>
+<td>New solution designs and ADRs authored in Markdown in the same repo</td>
+<td style="text-align: center;">None — same content, text format</td>
+</tr>
+<tr>
+<td><strong>Automatic</strong></td>
+<td>Browsable portal generated from Git on every push</td>
+<td style="text-align: center;">None — replaces a manual step that was often skipped</td>
 </tr>
 <tr>
 <td><strong>Optional</strong></td>
-<td>High-value existing designs exported from Confluence to Markdown</td>
-<td style="text-align: center;">Low — export tools available</td>
+<td>Confluence sync from the same Markdown source</td>
+<td style="text-align: center;">None — additive, not replacement</td>
 </tr>
 <tr>
 <td><strong>Never required</strong></td>
@@ -1095,11 +1074,11 @@
 </tbody>
 </table>
 <div class="key-insight">
-<p><strong>The migration cost is near zero.</strong> Architects already write structured text with tables and code blocks. Markdown is the same skill with a different syntax. The AI handles formatting automatically.</p>
+<p><strong>The migration cost is near zero.</strong> Architects already author in text formats (YAML specs, PlantUML). Markdown is the same skill. And the AI handles formatting automatically.</p>
 </div>
 <div class="cta-box">
 <h3 id="how-does-publishing-work">How does publishing work?</h3>
-<p><a href="../publishing-pipeline/">CI/CD Publishing: Living Documentation</a></p>
+<p><a href="../publishing-pipeline/">Automated Publishing: Replace the Manual Confluence Step</a></p>
 </div>
 
 
@@ -1138,7 +1117,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../shared-workspace/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Shared Workspace">
+          <a href="../shared-workspace/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Enhanced Workspace">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1148,20 +1127,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Shared Workspace
+                Enhanced Workspace
               </div>
             </div>
           </a>
         
         
           
-          <a href="../publishing-pipeline/" class="md-footer__link md-footer__link--next" aria-label="Next: CI/CD Publishing">
+          <a href="../publishing-pipeline/" class="md-footer__link md-footer__link--next" aria-label="Next: Automated Publishing">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                CI/CD Publishing
+                Automated Publishing
               </div>
             </div>
             <div class="md-footer__button md-icon">
