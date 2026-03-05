@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /payments/{payment_id}/refund
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-payments/#post-paymentspayment_idrefund-initiate-a-refund route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body

@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /guides
 activate GW #2563eb
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-guide-management/#get-guides-search-guides-with-filters route request]]
 activate Svc #2563eb
 
 == Database ==

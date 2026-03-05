@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /gear-items/{item_id}
 activate GW #7c3aed
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-gear-inventory/#patch-gear-itemsitem_id-update-gear-item route request]]
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

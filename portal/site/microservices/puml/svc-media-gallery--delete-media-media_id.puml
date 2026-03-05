@@ -27,7 +27,7 @@ end note
 
 Client -> GW : DELETE /media/{media_id}
 activate GW #dc2626
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-media-gallery/#delete-mediamedia_id-delete-a-media-item route request]]
 activate Svc #dc2626
 
 == Database ==

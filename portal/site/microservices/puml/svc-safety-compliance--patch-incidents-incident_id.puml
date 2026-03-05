@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /incidents/{incident_id}
 activate GW #7c3aed
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-safety-compliance/#patch-incidentsincident_id-update-an-incident-report-add-follow-up-change-status route request]]
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

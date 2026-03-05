@@ -28,7 +28,7 @@ end note
 
 Client -> GW : GET /guests/{guest_id}/adventure-history
 activate GW #2563eb
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-guest-profiles/#get-guestsguest_idadventure-history-get-guest-adventure-history route request]]
 activate Svc #2563eb
 
 == Cross-Service Integration ==

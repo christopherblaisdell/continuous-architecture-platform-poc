@@ -28,7 +28,7 @@ end note
 
 Client -> GW : PUT /reservations/{reservation_id}/status
 activate GW #c77b30
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-reservations/#put-reservationsreservation_idstatus-transition-reservation-status route request]]
 activate Svc #c77b30
 
 note right of Svc : Validate request body

@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /guides/{guide_id}/availability
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-guide-management/#post-guidesguide_idavailability-set-availability-windows route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body

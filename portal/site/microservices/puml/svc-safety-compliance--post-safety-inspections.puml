@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /safety-inspections
 activate GW #059669
-GW -> Svc : route request
+GW -> Svc : [[/microservices/svc-safety-compliance/#post-safety-inspections-record-a-safety-inspection route request]]
 activate Svc #059669
 
 note right of Svc : Validate request body
