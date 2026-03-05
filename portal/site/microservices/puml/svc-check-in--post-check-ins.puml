@@ -18,7 +18,7 @@ header [[/microservices/svc-check-in/#integration-context ⬆ svc-check-in Integ
 
 title POST /check-ins\nInitiate check-in for a participant
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-check-in" as Svc [[/microservices/svc-check-in/]] #E8F4F8
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0

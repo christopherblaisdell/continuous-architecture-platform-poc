@@ -18,7 +18,7 @@ header [[/microservices/svc-scheduling-orchestrator/#integration-context ⬆ svc
 
 title GET /schedule-conflicts\nList scheduling conflicts
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-scheduling-orchestrator" as Svc [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
 database "PG + Valkey" as DB #FCE4EC

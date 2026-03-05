@@ -18,7 +18,7 @@ header [[/microservices/svc-weather/#integration-context ⬆ svc-weather Integra
 
 title POST /weather/alerts\nCreate a weather alert (internal)
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-weather" as Svc [[/microservices/svc-weather/]] #E8F4F8
 database "Valkey + PG" as DB #FCE4EC

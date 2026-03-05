@@ -18,7 +18,7 @@ header [[/microservices/svc-payments/#integration-context ⬆ svc-payments Integ
 
 title GET /guests/{guest_id}/payment-history\nRetrieve payment history for a guest
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC

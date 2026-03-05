@@ -18,8 +18,8 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 
 title Inventory Management\nNovaTrek Operations Dashboard
 
-actor "Guest" as User
-participant "Browser" as App #DBEAFE
+actor "Guest" as User [[/applications/web-ops-dashboard/]]
+participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
 participant "API Gateway" as GW #DBEAFE
 participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
 participant "svc-inventory-procurement" as IP [[/microservices/svc-inventory-procurement/]] #E8F4F8

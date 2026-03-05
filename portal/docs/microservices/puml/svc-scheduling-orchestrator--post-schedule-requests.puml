@@ -18,7 +18,7 @@ header [[/microservices/svc-scheduling-orchestrator/#integration-context ⬆ svc
 
 title POST /schedule-requests\nRequest optimal schedule for a trip
 
-participant "Client" as Client
+participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-scheduling-orchestrator" as Svc [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
 participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #FFF8F0

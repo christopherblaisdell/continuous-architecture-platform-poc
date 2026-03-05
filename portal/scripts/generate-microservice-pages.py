@@ -917,7 +917,7 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     L.append("")
 
     # Participants - clickable
-    L.append('participant "Client" as Client')
+    L.append(f'participant "Client" as Client [[/applications/]]')
     L.append('participant "API Gateway" as GW #DBEAFE')
     L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] #E8F4F8')
 
