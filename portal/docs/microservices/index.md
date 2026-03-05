@@ -19,6 +19,14 @@ Each microservice page provides **PlantUML sequence diagrams** for every API end
 
 ---
 
+## Enterprise Architecture
+
+<object data="svg/enterprise-c4-context.svg" type="image/svg+xml" style="width:100%;max-width:1400px"></object>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="svg/enterprise-c4-context.svg" target="_blank">:material-fullscreen: View full screen</a></p>
+
+---
+
 ## Operations
 
 | Service | Version | Endpoints | Page |

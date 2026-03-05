@@ -1,0 +1,134 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title NovaTrek Adventures — Enterprise Architecture
+
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
+
+System_Boundary(Operations, "Operations") {
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Check In", $link="/microservices/svc-check-in/#integration-context")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+}
+
+System_Boundary(Guest_Identity, "Guest Identity") {
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Profiles", $link="/microservices/svc-guest-profiles/#integration-context")
+}
+
+System_Boundary(Booking, "Booking") {
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Reservations", $link="/microservices/svc-reservations/#integration-context")
+}
+
+System_Boundary(Product_Catalog, "Product Catalog") {
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Trip Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Trail Management", $link="/microservices/svc-trail-management/#integration-context")
+}
+
+System_Boundary(Safety, "Safety") {
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance", $link="/microservices/svc-safety-compliance/#integration-context")
+}
+
+System_Boundary(Logistics, "Logistics") {
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Transport Logistics", $link="/microservices/svc-transport-logistics/#integration-context")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Gear Inventory", $link="/microservices/svc-gear-inventory/#integration-context")
+}
+
+System_Boundary(Guide_Management, "Guide Management") {
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management", $link="/microservices/svc-guide-management/#integration-context")
+}
+
+System_Boundary(External, "External") {
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations", $link="/microservices/svc-partner-integrations/#integration-context")
+}
+
+System_Boundary(Support, "Support") {
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments", $link="/microservices/svc-payments/#integration-context")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Loyalty Rewards", $link="/microservices/svc-loyalty-rewards/#integration-context")
+    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "Media Gallery", $link="/microservices/svc-media-gallery/#integration-context")
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Analytics", $link="/microservices/svc-analytics/#integration-context")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather", $link="/microservices/svc-weather/#integration-context")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services", $link="/microservices/svc-location-services/#integration-context")
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement", $link="/microservices/svc-inventory-procurement/#integration-context")
+}
+
+System_Ext(DocuSign_API, "DocuSign API", "Third-party service")
+System_Ext(Firebase_Cloud_Messaging, "Firebase Cloud Messaging", "Third-party service")
+System_Ext(Fraud_Detection_API, "Fraud Detection API", "Third-party service")
+System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
+System_Ext(IDVerify_API, "IDVerify API", "Third-party service")
+System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service")
+System_Ext(SendGrid_API, "SendGrid API", "Third-party service")
+System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")
+System_Ext(Stripe_API, "Stripe API", "Third-party service")
+System_Ext(Twilio_API, "Twilio API", "Third-party service")
+
+Rel(web_guest_portal, svc_reservations, "4 screens", "HTTPS")
+Rel(web_guest_portal, svc_guest_profiles, "3 screens", "HTTPS")
+Rel(web_guest_portal, svc_trip_catalog, "3 screens", "HTTPS")
+Rel(web_guest_portal, svc_safety_compliance, "1 screens", "HTTPS")
+Rel(web_guest_portal, svc_notifications, "10 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_reservations, "4 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_partner_integrations, "1 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_guest_profiles, "2 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_guide_management, "3 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_transport_logistics, "3 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_check_in, "3 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_trip_catalog, "2 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_safety_compliance, "2 screens", "HTTPS")
+Rel(web_ops_dashboard, svc_notifications, "8 screens", "HTTPS")
+Rel(app_guest_mobile, svc_reservations, "3 screens", "HTTPS")
+Rel(app_guest_mobile, svc_guest_profiles, "2 screens", "HTTPS")
+Rel(app_guest_mobile, svc_transport_logistics, "2 screens", "HTTPS")
+Rel(app_guest_mobile, svc_check_in, "3 screens", "HTTPS")
+Rel(app_guest_mobile, svc_trip_catalog, "3 screens", "HTTPS")
+Rel(app_guest_mobile, svc_safety_compliance, "1 screens", "HTTPS")
+Rel(app_guest_mobile, svc_notifications, "8 screens", "HTTPS")
+
+Rel(svc_reservations, svc_guest_profiles, "2 calls", "HTTPS")
+Rel(svc_reservations, svc_trip_catalog, "2 calls", "HTTPS")
+Rel(svc_reservations, svc_notifications, "3 calls", "HTTPS")
+Rel(svc_partner_integrations, svc_reservations, "2 calls", "HTTPS")
+Rel(svc_partner_integrations, svc_guest_profiles, "1 calls", "HTTPS")
+Rel(svc_partner_integrations, svc_trip_catalog, "1 calls", "HTTPS")
+Rel(svc_partner_integrations, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_guest_profiles, svc_reservations, "1 calls", "HTTPS")
+Rel(svc_guest_profiles, svc_notifications, "1 calls", "HTTPS")
+Rel(svc_transport_logistics, svc_reservations, "2 calls", "HTTPS")
+Rel(svc_transport_logistics, svc_guest_profiles, "1 calls", "HTTPS")
+Rel(svc_transport_logistics, svc_safety_compliance, "1 calls", "HTTPS")
+Rel(svc_transport_logistics, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_check_in, svc_reservations, "1 calls", "HTTPS")
+Rel(svc_check_in, svc_guest_profiles, "1 calls", "HTTPS")
+Rel(svc_check_in, svc_guide_management, "3 calls", "HTTPS")
+Rel(svc_check_in, svc_transport_logistics, "1 calls", "HTTPS")
+Rel(svc_check_in, svc_trip_catalog, "4 calls", "HTTPS")
+Rel(svc_check_in, svc_safety_compliance, "2 calls", "HTTPS")
+Rel(svc_check_in, svc_notifications, "6 calls", "HTTPS")
+Rel(svc_trip_catalog, svc_safety_compliance, "1 calls", "HTTPS")
+Rel(svc_trip_catalog, svc_notifications, "3 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_guest_profiles, "2 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_guide_management, "1 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_notifications, svc_reservations, "1 calls", "HTTPS")
+Rel(svc_notifications, svc_guest_profiles, "2 calls", "HTTPS")
+Rel(svc_notifications, svc_transport_logistics, "1 calls", "HTTPS")
+
+Rel(svc_analytics, Snowflake_Data_Cloud, "Integrates", "HTTPS")
+Rel(svc_guest_profiles, IDVerify_API, "Integrates", "HTTPS")
+Rel(svc_location_services, Google_Maps_Platform, "Integrates", "HTTPS")
+Rel(svc_media_gallery, Google_Maps_Platform, "Integrates", "HTTPS")
+Rel(svc_notifications, Firebase_Cloud_Messaging, "Integrates", "HTTPS")
+Rel(svc_notifications, SendGrid_API, "Integrates", "HTTPS")
+Rel(svc_notifications, Twilio_API, "Integrates", "HTTPS")
+Rel(svc_payments, Fraud_Detection_API, "Integrates", "HTTPS")
+Rel(svc_payments, Stripe_API, "Integrates", "HTTPS")
+Rel(svc_safety_compliance, DocuSign_API, "Integrates", "HTTPS")
+Rel(svc_transport_logistics, Google_Maps_Platform, "Integrates", "HTTPS")
+Rel(svc_weather, OpenWeather_API, "Integrates", "HTTPS")
+
+@enduml
