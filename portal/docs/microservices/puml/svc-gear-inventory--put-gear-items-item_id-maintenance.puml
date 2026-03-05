@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-gear-inventory/#integration-context ⬆ svc-gear-inventory Integration Context]]
+
 title PUT /gear-items/{item_id}/maintenance\nLog a maintenance event
 
 participant "Client" as Client

@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-trail-management/#integration-context ⬆ svc-trail-management Integration Context]]
+
 title POST /trails/{trail_id}/waypoints\nAdd a waypoint to a trail
 
 participant "Client" as Client

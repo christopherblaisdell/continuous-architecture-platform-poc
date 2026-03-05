@@ -4,6 +4,8 @@
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
+header [[/applications/ ⬆ All Applications]]
+
 title app-guest-mobile — Service Dependencies
 
 Person(user, "Guest", "NovaTrek customer")

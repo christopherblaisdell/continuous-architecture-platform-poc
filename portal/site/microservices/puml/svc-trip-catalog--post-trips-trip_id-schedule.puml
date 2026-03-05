@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-trip-catalog/#integration-context ⬆ svc-trip-catalog Integration Context]]
+
 title POST /trips/{trip_id}/schedule\nAdd a scheduled departure
 
 participant "Client" as Client

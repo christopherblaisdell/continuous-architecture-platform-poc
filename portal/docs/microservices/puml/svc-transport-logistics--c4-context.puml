@@ -4,6 +4,8 @@
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
+header [[/microservices/ ⬆ All Microservices]]
+
 title svc-transport-logistics — Integration Context
 
 Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/#service-dependencies")

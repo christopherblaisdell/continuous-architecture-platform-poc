@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-analytics/#integration-context ⬆ svc-analytics Integration Context]]
+
 title GET /analytics/bookings\nGet booking analytics for a period
 
 participant "Client" as Client

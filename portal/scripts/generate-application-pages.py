@@ -377,6 +377,10 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
     L.append("}")
     L.append("")
 
+    # Parent breadcrumb
+    L.append(f'header [[/applications/{app_name}/#service-dependencies \u2B06 {app_info["title"]} Service Dependencies]]')
+    L.append("")
+
     # Title
     L.append(f"title {screen_name}\\n{app_info['title']}")
     L.append("")
@@ -484,6 +488,8 @@ def build_c4_app_puml(app_name, app_info):
     L.append("")
     L.append("LAYOUT_WITH_LEGEND()")
     L.append("LAYOUT_TOP_DOWN()")
+    L.append("")
+    L.append(f'header [[/applications/ \u2B06 All Applications]]')
     L.append("")
     L.append(f'title {app_name} — Service Dependencies')
     L.append("")

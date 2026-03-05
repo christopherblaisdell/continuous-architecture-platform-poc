@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-transport-logistics Integration Context]]
+
 title POST /transport-requests\nRequest transport for a reservation
 
 participant "Client" as Client

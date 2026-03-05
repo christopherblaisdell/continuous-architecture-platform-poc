@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-partner-integrations/#integration-context ⬆ svc-partner-integrations Integration Context]]
+
 title POST /partner-bookings/{booking_id}/confirm\nConfirm a pending partner booking
 
 participant "Client" as Client

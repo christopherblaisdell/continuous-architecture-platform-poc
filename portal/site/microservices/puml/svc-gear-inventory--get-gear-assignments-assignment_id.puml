@@ -14,6 +14,8 @@ skinparam sequence {
     NoteBackgroundColor #FEF3E7
 }
 
+header [[/microservices/svc-gear-inventory/#integration-context ⬆ svc-gear-inventory Integration Context]]
+
 title GET /gear-assignments/{assignment_id}\nGet gear assignment details
 
 participant "Client" as Client
