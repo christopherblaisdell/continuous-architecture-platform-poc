@@ -17,7 +17,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
-System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
+System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service", $link="/actors/#google-maps-platform")
 
 Rel(app_guest_mobile, svc_media_gallery, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_media_gallery, "Uses API", "HTTPS")

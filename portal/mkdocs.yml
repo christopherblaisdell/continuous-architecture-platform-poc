@@ -173,4 +173,5 @@ nav:
     - svc-trip-catalog: microservices/svc-trip-catalog.md
     - svc-weather: microservices/svc-weather.md
   - Event Catalog: events/index.md
+  - Actor Catalog: actors/index.md
   - Tags: tags.md

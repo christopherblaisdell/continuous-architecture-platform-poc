@@ -19,7 +19,7 @@ header [[/microservices/svc-reservations/#integration-context ⬆ svc-reservatio
 title PATCH /reservations/{reservation_id}\nUpdate a reservation
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC
 

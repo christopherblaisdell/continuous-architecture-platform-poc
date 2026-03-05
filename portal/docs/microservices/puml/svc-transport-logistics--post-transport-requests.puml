@@ -19,11 +19,11 @@ header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-tra
 title POST /transport-requests\nRequest transport for a reservation
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logistics/]] #E8F4F8
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 participant "Location Svc" as LS [[/microservices/svc-location-services/]] #FFF8F0
-participant "Google Maps Platform" as ExtMap #F5F5F5
+participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F5F5F5
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 

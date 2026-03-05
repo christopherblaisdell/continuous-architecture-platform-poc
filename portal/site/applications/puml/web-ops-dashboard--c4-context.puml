@@ -8,7 +8,7 @@ header [[/applications/ ⬆ All Applications]]
 
 title web-ops-dashboard — Service Dependencies
 
-Person(user, "Guest", "NovaTrek customer", $link="/applications/")
+Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 
 Container(web_ops_dashboard, "NovaTrek Operations Dashboard", "Angular 17", "Web application", $link="/applications/web-ops-dashboard/")
 

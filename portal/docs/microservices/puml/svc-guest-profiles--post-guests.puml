@@ -19,10 +19,10 @@ header [[/microservices/svc-guest-profiles/#integration-context ⬆ svc-guest-pr
 title POST /guests\nRegister a new guest
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
-participant "IDVerify API" as ExtID #F5F5F5
-queue "Kafka" as Kafka #F0E6FF
+participant "IDVerify API" as ExtID [[/actors/#idverify-api]] #F5F5F5
+queue "Kafka" as Kafka [[/actors/#event-bus]] #F0E6FF
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc

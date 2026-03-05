@@ -386,9 +386,9 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
     L.append("")
 
     # Participants
-    L.append(f'actor "Guest" as User [[/applications/{app_name}/]]')
+    L.append(f'actor "Guest" as User [[/actors/#guest]]')
     L.append(f'participant "{client_label}" as App [[/applications/{app_name}/]] #DBEAFE')
-    L.append('participant "API Gateway" as GW #DBEAFE')
+    L.append(f'participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE')
 
     # Collect unique participants in order
     declared = set()
@@ -495,7 +495,7 @@ def build_c4_app_puml(app_name, app_info):
     L.append("")
 
     # User
-    L.append(f'Person(user, "Guest", "NovaTrek customer", $link="/applications/")')
+    L.append(f'Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")')
     L.append("")
 
     # The application itself

@@ -8,7 +8,7 @@ header [[/applications/ ⬆ All Applications]]
 
 title app-guest-mobile — Service Dependencies
 
-Person(user, "Guest", "NovaTrek customer", $link="/applications/")
+Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 
 Container(app_guest_mobile, "NovaTrek Adventure App", "React Native 0.74", "Mobile application", $link="/applications/app-guest-mobile/")
 

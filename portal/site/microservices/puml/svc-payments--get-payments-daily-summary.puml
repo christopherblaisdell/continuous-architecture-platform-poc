@@ -19,7 +19,7 @@ header [[/microservices/svc-payments/#integration-context ⬆ svc-payments Integ
 title GET /payments/daily-summary\nGet daily payment summary
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FFE0E0
 database "PostgreSQL" as DB #FCE4EC
 

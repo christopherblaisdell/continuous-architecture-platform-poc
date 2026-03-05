@@ -19,7 +19,7 @@ header [[/microservices/svc-gear-inventory/#integration-context ⬆ svc-gear-inv
 title POST /gear-assignments\nAssign gear to a participant
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-gear-inventory" as Svc [[/microservices/svc-gear-inventory/]] #E8F4F8
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0

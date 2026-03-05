@@ -721,6 +721,161 @@ APP_TITLES = {
 
 
 # ============================================================
+# Actor Catalog
+# ============================================================
+
+ACTORS = {
+    # ── Human Actors ──
+    "Guest": {
+        "type": "Human",
+        "description": "NovaTrek customer who books, checks in for, and participates in adventure trips.",
+        "interacts_with": ["web-guest-portal", "app-guest-mobile"],
+        "domain": "Guest Identity",
+    },
+    "Operations Staff": {
+        "type": "Human",
+        "description": "On-site NovaTrek employees who manage daily operations including check-in, scheduling, gear assignment, and incident response.",
+        "interacts_with": ["web-ops-dashboard"],
+        "domain": "Operations",
+    },
+    "Adventure Guide": {
+        "type": "Human",
+        "description": "Certified outdoor guides who lead adventure trips, manage guest safety, and report incidents.",
+        "interacts_with": ["app-guest-mobile", "web-ops-dashboard"],
+        "domain": "Guide Management",
+    },
+
+    # ── Frontend Applications ──
+    "web-guest-portal": {
+        "type": "Frontend Application",
+        "description": "Public-facing web application for guests to browse trips, book reservations, manage profiles, sign waivers, and view trip media.",
+        "technology": "React SPA",
+        "team": "Guest Experience Team",
+        "domain": "Guest Identity",
+    },
+    "web-ops-dashboard": {
+        "type": "Frontend Application",
+        "description": "Internal web application for operations staff to manage check-ins, daily schedules, guide assignments, safety incidents, and partner bookings.",
+        "technology": "React SPA",
+        "team": "NovaTrek Operations Team",
+        "domain": "Operations",
+    },
+    "app-guest-mobile": {
+        "type": "Frontend Application",
+        "description": "Native mobile application for guests to self check-in, view live trip maps, receive weather alerts, upload photos, and earn loyalty points.",
+        "technology": "React Native",
+        "team": "Guest Experience Team",
+        "domain": "Guest Identity",
+    },
+
+    # ── Infrastructure ──
+    "API Gateway": {
+        "type": "Infrastructure",
+        "description": "Central API Gateway that routes all external requests to backend microservices. Handles authentication, rate limiting, and TLS termination.",
+        "technology": "Azure API Management",
+        "domain": "Platform",
+    },
+    "Event Bus": {
+        "type": "Infrastructure",
+        "description": "Apache Kafka cluster used for asynchronous event-driven communication between microservices. All domain events flow through dedicated Kafka topics.",
+        "technology": "Apache Kafka",
+        "domain": "Platform",
+    },
+    "Object Store": {
+        "type": "Infrastructure",
+        "description": "Cloud object storage for media assets including trip photos, guide profile images, and waiver documents.",
+        "technology": "Azure Blob Storage",
+        "domain": "Platform",
+    },
+
+    # ── External Systems ──
+    "Payment Gateway": {
+        "type": "External System",
+        "description": "PCI-certified payment processing gateway that handles credit card authorization, capture, and refund transactions.",
+        "technology": "Stripe",
+        "pci": True,
+        "domain": "Support",
+    },
+    "Stripe API": {
+        "type": "External System",
+        "description": "Payment platform API for processing charges, managing payment methods, and handling disputes.",
+        "technology": "Stripe REST API",
+        "pci": True,
+        "domain": "Support",
+    },
+    "Fraud Detection API": {
+        "type": "External System",
+        "description": "Third-party fraud prevention service that scores payment transactions for risk before authorization.",
+        "technology": "REST API",
+        "pci": True,
+        "domain": "Support",
+    },
+    "DocuSign API": {
+        "type": "External System",
+        "description": "Electronic signature platform used for legally-binding adventure liability waivers and safety acknowledgments.",
+        "technology": "DocuSign eSignature REST API",
+        "domain": "Safety",
+    },
+    "IDVerify API": {
+        "type": "External System",
+        "description": "Identity verification service used during check-in to validate guest identity against government-issued IDs.",
+        "technology": "REST API",
+        "domain": "Guest Identity",
+    },
+    "Google Maps Platform": {
+        "type": "External System",
+        "description": "Geolocation and mapping service used for trail positioning, location tracking, and capacity management at adventure sites.",
+        "technology": "Google Maps REST API",
+        "domain": "Logistics",
+    },
+    "OpenWeather API": {
+        "type": "External System",
+        "description": "Weather data provider delivering current conditions, forecasts, and severe weather alerts for trail and adventure locations.",
+        "technology": "OpenWeather REST API",
+        "domain": "Support",
+    },
+    "Firebase Cloud Messaging": {
+        "type": "External System",
+        "description": "Push notification delivery service for real-time alerts to guest mobile devices (weather warnings, check-in reminders, schedule changes).",
+        "technology": "Firebase FCM",
+        "domain": "Support",
+    },
+    "SendGrid API": {
+        "type": "External System",
+        "description": "Transactional email delivery service for reservation confirmations, waiver requests, and loyalty point notifications.",
+        "technology": "SendGrid REST API",
+        "domain": "Support",
+    },
+    "Twilio API": {
+        "type": "External System",
+        "description": "SMS and messaging service for check-in reminders, schedule updates, and emergency notifications to guests and guides.",
+        "technology": "Twilio REST API",
+        "domain": "Support",
+    },
+    "Snowflake Data Cloud": {
+        "type": "External System",
+        "description": "Cloud data warehouse used for business intelligence, analytics aggregation, and historical trend analysis across all NovaTrek domains.",
+        "technology": "Snowflake SQL API",
+        "domain": "Support",
+    },
+}
+
+# Build reverse index: which services reference which actors
+ACTOR_SERVICE_USAGE = {}
+for (_caller, _method, _path), _targets in CROSS_SERVICE_CALLS.items():
+    for _t in _targets:
+        _label = _t[1]
+        if _label in ACTORS:
+            ACTOR_SERVICE_USAGE.setdefault(_label, set()).add(_caller)
+
+# Add services from APP_CONSUMERS
+for _svc, _apps in APP_CONSUMERS.items():
+    for _app_name, _ in _apps:
+        if _app_name in ACTORS:
+            ACTOR_SERVICE_USAGE.setdefault(_app_name, set()).add(_svc)
+
+
+# ============================================================
 # C4 Context Diagram Generation
 # ============================================================
 
@@ -829,10 +984,11 @@ def build_enterprise_c4_puml():
     # External systems (add Payment Gateway explicitly)
     all_ext = ext_labels | {"Payment Gateway"}
     for ext in sorted(all_ext):
+        ext_anchor_val = actor_anchor(ext)
         if ext in PCI_EXTERNALS:
-            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "PCI-certified third-party")')
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "PCI-certified third-party", $link="/actors/#{ext_anchor_val}")')
         else:
-            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service", $link="/actors/#{ext_anchor_val}")')
     L.append("")
 
     # Relationships: apps to domains
@@ -984,10 +1140,11 @@ def build_c4_context_puml(svc_name):
 
     # External systems outside boundary
     for ext in sorted(outbound_ext.keys()):
+        ext_anchor = actor_anchor(ext)
         if ext in PCI_EXTERNALS:
-            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "PCI-certified third-party")')
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "PCI-certified third-party", $link="/actors/#{ext_anchor}")')
         else:
-            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service", $link="/actors/#{ext_anchor}")')
     L.append("")
 
     # Relationships — apps to this service
@@ -1177,7 +1334,7 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
 
     # Participants - clickable
     L.append(f'participant "Client" as Client [[/applications/]]')
-    L.append('participant "API Gateway" as GW #DBEAFE')
+    L.append(f'participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE')
     svc_bg = "#FFE0E0" if svc_name in PCI_SERVICES else "#E8F4F8"
     L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] {svc_bg}')
 
@@ -1193,11 +1350,16 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
             color = "#FFE0E0" if target_svc in PCI_SERVICES else "#FFF8F0"
             L.append(f'participant "{label}" as {alias} [[/microservices/{target_svc}/]] {color}')
         elif label == "Event Bus":
-            L.append(f'queue "Kafka" as {alias} #F0E6FF')
+            L.append(f'queue "Kafka" as {alias} [[/actors/#event-bus]] #F0E6FF')
         elif label in PCI_EXTERNALS:
-            L.append(f'participant "{label}" as {alias} #FFE0E0')
+            actor_link = actor_anchor(label)
+            L.append(f'participant "{label}" as {alias} [[/actors/#{actor_link}]] #FFE0E0')
         else:
-            L.append(f'participant "{label}" as {alias} #F5F5F5')
+            actor_link = actor_anchor(label)
+            if label in ACTORS:
+                L.append(f'participant "{label}" as {alias} [[/actors/#{actor_link}]] #F5F5F5')
+            else:
+                L.append(f'participant "{label}" as {alias} #F5F5F5')
 
     L.append(f'database "{db_label}" as DB #FCE4EC')
     L.append("")
@@ -1888,6 +2050,179 @@ def generate_event_catalog_page():
     return "\n".join(lines)
 
 
+ACTORS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "actors")
+
+
+def actor_anchor(name):
+    """Generate MkDocs-compatible anchor from an actor name."""
+    text = unicodedata.normalize('NFKD', name)
+    text = re.sub(r'[^\w\s-]', '', text).strip().lower()
+    return re.sub(r'[-\s]+', '-', text)
+
+
+def generate_actors_page():
+    """Generate the Actor Catalog index page."""
+    lines = []
+    lines.append("---")
+    lines.append("hide:")
+    lines.append("  - toc")
+    lines.append("tags:")
+    lines.append("  - actors")
+    lines.append("  - catalog")
+    lines.append("---")
+    lines.append("")
+    lines.append('<div class="hero" markdown>')
+    lines.append("")
+    lines.append("# Actor Catalog")
+    lines.append("")
+    lines.append(
+        '<p class="subtitle">'
+        "All Actors Across the NovaTrek Enterprise"
+        "</p>"
+    )
+
+    # Count by type
+    type_counts = {}
+    for a in ACTORS.values():
+        t = a["type"]
+        type_counts[t] = type_counts.get(t, 0) + 1
+    badge_parts = " &middot; ".join(f"{v} {k}s" for k, v in sorted(type_counts.items()))
+    lines.append(f'<span class="version-badge">{len(ACTORS)} Actors &middot; {badge_parts}</span>')
+    lines.append("")
+    lines.append("</div>")
+    lines.append("")
+    lines.append(
+        "This catalog lists every actor that interacts with the NovaTrek platform: "
+        "people, frontend applications, internal microservices, external systems, and infrastructure components. "
+        "Each actor links to its detailed page where available."
+    )
+    lines.append("")
+
+    # Group actors by type, maintaining order
+    type_order = ["Human", "Frontend Application", "Infrastructure", "External System"]
+    by_type = {}
+    for name, info in ACTORS.items():
+        by_type.setdefault(info["type"], []).append((name, info))
+
+    # Icon per type
+    type_icon = {
+        "Human": ":material-account:",
+        "Frontend Application": ":material-application:",
+        "Infrastructure": ":material-server-network:",
+        "External System": ":material-cloud:",
+    }
+
+    for actor_type in type_order:
+        actors = by_type.get(actor_type, [])
+        if not actors:
+            continue
+        icon = type_icon.get(actor_type, "")
+        lines.append("---")
+        lines.append("")
+        lines.append(f"## {icon} {actor_type}s")
+        lines.append("")
+
+        if actor_type == "Human":
+            lines.append("| Actor | Domain | Description | Interacts With |")
+            lines.append("|-------|--------|-------------|----------------|")
+            for name, info in sorted(actors):
+                interactions = ", ".join(
+                    f"[{APP_TITLES.get(i, i)}](../applications/{i}/)" for i in info.get("interacts_with", [])
+                )
+                lines.append(f"| **{name}** | {info['domain']} | {info['description']} | {interactions} |")
+            lines.append("")
+
+        elif actor_type == "Frontend Application":
+            lines.append("| Application | Display Name | Domain | Technology | Team | Description |")
+            lines.append("|-------------|-------------|--------|------------|------|-------------|")
+            for name, info in sorted(actors):
+                display = APP_TITLES.get(name, name)
+                lines.append(
+                    f"| [{name}](../applications/{name}/) | {display} | {info['domain']} "
+                    f"| {info.get('technology', '')} | {info.get('team', '')} | {info['description']} |"
+                )
+            lines.append("")
+
+        elif actor_type == "Infrastructure":
+            lines.append("| Component | Technology | Domain | Description |")
+            lines.append("|-----------|------------|--------|-------------|")
+            for name, info in sorted(actors):
+                lines.append(
+                    f"| **{name}** | {info.get('technology', '')} "
+                    f"| {info['domain']} | {info['description']} |"
+                )
+            lines.append("")
+
+        elif actor_type == "External System":
+            lines.append("| System | Technology | Domain | PCI | Description |")
+            lines.append("|--------|------------|--------|-----|-------------|")
+            for name, info in sorted(actors):
+                pci_badge = ":material-shield-lock: PCI" if info.get("pci") else ""
+                lines.append(
+                    f"| **{name}** | {info.get('technology', '')} "
+                    f"| {info['domain']} | {pci_badge} | {info['description']} |"
+                )
+            lines.append("")
+
+    # Internal Microservices section (from DOMAINS, not ACTORS dict)
+    lines.append("---")
+    lines.append("")
+    lines.append("## :material-hexagon-multiple: Internal Microservices")
+    lines.append("")
+    lines.append("| Service | Domain | Description |")
+    lines.append("|---------|--------|-------------|")
+    all_svcs = set()
+    for domain_name, domain_info in sorted(DOMAINS.items()):
+        for svc in sorted(domain_info["services"]):
+            all_svcs.add(svc)
+            lines.append(
+                f"| [{svc}](../microservices/{svc}/) | {domain_name} "
+                f"| See [microservice page](../microservices/{svc}/) for full details |"
+            )
+    lines.append("")
+
+    # Detail sections for deep-link anchors (one H3 per actor)
+    lines.append("---")
+    lines.append("")
+    lines.append("## Actor Details")
+    lines.append("")
+
+    for name, info in sorted(ACTORS.items()):
+        lines.append(f"### {name}")
+        lines.append("")
+        lines.append(f"- **Type:** {info['type']}")
+        lines.append(f"- **Domain:** {info['domain']}")
+        lines.append(f"- **Description:** {info['description']}")
+        if info.get("technology"):
+            lines.append(f"- **Technology:** {info['technology']}")
+        if info.get("pci"):
+            lines.append("- **Compliance:** :material-shield-lock: PCI DSS scope")
+        if info.get("team"):
+            lines.append(f"- **Team:** {info['team']}")
+
+        # Show which services reference this actor
+        usage = ACTOR_SERVICE_USAGE.get(name, set())
+        if usage:
+            lines.append("")
+            lines.append("**Referenced by:**")
+            lines.append("")
+            for svc in sorted(usage):
+                lines.append(f"- [{svc}](../microservices/{svc}/)")
+        lines.append("")
+
+    # Internal services detail
+    for svc in sorted(all_svcs):
+        domain, color = get_domain_info(svc)
+        lines.append(f"### {svc}")
+        lines.append("")
+        lines.append(f"- **Type:** Internal Microservice")
+        lines.append(f"- **Domain:** {domain}")
+        lines.append(f"- **Details:** [{svc} Microservice Page](../microservices/{svc}/)")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 # ============================================================
 # Main
 # ============================================================
@@ -2013,12 +2348,21 @@ def main():
         f.write(event_catalog_page)
     print(f"  Event Catalog: {event_catalog_path}")
 
+    # Generate Actor Catalog page
+    os.makedirs(ACTORS_DIR, exist_ok=True)
+    actors_page = generate_actors_page()
+    actors_path = os.path.join(ACTORS_DIR, "index.md")
+    with open(actors_path, "w") as f:
+        f.write(actors_page)
+    print(f"  Actor Catalog: {actors_path}")
+
     print()
-    print(f"  Done! {len(all_services)} service pages, {total_ep} endpoint diagrams, 1 event catalog")
+    print(f"  Done! {len(all_services)} service pages, {total_ep} endpoint diagrams, 1 event catalog, 1 actor catalog")
     print(f"  PUML: {PUML_DIR}/")
     print(f"  SVGs: {SVG_DIR}/")
     print(f"  Pages: {OUTPUT_DIR}/")
     print(f"  Events: {EVENTS_DIR}/")
+    print(f"  Actors: {ACTORS_DIR}/")
 
 
 if __name__ == "__main__":

@@ -24,7 +24,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Support", $link="/microservices/svc-analytics/#integration-context")
 }
 
-System_Ext(IDVerify_API, "IDVerify API", "Third-party service")
+System_Ext(IDVerify_API, "IDVerify API", "Third-party service", $link="/actors/#idverify-api")
 
 Rel(app_guest_mobile, svc_guest_profiles, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_guest_profiles, "Uses API", "HTTPS")

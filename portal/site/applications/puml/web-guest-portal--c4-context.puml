@@ -8,7 +8,7 @@ header [[/applications/ ⬆ All Applications]]
 
 title web-guest-portal — Service Dependencies
 
-Person(user, "Guest", "NovaTrek customer", $link="/applications/")
+Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 
 Container(web_guest_portal, "NovaTrek Guest Portal", "React 18", "Web application", $link="/applications/web-guest-portal/")
 

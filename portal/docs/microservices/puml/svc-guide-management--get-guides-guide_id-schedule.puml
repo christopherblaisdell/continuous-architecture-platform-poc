@@ -19,7 +19,7 @@ header [[/microservices/svc-guide-management/#integration-context ⬆ svc-guide-
 title GET /guides/{guide_id}/schedule\nGet upcoming trip assignments
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-guide-management" as Svc [[/microservices/svc-guide-management/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC
 

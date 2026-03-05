@@ -19,7 +19,7 @@ header [[/microservices/svc-trip-catalog/#integration-context ⬆ svc-trip-catal
 title GET /activity-types\nList available activity types
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-trip-catalog" as Svc [[/microservices/svc-trip-catalog/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC
 

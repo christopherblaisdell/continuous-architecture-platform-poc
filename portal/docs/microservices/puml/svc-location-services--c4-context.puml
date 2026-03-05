@@ -19,7 +19,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Logistics", $link="/microservices/svc-transport-logistics/#integration-context")
 }
 
-System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
+System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service", $link="/actors/#google-maps-platform")
 
 Rel(app_guest_mobile, svc_location_services, "Uses API", "HTTPS")
 Rel(web_ops_dashboard, svc_location_services, "Uses API", "HTTPS")

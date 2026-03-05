@@ -19,9 +19,9 @@ header [[/microservices/svc-payments/#integration-context ⬆ svc-payments Integ
 title POST /payments/{payment_id}/refund\nInitiate a refund
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FFE0E0
-participant "Payment Gateway" as PGW #FFE0E0
+participant "Payment Gateway" as PGW [[/actors/#payment-gateway]] #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 

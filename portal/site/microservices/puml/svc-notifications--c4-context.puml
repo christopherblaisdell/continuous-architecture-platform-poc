@@ -29,9 +29,9 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support", $link="/microservices/svc-weather/#integration-context")
 }
 
-System_Ext(Firebase_Cloud_Messaging, "Firebase Cloud Messaging", "Third-party service")
-System_Ext(SendGrid_API, "SendGrid API", "Third-party service")
-System_Ext(Twilio_API, "Twilio API", "Third-party service")
+System_Ext(Firebase_Cloud_Messaging, "Firebase Cloud Messaging", "Third-party service", $link="/actors/#firebase-cloud-messaging")
+System_Ext(SendGrid_API, "SendGrid API", "Third-party service", $link="/actors/#sendgrid-api")
+System_Ext(Twilio_API, "Twilio API", "Third-party service", $link="/actors/#twilio-api")
 
 Rel(app_guest_mobile, svc_notifications, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_notifications, "Uses API", "HTTPS")

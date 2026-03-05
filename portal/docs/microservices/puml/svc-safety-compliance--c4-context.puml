@@ -23,7 +23,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
-System_Ext(DocuSign_API, "DocuSign API", "Third-party service")
+System_Ext(DocuSign_API, "DocuSign API", "Third-party service", $link="/actors/#docusign-api")
 
 Rel(app_guest_mobile, svc_safety_compliance, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_safety_compliance, "Uses API", "HTTPS")

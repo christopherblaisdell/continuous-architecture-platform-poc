@@ -19,7 +19,7 @@ header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty
 title GET /tiers\nList all loyalty tiers and their thresholds
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
 database "Couchbase" as DB #FCE4EC
 
