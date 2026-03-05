@@ -600,9 +600,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#copilot-bills-per-user-prompt-not-per-token" class="md-nav__link">
+  <a href="#the-architectural-difference-indexing-vs-recalculation" class="md-nav__link">
     <span class="md-ellipsis">
-      Copilot Bills Per User Prompt — Not Per Token
+      The Architectural Difference: Indexing vs Recalculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-this-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-billing-model-intent-based-vs-token-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Billing Model: Intent-Based vs Token-Based
     </span>
   </a>
   
@@ -614,9 +632,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-context-re-transmission-tax" class="md-nav__link">
+  <a href="#why-indexing-matters-the-context-cost-explosion" class="md-nav__link">
     <span class="md-ellipsis">
-      The Context Re-Transmission Tax
+      Why Indexing Matters: The Context Cost Explosion
     </span>
   </a>
   
@@ -973,58 +991,82 @@
 <p><strong>cheaper per run</strong> — $0.48 vs ~$100, using the same underlying AI model.</p>
 <hr />
 <h2 id="why-the-difference-is-so-large">Why the Difference Is So Large</h2>
-<h3 id="copilot-bills-per-user-prompt-not-per-token">Copilot Bills Per User Prompt — Not Per Token</h3>
-<p>This was the key discovery from our deep research into GitHub's billing model:</p>
+<h3 id="the-architectural-difference-indexing-vs-recalculation">The Architectural Difference: Indexing vs Recalculation</h3>
+<p><strong>This is the biggest reason for the 208x cost difference.</strong></p>
+<p>GitHub Copilot and OpenRouter represent two fundamentally different architectural approaches to handling static context:</p>
 <table>
 <thead>
 <tr>
-<th>What gets billed</th>
-<th>Copilot</th>
-<th>OpenRouter</th>
+<th></th>
+<th style="text-align: center;">GitHub Copilot</th>
+<th style="text-align: center;">OpenRouter</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>User typing a prompt</td>
-<td>1 premium request (3x multiplier for Claude)</td>
-<td>Tokens billed</td>
+<td><strong>Architecture</strong></td>
+<td style="text-align: center;">Pre-indexes workspace (vector database + semantic retrieval)</td>
+<td style="text-align: center;">Token-by-token calculation</td>
 </tr>
 <tr>
-<td>AI reading a file</td>
-<td><strong>Free</strong></td>
-<td>Tokens billed</td>
+<td><strong>Static Context Handling</strong></td>
+<td style="text-align: center;">Indexed once, reused across all queries</td>
+<td style="text-align: center;">Recalculated and billed on every request</td>
 </tr>
 <tr>
-<td>AI running a terminal command</td>
-<td><strong>Free</strong></td>
-<td>Tokens billed</td>
+<td><strong>Cost Model</strong></td>
+<td style="text-align: center;">Fixed subscription (amortizes indexing cost)</td>
+<td style="text-align: center;">Pay-per-token (includes all recalculation)</td>
 </tr>
 <tr>
-<td>AI spawning a sub-agent</td>
-<td><strong>Free</strong></td>
-<td>Tokens billed</td>
-</tr>
-<tr>
-<td>AI analyzing search results</td>
-<td><strong>Free</strong></td>
-<td>Tokens billed</td>
-</tr>
-<tr>
-<td>Context re-transmission per turn</td>
-<td><strong>Free</strong> (server-side)</td>
-<td>Tokens billed</td>
+<td><strong>What You Pay For</strong></td>
+<td style="text-align: center;">User query that searches the index</td>
+<td style="text-align: center;">Every single token for every single request</td>
 </tr>
 </tbody>
 </table>
-<p>A typical 4-prompt architecture session on Copilot:</p>
+<p><strong>Copilot's approach:</strong></p>
+<p>GitHub maintains a vector database index of your entire workspace — your specs, source code, decision history, standards. When you ask a question, Copilot:
+1. Searches the indexed content (semantic retrieval)
+2. Pulls back only the most relevant snippets
+3. Sends a small, curated context window to Claude Opus (typically under 5K tokens)
+4. Charges you <strong>once</strong> for your user query</p>
+<p>The indexing infrastructure cost is amortized across the entire user base through the $39/month subscription.</p>
+<p><strong>OpenRouter's approach:</strong></p>
+<p>Every time you run an architecture session, OpenRouter:
+1. Re-calculates which context is relevant (no persistent index)
+2. Sends <strong>all relevant context</strong> to Claude Opus on every turn
+3. Bills you for <strong>every token</strong> in every direction
+4. Charges you again for the full context on turn 2, turn 3, turn 4...</p>
+<p>There's no amortization. No indexing. Each request starts from zero and includes all context recalculation costs.</p>
+<hr />
+<h3 id="why-this-matters">Why This Matters</h3>
+<p>In our 5-scenario POC, architects ran multi-turn sessions (4-20 turns per scenario). With OpenRouter's per-token approach:</p>
+<ul>
+<li>Turn 1: Full workspace context billed</li>
+<li>Turn 2: Full workspace context + accumulated conversation billed again</li>
+<li>Turn 3-20: Same context re-billed, growing context window, quadratic cost</li>
+</ul>
+<p>With Copilot's indexed approach, that entire session is one or two queries against a pre-indexed database.</p>
+<h3 id="the-billing-model-intent-based-vs-token-based">The Billing Model: Intent-Based vs Token-Based</h3>
+<p>The architectural difference enables a different billing model:
+| | Copilot | OpenRouter |
+|---|:---:|:---:|
+| <strong>User types a prompt</strong> | 1 premium request (fixed per query) | Tokens billed |
+| <strong>AI reads a file from the indexed workspace</strong> | Included in query cost | Tokens billed |
+| <strong>AI running a terminal command</strong> | Included in query cost | Tokens billed |
+| <strong>AI spawning a sub-agent</strong> | Included in query cost | Tokens billed |
+| <strong>AI analyzing search results</strong> | Included in query cost | Tokens billed |
+| <strong>Context re-transmission per turn</strong> | Included (server-side semantic retrieval) | Tokens billed |</p>
+<p>A typical 4-prompt architecture session on Copilot (4 queries to the indexed database):</p>
 <blockquote>
 <p>4 prompts x 3 (Claude multiplier) x $0.04 = <strong>$0.48</strong></p>
 </blockquote>
-<p>The same session on OpenRouter bills for every token in every tool call, file read, terminal command, and context re-transmission — which compounds quadratically as the conversation gets longer.</p>
+<p>The same session on OpenRouter recalculates context on every turn and bills every token. Context grows quadratically as the session progresses — a 4-turn session can easily generate 50K-100K tokens.</p>
 <hr />
-<h2 id="the-context-re-transmission-tax">The Context Re-Transmission Tax</h2>
-<p>Per-token models have a hidden cost multiplier: <strong>context re-transmission</strong>.</p>
-<p>Every time the AI takes a turn in a conversation, the entire conversation history must be re-sent to the model. As a session progresses:</p>
+<h2 id="why-indexing-matters-the-context-cost-explosion">Why Indexing Matters: The Context Cost Explosion</h2>
+<p>Without workspace indexing (OpenRouter's model), context costs explode as sessions get longer:</p>
+<p>With indexed context (Copilot's model), semantic retrieval keeps context bounded regardless of session length:</p>
 <table>
 <thead>
 <tr>
