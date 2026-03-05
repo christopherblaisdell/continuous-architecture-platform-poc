@@ -130,11 +130,10 @@ Unknown categories default to **Pattern 3** (ADR-005).
 
 ## Enterprise Architecture
 
+<div class="diagram-wrap">
+<a href="microservices/svg/enterprise-c4.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
 <object data="microservices/svg/enterprise-c4.svg" type="image/svg+xml" style="width:100%;max-width:1200px;display:block;margin:0 auto"></object>
-
-<p style="text-align:center;margin-top:0.5em">
-<a href="microservices/svg/enterprise-c4.svg" target="_blank">:material-fullscreen: View full screen</a>
-</p>
+</div>
 
 </div>
 

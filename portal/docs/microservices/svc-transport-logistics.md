@@ -18,9 +18,8 @@ tags:
 
 ## :material-map: Integration Context
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-transport-logistics C4 context diagram</object></div>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-transport-logistics C4 context diagram</object></div>
 
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -42,9 +41,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--get-routes.svg" type="image/svg+xml" style="max-width: 100%;">GET /routes sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--get-routes.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-routes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-routes.svg" type="image/svg+xml" style="max-width: 100%;">GET /routes sequence diagram</object></div>
 
 ---
 
@@ -52,9 +49,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--post-routes.svg" type="image/svg+xml" style="max-width: 100%;">POST /routes sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--post-routes.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--post-routes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--post-routes.svg" type="image/svg+xml" style="max-width: 100%;">POST /routes sequence diagram</object></div>
 
 ---
 
@@ -64,9 +59,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--get-routes-route_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /routes/{route_id}/schedule sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--get-routes-route_id-schedule.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-routes-route_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-routes-route_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /routes/{route_id}/schedule sequence diagram</object></div>
 
 ---
 
@@ -76,9 +69,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--post-transport-requests.svg" type="image/svg+xml" style="max-width: 100%;">POST /transport-requests sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--post-transport-requests.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--post-transport-requests.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--post-transport-requests.svg" type="image/svg+xml" style="max-width: 100%;">POST /transport-requests sequence diagram</object></div>
 
 ---
 
@@ -86,9 +77,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--get-transport-requests-request_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /transport-requests/{request_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--get-transport-requests-request_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-transport-requests-request_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-transport-requests-request_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /transport-requests/{request_id} sequence diagram</object></div>
 
 ---
 
@@ -96,9 +85,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--get-vehicles.svg" type="image/svg+xml" style="max-width: 100%;">GET /vehicles sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--get-vehicles.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-vehicles.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-vehicles.svg" type="image/svg+xml" style="max-width: 100%;">GET /vehicles sequence diagram</object></div>
 
 ---
 
@@ -106,9 +93,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /vehicles/{vehicle_id} sequence diagram</object></div>
-
-<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+<div class="diagram-wrap"><a href="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /vehicles/{vehicle_id} sequence diagram</object></div>
 
 ---
 
