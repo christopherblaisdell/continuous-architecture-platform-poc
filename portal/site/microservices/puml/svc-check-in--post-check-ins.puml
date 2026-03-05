@@ -20,7 +20,10 @@ participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-check-in" as Svc [[/microservices/svc-check-in/]] #E8F4F8
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
 participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FFF8F0
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
@@ -41,6 +44,16 @@ activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res
 
+Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Validate guest identity]]
+activate GP #DBEAFE
+GP --> Svc : OK
+deactivate GP
+
+Svc -> TC : [[/microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details Get adventure category]]
+activate TC #DBEAFE
+TC --> Svc : OK
+deactivate TC
+
 Svc -> Safety : [[/microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest Validate active waiver]]
 activate Safety #DBEAFE
 Safety --> Svc : OK
@@ -52,6 +65,10 @@ Svc -> DB : INSERT INTO ...
 activate DB #FCE4EC
 DB --> Svc : Created row
 deactivate DB
+
+== Async Events ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send check-in confirmation]]
 
 Svc --> GW : 201 Created
 deactivate Svc

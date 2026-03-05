@@ -86,6 +86,7 @@ LABEL_TO_SVC = {
     "Payments Svc": "svc-payments",
     "Notifications": "svc-notifications",
     "Safety Compliance": "svc-safety-compliance",
+    "Analytics": "svc-analytics",
 }
 
 DATA_STORES = {
@@ -112,12 +113,12 @@ DATA_STORES = {
         "volume": "~2,000 new reservations/day",
     },
     "svc-scheduling-orchestrator": {
-        "engine": "PostgreSQL 15 + Redis 7",
+        "engine": "PostgreSQL 15 + Valkey 8",
         "schema": "scheduling",
         "tables": ["schedule_requests", "daily_schedules", "schedule_conflicts", "optimization_runs"],
         "features": [
             "Optimistic locking per ADR-011",
-            "Redis for schedule lock cache and optimization queue",
+            "Valkey for schedule lock cache and optimization queue",
             "JSONB columns for constraint parameters",
         ],
         "volume": "~500 schedule requests/day",
@@ -222,35 +223,35 @@ DATA_STORES = {
         "volume": "~2,500 transactions/day",
     },
     "svc-notifications": {
-        "engine": "PostgreSQL 15 + Redis 7",
+        "engine": "PostgreSQL 15 + Valkey 8",
         "schema": "notifications",
         "tables": ["notifications", "templates", "delivery_log", "channel_preferences"],
         "features": [
-            "Redis queue for async delivery processing",
+            "Valkey queue for async delivery processing",
             "Template versioning with rollback support",
             "Multi-channel delivery: email, SMS, push, in-app",
         ],
         "volume": "~15,000 notifications/day",
     },
     "svc-analytics": {
-        "engine": "TimescaleDB (PostgreSQL 15)",
-        "schema": "analytics",
-        "tables": ["booking_metrics", "revenue_metrics", "utilization_metrics", "satisfaction_scores", "safety_metrics", "guide_performance"],
+        "engine": "Oracle Database 19c",
+        "schema": "ANALYTICS",
+        "tables": ["BOOKING_METRICS", "REVENUE_METRICS", "UTILIZATION_METRICS", "SATISFACTION_SCORES", "SAFETY_METRICS", "GUIDE_PERFORMANCE"],
         "features": [
-            "TimescaleDB hypertables for time-series aggregation",
-            "Continuous aggregates for real-time dashboards",
-            "30-day raw retention, 2-year aggregate retention",
+            "Oracle Partitioning for time-series data (range partitioning by month)",
+            "Materialized views with fast refresh for real-time dashboards",
+            "Oracle Advanced Analytics (DBMS_PREDICTIVE_ANALYTICS) for trend forecasting",
         ],
         "volume": "~50K metric inserts/day (event-driven)",
     },
     "svc-loyalty-rewards": {
-        "engine": "PostgreSQL 15",
+        "engine": "Couchbase 7",
         "schema": "loyalty",
         "tables": ["members", "point_transactions", "tiers", "redemptions"],
         "features": [
-            "Points balance with optimistic locking for concurrency",
-            "Tier recalculation triggers on point thresholds",
-            "Point expiry date tracking and automated cleanup",
+            "Document-oriented member profiles with flexible reward schemas",
+            "N1QL queries for tier recalculation and point aggregation",
+            "Sub-document operations for atomic point balance updates",
         ],
         "volume": "~1,000 transactions/day",
     },
@@ -288,11 +289,11 @@ DATA_STORES = {
         "volume": "~50 POs/day, ~200 stock adjustments/day",
     },
     "svc-weather": {
-        "engine": "Redis 7 + PostgreSQL 15",
+        "engine": "Valkey 8 + PostgreSQL 15",
         "schema": "weather",
         "tables": ["weather_stations", "forecast_cache", "alert_history"],
         "features": [
-            "Redis TTL cache for current conditions (5-min TTL)",
+            "Valkey TTL cache for current conditions (5-min TTL)",
             "External weather API response caching and aggregation",
             "Severe weather alert deduplication",
         ],
@@ -324,18 +325,26 @@ def endpoint_anchor(target_svc, target_method, target_path):
 # Each entry: (alias, label, action, is_async, (target_method, target_path) or None)
 CROSS_SERVICE_CALLS = {}
 
+# --- svc-check-in ---
 CROSS_SERVICE_CALLS[("svc-check-in", "POST", "/check-ins")] = [
     ("Res", "Reservations", "Verify reservation exists", False, ("GET", "/reservations/{reservation_id}")),
+    ("GP", "Guest Profiles", "Validate guest identity", False, ("GET", "/guests/{guest_id}")),
+    ("TC", "Trip Catalog", "Get adventure category", False, ("GET", "/trips/{trip_id}")),
     ("Safety", "Safety Compliance", "Validate active waiver", False, ("GET", "/waivers")),
+    ("Ntfy", "Notifications", "Send check-in confirmation", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-check-in", "POST", "/check-ins/{check_in_id}/gear-verification")] = [
     ("Gear", "Gear Inventory", "Verify gear assignment", False, ("GET", "/gear-assignments/{assignment_id}")),
+    ("Safety", "Safety Compliance", "Log gear verification", False, ("POST", "/incidents")),
 ]
 
+# --- svc-reservations ---
 CROSS_SERVICE_CALLS[("svc-reservations", "POST", "/reservations")] = [
     ("GP", "Guest Profiles", "Validate guest identity", False, ("GET", "/guests/{guest_id}")),
     ("TC", "Trip Catalog", "Check trip availability", False, ("GET", "/trips/{trip_id}")),
+    ("Pay", "Payments Svc", "Process deposit payment", False, ("POST", "/payments")),
     ("Kafka", "Event Bus", "reservation.created", True, None),
+    ("Ntfy", "Notifications", "Send booking confirmation", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-reservations", "PUT", "/reservations/{reservation_id}")] = [
     ("TC", "Trip Catalog", "Verify availability", False, ("GET", "/trips/{trip_id}")),
@@ -345,96 +354,156 @@ CROSS_SERVICE_CALLS[("svc-reservations", "POST", "/reservations/{reservation_id}
 ]
 CROSS_SERVICE_CALLS[("svc-reservations", "PUT", "/reservations/{reservation_id}/status")] = [
     ("Kafka", "Event Bus", "reservation.status_changed", True, None),
+    ("Ntfy", "Notifications", "Send status update", True, ("POST", "/notifications")),
 ]
 
+# --- svc-scheduling-orchestrator ---
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-requests")] = [
     ("GM", "Guide Mgmt", "Check guide availability", False, ("GET", "/guides/{guide_id}/availability")),
     ("TM", "Trail Mgmt", "Verify trail conditions", False, ("GET", "/trails/{trail_id}/conditions")),
     ("WX", "Weather Svc", "Get forecast", False, ("GET", "/weather/forecast")),
     ("TC", "Trip Catalog", "Get trip details", False, ("GET", "/trips/{trip_id}")),
+    ("Ntfy", "Notifications", "Notify assigned guides", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-optimization")] = [
     ("GM", "Guide Mgmt", "Get all available guides", False, ("GET", "/guides/available")),
     ("LS", "Location Svc", "Check location capacity", False, ("GET", "/locations/{location_id}/capacity")),
+    ("TC", "Trip Catalog", "Get trip requirements", False, ("GET", "/trips/{trip_id}")),
+    ("AN", "Analytics", "Log optimization metrics", True, ("POST", "/events")),
 ]
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-conflicts/resolve")] = [
     ("GM", "Guide Mgmt", "Reassign guide", False, ("PATCH", "/guides/{guide_id}")),
+    ("Ntfy", "Notifications", "Notify affected parties", True, ("POST", "/notifications")),
 ]
 
+# --- svc-partner-integrations ---
 CROSS_SERVICE_CALLS[("svc-partner-integrations", "POST", "/partner-bookings")] = [
+    ("GP", "Guest Profiles", "Validate guest identity", False, ("GET", "/guests/{guest_id}")),
+    ("TC", "Trip Catalog", "Check trip availability", False, ("GET", "/trips/{trip_id}")),
     ("Res", "Reservations", "Create reservation", False, ("POST", "/reservations")),
 ]
 CROSS_SERVICE_CALLS[("svc-partner-integrations", "POST", "/partner-bookings/{booking_id}/confirm")] = [
     ("Res", "Reservations", "Confirm reservation", False, ("PUT", "/reservations/{reservation_id}/status")),
     ("Pay", "Payments Svc", "Process commission", False, ("POST", "/payments")),
+    ("Ntfy", "Notifications", "Send partner confirmation", True, ("POST", "/notifications")),
 ]
 
+# --- svc-guest-profiles ---
 CROSS_SERVICE_CALLS[("svc-guest-profiles", "POST", "/guests")] = [
+    ("ExtID", "IDVerify API", "Verify identity document", False, None),
     ("Kafka", "Event Bus", "guest.registered", True, None),
 ]
 CROSS_SERVICE_CALLS[("svc-guest-profiles", "GET", "/guests/{guest_id}/adventure-history")] = [
     ("Res", "Reservations", "Query past bookings", False, ("GET", "/reservations")),
+    ("AN", "Analytics", "Get satisfaction scores", False, ("GET", "/events")),
 ]
 
+# --- svc-payments ---
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments")] = [
-    ("ExtPay", "Payment Gateway", "Process payment", False, None),
+    ("FD", "Fraud Detection API", "Screen transaction", False, None),
+    ("ExtPay", "Stripe API", "Process payment", False, None),
+    ("Ntfy", "Notifications", "Send payment receipt", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments/{payment_id}/refund")] = [
-    ("ExtPay", "Payment Gateway", "Process refund", False, None),
+    ("ExtPay", "Stripe API", "Process refund", False, None),
+    ("Ntfy", "Notifications", "Send refund confirmation", True, ("POST", "/notifications")),
 ]
 
+# --- svc-notifications ---
 CROSS_SERVICE_CALLS[("svc-notifications", "POST", "/notifications")] = [
-    ("ExtMsg", "Email/SMS Provider", "Deliver message", True, None),
+    ("SG", "SendGrid API", "Deliver email", True, None),
+    ("TW", "Twilio API", "Deliver SMS", True, None),
+    ("FCM", "Firebase Cloud Messaging", "Send push notification", True, None),
 ]
 CROSS_SERVICE_CALLS[("svc-notifications", "POST", "/notifications/bulk")] = [
-    ("ExtMsg", "Email/SMS Provider", "Deliver bulk messages", True, None),
+    ("SG", "SendGrid API", "Deliver bulk emails", True, None),
+    ("TW", "Twilio API", "Deliver bulk SMS", True, None),
+    ("FCM", "Firebase Cloud Messaging", "Send bulk push notifications", True, None),
 ]
 
+# --- svc-safety-compliance ---
 CROSS_SERVICE_CALLS[("svc-safety-compliance", "POST", "/waivers")] = [
     ("GP", "Guest Profiles", "Validate guest identity", False, ("GET", "/guests/{guest_id}")),
+    ("DS", "DocuSign API", "Verify digital signature", False, None),
+    ("Ntfy", "Notifications", "Send waiver copy", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-safety-compliance", "POST", "/incidents")] = [
+    ("GP", "Guest Profiles", "Get guest contact info", False, ("GET", "/guests/{guest_id}")),
+    ("GM", "Guide Mgmt", "Get assigned guide", False, ("GET", "/guides/{guide_id}")),
     ("Ntfy", "Notifications", "Send safety alert", True, ("POST", "/notifications")),
 ]
 
+# --- svc-gear-inventory ---
 CROSS_SERVICE_CALLS[("svc-gear-inventory", "POST", "/gear-assignments")] = [
     ("GP", "Guest Profiles", "Validate guest", False, ("GET", "/guests/{guest_id}")),
+    ("Res", "Reservations", "Verify booking", False, ("GET", "/reservations/{reservation_id}")),
+    ("Safety", "Safety Compliance", "Check waiver status", False, ("GET", "/waivers")),
 ]
 
+# --- svc-transport-logistics ---
 CROSS_SERVICE_CALLS[("svc-transport-logistics", "POST", "/transport-requests")] = [
+    ("Res", "Reservations", "Get booking details", False, ("GET", "/reservations/{reservation_id}")),
     ("LS", "Location Svc", "Validate pickup location", False, ("GET", "/locations/{location_id}")),
+    ("ExtMap", "Google Maps Platform", "Calculate optimal route", False, None),
+    ("Ntfy", "Notifications", "Send transport details", True, ("POST", "/notifications")),
 ]
 
+# --- svc-loyalty-rewards ---
 CROSS_SERVICE_CALLS[("svc-loyalty-rewards", "POST", "/members/{guest_id}/earn")] = [
     ("Res", "Reservations", "Verify completed booking", False, ("GET", "/reservations/{reservation_id}")),
+    ("GP", "Guest Profiles", "Get member profile", False, ("GET", "/guests/{guest_id}")),
+    ("Ntfy", "Notifications", "Send earn confirmation", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-loyalty-rewards", "POST", "/members/{guest_id}/redeem")] = [
+    ("GP", "Guest Profiles", "Get member profile", False, ("GET", "/guests/{guest_id}")),
     ("Pay", "Payments Svc", "Process reward credit", False, ("POST", "/payments")),
+    ("Ntfy", "Notifications", "Send redemption confirmation", True, ("POST", "/notifications")),
 ]
 
+# --- svc-media-gallery ---
 CROSS_SERVICE_CALLS[("svc-media-gallery", "POST", "/media")] = [
     ("S3", "Object Store", "Upload binary file", False, None),
+    ("ExtMap", "Google Maps Platform", "Reverse geocode GPS metadata", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-media-gallery", "POST", "/media/{media_id}/share")] = [
     ("Ntfy", "Notifications", "Send share link", True, ("POST", "/notifications")),
 ]
 
+# --- svc-inventory-procurement ---
 CROSS_SERVICE_CALLS[("svc-inventory-procurement", "POST", "/purchase-orders")] = [
     ("GI", "Gear Inventory", "Verify item catalog", False, ("GET", "/gear-items")),
+    ("Pay", "Payments Svc", "Process PO payment", False, ("POST", "/payments")),
+    ("Ntfy", "Notifications", "Notify procurement team", True, ("POST", "/notifications")),
 ]
 
+# --- svc-weather ---
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/current")] = [
-    ("ExtWx", "Weather API", "Fetch current conditions", False, None),
+    ("ExtWx", "OpenWeather API", "Fetch current conditions", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/forecast")] = [
-    ("ExtWx", "Weather API", "Fetch multi-day forecast", False, None),
+    ("ExtWx", "OpenWeather API", "Fetch multi-day forecast", False, None),
 ]
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/alerts")] = [
-    ("ExtWx", "Weather API", "Fetch active alerts", False, None),
+    ("ExtWx", "OpenWeather API", "Fetch active alerts", False, None),
+    ("Ntfy", "Notifications", "Distribute severe weather alerts", True, ("POST", "/notifications")),
 ]
 
+# --- svc-trail-management ---
 CROSS_SERVICE_CALLS[("svc-trail-management", "POST", "/trails/{trail_id}/conditions")] = [
     ("WX", "Weather Svc", "Correlate weather data", False, ("GET", "/weather/current")),
+    ("LS", "Location Svc", "Get trail coordinates", False, ("GET", "/locations/{location_id}")),
+    ("Safety", "Safety Compliance", "Update trail safety assessment", False, ("POST", "/incidents")),
+    ("Ntfy", "Notifications", "Alert park rangers", True, ("POST", "/notifications")),
+]
+
+# --- svc-location-services ---
+CROSS_SERVICE_CALLS[("svc-location-services", "POST", "/locations")] = [
+    ("ExtMap", "Google Maps Platform", "Geocode address", False, None),
+]
+
+# --- svc-analytics ---
+CROSS_SERVICE_CALLS[("svc-analytics", "POST", "/events")] = [
+    ("ExtBI", "Snowflake Data Cloud", "Export aggregated metrics", True, None),
 ]
 
 
@@ -469,12 +538,20 @@ def extract_endpoints(spec):
 
 
 def get_short_db_name(engine):
+    if "Oracle" in engine:
+        return "Oracle"
+    if "Couchbase" in engine:
+        return "Couchbase"
     if "TimescaleDB" in engine:
         return "TimescaleDB"
     if "PostGIS" in engine:
         return "PostGIS"
+    if engine.startswith("Valkey"):
+        return "Valkey + PG"
     if engine.startswith("Redis"):
         return "Redis + PG"
+    if "PostgreSQL" in engine and "Valkey" in engine:
+        return "PG + Valkey"
     if "PostgreSQL" in engine and "Redis" in engine:
         return "PG + Redis"
     if "PostgreSQL" in engine:
@@ -640,62 +717,86 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
             L.append(f"deactivate {alias}")
             L.append("")
 
+    # Database operation labels (adapt for document vs relational databases)
+    _doc = "Couchbase" in db_engine
+    _q = {
+        "by_id":     "GET document by key"            if _doc else "SELECT ... WHERE id = ?",
+        "by_parent": "N1QL: SELECT WHERE parent_id"   if _doc else "SELECT ... WHERE parent_id = ?",
+        "filter":    "N1QL: SELECT WHERE filters"     if _doc else "SELECT ... WHERE filters",
+        "chk_par":   "GET parent document by key"     if _doc else "SELECT parent WHERE id = ?",
+        "insert":    "INSERT document"                if _doc else "INSERT INTO ...",
+        "lock":      "GET document (CAS read)"        if _doc else "SELECT ... FOR UPDATE",
+        "update":    "UPSERT document (CAS write)"    if _doc else "UPDATE ... SET ...",
+        "delete":    "REMOVE document"                if _doc else "DELETE FROM ... WHERE id = ?",
+    }
+    _r = {
+        "one":     "Document"     if _doc else "Row",
+        "set":     "Document set" if _doc else "ResultSet",
+        "page":    "Document set" if _doc else "Page of results",
+        "parent":  "Document"     if _doc else "Parent row",
+        "created": "Document"     if _doc else "Created row",
+        "current": "Document"     if _doc else "Current row",
+        "updated": "Document"     if _doc else "Updated row",
+    }
+    _merge_note = "Sub-document mutation for changed fields" if _doc else "Merge changed fields only"
+    _replace_note = "Replace document content" if _doc else "Replace mutable fields"
+
     # Database operations
     L.append("== Database ==")
     L.append("")
 
     if method == "GET":
         if has_path_param_at_end(path):
-            L.append("Svc -> DB : SELECT ... WHERE id = ?")
+            L.append(f"Svc -> DB : {_q['by_id']}")
             L.append("activate DB #FCE4EC")
-            L.append("DB --> Svc : Row")
+            L.append(f"DB --> Svc : {_r['one']}")
             L.append("deactivate DB")
             L.append("note right of DB : Returns 404 if not found")
         elif is_sub_resource(path):
-            L.append("Svc -> DB : SELECT ... WHERE parent_id = ?")
+            L.append(f"Svc -> DB : {_q['by_parent']}")
             L.append("activate DB #FCE4EC")
-            L.append("DB --> Svc : ResultSet")
+            L.append(f"DB --> Svc : {_r['set']}")
             L.append("deactivate DB")
         else:
-            L.append("Svc -> DB : SELECT ... WHERE filters")
+            L.append(f"Svc -> DB : {_q['filter']}")
             L.append("activate DB #FCE4EC")
-            L.append("DB --> Svc : Page of results")
+            L.append(f"DB --> Svc : {_r['page']}")
             L.append("deactivate DB")
 
     elif method == "POST":
         if is_sub_resource(path):
-            L.append("Svc -> DB : SELECT parent WHERE id = ?")
+            L.append(f"Svc -> DB : {_q['chk_par']}")
             L.append("activate DB #FCE4EC")
-            L.append("DB --> Svc : Parent row")
+            L.append(f"DB --> Svc : {_r['parent']}")
             L.append("deactivate DB")
             L.append("note right of DB : 404 if parent not found")
             L.append("")
-        L.append("Svc -> DB : INSERT INTO ...")
+        L.append(f"Svc -> DB : {_q['insert']}")
         L.append("activate DB #FCE4EC")
-        L.append("DB --> Svc : Created row")
+        L.append(f"DB --> Svc : {_r['created']}")
         L.append("deactivate DB")
 
     elif method in ("PUT", "PATCH"):
-        L.append("Svc -> DB : SELECT ... FOR UPDATE")
+        L.append(f"Svc -> DB : {_q['lock']}")
         L.append("activate DB #FCE4EC")
-        L.append("DB --> Svc : Current row")
+        L.append(f"DB --> Svc : {_r['current']}")
         L.append("deactivate DB")
-        note = "Merge changed fields only" if method == "PATCH" else "Replace mutable fields"
+        note = _merge_note if method == "PATCH" else _replace_note
         L.append(f"note right of Svc : {note}")
         L.append("")
-        L.append("Svc -> DB : UPDATE ... SET ...")
+        L.append(f"Svc -> DB : {_q['update']}")
         L.append("activate DB #FCE4EC")
-        L.append("DB --> Svc : Updated row")
+        L.append(f"DB --> Svc : {_r['updated']}")
         L.append("deactivate DB")
 
     elif method == "DELETE":
-        L.append("Svc -> DB : SELECT ... WHERE id = ?")
+        L.append(f"Svc -> DB : {_q['by_id']}")
         L.append("activate DB #FCE4EC")
-        L.append("DB --> Svc : Row")
+        L.append(f"DB --> Svc : {_r['one']}")
         L.append("deactivate DB")
         L.append("note right of DB : Returns 404 if not found")
         L.append("")
-        L.append("Svc -> DB : DELETE FROM ... WHERE id = ?")
+        L.append(f"Svc -> DB : {_q['delete']}")
         L.append("activate DB #FCE4EC")
         L.append("DB --> Svc : OK")
         L.append("deactivate DB")

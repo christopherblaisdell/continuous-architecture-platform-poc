@@ -20,6 +20,7 @@ participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-check-in" as Svc [[/microservices/svc-check-in/]] #E8F4F8
 participant "Gear Inventory" as Gear [[/microservices/svc-gear-inventory/]] #FFF8F0
+participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
@@ -39,6 +40,11 @@ Svc -> Gear : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignmen
 activate Gear #DBEAFE
 Gear --> Svc : OK
 deactivate Gear
+
+Svc -> Safety : [[/microservices/svc-safety-compliance/#post-incidents-file-an-incident-report Log gear verification]]
+activate Safety #DBEAFE
+Safety --> Svc : OK
+deactivate Safety
 
 == Database ==
 

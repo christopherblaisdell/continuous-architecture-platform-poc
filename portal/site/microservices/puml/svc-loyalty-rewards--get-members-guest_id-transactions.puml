@@ -19,7 +19,7 @@ title GET /members/{guest_id}/transactions\nList point transactions for a member
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "Couchbase" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-loyalty-rewards.html#/Transactions/getMemberTransactions View in Swagger UI]]
@@ -32,9 +32,9 @@ activate Svc #2563eb
 
 == Database ==
 
-Svc -> DB : SELECT ... WHERE parent_id = ?
+Svc -> DB : N1QL: SELECT WHERE parent_id
 activate DB #FCE4EC
-DB --> Svc : ResultSet
+DB --> Svc : Document set
 deactivate DB
 
 Svc --> GW : 200 OK

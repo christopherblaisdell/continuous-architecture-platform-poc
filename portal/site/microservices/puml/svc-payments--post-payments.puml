@@ -19,7 +19,9 @@ title POST /payments\nProcess a payment
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
-participant "Payment Gateway" as ExtPay #F5F5F5
+participant "Fraud Detection API" as FD #F5F5F5
+participant "Stripe API" as ExtPay #F5F5F5
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
@@ -35,6 +37,11 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
+Svc -> FD : Screen transaction
+activate FD #DBEAFE
+FD --> Svc : OK
+deactivate FD
+
 Svc -> ExtPay : Process payment
 activate ExtPay #DBEAFE
 ExtPay --> Svc : OK
@@ -46,6 +53,10 @@ Svc -> DB : INSERT INTO ...
 activate DB #FCE4EC
 DB --> Svc : Created row
 deactivate DB
+
+== Async Events ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send payment receipt]]
 
 Svc --> GW : 201 Created
 deactivate Svc

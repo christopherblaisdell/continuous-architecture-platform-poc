@@ -19,6 +19,8 @@ title POST /partner-bookings\nExternal partner creates a booking
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #E8F4F8
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
@@ -34,6 +36,16 @@ activate Svc #059669
 note right of Svc : Validate request body
 
 == Cross-Service Integration ==
+
+Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Validate guest identity]]
+activate GP #DBEAFE
+GP --> Svc : OK
+deactivate GP
+
+Svc -> TC : [[/microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details Check trip availability]]
+activate TC #DBEAFE
+TC --> Svc : OK
+deactivate TC
 
 Svc -> Res : [[/microservices/svc-reservations/#post-reservations-create-a-new-reservation Create reservation]]
 activate Res #DBEAFE

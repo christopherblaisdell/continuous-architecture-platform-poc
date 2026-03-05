@@ -20,10 +20,10 @@ tags:
 
 | Property | Detail |
 |----------|--------|
-| **Engine** | PostgreSQL 15 |
+| **Engine** | Couchbase 7 |
 | **Schema** | `loyalty` |
 | **Primary Tables** | `members`, `point_transactions`, `tiers`, `redemptions` |
-| **Key Features** | Points balance with optimistic locking for concurrency | Tier recalculation triggers on point thresholds | Point expiry date tracking and automated cleanup |
+| **Key Features** | Document-oriented member profiles with flexible reward schemas | N1QL queries for tier recalculation and point aggregation | Sub-document operations for atomic point balance updates |
 | **Estimated Volume** | ~1,000 transactions/day |
 
 ---

@@ -20,6 +20,7 @@ participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
 queue "Kafka" as Kafka #F0E6FF
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
@@ -49,6 +50,7 @@ deactivate DB
 == Async Events ==
 
 Svc ->> Kafka : reservation.status_changed
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send status update]]
 
 Svc --> GW : 200 OK
 deactivate Svc

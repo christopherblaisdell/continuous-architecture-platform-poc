@@ -19,8 +19,9 @@ title GET /weather/alerts\nGet active weather alerts for a region
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-weather" as Svc [[/microservices/svc-weather/]] #E8F4F8
-participant "Weather API" as ExtWx #F5F5F5
-database "Redis + PG" as DB #FCE4EC
+participant "OpenWeather API" as ExtWx #F5F5F5
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
+database "Valkey + PG" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-weather.html#/Alerts/getWeatherAlerts View in Swagger UI]]
@@ -44,6 +45,10 @@ Svc -> DB : SELECT ... WHERE filters
 activate DB #FCE4EC
 DB --> Svc : Page of results
 deactivate DB
+
+== Async Events ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Distribute severe weather alerts]]
 
 Svc --> GW : 200 OK
 deactivate Svc

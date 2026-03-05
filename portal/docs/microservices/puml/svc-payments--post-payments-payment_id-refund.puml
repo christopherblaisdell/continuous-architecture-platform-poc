@@ -19,7 +19,8 @@ title POST /payments/{payment_id}/refund\nInitiate a refund
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
-participant "Payment Gateway" as ExtPay #F5F5F5
+participant "Stripe API" as ExtPay #F5F5F5
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
@@ -52,6 +53,10 @@ Svc -> DB : INSERT INTO ...
 activate DB #FCE4EC
 DB --> Svc : Created row
 deactivate DB
+
+== Async Events ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send refund confirmation]]
 
 Svc --> GW : 201 Created
 deactivate Svc

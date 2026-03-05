@@ -19,6 +19,7 @@ title POST /locations\nCreate a new location
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-location-services" as Svc [[/microservices/svc-location-services/]] #E8F4F8
+participant "Google Maps Platform" as ExtMap #F5F5F5
 database "PostGIS" as DB #FCE4EC
 
 note over Svc
@@ -31,6 +32,13 @@ GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body
+
+== Cross-Service Integration ==
+
+Svc -> ExtMap : Geocode address
+activate ExtMap #DBEAFE
+ExtMap --> Svc : OK
+deactivate ExtMap
 
 == Database ==
 

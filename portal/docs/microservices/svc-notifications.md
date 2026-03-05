@@ -20,10 +20,10 @@ tags:
 
 | Property | Detail |
 |----------|--------|
-| **Engine** | PostgreSQL 15 + Redis 7 |
+| **Engine** | PostgreSQL 15 + Valkey 8 |
 | **Schema** | `notifications` |
 | **Primary Tables** | `notifications`, `templates`, `delivery_log`, `channel_preferences` |
-| **Key Features** | Redis queue for async delivery processing | Template versioning with rollback support | Multi-channel delivery: email, SMS, push, in-app |
+| **Key Features** | Valkey queue for async delivery processing | Template versioning with rollback support | Multi-channel delivery: email, SMS, push, in-app |
 | **Estimated Volume** | ~15,000 notifications/day |
 
 ---
