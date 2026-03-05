@@ -1,0 +1,59 @@
+@startuml app-guest-mobile--weather-and-trail-alerts
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Weather and Trail Alerts\nNovaTrek Adventure App
+
+actor "Guest" as User
+participant "Mobile App" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-weather" as WX [[/microservices/svc-weather/]] #E8F4F8
+participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
+participant "OpenWeather API" as ExtWx #F5F5F5
+participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #E8F4F8
+
+User -> App : Open Weather and Trail Alerts
+activate App #059669
+App -> GW : API request
+activate GW #059669
+
+== Backend Integration ==
+
+GW -> WX : [[/microservices/svc-weather/#get-weatheralerts-get-active-weather-alerts-for-a-region Get weather alerts]]
+activate WX #DBEAFE
+WX --> GW : OK
+deactivate WX
+
+GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions Get trail closures]]
+activate TM #DBEAFE
+TM --> GW : OK
+deactivate TM
+
+GW -> ExtWx : Fetch severe alerts
+activate ExtWx #DBEAFE
+ExtWx --> GW : OK
+deactivate ExtWx
+
+GW ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Receive push notification]]
+activate Ntfy #DBEAFE
+Ntfy -->> GW : OK
+deactivate Ntfy
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

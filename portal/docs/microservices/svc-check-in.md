@@ -75,3 +75,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/assignWristband){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/wristband-assignment sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station |
+| [Adventure App](../applications/app-guest-mobile/) | Self Check-In, Digital Wristband |

@@ -93,3 +93,13 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Inspections/createSafetyInspection){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--post-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">POST /safety-inspections sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Waiver Signing |
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Check-In Station, Safety Incident Board |
+| [Adventure App](../applications/app-guest-mobile/) | Self Check-In |

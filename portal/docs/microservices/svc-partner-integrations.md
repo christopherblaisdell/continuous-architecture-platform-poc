@@ -89,3 +89,11 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partners/getCommissionReport){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--get-partners-partner_id-commission-report.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners/{partner_id}/commission-report sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Partner Bookings |

@@ -1,0 +1,58 @@
+@startuml web-ops-dashboard--partner-bookings
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #dc2626
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Partner Bookings\nNovaTrek Operations Dashboard
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-partner-integrations" as PI [[/microservices/svc-partner-integrations/]] #E8F4F8
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+participant "svc-payments" as Pay [[/microservices/svc-payments/]] #E8F4F8
+
+User -> App : Open Partner Bookings
+activate App #dc2626
+App -> GW : API request
+activate GW #dc2626
+
+== Backend Integration ==
+
+GW -> PI : [[/microservices/svc-partner-integrations/ List partner bookings]]
+activate PI #DBEAFE
+PI --> GW : OK
+deactivate PI
+
+GW -> PI : [[/microservices/svc-partner-integrations/#post-partner-bookingsbooking_idconfirm-confirm-a-pending-partner-booking Confirm booking]]
+activate PI #DBEAFE
+PI --> GW : OK
+deactivate PI
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Get reservation details]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> Pay : [[/microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details Get payment status]]
+activate Pay #DBEAFE
+Pay --> GW : OK
+deactivate Pay
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

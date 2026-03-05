@@ -508,6 +508,129 @@ CROSS_SERVICE_CALLS[("svc-analytics", "POST", "/events")] = [
 
 
 # ============================================================
+# Consuming Applications (reverse index for bidirectional links)
+# ============================================================
+
+APP_CONSUMERS = {
+    "svc-trip-catalog": [
+        ("web-guest-portal", "Trip Browser"),
+        ("web-guest-portal", "Booking Flow"),
+        ("app-guest-mobile", "My Reservations"),
+    ],
+    "svc-trail-management": [
+        ("web-guest-portal", "Trip Browser"),
+        ("web-ops-dashboard", "Daily Schedule Board"),
+        ("web-ops-dashboard", "Guide Assignment"),
+        ("app-guest-mobile", "Live Trip Map"),
+        ("app-guest-mobile", "Weather and Trail Alerts"),
+    ],
+    "svc-weather": [
+        ("web-guest-portal", "Trip Browser"),
+        ("web-ops-dashboard", "Daily Schedule Board"),
+        ("app-guest-mobile", "Live Trip Map"),
+        ("app-guest-mobile", "Weather and Trail Alerts"),
+    ],
+    "svc-media-gallery": [
+        ("web-guest-portal", "Trip Browser"),
+        ("web-guest-portal", "Trip Gallery"),
+        ("app-guest-mobile", "Photo Upload"),
+    ],
+    "svc-guest-profiles": [
+        ("web-guest-portal", "Booking Flow"),
+        ("web-guest-portal", "Guest Profile"),
+        ("web-guest-portal", "Waiver Signing"),
+        ("web-ops-dashboard", "Check-In Station"),
+        ("web-ops-dashboard", "Safety Incident Board"),
+        ("app-guest-mobile", "Self Check-In"),
+        ("app-guest-mobile", "Earn Loyalty Points"),
+    ],
+    "svc-reservations": [
+        ("web-guest-portal", "Booking Flow"),
+        ("web-guest-portal", "Guest Profile"),
+        ("web-guest-portal", "Reservation Management"),
+        ("web-guest-portal", "Trip Gallery"),
+        ("web-ops-dashboard", "Check-In Station"),
+        ("web-ops-dashboard", "Transport Dispatch"),
+        ("web-ops-dashboard", "Analytics Dashboard"),
+        ("web-ops-dashboard", "Partner Bookings"),
+        ("app-guest-mobile", "Self Check-In"),
+        ("app-guest-mobile", "My Reservations"),
+        ("app-guest-mobile", "Earn Loyalty Points"),
+    ],
+    "svc-payments": [
+        ("web-guest-portal", "Booking Flow"),
+        ("web-guest-portal", "Reservation Management"),
+        ("web-ops-dashboard", "Analytics Dashboard"),
+        ("web-ops-dashboard", "Partner Bookings"),
+        ("app-guest-mobile", "My Reservations"),
+    ],
+    "svc-loyalty-rewards": [
+        ("web-guest-portal", "Guest Profile"),
+        ("web-guest-portal", "Loyalty Dashboard"),
+        ("app-guest-mobile", "Earn Loyalty Points"),
+    ],
+    "svc-notifications": [
+        ("web-guest-portal", "Reservation Management"),
+        ("web-guest-portal", "Waiver Signing"),
+        ("web-guest-portal", "Trip Gallery"),
+        ("web-ops-dashboard", "Safety Incident Board"),
+        ("app-guest-mobile", "Photo Upload"),
+        ("app-guest-mobile", "Weather and Trail Alerts"),
+    ],
+    "svc-safety-compliance": [
+        ("web-guest-portal", "Waiver Signing"),
+        ("web-ops-dashboard", "Check-In Station"),
+        ("web-ops-dashboard", "Safety Incident Board"),
+        ("app-guest-mobile", "Self Check-In"),
+    ],
+    "svc-check-in": [
+        ("web-ops-dashboard", "Check-In Station"),
+        ("app-guest-mobile", "Self Check-In"),
+        ("app-guest-mobile", "Digital Wristband"),
+    ],
+    "svc-gear-inventory": [
+        ("web-ops-dashboard", "Check-In Station"),
+        ("web-ops-dashboard", "Inventory Management"),
+        ("app-guest-mobile", "Self Check-In"),
+        ("app-guest-mobile", "Digital Wristband"),
+    ],
+    "svc-scheduling-orchestrator": [
+        ("web-ops-dashboard", "Daily Schedule Board"),
+        ("web-ops-dashboard", "Guide Assignment"),
+        ("app-guest-mobile", "Live Trip Map"),
+    ],
+    "svc-guide-management": [
+        ("web-ops-dashboard", "Daily Schedule Board"),
+        ("web-ops-dashboard", "Guide Assignment"),
+        ("web-ops-dashboard", "Safety Incident Board"),
+    ],
+    "svc-location-services": [
+        ("web-ops-dashboard", "Daily Schedule Board"),
+        ("web-ops-dashboard", "Transport Dispatch"),
+        ("app-guest-mobile", "Live Trip Map"),
+    ],
+    "svc-transport-logistics": [
+        ("web-ops-dashboard", "Transport Dispatch"),
+    ],
+    "svc-inventory-procurement": [
+        ("web-ops-dashboard", "Inventory Management"),
+    ],
+    "svc-analytics": [
+        ("web-ops-dashboard", "Analytics Dashboard"),
+    ],
+    "svc-partner-integrations": [
+        ("web-ops-dashboard", "Partner Bookings"),
+    ],
+}
+
+APP_TITLES = {
+    "web-guest-portal": "Guest Portal",
+    "web-ops-dashboard": "Operations Dashboard",
+    "app-guest-mobile": "Adventure App",
+}
+
+
+# ============================================================
 # Helper Functions
 # ============================================================
 
@@ -948,6 +1071,24 @@ def generate_service_page(svc_name, spec, svg_files):
         else:
             lines.append(f"*Diagram not available for {method} {path}*")
 
+        lines.append("")
+
+    # Consuming Applications section
+    consumers = APP_CONSUMERS.get(svc_name, [])
+    if consumers:
+        lines.append("---")
+        lines.append("")
+        lines.append("## :material-cellphone-link: Consuming Applications")
+        lines.append("")
+        lines.append("| Application | Screens Using This Service |")
+        lines.append("|-------------|---------------------------|")
+        by_app = {}
+        for app_name, screen_name in consumers:
+            by_app.setdefault(app_name, []).append(screen_name)
+        for app_name, screen_list in by_app.items():
+            title = APP_TITLES.get(app_name, app_name)
+            screens_str = ", ".join(screen_list)
+            lines.append(f"| [{title}](../applications/{app_name}/) | {screens_str} |")
         lines.append("")
 
     return "\n".join(lines)

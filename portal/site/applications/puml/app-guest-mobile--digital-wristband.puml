@@ -1,0 +1,47 @@
+@startuml app-guest-mobile--digital-wristband
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Digital Wristband\nNovaTrek Adventure App
+
+actor "Guest" as User
+participant "Mobile App" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-check-in" as CI [[/microservices/svc-check-in/]] #E8F4F8
+participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
+
+User -> App : Open Digital Wristband
+activate App #059669
+App -> GW : API request
+activate GW #059669
+
+== Backend Integration ==
+
+GW -> CI : [[/microservices/svc-check-in/#get-check-inscheck_in_id-get-check-in-details Get check-in status]]
+activate CI #DBEAFE
+CI --> GW : OK
+deactivate CI
+
+GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details Verify gear assignment]]
+activate GI #DBEAFE
+GI --> GW : OK
+deactivate GI
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

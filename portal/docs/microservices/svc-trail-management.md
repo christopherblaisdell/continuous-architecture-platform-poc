@@ -119,3 +119,13 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Conditions/getTrailCurrentConditions){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/conditions sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Guest Portal](../applications/web-guest-portal/) | Trip Browser |
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Daily Schedule Board, Guide Assignment |
+| [Adventure App](../applications/app-guest-mobile/) | Live Trip Map, Weather and Trail Alerts |

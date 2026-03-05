@@ -79,3 +79,12 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-scheduling-orchestrator.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.svg" type="image/svg+xml" style="max-width: 100%;">POST /schedule-conflicts/resolve sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Daily Schedule Board, Guide Assignment |
+| [Adventure App](../applications/app-guest-mobile/) | Live Trip Map |

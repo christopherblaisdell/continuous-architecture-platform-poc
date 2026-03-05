@@ -1,0 +1,53 @@
+@startuml app-guest-mobile--my-reservations
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title My Reservations\nNovaTrek Adventure App
+
+actor "Guest" as User
+participant "Mobile App" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+participant "svc-trip-catalog" as TC [[/microservices/svc-trip-catalog/]] #E8F4F8
+participant "svc-payments" as Pay [[/microservices/svc-payments/]] #E8F4F8
+
+User -> App : Open My Reservations
+activate App #059669
+App -> GW : API request
+activate GW #059669
+
+== Backend Integration ==
+
+GW -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations List my reservations]]
+activate Res #DBEAFE
+Res --> GW : OK
+deactivate Res
+
+GW -> TC : [[/microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details Get trip details]]
+activate TC #DBEAFE
+TC --> GW : OK
+deactivate TC
+
+GW -> Pay : [[/microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details Get payment details]]
+activate Pay #DBEAFE
+Pay --> GW : OK
+deactivate Pay
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml

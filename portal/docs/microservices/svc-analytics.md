@@ -79,3 +79,11 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Staff/getGuidePerformance){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guide-performance/{guide_id} sequence diagram</object></div>
+
+---
+
+## :material-cellphone-link: Consuming Applications
+
+| Application | Screens Using This Service |
+|-------------|---------------------------|
+| [Operations Dashboard](../applications/web-ops-dashboard/) | Analytics Dashboard |

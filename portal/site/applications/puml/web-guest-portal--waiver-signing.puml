@@ -1,0 +1,64 @@
+@startuml web-guest-portal--waiver-signing
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2563eb
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title Waiver Signing\nNovaTrek Guest Portal
+
+actor "Guest" as User
+participant "Browser" as App #DBEAFE
+participant "API Gateway" as GW #DBEAFE
+participant "svc-safety-compliance" as SC [[/microservices/svc-safety-compliance/]] #E8F4F8
+participant "svc-guest-profiles" as GP [[/microservices/svc-guest-profiles/]] #E8F4F8
+participant "DocuSign API" as DS #F5F5F5
+participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #E8F4F8
+
+User -> App : Open Waiver Signing
+activate App #2563eb
+App -> GW : API request
+activate GW #2563eb
+
+== Backend Integration ==
+
+GW -> SC : [[/microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest Get required waivers]]
+activate SC #DBEAFE
+SC --> GW : OK
+deactivate SC
+
+GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get guest profile]]
+activate GP #DBEAFE
+GP --> GW : OK
+deactivate GP
+
+GW -> SC : [[/microservices/svc-safety-compliance/#post-waivers-guest-signs-a-safety-waiver Submit signed waiver]]
+activate SC #DBEAFE
+SC --> GW : OK
+deactivate SC
+
+GW -> DS : Verify digital signature
+activate DS #DBEAFE
+DS --> GW : OK
+deactivate DS
+
+GW ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send waiver copy]]
+activate Ntfy #DBEAFE
+Ntfy -->> GW : OK
+deactivate Ntfy
+
+GW --> App : Response
+deactivate GW
+App --> User : Render screen
+deactivate App
+
+@enduml
