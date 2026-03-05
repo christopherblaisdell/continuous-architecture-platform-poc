@@ -23,7 +23,7 @@ participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-scheduling-orchestrator" as Svc [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
 participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #FFF8F0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PG + Valkey" as DB #FCE4EC
+database "PG + Valkey" as DB [[/microservices/svc-scheduling-orchestrator/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-scheduling-orchestrator.html View in Swagger UI]]

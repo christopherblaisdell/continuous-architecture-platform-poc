@@ -21,13 +21,88 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-check-in--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-check-in C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `checkin` |
-| **Primary Tables** | `check_ins`, `gear_verifications`, `wristband_assignments` |
-| **Key Features** | Indexes on reservation_id and check_in_date | TTL-based cleanup of stale check-ins (older than 24h) | Composite unique constraint on (reservation_id, participant_id) |
+| **Tables** | `check_ins`, `gear_verifications`, `wristband_assignments` |
 | **Estimated Volume** | ~5,000 check-ins/day peak season |
+| **Connection Pool** | min 5 / max 20 / idle timeout 10min |
+| **Backup Strategy** | Continuous WAL archiving, daily base backup, 7-day PITR |
+
+### Key Features
+
+- Indexes on reservation_id and check_in_date
+- TTL-based cleanup of stale check-ins (older than 24h)
+- Composite unique constraint on (reservation_id, participant_id)
+
+### Table Reference
+
+#### `check_ins`
+
+*Primary check-in records for each guest arrival*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `check_in_id` | `UUID` | PK, DEFAULT gen_random_uuid() |
+| `reservation_id` | `UUID` | NOT NULL, FK -> svc-reservations |
+| `participant_id` | `UUID` | NOT NULL |
+| `guest_id` | `UUID` | NOT NULL |
+| `adventure_category` | `VARCHAR(50)` | NOT NULL |
+| `check_in_pattern` | `SMALLINT` | NOT NULL, CHECK (1-3) |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'pending' |
+| `checked_in_at` | `TIMESTAMPTZ` | DEFAULT NOW() |
+| `checked_in_by` | `VARCHAR(100)` | NULL (staff ID or 'self') |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL, DEFAULT NOW() |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL, DEFAULT NOW() |
+
+**Indexes:**
+
+- `idx_checkin_reservation` on `reservation_id`
+- `idx_checkin_date` on `checked_in_at`
+- `idx_checkin_guest` on `guest_id, checked_in_at DESC`
+- `uq_checkin_participant` on `reservation_id, participant_id` (UNIQUE)
+
+#### `gear_verifications`
+
+*Gear assignment verification records linked to check-ins*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `verification_id` | `UUID` | PK |
+| `check_in_id` | `UUID` | NOT NULL, FK -> check_ins |
+| `gear_assignment_id` | `UUID` | NOT NULL |
+| `verified_by` | `VARCHAR(100)` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `notes` | `TEXT` | NULL |
+| `verified_at` | `TIMESTAMPTZ` | NOT NULL, DEFAULT NOW() |
+
+**Indexes:**
+
+- `idx_gear_ver_checkin` on `check_in_id`
+
+#### `wristband_assignments`
+
+*Digital wristband NFC assignments for checked-in guests*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `assignment_id` | `UUID` | PK |
+| `check_in_id` | `UUID` | NOT NULL, FK -> check_ins |
+| `wristband_nfc_id` | `VARCHAR(64)` | NOT NULL, UNIQUE |
+| `active` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+| `assigned_at` | `TIMESTAMPTZ` | NOT NULL, DEFAULT NOW() |
+| `deactivated_at` | `TIMESTAMPTZ` | NULL |
+
+**Indexes:**
+
+- `idx_wristband_nfc` on `wristband_nfc_id` (UNIQUE)
+- `idx_wristband_checkin` on `check_in_id`
+
 
 ---
 

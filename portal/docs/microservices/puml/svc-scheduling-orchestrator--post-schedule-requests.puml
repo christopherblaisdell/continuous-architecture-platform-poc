@@ -26,7 +26,7 @@ participant "Trail Mgmt" as TM [[/microservices/svc-trail-management/]] #FFF8F0
 participant "Weather Svc" as WX [[/microservices/svc-weather/]] #FFF8F0
 participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PG + Valkey" as DB #FCE4EC
+database "PG + Valkey" as DB [[/microservices/svc-scheduling-orchestrator/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-scheduling-orchestrator.html View in Swagger UI]]

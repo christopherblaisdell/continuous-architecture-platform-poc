@@ -24,7 +24,7 @@ participant "svc-safety-compliance" as Svc [[/microservices/svc-safety-complianc
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
 participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #FFF8F0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-safety-compliance/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-safety-compliance.html#/Incidents/createIncident View in Swagger UI]]

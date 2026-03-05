@@ -118,6 +118,62 @@ DATA_STORES = {
             "Composite unique constraint on (reservation_id, participant_id)",
         ],
         "volume": "~5,000 check-ins/day peak season",
+        "connection_pool": {"min": 5, "max": 20, "idle_timeout": "10min"},
+        "backup": "Continuous WAL archiving, daily base backup, 7-day PITR",
+        "table_details": {
+            "check_ins": {
+                "description": "Primary check-in records for each guest arrival",
+                "columns": [
+                    ("check_in_id", "UUID", "PK, DEFAULT gen_random_uuid()"),
+                    ("reservation_id", "UUID", "NOT NULL, FK -> svc-reservations"),
+                    ("participant_id", "UUID", "NOT NULL"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("adventure_category", "VARCHAR(50)", "NOT NULL"),
+                    ("check_in_pattern", "SMALLINT", "NOT NULL, CHECK (1-3)"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'pending'"),
+                    ("checked_in_at", "TIMESTAMPTZ", "DEFAULT NOW()"),
+                    ("checked_in_by", "VARCHAR(100)", "NULL (staff ID or 'self')"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL, DEFAULT NOW()"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL, DEFAULT NOW()"),
+                ],
+                "indexes": [
+                    ("idx_checkin_reservation", "reservation_id"),
+                    ("idx_checkin_date", "checked_in_at"),
+                    ("idx_checkin_guest", "guest_id, checked_in_at DESC"),
+                    ("uq_checkin_participant", "reservation_id, participant_id", "UNIQUE"),
+                ],
+            },
+            "gear_verifications": {
+                "description": "Gear assignment verification records linked to check-ins",
+                "columns": [
+                    ("verification_id", "UUID", "PK"),
+                    ("check_in_id", "UUID", "NOT NULL, FK -> check_ins"),
+                    ("gear_assignment_id", "UUID", "NOT NULL"),
+                    ("verified_by", "VARCHAR(100)", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("notes", "TEXT", "NULL"),
+                    ("verified_at", "TIMESTAMPTZ", "NOT NULL, DEFAULT NOW()"),
+                ],
+                "indexes": [
+                    ("idx_gear_ver_checkin", "check_in_id"),
+                ],
+            },
+            "wristband_assignments": {
+                "description": "Digital wristband NFC assignments for checked-in guests",
+                "columns": [
+                    ("assignment_id", "UUID", "PK"),
+                    ("check_in_id", "UUID", "NOT NULL, FK -> check_ins"),
+                    ("wristband_nfc_id", "VARCHAR(64)", "NOT NULL, UNIQUE"),
+                    ("active", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                    ("assigned_at", "TIMESTAMPTZ", "NOT NULL, DEFAULT NOW()"),
+                    ("deactivated_at", "TIMESTAMPTZ", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_wristband_nfc", "wristband_nfc_id", "UNIQUE"),
+                    ("idx_wristband_checkin", "check_in_id"),
+                ],
+            },
+        },
     },
     "svc-reservations": {
         "engine": "PostgreSQL 15",
@@ -129,6 +185,63 @@ DATA_STORES = {
             "Monthly partitioning by reservation_date",
         ],
         "volume": "~2,000 new reservations/day",
+        "connection_pool": {"min": 10, "max": 40, "idle_timeout": "10min"},
+        "backup": "Continuous WAL archiving, daily base backup, 30-day PITR",
+        "table_details": {
+            "reservations": {
+                "description": "Core reservation records for adventure bookings",
+                "columns": [
+                    ("reservation_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("trip_id", "UUID", "NOT NULL"),
+                    ("confirmation_code", "VARCHAR(12)", "NOT NULL, UNIQUE"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'confirmed'"),
+                    ("trip_date", "DATE", "NOT NULL"),
+                    ("party_size", "INTEGER", "NOT NULL, CHECK (> 0)"),
+                    ("total_amount", "DECIMAL(10,2)", "NOT NULL"),
+                    ("currency", "CHAR(3)", "NOT NULL, DEFAULT 'USD'"),
+                    ("_rev", "INTEGER", "NOT NULL, DEFAULT 1"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_res_guest_date", "guest_id, trip_date"),
+                    ("idx_res_trip_date", "trip_id, trip_date"),
+                    ("idx_res_confirmation", "confirmation_code", "UNIQUE"),
+                    ("idx_res_status", "status"),
+                ],
+            },
+            "participants": {
+                "description": "Individual participants linked to a reservation",
+                "columns": [
+                    ("participant_id", "UUID", "PK"),
+                    ("reservation_id", "UUID", "NOT NULL, FK -> reservations"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("role", "VARCHAR(20)", "NOT NULL, DEFAULT 'guest'"),
+                    ("waiver_signed", "BOOLEAN", "NOT NULL, DEFAULT FALSE"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_part_reservation", "reservation_id"),
+                    ("idx_part_guest", "guest_id"),
+                ],
+            },
+            "status_history": {
+                "description": "Audit trail of reservation status transitions",
+                "columns": [
+                    ("history_id", "UUID", "PK"),
+                    ("reservation_id", "UUID", "NOT NULL, FK -> reservations"),
+                    ("old_status", "VARCHAR(20)", "NULL"),
+                    ("new_status", "VARCHAR(20)", "NOT NULL"),
+                    ("changed_by", "VARCHAR(100)", "NOT NULL"),
+                    ("reason", "TEXT", "NULL"),
+                    ("changed_at", "TIMESTAMPTZ", "NOT NULL, DEFAULT NOW()"),
+                ],
+                "indexes": [
+                    ("idx_hist_reservation", "reservation_id, changed_at DESC"),
+                ],
+            },
+        },
     },
     "svc-scheduling-orchestrator": {
         "engine": "PostgreSQL 15 + Valkey 8",
@@ -140,6 +253,70 @@ DATA_STORES = {
             "JSONB columns for constraint parameters",
         ],
         "volume": "~500 schedule requests/day",
+        "connection_pool": {"min": 5, "max": 20, "idle_timeout": "10min"},
+        "backup": "Continuous WAL archiving, daily base backup, 14-day PITR",
+        "table_details": {
+            "schedule_requests": {
+                "description": "Incoming requests to create or modify daily schedules",
+                "columns": [
+                    ("request_id", "UUID", "PK"),
+                    ("schedule_date", "DATE", "NOT NULL"),
+                    ("requested_by", "VARCHAR(100)", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("constraints", "JSONB", "NOT NULL, DEFAULT '{}'"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_sched_req_date", "schedule_date"),
+                    ("idx_sched_req_status", "status"),
+                ],
+            },
+            "daily_schedules": {
+                "description": "Published daily schedules with optimistic locking",
+                "columns": [
+                    ("schedule_id", "UUID", "PK"),
+                    ("schedule_date", "DATE", "NOT NULL, UNIQUE"),
+                    ("assignments", "JSONB", "NOT NULL"),
+                    ("_rev", "INTEGER", "NOT NULL, DEFAULT 1"),
+                    ("published_at", "TIMESTAMPTZ", "NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_daily_sched_date", "schedule_date", "UNIQUE"),
+                ],
+            },
+            "schedule_conflicts": {
+                "description": "Detected conflicts during schedule optimization",
+                "columns": [
+                    ("conflict_id", "UUID", "PK"),
+                    ("schedule_id", "UUID", "NOT NULL, FK -> daily_schedules"),
+                    ("conflict_type", "VARCHAR(30)", "NOT NULL"),
+                    ("details", "JSONB", "NOT NULL"),
+                    ("resolved", "BOOLEAN", "NOT NULL, DEFAULT FALSE"),
+                    ("detected_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_conflict_schedule", "schedule_id"),
+                ],
+            },
+            "optimization_runs": {
+                "description": "Execution history of schedule optimization algorithms",
+                "columns": [
+                    ("run_id", "UUID", "PK"),
+                    ("schedule_date", "DATE", "NOT NULL"),
+                    ("algorithm", "VARCHAR(30)", "NOT NULL"),
+                    ("duration_ms", "INTEGER", "NOT NULL"),
+                    ("score", "DECIMAL(5,2)", "NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("started_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("completed_at", "TIMESTAMPTZ", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_opt_run_date", "schedule_date"),
+                ],
+            },
+        },
     },
     "svc-guest-profiles": {
         "engine": "PostgreSQL 15",
@@ -151,6 +328,90 @@ DATA_STORES = {
             "Soft delete with GDPR data retention policy",
         ],
         "volume": "~800 new profiles/day peak season",
+        "connection_pool": {"min": 10, "max": 30, "idle_timeout": "10min"},
+        "backup": "Continuous WAL archiving, daily base backup, 90-day PITR (GDPR)",
+        "table_details": {
+            "guest_profiles": {
+                "description": "Core guest identity records with PII encryption",
+                "columns": [
+                    ("guest_id", "UUID", "PK"),
+                    ("first_name", "VARCHAR(100)", "NOT NULL, ENCRYPTED"),
+                    ("last_name", "VARCHAR(100)", "NOT NULL, ENCRYPTED"),
+                    ("email", "VARCHAR(255)", "NOT NULL, UNIQUE, ENCRYPTED"),
+                    ("phone", "VARCHAR(30)", "NULL, ENCRYPTED"),
+                    ("date_of_birth", "DATE", "NOT NULL"),
+                    ("loyalty_tier", "VARCHAR(20)", "DEFAULT 'bronze'"),
+                    ("identity_verified", "BOOLEAN", "NOT NULL, DEFAULT FALSE"),
+                    ("deleted_at", "TIMESTAMPTZ", "NULL (soft delete)"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_guest_email", "email", "UNIQUE"),
+                    ("idx_guest_name_dob", "last_name, date_of_birth"),
+                    ("idx_guest_loyalty", "loyalty_tier"),
+                ],
+            },
+            "certifications": {
+                "description": "Guest adventure certifications (scuba, climbing, etc.)",
+                "columns": [
+                    ("cert_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL, FK -> guest_profiles"),
+                    ("cert_type", "VARCHAR(50)", "NOT NULL"),
+                    ("issuer", "VARCHAR(100)", "NOT NULL"),
+                    ("issued_date", "DATE", "NOT NULL"),
+                    ("expiry_date", "DATE", "NULL"),
+                    ("document_url", "TEXT", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_cert_guest", "guest_id"),
+                    ("idx_cert_expiry", "expiry_date"),
+                ],
+            },
+            "medical_info": {
+                "description": "Guest medical conditions and allergy records (encrypted PII)",
+                "columns": [
+                    ("medical_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL, FK -> guest_profiles"),
+                    ("conditions", "JSONB", "ENCRYPTED"),
+                    ("allergies", "JSONB", "ENCRYPTED"),
+                    ("emergency_medications", "JSONB", "ENCRYPTED"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_medical_guest", "guest_id", "UNIQUE"),
+                ],
+            },
+            "emergency_contacts": {
+                "description": "Emergency contact information for each guest",
+                "columns": [
+                    ("contact_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL, FK -> guest_profiles"),
+                    ("name", "VARCHAR(200)", "NOT NULL, ENCRYPTED"),
+                    ("phone", "VARCHAR(30)", "NOT NULL, ENCRYPTED"),
+                    ("relationship", "VARCHAR(50)", "NOT NULL"),
+                    ("is_primary", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                ],
+                "indexes": [
+                    ("idx_emg_guest", "guest_id"),
+                ],
+            },
+            "adventure_history": {
+                "description": "Record of completed adventures per guest for profile display",
+                "columns": [
+                    ("history_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL, FK -> guest_profiles"),
+                    ("trip_id", "UUID", "NOT NULL"),
+                    ("trip_date", "DATE", "NOT NULL"),
+                    ("adventure_category", "VARCHAR(50)", "NOT NULL"),
+                    ("rating", "SMALLINT", "NULL, CHECK (1-5)"),
+                    ("completed_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_hist_guest", "guest_id, trip_date DESC"),
+                ],
+            },
+        },
     },
     "svc-trip-catalog": {
         "engine": "PostgreSQL 15",
@@ -162,6 +423,63 @@ DATA_STORES = {
             "JSONB columns for flexible requirement definitions",
         ],
         "volume": "~50 catalog updates/day, ~10K availability reads/day",
+        "connection_pool": {"min": 5, "max": 25, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 14-day retention",
+        "table_details": {
+            "trips": {
+                "description": "Master adventure trip catalog entries",
+                "columns": [
+                    ("trip_id", "UUID", "PK"),
+                    ("name", "VARCHAR(200)", "NOT NULL"),
+                    ("description", "TEXT", "NOT NULL"),
+                    ("adventure_category", "VARCHAR(50)", "NOT NULL"),
+                    ("region_id", "UUID", "NOT NULL, FK -> regions"),
+                    ("difficulty_level", "SMALLINT", "NOT NULL, CHECK (1-5)"),
+                    ("duration_hours", "DECIMAL(4,1)", "NOT NULL"),
+                    ("min_participants", "INTEGER", "NOT NULL, DEFAULT 1"),
+                    ("max_participants", "INTEGER", "NOT NULL"),
+                    ("base_price", "DECIMAL(10,2)", "NOT NULL"),
+                    ("currency", "CHAR(3)", "DEFAULT 'USD'"),
+                    ("active", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_trip_category", "adventure_category"),
+                    ("idx_trip_region", "region_id"),
+                    ("idx_trip_search", "name, description", "GIN (tsvector)"),
+                ],
+            },
+            "trip_schedules": {
+                "description": "Available dates and time slots for each trip",
+                "columns": [
+                    ("schedule_id", "UUID", "PK"),
+                    ("trip_id", "UUID", "NOT NULL, FK -> trips"),
+                    ("trip_date", "DATE", "NOT NULL"),
+                    ("start_time", "TIME", "NOT NULL"),
+                    ("available_spots", "INTEGER", "NOT NULL"),
+                    ("booked_spots", "INTEGER", "NOT NULL, DEFAULT 0"),
+                ],
+                "indexes": [
+                    ("idx_sched_trip_date", "trip_id, trip_date"),
+                    ("idx_sched_avail", "trip_date, available_spots"),
+                ],
+            },
+            "pricing_tiers": {
+                "description": "Dynamic pricing tiers based on season, demand, and group size",
+                "columns": [
+                    ("tier_id", "UUID", "PK"),
+                    ("trip_id", "UUID", "NOT NULL, FK -> trips"),
+                    ("tier_name", "VARCHAR(50)", "NOT NULL"),
+                    ("multiplier", "DECIMAL(3,2)", "NOT NULL"),
+                    ("effective_from", "DATE", "NOT NULL"),
+                    ("effective_to", "DATE", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_pricing_trip", "trip_id, effective_from"),
+                ],
+            },
+        },
     },
     "svc-trail-management": {
         "engine": "PostGIS (PostgreSQL 15)",
@@ -173,6 +491,59 @@ DATA_STORES = {
             "Time-series condition data with hypertable extension",
         ],
         "volume": "~200 condition updates/day, ~5K trail reads/day",
+        "connection_pool": {"min": 5, "max": 15, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump with PostGIS extensions, 14-day retention",
+        "table_details": {
+            "trails": {
+                "description": "Trail definitions with geospatial route geometry",
+                "columns": [
+                    ("trail_id", "UUID", "PK"),
+                    ("name", "VARCHAR(200)", "NOT NULL"),
+                    ("difficulty", "VARCHAR(20)", "NOT NULL"),
+                    ("length_km", "DECIMAL(6,2)", "NOT NULL"),
+                    ("elevation_gain_m", "INTEGER", "NULL"),
+                    ("route", "GEOMETRY(LineString, 4326)", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'open'"),
+                    ("region_id", "UUID", "NOT NULL"),
+                    ("updated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_trail_route", "route", "GiST spatial"),
+                    ("idx_trail_status", "status"),
+                    ("idx_trail_region", "region_id"),
+                ],
+            },
+            "waypoints": {
+                "description": "Points of interest and navigation markers along trails",
+                "columns": [
+                    ("waypoint_id", "UUID", "PK"),
+                    ("trail_id", "UUID", "NOT NULL, FK -> trails"),
+                    ("name", "VARCHAR(100)", "NOT NULL"),
+                    ("location", "GEOMETRY(Point, 4326)", "NOT NULL"),
+                    ("waypoint_type", "VARCHAR(30)", "NOT NULL"),
+                    ("elevation_m", "INTEGER", "NULL"),
+                    ("sequence_order", "INTEGER", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_wp_trail", "trail_id, sequence_order"),
+                    ("idx_wp_location", "location", "GiST spatial"),
+                ],
+            },
+            "condition_reports": {
+                "description": "Time-series trail condition observations from guides and sensors",
+                "columns": [
+                    ("report_id", "UUID", "PK"),
+                    ("trail_id", "UUID", "NOT NULL, FK -> trails"),
+                    ("condition", "VARCHAR(30)", "NOT NULL"),
+                    ("details", "TEXT", "NULL"),
+                    ("reported_by", "VARCHAR(100)", "NOT NULL"),
+                    ("reported_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_cond_trail_time", "trail_id, reported_at DESC"),
+                ],
+            },
+        },
     },
     "svc-safety-compliance": {
         "engine": "PostgreSQL 15",
@@ -184,6 +555,62 @@ DATA_STORES = {
             "Regulatory compliance retention (7 years)",
         ],
         "volume": "~3,000 waiver checks/day",
+        "connection_pool": {"min": 5, "max": 20, "idle_timeout": "10min"},
+        "backup": "Continuous WAL archiving, daily base backup, 7-year retention (regulatory)",
+        "table_details": {
+            "waivers": {
+                "description": "Signed liability waivers with digital signature verification",
+                "columns": [
+                    ("waiver_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("trip_id", "UUID", "NOT NULL"),
+                    ("waiver_type", "VARCHAR(50)", "NOT NULL"),
+                    ("signed_at", "TIMESTAMPTZ", "NULL"),
+                    ("signature_ref", "VARCHAR(255)", "NULL (DocuSign envelope ID)"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'pending'"),
+                    ("expires_at", "TIMESTAMPTZ", "NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_waiver_guest_trip", "guest_id, trip_id"),
+                    ("idx_waiver_status", "status"),
+                ],
+            },
+            "incidents": {
+                "description": "Safety incident reports with severity classification",
+                "columns": [
+                    ("incident_id", "UUID", "PK"),
+                    ("trip_id", "UUID", "NULL"),
+                    ("location_id", "UUID", "NULL"),
+                    ("severity", "VARCHAR(20)", "NOT NULL"),
+                    ("description", "TEXT", "NOT NULL"),
+                    ("reported_by", "VARCHAR(100)", "NOT NULL"),
+                    ("reported_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("resolved_at", "TIMESTAMPTZ", "NULL"),
+                    ("resolution_notes", "TEXT", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_incident_severity", "severity, reported_at DESC"),
+                    ("idx_incident_trip", "trip_id"),
+                ],
+            },
+            "audit_log": {
+                "description": "Immutable append-only audit trail for regulatory compliance",
+                "columns": [
+                    ("log_id", "BIGSERIAL", "PK"),
+                    ("entity_type", "VARCHAR(50)", "NOT NULL"),
+                    ("entity_id", "UUID", "NOT NULL"),
+                    ("action", "VARCHAR(20)", "NOT NULL"),
+                    ("actor", "VARCHAR(100)", "NOT NULL"),
+                    ("details", "JSONB", "NOT NULL"),
+                    ("logged_at", "TIMESTAMPTZ", "NOT NULL, DEFAULT NOW()"),
+                ],
+                "indexes": [
+                    ("idx_audit_entity", "entity_type, entity_id"),
+                    ("idx_audit_time", "logged_at"),
+                ],
+            },
+        },
     },
     "svc-gear-inventory": {
         "engine": "PostgreSQL 15",
@@ -195,6 +622,60 @@ DATA_STORES = {
             "Location-based inventory partitioning",
         ],
         "volume": "~1,500 assignments/day peak season",
+        "connection_pool": {"min": 5, "max": 20, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 30-day retention",
+        "table_details": {
+            "gear_items": {
+                "description": "Individual gear items tracked by RFID tag",
+                "columns": [
+                    ("item_id", "UUID", "PK"),
+                    ("rfid_tag", "VARCHAR(64)", "NOT NULL, UNIQUE"),
+                    ("gear_type", "VARCHAR(50)", "NOT NULL"),
+                    ("size", "VARCHAR(20)", "NULL"),
+                    ("condition", "VARCHAR(20)", "NOT NULL, DEFAULT 'good'"),
+                    ("location_id", "UUID", "NOT NULL"),
+                    ("last_inspected", "DATE", "NULL"),
+                    ("acquired_date", "DATE", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_gear_rfid", "rfid_tag", "UNIQUE"),
+                    ("idx_gear_type_loc", "gear_type, location_id"),
+                    ("idx_gear_condition", "condition"),
+                ],
+            },
+            "gear_assignments": {
+                "description": "Gear lent to guests for specific check-ins",
+                "columns": [
+                    ("assignment_id", "UUID", "PK"),
+                    ("check_in_id", "UUID", "NOT NULL"),
+                    ("item_id", "UUID", "NOT NULL, FK -> gear_items"),
+                    ("assigned_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("returned_at", "TIMESTAMPTZ", "NULL"),
+                    ("condition_on_return", "VARCHAR(20)", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_assign_checkin", "check_in_id"),
+                    ("idx_assign_item", "item_id"),
+                    ("idx_assign_outstanding", "returned_at", "WHERE returned_at IS NULL"),
+                ],
+            },
+            "maintenance_records": {
+                "description": "Maintenance and inspection history for gear items",
+                "columns": [
+                    ("record_id", "UUID", "PK"),
+                    ("item_id", "UUID", "NOT NULL, FK -> gear_items"),
+                    ("maintenance_type", "VARCHAR(30)", "NOT NULL"),
+                    ("performed_by", "VARCHAR(100)", "NOT NULL"),
+                    ("notes", "TEXT", "NULL"),
+                    ("performed_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("next_due", "DATE", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_maint_item", "item_id, performed_at DESC"),
+                    ("idx_maint_due", "next_due"),
+                ],
+            },
+        },
     },
     "svc-transport-logistics": {
         "engine": "PostgreSQL 15",
@@ -206,6 +687,45 @@ DATA_STORES = {
             "GPS coordinate storage for pickup and dropoff points",
         ],
         "volume": "~300 transport requests/day",
+        "connection_pool": {"min": 3, "max": 10, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 14-day retention",
+        "table_details": {
+            "vehicles": {
+                "description": "Fleet vehicles with capacity and maintenance status",
+                "columns": [
+                    ("vehicle_id", "UUID", "PK"),
+                    ("registration", "VARCHAR(20)", "NOT NULL, UNIQUE"),
+                    ("vehicle_type", "VARCHAR(30)", "NOT NULL"),
+                    ("capacity", "INTEGER", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'available'"),
+                    ("current_location", "POINT", "NULL"),
+                    ("last_service_date", "DATE", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_vehicle_status", "status"),
+                    ("idx_vehicle_type", "vehicle_type"),
+                ],
+            },
+            "transport_requests": {
+                "description": "Guest and staff transport requests with pickup windows",
+                "columns": [
+                    ("request_id", "UUID", "PK"),
+                    ("route_id", "UUID", "NOT NULL, FK -> routes"),
+                    ("vehicle_id", "UUID", "NULL, FK -> vehicles"),
+                    ("passenger_count", "INTEGER", "NOT NULL"),
+                    ("pickup_time", "TIMESTAMPTZ", "NOT NULL"),
+                    ("pickup_location", "POINT", "NOT NULL"),
+                    ("dropoff_location", "POINT", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_treq_route", "route_id"),
+                    ("idx_treq_pickup", "pickup_time"),
+                    ("idx_treq_vehicle", "vehicle_id"),
+                ],
+            },
+        },
     },
     "svc-guide-management": {
         "engine": "PostgreSQL 15",
@@ -217,6 +737,73 @@ DATA_STORES = {
             "Weighted rating aggregation with recency bias",
         ],
         "volume": "~100 schedule updates/day, ~500 availability queries/day",
+        "connection_pool": {"min": 3, "max": 15, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 30-day retention",
+        "table_details": {
+            "guides": {
+                "description": "Adventure guide profiles and qualifications",
+                "columns": [
+                    ("guide_id", "UUID", "PK"),
+                    ("first_name", "VARCHAR(100)", "NOT NULL"),
+                    ("last_name", "VARCHAR(100)", "NOT NULL"),
+                    ("email", "VARCHAR(255)", "NOT NULL, UNIQUE"),
+                    ("phone", "VARCHAR(30)", "NOT NULL"),
+                    ("hire_date", "DATE", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'active'"),
+                    ("avg_rating", "DECIMAL(3,2)", "NULL"),
+                    ("total_trips", "INTEGER", "NOT NULL, DEFAULT 0"),
+                ],
+                "indexes": [
+                    ("idx_guide_email", "email", "UNIQUE"),
+                    ("idx_guide_status", "status"),
+                    ("idx_guide_rating", "avg_rating DESC NULLS LAST"),
+                ],
+            },
+            "certifications": {
+                "description": "Guide adventure certifications with expiry tracking",
+                "columns": [
+                    ("cert_id", "UUID", "PK"),
+                    ("guide_id", "UUID", "NOT NULL, FK -> guides"),
+                    ("cert_type", "VARCHAR(50)", "NOT NULL"),
+                    ("level", "VARCHAR(20)", "NOT NULL"),
+                    ("issued_date", "DATE", "NOT NULL"),
+                    ("expiry_date", "DATE", "NOT NULL"),
+                    ("verified", "BOOLEAN", "NOT NULL, DEFAULT FALSE"),
+                ],
+                "indexes": [
+                    ("idx_gcert_guide", "guide_id"),
+                    ("idx_gcert_expiry", "expiry_date"),
+                ],
+            },
+            "availability_windows": {
+                "description": "Time blocks when a guide is available for scheduling",
+                "columns": [
+                    ("window_id", "UUID", "PK"),
+                    ("guide_id", "UUID", "NOT NULL, FK -> guides"),
+                    ("start_time", "TIMESTAMPTZ", "NOT NULL"),
+                    ("end_time", "TIMESTAMPTZ", "NOT NULL"),
+                    ("recurrence", "VARCHAR(20)", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_avail_guide_time", "guide_id, start_time"),
+                ],
+            },
+            "ratings": {
+                "description": "Guest ratings and reviews for guides",
+                "columns": [
+                    ("rating_id", "UUID", "PK"),
+                    ("guide_id", "UUID", "NOT NULL, FK -> guides"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("trip_id", "UUID", "NOT NULL"),
+                    ("score", "SMALLINT", "NOT NULL, CHECK (1-5)"),
+                    ("comment", "TEXT", "NULL"),
+                    ("rated_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_rating_guide", "guide_id, rated_at DESC"),
+                ],
+            },
+        },
     },
     "svc-partner-integrations": {
         "engine": "PostgreSQL 15",
@@ -228,6 +815,41 @@ DATA_STORES = {
             "Idempotency keys for booking creation",
         ],
         "volume": "~400 partner bookings/day",
+        "connection_pool": {"min": 3, "max": 10, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 30-day retention",
+        "table_details": {
+            "partners": {
+                "description": "External partner organizations and their API credentials",
+                "columns": [
+                    ("partner_id", "UUID", "PK"),
+                    ("name", "VARCHAR(200)", "NOT NULL"),
+                    ("api_key_hash", "VARCHAR(128)", "NOT NULL"),
+                    ("commission_rate", "DECIMAL(4,2)", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'active'"),
+                    ("key_rotated_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_partner_status", "status"),
+                ],
+            },
+            "partner_bookings": {
+                "description": "Bookings originated from partner channels",
+                "columns": [
+                    ("booking_id", "UUID", "PK"),
+                    ("partner_id", "UUID", "NOT NULL, FK -> partners"),
+                    ("reservation_id", "UUID", "NOT NULL"),
+                    ("idempotency_key", "VARCHAR(64)", "NOT NULL, UNIQUE"),
+                    ("commission_amount", "DECIMAL(10,2)", "NOT NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_pb_partner", "partner_id"),
+                    ("idx_pb_idempotency", "idempotency_key", "UNIQUE"),
+                    ("idx_pb_reservation", "reservation_id"),
+                ],
+            },
+        },
     },
     "svc-payments": {
         "engine": "PostgreSQL 15",
@@ -239,6 +861,62 @@ DATA_STORES = {
             "Double-entry ledger for financial reconciliation",
         ],
         "volume": "~2,500 transactions/day",
+        "connection_pool": {"min": 10, "max": 30, "idle_timeout": "5min"},
+        "backup": "Continuous WAL archiving, daily base backup, 7-year retention (financial)",
+        "table_details": {
+            "payments": {
+                "description": "Payment transaction records with tokenized card references",
+                "columns": [
+                    ("payment_id", "UUID", "PK"),
+                    ("reservation_id", "UUID", "NOT NULL"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("amount", "DECIMAL(10,2)", "NOT NULL"),
+                    ("currency", "CHAR(3)", "NOT NULL"),
+                    ("payment_method_id", "UUID", "NOT NULL, FK -> payment_methods"),
+                    ("gateway_ref", "VARCHAR(255)", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("idempotency_key", "VARCHAR(64)", "NOT NULL, UNIQUE"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_pay_reservation", "reservation_id"),
+                    ("idx_pay_guest", "guest_id"),
+                    ("idx_pay_idempotency", "idempotency_key", "UNIQUE"),
+                    ("idx_pay_status", "status, created_at DESC"),
+                ],
+            },
+            "refunds": {
+                "description": "Refund records linked to original payments",
+                "columns": [
+                    ("refund_id", "UUID", "PK"),
+                    ("payment_id", "UUID", "NOT NULL, FK -> payments"),
+                    ("amount", "DECIMAL(10,2)", "NOT NULL"),
+                    ("reason", "TEXT", "NOT NULL"),
+                    ("gateway_ref", "VARCHAR(255)", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_refund_payment", "payment_id"),
+                ],
+            },
+            "payment_methods": {
+                "description": "Tokenized payment instruments (no raw card data stored)",
+                "columns": [
+                    ("method_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("token", "VARCHAR(255)", "NOT NULL (gateway token)"),
+                    ("card_last_four", "CHAR(4)", "NOT NULL"),
+                    ("card_brand", "VARCHAR(20)", "NOT NULL"),
+                    ("expiry_month", "SMALLINT", "NOT NULL"),
+                    ("expiry_year", "SMALLINT", "NOT NULL"),
+                    ("is_default", "BOOLEAN", "NOT NULL, DEFAULT FALSE"),
+                ],
+                "indexes": [
+                    ("idx_pm_guest", "guest_id"),
+                ],
+            },
+        },
     },
     "svc-notifications": {
         "engine": "PostgreSQL 15 + Valkey 8",
@@ -250,6 +928,60 @@ DATA_STORES = {
             "Multi-channel delivery: email, SMS, push, in-app",
         ],
         "volume": "~15,000 notifications/day",
+        "connection_pool": {"min": 5, "max": 25, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 30-day retention",
+        "table_details": {
+            "notifications": {
+                "description": "Notification dispatch records with delivery tracking",
+                "columns": [
+                    ("notification_id", "UUID", "PK"),
+                    ("recipient_id", "UUID", "NOT NULL"),
+                    ("template_id", "UUID", "NOT NULL, FK -> templates"),
+                    ("channel", "VARCHAR(20)", "NOT NULL"),
+                    ("subject", "VARCHAR(255)", "NULL"),
+                    ("body", "TEXT", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'queued'"),
+                    ("scheduled_at", "TIMESTAMPTZ", "NULL"),
+                    ("sent_at", "TIMESTAMPTZ", "NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_notif_recipient", "recipient_id, created_at DESC"),
+                    ("idx_notif_status", "status"),
+                    ("idx_notif_scheduled", "scheduled_at", "WHERE status = 'scheduled'"),
+                ],
+            },
+            "templates": {
+                "description": "Notification content templates with version history",
+                "columns": [
+                    ("template_id", "UUID", "PK"),
+                    ("name", "VARCHAR(100)", "NOT NULL"),
+                    ("channel", "VARCHAR(20)", "NOT NULL"),
+                    ("subject_template", "TEXT", "NULL"),
+                    ("body_template", "TEXT", "NOT NULL"),
+                    ("version", "INTEGER", "NOT NULL, DEFAULT 1"),
+                    ("active", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_tpl_name_channel", "name, channel"),
+                ],
+            },
+            "delivery_log": {
+                "description": "Delivery attempt history for debugging and retry logic",
+                "columns": [
+                    ("log_id", "UUID", "PK"),
+                    ("notification_id", "UUID", "NOT NULL, FK -> notifications"),
+                    ("attempt", "SMALLINT", "NOT NULL"),
+                    ("status", "VARCHAR(20)", "NOT NULL"),
+                    ("provider_response", "JSONB", "NULL"),
+                    ("attempted_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_dlog_notif", "notification_id"),
+                ],
+            },
+        },
     },
     "svc-analytics": {
         "engine": "Oracle Database 19c",
@@ -261,6 +993,56 @@ DATA_STORES = {
             "Oracle Advanced Analytics (DBMS_PREDICTIVE_ANALYTICS) for trend forecasting",
         ],
         "volume": "~50K metric inserts/day (event-driven)",
+        "connection_pool": {"min": 5, "max": 20, "idle_timeout": "10min"},
+        "backup": "Oracle RMAN incremental backup, 90-day retention",
+        "table_details": {
+            "BOOKING_METRICS": {
+                "description": "Aggregated booking KPIs partitioned by month",
+                "columns": [
+                    ("METRIC_ID", "NUMBER(19)", "PK"),
+                    ("METRIC_DATE", "DATE", "NOT NULL"),
+                    ("REGION_ID", "VARCHAR2(36)", "NOT NULL"),
+                    ("BOOKINGS_COUNT", "NUMBER(10)", "NOT NULL"),
+                    ("CANCELLATION_COUNT", "NUMBER(10)", "NOT NULL, DEFAULT 0"),
+                    ("TOTAL_REVENUE", "NUMBER(12,2)", "NOT NULL"),
+                    ("AVG_PARTY_SIZE", "NUMBER(4,1)", "NULL"),
+                    ("CREATED_AT", "TIMESTAMP WITH TIME ZONE", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("IDX_BM_DATE_REGION", "METRIC_DATE, REGION_ID"),
+                ],
+            },
+            "REVENUE_METRICS": {
+                "description": "Daily revenue aggregation across payment channels",
+                "columns": [
+                    ("METRIC_ID", "NUMBER(19)", "PK"),
+                    ("METRIC_DATE", "DATE", "NOT NULL"),
+                    ("CHANNEL", "VARCHAR2(30)", "NOT NULL"),
+                    ("GROSS_REVENUE", "NUMBER(12,2)", "NOT NULL"),
+                    ("REFUND_TOTAL", "NUMBER(12,2)", "NOT NULL, DEFAULT 0"),
+                    ("NET_REVENUE", "NUMBER(12,2)", "GENERATED ALWAYS AS (GROSS_REVENUE - REFUND_TOTAL)"),
+                    ("TRANSACTION_COUNT", "NUMBER(10)", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("IDX_RM_DATE", "METRIC_DATE"),
+                ],
+            },
+            "GUIDE_PERFORMANCE": {
+                "description": "Guide performance metrics for scheduling optimization",
+                "columns": [
+                    ("METRIC_ID", "NUMBER(19)", "PK"),
+                    ("GUIDE_ID", "VARCHAR2(36)", "NOT NULL"),
+                    ("METRIC_DATE", "DATE", "NOT NULL"),
+                    ("TRIPS_LED", "NUMBER(5)", "NOT NULL"),
+                    ("AVG_RATING", "NUMBER(3,2)", "NULL"),
+                    ("INCIDENTS_COUNT", "NUMBER(5)", "NOT NULL, DEFAULT 0"),
+                    ("UTILIZATION_PCT", "NUMBER(5,2)", "NULL"),
+                ],
+                "indexes": [
+                    ("IDX_GP_GUIDE_DATE", "GUIDE_ID, METRIC_DATE"),
+                ],
+            },
+        },
     },
     "svc-loyalty-rewards": {
         "engine": "Couchbase 7",
@@ -272,6 +1054,57 @@ DATA_STORES = {
             "Sub-document operations for atomic point balance updates",
         ],
         "volume": "~1,000 transactions/day",
+        "connection_pool": {"min": 5, "max": 15, "idle_timeout": "30s"},
+        "backup": "XDCR to standby cluster, daily cbbackupmgr",
+        "table_details": {
+            "members": {
+                "description": "Loyalty member documents with point balances and tier status",
+                "columns": [
+                    ("document_key", "String", "members::{guest_id}"),
+                    ("guest_id", "String", "NOT NULL"),
+                    ("tier", "String", "NOT NULL (bronze/silver/gold/platinum)"),
+                    ("points_balance", "Number", "NOT NULL"),
+                    ("lifetime_points", "Number", "NOT NULL"),
+                    ("tier_qualified_at", "ISO8601 String", "NOT NULL"),
+                    ("enrolled_at", "ISO8601 String", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_member_tier", "tier", "N1QL GSI"),
+                    ("idx_member_points", "points_balance DESC", "N1QL GSI"),
+                ],
+            },
+            "point_transactions": {
+                "description": "Point earn and redeem transaction ledger",
+                "columns": [
+                    ("document_key", "String", "txn::{transaction_id}"),
+                    ("transaction_id", "String", "NOT NULL"),
+                    ("guest_id", "String", "NOT NULL"),
+                    ("type", "String", "NOT NULL (earn/redeem/expire/adjust)"),
+                    ("points", "Number", "NOT NULL"),
+                    ("description", "String", "NOT NULL"),
+                    ("reference_id", "String", "NULL (reservation or trip ID)"),
+                    ("created_at", "ISO8601 String", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_txn_guest", "guest_id, created_at DESC", "N1QL GSI"),
+                ],
+            },
+            "redemptions": {
+                "description": "Reward redemption records against point balances",
+                "columns": [
+                    ("document_key", "String", "redemption::{redemption_id}"),
+                    ("redemption_id", "String", "NOT NULL"),
+                    ("guest_id", "String", "NOT NULL"),
+                    ("reward_type", "String", "NOT NULL"),
+                    ("points_spent", "Number", "NOT NULL"),
+                    ("status", "String", "NOT NULL"),
+                    ("redeemed_at", "ISO8601 String", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_redeem_guest", "guest_id", "N1QL GSI"),
+                ],
+            },
+        },
     },
     "svc-media-gallery": {
         "engine": "PostgreSQL 15 + S3-Compatible Object Store",
@@ -283,6 +1116,58 @@ DATA_STORES = {
             "Automatic thumbnail generation on upload",
         ],
         "volume": "~500 uploads/day peak season",
+        "connection_pool": {"min": 3, "max": 15, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, S3 cross-region replication",
+        "table_details": {
+            "media_items": {
+                "description": "Metadata for uploaded photos and videos (binary stored in S3)",
+                "columns": [
+                    ("media_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("trip_id", "UUID", "NULL"),
+                    ("media_type", "VARCHAR(20)", "NOT NULL (photo/video)"),
+                    ("s3_key", "VARCHAR(512)", "NOT NULL"),
+                    ("thumbnail_key", "VARCHAR(512)", "NULL"),
+                    ("file_size_bytes", "BIGINT", "NOT NULL"),
+                    ("width", "INTEGER", "NULL"),
+                    ("height", "INTEGER", "NULL"),
+                    ("gps_lat", "DECIMAL(9,6)", "NULL"),
+                    ("gps_lng", "DECIMAL(9,6)", "NULL"),
+                    ("uploaded_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_media_guest", "guest_id, uploaded_at DESC"),
+                    ("idx_media_trip", "trip_id"),
+                ],
+            },
+            "share_links": {
+                "description": "Shareable links for media items with expiry",
+                "columns": [
+                    ("link_id", "UUID", "PK"),
+                    ("media_id", "UUID", "NOT NULL, FK -> media_items"),
+                    ("token", "VARCHAR(128)", "NOT NULL, UNIQUE"),
+                    ("expires_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_share_token", "token", "UNIQUE"),
+                    ("idx_share_expiry", "expires_at"),
+                ],
+            },
+            "albums": {
+                "description": "Guest-created photo albums grouping media items",
+                "columns": [
+                    ("album_id", "UUID", "PK"),
+                    ("guest_id", "UUID", "NOT NULL"),
+                    ("name", "VARCHAR(200)", "NOT NULL"),
+                    ("cover_media_id", "UUID", "NULL, FK -> media_items"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_album_guest", "guest_id"),
+                ],
+            },
+        },
     },
     "svc-location-services": {
         "engine": "PostGIS (PostgreSQL 15)",
@@ -294,6 +1179,40 @@ DATA_STORES = {
             "Timezone-aware operating hours management",
         ],
         "volume": "~100 updates/day, ~2K reads/day",
+        "connection_pool": {"min": 3, "max": 10, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 14-day retention",
+        "table_details": {
+            "locations": {
+                "description": "Adventure locations and facilities with geospatial boundaries",
+                "columns": [
+                    ("location_id", "UUID", "PK"),
+                    ("name", "VARCHAR(200)", "NOT NULL"),
+                    ("location_type", "VARCHAR(30)", "NOT NULL"),
+                    ("boundary", "GEOMETRY(Polygon, 4326)", "NOT NULL"),
+                    ("center_point", "GEOMETRY(Point, 4326)", "NOT NULL"),
+                    ("max_capacity", "INTEGER", "NOT NULL"),
+                    ("timezone", "VARCHAR(50)", "NOT NULL"),
+                    ("active", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                ],
+                "indexes": [
+                    ("idx_loc_boundary", "boundary", "GiST spatial"),
+                    ("idx_loc_center", "center_point", "GiST spatial"),
+                    ("idx_loc_type", "location_type"),
+                ],
+            },
+            "capacity_records": {
+                "description": "Real-time occupancy tracking for locations",
+                "columns": [
+                    ("record_id", "UUID", "PK"),
+                    ("location_id", "UUID", "NOT NULL, FK -> locations"),
+                    ("current_count", "INTEGER", "NOT NULL"),
+                    ("recorded_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_cap_loc_time", "location_id, recorded_at DESC"),
+                ],
+            },
+        },
     },
     "svc-inventory-procurement": {
         "engine": "PostgreSQL 15",
@@ -305,6 +1224,58 @@ DATA_STORES = {
             "Supplier lead time tracking for delivery estimates",
         ],
         "volume": "~50 POs/day, ~200 stock adjustments/day",
+        "connection_pool": {"min": 3, "max": 10, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 30-day retention",
+        "table_details": {
+            "purchase_orders": {
+                "description": "Purchase orders with approval state machine",
+                "columns": [
+                    ("po_id", "UUID", "PK"),
+                    ("supplier_id", "UUID", "NOT NULL, FK -> suppliers"),
+                    ("status", "VARCHAR(20)", "NOT NULL, DEFAULT 'draft'"),
+                    ("total_amount", "DECIMAL(10,2)", "NOT NULL"),
+                    ("currency", "CHAR(3)", "NOT NULL, DEFAULT 'USD'"),
+                    ("approved_by", "VARCHAR(100)", "NULL"),
+                    ("submitted_at", "TIMESTAMPTZ", "NULL"),
+                    ("approved_at", "TIMESTAMPTZ", "NULL"),
+                    ("created_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_po_supplier", "supplier_id"),
+                    ("idx_po_status", "status"),
+                ],
+            },
+            "suppliers": {
+                "description": "Approved suppliers with performance tracking",
+                "columns": [
+                    ("supplier_id", "UUID", "PK"),
+                    ("name", "VARCHAR(200)", "NOT NULL"),
+                    ("contact_email", "VARCHAR(255)", "NOT NULL"),
+                    ("lead_time_days", "INTEGER", "NOT NULL"),
+                    ("rating", "DECIMAL(3,2)", "NULL"),
+                    ("active", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                ],
+                "indexes": [
+                    ("idx_supplier_active", "active"),
+                ],
+            },
+            "stock_levels": {
+                "description": "Current stock quantities with reorder thresholds",
+                "columns": [
+                    ("stock_id", "UUID", "PK"),
+                    ("item_type", "VARCHAR(50)", "NOT NULL"),
+                    ("location_id", "UUID", "NOT NULL"),
+                    ("quantity_on_hand", "INTEGER", "NOT NULL"),
+                    ("reorder_point", "INTEGER", "NOT NULL"),
+                    ("reorder_quantity", "INTEGER", "NOT NULL"),
+                    ("last_counted_at", "TIMESTAMPTZ", "NULL"),
+                ],
+                "indexes": [
+                    ("idx_stock_item_loc", "item_type, location_id", "UNIQUE"),
+                    ("idx_stock_reorder", "quantity_on_hand", "WHERE quantity_on_hand <= reorder_point"),
+                ],
+            },
+        },
     },
     "svc-weather": {
         "engine": "Valkey 8 + PostgreSQL 15",
@@ -316,6 +1287,41 @@ DATA_STORES = {
             "Severe weather alert deduplication",
         ],
         "volume": "~10K weather reads/day, ~100 external API fetches/day",
+        "connection_pool": {"min": 3, "max": 10, "idle_timeout": "10min"},
+        "backup": "Daily pg_dump, 7-day retention (cache data is ephemeral)",
+        "table_details": {
+            "weather_stations": {
+                "description": "Registered weather station locations for data sourcing",
+                "columns": [
+                    ("station_id", "UUID", "PK"),
+                    ("name", "VARCHAR(100)", "NOT NULL"),
+                    ("latitude", "DECIMAL(9,6)", "NOT NULL"),
+                    ("longitude", "DECIMAL(9,6)", "NOT NULL"),
+                    ("provider", "VARCHAR(50)", "NOT NULL"),
+                    ("active", "BOOLEAN", "NOT NULL, DEFAULT TRUE"),
+                ],
+                "indexes": [
+                    ("idx_ws_provider", "provider"),
+                ],
+            },
+            "alert_history": {
+                "description": "Archived severe weather alerts with deduplication",
+                "columns": [
+                    ("alert_id", "UUID", "PK"),
+                    ("station_id", "UUID", "NOT NULL, FK -> weather_stations"),
+                    ("alert_type", "VARCHAR(50)", "NOT NULL"),
+                    ("severity", "VARCHAR(20)", "NOT NULL"),
+                    ("message", "TEXT", "NOT NULL"),
+                    ("external_id", "VARCHAR(100)", "NOT NULL, UNIQUE (dedup key)"),
+                    ("issued_at", "TIMESTAMPTZ", "NOT NULL"),
+                    ("expires_at", "TIMESTAMPTZ", "NOT NULL"),
+                ],
+                "indexes": [
+                    ("idx_alert_station", "station_id, issued_at DESC"),
+                    ("idx_alert_dedup", "external_id", "UNIQUE"),
+                ],
+            },
+        },
     },
 }
 
@@ -1361,7 +2367,7 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
             else:
                 L.append(f'participant "{label}" as {alias} #F5F5F5')
 
-    L.append(f'database "{db_label}" as DB #FCE4EC')
+    L.append(f'database "{db_label}" as DB [[/microservices/{svc_name}/#data-store]] #FCE4EC')
     L.append("")
 
     # Swagger link note
@@ -1596,16 +2602,66 @@ def generate_service_page(svc_name, spec, svg_files):
         )
         lines.append("")
         lines.append("")
+    lines.append("## :material-database: Data Store { #data-store }")
+    lines.append("")
     if ds:
+        lines.append("### Overview")
+        lines.append("")
         tables_fmt = ", ".join(f"`{t}`" for t in ds.get("tables", []))
-        features_fmt = " | ".join(ds.get("features", []))
         lines.append("| Property | Detail |")
         lines.append("|----------|--------|")
         lines.append(f"| **Engine** | {ds.get('engine', 'N/A')} |")
         lines.append(f"| **Schema** | `{ds.get('schema', 'N/A')}` |")
-        lines.append(f"| **Primary Tables** | {tables_fmt} |")
-        lines.append(f"| **Key Features** | {features_fmt} |")
+        lines.append(f"| **Tables** | {tables_fmt} |")
         lines.append(f"| **Estimated Volume** | {ds.get('volume', 'N/A')} |")
+        cp = ds.get("connection_pool")
+        if cp:
+            lines.append(f"| **Connection Pool** | min {cp['min']} / max {cp['max']} / idle timeout {cp['idle_timeout']} |")
+        backup = ds.get("backup")
+        if backup:
+            lines.append(f"| **Backup Strategy** | {backup} |")
+        lines.append("")
+
+        # Key features
+        features = ds.get("features", [])
+        if features:
+            lines.append("### Key Features")
+            lines.append("")
+            for feat in features:
+                lines.append(f"- {feat}")
+            lines.append("")
+
+        # Table details
+        table_details = ds.get("table_details", {})
+        if table_details:
+            lines.append("### Table Reference")
+            lines.append("")
+            for tbl_name, tbl_info in table_details.items():
+                tbl_desc = tbl_info.get("description", "")
+                lines.append(f"#### `{tbl_name}`")
+                lines.append("")
+                if tbl_desc:
+                    lines.append(f"*{tbl_desc}*")
+                    lines.append("")
+                columns = tbl_info.get("columns", [])
+                if columns:
+                    lines.append("| Column | Type | Constraints |")
+                    lines.append("|--------|------|-------------|")
+                    for col in columns:
+                        col_name, col_type, col_constraints = col[0], col[1], col[2] if len(col) > 2 else ""
+                        lines.append(f"| `{col_name}` | `{col_type}` | {col_constraints} |")
+                    lines.append("")
+                indexes = tbl_info.get("indexes", [])
+                if indexes:
+                    lines.append("**Indexes:**")
+                    lines.append("")
+                    for idx in indexes:
+                        idx_name = idx[0]
+                        idx_cols = idx[1]
+                        idx_note = idx[2] if len(idx) > 2 else ""
+                        note_str = f" ({idx_note})" if idx_note else ""
+                        lines.append(f"- `{idx_name}` on `{idx_cols}`{note_str}")
+                    lines.append("")
     else:
         lines.append("*Data store information not yet documented.*")
 

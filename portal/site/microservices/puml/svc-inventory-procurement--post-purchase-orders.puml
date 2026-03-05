@@ -24,7 +24,7 @@ participant "svc-inventory-procurement" as Svc [[/microservices/svc-inventory-pr
 participant "Gear Inventory" as GI [[/microservices/svc-gear-inventory/]] #FFF8F0
 participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-inventory-procurement/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-inventory-procurement.html View in Swagger UI]]

@@ -24,7 +24,7 @@ participant "svc-gear-inventory" as Svc [[/microservices/svc-gear-inventory/]] #
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-gear-inventory/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-gear-inventory.html#/Gear%20Assignments/createGearAssignment View in Swagger UI]]

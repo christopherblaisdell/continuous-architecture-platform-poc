@@ -21,13 +21,122 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-guest-profiles C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `guests` |
-| **Primary Tables** | `guest_profiles`, `certifications`, `medical_info`, `emergency_contacts`, `adventure_history` |
-| **Key Features** | PII encrypted at rest (AES-256) | Composite index on (last_name, date_of_birth) | Soft delete with GDPR data retention policy |
+| **Tables** | `guest_profiles`, `certifications`, `medical_info`, `emergency_contacts`, `adventure_history` |
 | **Estimated Volume** | ~800 new profiles/day peak season |
+| **Connection Pool** | min 10 / max 30 / idle timeout 10min |
+| **Backup Strategy** | Continuous WAL archiving, daily base backup, 90-day PITR (GDPR) |
+
+### Key Features
+
+- PII encrypted at rest (AES-256)
+- Composite index on (last_name, date_of_birth)
+- Soft delete with GDPR data retention policy
+
+### Table Reference
+
+#### `guest_profiles`
+
+*Core guest identity records with PII encryption*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `guest_id` | `UUID` | PK |
+| `first_name` | `VARCHAR(100)` | NOT NULL, ENCRYPTED |
+| `last_name` | `VARCHAR(100)` | NOT NULL, ENCRYPTED |
+| `email` | `VARCHAR(255)` | NOT NULL, UNIQUE, ENCRYPTED |
+| `phone` | `VARCHAR(30)` | NULL, ENCRYPTED |
+| `date_of_birth` | `DATE` | NOT NULL |
+| `loyalty_tier` | `VARCHAR(20)` | DEFAULT 'bronze' |
+| `identity_verified` | `BOOLEAN` | NOT NULL, DEFAULT FALSE |
+| `deleted_at` | `TIMESTAMPTZ` | NULL (soft delete) |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_guest_email` on `email` (UNIQUE)
+- `idx_guest_name_dob` on `last_name, date_of_birth`
+- `idx_guest_loyalty` on `loyalty_tier`
+
+#### `certifications`
+
+*Guest adventure certifications (scuba, climbing, etc.)*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `cert_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL, FK -> guest_profiles |
+| `cert_type` | `VARCHAR(50)` | NOT NULL |
+| `issuer` | `VARCHAR(100)` | NOT NULL |
+| `issued_date` | `DATE` | NOT NULL |
+| `expiry_date` | `DATE` | NULL |
+| `document_url` | `TEXT` | NULL |
+
+**Indexes:**
+
+- `idx_cert_guest` on `guest_id`
+- `idx_cert_expiry` on `expiry_date`
+
+#### `medical_info`
+
+*Guest medical conditions and allergy records (encrypted PII)*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `medical_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL, FK -> guest_profiles |
+| `conditions` | `JSONB` | ENCRYPTED |
+| `allergies` | `JSONB` | ENCRYPTED |
+| `emergency_medications` | `JSONB` | ENCRYPTED |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_medical_guest` on `guest_id` (UNIQUE)
+
+#### `emergency_contacts`
+
+*Emergency contact information for each guest*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `contact_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL, FK -> guest_profiles |
+| `name` | `VARCHAR(200)` | NOT NULL, ENCRYPTED |
+| `phone` | `VARCHAR(30)` | NOT NULL, ENCRYPTED |
+| `relationship` | `VARCHAR(50)` | NOT NULL |
+| `is_primary` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+
+**Indexes:**
+
+- `idx_emg_guest` on `guest_id`
+
+#### `adventure_history`
+
+*Record of completed adventures per guest for profile display*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `history_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL, FK -> guest_profiles |
+| `trip_id` | `UUID` | NOT NULL |
+| `trip_date` | `DATE` | NOT NULL |
+| `adventure_category` | `VARCHAR(50)` | NOT NULL |
+| `rating` | `SMALLINT` | NULL, CHECK (1-5) |
+| `completed_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_hist_guest` on `guest_id, trip_date DESC`
+
 
 ---
 

@@ -21,13 +21,86 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-notifications--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-notifications C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 + Valkey 8 |
 | **Schema** | `notifications` |
-| **Primary Tables** | `notifications`, `templates`, `delivery_log`, `channel_preferences` |
-| **Key Features** | Valkey queue for async delivery processing | Template versioning with rollback support | Multi-channel delivery: email, SMS, push, in-app |
+| **Tables** | `notifications`, `templates`, `delivery_log`, `channel_preferences` |
 | **Estimated Volume** | ~15,000 notifications/day |
+| **Connection Pool** | min 5 / max 25 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 30-day retention |
+
+### Key Features
+
+- Valkey queue for async delivery processing
+- Template versioning with rollback support
+- Multi-channel delivery: email, SMS, push, in-app
+
+### Table Reference
+
+#### `notifications`
+
+*Notification dispatch records with delivery tracking*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `notification_id` | `UUID` | PK |
+| `recipient_id` | `UUID` | NOT NULL |
+| `template_id` | `UUID` | NOT NULL, FK -> templates |
+| `channel` | `VARCHAR(20)` | NOT NULL |
+| `subject` | `VARCHAR(255)` | NULL |
+| `body` | `TEXT` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'queued' |
+| `scheduled_at` | `TIMESTAMPTZ` | NULL |
+| `sent_at` | `TIMESTAMPTZ` | NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_notif_recipient` on `recipient_id, created_at DESC`
+- `idx_notif_status` on `status`
+- `idx_notif_scheduled` on `scheduled_at` (WHERE status = 'scheduled')
+
+#### `templates`
+
+*Notification content templates with version history*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `template_id` | `UUID` | PK |
+| `name` | `VARCHAR(100)` | NOT NULL |
+| `channel` | `VARCHAR(20)` | NOT NULL |
+| `subject_template` | `TEXT` | NULL |
+| `body_template` | `TEXT` | NOT NULL |
+| `version` | `INTEGER` | NOT NULL, DEFAULT 1 |
+| `active` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_tpl_name_channel` on `name, channel`
+
+#### `delivery_log`
+
+*Delivery attempt history for debugging and retry logic*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `log_id` | `UUID` | PK |
+| `notification_id` | `UUID` | NOT NULL, FK -> notifications |
+| `attempt` | `SMALLINT` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `provider_response` | `JSONB` | NULL |
+| `attempted_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_dlog_notif` on `notification_id`
+
 
 ---
 

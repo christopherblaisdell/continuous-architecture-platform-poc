@@ -21,13 +21,82 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-analytics--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-analytics C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | Oracle Database 19c |
 | **Schema** | `ANALYTICS` |
-| **Primary Tables** | `BOOKING_METRICS`, `REVENUE_METRICS`, `UTILIZATION_METRICS`, `SATISFACTION_SCORES`, `SAFETY_METRICS`, `GUIDE_PERFORMANCE` |
-| **Key Features** | Oracle Partitioning for time-series data (range partitioning by month) | Materialized views with fast refresh for real-time dashboards | Oracle Advanced Analytics (DBMS_PREDICTIVE_ANALYTICS) for trend forecasting |
+| **Tables** | `BOOKING_METRICS`, `REVENUE_METRICS`, `UTILIZATION_METRICS`, `SATISFACTION_SCORES`, `SAFETY_METRICS`, `GUIDE_PERFORMANCE` |
 | **Estimated Volume** | ~50K metric inserts/day (event-driven) |
+| **Connection Pool** | min 5 / max 20 / idle timeout 10min |
+| **Backup Strategy** | Oracle RMAN incremental backup, 90-day retention |
+
+### Key Features
+
+- Oracle Partitioning for time-series data (range partitioning by month)
+- Materialized views with fast refresh for real-time dashboards
+- Oracle Advanced Analytics (DBMS_PREDICTIVE_ANALYTICS) for trend forecasting
+
+### Table Reference
+
+#### `BOOKING_METRICS`
+
+*Aggregated booking KPIs partitioned by month*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `METRIC_ID` | `NUMBER(19)` | PK |
+| `METRIC_DATE` | `DATE` | NOT NULL |
+| `REGION_ID` | `VARCHAR2(36)` | NOT NULL |
+| `BOOKINGS_COUNT` | `NUMBER(10)` | NOT NULL |
+| `CANCELLATION_COUNT` | `NUMBER(10)` | NOT NULL, DEFAULT 0 |
+| `TOTAL_REVENUE` | `NUMBER(12,2)` | NOT NULL |
+| `AVG_PARTY_SIZE` | `NUMBER(4,1)` | NULL |
+| `CREATED_AT` | `TIMESTAMP WITH TIME ZONE` | NOT NULL |
+
+**Indexes:**
+
+- `IDX_BM_DATE_REGION` on `METRIC_DATE, REGION_ID`
+
+#### `REVENUE_METRICS`
+
+*Daily revenue aggregation across payment channels*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `METRIC_ID` | `NUMBER(19)` | PK |
+| `METRIC_DATE` | `DATE` | NOT NULL |
+| `CHANNEL` | `VARCHAR2(30)` | NOT NULL |
+| `GROSS_REVENUE` | `NUMBER(12,2)` | NOT NULL |
+| `REFUND_TOTAL` | `NUMBER(12,2)` | NOT NULL, DEFAULT 0 |
+| `NET_REVENUE` | `NUMBER(12,2)` | GENERATED ALWAYS AS (GROSS_REVENUE - REFUND_TOTAL) |
+| `TRANSACTION_COUNT` | `NUMBER(10)` | NOT NULL |
+
+**Indexes:**
+
+- `IDX_RM_DATE` on `METRIC_DATE`
+
+#### `GUIDE_PERFORMANCE`
+
+*Guide performance metrics for scheduling optimization*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `METRIC_ID` | `NUMBER(19)` | PK |
+| `GUIDE_ID` | `VARCHAR2(36)` | NOT NULL |
+| `METRIC_DATE` | `DATE` | NOT NULL |
+| `TRIPS_LED` | `NUMBER(5)` | NOT NULL |
+| `AVG_RATING` | `NUMBER(3,2)` | NULL |
+| `INCIDENTS_COUNT` | `NUMBER(5)` | NOT NULL, DEFAULT 0 |
+| `UTILIZATION_PCT` | `NUMBER(5,2)` | NULL |
+
+**Indexes:**
+
+- `IDX_GP_GUIDE_DATE` on `GUIDE_ID, METRIC_DATE`
+
 
 ---
 

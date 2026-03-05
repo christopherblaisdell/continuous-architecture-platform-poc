@@ -21,13 +21,88 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-payments--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-payments C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `payments` |
-| **Primary Tables** | `payments`, `refunds`, `payment_methods`, `daily_summaries` |
-| **Key Features** | PCI-DSS compliant token storage (no raw card data) | Idempotent payment processing via request keys | Double-entry ledger for financial reconciliation |
+| **Tables** | `payments`, `refunds`, `payment_methods`, `daily_summaries` |
 | **Estimated Volume** | ~2,500 transactions/day |
+| **Connection Pool** | min 10 / max 30 / idle timeout 5min |
+| **Backup Strategy** | Continuous WAL archiving, daily base backup, 7-year retention (financial) |
+
+### Key Features
+
+- PCI-DSS compliant token storage (no raw card data)
+- Idempotent payment processing via request keys
+- Double-entry ledger for financial reconciliation
+
+### Table Reference
+
+#### `payments`
+
+*Payment transaction records with tokenized card references*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `payment_id` | `UUID` | PK |
+| `reservation_id` | `UUID` | NOT NULL |
+| `guest_id` | `UUID` | NOT NULL |
+| `amount` | `DECIMAL(10,2)` | NOT NULL |
+| `currency` | `CHAR(3)` | NOT NULL |
+| `payment_method_id` | `UUID` | NOT NULL, FK -> payment_methods |
+| `gateway_ref` | `VARCHAR(255)` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `idempotency_key` | `VARCHAR(64)` | NOT NULL, UNIQUE |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_pay_reservation` on `reservation_id`
+- `idx_pay_guest` on `guest_id`
+- `idx_pay_idempotency` on `idempotency_key` (UNIQUE)
+- `idx_pay_status` on `status, created_at DESC`
+
+#### `refunds`
+
+*Refund records linked to original payments*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `refund_id` | `UUID` | PK |
+| `payment_id` | `UUID` | NOT NULL, FK -> payments |
+| `amount` | `DECIMAL(10,2)` | NOT NULL |
+| `reason` | `TEXT` | NOT NULL |
+| `gateway_ref` | `VARCHAR(255)` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_refund_payment` on `payment_id`
+
+#### `payment_methods`
+
+*Tokenized payment instruments (no raw card data stored)*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `method_id` | `UUID` | PK |
+| `guest_id` | `UUID` | NOT NULL |
+| `token` | `VARCHAR(255)` | NOT NULL (gateway token) |
+| `card_last_four` | `CHAR(4)` | NOT NULL |
+| `card_brand` | `VARCHAR(20)` | NOT NULL |
+| `expiry_month` | `SMALLINT` | NOT NULL |
+| `expiry_year` | `SMALLINT` | NOT NULL |
+| `is_default` | `BOOLEAN` | NOT NULL, DEFAULT FALSE |
+
+**Indexes:**
+
+- `idx_pm_guest` on `guest_id`
+
 
 ---
 

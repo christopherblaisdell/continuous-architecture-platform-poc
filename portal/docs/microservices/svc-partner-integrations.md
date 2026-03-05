@@ -21,13 +21,64 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-partner-integrations--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-partner-integrations--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-partner-integrations C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `partners` |
-| **Primary Tables** | `partners`, `partner_bookings`, `commission_records`, `reconciliation_log` |
-| **Key Features** | Partner API key management with rotation policy | Commission calculation engine with tiered rates | Idempotency keys for booking creation |
+| **Tables** | `partners`, `partner_bookings`, `commission_records`, `reconciliation_log` |
 | **Estimated Volume** | ~400 partner bookings/day |
+| **Connection Pool** | min 3 / max 10 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 30-day retention |
+
+### Key Features
+
+- Partner API key management with rotation policy
+- Commission calculation engine with tiered rates
+- Idempotency keys for booking creation
+
+### Table Reference
+
+#### `partners`
+
+*External partner organizations and their API credentials*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `partner_id` | `UUID` | PK |
+| `name` | `VARCHAR(200)` | NOT NULL |
+| `api_key_hash` | `VARCHAR(128)` | NOT NULL |
+| `commission_rate` | `DECIMAL(4,2)` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL, DEFAULT 'active' |
+| `key_rotated_at` | `TIMESTAMPTZ` | NOT NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_partner_status` on `status`
+
+#### `partner_bookings`
+
+*Bookings originated from partner channels*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `booking_id` | `UUID` | PK |
+| `partner_id` | `UUID` | NOT NULL, FK -> partners |
+| `reservation_id` | `UUID` | NOT NULL |
+| `idempotency_key` | `VARCHAR(64)` | NOT NULL, UNIQUE |
+| `commission_amount` | `DECIMAL(10,2)` | NOT NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_pb_partner` on `partner_id`
+- `idx_pb_idempotency` on `idempotency_key` (UNIQUE)
+- `idx_pb_reservation` on `reservation_id`
+
 
 ---
 

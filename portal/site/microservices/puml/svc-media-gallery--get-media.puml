@@ -21,7 +21,7 @@ title GET /media\nList media by reservation or trip
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-media-gallery" as Svc [[/microservices/svc-media-gallery/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-media-gallery/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-media-gallery.html#/Media/listMedia View in Swagger UI]]

@@ -21,7 +21,7 @@ title GET /guides/{guide_id}\nGet guide by ID
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-guide-management" as Svc [[/microservices/svc-guide-management/]] #E8F4F8
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-guide-management/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-guide-management.html#/Guides/getGuide View in Swagger UI]]

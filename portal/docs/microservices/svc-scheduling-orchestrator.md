@@ -21,13 +21,99 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-scheduling-orchestrator--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-scheduling-orchestrator--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-scheduling-orchestrator C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 + Valkey 8 |
 | **Schema** | `scheduling` |
-| **Primary Tables** | `schedule_requests`, `daily_schedules`, `schedule_conflicts`, `optimization_runs` |
-| **Key Features** | Optimistic locking per ADR-011 | Valkey for schedule lock cache and optimization queue | JSONB columns for constraint parameters |
+| **Tables** | `schedule_requests`, `daily_schedules`, `schedule_conflicts`, `optimization_runs` |
 | **Estimated Volume** | ~500 schedule requests/day |
+| **Connection Pool** | min 5 / max 20 / idle timeout 10min |
+| **Backup Strategy** | Continuous WAL archiving, daily base backup, 14-day PITR |
+
+### Key Features
+
+- Optimistic locking per ADR-011
+- Valkey for schedule lock cache and optimization queue
+- JSONB columns for constraint parameters
+
+### Table Reference
+
+#### `schedule_requests`
+
+*Incoming requests to create or modify daily schedules*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `request_id` | `UUID` | PK |
+| `schedule_date` | `DATE` | NOT NULL |
+| `requested_by` | `VARCHAR(100)` | NOT NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `constraints` | `JSONB` | NOT NULL, DEFAULT '{}' |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_sched_req_date` on `schedule_date`
+- `idx_sched_req_status` on `status`
+
+#### `daily_schedules`
+
+*Published daily schedules with optimistic locking*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `schedule_id` | `UUID` | PK |
+| `schedule_date` | `DATE` | NOT NULL, UNIQUE |
+| `assignments` | `JSONB` | NOT NULL |
+| `_rev` | `INTEGER` | NOT NULL, DEFAULT 1 |
+| `published_at` | `TIMESTAMPTZ` | NULL |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_daily_sched_date` on `schedule_date` (UNIQUE)
+
+#### `schedule_conflicts`
+
+*Detected conflicts during schedule optimization*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `conflict_id` | `UUID` | PK |
+| `schedule_id` | `UUID` | NOT NULL, FK -> daily_schedules |
+| `conflict_type` | `VARCHAR(30)` | NOT NULL |
+| `details` | `JSONB` | NOT NULL |
+| `resolved` | `BOOLEAN` | NOT NULL, DEFAULT FALSE |
+| `detected_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_conflict_schedule` on `schedule_id`
+
+#### `optimization_runs`
+
+*Execution history of schedule optimization algorithms*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `run_id` | `UUID` | PK |
+| `schedule_date` | `DATE` | NOT NULL |
+| `algorithm` | `VARCHAR(30)` | NOT NULL |
+| `duration_ms` | `INTEGER` | NOT NULL |
+| `score` | `DECIMAL(5,2)` | NULL |
+| `status` | `VARCHAR(20)` | NOT NULL |
+| `started_at` | `TIMESTAMPTZ` | NOT NULL |
+| `completed_at` | `TIMESTAMPTZ` | NULL |
+
+**Indexes:**
+
+- `idx_opt_run_date` on `schedule_date`
+
 
 ---
 

@@ -21,7 +21,7 @@ title GET /analytics/bookings\nGet booking analytics for a period
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-analytics" as Svc [[/microservices/svc-analytics/]] #E8F4F8
-database "Oracle" as DB #FCE4EC
+database "Oracle" as DB [[/microservices/svc-analytics/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-analytics.html#/Bookings/getBookingAnalytics View in Swagger UI]]

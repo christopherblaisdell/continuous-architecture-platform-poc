@@ -21,13 +21,89 @@ tags:
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-trip-catalog C4 context diagram</object></div>
 
 
+## :material-database: Data Store { #data-store }
+
+### Overview
+
 | Property | Detail |
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `catalog` |
-| **Primary Tables** | `trips`, `trip_schedules`, `pricing_tiers`, `requirements`, `regions`, `activity_types` |
-| **Key Features** | Full-text search index on trip name and description | Materialized view for availability calendar | JSONB columns for flexible requirement definitions |
+| **Tables** | `trips`, `trip_schedules`, `pricing_tiers`, `requirements`, `regions`, `activity_types` |
 | **Estimated Volume** | ~50 catalog updates/day, ~10K availability reads/day |
+| **Connection Pool** | min 5 / max 25 / idle timeout 10min |
+| **Backup Strategy** | Daily pg_dump, 14-day retention |
+
+### Key Features
+
+- Full-text search index on trip name and description
+- Materialized view for availability calendar
+- JSONB columns for flexible requirement definitions
+
+### Table Reference
+
+#### `trips`
+
+*Master adventure trip catalog entries*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `trip_id` | `UUID` | PK |
+| `name` | `VARCHAR(200)` | NOT NULL |
+| `description` | `TEXT` | NOT NULL |
+| `adventure_category` | `VARCHAR(50)` | NOT NULL |
+| `region_id` | `UUID` | NOT NULL, FK -> regions |
+| `difficulty_level` | `SMALLINT` | NOT NULL, CHECK (1-5) |
+| `duration_hours` | `DECIMAL(4,1)` | NOT NULL |
+| `min_participants` | `INTEGER` | NOT NULL, DEFAULT 1 |
+| `max_participants` | `INTEGER` | NOT NULL |
+| `base_price` | `DECIMAL(10,2)` | NOT NULL |
+| `currency` | `CHAR(3)` | DEFAULT 'USD' |
+| `active` | `BOOLEAN` | NOT NULL, DEFAULT TRUE |
+| `created_at` | `TIMESTAMPTZ` | NOT NULL |
+| `updated_at` | `TIMESTAMPTZ` | NOT NULL |
+
+**Indexes:**
+
+- `idx_trip_category` on `adventure_category`
+- `idx_trip_region` on `region_id`
+- `idx_trip_search` on `name, description` (GIN (tsvector))
+
+#### `trip_schedules`
+
+*Available dates and time slots for each trip*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `schedule_id` | `UUID` | PK |
+| `trip_id` | `UUID` | NOT NULL, FK -> trips |
+| `trip_date` | `DATE` | NOT NULL |
+| `start_time` | `TIME` | NOT NULL |
+| `available_spots` | `INTEGER` | NOT NULL |
+| `booked_spots` | `INTEGER` | NOT NULL, DEFAULT 0 |
+
+**Indexes:**
+
+- `idx_sched_trip_date` on `trip_id, trip_date`
+- `idx_sched_avail` on `trip_date, available_spots`
+
+#### `pricing_tiers`
+
+*Dynamic pricing tiers based on season, demand, and group size*
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `tier_id` | `UUID` | PK |
+| `trip_id` | `UUID` | NOT NULL, FK -> trips |
+| `tier_name` | `VARCHAR(50)` | NOT NULL |
+| `multiplier` | `DECIMAL(3,2)` | NOT NULL |
+| `effective_from` | `DATE` | NOT NULL |
+| `effective_to` | `DATE` | NULL |
+
+**Indexes:**
+
+- `idx_pricing_trip` on `trip_id, effective_from`
+
 
 ---
 

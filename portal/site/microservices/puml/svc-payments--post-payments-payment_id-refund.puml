@@ -23,7 +23,7 @@ participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FFE0E0
 participant "Payment Gateway" as PGW [[/actors/#payment-gateway]] #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+database "PostgreSQL" as DB [[/microservices/svc-payments/#data-store]] #FCE4EC
 
 note over Svc
   [[/services/api/svc-payments.html#/Refunds/refundPayment View in Swagger UI]]
