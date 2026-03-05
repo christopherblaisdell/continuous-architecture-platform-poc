@@ -44,7 +44,7 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/daily-schedules`](../microservices/svc-scheduling-orchestrator/) | `svc-scheduling-orchestrator` | Get daily schedules |
+| GET | [GET `/schedule-optimization`](../microservices/svc-scheduling-orchestrator/#get-schedule-optimization-run-synchronous-schedule-optimization) | `svc-scheduling-orchestrator` | Get daily schedules |
 | GET | [GET `/guides/available`](../microservices/svc-guide-management/#get-guidesavailable-find-available-guides-for-a-date-activity-and-region) | `svc-guide-management` | Get available guides |
 | GET | [GET `/weather/forecast`](../microservices/svc-weather/#get-weatherforecast-get-weather-forecast) | `svc-weather` | Get weather forecast |
 | GET | [GET `/trails/{trail_id}/conditions`](../microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions) | `svc-trail-management` | Get trail conditions |
@@ -97,7 +97,7 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/incidents`](../microservices/svc-safety-compliance/) | `svc-safety-compliance` | List active incidents |
+| GET | [GET `/incidents/{incident_id}`](../microservices/svc-safety-compliance/#get-incidentsincident_id-get-an-incident-report) | `svc-safety-compliance` | List active incidents |
 | POST | [POST `/incidents`](../microservices/svc-safety-compliance/#post-incidents-file-an-incident-report) | `svc-safety-compliance` | Log new incident |
 | GET | [GET `/guests/{guest_id}`](../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest contact info |
 | GET | [GET `/guides/{guide_id}`](../microservices/svc-guide-management/#get-guidesguide_id-get-guide-by-id) | `svc-guide-management` | Get assigned guide |
@@ -116,7 +116,7 @@ This application interacts with **16 microservices** across 8 screens.
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
 | GET | [GET `/gear-items`](../microservices/svc-gear-inventory/#get-gear-items-search-gear-inventory) | `svc-gear-inventory` | Get inventory levels |
-| GET | [GET `/gear-assignments`](../microservices/svc-gear-inventory/) | `svc-gear-inventory` | Check gear assignments |
+| GET | [GET `/gear-assignments/{assignment_id}`](../microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details) | `svc-gear-inventory` | Check gear assignments |
 | POST | [POST `/purchase-orders`](../microservices/svc-inventory-procurement/#post-purchase-orders-create-a-new-purchase-order) | `svc-inventory-procurement` | Create purchase order |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--inventory-management.svg" type="image/svg+xml" style="max-width: 100%;">Inventory Management user journey diagram</object></div>
@@ -131,7 +131,7 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/transport-requests`](../microservices/svc-transport-logistics/) | `svc-transport-logistics` | List transport requests |
+| GET | [GET `/transport-requests/{request_id}`](../microservices/svc-transport-logistics/#get-transport-requestsrequest_id-get-transport-request-details) | `svc-transport-logistics` | List transport requests |
 | POST | [POST `/transport-requests`](../microservices/svc-transport-logistics/#post-transport-requests-request-transport-for-a-reservation) | `svc-transport-logistics` | Create transport request |
 | GET | [GET `/locations/{location_id}`](../microservices/svc-location-services/#get-locationslocation_id-get-location-details) | `svc-location-services` | Get pickup locations |
 | GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get booking details |
@@ -149,9 +149,9 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/events`](../microservices/svc-analytics/) | `svc-analytics` | Get booking metrics |
+| GET | [GET `/analytics/bookings`](../microservices/svc-analytics/#get-analyticsbookings-get-booking-analytics-for-a-period) | `svc-analytics` | Get booking metrics |
 | GET | [GET `/reservations`](../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get reservation stats |
-| GET | [GET `/payments`](../microservices/svc-payments/) | `svc-payments` | Get revenue summary |
+| GET | [GET `/payments/daily-summary`](../microservices/svc-payments/#get-paymentsdaily-summary-get-daily-payment-summary) | `svc-payments` | Get revenue summary |
 | -- | *Snowflake Data Cloud* | External | Query data warehouse |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--analytics-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Analytics Dashboard user journey diagram</object></div>
@@ -166,7 +166,7 @@ This application interacts with **16 microservices** across 8 screens.
 
 | Method | Endpoint | Service | Purpose |
 |--------|----------|---------|---------|
-| GET | [GET `/partner-bookings`](../microservices/svc-partner-integrations/) | `svc-partner-integrations` | List partner bookings |
+| GET | [GET `/partner-bookings/{booking_id}`](../microservices/svc-partner-integrations/#get-partner-bookingsbooking_id-get-partner-booking-details) | `svc-partner-integrations` | List partner bookings |
 | POST | [POST `/partner-bookings/{booking_id}/confirm`](../microservices/svc-partner-integrations/#post-partner-bookingsbooking_idconfirm-confirm-a-pending-partner-booking) | `svc-partner-integrations` | Confirm booking |
 | GET | [GET `/reservations/{reservation_id}`](../microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details) | `svc-reservations` | Get reservation details |
 | GET | [GET `/payments/{payment_id}`](../microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details) | `svc-payments` | Get payment status |

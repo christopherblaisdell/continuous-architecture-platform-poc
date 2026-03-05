@@ -32,7 +32,7 @@ activate GW #dc2626
 
 == Backend Integration ==
 
-GW -> SO : [[/microservices/svc-scheduling-orchestrator/ Get daily schedules]]
+GW -> SO : [[/microservices/svc-scheduling-orchestrator/#get-schedule-optimization-run-synchronous-schedule-optimization Get daily schedules]]
 activate SO #DBEAFE
 SO --> GW : OK
 deactivate SO

@@ -31,7 +31,7 @@ activate GW #dc2626
 
 == Backend Integration ==
 
-GW -> AN : [[/microservices/svc-analytics/ Get booking metrics]]
+GW -> AN : [[/microservices/svc-analytics/#get-analyticsbookings-get-booking-analytics-for-a-period Get booking metrics]]
 activate AN #DBEAFE
 AN --> GW : OK
 deactivate AN
@@ -41,7 +41,7 @@ activate Res #DBEAFE
 Res --> GW : OK
 deactivate Res
 
-GW -> Pay : [[/microservices/svc-payments/ Get revenue summary]]
+GW -> Pay : [[/microservices/svc-payments/#get-paymentsdaily-summary-get-daily-payment-summary Get revenue summary]]
 activate Pay #DBEAFE
 Pay --> GW : OK
 deactivate Pay

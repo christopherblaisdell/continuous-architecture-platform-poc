@@ -30,7 +30,7 @@ activate GW #dc2626
 
 == Backend Integration ==
 
-GW -> PI : [[/microservices/svc-partner-integrations/ List partner bookings]]
+GW -> PI : [[/microservices/svc-partner-integrations/#get-partner-bookingsbooking_id-get-partner-booking-details List partner bookings]]
 activate PI #DBEAFE
 PI --> GW : OK
 deactivate PI

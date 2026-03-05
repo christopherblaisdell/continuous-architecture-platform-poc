@@ -34,7 +34,7 @@ activate GI #DBEAFE
 GI --> GW : OK
 deactivate GI
 
-GW -> GI : [[/microservices/svc-gear-inventory/ Check gear assignments]]
+GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details Check gear assignments]]
 activate GI #DBEAFE
 GI --> GW : OK
 deactivate GI

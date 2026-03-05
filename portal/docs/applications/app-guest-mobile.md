@@ -65,7 +65,7 @@ This application interacts with **14 microservices** across 7 screens.
 | GET | [GET `/trails/{trail_id}`](../microservices/svc-trail-management/#get-trailstrail_id-get-trail-details) | `svc-trail-management` | Get trail waypoints |
 | GET | [GET `/trails/{trail_id}/conditions`](../microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions) | `svc-trail-management` | Get trail conditions |
 | GET | [GET `/weather/current`](../microservices/svc-weather/#get-weathercurrent-get-current-weather-conditions) | `svc-weather` | Get current weather |
-| GET | [GET `/daily-schedules/{schedule_id}`](../microservices/svc-scheduling-orchestrator/) | `svc-scheduling-orchestrator` | Get group schedule |
+| GET | [GET `/schedule-requests/{request_id}`](../microservices/svc-scheduling-orchestrator/#get-schedule-requestsrequest_id-get-schedule-request-status-and-result) | `svc-scheduling-orchestrator` | Get group schedule |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--live-trip-map.svg" type="image/svg+xml" style="max-width: 100%;">Live Trip Map user journey diagram</object></div>
 
