@@ -1,0 +1,30 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-partner-integrations — Integration Context
+
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations Service")
+    ContainerDb(svc_partner_integrations_db, "PostgreSQL 15", "partners schema", "Primary data store")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog")
+}
+
+
+Rel(web_ops_dashboard, svc_partner_integrations, "Uses API", "HTTPS")
+Rel(svc_partner_integrations, svc_partner_integrations_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_partner_integrations, svc_guest_profiles, "Validate guest identity", "HTTPS")
+Rel(svc_partner_integrations, svc_notifications, "Send partner confirmation", "HTTPS")
+Rel(svc_partner_integrations, svc_payments, "Process commission", "HTTPS")
+Rel(svc_partner_integrations, svc_reservations, "2 calls", "HTTPS")
+Rel(svc_partner_integrations, svc_trip_catalog, "Check trip availability", "HTTPS")
+
+@enduml

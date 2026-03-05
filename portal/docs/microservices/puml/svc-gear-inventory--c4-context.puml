@@ -1,0 +1,32 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-gear-inventory — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Gear Inventory Service")
+    ContainerDb(svc_gear_inventory_db, "PostgreSQL 15", "gear schema", "Primary data store")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations")
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Support")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety")
+}
+
+
+Rel(app_guest_mobile, svc_gear_inventory, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_gear_inventory, "Uses API", "HTTPS")
+Rel(svc_check_in, svc_gear_inventory, "Verify gear assignment", "HTTPS")
+Rel(svc_inventory_procurement, svc_gear_inventory, "Verify item catalog", "HTTPS")
+Rel(svc_gear_inventory, svc_gear_inventory_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_gear_inventory, svc_guest_profiles, "Validate guest", "HTTPS")
+Rel(svc_gear_inventory, svc_reservations, "Verify booking", "HTTPS")
+Rel(svc_gear_inventory, svc_safety_compliance, "Check waiver status", "HTTPS")
+
+@enduml

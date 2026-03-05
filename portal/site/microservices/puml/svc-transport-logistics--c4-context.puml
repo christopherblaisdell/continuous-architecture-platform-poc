@@ -1,0 +1,28 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-transport-logistics — Integration Context
+
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Transport Logistics Service")
+    ContainerDb(svc_transport_logistics_db, "PostgreSQL 15", "transport schema", "Primary data store")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+}
+
+System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
+
+Rel(web_ops_dashboard, svc_transport_logistics, "Uses API", "HTTPS")
+Rel(svc_transport_logistics, svc_transport_logistics_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_transport_logistics, svc_location_services, "Validate pickup location", "HTTPS")
+Rel(svc_transport_logistics, svc_notifications, "Send transport details", "HTTPS")
+Rel(svc_transport_logistics, svc_reservations, "Get booking details", "HTTPS")
+Rel(svc_transport_logistics, Google_Maps_Platform, "Calculate optimal route", "HTTPS")
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-analytics — Integration Context
+
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Analytics Service")
+    ContainerDb(svc_analytics_db, "Oracle Database 19c", "ANALYTICS schema", "Primary data store")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations")
+}
+
+System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")
+
+Rel(web_ops_dashboard, svc_analytics, "Uses API", "HTTPS")
+Rel(svc_guest_profiles, svc_analytics, "Get satisfaction scores", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_analytics, "Log optimization metrics", "HTTPS")
+Rel(svc_analytics, svc_analytics_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_analytics, Snowflake_Data_Cloud, "Export aggregated metrics", "HTTPS")
+
+@enduml

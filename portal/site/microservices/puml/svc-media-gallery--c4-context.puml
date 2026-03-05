@@ -1,0 +1,26 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-media-gallery — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "Media Gallery Service")
+    ContainerDb(svc_media_gallery_db, "PostgreSQL 15 + S3-Compatible Object Store", "media schema", "Primary data store")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+}
+
+System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
+
+Rel(app_guest_mobile, svc_media_gallery, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_media_gallery, "Uses API", "HTTPS")
+Rel(svc_media_gallery, svc_media_gallery_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_media_gallery, svc_notifications, "Send share link", "HTTPS")
+Rel(svc_media_gallery, Google_Maps_Platform, "Reverse geocode GPS metadata", "HTTPS")
+
+@enduml

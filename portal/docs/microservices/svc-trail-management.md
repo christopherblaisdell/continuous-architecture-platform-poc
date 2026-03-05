@@ -16,6 +16,12 @@ tags:
 
 ---
 
+## :material-map: Integration Context
+
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-trail-management C4 context diagram</object></div>
+
+---
+
 ## :material-database: Data Store
 
 | Property | Detail |

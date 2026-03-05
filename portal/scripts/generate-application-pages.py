@@ -445,6 +445,91 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
 
 
 # ============================================================
+# C4 Context Diagram Generation
+# ============================================================
+
+def _safe_alias(name):
+    """Create a valid PlantUML alias from a name."""
+    return re.sub(r'[^a-zA-Z0-9]', '_', name)
+
+
+def build_c4_app_puml(app_name, app_info):
+    """Build a C4 Container-level context diagram for a frontend application.
+
+    Shows the application at the center with all microservices and
+    external systems it connects to.
+    """
+    title = app_info["title"]
+    color = app_info["color"]
+    tech = app_info["tech"].split(",")[0]  # e.g. "React 18"
+    app_type = app_info["type"]
+    screens = app_info["screens"]
+
+    # Collect all unique microservices and external systems
+    all_svcs = {}       # svc_name -> set of screen names
+    all_externals = {}  # label -> set of screen names
+
+    for screen_name, screen in screens.items():
+        for step in screen["steps"]:
+            svc = step[2]
+            label = step[1]
+            if svc:
+                all_svcs.setdefault(svc, set()).add(screen_name)
+            else:
+                all_externals.setdefault(label, set()).add(screen_name)
+
+    L = []
+    L.append("@startuml")
+    L.append("!include <c4/C4_Container>")
+    L.append("")
+    L.append("LAYOUT_WITH_LEGEND()")
+    L.append("LAYOUT_TOP_DOWN()")
+    L.append("")
+    L.append(f'title {app_name} — Service Dependencies')
+    L.append("")
+
+    # User
+    L.append(f'Person(user, "Guest", "NovaTrek customer")')
+    L.append("")
+
+    # The application itself
+    if app_type == "Web":
+        L.append(f'Container({_safe_alias(app_name)}, "{title}", "{tech}", "{app_type} application")')
+    else:
+        L.append(f'Container({_safe_alias(app_name)}, "{title}", "{tech}", "{app_type} application")')
+    L.append("")
+
+    # Backend services inside platform boundary
+    L.append('System_Boundary(platform, "NovaTrek Platform") {')
+    for svc in sorted(all_svcs.keys()):
+        screen_count = len(all_svcs[svc])
+        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens")')
+    L.append("}")
+    L.append("")
+
+    # External systems
+    for ext in sorted(all_externals.keys()):
+        L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+    L.append("")
+
+    # Relationships
+    app_alias = _safe_alias(app_name)
+    L.append(f'Rel(user, {app_alias}, "Uses", "HTTPS")')
+    for svc in sorted(all_svcs.keys()):
+        screen_count = len(all_svcs[svc])
+        label = f"{screen_count} screens" if screen_count > 1 else "1 screen"
+        L.append(f'Rel({app_alias}, {_safe_alias(svc)}, "{label}", "REST/HTTPS")')
+
+    for ext in sorted(all_externals.keys()):
+        L.append(f'Rel({app_alias}, {_safe_alias(ext)}, "Uses", "HTTPS")')
+
+    L.append("")
+    L.append("@enduml")
+
+    return "\n".join(L)
+
+
+# ============================================================
 # Page Generation
 # ============================================================
 
@@ -494,6 +579,20 @@ def generate_app_page(app_name, app_info, svg_files):
     lines.append("")
     lines.append("---")
     lines.append("")
+
+    # C4 Context Diagram
+    c4_svg = f"{app_name}--c4-context.svg"
+    if c4_svg in svg_files:
+        lines.append("## :material-map: Service Dependencies")
+        lines.append("")
+        lines.append(
+            f'<div style="overflow-x: auto; width: 100%;">'
+            f'<object data="../svg/{c4_svg}" type="image/svg+xml" '
+            f'style="max-width: 100%;">{app_name} C4 context diagram</object></div>'
+        )
+        lines.append("")
+        lines.append("---")
+        lines.append("")
 
     # Screen count summary
     total_services = set()
@@ -695,7 +794,14 @@ def main():
                 f.write(puml_content)
             all_pumls.append(puml_path)
 
-    print(f"\n  Generated {len(all_pumls)} PUML files")
+        # C4 context diagram for the application
+        c4_puml = build_c4_app_puml(app_name, app_info)
+        c4_path = os.path.join(PUML_DIR, f"{app_name}--c4-context.puml")
+        with open(c4_path, "w") as f:
+            f.write(c4_puml)
+        all_pumls.append(c4_path)
+
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_screens} screen + {len(APPLICATIONS)} C4 context)")
 
     # Render all PUMLs to SVG
     print("  Rendering SVGs with PlantUML...")

@@ -1,0 +1,32 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-weather — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather Service")
+    ContainerDb(svc_weather_db, "Valkey 8 + PostgreSQL 15", "weather schema", "Primary data store")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+}
+
+System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service")
+
+Rel(app_guest_mobile, svc_weather, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_weather, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_weather, "Uses API", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_weather, "Get forecast", "HTTPS")
+Rel(svc_trail_management, svc_weather, "Correlate weather data", "HTTPS")
+Rel(svc_weather, svc_weather_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_weather, svc_notifications, "Distribute severe weather alerts", "HTTPS")
+Rel(svc_weather, OpenWeather_API, "Fetch active alerts, Fetch current conditions", "HTTPS")
+
+@enduml

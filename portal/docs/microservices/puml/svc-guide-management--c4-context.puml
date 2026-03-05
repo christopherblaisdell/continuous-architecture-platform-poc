@@ -1,0 +1,24 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-guide-management — Integration Context
+
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management Service")
+    ContainerDb(svc_guide_management_db, "PostgreSQL 15", "guides schema", "Primary data store")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations")
+}
+
+
+Rel(web_ops_dashboard, svc_guide_management, "Uses API", "HTTPS")
+Rel(svc_safety_compliance, svc_guide_management, "Get assigned guide", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_guide_management, "3 calls", "HTTPS")
+Rel(svc_guide_management, svc_guide_management_db, "Reads/Writes", "SQL/TCP")
+
+@enduml

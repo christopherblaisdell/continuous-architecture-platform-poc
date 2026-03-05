@@ -17,6 +17,12 @@ tags:
 
 ---
 
+## :material-map: Service Dependencies
+
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-guest-portal C4 context diagram</object></div>
+
+---
+
 ## :material-web: Screens (7 total)
 
 This application interacts with **10 microservices** across 7 screens.

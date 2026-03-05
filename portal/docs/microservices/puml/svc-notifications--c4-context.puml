@@ -1,0 +1,54 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-notifications — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications Service")
+    ContainerDb(svc_notifications_db, "PostgreSQL 15 + Valkey 8", "notifications schema", "Primary data store")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations")
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Support")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Support")
+    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "Support")
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "External")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Logistics")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support")
+}
+
+System_Ext(Firebase_Cloud_Messaging, "Firebase Cloud Messaging", "Third-party service")
+System_Ext(SendGrid_API, "SendGrid API", "Third-party service")
+System_Ext(Twilio_API, "Twilio API", "Third-party service")
+
+Rel(app_guest_mobile, svc_notifications, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_notifications, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_notifications, "Uses API", "HTTPS")
+Rel(svc_check_in, svc_notifications, "Send check-in confirmation", "HTTPS")
+Rel(svc_inventory_procurement, svc_notifications, "Notify procurement team", "HTTPS")
+Rel(svc_loyalty_rewards, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_media_gallery, svc_notifications, "Send share link", "HTTPS")
+Rel(svc_partner_integrations, svc_notifications, "Send partner confirmation", "HTTPS")
+Rel(svc_payments, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_reservations, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_trail_management, svc_notifications, "Alert park rangers", "HTTPS")
+Rel(svc_transport_logistics, svc_notifications, "Send transport details", "HTTPS")
+Rel(svc_weather, svc_notifications, "Distribute severe weather alerts", "HTTPS")
+Rel(svc_notifications, svc_notifications_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_notifications, Firebase_Cloud_Messaging, "Send bulk push notifications, Send push notification", "HTTPS")
+Rel(svc_notifications, SendGrid_API, "Deliver bulk emails, Deliver email", "HTTPS")
+Rel(svc_notifications, Twilio_API, "Deliver SMS, Deliver bulk SMS", "HTTPS")
+
+@enduml

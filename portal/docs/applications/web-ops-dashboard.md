@@ -17,6 +17,12 @@ tags:
 
 ---
 
+## :material-map: Service Dependencies
+
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/web-ops-dashboard--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-ops-dashboard C4 context diagram</object></div>
+
+---
+
 ## :material-monitor-dashboard: Screens (8 total)
 
 This application interacts with **16 microservices** across 8 screens.
