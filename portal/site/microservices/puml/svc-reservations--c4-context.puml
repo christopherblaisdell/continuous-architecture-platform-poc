@@ -4,6 +4,8 @@
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
+AddRelTag("pci", $lineColor="#DC2626", $textColor="#DC2626", $legendText="PCI Data Flow")
+
 header [[/microservices/ ⬆ All Microservices]]
 
 title svc-reservations — Integration Context
@@ -39,7 +41,7 @@ Rel(svc_transport_logistics, svc_reservations, "Get booking details", "HTTPS")
 Rel(svc_reservations, svc_reservations_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_reservations, svc_guest_profiles, "2 calls", "HTTPS")
 Rel(svc_reservations, svc_notifications, "2 calls", "HTTPS")
-Rel(svc_reservations, svc_payments, "Process deposit payment", "HTTPS")
+Rel(svc_reservations, svc_payments, "Process deposit payment", "HTTPS", $tags="pci")
 Rel(svc_reservations, svc_trip_catalog, "2 calls", "HTTPS")
 
 @enduml

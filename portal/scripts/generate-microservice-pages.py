@@ -89,6 +89,24 @@ LABEL_TO_SVC = {
     "Analytics": "svc-analytics",
 }
 
+# PCI DSS Compliance Configuration
+PCI_SERVICES = {"svc-payments"}  # Services operating within PCI compliance scope
+PCI_EXTERNALS = {"Payment Gateway", "Stripe API", "Fraud Detection API"}
+# Directional pairs where PCI-sensitive data (card numbers, tokens) flows
+PCI_DATA_FLOWS = {
+    ("svc-reservations", "svc-payments"),
+    ("svc-partner-integrations", "svc-payments"),
+    ("svc-loyalty-rewards", "svc-payments"),
+    ("svc-inventory-procurement", "svc-payments"),
+    ("svc-payments", "Payment Gateway"),
+    ("svc-payments", "Stripe API"),
+    ("svc-payments", "Fraud Detection API"),
+}
+
+def is_pci_flow(from_name, to_name):
+    """Check whether a relationship carries PCI-sensitive data."""
+    return (from_name, to_name) in PCI_DATA_FLOWS
+
 DATA_STORES = {
     "svc-check-in": {
         "engine": "PostgreSQL 15",
@@ -398,14 +416,14 @@ CROSS_SERVICE_CALLS[("svc-guest-profiles", "GET", "/guests/{guest_id}/adventure-
     ("AN", "Analytics", "Get satisfaction scores", False, ("GET", "/events")),
 ]
 
-# --- svc-payments ---
+# --- svc-payments --- (PCI scope)
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments")] = [
     ("FD", "Fraud Detection API", "Screen transaction", False, None),
-    ("ExtPay", "Stripe API", "Process payment", False, None),
+    ("PGW", "Payment Gateway", "Tokenize & route payment", False, None),
     ("Ntfy", "Notifications", "Send payment receipt", True, ("POST", "/notifications")),
 ]
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments/{payment_id}/refund")] = [
-    ("ExtPay", "Stripe API", "Process refund", False, None),
+    ("PGW", "Payment Gateway", "Process refund via gateway", False, None),
     ("Ntfy", "Notifications", "Send refund confirmation", True, ("POST", "/notifications")),
 ]
 
@@ -670,8 +688,11 @@ def build_enterprise_c4_puml():
                 ext_labels.add(label)
 
     # Aggregate to domain-level relationships to avoid spaghetti
+    # Exclude PCI service edges from domain aggregation (they get their own arrows)
     domain_edges = {}  # (from_domain, to_domain) -> total_count
     for (f, t), cnt in svc_edges.items():
+        if f in PCI_SERVICES or t in PCI_SERVICES:
+            continue  # handled as direct PCI arrows below
         fd = svc_to_domain.get(f, "Support")
         td = svc_to_domain.get(t, "Support")
         if fd != td:
@@ -692,6 +713,8 @@ def build_enterprise_c4_puml():
     L.append("")
     L.append("LAYOUT_WITH_LEGEND()")
     L.append("LAYOUT_TOP_DOWN()")
+    L.append("")
+    L.append('AddRelTag("pci", $lineColor="#DC2626", $textColor="#DC2626", $legendText="PCI Data Flow")')
     L.append("")
     L.append("title NovaTrek Adventures — Enterprise Architecture")
     L.append("")
@@ -716,14 +739,28 @@ def build_enterprise_c4_puml():
         boundary_alias = _safe_alias(domain_name)
         L.append(f'System_Boundary({boundary_alias}, "{domain_name}") {{')
         for svc in svcs:
+            if svc in PCI_SERVICES:
+                continue  # rendered inside PCI Zone instead
             svc_title = svc.replace("svc-", "").replace("-", " ").title()
             L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{svc_title}", $link="/microservices/{svc}/#integration-context")')
         L.append("}")
         L.append("")
 
-    # External systems
-    for ext in sorted(ext_labels):
-        L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+    # PCI Zone boundary (separate, visually distinct)
+    L.append('System_Boundary(PCI_Zone, "PCI DSS Compliance Zone") {')
+    for svc in sorted(PCI_SERVICES):
+        svc_title = svc.replace("svc-", "").replace("-", " ").title()
+        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{svc_title} (PCI scope)", $link="/microservices/{svc}/#integration-context")')
+    L.append("}")
+    L.append("")
+
+    # External systems (add Payment Gateway explicitly)
+    all_ext = ext_labels | {"Payment Gateway"}
+    for ext in sorted(all_ext):
+        if ext in PCI_EXTERNALS:
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "PCI-certified third-party")')
+        else:
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
     L.append("")
 
     # Relationships: apps to domains
@@ -738,7 +775,7 @@ def build_enterprise_c4_puml():
 
     L.append("")
 
-    # Relationships: inter-domain (aggregated)
+    # Relationships: inter-domain (aggregated), with PCI tags
     for (fd, td), cnt in sorted(domain_edges.items()):
         from_svc = DOMAINS[fd]["services"][0]
         to_svc = DOMAINS[td]["services"][0]
@@ -746,9 +783,24 @@ def build_enterprise_c4_puml():
 
     L.append("")
 
+    # Direct PCI service-level edges (not aggregated to domain)
+    for (f, t), cnt in sorted(svc_edges.items()):
+        if f not in PCI_SERVICES and t not in PCI_SERVICES:
+            continue
+        pci = is_pci_flow(f, t)
+        tag_attr = ', $tags="pci"' if pci else ""
+        L.append(f'Rel({_safe_alias(f)}, {_safe_alias(t)}, "{cnt} calls", "HTTPS"{tag_attr})')
+
+    L.append("")
+
     # Relationships: services to external systems (service-level, not domain-level)
     for (svc, ext), cnt in sorted(ext_edges.items()):
-        L.append(f'Rel({_safe_alias(svc)}, {_safe_alias(ext)}, "Integrates", "HTTPS")')
+        pci = is_pci_flow(svc, ext)
+        tag_attr = ', $tags="pci"' if pci else ""
+        L.append(f'Rel({_safe_alias(svc)}, {_safe_alias(ext)}, "Integrates", "HTTPS"{tag_attr})')
+
+    # Payment Gateway to Stripe API (PCI)
+    L.append(f'Rel({_safe_alias("Payment Gateway")}, {_safe_alias("Stripe API")}, "Process card txn", "HTTPS", $tags="pci")')
 
     L.append("")
     L.append("@enduml")
@@ -798,12 +850,24 @@ def build_c4_context_puml(svc_name):
     apps = APP_CONSUMERS.get(svc_name, [])
     app_names = sorted(set(a for a, _ in apps))
 
+    # Determine if this diagram involves any PCI flows
+    has_pci = svc_name in PCI_SERVICES or any(
+        is_pci_flow(peer, svc_name) for peer in inbound_svcs
+    ) or any(
+        is_pci_flow(svc_name, peer) for peer in outbound_svcs
+    ) or any(
+        is_pci_flow(svc_name, ext) for ext in outbound_ext
+    )
+
     L = []
     L.append("@startuml")
     L.append("!include <c4/C4_Container>")
     L.append("")
     L.append("LAYOUT_WITH_LEGEND()")
     L.append("LAYOUT_TOP_DOWN()")
+    if has_pci:
+        L.append("")
+        L.append('AddRelTag("pci", $lineColor="#DC2626", $textColor="#DC2626", $legendText="PCI Data Flow")')
     L.append("")
     L.append(f'header [[/microservices/ \u2B06 All Microservices]]')
     L.append("")
@@ -848,7 +912,10 @@ def build_c4_context_puml(svc_name):
 
     # External systems outside boundary
     for ext in sorted(outbound_ext.keys()):
-        L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+        if ext in PCI_EXTERNALS:
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "PCI-certified third-party")')
+        else:
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
     L.append("")
 
     # Relationships — apps to this service
@@ -861,7 +928,8 @@ def build_c4_context_puml(svc_name):
     for peer in sorted(inbound_svcs.keys()):
         actions = sorted(inbound_svcs[peer])
         label = actions[0] if len(actions) == 1 else f"{len(actions)} calls"
-        L.append(f'Rel({_safe_alias(peer)}, {svc_alias}, "{label}", "HTTPS")')
+        pci_tag = ', $tags="pci"' if is_pci_flow(peer, svc_name) else ""
+        L.append(f'Rel({_safe_alias(peer)}, {svc_alias}, "{label}", "HTTPS"{pci_tag})')
 
     # Relationships — database
     if ds:
@@ -871,13 +939,15 @@ def build_c4_context_puml(svc_name):
     for peer in sorted(outbound_svcs.keys()):
         actions = sorted(outbound_svcs[peer])
         label = actions[0] if len(actions) == 1 else f"{len(actions)} calls"
-        L.append(f'Rel({svc_alias}, {_safe_alias(peer)}, "{label}", "HTTPS")')
+        pci_tag = ', $tags="pci"' if is_pci_flow(svc_name, peer) else ""
+        L.append(f'Rel({svc_alias}, {_safe_alias(peer)}, "{label}", "HTTPS"{pci_tag})')
 
     # Relationships — external systems
     for ext in sorted(outbound_ext.keys()):
         actions = sorted(outbound_ext[ext])
         label = actions[0] if len(actions) == 1 else ", ".join(actions[:2])
-        L.append(f'Rel({svc_alias}, {_safe_alias(ext)}, "{label}", "HTTPS")')
+        pci_tag = ', $tags="pci"' if is_pci_flow(svc_name, ext) else ""
+        L.append(f'Rel({svc_alias}, {_safe_alias(ext)}, "{label}", "HTTPS"{pci_tag})')
 
     L.append("")
     L.append("@enduml")
@@ -1036,7 +1106,8 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     # Participants - clickable
     L.append(f'participant "Client" as Client [[/applications/]]')
     L.append('participant "API Gateway" as GW #DBEAFE')
-    L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] #E8F4F8')
+    svc_bg = "#FFE0E0" if svc_name in PCI_SERVICES else "#E8F4F8"
+    L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] {svc_bg}')
 
     declared = set()
     for call in (ext_calls or []):
@@ -1047,9 +1118,12 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
         declared.add(alias)
         target_svc = label_to_svc_name(label)
         if target_svc:
-            L.append(f'participant "{label}" as {alias} [[/microservices/{target_svc}/]] #FFF8F0')
+            color = "#FFE0E0" if target_svc in PCI_SERVICES else "#FFF8F0"
+            L.append(f'participant "{label}" as {alias} [[/microservices/{target_svc}/]] {color}')
         elif label == "Event Bus":
             L.append(f'queue "Kafka" as {alias} #F0E6FF')
+        elif label in PCI_EXTERNALS:
+            L.append(f'participant "{label}" as {alias} #FFE0E0')
         else:
             L.append(f'participant "{label}" as {alias} #F5F5F5')
 
@@ -1087,15 +1161,19 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
             alias, label, action = call[0], call[1], call[2]
             target_ep = call[4] if len(call) > 4 else None
             target_svc = label_to_svc_name(label)
+            # Determine if this call carries PCI data
+            pci_target = target_svc if target_svc else label
+            pci_arrow = "-[#DC2626]>" if is_pci_flow(svc_name, pci_target) else "->"
+            pci_return = "--[#DC2626]>" if is_pci_flow(svc_name, pci_target) else "-->"
             if target_svc:
                 anchor = ""
                 if target_ep:
                     anchor = endpoint_anchor(target_svc, target_ep[0], target_ep[1])
-                L.append(f"Svc -> {alias} : [[/microservices/{target_svc}/{anchor} {action}]]")
+                L.append(f"Svc {pci_arrow} {alias} : [[/microservices/{target_svc}/{anchor} {action}]]")
             else:
-                L.append(f"Svc -> {alias} : {action}")
+                L.append(f"Svc {pci_arrow} {alias} : {action}")
             L.append(f"activate {alias} #DBEAFE")
-            L.append(f"{alias} --> Svc : OK")
+            L.append(f"{alias} {pci_return} Svc : OK")
             L.append(f"deactivate {alias}")
             L.append("")
 

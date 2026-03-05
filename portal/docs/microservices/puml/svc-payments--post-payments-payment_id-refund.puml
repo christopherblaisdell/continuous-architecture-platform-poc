@@ -20,8 +20,8 @@ title POST /payments/{payment_id}/refund\nInitiate a refund
 
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
-participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
-participant "Stripe API" as ExtPay #F5F5F5
+participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FFE0E0
+participant "Payment Gateway" as PGW #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
@@ -38,10 +38,10 @@ note right of Svc : Validate request body
 
 == Cross-Service Integration ==
 
-Svc -> ExtPay : Process refund
-activate ExtPay #DBEAFE
-ExtPay --> Svc : OK
-deactivate ExtPay
+Svc -[#DC2626]> PGW : Process refund via gateway
+activate PGW #DBEAFE
+PGW --[#DC2626]> Svc : OK
+deactivate PGW
 
 == Database ==
 
