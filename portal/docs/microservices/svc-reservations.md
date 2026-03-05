@@ -131,3 +131,20 @@ tags:
 | [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Guest Profile, Reservation Management, Trip Gallery |
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station, Transport Dispatch, Analytics Dashboard, Partner Bookings |
 | [Adventure App](../../applications/app-guest-mobile/) | Self Check-In, My Reservations, Earn Loyalty Points |
+
+---
+
+## :material-broadcast: Events Published
+
+| Event | Channel | Trigger | Consumers |
+|-------|---------|---------|-----------|
+| [`reservation.created`](/events/#reservationcreated) | `novatrek.booking.reservation.created` | [`POST /reservations`](#post-reservations-create-a-new-reservation) | [svc-scheduling-orchestrator](../svc-scheduling-orchestrator/), [svc-analytics](../svc-analytics/) |
+| [`reservation.status_changed`](/events/#reservationstatus_changed) | `novatrek.booking.reservation.status-changed` | [`PUT /reservations/{reservation_id}/status`](#put-reservationsreservation_idstatus-transition-reservation-status) | [svc-notifications](../svc-notifications/), [svc-analytics](../svc-analytics/) |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`payment.processed`](/events/#paymentprocessed) | [svc-payments](../svc-payments/) | `novatrek.support.payment.processed` |

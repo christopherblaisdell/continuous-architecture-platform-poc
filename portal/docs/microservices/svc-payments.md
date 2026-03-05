@@ -103,3 +103,11 @@ tags:
 | [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Reservation Management |
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Analytics Dashboard, Partner Bookings |
 | [Adventure App](../../applications/app-guest-mobile/) | My Reservations |
+
+---
+
+## :material-broadcast: Events Published
+
+| Event | Channel | Trigger | Consumers |
+|-------|---------|---------|-----------|
+| [`payment.processed`](/events/#paymentprocessed) | `novatrek.support.payment.processed` | [`POST /payments`](#post-payments-process-a-payment) | [svc-reservations](../svc-reservations/), [svc-notifications](../svc-notifications/) |

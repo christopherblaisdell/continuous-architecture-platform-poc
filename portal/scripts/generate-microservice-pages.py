@@ -526,6 +526,78 @@ CROSS_SERVICE_CALLS[("svc-analytics", "POST", "/events")] = [
 
 
 # ============================================================
+# Event Catalog
+# ============================================================
+
+EVENT_CATALOG = {
+    "reservation.created": {
+        "channel": "novatrek.booking.reservation.created",
+        "producer": "svc-reservations",
+        "trigger": ("POST", "/reservations"),
+        "consumers": ["svc-scheduling-orchestrator", "svc-analytics"],
+        "domain": "Booking",
+        "summary": "Published when a new reservation is confirmed",
+    },
+    "reservation.status_changed": {
+        "channel": "novatrek.booking.reservation.status-changed",
+        "producer": "svc-reservations",
+        "trigger": ("PUT", "/reservations/{reservation_id}/status"),
+        "consumers": ["svc-notifications", "svc-analytics"],
+        "domain": "Booking",
+        "summary": "Published when a reservation status transitions",
+    },
+    "guest.registered": {
+        "channel": "novatrek.guest-identity.guest.registered",
+        "producer": "svc-guest-profiles",
+        "trigger": ("POST", "/guests"),
+        "consumers": ["svc-loyalty-rewards", "svc-analytics"],
+        "domain": "Guest Identity",
+        "summary": "Published when a new guest profile is created",
+    },
+    "checkin.completed": {
+        "channel": "novatrek.operations.checkin.completed",
+        "producer": "svc-check-in",
+        "trigger": ("POST", "/check-ins"),
+        "consumers": ["svc-analytics", "svc-notifications"],
+        "domain": "Operations",
+        "summary": "Published when a guest completes the check-in process",
+    },
+    "schedule.published": {
+        "channel": "novatrek.operations.schedule.published",
+        "producer": "svc-scheduling-orchestrator",
+        "trigger": ("POST", "/schedule-requests"),
+        "consumers": ["svc-guide-management", "svc-notifications"],
+        "domain": "Operations",
+        "summary": "Published when a daily schedule is finalized",
+    },
+    "payment.processed": {
+        "channel": "novatrek.support.payment.processed",
+        "producer": "svc-payments",
+        "trigger": ("POST", "/payments"),
+        "consumers": ["svc-reservations", "svc-notifications"],
+        "domain": "Support",
+        "summary": "Published when a payment is successfully processed",
+    },
+    "incident.reported": {
+        "channel": "novatrek.safety.incident.reported",
+        "producer": "svc-safety-compliance",
+        "trigger": ("POST", "/incidents"),
+        "consumers": ["svc-notifications", "svc-analytics"],
+        "domain": "Safety",
+        "summary": "Published when a safety incident is reported",
+    },
+}
+
+# Derived lookups
+EVENTS_BY_PRODUCER = {}
+EVENTS_BY_CONSUMER = {}
+for _evt_name, _evt_info in EVENT_CATALOG.items():
+    EVENTS_BY_PRODUCER.setdefault(_evt_info["producer"], []).append(_evt_name)
+    for _consumer in _evt_info["consumers"]:
+        EVENTS_BY_CONSUMER.setdefault(_consumer, []).append(_evt_name)
+
+
+# ============================================================
 # Consuming Applications (reverse index for bidirectional links)
 # ============================================================
 
@@ -1274,6 +1346,9 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
             if target_svc and target_ep:
                 anchor = endpoint_anchor(target_svc, target_ep[0], target_ep[1])
                 L.append(f"Svc ->> {alias} : [[/microservices/{target_svc}/{anchor} {action}]]")
+            elif label == "Event Bus" and action in EVENT_CATALOG:
+                slug = re.sub(r'[^\w\s-]', '', action).strip().lower().replace(' ', '-')
+                L.append(f"Svc ->> {alias} : [[/events/#{slug} {action}]]")
             else:
                 L.append(f"Svc ->> {alias} : {action}")
         L.append("")
@@ -1448,6 +1523,59 @@ def generate_service_page(svc_name, spec, svg_files):
             lines.append(f"| [{title}](../../applications/{app_name}/) | {screens_str} |")
         lines.append("")
 
+    # Events Published section
+    published_events = EVENTS_BY_PRODUCER.get(svc_name, [])
+    if published_events:
+        lines.append("---")
+        lines.append("")
+        lines.append("## :material-broadcast: Events Published")
+        lines.append("")
+        lines.append("| Event | Channel | Trigger | Consumers |")
+        lines.append("|-------|---------|---------|-----------|")
+        for evt_name in published_events:
+            evt = EVENT_CATALOG[evt_name]
+            trigger_method, trigger_path = evt["trigger"]
+            trigger_summary = ALL_ENDPOINT_SUMMARIES.get(
+                (svc_name, trigger_method, trigger_path), ""
+            )
+            if trigger_summary:
+                anchor = "#" + heading_slug(trigger_method, trigger_path, trigger_summary)
+                trigger_link = f"[`{trigger_method} {trigger_path}`]({anchor})"
+            else:
+                trigger_link = f"`{trigger_method} {trigger_path}`"
+            consumer_links = []
+            for c in evt["consumers"]:
+                consumer_links.append(f"[{c}](../{c}/)")
+            consumers_str = ", ".join(consumer_links)
+            evt_slug = re.sub(r'[^\w\s-]', '', evt_name).strip().lower().replace(' ', '-')
+            lines.append(
+                f"| [`{evt_name}`](/events/#{evt_slug}) "
+                f"| `{evt['channel']}` "
+                f"| {trigger_link} "
+                f"| {consumers_str} |"
+            )
+        lines.append("")
+
+    # Events Consumed section
+    consumed_events = EVENTS_BY_CONSUMER.get(svc_name, [])
+    if consumed_events:
+        lines.append("---")
+        lines.append("")
+        lines.append("## :material-broadcast-off: Events Consumed")
+        lines.append("")
+        lines.append("| Event | Producer | Channel |")
+        lines.append("|-------|----------|---------|")
+        for evt_name in consumed_events:
+            evt = EVENT_CATALOG[evt_name]
+            producer = evt["producer"]
+            evt_slug = re.sub(r'[^\w\s-]', '', evt_name).strip().lower().replace(' ', '-')
+            lines.append(
+                f"| [`{evt_name}`](/events/#{evt_slug}) "
+                f"| [{producer}](../{producer}/) "
+                f"| `{evt['channel']}` |"
+            )
+        lines.append("")
+
     return "\n".join(lines)
 
 
@@ -1539,6 +1667,226 @@ def generate_index_page(all_services):
 
 
 # ============================================================
+# Event Catalog Page Generation
+# ============================================================
+
+EVENTS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
+
+
+def build_event_flow_puml():
+    """Generate a PlantUML diagram showing all event producers, Kafka, and consumers."""
+    L = []
+    L.append("@startuml")
+    L.append("!theme plain")
+    L.append("skinparam backgroundColor #FAFAFA")
+    L.append("skinparam defaultFontName Inter")
+    L.append("skinparam defaultFontSize 12")
+    L.append("skinparam roundCorner 8")
+    L.append("skinparam componentStyle rectangle")
+    L.append("title NovaTrek Event Flow")
+    L.append("")
+
+    # Collect unique producers and consumers
+    producers = set()
+    consumers = set()
+    for evt_name, evt in EVENT_CATALOG.items():
+        producers.add(evt["producer"])
+        for c in evt["consumers"]:
+            consumers.add(c)
+
+    # Declare producers (left side)
+    L.append("rectangle \"Producers\" {")
+    for p in sorted(producers):
+        _, color = get_domain_info(p)
+        L.append(f'  component "{p}" as {p.replace("-", "_")} [[/microservices/{p}/]] {color}')
+    L.append("}")
+    L.append("")
+
+    # Kafka in the middle
+    L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
+    L.append("")
+
+    # Declare consumers (right side)
+    L.append("rectangle \"Consumers\" {")
+    for c in sorted(consumers):
+        _, color = get_domain_info(c)
+        L.append(f'  component "{c}" as {c.replace("-", "_")} [[/microservices/{c}/]] {color}')
+    L.append("}")
+    L.append("")
+
+    # Draw arrows from producers to Kafka
+    for evt_name, evt in sorted(EVENT_CATALOG.items()):
+        p_alias = evt["producer"].replace("-", "_")
+        L.append(f'{p_alias} -right-> kafka : {evt_name}')
+
+    L.append("")
+
+    # Draw arrows from Kafka to consumers
+    drawn = set()
+    for evt_name, evt in sorted(EVENT_CATALOG.items()):
+        for c in evt["consumers"]:
+            c_alias = c.replace("-", "_")
+            key = (evt_name, c_alias)
+            if key not in drawn:
+                drawn.add(key)
+                L.append(f'kafka -right-> {c_alias} : {evt_name}')
+
+    L.append("")
+    L.append("@enduml")
+    return "\n".join(L)
+
+
+def generate_event_catalog_page():
+    """Generate the Event Catalog index page."""
+    lines = []
+    lines.append("---")
+    lines.append("hide:")
+    lines.append("  - toc")
+    lines.append("tags:")
+    lines.append("  - events")
+    lines.append("  - kafka")
+    lines.append("---")
+    lines.append("")
+    lines.append('<div class="hero" markdown>')
+    lines.append("")
+    lines.append("# Event Catalog")
+    lines.append("")
+    lines.append(
+        '<p class="subtitle">'
+        "Domain Events Published and Consumed Across NovaTrek Services"
+        "</p>"
+    )
+    lines.append("")
+    lines.append(
+        f'<span class="version-badge">'
+        f"{len(EVENT_CATALOG)} Events &middot; "
+        f"{len(EVENTS_BY_PRODUCER)} Producers &middot; "
+        f"{len(EVENTS_BY_CONSUMER)} Consumers"
+        f"</span>"
+    )
+    lines.append("")
+    lines.append("</div>")
+    lines.append("")
+    lines.append(
+        "The NovaTrek platform uses **Apache Kafka** as its event bus for "
+        "asynchronous inter-service communication. Each event is published to a "
+        "dedicated channel and consumed by one or more downstream services."
+    )
+    lines.append("")
+
+    # Event flow diagram
+    lines.append("---")
+    lines.append("")
+    lines.append("## Event Flow Overview")
+    lines.append("")
+    lines.append(
+        '<object data="../microservices/svg/event-flow.svg" type="image/svg+xml" '
+        'style="width:100%;max-width:1400px"></object>'
+    )
+    lines.append("")
+    lines.append(
+        '<p style="text-align: right; margin-top: -0.5em;">'
+        '<a href="../microservices/svg/event-flow.svg" target="_blank">'
+        ':material-fullscreen: View full screen</a></p>'
+    )
+    lines.append("")
+
+    # Group events by domain
+    lines.append("---")
+    lines.append("")
+
+    domain_order = [
+        "Operations", "Guest Identity", "Booking", "Product Catalog",
+        "Safety", "Logistics", "Guide Management", "External", "Support",
+    ]
+
+    by_domain = {}
+    for evt_name, evt in EVENT_CATALOG.items():
+        by_domain.setdefault(evt["domain"], []).append((evt_name, evt))
+
+    for domain_name in domain_order:
+        events = by_domain.get(domain_name, [])
+        if not events:
+            continue
+
+        lines.append(f"## {domain_name}")
+        lines.append("")
+        lines.append("| Event | Channel | Producer | Consumers | Description |")
+        lines.append("|-------|---------|----------|-----------|-------------|")
+
+        for evt_name, evt in sorted(events):
+            producer = evt["producer"]
+            consumer_links = ", ".join(
+                f"[{c}](../microservices/{c}/)" for c in evt["consumers"]
+            )
+            lines.append(
+                f"| **{evt_name}** "
+                f"| `{evt['channel']}` "
+                f"| [{producer}](../microservices/{producer}/) "
+                f"| {consumer_links} "
+                f"| {evt['summary']} |"
+            )
+        lines.append("")
+
+    # Individual event detail sections (for deep-link anchors)
+    lines.append("---")
+    lines.append("")
+    lines.append("## Event Details")
+    lines.append("")
+
+    for evt_name in sorted(EVENT_CATALOG.keys()):
+        evt = EVENT_CATALOG[evt_name]
+        lines.append(f"### {evt_name}")
+        lines.append("")
+        trigger_method, trigger_path = evt["trigger"]
+        trigger_summary = ALL_ENDPOINT_SUMMARIES.get(
+            (evt["producer"], trigger_method, trigger_path), ""
+        )
+        if trigger_summary:
+            anchor = "#" + heading_slug(trigger_method, trigger_path, trigger_summary)
+            trigger_link = f"[`{trigger_method} {trigger_path}`](../microservices/{evt['producer']}/{anchor})"
+        else:
+            trigger_link = f"`{trigger_method} {trigger_path}`"
+
+        lines.append(f"- **Channel:** `{evt['channel']}`")
+        lines.append(f"- **Producer:** [{evt['producer']}](../microservices/{evt['producer']}/)")
+        lines.append(f"- **Trigger:** {trigger_link}")
+        lines.append(f"- **Domain:** {evt['domain']}")
+        lines.append(f"- **Description:** {evt['summary']}")
+        lines.append("")
+        lines.append("**Consumers:**")
+        lines.append("")
+        for c in evt["consumers"]:
+            lines.append(f"- [{c}](../microservices/{c}/)")
+        lines.append("")
+
+    # AsyncAPI specs reference
+    lines.append("---")
+    lines.append("")
+    lines.append("## AsyncAPI Specifications")
+    lines.append("")
+    lines.append(
+        "Each producing service has an AsyncAPI 3.0 specification file "
+        "describing its published events in detail."
+    )
+    lines.append("")
+    lines.append("| Service | Spec File |")
+    lines.append("|---------|-----------|")
+    events_dir = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
+    if os.path.isdir(events_dir):
+        for fname in sorted(os.listdir(events_dir)):
+            if fname.endswith(".events.yaml"):
+                svc = fname.replace(".events.yaml", "")
+                lines.append(
+                    f"| [{svc}](../microservices/{svc}/) "
+                    f"| [`{fname}`](../events/{fname}) |"
+                )
+    lines.append("")
+
+    return "\n".join(lines)
+
+
+# ============================================================
 # Main
 # ============================================================
 
@@ -1614,8 +1962,15 @@ def main():
         f.write(enterprise_puml)
     all_pumls.append(enterprise_path)
 
+    # Generate event flow diagram
+    event_flow_puml = build_event_flow_puml()
+    event_flow_path = os.path.join(PUML_DIR, "event-flow.puml")
+    with open(event_flow_path, "w") as f:
+        f.write(event_flow_puml)
+    all_pumls.append(event_flow_path)
+
     total_ep = sum(s[2] for s in all_services)
-    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise)")
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise + 1 event flow)")
 
     # Render all PUMLs to SVG
     print("  Rendering SVGs with PlantUML...")
@@ -1648,11 +2003,20 @@ def main():
     with open(os.path.join(OUTPUT_DIR, "index.md"), "w") as f:
         f.write(index_page)
 
+    # Generate Event Catalog page
+    os.makedirs(EVENTS_DIR, exist_ok=True)
+    event_catalog_page = generate_event_catalog_page()
+    event_catalog_path = os.path.join(EVENTS_DIR, "index.md")
+    with open(event_catalog_path, "w") as f:
+        f.write(event_catalog_page)
+    print(f"  Event Catalog: {event_catalog_path}")
+
     print()
-    print(f"  Done! {len(all_services)} service pages, {total_ep} endpoint diagrams")
+    print(f"  Done! {len(all_services)} service pages, {total_ep} endpoint diagrams, 1 event catalog")
     print(f"  PUML: {PUML_DIR}/")
     print(f"  SVGs: {SVG_DIR}/")
     print(f"  Pages: {OUTPUT_DIR}/")
+    print(f"  Events: {EVENTS_DIR}/")
 
 
 if __name__ == "__main__":

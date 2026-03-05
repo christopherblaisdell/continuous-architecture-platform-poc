@@ -103,3 +103,15 @@ tags:
 | Application | Screens Using This Service |
 |-------------|---------------------------|
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Analytics Dashboard |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`reservation.created`](/events/#reservationcreated) | [svc-reservations](../svc-reservations/) | `novatrek.booking.reservation.created` |
+| [`reservation.status_changed`](/events/#reservationstatus_changed) | [svc-reservations](../svc-reservations/) | `novatrek.booking.reservation.status-changed` |
+| [`guest.registered`](/events/#guestregistered) | [svc-guest-profiles](../svc-guest-profiles/) | `novatrek.guest-identity.guest.registered` |
+| [`checkin.completed`](/events/#checkincompleted) | [svc-check-in](../svc-check-in/) | `novatrek.operations.checkin.completed` |
+| [`incident.reported`](/events/#incidentreported) | [svc-safety-compliance](../svc-safety-compliance/) | `novatrek.safety.incident.reported` |

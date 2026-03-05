@@ -1,0 +1,85 @@
+asyncapi: 3.0.0
+info:
+  title: svc-payments Events
+  version: 1.0.0
+  description: Domain events published by the NovaTrek Payments Service (PCI scope)
+  contact:
+    name: NovaTrek Engineering
+
+defaultContentType: application/json
+
+channels:
+  paymentProcessed:
+    address: novatrek.support.payment.processed
+    messages:
+      paymentProcessed:
+        $ref: '#/components/messages/PaymentProcessed'
+
+operations:
+  publishPaymentProcessed:
+    action: send
+    channel:
+      $ref: '#/channels/paymentProcessed'
+    summary: Published when a payment transaction is successfully processed
+
+components:
+  messages:
+    PaymentProcessed:
+      name: PaymentProcessed
+      title: Payment Processed
+      summary: A payment has been successfully processed through the payment gateway
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PaymentProcessedPayload'
+
+  schemas:
+    PaymentProcessedPayload:
+      type: object
+      description: >
+        NOTE - This event payload intentionally excludes PCI-sensitive data
+        (card numbers, tokens). Only the payment reference and outcome are published.
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - payment_id
+        - reservation_id
+        - amount
+        - currency
+        - status
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: payment.processed
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        payment_id:
+          type: string
+          format: uuid
+          description: ID of the payment record
+        reservation_id:
+          type: string
+          format: uuid
+          description: ID of the reservation this payment covers
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+        currency:
+          type: string
+          enum: [USD, CAD, EUR, GBP]
+          description: ISO 4217 currency code
+        status:
+          type: string
+          enum: [COMPLETED, REFUNDED, PARTIALLY_REFUNDED]
+          description: Outcome of the payment transaction
+        payment_method:
+          type: string
+          enum: [CREDIT_CARD, DEBIT_CARD, LOYALTY_POINTS, PARTNER_CREDIT]
+          description: Payment method category (no card details)

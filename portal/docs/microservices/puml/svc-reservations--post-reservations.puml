@@ -65,7 +65,7 @@ deactivate DB
 
 == Async Events ==
 
-Svc ->> Kafka : reservation.created
+Svc ->> Kafka : [[/events/#reservationcreated reservation.created]]
 Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send booking confirmation]]
 
 Svc --> GW : 201 Created

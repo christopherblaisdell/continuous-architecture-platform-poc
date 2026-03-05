@@ -92,3 +92,11 @@ tags:
 |-------------|---------------------------|
 | [Guest Portal](../../applications/web-guest-portal/) | Guest Profile, Loyalty Dashboard |
 | [Adventure App](../../applications/app-guest-mobile/) | Earn Loyalty Points |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`guest.registered`](/events/#guestregistered) | [svc-guest-profiles](../svc-guest-profiles/) | `novatrek.guest-identity.guest.registered` |

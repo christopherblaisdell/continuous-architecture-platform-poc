@@ -1,0 +1,74 @@
+asyncapi: 3.0.0
+info:
+  title: svc-guest-profiles Events
+  version: 2.4.0
+  description: Domain events published by the NovaTrek Guest Profiles Service
+  contact:
+    name: Guest Experience Team
+
+defaultContentType: application/json
+
+channels:
+  guestRegistered:
+    address: novatrek.guest-identity.guest.registered
+    messages:
+      guestRegistered:
+        $ref: '#/components/messages/GuestRegistered'
+
+operations:
+  publishGuestRegistered:
+    action: send
+    channel:
+      $ref: '#/channels/guestRegistered'
+    summary: Published when a new guest profile is created
+
+components:
+  messages:
+    GuestRegistered:
+      name: GuestRegistered
+      title: Guest Registered
+      summary: A new guest has registered in the system
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/GuestRegisteredPayload'
+
+  schemas:
+    GuestRegisteredPayload:
+      type: object
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - guest_id
+        - first_name
+        - last_name
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: guest.registered
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the newly registered guest
+        first_name:
+          type: string
+          description: Guest first name
+        last_name:
+          type: string
+          description: Guest last name
+        email:
+          type: string
+          format: email
+          description: Guest email address
+        date_of_birth:
+          type: string
+          format: date
+          description: Guest date of birth

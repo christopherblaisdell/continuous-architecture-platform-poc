@@ -115,3 +115,15 @@ tags:
 | [Guest Portal](../../applications/web-guest-portal/) | Reservation Management, Waiver Signing, Trip Gallery |
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Safety Incident Board |
 | [Adventure App](../../applications/app-guest-mobile/) | Photo Upload, Weather and Trail Alerts |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`reservation.status_changed`](/events/#reservationstatus_changed) | [svc-reservations](../svc-reservations/) | `novatrek.booking.reservation.status-changed` |
+| [`checkin.completed`](/events/#checkincompleted) | [svc-check-in](../svc-check-in/) | `novatrek.operations.checkin.completed` |
+| [`schedule.published`](/events/#schedulepublished) | [svc-scheduling-orchestrator](../svc-scheduling-orchestrator/) | `novatrek.operations.schedule.published` |
+| [`payment.processed`](/events/#paymentprocessed) | [svc-payments](../svc-payments/) | `novatrek.support.payment.processed` |
+| [`incident.reported`](/events/#incidentreported) | [svc-safety-compliance](../svc-safety-compliance/) | `novatrek.safety.incident.reported` |

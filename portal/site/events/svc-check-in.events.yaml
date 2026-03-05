@@ -1,0 +1,89 @@
+asyncapi: 3.0.0
+info:
+  title: svc-check-in Events
+  version: 1.0.0
+  description: Domain events published by the NovaTrek Check-In Service
+  contact:
+    name: NovaTrek Operations Team
+
+defaultContentType: application/json
+
+channels:
+  checkinCompleted:
+    address: novatrek.operations.checkin.completed
+    messages:
+      checkinCompleted:
+        $ref: '#/components/messages/CheckinCompleted'
+
+operations:
+  publishCheckinCompleted:
+    action: send
+    channel:
+      $ref: '#/channels/checkinCompleted'
+    summary: Published when a guest completes the check-in process
+
+components:
+  messages:
+    CheckinCompleted:
+      name: CheckinCompleted
+      title: Check-In Completed
+      summary: A guest has successfully completed the day-of-adventure check-in process
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CheckinCompletedPayload'
+
+  schemas:
+    CheckinCompletedPayload:
+      type: object
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - check_in_id
+        - reservation_id
+        - guest_id
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: checkin.completed
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        check_in_id:
+          type: string
+          format: uuid
+          description: ID of the completed check-in record
+        reservation_id:
+          type: string
+          format: uuid
+          description: ID of the associated reservation
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the checked-in guest
+        trip_id:
+          type: string
+          format: uuid
+          description: ID of the booked trip
+        adventure_category:
+          type: string
+          description: Category of the adventure (e.g., hiking, kayaking)
+        check_in_pattern:
+          type: integer
+          enum: [1, 2, 3]
+          description: Check-in UI pattern applied (1=Basic, 2=Guided, 3=Full Service)
+        gear_verified:
+          type: boolean
+          description: Whether gear verification was completed
+        wristband_assigned:
+          type: boolean
+          description: Whether an RFID wristband was assigned
+        rfid_tag:
+          type: string
+          nullable: true
+          description: RFID tag identifier if a wristband was assigned

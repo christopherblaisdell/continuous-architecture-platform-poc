@@ -102,3 +102,19 @@ tags:
 |-------------|---------------------------|
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Daily Schedule Board, Guide Assignment |
 | [Adventure App](../../applications/app-guest-mobile/) | Live Trip Map |
+
+---
+
+## :material-broadcast: Events Published
+
+| Event | Channel | Trigger | Consumers |
+|-------|---------|---------|-----------|
+| [`schedule.published`](/events/#schedulepublished) | `novatrek.operations.schedule.published` | [`POST /schedule-requests`](#post-schedule-requests-request-optimal-schedule-for-a-trip) | [svc-guide-management](../svc-guide-management/), [svc-notifications](../svc-notifications/) |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`reservation.created`](/events/#reservationcreated) | [svc-reservations](../svc-reservations/) | `novatrek.booking.reservation.created` |

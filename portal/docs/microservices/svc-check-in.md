@@ -98,3 +98,11 @@ tags:
 |-------------|---------------------------|
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station |
 | [Adventure App](../../applications/app-guest-mobile/) | Self Check-In, Digital Wristband |
+
+---
+
+## :material-broadcast: Events Published
+
+| Event | Channel | Trigger | Consumers |
+|-------|---------|---------|-----------|
+| [`checkin.completed`](/events/#checkincompleted) | `novatrek.operations.checkin.completed` | [`POST /check-ins`](#post-check-ins-initiate-check-in-for-a-participant) | [svc-analytics](../svc-analytics/), [svc-notifications](../svc-notifications/) |

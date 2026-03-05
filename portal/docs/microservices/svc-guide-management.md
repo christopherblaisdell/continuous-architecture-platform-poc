@@ -185,3 +185,11 @@ tags:
 | Application | Screens Using This Service |
 |-------------|---------------------------|
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Daily Schedule Board, Guide Assignment, Safety Incident Board |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`schedule.published`](/events/#schedulepublished) | [svc-scheduling-orchestrator](../svc-scheduling-orchestrator/) | `novatrek.operations.schedule.published` |
