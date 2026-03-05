@@ -19,9 +19,9 @@ header [[/microservices/svc-reservations/#integration-context ⬆ svc-reservatio
 title PUT /reservations/{reservation_id}/status\nTransition reservation status
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
-queue "Kafka" as Kafka #F0E6FF
+queue "Kafka" as Kafka [[/actors/#event-bus]] #F0E6FF
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 

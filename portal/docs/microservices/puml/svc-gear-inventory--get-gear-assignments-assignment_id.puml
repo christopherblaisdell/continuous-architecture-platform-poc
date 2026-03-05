@@ -19,7 +19,7 @@ header [[/microservices/svc-gear-inventory/#integration-context ⬆ svc-gear-inv
 title GET /gear-assignments/{assignment_id}\nGet gear assignment details
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-gear-inventory" as Svc [[/microservices/svc-gear-inventory/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC
 

@@ -19,10 +19,10 @@ header [[/microservices/svc-media-gallery/#integration-context ⬆ svc-media-gal
 title POST /media\nUpload a media item
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-media-gallery" as Svc [[/microservices/svc-media-gallery/]] #E8F4F8
-participant "Object Store" as S3 #F5F5F5
-participant "Google Maps Platform" as ExtMap #F5F5F5
+participant "Object Store" as S3 [[/actors/#object-store]] #F5F5F5
+participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F5F5F5
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc

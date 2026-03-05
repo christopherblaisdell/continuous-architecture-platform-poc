@@ -19,7 +19,7 @@ header [[/microservices/svc-check-in/#integration-context ⬆ svc-check-in Integ
 title GET /check-ins\nList check-ins by reservation
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-check-in" as Svc [[/microservices/svc-check-in/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC
 

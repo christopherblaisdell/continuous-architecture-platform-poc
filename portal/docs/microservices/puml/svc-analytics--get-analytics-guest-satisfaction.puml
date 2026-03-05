@@ -19,7 +19,7 @@ header [[/microservices/svc-analytics/#integration-context ⬆ svc-analytics Int
 title GET /analytics/guest-satisfaction\nGet guest satisfaction metrics
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-analytics" as Svc [[/microservices/svc-analytics/]] #E8F4F8
 database "Oracle" as DB #FCE4EC
 

@@ -19,10 +19,10 @@ header [[/microservices/svc-safety-compliance/#integration-context ⬆ svc-safet
 title POST /waivers\nGuest signs a safety waiver
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-safety-compliance" as Svc [[/microservices/svc-safety-compliance/]] #E8F4F8
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
-participant "DocuSign API" as DS #F5F5F5
+participant "DocuSign API" as DS [[/actors/#docusign-api]] #F5F5F5
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 

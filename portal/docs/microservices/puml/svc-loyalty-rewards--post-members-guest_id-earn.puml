@@ -19,7 +19,7 @@ header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty
 title POST /members/{guest_id}/earn\nAward points to a member
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0

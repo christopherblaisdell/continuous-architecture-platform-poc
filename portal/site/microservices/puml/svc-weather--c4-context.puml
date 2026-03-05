@@ -20,7 +20,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
-System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service")
+System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service", $link="/actors/#openweather-api")
 
 Rel(app_guest_mobile, svc_weather, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_weather, "Uses API", "HTTPS")

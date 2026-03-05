@@ -19,7 +19,7 @@ header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-tra
 title GET /vehicles\nList fleet vehicles
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logistics/]] #E8F4F8
 database "PostgreSQL" as DB #FCE4EC
 

@@ -18,9 +18,9 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 
 title Analytics Dashboard\nNovaTrek Operations Dashboard
 
-actor "Guest" as User [[/applications/web-ops-dashboard/]]
+actor "Guest" as User [[/actors/#guest]]
 participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-analytics" as AN [[/microservices/svc-analytics/]] #E8F4F8
 participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
 participant "svc-payments" as Pay [[/microservices/svc-payments/]] #E8F4F8

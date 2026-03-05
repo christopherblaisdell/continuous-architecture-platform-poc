@@ -18,9 +18,9 @@ header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adven
 
 title Digital Wristband\nNovaTrek Adventure App
 
-actor "Guest" as User [[/applications/app-guest-mobile/]]
+actor "Guest" as User [[/actors/#guest]]
 participant "Mobile App" as App [[/applications/app-guest-mobile/]] #DBEAFE
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-check-in" as CI [[/microservices/svc-check-in/]] #E8F4F8
 participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
 

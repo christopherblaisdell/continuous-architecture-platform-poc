@@ -17,7 +17,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
 }
 
-System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")
+System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service", $link="/actors/#snowflake-data-cloud")
 
 Rel(web_ops_dashboard, svc_analytics, "Uses API", "HTTPS")
 Rel(svc_guest_profiles, svc_analytics, "Get satisfaction scores", "HTTPS")

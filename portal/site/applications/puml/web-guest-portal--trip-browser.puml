@@ -18,9 +18,9 @@ header [[/applications/web-guest-portal/#service-dependencies ⬆ NovaTrek Guest
 
 title Trip Browser\nNovaTrek Guest Portal
 
-actor "Guest" as User [[/applications/web-guest-portal/]]
+actor "Guest" as User [[/actors/#guest]]
 participant "Browser" as App [[/applications/web-guest-portal/]] #DBEAFE
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-trip-catalog" as TC [[/microservices/svc-trip-catalog/]] #E8F4F8
 participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
 participant "svc-weather" as WX [[/microservices/svc-weather/]] #E8F4F8

@@ -24,8 +24,8 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
-System_Ext(Fraud_Detection_API, "Fraud Detection API", "PCI-certified third-party")
-System_Ext(Payment_Gateway, "Payment Gateway", "PCI-certified third-party")
+System_Ext(Fraud_Detection_API, "Fraud Detection API", "PCI-certified third-party", $link="/actors/#fraud-detection-api")
+System_Ext(Payment_Gateway, "Payment Gateway", "PCI-certified third-party", $link="/actors/#payment-gateway")
 
 Rel(app_guest_mobile, svc_payments, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_payments, "Uses API", "HTTPS")

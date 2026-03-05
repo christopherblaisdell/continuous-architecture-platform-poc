@@ -19,11 +19,11 @@ header [[/microservices/svc-notifications/#integration-context ⬆ svc-notificat
 title POST /notifications\nSend a notification
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW #DBEAFE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
 participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #E8F4F8
-participant "SendGrid API" as SG #F5F5F5
-participant "Twilio API" as TW #F5F5F5
-participant "Firebase Cloud Messaging" as FCM #F5F5F5
+participant "SendGrid API" as SG [[/actors/#sendgrid-api]] #F5F5F5
+participant "Twilio API" as TW [[/actors/#twilio-api]] #F5F5F5
+participant "Firebase Cloud Messaging" as FCM [[/actors/#firebase-cloud-messaging]] #F5F5F5
 database "PG + Valkey" as DB #FCE4EC
 
 note over Svc
