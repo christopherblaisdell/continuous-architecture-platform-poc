@@ -51,7 +51,7 @@ deactivate DB
 
 == Async Events ==
 
-Svc ->> Kafka : reservation.status_changed
+Svc ->> Kafka : [[/events/#reservationstatus_changed reservation.status_changed]]
 Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send status update]]
 
 Svc --> GW : 200 OK

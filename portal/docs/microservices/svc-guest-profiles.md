@@ -151,3 +151,11 @@ tags:
 | [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Guest Profile, Waiver Signing |
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station, Safety Incident Board |
 | [Adventure App](../../applications/app-guest-mobile/) | Self Check-In, Earn Loyalty Points |
+
+---
+
+## :material-broadcast: Events Published
+
+| Event | Channel | Trigger | Consumers |
+|-------|---------|---------|-----------|
+| [`guest.registered`](/events/#guestregistered) | `novatrek.guest-identity.guest.registered` | [`POST /guests`](#post-guests-register-a-new-guest) | [svc-loyalty-rewards](../svc-loyalty-rewards/), [svc-analytics](../svc-analytics/) |

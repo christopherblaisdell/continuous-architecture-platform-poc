@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>svc-safety-compliance Events — Event Specification</title>
+  <link rel="stylesheet" href="https://unpkg.com/@asyncapi/react-component@1.4.10/styles/default.min.css">
+  <style>
+    :root {
+      --nt-navy: #1a2744;
+      --nt-copper: #c77b30;
+      --nt-slate: #f8fafc;
+      --nt-text: #1e293b;
+      --nt-border: #e2e8f0;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      background: var(--nt-slate);
+      color: var(--nt-text);
+    }
+    .nt-header {
+      background: var(--nt-navy);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nt-header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .nt-header a {
+      color: var(--nt-copper);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .nt-header a:hover {
+      text-decoration: underline;
+    }
+    .nt-breadcrumb {
+      background: white;
+      border-bottom: 1px solid var(--nt-border);
+      padding: 0.5rem 2rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .nt-breadcrumb a {
+      color: var(--nt-copper);
+      text-decoration: none;
+    }
+    .nt-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    #asyncapi-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="nt-header">
+    <h1>svc-safety-compliance Events — Event Specification</h1>
+    <a href="/events/">Back to Event Catalog</a>
+    <a href="/microservices/svc-safety-compliance/">Service Page</a>
+  </div>
+  <div class="nt-breadcrumb">
+    <a href="/">Portal</a> &rsaquo;
+    <a href="/events/">Event Catalog</a> &rsaquo;
+    svc-safety-compliance Events
+  </div>
+  <div id="asyncapi-container">
+    <asyncapi-component
+      schemaFetchError="Failed to load AsyncAPI specification"
+      cssImportPath="https://unpkg.com/@asyncapi/react-component@1.4.10/styles/default.min.css">
+    </asyncapi-component>
+  </div>
+  <script src="https://unpkg.com/@asyncapi/react-component@1.4.10/browser/standalone/index.js"></script>
+  <script>
+    const schema = {
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "svc-safety-compliance Events",
+    "version": "1.0.0",
+    "description": "Domain events published by the NovaTrek Safety and Compliance Service",
+    "contact": {
+      "name": "Safety and Compliance Team"
+    }
+  },
+  "defaultContentType": "application/json",
+  "channels": {
+    "incidentReported": {
+      "address": "novatrek.safety.incident.reported",
+      "messages": {
+        "incidentReported": {
+          "$ref": "#/components/messages/IncidentReported"
+        }
+      }
+    }
+  },
+  "operations": {
+    "publishIncidentReported": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/incidentReported"
+      },
+      "summary": "Published when a safety incident is reported"
+    }
+  },
+  "components": {
+    "messages": {
+      "IncidentReported": {
+        "name": "IncidentReported",
+        "title": "Incident Reported",
+        "summary": "A safety incident has been reported and logged in the audit trail",
+        "contentType": "application/json",
+        "payload": {
+          "$ref": "#/components/schemas/IncidentReportedPayload"
+        }
+      }
+    },
+    "schemas": {
+      "IncidentReportedPayload": {
+        "type": "object",
+        "required": [
+          "event_id",
+          "event_type",
+          "timestamp",
+          "incident_id",
+          "severity",
+          "incident_type"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for this event instance"
+          },
+          "event_type": {
+            "type": "string",
+            "const": "incident.reported"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp when the event occurred"
+          },
+          "incident_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the incident record"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ],
+            "description": "Incident severity level"
+          },
+          "incident_type": {
+            "type": "string",
+            "enum": [
+              "INJURY",
+              "EQUIPMENT_FAILURE",
+              "WEATHER_HAZARD",
+              "TRAIL_HAZARD",
+              "MEDICAL",
+              "OTHER"
+            ],
+            "description": "Classification of the incident"
+          },
+          "trip_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "ID of the trip where the incident occurred (if applicable)"
+          },
+          "trail_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "ID of the trail where the incident occurred (if applicable)"
+          },
+          "guest_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "ID of the affected guest (if applicable)"
+          },
+          "guide_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "ID of the guide who reported the incident"
+          },
+          "requires_evacuation": {
+            "type": "boolean",
+            "description": "Whether the incident requires emergency evacuation"
+          }
+        }
+      }
+    }
+  }
+};
+    AsyncApiStandalone.render({ schema: schema, config: { show: { sidebar: true } } }, document.getElementById('asyncapi-container'));
+  </script>
+</body>
+</html>

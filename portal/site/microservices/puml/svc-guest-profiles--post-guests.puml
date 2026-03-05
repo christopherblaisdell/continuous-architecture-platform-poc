@@ -52,7 +52,7 @@ deactivate DB
 
 == Async Events ==
 
-Svc ->> Kafka : guest.registered
+Svc ->> Kafka : [[/events/#guestregistered guest.registered]]
 
 Svc --> GW : 201 Created
 deactivate Svc

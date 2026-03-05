@@ -123,3 +123,11 @@ tags:
 | [Guest Portal](../../applications/web-guest-portal/) | Waiver Signing |
 | [Operations Dashboard](../../applications/web-ops-dashboard/) | Check-In Station, Safety Incident Board |
 | [Adventure App](../../applications/app-guest-mobile/) | Self Check-In |
+
+---
+
+## :material-broadcast: Events Published
+
+| Event | Channel | Trigger | Consumers |
+|-------|---------|---------|-----------|
+| [`incident.reported`](/events/#incidentreported) | `novatrek.safety.incident.reported` | [`POST /incidents`](#post-incidents-file-an-incident-report) | [svc-notifications](../svc-notifications/), [svc-analytics](../svc-analytics/) |

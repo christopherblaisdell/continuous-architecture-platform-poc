@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName Inter
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam componentStyle rectangle
+title NovaTrek Event Flow
+
+rectangle "Producers" {
+  component "svc-check-in" as svc_check_in [[/microservices/svc-check-in/]] #2563eb
+  component "svc-guest-profiles" as svc_guest_profiles [[/microservices/svc-guest-profiles/]] #7c3aed
+  component "svc-payments" as svc_payments [[/microservices/svc-payments/]] #64748b
+  component "svc-reservations" as svc_reservations [[/microservices/svc-reservations/]] #059669
+  component "svc-safety-compliance" as svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
+  component "svc-scheduling-orchestrator" as svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
+}
+
+queue "Kafka Event Bus" as kafka #F0E6FF
+
+rectangle "Consumers" {
+  component "svc-analytics" as svc_analytics [[/microservices/svc-analytics/]] #64748b
+  component "svc-guide-management" as svc_guide_management [[/microservices/svc-guide-management/]] #4f46e5
+  component "svc-loyalty-rewards" as svc_loyalty_rewards [[/microservices/svc-loyalty-rewards/]] #64748b
+  component "svc-notifications" as svc_notifications [[/microservices/svc-notifications/]] #64748b
+  component "svc-reservations" as svc_reservations [[/microservices/svc-reservations/]] #059669
+  component "svc-scheduling-orchestrator" as svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
+}
+
+svc_check_in -right-> kafka : checkin.completed
+svc_guest_profiles -right-> kafka : guest.registered
+svc_safety_compliance -right-> kafka : incident.reported
+svc_payments -right-> kafka : payment.processed
+svc_reservations -right-> kafka : reservation.created
+svc_reservations -right-> kafka : reservation.status_changed
+svc_scheduling_orchestrator -right-> kafka : schedule.published
+
+kafka -right-> svc_analytics : checkin.completed
+kafka -right-> svc_notifications : checkin.completed
+kafka -right-> svc_loyalty_rewards : guest.registered
+kafka -right-> svc_analytics : guest.registered
+kafka -right-> svc_notifications : incident.reported
+kafka -right-> svc_analytics : incident.reported
+kafka -right-> svc_reservations : payment.processed
+kafka -right-> svc_notifications : payment.processed
+kafka -right-> svc_scheduling_orchestrator : reservation.created
+kafka -right-> svc_analytics : reservation.created
+kafka -right-> svc_notifications : reservation.status_changed
+kafka -right-> svc_analytics : reservation.status_changed
+kafka -right-> svc_guide_management : schedule.published
+kafka -right-> svc_notifications : schedule.published
+
+@enduml
