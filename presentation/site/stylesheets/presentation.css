@@ -1,0 +1,207 @@
+/* Presentation-grade styling for architecture pitch deck */
+
+/* Hero section styling */
+.md-typeset .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.md-typeset .hero-card {
+    background: linear-gradient(135deg, #00897b 0%, #00695c 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transition: transform 0.2s ease;
+}
+
+.md-typeset .hero-card:hover {
+    transform: translateY(-4px);
+}
+
+.md-typeset .hero-card .metric {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.md-typeset .hero-card .label {
+    font-size: 1rem;
+    opacity: 0.92;
+    font-weight: 500;
+}
+
+/* Accent card variant */
+.md-typeset .hero-card.accent {
+    background: linear-gradient(135deg, #ff8f00 0%, #e65100 100%);
+}
+
+.md-typeset .hero-card.dark {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+}
+
+/* Comparison tables — highlight winner cells */
+.md-typeset table.comparison th {
+    background: #00897b;
+    color: white;
+    font-weight: 600;
+}
+
+.md-typeset .winner {
+    color: #2e7d32;
+    font-weight: 700;
+}
+
+.md-typeset .loser {
+    color: #c62828;
+}
+
+/* Large callout numbers */
+.md-typeset .big-number {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #00897b;
+    line-height: 1;
+    margin: 0.5rem 0;
+}
+
+.md-typeset .big-number.red {
+    color: #c62828;
+}
+
+/* Section dividers */
+.md-typeset hr {
+    border: none;
+    border-top: 3px solid #e0e0e0;
+    margin: 3rem 0;
+}
+
+/* Key insight boxes */
+.md-typeset .key-insight {
+    background: #e0f2f1;
+    border-left: 5px solid #00897b;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin: 2rem 0;
+    font-size: 1.1rem;
+}
+
+.md-typeset .key-insight strong {
+    color: #00695c;
+}
+
+/* Timeline styling */
+.md-typeset .timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.md-typeset .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #00897b;
+}
+
+.md-typeset .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+}
+
+.md-typeset .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #00897b;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #00897b;
+}
+
+.md-typeset .timeline-item.completed::before {
+    background: #2e7d32;
+    box-shadow: 0 0 0 2px #2e7d32;
+}
+
+/* Score bar visualization */
+.md-typeset .score-bar {
+    background: #e8e8e8;
+    border-radius: 8px;
+    height: 32px;
+    position: relative;
+    margin: 0.5rem 0 1rem;
+    overflow: hidden;
+}
+
+.md-typeset .score-bar .fill {
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #00897b, #26a69a);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 12px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* Larger headings for presentation */
+.md-typeset h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.md-typeset h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+/* Footer CTA */
+.md-typeset .cta-box {
+    background: linear-gradient(135deg, #00897b 0%, #004d40 100%);
+    color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.md-typeset .cta-box h3 {
+    color: white;
+    font-size: 1.6rem;
+    margin-top: 0;
+}
+
+.md-typeset .cta-box a {
+    color: #ffb74d;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .md-typeset .hero-card .metric {
+        font-size: 2.4rem;
+    }
+    .md-typeset .big-number {
+        font-size: 3rem;
+    }
+    .md-typeset h1 {
+        font-size: 1.8rem;
+    }
+}

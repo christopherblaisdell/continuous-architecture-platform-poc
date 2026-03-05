@@ -1,0 +1,69 @@
+site_name: "Continuous Architecture Platform — The Case for Adoption"
+site_description: "Executive presentation for the Continuous Architecture Platform powered by AI-assisted workflows"
+site_author: "Christopher Blaisdell"
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - content.tabs.link
+    - toc.integrate
+  icon:
+    logo: material/presentation
+  font:
+    text: Inter
+    code: Fira Code
+
+nav:
+  - Home: index.md
+  - The Problem: problem.md
+  - The Solution: solution.md
+  - Evidence:
+    - "Cost: 208x Cheaper": cost-evidence.md
+    - "Quality: 96.1%": quality-evidence.md
+  - How It Works:
+    - Shared Workspace: shared-workspace.md
+    - Markdown-First: markdown-first.md
+    - CI/CD Publishing: publishing-pipeline.md
+  - Live Demo: live-demo.md
+  - Closing the Loop: closing-the-loop.md
+  - Roadmap: roadmap.md
+  - The Ask: the-ask.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.critic
+  - pymdownx.mark
+
+extra_css:
+  - stylesheets/presentation.css
+
+extra_javascript:
+  - javascripts/site-name-link.js
+
+extra:
+  generator: false
