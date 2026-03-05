@@ -1,0 +1,45 @@
+@startuml svc-notifications--get-notifications
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2563eb
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title GET /notifications\nList notifications
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #E8F4F8
+database "PG + Redis" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-notifications.html#/Notifications/listNotifications View in Swagger UI]]
+end note
+
+Client -> GW : GET /notifications
+activate GW #2563eb
+GW -> Svc : route request
+activate Svc #2563eb
+
+== Database ==
+
+Svc -> DB : SELECT ... WHERE filters
+activate DB #FCE4EC
+DB --> Svc : Page of results
+deactivate DB
+
+Svc --> GW : 200 OK
+deactivate Svc
+GW --> Client : 200 OK
+deactivate GW
+
+@enduml

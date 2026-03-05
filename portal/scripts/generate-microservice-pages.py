@@ -4,7 +4,7 @@
 Creates a deep-dive page for each of the 19 NovaTrek microservices with:
   - Service metadata and description
   - Data store documentation
-  - Internal sequence diagrams for EVERY endpoint (Mermaid)
+  - PlantUML sequence diagrams for EVERY endpoint (rendered as clickable SVGs)
   - Direct links to Swagger UI for each endpoint
   - Cross-service integration flows where applicable
 
@@ -13,46 +13,18 @@ Usage:
 """
 
 import os
+import subprocess
 import yaml
 from urllib.parse import quote
 
-# ────────────────────────────────────────────────────────────
 # Paths
-# ────────────────────────────────────────────────────────────
-
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SPECS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "specs")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "microservices")
+PUML_DIR = os.path.join(OUTPUT_DIR, "puml")
+SVG_DIR = os.path.join(OUTPUT_DIR, "svg")
 
-# ────────────────────────────────────────────────────────────
-# Mermaid Theme — NovaTrek Corporate Palette
-# ────────────────────────────────────────────────────────────
-
-MERMAID_THEME = (
-    "%%{init: {'theme': 'base', 'themeVariables': {"
-    "'primaryColor': '#1a2744', "
-    "'primaryTextColor': '#fff', "
-    "'primaryBorderColor': '#c77b30', "
-    "'lineColor': '#475569', "
-    "'secondaryColor': '#dbeafe', "
-    "'tertiaryColor': '#fff7ed', "
-    "'noteBkgColor': '#fef3e7', "
-    "'noteTextColor': '#1e293b', "
-    "'noteBorderColor': '#c77b30', "
-    "'actorBkg': '#1a2744', "
-    "'actorTextColor': '#fff', "
-    "'actorBorder': '#c77b30', "
-    "'activationBkgColor': '#dbeafe', "
-    "'activationBorderColor': '#3b82f6', "
-    "'signalColor': '#1e293b', "
-    "'signalTextColor': '#1e293b'"
-    "}}}%%"
-)
-
-# ────────────────────────────────────────────────────────────
 # Domain Configuration
-# ────────────────────────────────────────────────────────────
-
 DOMAINS = {
     "Operations": {
         "color": "#2563eb",
@@ -96,9 +68,23 @@ DOMAINS = {
     },
 }
 
-# ────────────────────────────────────────────────────────────
-# Data Store Metadata (Synthetic — NovaTrek Adventures)
-# ────────────────────────────────────────────────────────────
+ALL_SERVICES = set()
+for _info in DOMAINS.values():
+    ALL_SERVICES.update(_info["services"])
+
+LABEL_TO_SVC = {
+    "Reservations": "svc-reservations",
+    "Guest Profiles": "svc-guest-profiles",
+    "Trip Catalog": "svc-trip-catalog",
+    "Trail Mgmt": "svc-trail-management",
+    "Guide Mgmt": "svc-guide-management",
+    "Weather Svc": "svc-weather",
+    "Location Svc": "svc-location-services",
+    "Gear Inventory": "svc-gear-inventory",
+    "Payments Svc": "svc-payments",
+    "Notifications": "svc-notifications",
+    "Safety Compliance": "svc-safety-compliance",
+}
 
 DATA_STORES = {
     "svc-check-in": {
@@ -312,14 +298,9 @@ DATA_STORES = {
     },
 }
 
-# ────────────────────────────────────────────────────────────
 # Cross-Service Integration Map
-# Key: (service, HTTP method, path) -> [(alias, label, action, is_async)]
-# ────────────────────────────────────────────────────────────
-
 CROSS_SERVICE_CALLS = {}
 
-# -- svc-check-in --
 CROSS_SERVICE_CALLS[("svc-check-in", "POST", "/check-ins")] = [
     ("Res", "Reservations", "Verify reservation exists", False),
     ("Safety", "Safety Compliance", "Validate active waiver", False),
@@ -328,7 +309,6 @@ CROSS_SERVICE_CALLS[("svc-check-in", "POST", "/check-ins/{check_in_id}/gear-veri
     ("Gear", "Gear Inventory", "Verify gear assignment", False),
 ]
 
-# -- svc-reservations --
 CROSS_SERVICE_CALLS[("svc-reservations", "POST", "/reservations")] = [
     ("GP", "Guest Profiles", "Validate guest identity", False),
     ("TC", "Trip Catalog", "Check trip availability", False),
@@ -344,7 +324,6 @@ CROSS_SERVICE_CALLS[("svc-reservations", "PUT", "/reservations/{reservation_id}/
     ("Kafka", "Event Bus", "reservation.status_changed", True),
 ]
 
-# -- svc-scheduling-orchestrator --
 CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-requests")] = [
     ("GM", "Guide Mgmt", "Check guide availability", False),
     ("TM", "Trail Mgmt", "Verify trail conditions", False),
@@ -359,7 +338,6 @@ CROSS_SERVICE_CALLS[("svc-scheduling-orchestrator", "POST", "/schedule-conflicts
     ("GM", "Guide Mgmt", "Reassign guide", False),
 ]
 
-# -- svc-partner-integrations --
 CROSS_SERVICE_CALLS[("svc-partner-integrations", "POST", "/partner-bookings")] = [
     ("Res", "Reservations", "Create reservation", False),
 ]
@@ -368,7 +346,6 @@ CROSS_SERVICE_CALLS[("svc-partner-integrations", "POST", "/partner-bookings/{boo
     ("Pay", "Payments Svc", "Process commission", False),
 ]
 
-# -- svc-guest-profiles --
 CROSS_SERVICE_CALLS[("svc-guest-profiles", "POST", "/guests")] = [
     ("Kafka", "Event Bus", "guest.registered", True),
 ]
@@ -376,7 +353,6 @@ CROSS_SERVICE_CALLS[("svc-guest-profiles", "GET", "/guests/{guest_id}/adventure-
     ("Res", "Reservations", "Query past bookings", False),
 ]
 
-# -- svc-payments --
 CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments")] = [
     ("ExtPay", "Payment Gateway", "Process payment", False),
 ]
@@ -384,7 +360,6 @@ CROSS_SERVICE_CALLS[("svc-payments", "POST", "/payments/{payment_id}/refund")] =
     ("ExtPay", "Payment Gateway", "Process refund", False),
 ]
 
-# -- svc-notifications --
 CROSS_SERVICE_CALLS[("svc-notifications", "POST", "/notifications")] = [
     ("ExtMsg", "Email/SMS Provider", "Deliver message", True),
 ]
@@ -392,7 +367,6 @@ CROSS_SERVICE_CALLS[("svc-notifications", "POST", "/notifications/bulk")] = [
     ("ExtMsg", "Email/SMS Provider", "Deliver bulk messages", True),
 ]
 
-# -- svc-safety-compliance --
 CROSS_SERVICE_CALLS[("svc-safety-compliance", "POST", "/waivers")] = [
     ("GP", "Guest Profiles", "Validate guest identity", False),
 ]
@@ -400,17 +374,14 @@ CROSS_SERVICE_CALLS[("svc-safety-compliance", "POST", "/incidents")] = [
     ("Ntfy", "Notifications", "Send safety alert", True),
 ]
 
-# -- svc-gear-inventory --
 CROSS_SERVICE_CALLS[("svc-gear-inventory", "POST", "/gear-assignments")] = [
     ("GP", "Guest Profiles", "Validate guest", False),
 ]
 
-# -- svc-transport-logistics --
 CROSS_SERVICE_CALLS[("svc-transport-logistics", "POST", "/transport-requests")] = [
     ("LS", "Location Svc", "Validate pickup location", False),
 ]
 
-# -- svc-loyalty-rewards --
 CROSS_SERVICE_CALLS[("svc-loyalty-rewards", "POST", "/members/{guest_id}/earn")] = [
     ("Res", "Reservations", "Verify completed booking", False),
 ]
@@ -418,7 +389,6 @@ CROSS_SERVICE_CALLS[("svc-loyalty-rewards", "POST", "/members/{guest_id}/redeem"
     ("Pay", "Payments Svc", "Process reward credit", False),
 ]
 
-# -- svc-media-gallery --
 CROSS_SERVICE_CALLS[("svc-media-gallery", "POST", "/media")] = [
     ("S3", "Object Store", "Upload binary file", False),
 ]
@@ -426,12 +396,10 @@ CROSS_SERVICE_CALLS[("svc-media-gallery", "POST", "/media/{media_id}/share")] = 
     ("Ntfy", "Notifications", "Send share link", True),
 ]
 
-# -- svc-inventory-procurement --
 CROSS_SERVICE_CALLS[("svc-inventory-procurement", "POST", "/purchase-orders")] = [
     ("GI", "Gear Inventory", "Verify item catalog", False),
 ]
 
-# -- svc-weather --
 CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/current")] = [
     ("ExtWx", "Weather API", "Fetch current conditions", False),
 ]
@@ -442,7 +410,6 @@ CROSS_SERVICE_CALLS[("svc-weather", "GET", "/weather/alerts")] = [
     ("ExtWx", "Weather API", "Fetch active alerts", False),
 ]
 
-# -- svc-trail-management --
 CROSS_SERVICE_CALLS[("svc-trail-management", "POST", "/trails/{trail_id}/conditions")] = [
     ("WX", "Weather Svc", "Correlate weather data", False),
 ]
@@ -453,7 +420,6 @@ CROSS_SERVICE_CALLS[("svc-trail-management", "POST", "/trails/{trail_id}/conditi
 # ============================================================
 
 def get_domain_info(svc_name):
-    """Return (domain_name, domain_color) for a service."""
     for domain, info in DOMAINS.items():
         if svc_name in info["services"]:
             return domain, info["color"]
@@ -461,7 +427,6 @@ def get_domain_info(svc_name):
 
 
 def extract_endpoints(spec):
-    """Extract all endpoints from an OpenAPI spec."""
     endpoints = []
     for path, path_item in spec.get("paths", {}).items():
         for method in ["get", "post", "put", "patch", "delete"]:
@@ -481,26 +446,25 @@ def extract_endpoints(spec):
 
 
 def get_short_db_name(engine):
-    """Extract short database name for Mermaid participant."""
     if "TimescaleDB" in engine:
         return "TimescaleDB"
     if "PostGIS" in engine:
         return "PostGIS"
     if engine.startswith("Redis"):
-        return "Redis"
+        return "Redis + PG"
+    if "PostgreSQL" in engine and "Redis" in engine:
+        return "PG + Redis"
     if "PostgreSQL" in engine:
         return "PostgreSQL"
     return engine.split()[0]
 
 
 def has_path_param_at_end(path):
-    """Check if path ends with a path parameter like /{id}."""
     parts = path.strip("/").split("/")
     return parts[-1].startswith("{") and parts[-1].endswith("}")
 
 
 def is_sub_resource(path):
-    """Check if path accesses a sub-resource under a parameterized parent."""
     parts = path.strip("/").split("/")
     if len(parts) >= 3:
         has_mid_param = any(p.startswith("{") for p in parts[1:-1])
@@ -509,25 +473,7 @@ def is_sub_resource(path):
     return False
 
 
-def sanitize_mermaid(text):
-    """Remove characters that break Mermaid syntax."""
-    return (text
-        .replace("#", "")
-        .replace("<", "")
-        .replace(">", "")
-        .replace("{", "(")
-        .replace("}", ")")
-        .replace('"', "'")
-        .replace(";", ","))
-
-
-def path_display(path):
-    """Convert path to display format for Mermaid messages."""
-    return sanitize_mermaid(path)
-
-
 def success_status(method):
-    """Return expected success HTTP status code."""
     if method == "POST":
         return "201 Created"
     if method == "DELETE":
@@ -536,13 +482,10 @@ def success_status(method):
 
 
 def svc_method_name(method, path, operation_id):
-    """Generate a service-layer method call description."""
     if operation_id:
-        return sanitize_mermaid(operation_id) + "()"
+        return operation_id + "()"
     if method == "GET":
-        if has_path_param_at_end(path):
-            return "getById(id)"
-        return "search(filters)"
+        return "getById(id)" if has_path_param_at_end(path) else "search(filters)"
     elif method == "POST":
         return "create(body)"
     elif method == "PUT":
@@ -554,135 +497,206 @@ def svc_method_name(method, path, operation_id):
     return "handle(request)"
 
 
+def label_to_svc_name(label):
+    return LABEL_TO_SVC.get(label, None)
+
+
+def make_puml_filename(svc_name, method, path):
+    clean = path.strip("/").replace("/", "-").replace("{", "").replace("}", "")
+    return f"{svc_name}--{method.lower()}-{clean}"
+
+
 # ============================================================
-# Mermaid Diagram Generation
+# PlantUML Diagram Generation
 # ============================================================
 
-def build_diagram(svc_name, method, path, summary, db_engine, ext_calls, operation_id=""):
-    """Generate a Mermaid sequence diagram for one endpoint."""
+METHOD_COLORS = {
+    "GET": "#2563eb",
+    "POST": "#059669",
+    "PUT": "#c77b30",
+    "PATCH": "#7c3aed",
+    "DELETE": "#dc2626",
+}
 
+
+def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
+               operation_id="", tags=None):
+    method_color = METHOD_COLORS.get(method, "#475569")
     db_label = get_short_db_name(db_engine)
-    disp_path = path_display(path)
-    svc_call = svc_method_name(method, path, operation_id)
+    tag = (tags or [""])[0]
+    fname = make_puml_filename(svc_name, method, path)
 
-    lines = [MERMAID_THEME, "sequenceDiagram"]
+    L = []
+    L.append(f"@startuml {fname}")
+    L.append("")
 
-    # ── Participants (left to right) ──
-    lines.append("    participant C as Client")
-    lines.append("    participant GW as API Gateway")
-    lines.append("    participant Ctrl as Controller")
-    lines.append("    participant Svc as Service Layer")
+    # Skinparam
+    L.append("skinparam backgroundColor #FEFEFE")
+    L.append("skinparam shadowing false")
+    L.append('skinparam defaultFontName "Segoe UI"')
+    L.append("skinparam sequence {")
+    L.append(f"    ArrowColor {method_color}")
+    L.append("    ParticipantBorderColor #2E86AB")
+    L.append("    ParticipantBackgroundColor #E8F4F8")
+    L.append("    LifeLineBorderColor #A23B72")
+    L.append("    BoxBorderColor #F18F01")
+    L.append("    BoxBackgroundColor #FFF8F0")
+    L.append("    NoteBorderColor #c77b30")
+    L.append("    NoteBackgroundColor #FEF3E7")
+    L.append("}")
+    L.append("")
 
-    for alias, label, _, _ in (ext_calls or []):
-        lines.append(f"    participant {alias} as {label}")
+    # Title
+    title_text = f"{method} {path}"
+    L.append(f"title {title_text}\\n{summary}")
+    L.append("")
 
-    lines.append("    participant Repo as Repository")
-    lines.append(f"    participant DB as {db_label}")
-    lines.append("")
+    # Participants - clickable
+    L.append('participant "Client" as Client')
+    L.append('participant "API Gateway" as GW #DBEAFE')
+    L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] #E8F4F8')
 
-    # ── Request arrival ──
-    lines.append(f"    C->>+GW: {method} {disp_path}")
-    lines.append("    GW->>+Ctrl: Route request")
+    declared = set()
+    for alias, label, action, is_async in (ext_calls or []):
+        if alias in declared:
+            continue
+        declared.add(alias)
+        target_svc = label_to_svc_name(label)
+        if target_svc:
+            L.append(f'participant "{label}" as {alias} [[/microservices/{target_svc}/]] #FFF8F0')
+        elif label == "Event Bus":
+            L.append(f'queue "Kafka" as {alias} #F0E6FF')
+        else:
+            L.append(f'participant "{label}" as {alias} #F5F5F5')
 
-    # ── Validation for writes ──
+    L.append(f'database "{db_label}" as DB #FCE4EC')
+    L.append("")
+
+    # Swagger link note
+    tag_enc = quote(tag, safe="") if tag else ""
+    anchor = f"#/{tag_enc}/{operation_id}" if tag_enc and operation_id else ""
+    swagger_url = f"/services/api/{svc_name}.html{anchor}"
+    L.append("note over Svc")
+    L.append(f"  [[{swagger_url} View in Swagger UI]]")
+    L.append("end note")
+    L.append("")
+
+    # Request flow
+    L.append(f"Client -> GW : {method} {path}")
+    L.append(f"activate GW {method_color}")
+    L.append("GW -> Svc : route request")
+    L.append(f"activate Svc {method_color}")
+    L.append("")
+
     if method in ("POST", "PUT", "PATCH"):
-        lines.append("    Note right of Ctrl: Validate request body")
+        L.append("note right of Svc : Validate request body")
+        L.append("")
 
-    # ── Delegate to service layer ──
-    lines.append(f"    Ctrl->>+Svc: {svc_call}")
-
-    # ── Cross-service integration (sync) ──
+    # Cross-service calls (sync)
     sync_calls = [c for c in (ext_calls or []) if not c[3]]
     async_calls = [c for c in (ext_calls or []) if c[3]]
 
     if sync_calls:
-        lines.append("")
-        lines.append("    rect rgba(199, 123, 48, 0.08)")
-        lines.append(f"        Note over Svc,{sync_calls[-1][0]}: Cross-service integration")
+        L.append("== Cross-Service Integration ==")
+        L.append("")
         for alias, label, action, _ in sync_calls:
-            lines.append(f"        Svc->>+{alias}: {action}")
-            lines.append(f"        {alias}-->>-Svc: OK")
-        lines.append("    end")
+            target_svc = label_to_svc_name(label)
+            if target_svc:
+                L.append(f"Svc -> {alias} : [[/microservices/{target_svc}/ {action}]]")
+            else:
+                L.append(f"Svc -> {alias} : {action}")
+            L.append(f"activate {alias} #DBEAFE")
+            L.append(f"{alias} --> Svc : OK")
+            L.append(f"deactivate {alias}")
+            L.append("")
 
-    lines.append("")
+    # Database operations
+    L.append("== Database ==")
+    L.append("")
 
-    # ── Database operations ──
     if method == "GET":
         if has_path_param_at_end(path):
-            lines.append("    Svc->>+Repo: findById(id)")
-            lines.append("    Repo->>+DB: SELECT ... WHERE id = ?")
-            lines.append("    DB-->>-Repo: Row")
-            lines.append("    Repo-->>-Svc: Entity")
-            lines.append("    Note right of Repo: Returns 404 if not found")
+            L.append("Svc -> DB : SELECT ... WHERE id = ?")
+            L.append("activate DB #FCE4EC")
+            L.append("DB --> Svc : Row")
+            L.append("deactivate DB")
+            L.append("note right of DB : Returns 404 if not found")
         elif is_sub_resource(path):
-            lines.append("    Svc->>+Repo: findByParent(parentId)")
-            lines.append("    Repo->>+DB: SELECT ... WHERE parent_id = ?")
-            lines.append("    DB-->>-Repo: ResultSet")
-            lines.append("    Repo-->>-Svc: List of results")
+            L.append("Svc -> DB : SELECT ... WHERE parent_id = ?")
+            L.append("activate DB #FCE4EC")
+            L.append("DB --> Svc : ResultSet")
+            L.append("deactivate DB")
         else:
-            lines.append("    Svc->>+Repo: findByFilters(criteria)")
-            lines.append("    Repo->>+DB: SELECT ... WHERE filters")
-            lines.append("    DB-->>-Repo: ResultSet")
-            lines.append("    Repo-->>-Svc: Page of results")
+            L.append("Svc -> DB : SELECT ... WHERE filters")
+            L.append("activate DB #FCE4EC")
+            L.append("DB --> Svc : Page of results")
+            L.append("deactivate DB")
 
     elif method == "POST":
         if is_sub_resource(path):
-            lines.append("    Svc->>+Repo: findParent(parentId)")
-            lines.append("    Repo->>+DB: SELECT parent")
-            lines.append("    DB-->>-Repo: Parent row")
-            lines.append("    Repo-->>-Svc: Parent entity")
-            lines.append("    Note right of Repo: 404 if parent not found")
-        lines.append("    Svc->>+Repo: save(entity)")
-        lines.append("    Repo->>+DB: INSERT INTO ...")
-        lines.append("    DB-->>-Repo: Created row")
-        lines.append("    Repo-->>-Svc: Persisted entity")
+            L.append("Svc -> DB : SELECT parent WHERE id = ?")
+            L.append("activate DB #FCE4EC")
+            L.append("DB --> Svc : Parent row")
+            L.append("deactivate DB")
+            L.append("note right of DB : 404 if parent not found")
+            L.append("")
+        L.append("Svc -> DB : INSERT INTO ...")
+        L.append("activate DB #FCE4EC")
+        L.append("DB --> Svc : Created row")
+        L.append("deactivate DB")
 
     elif method in ("PUT", "PATCH"):
-        lines.append("    Svc->>+Repo: findById(id)")
-        lines.append("    Repo->>+DB: SELECT ... FOR UPDATE")
-        lines.append("    DB-->>-Repo: Current row")
-        lines.append("    Repo-->>-Svc: Existing entity")
+        L.append("Svc -> DB : SELECT ... FOR UPDATE")
+        L.append("activate DB #FCE4EC")
+        L.append("DB --> Svc : Current row")
+        L.append("deactivate DB")
         note = "Merge changed fields only" if method == "PATCH" else "Replace mutable fields"
-        lines.append(f"    Note right of Svc: {note}")
-        lines.append("    Svc->>+Repo: save(entity)")
-        lines.append("    Repo->>+DB: UPDATE ... SET ...")
-        lines.append("    DB-->>-Repo: Updated row")
-        lines.append("    Repo-->>-Svc: Updated entity")
+        L.append(f"note right of Svc : {note}")
+        L.append("")
+        L.append("Svc -> DB : UPDATE ... SET ...")
+        L.append("activate DB #FCE4EC")
+        L.append("DB --> Svc : Updated row")
+        L.append("deactivate DB")
 
     elif method == "DELETE":
-        lines.append("    Svc->>+Repo: findById(id)")
-        lines.append("    Repo->>+DB: SELECT ... WHERE id = ?")
-        lines.append("    DB-->>-Repo: Row")
-        lines.append("    Repo-->>-Svc: Entity")
-        lines.append("    Note right of Repo: Returns 404 if not found")
-        lines.append("    Svc->>+Repo: delete(entity)")
-        lines.append("    Repo->>+DB: DELETE FROM ... WHERE id = ?")
-        lines.append("    DB-->>-Repo: OK")
-        lines.append("    Repo-->>-Svc: void")
+        L.append("Svc -> DB : SELECT ... WHERE id = ?")
+        L.append("activate DB #FCE4EC")
+        L.append("DB --> Svc : Row")
+        L.append("deactivate DB")
+        L.append("note right of DB : Returns 404 if not found")
+        L.append("")
+        L.append("Svc -> DB : DELETE FROM ... WHERE id = ?")
+        L.append("activate DB #FCE4EC")
+        L.append("DB --> Svc : OK")
+        L.append("deactivate DB")
 
-    # ── Async events ──
+    L.append("")
+
+    # Async events
     if async_calls:
-        lines.append("")
+        L.append("== Async Events ==")
+        L.append("")
         for alias, label, action, _ in async_calls:
-            lines.append(f"    Svc-){alias}: {action}")
+            L.append(f"Svc ->> {alias} : {action}")
+        L.append("")
 
-    # ── Response chain ──
+    # Response
     status = success_status(method)
-    lines.append("")
-    lines.append("    Svc-->>-Ctrl: Result")
-    lines.append("    Ctrl-->>-GW: Response")
-    lines.append(f"    GW-->>-C: {status}")
+    L.append(f"Svc --> GW : {status}")
+    L.append("deactivate Svc")
+    L.append(f"GW --> Client : {status}")
+    L.append("deactivate GW")
+    L.append("")
+    L.append("@enduml")
 
-    return "\n".join(lines)
+    return "\n".join(L)
 
 
 # ============================================================
 # Page Generation
 # ============================================================
 
-def generate_service_page(svc_name, spec):
-    """Generate the full Markdown page for one microservice."""
-
+def generate_service_page(svc_name, spec, svg_files):
     info = spec.get("info", {})
     title = info.get("title", svc_name)
     version = info.get("version", "0.0.0")
@@ -696,7 +710,6 @@ def generate_service_page(svc_name, spec):
 
     lines = []
 
-    # ── Frontmatter ──
     lines.append("---")
     lines.append("tags:")
     lines.append("  - microservice")
@@ -705,7 +718,6 @@ def generate_service_page(svc_name, spec):
     lines.append("---")
     lines.append("")
 
-    # ── Title ──
     lines.append(f"# {svc_name}")
     lines.append("")
     badge_style = (
@@ -720,12 +732,10 @@ def generate_service_page(svc_name, spec):
     )
     lines.append("")
 
-    # ── Description ──
     if desc_first_line:
         lines.append(f"> {desc_first_line}")
         lines.append("")
 
-    # ── Quick links ──
     lines.append(
         f"[:material-api: Swagger UI](../services/api/{svc_name}.html)"
         "{ .md-button .md-button--primary }"
@@ -738,14 +748,12 @@ def generate_service_page(svc_name, spec):
     lines.append("---")
     lines.append("")
 
-    # ── Data Store section ──
     lines.append("## :material-database: Data Store")
     lines.append("")
 
     if ds:
         tables_fmt = ", ".join(f"`{t}`" for t in ds.get("tables", []))
-        features_fmt = " · ".join(ds.get("features", []))
-
+        features_fmt = " | ".join(ds.get("features", []))
         lines.append("| Property | Detail |")
         lines.append("|----------|--------|")
         lines.append(f"| **Engine** | {ds.get('engine', 'N/A')} |")
@@ -760,7 +768,6 @@ def generate_service_page(svc_name, spec):
     lines.append("---")
     lines.append("")
 
-    # ── Endpoints section ──
     lines.append(f"## :material-api: Endpoints ({len(endpoints)} total)")
     lines.append("")
 
@@ -770,21 +777,19 @@ def generate_service_page(svc_name, spec):
         summary = ep["summary"] or "Endpoint"
         desc = ep["description"]
         op_id = ep["operationId"]
-        tags = ep["tags"]
+        tags_list = ep["tags"]
         method_lower = method.lower()
 
-        # Endpoint header with CSS class
         lines.append("---")
         lines.append("")
-        lines.append(f"### {method} `{path}` — {summary} {{ .endpoint-{method_lower} }}")
+        lines.append(f"### {method} `{path}` -- {summary} " + "{ .endpoint-" + method_lower + " }")
         lines.append("")
 
         if desc:
             lines.append(f"> {desc}")
             lines.append("")
 
-        # Swagger UI deep link
-        tag_encoded = quote(tags[0], safe="") if tags else ""
+        tag_encoded = quote(tags_list[0], safe="") if tags_list else ""
         anchor = f"#/{tag_encoded}/{op_id}" if tag_encoded and op_id else ""
         swagger_url = f"../services/api/{svc_name}.html{anchor}"
         lines.append(
@@ -793,24 +798,24 @@ def generate_service_page(svc_name, spec):
         )
         lines.append("")
 
-        # Mermaid sequence diagram
-        ext_calls = CROSS_SERVICE_CALLS.get((svc_name, method, path), [])
-        diagram = build_diagram(
-            svc_name, method, path, summary,
-            ds.get("engine", "PostgreSQL"), ext_calls, op_id
-        )
+        svg_filename = make_puml_filename(svc_name, method, path) + ".svg"
+        if svg_filename in svg_files:
+            lines.append(
+                f'<div style="overflow-x: auto; width: 100%;">'
+                f'<object data="svg/{svg_filename}" type="image/svg+xml" '
+                f'style="max-width: 100%;">'
+                f'{method} {path} sequence diagram</object>'
+                f'</div>'
+            )
+        else:
+            lines.append(f"*Diagram not available for {method} {path}*")
 
-        lines.append("```mermaid")
-        lines.append(diagram)
-        lines.append("```")
         lines.append("")
 
     return "\n".join(lines)
 
 
 def generate_index_page(all_services):
-    """Generate the Microservice Pages landing / index page."""
-
     total_endpoints = sum(s[2] for s in all_services)
 
     lines = []
@@ -840,15 +845,14 @@ def generate_index_page(all_services):
     lines.append("</div>")
     lines.append("")
     lines.append(
-        "Each microservice page provides **internal sequence diagrams** for every "
-        "API endpoint, data store documentation, and direct links to the interactive "
-        "Swagger UI reference."
+        "Each microservice page provides **PlantUML sequence diagrams** for every "
+        "API endpoint with clickable links to other services and Swagger UI, "
+        "data store documentation, and direct links to the interactive API reference."
     )
     lines.append("")
     lines.append("---")
     lines.append("")
 
-    # Group by domain
     domain_order = [
         "Operations", "Guest Identity", "Booking", "Product Catalog",
         "Safety", "Logistics", "Guide Management", "External", "Support",
@@ -873,7 +877,7 @@ def generate_index_page(all_services):
                 f"| **{title}**<br><small>`{svc_name}`</small> "
                 f"| `{version}` "
                 f"| {ep_count} endpoints "
-                f"| [:material-arrow-right: Open]({svc_name}.md){{ .md-button }} |"
+                f"| [:material-arrow-right: Open]({svc_name}.md)" + "{ .md-button } |"
             )
 
         lines.append("")
@@ -886,16 +890,19 @@ def generate_index_page(all_services):
 # ============================================================
 
 def main():
-    print("Generating NovaTrek Microservice Pages...")
+    print("Generating NovaTrek Microservice Pages (PlantUML SVGs)...")
     print(f"  Specs:  {SPECS_DIR}")
     print(f"  Output: {OUTPUT_DIR}")
     print()
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-    all_services = []   # (svc_name, title, endpoint_count, version, domain)
+    os.makedirs(PUML_DIR, exist_ok=True)
+    os.makedirs(SVG_DIR, exist_ok=True)
 
     spec_files = sorted(f for f in os.listdir(SPECS_DIR) if f.endswith(".yaml"))
+
+    all_pumls = []
+    all_services = []
 
     for spec_file in spec_files:
         svc_name = spec_file.replace(".yaml", "")
@@ -908,25 +915,65 @@ def main():
         title = spec.get("info", {}).get("title", svc_name)
         version = spec.get("info", {}).get("version", "0.0.0")
         domain, _ = get_domain_info(svc_name)
+        ds = DATA_STORES.get(svc_name, {})
 
         print(f"  {svc_name}: {len(endpoints)} endpoints")
 
-        page = generate_service_page(svc_name, spec)
-        with open(os.path.join(OUTPUT_DIR, f"{svc_name}.md"), "w") as f:
-            f.write(page)
+        for ep in endpoints:
+            puml_content = build_puml(
+                svc_name, ep["method"], ep["path"], ep["summary"],
+                ds.get("engine", "PostgreSQL"),
+                CROSS_SERVICE_CALLS.get((svc_name, ep["method"], ep["path"]), []),
+                ep["operationId"],
+                ep["tags"],
+            )
+            fname = make_puml_filename(svc_name, ep["method"], ep["path"])
+            puml_path = os.path.join(PUML_DIR, f"{fname}.puml")
+            with open(puml_path, "w") as f:
+                f.write(puml_content)
+            all_pumls.append(puml_path)
 
         all_services.append((svc_name, title, len(endpoints), version, domain))
 
-    # Index page
+    total_ep = sum(s[2] for s in all_services)
+    print(f"\n  Generated {len(all_pumls)} PUML files")
+
+    # Render all PUMLs to SVG
+    print("  Rendering SVGs with PlantUML...")
+    result = subprocess.run(
+        ["plantuml", "-tsvg", "-o", SVG_DIR] + all_pumls,
+        capture_output=True, text=True, timeout=300,
+    )
+    if result.returncode != 0:
+        print(f"  WARNING: PlantUML returned {result.returncode}")
+        if result.stderr:
+            print(f"  stderr: {result.stderr[:500]}")
+
+    svg_files = set(f for f in os.listdir(SVG_DIR) if f.endswith(".svg"))
+    print(f"  Rendered {len(svg_files)} SVGs")
+
+    # Generate Markdown pages
+    print("  Generating Markdown pages...")
+    for spec_file in spec_files:
+        svc_name = spec_file.replace(".yaml", "")
+        spec_path = os.path.join(SPECS_DIR, spec_file)
+
+        with open(spec_path) as f:
+            spec = yaml.safe_load(f)
+
+        page = generate_service_page(svc_name, spec, svg_files)
+        with open(os.path.join(OUTPUT_DIR, f"{svc_name}.md"), "w") as f:
+            f.write(page)
+
     index_page = generate_index_page(all_services)
     with open(os.path.join(OUTPUT_DIR, "index.md"), "w") as f:
         f.write(index_page)
 
-    total_ep = sum(s[2] for s in all_services)
     print()
-    print(f"  Generated {len(all_services)} service pages with {total_ep} endpoint diagrams")
-    print(f"  Index: {os.path.join(OUTPUT_DIR, 'index.md')}")
-    print("  Done!")
+    print(f"  Done! {len(all_services)} service pages, {total_ep} endpoint diagrams")
+    print(f"  PUML: {PUML_DIR}/")
+    print(f"  SVGs: {SVG_DIR}/")
+    print(f"  Pages: {OUTPUT_DIR}/")
 
 
 if __name__ == "__main__":

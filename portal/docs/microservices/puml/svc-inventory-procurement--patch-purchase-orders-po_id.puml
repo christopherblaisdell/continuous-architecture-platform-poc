@@ -1,0 +1,53 @@
+@startuml svc-inventory-procurement--patch-purchase-orders-po_id
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #7c3aed
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title PATCH /purchase-orders/{po_id}\nUpdate purchase order status or line items
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-inventory-procurement" as Svc [[/microservices/svc-inventory-procurement/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-inventory-procurement.html View in Swagger UI]]
+end note
+
+Client -> GW : PATCH /purchase-orders/{po_id}
+activate GW #7c3aed
+GW -> Svc : route request
+activate Svc #7c3aed
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : SELECT ... FOR UPDATE
+activate DB #FCE4EC
+DB --> Svc : Current row
+deactivate DB
+note right of Svc : Merge changed fields only
+
+Svc -> DB : UPDATE ... SET ...
+activate DB #FCE4EC
+DB --> Svc : Updated row
+deactivate DB
+
+Svc --> GW : 200 OK
+deactivate Svc
+GW --> Client : 200 OK
+deactivate GW
+
+@enduml

@@ -1,0 +1,46 @@
+@startuml svc-payments--get-payments-payment_id
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2563eb
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title GET /payments/{payment_id}\nRetrieve payment details
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-payments.html#/Payments/getPayment View in Swagger UI]]
+end note
+
+Client -> GW : GET /payments/{payment_id}
+activate GW #2563eb
+GW -> Svc : route request
+activate Svc #2563eb
+
+== Database ==
+
+Svc -> DB : SELECT ... WHERE id = ?
+activate DB #FCE4EC
+DB --> Svc : Row
+deactivate DB
+note right of DB : Returns 404 if not found
+
+Svc --> GW : 200 OK
+deactivate Svc
+GW --> Client : 200 OK
+deactivate GW
+
+@enduml

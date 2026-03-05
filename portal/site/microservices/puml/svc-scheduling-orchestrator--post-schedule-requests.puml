@@ -1,0 +1,73 @@
+@startuml svc-scheduling-orchestrator--post-schedule-requests
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /schedule-requests\nRequest optimal schedule for a trip
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-scheduling-orchestrator" as Svc [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
+participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #FFF8F0
+participant "Trail Mgmt" as TM [[/microservices/svc-trail-management/]] #FFF8F0
+participant "Weather Svc" as WX [[/microservices/svc-weather/]] #FFF8F0
+participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
+database "PG + Redis" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-scheduling-orchestrator.html View in Swagger UI]]
+end note
+
+Client -> GW : POST /schedule-requests
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Cross-Service Integration ==
+
+Svc -> GM : [[/microservices/svc-guide-management/ Check guide availability]]
+activate GM #DBEAFE
+GM --> Svc : OK
+deactivate GM
+
+Svc -> TM : [[/microservices/svc-trail-management/ Verify trail conditions]]
+activate TM #DBEAFE
+TM --> Svc : OK
+deactivate TM
+
+Svc -> WX : [[/microservices/svc-weather/ Get forecast]]
+activate WX #DBEAFE
+WX --> Svc : OK
+deactivate WX
+
+Svc -> TC : [[/microservices/svc-trip-catalog/ Get trip details]]
+activate TC #DBEAFE
+TC --> Svc : OK
+deactivate TC
+
+== Database ==
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

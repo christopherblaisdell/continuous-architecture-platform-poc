@@ -15,7 +15,7 @@ tags:
 
 </div>
 
-Each microservice page provides **internal sequence diagrams** for every API endpoint, data store documentation, and direct links to the interactive Swagger UI reference.
+Each microservice page provides **PlantUML sequence diagrams** for every API endpoint with clickable links to other services and Swagger UI, data store documentation, and direct links to the interactive API reference.
 
 ---
 

@@ -23,7 +23,7 @@ tags:
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `safety` |
 | **Primary Tables** | `waivers`, `incidents`, `safety_inspections`, `audit_log` |
-| **Key Features** | Immutable audit log (append-only) · Digital signature verification for waivers · Regulatory compliance retention (7 years) |
+| **Key Features** | Immutable audit log (append-only) | Digital signature verification for waivers | Regulatory compliance retention (7 years) |
 | **Estimated Volume** | ~3,000 waiver checks/day |
 
 ---
@@ -32,261 +32,64 @@ tags:
 
 ---
 
-### GET `/waivers` — List waivers by guest { .endpoint-get }
+### GET `/waivers` -- List waivers by guest { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/listWaivers){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /waivers
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: listWaivers()
-
-    Svc->>+Repo: findByFilters(criteria)
-    Repo->>+DB: SELECT ... WHERE filters
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: Page of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--get-waivers.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers sequence diagram</object></div>
 
 ---
 
-### POST `/waivers` — Guest signs a safety waiver { .endpoint-post }
+### POST `/waivers` -- Guest signs a safety waiver { .endpoint-post }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/signWaiver){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant GP as Guest Profiles
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: POST /waivers
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: signWaiver()
-
-    rect rgba(199, 123, 48, 0.08)
-        Note over Svc,GP: Cross-service integration
-        Svc->>+GP: Validate guest identity
-        GP-->>-Svc: OK
-    end
-
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--post-waivers.svg" type="image/svg+xml" style="max-width: 100%;">POST /waivers sequence diagram</object></div>
 
 ---
 
-### GET `/waivers/{waiver_id}` — Get a specific waiver { .endpoint-get }
+### GET `/waivers/{waiver_id}` -- Get a specific waiver { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/getWaiver){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /waivers/(waiver_id)
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getWaiver()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... WHERE id = ?
-    DB-->>-Repo: Row
-    Repo-->>-Svc: Entity
-    Note right of Repo: Returns 404 if not found
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--get-waivers-waiver_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers/{waiver_id} sequence diagram</object></div>
 
 ---
 
-### POST `/incidents` — File an incident report { .endpoint-post }
+### POST `/incidents` -- File an incident report { .endpoint-post }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/createIncident){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Ntfy as Notifications
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: POST /incidents
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: createIncident()
-
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-)Ntfy: Send safety alert
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--post-incidents.svg" type="image/svg+xml" style="max-width: 100%;">POST /incidents sequence diagram</object></div>
 
 ---
 
-### GET `/incidents/{incident_id}` — Get an incident report { .endpoint-get }
+### GET `/incidents/{incident_id}` -- Get an incident report { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/getIncident){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /incidents/(incident_id)
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getIncident()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... WHERE id = ?
-    DB-->>-Repo: Row
-    Repo-->>-Svc: Entity
-    Note right of Repo: Returns 404 if not found
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--get-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /incidents/{incident_id} sequence diagram</object></div>
 
 ---
 
-### PATCH `/incidents/{incident_id}` — Update an incident report (add follow-up, change status) { .endpoint-patch }
+### PATCH `/incidents/{incident_id}` -- Update an incident report (add follow-up, change status) { .endpoint-patch }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/updateIncident){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: PATCH /incidents/(incident_id)
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: updateIncident()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... FOR UPDATE
-    DB-->>-Repo: Current row
-    Repo-->>-Svc: Existing entity
-    Note right of Svc: Merge changed fields only
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: UPDATE ... SET ...
-    DB-->>-Repo: Updated row
-    Repo-->>-Svc: Updated entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--patch-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /incidents/{incident_id} sequence diagram</object></div>
 
 ---
 
-### GET `/safety-inspections` — List safety inspections for a location { .endpoint-get }
+### GET `/safety-inspections` -- List safety inspections for a location { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Inspections/listSafetyInspections){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /safety-inspections
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: listSafetyInspections()
-
-    Svc->>+Repo: findByFilters(criteria)
-    Repo->>+DB: SELECT ... WHERE filters
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: Page of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--get-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">GET /safety-inspections sequence diagram</object></div>
 
 ---
 
-### POST `/safety-inspections` — Record a safety inspection { .endpoint-post }
+### POST `/safety-inspections` -- Record a safety inspection { .endpoint-post }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Inspections/createSafetyInspection){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: POST /safety-inspections
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: createSafetyInspection()
-
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-safety-compliance--post-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">POST /safety-inspections sequence diagram</object></div>

@@ -1,0 +1,53 @@
+@startuml svc-trip-catalog--post-trips-trip_id-schedule
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /trips/{trip_id}/schedule\nAdd a scheduled departure
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-trip-catalog" as Svc [[/microservices/svc-trip-catalog/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-trip-catalog.html#/Schedule/addScheduledDeparture View in Swagger UI]]
+end note
+
+Client -> GW : POST /trips/{trip_id}/schedule
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : SELECT parent WHERE id = ?
+activate DB #FCE4EC
+DB --> Svc : Parent row
+deactivate DB
+note right of DB : 404 if parent not found
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

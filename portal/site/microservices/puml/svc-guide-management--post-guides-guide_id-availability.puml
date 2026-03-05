@@ -1,0 +1,53 @@
+@startuml svc-guide-management--post-guides-guide_id-availability
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /guides/{guide_id}/availability\nSet availability windows
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-guide-management" as Svc [[/microservices/svc-guide-management/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-guide-management.html#/Availability/setGuideAvailability View in Swagger UI]]
+end note
+
+Client -> GW : POST /guides/{guide_id}/availability
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : SELECT parent WHERE id = ?
+activate DB #FCE4EC
+DB --> Svc : Parent row
+deactivate DB
+note right of DB : 404 if parent not found
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

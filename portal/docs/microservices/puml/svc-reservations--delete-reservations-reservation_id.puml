@@ -1,0 +1,51 @@
+@startuml svc-reservations--delete-reservations-reservation_id
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #dc2626
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title DELETE /reservations/{reservation_id}\nCancel a reservation
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-reservations.html#/Reservations/cancelReservation View in Swagger UI]]
+end note
+
+Client -> GW : DELETE /reservations/{reservation_id}
+activate GW #dc2626
+GW -> Svc : route request
+activate Svc #dc2626
+
+== Database ==
+
+Svc -> DB : SELECT ... WHERE id = ?
+activate DB #FCE4EC
+DB --> Svc : Row
+deactivate DB
+note right of DB : Returns 404 if not found
+
+Svc -> DB : DELETE FROM ... WHERE id = ?
+activate DB #FCE4EC
+DB --> Svc : OK
+deactivate DB
+
+Svc --> GW : 204 No Content
+deactivate Svc
+GW --> Client : 204 No Content
+deactivate GW
+
+@enduml
