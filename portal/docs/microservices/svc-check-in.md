@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-check-in C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-check-in--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -44,6 +42,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--get-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-check-in--get-check-ins.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/check-ins` -- Initiate check-in for a participant { .endpoint-post }
@@ -54,6 +54,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-check-in--post-check-ins.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/check-ins/{check_in_id}` -- Get check-in details { .endpoint-get }
@@ -61,6 +63,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/getCheckIn){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--get-check-ins-check_in_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins/{check_in_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-check-in--get-check-ins-check_in_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -72,6 +76,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/gear-verification sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/check-ins/{check_in_id}/wristband-assignment` -- Assign RFID wristband to checked-in participant { .endpoint-post }
@@ -81,6 +87,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/assignWristband){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/wristband-assignment sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

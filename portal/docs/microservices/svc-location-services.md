@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-location-services C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -46,6 +44,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--get-locations.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/locations` -- Create a new location { .endpoint-post }
@@ -53,6 +53,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--post-locations.svg" type="image/svg+xml" style="max-width: 100%;">POST /locations sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--post-locations.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -62,6 +64,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--get-locations-location_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### PATCH `/locations/{location_id}` -- Update location details { .endpoint-patch }
@@ -69,6 +73,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--patch-locations-location_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /locations/{location_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--patch-locations-location_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -78,6 +84,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id-capacity.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/capacity sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--get-locations-location_id-capacity.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/locations/{location_id}/operating-hours` -- Get operating hours for a location { .endpoint-get }
@@ -85,6 +93,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-location-services.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-location-services--get-locations-location_id-operating-hours.svg" type="image/svg+xml" style="max-width: 100%;">GET /locations/{location_id}/operating-hours sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-location-services--get-locations-location_id-operating-hours.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-partner-integrations C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -46,6 +44,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--post-partner-bookings.svg" type="image/svg+xml" style="max-width: 100%;">POST /partner-bookings sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--post-partner-bookings.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/partner-bookings/{booking_id}` -- Get partner booking details { .endpoint-get }
@@ -54,6 +54,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--get-partner-bookings-booking_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /partner-bookings/{booking_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--get-partner-bookings-booking_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### PATCH `/partner-bookings/{booking_id}` -- Update a partner booking { .endpoint-patch }
@@ -61,6 +63,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partner%20Bookings/updatePartnerBooking){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--patch-partner-bookings-booking_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /partner-bookings/{booking_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--patch-partner-bookings-booking_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -72,6 +76,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--post-partner-bookings-booking_id-confirm.svg" type="image/svg+xml" style="max-width: 100%;">POST /partner-bookings/{booking_id}/confirm sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--post-partner-bookings-booking_id-confirm.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/partners` -- List registered partners { .endpoint-get }
@@ -79,6 +85,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partners/listPartners){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--get-partners.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--get-partners.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -88,6 +96,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--post-partners.svg" type="image/svg+xml" style="max-width: 100%;">POST /partners sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--post-partners.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/partners/{partner_id}/commission-report` -- Get commission report for a partner { .endpoint-get }
@@ -95,6 +105,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partners/getCommissionReport){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-partner-integrations--get-partners-partner_id-commission-report.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners/{partner_id}/commission-report sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-partner-integrations--get-partners-partner_id-commission-report.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

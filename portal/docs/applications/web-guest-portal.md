@@ -21,6 +21,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-guest-portal C4 context diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ## :material-web: Screens (7 total)
@@ -57,6 +59,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--trip-browser.svg" type="image/svg+xml" style="max-width: 100%;">Trip Browser user journey diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--trip-browser.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### Booking Flow
@@ -75,6 +79,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--booking-flow.svg" type="image/svg+xml" style="max-width: 100%;">Booking Flow user journey diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--booking-flow.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### Guest Profile
@@ -91,6 +97,8 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get upcoming bookings |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--guest-profile.svg" type="image/svg+xml" style="max-width: 100%;">Guest Profile user journey diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--guest-profile.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -110,6 +118,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--reservation-management.svg" type="image/svg+xml" style="max-width: 100%;">Reservation Management user journey diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--reservation-management.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### Loyalty Dashboard
@@ -125,6 +135,8 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--loyalty-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Loyalty Dashboard user journey diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--loyalty-dashboard.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -144,6 +156,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--waiver-signing.svg" type="image/svg+xml" style="max-width: 100%;">Waiver Signing user journey diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--waiver-signing.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### Trip Gallery
@@ -160,3 +174,5 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send share notification |
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/web-guest-portal--trip-gallery.svg" type="image/svg+xml" style="max-width: 100%;">Trip Gallery user journey diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/web-guest-portal--trip-gallery.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>

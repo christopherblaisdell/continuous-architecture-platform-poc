@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-trail-management C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -46,6 +44,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--get-trails.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/trails` -- Create a new trail { .endpoint-post }
@@ -55,6 +55,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/createTrail){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--post-trails.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--post-trails.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -66,6 +68,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--get-trails-trail_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### PATCH `/trails/{trail_id}` -- Update trail details { .endpoint-patch }
@@ -75,6 +79,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/updateTrail){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--patch-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /trails/{trail_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--patch-trails-trail_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -86,6 +92,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/waypoints sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--get-trails-trail_id-waypoints.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/trails/{trail_id}/waypoints` -- Add a waypoint to a trail { .endpoint-post }
@@ -95,6 +103,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Waypoints/addWaypoint){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--post-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/waypoints sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--post-trails-trail_id-waypoints.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -106,6 +116,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/closures sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--get-trails-trail_id-closures.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/trails/{trail_id}/closures` -- Create a trail closure { .endpoint-post }
@@ -116,6 +128,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--post-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/closures sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--post-trails-trail_id-closures.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/trails/{trail_id}/conditions` -- Get current trail conditions { .endpoint-get }
@@ -125,6 +139,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Conditions/getTrailCurrentConditions){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-trail-management--get-trails-trail_id-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/conditions sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-trail-management--get-trails-trail_id-conditions.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

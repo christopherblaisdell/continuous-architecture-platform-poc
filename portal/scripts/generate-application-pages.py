@@ -594,6 +594,12 @@ def generate_app_page(app_name, app_info, svg_files):
             f'style="max-width: 100%;">{app_name} C4 context diagram</object></div>'
         )
         lines.append("")
+        lines.append(
+            f'<p style="text-align: right; margin-top: -0.5em;">'
+            f'<a href="../svg/{c4_svg}" target="_blank" title="Open diagram in full screen">'
+            f':material-fullscreen: View full screen</a></p>'
+        )
+        lines.append("")
         lines.append("---")
         lines.append("")
 
@@ -664,6 +670,12 @@ def generate_app_page(app_name, app_info, svg_files):
                 f'style="max-width: 100%;">'
                 f'{screen_name} user journey diagram</object>'
                 f'</div>'
+            )
+            lines.append("")
+            lines.append(
+                f'<p style="text-align: right; margin-top: -0.5em;">'
+                f'<a href="../svg/{svg_filename}" target="_blank" title="Open diagram in full screen">'
+                f':material-fullscreen: View full screen</a></p>'
             )
         else:
             lines.append(f"*Diagram not available for {screen_name}*")
