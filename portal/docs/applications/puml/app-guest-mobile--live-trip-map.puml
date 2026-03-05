@@ -51,7 +51,7 @@ activate WX #DBEAFE
 WX --> GW : OK
 deactivate WX
 
-GW -> SO : [[/microservices/svc-scheduling-orchestrator/ Get group schedule]]
+GW -> SO : [[/microservices/svc-scheduling-orchestrator/#get-schedule-requestsrequest_id-get-schedule-request-status-and-result Get group schedule]]
 activate SO #DBEAFE
 SO --> GW : OK
 deactivate SO

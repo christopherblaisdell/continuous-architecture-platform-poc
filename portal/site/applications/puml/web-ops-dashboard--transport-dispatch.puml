@@ -31,7 +31,7 @@ activate GW #dc2626
 
 == Backend Integration ==
 
-GW -> TL : [[/microservices/svc-transport-logistics/ List transport requests]]
+GW -> TL : [[/microservices/svc-transport-logistics/#get-transport-requestsrequest_id-get-transport-request-details List transport requests]]
 activate TL #DBEAFE
 TL --> GW : OK
 deactivate TL

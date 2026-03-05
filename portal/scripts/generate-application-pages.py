@@ -156,7 +156,7 @@ APPLICATIONS = {
             "Daily Schedule Board": {
                 "description": "View and manage the day's adventure schedule with guide assignments, weather conditions, and trail status.",
                 "steps": [
-                    ("SO", "svc-scheduling-orchestrator", "svc-scheduling-orchestrator", "Get daily schedules", "GET", "/daily-schedules", False),
+                    ("SO", "svc-scheduling-orchestrator", "svc-scheduling-orchestrator", "Get daily schedules", "GET", "/schedule-optimization", False),
                     ("GM", "svc-guide-management", "svc-guide-management", "Get available guides", "GET", "/guides/available", False),
                     ("WX", "svc-weather", "svc-weather", "Get weather forecast", "GET", "/weather/forecast", False),
                     ("TM", "svc-trail-management", "svc-trail-management", "Get trail conditions", "GET", "/trails/{trail_id}/conditions", False),
@@ -185,7 +185,7 @@ APPLICATIONS = {
             "Safety Incident Board": {
                 "description": "Log and manage safety incidents with guest contact, guide notification, and regulatory reporting.",
                 "steps": [
-                    ("SC", "svc-safety-compliance", "svc-safety-compliance", "List active incidents", "GET", "/incidents", False),
+                    ("SC", "svc-safety-compliance", "svc-safety-compliance", "List active incidents", "GET", "/incidents/{incident_id}", False),
                     ("SC", "svc-safety-compliance", "svc-safety-compliance", "Log new incident", "POST", "/incidents", False),
                     ("GP", "svc-guest-profiles", "svc-guest-profiles", "Get guest contact info", "GET", "/guests/{guest_id}", False),
                     ("GM", "svc-guide-management", "svc-guide-management", "Get assigned guide", "GET", "/guides/{guide_id}", False),
@@ -196,14 +196,14 @@ APPLICATIONS = {
                 "description": "Track gear inventory levels, manage assignments, and create procurement orders.",
                 "steps": [
                     ("GI", "svc-gear-inventory", "svc-gear-inventory", "Get inventory levels", "GET", "/gear-items", False),
-                    ("GI", "svc-gear-inventory", "svc-gear-inventory", "Check gear assignments", "GET", "/gear-assignments", False),
+                    ("GI", "svc-gear-inventory", "svc-gear-inventory", "Check gear assignments", "GET", "/gear-assignments/{assignment_id}", False),
                     ("IP", "svc-inventory-procurement", "svc-inventory-procurement", "Create purchase order", "POST", "/purchase-orders", False),
                 ],
             },
             "Transport Dispatch": {
                 "description": "Coordinate guest transport with route optimization, vehicle assignment, and real-time tracking.",
                 "steps": [
-                    ("TL", "svc-transport-logistics", "svc-transport-logistics", "List transport requests", "GET", "/transport-requests", False),
+                    ("TL", "svc-transport-logistics", "svc-transport-logistics", "List transport requests", "GET", "/transport-requests/{request_id}", False),
                     ("TL", "svc-transport-logistics", "svc-transport-logistics", "Create transport request", "POST", "/transport-requests", False),
                     ("LS", "svc-location-services", "svc-location-services", "Get pickup locations", "GET", "/locations/{location_id}", False),
                     ("Res", "svc-reservations", "svc-reservations", "Get booking details", "GET", "/reservations/{reservation_id}", False),
@@ -213,16 +213,16 @@ APPLICATIONS = {
             "Analytics Dashboard": {
                 "description": "Business intelligence views for booking trends, revenue, utilization, and guest satisfaction.",
                 "steps": [
-                    ("AN", "svc-analytics", "svc-analytics", "Get booking metrics", "GET", "/events", False),
+                    ("AN", "svc-analytics", "svc-analytics", "Get booking metrics", "GET", "/analytics/bookings", False),
                     ("Res", "svc-reservations", "svc-reservations", "Get reservation stats", "GET", "/reservations", False),
-                    ("Pay", "svc-payments", "svc-payments", "Get revenue summary", "GET", "/payments", False),
+                    ("Pay", "svc-payments", "svc-payments", "Get revenue summary", "GET", "/payments/daily-summary", False),
                     ("SF", "Snowflake Data Cloud", None, "Query data warehouse", None, None, False),
                 ],
             },
             "Partner Bookings": {
                 "description": "Manage partner-originated bookings, commission tracking, and reconciliation.",
                 "steps": [
-                    ("PI", "svc-partner-integrations", "svc-partner-integrations", "List partner bookings", "GET", "/partner-bookings", False),
+                    ("PI", "svc-partner-integrations", "svc-partner-integrations", "List partner bookings", "GET", "/partner-bookings/{booking_id}", False),
                     ("PI", "svc-partner-integrations", "svc-partner-integrations", "Confirm booking", "POST", "/partner-bookings/{booking_id}/confirm", False),
                     ("Res", "svc-reservations", "svc-reservations", "Get reservation details", "GET", "/reservations/{reservation_id}", False),
                     ("Pay", "svc-payments", "svc-payments", "Get payment status", "GET", "/payments/{payment_id}", False),
@@ -258,7 +258,7 @@ APPLICATIONS = {
                     ("TM", "svc-trail-management", "svc-trail-management", "Get trail waypoints", "GET", "/trails/{trail_id}", False),
                     ("TM", "svc-trail-management", "svc-trail-management", "Get trail conditions", "GET", "/trails/{trail_id}/conditions", False),
                     ("WX", "svc-weather", "svc-weather", "Get current weather", "GET", "/weather/current", False),
-                    ("SO", "svc-scheduling-orchestrator", "svc-scheduling-orchestrator", "Get group schedule", "GET", "/daily-schedules/{schedule_id}", False),
+                    ("SO", "svc-scheduling-orchestrator", "svc-scheduling-orchestrator", "Get group schedule", "GET", "/schedule-requests/{request_id}", False),
                 ],
             },
             "Photo Upload": {
