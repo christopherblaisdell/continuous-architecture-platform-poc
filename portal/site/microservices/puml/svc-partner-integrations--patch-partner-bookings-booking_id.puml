@@ -1,0 +1,53 @@
+@startuml svc-partner-integrations--patch-partner-bookings-booking_id
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #7c3aed
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title PATCH /partner-bookings/{booking_id}\nUpdate a partner booking
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-partner-integrations.html#/Partner%20Bookings/updatePartnerBooking View in Swagger UI]]
+end note
+
+Client -> GW : PATCH /partner-bookings/{booking_id}
+activate GW #7c3aed
+GW -> Svc : route request
+activate Svc #7c3aed
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : SELECT ... FOR UPDATE
+activate DB #FCE4EC
+DB --> Svc : Current row
+deactivate DB
+note right of Svc : Merge changed fields only
+
+Svc -> DB : UPDATE ... SET ...
+activate DB #FCE4EC
+DB --> Svc : Updated row
+deactivate DB
+
+Svc --> GW : 200 OK
+deactivate Svc
+GW --> Client : 200 OK
+deactivate GW
+
+@enduml

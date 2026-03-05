@@ -23,7 +23,7 @@ tags:
 | **Engine** | PostGIS (PostgreSQL 15) |
 | **Schema** | `trails` |
 | **Primary Tables** | `trails`, `waypoints`, `closures`, `condition_reports` |
-| **Key Features** | PostGIS geometry columns for trail routes and waypoints · Spatial indexes (GiST) for proximity queries · Time-series condition data with hypertable extension |
+| **Key Features** | PostGIS geometry columns for trail routes and waypoints | Spatial indexes (GiST) for proximity queries | Time-series condition data with hypertable extension |
 | **Estimated Volume** | ~200 condition updates/day, ~5K trail reads/day |
 
 ---
@@ -32,308 +32,90 @@ tags:
 
 ---
 
-### GET `/trails` — Search trails { .endpoint-get }
+### GET `/trails` -- Search trails { .endpoint-get }
 
 > Search and filter trails by region, difficulty, activity type, and status.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/searchTrails){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: GET /trails
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: searchTrails()
-
-    Svc->>+Repo: findByFilters(criteria)
-    Repo->>+DB: SELECT ... WHERE filters
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: Page of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails sequence diagram</object></div>
 
 ---
 
-### POST `/trails` — Create a new trail { .endpoint-post }
+### POST `/trails` -- Create a new trail { .endpoint-post }
 
 > Registers a new trail in the system. Requires operations or admin role.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/createTrail){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: POST /trails
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: createTrail()
-
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--post-trails.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails sequence diagram</object></div>
 
 ---
 
-### GET `/trails/{trail_id}` — Get trail details { .endpoint-get }
+### GET `/trails/{trail_id}` -- Get trail details { .endpoint-get }
 
 > Returns complete trail information including metadata, geography, and current status.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/getTrail){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: GET /trails/(trail_id)
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getTrail()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... WHERE id = ?
-    DB-->>-Repo: Row
-    Repo-->>-Svc: Entity
-    Note right of Repo: Returns 404 if not found
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id} sequence diagram</object></div>
 
 ---
 
-### PATCH `/trails/{trail_id}` — Update trail details { .endpoint-patch }
+### PATCH `/trails/{trail_id}` -- Update trail details { .endpoint-patch }
 
 > Partially updates trail metadata. Does not modify waypoints or closures.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Trails/updateTrail){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: PATCH /trails/(trail_id)
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: updateTrail()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... FOR UPDATE
-    DB-->>-Repo: Current row
-    Repo-->>-Svc: Existing entity
-    Note right of Svc: Merge changed fields only
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: UPDATE ... SET ...
-    DB-->>-Repo: Updated row
-    Repo-->>-Svc: Updated entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--patch-trails-trail_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /trails/{trail_id} sequence diagram</object></div>
 
 ---
 
-### GET `/trails/{trail_id}/waypoints` — List waypoints for a trail { .endpoint-get }
+### GET `/trails/{trail_id}/waypoints` -- List waypoints for a trail { .endpoint-get }
 
 > Returns all waypoints along the trail in sequence order.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Waypoints/getTrailWaypoints){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: GET /trails/(trail_id)/waypoints
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getTrailWaypoints()
-
-    Svc->>+Repo: findByParent(parentId)
-    Repo->>+DB: SELECT ... WHERE parent_id = ?
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: List of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/waypoints sequence diagram</object></div>
 
 ---
 
-### POST `/trails/{trail_id}/waypoints` — Add a waypoint to a trail { .endpoint-post }
+### POST `/trails/{trail_id}/waypoints` -- Add a waypoint to a trail { .endpoint-post }
 
 > Appends a new waypoint to the trail. Position in sequence can be specified.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Waypoints/addWaypoint){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: POST /trails/(trail_id)/waypoints
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: addWaypoint()
-
-    Svc->>+Repo: findParent(parentId)
-    Repo->>+DB: SELECT parent
-    DB-->>-Repo: Parent row
-    Repo-->>-Svc: Parent entity
-    Note right of Repo: 404 if parent not found
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--post-trails-trail_id-waypoints.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/waypoints sequence diagram</object></div>
 
 ---
 
-### GET `/trails/{trail_id}/closures` — List closures for a trail { .endpoint-get }
+### GET `/trails/{trail_id}/closures` -- List closures for a trail { .endpoint-get }
 
 > Returns all current and scheduled closures for the specified trail.
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Closures/getTrailClosures){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: GET /trails/(trail_id)/closures
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getTrailClosures()
-
-    Svc->>+Repo: findByParent(parentId)
-    Repo->>+DB: SELECT ... WHERE parent_id = ?
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: List of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/closures sequence diagram</object></div>
 
 ---
 
-### POST `/trails/{trail_id}/closures` — Create a trail closure { .endpoint-post }
+### POST `/trails/{trail_id}/closures` -- Create a trail closure { .endpoint-post }
 
 > Records a closure for the trail. Automatically updates trail status to
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Closures/createTrailClosure){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: POST /trails/(trail_id)/closures
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: createTrailClosure()
-
-    Svc->>+Repo: findParent(parentId)
-    Repo->>+DB: SELECT parent
-    DB-->>-Repo: Parent row
-    Repo-->>-Svc: Parent entity
-    Note right of Repo: 404 if parent not found
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--post-trails-trail_id-closures.svg" type="image/svg+xml" style="max-width: 100%;">POST /trails/{trail_id}/closures sequence diagram</object></div>
 
 ---
 
-### GET `/trails/{trail_id}/conditions` — Get current trail conditions { .endpoint-get }
+### GET `/trails/{trail_id}/conditions` -- Get current trail conditions { .endpoint-get }
 
 > Returns the latest condition assessment for the trail, combining data from
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Conditions/getTrailCurrentConditions){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostGIS
-
-    C->>+GW: GET /trails/(trail_id)/conditions
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getTrailCurrentConditions()
-
-    Svc->>+Repo: findByParent(parentId)
-    Repo->>+DB: SELECT ... WHERE parent_id = ?
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: List of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-trail-management--get-trails-trail_id-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/conditions sequence diagram</object></div>

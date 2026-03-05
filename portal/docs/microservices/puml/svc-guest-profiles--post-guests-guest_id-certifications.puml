@@ -1,0 +1,53 @@
+@startuml svc-guest-profiles--post-guests-guest_id-certifications
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /guests/{guest_id}/certifications\nAdd a certification
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-guest-profiles.html#/Certifications/addGuestCertification View in Swagger UI]]
+end note
+
+Client -> GW : POST /guests/{guest_id}/certifications
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : SELECT parent WHERE id = ?
+activate DB #FCE4EC
+DB --> Svc : Parent row
+deactivate DB
+note right of DB : 404 if parent not found
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

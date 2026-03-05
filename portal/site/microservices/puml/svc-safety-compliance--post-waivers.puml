@@ -1,0 +1,55 @@
+@startuml svc-safety-compliance--post-waivers
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /waivers\nGuest signs a safety waiver
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-safety-compliance" as Svc [[/microservices/svc-safety-compliance/]] #E8F4F8
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-safety-compliance.html#/Waivers/signWaiver View in Swagger UI]]
+end note
+
+Client -> GW : POST /waivers
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Cross-Service Integration ==
+
+Svc -> GP : [[/microservices/svc-guest-profiles/ Validate guest identity]]
+activate GP #DBEAFE
+GP --> Svc : OK
+deactivate GP
+
+== Database ==
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

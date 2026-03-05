@@ -1,0 +1,66 @@
+@startuml svc-reservations--post-reservations
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /reservations\nCreate a new reservation
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
+queue "Kafka" as Kafka #F0E6FF
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-reservations.html#/Reservations/createReservation View in Swagger UI]]
+end note
+
+Client -> GW : POST /reservations
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Cross-Service Integration ==
+
+Svc -> GP : [[/microservices/svc-guest-profiles/ Validate guest identity]]
+activate GP #DBEAFE
+GP --> Svc : OK
+deactivate GP
+
+Svc -> TC : [[/microservices/svc-trip-catalog/ Check trip availability]]
+activate TC #DBEAFE
+TC --> Svc : OK
+deactivate TC
+
+== Database ==
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+== Async Events ==
+
+Svc ->> Kafka : reservation.created
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml svc-weather--post-weather-alerts
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /weather/alerts\nCreate a weather alert (internal)
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-weather" as Svc [[/microservices/svc-weather/]] #E8F4F8
+database "Redis + PG" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-weather.html#/Alerts/createWeatherAlert View in Swagger UI]]
+end note
+
+Client -> GW : POST /weather/alerts
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

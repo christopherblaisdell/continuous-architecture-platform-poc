@@ -23,7 +23,7 @@ tags:
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `partners` |
 | **Primary Tables** | `partners`, `partner_bookings`, `commission_records`, `reconciliation_log` |
-| **Key Features** | Partner API key management with rotation policy · Commission calculation engine with tiered rates · Idempotency keys for booking creation |
+| **Key Features** | Partner API key management with rotation policy | Commission calculation engine with tiered rates | Idempotency keys for booking creation |
 | **Estimated Volume** | ~400 partner bookings/day |
 
 ---
@@ -32,246 +32,60 @@ tags:
 
 ---
 
-### POST `/partner-bookings` — External partner creates a booking { .endpoint-post }
+### POST `/partner-bookings` -- External partner creates a booking { .endpoint-post }
 
 > Allows an authenticated partner to submit a booking request. Creates
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partner%20Bookings/createPartnerBooking){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Res as Reservations
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: POST /partner-bookings
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: createPartnerBooking()
-
-    rect rgba(199, 123, 48, 0.08)
-        Note over Svc,Res: Cross-service integration
-        Svc->>+Res: Create reservation
-        Res-->>-Svc: OK
-    end
-
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--post-partner-bookings.svg" type="image/svg+xml" style="max-width: 100%;">POST /partner-bookings sequence diagram</object></div>
 
 ---
 
-### GET `/partner-bookings/{booking_id}` — Get partner booking details { .endpoint-get }
+### GET `/partner-bookings/{booking_id}` -- Get partner booking details { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partner%20Bookings/getPartnerBooking){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /partner-bookings/(booking_id)
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getPartnerBooking()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... WHERE id = ?
-    DB-->>-Repo: Row
-    Repo-->>-Svc: Entity
-    Note right of Repo: Returns 404 if not found
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--get-partner-bookings-booking_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /partner-bookings/{booking_id} sequence diagram</object></div>
 
 ---
 
-### PATCH `/partner-bookings/{booking_id}` — Update a partner booking { .endpoint-patch }
+### PATCH `/partner-bookings/{booking_id}` -- Update a partner booking { .endpoint-patch }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partner%20Bookings/updatePartnerBooking){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: PATCH /partner-bookings/(booking_id)
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: updatePartnerBooking()
-
-    Svc->>+Repo: findById(id)
-    Repo->>+DB: SELECT ... FOR UPDATE
-    DB-->>-Repo: Current row
-    Repo-->>-Svc: Existing entity
-    Note right of Svc: Merge changed fields only
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: UPDATE ... SET ...
-    DB-->>-Repo: Updated row
-    Repo-->>-Svc: Updated entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--patch-partner-bookings-booking_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /partner-bookings/{booking_id} sequence diagram</object></div>
 
 ---
 
-### POST `/partner-bookings/{booking_id}/confirm` — Confirm a pending partner booking { .endpoint-post }
+### POST `/partner-bookings/{booking_id}/confirm` -- Confirm a pending partner booking { .endpoint-post }
 
 > Confirms availability and finalizes the partner booking. Triggers
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partner%20Bookings/confirmPartnerBooking){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Res as Reservations
-    participant Pay as Payments Svc
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: POST /partner-bookings/(booking_id)/confirm
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: confirmPartnerBooking()
-
-    rect rgba(199, 123, 48, 0.08)
-        Note over Svc,Pay: Cross-service integration
-        Svc->>+Res: Confirm reservation
-        Res-->>-Svc: OK
-        Svc->>+Pay: Process commission
-        Pay-->>-Svc: OK
-    end
-
-    Svc->>+Repo: findParent(parentId)
-    Repo->>+DB: SELECT parent
-    DB-->>-Repo: Parent row
-    Repo-->>-Svc: Parent entity
-    Note right of Repo: 404 if parent not found
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--post-partner-bookings-booking_id-confirm.svg" type="image/svg+xml" style="max-width: 100%;">POST /partner-bookings/{booking_id}/confirm sequence diagram</object></div>
 
 ---
 
-### GET `/partners` — List registered partners { .endpoint-get }
+### GET `/partners` -- List registered partners { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partners/listPartners){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /partners
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: listPartners()
-
-    Svc->>+Repo: findByFilters(criteria)
-    Repo->>+DB: SELECT ... WHERE filters
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: Page of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--get-partners.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners sequence diagram</object></div>
 
 ---
 
-### POST `/partners` — Register a new partner { .endpoint-post }
+### POST `/partners` -- Register a new partner { .endpoint-post }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partners/registerPartner){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: POST /partners
-    GW->>+Ctrl: Route request
-    Note right of Ctrl: Validate request body
-    Ctrl->>+Svc: registerPartner()
-
-    Svc->>+Repo: save(entity)
-    Repo->>+DB: INSERT INTO ...
-    DB-->>-Repo: Created row
-    Repo-->>-Svc: Persisted entity
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 201 Created
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--post-partners.svg" type="image/svg+xml" style="max-width: 100%;">POST /partners sequence diagram</object></div>
 
 ---
 
-### GET `/partners/{partner_id}/commission-report` — Get commission report for a partner { .endpoint-get }
+### GET `/partners/{partner_id}/commission-report` -- Get commission report for a partner { .endpoint-get }
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-partner-integrations.html#/Partners/getCommissionReport){ .md-button }
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#1a2744', 'primaryTextColor': '#fff', 'primaryBorderColor': '#c77b30', 'lineColor': '#475569', 'secondaryColor': '#dbeafe', 'tertiaryColor': '#fff7ed', 'noteBkgColor': '#fef3e7', 'noteTextColor': '#1e293b', 'noteBorderColor': '#c77b30', 'actorBkg': '#1a2744', 'actorTextColor': '#fff', 'actorBorder': '#c77b30', 'activationBkgColor': '#dbeafe', 'activationBorderColor': '#3b82f6', 'signalColor': '#1e293b', 'signalTextColor': '#1e293b'}}}%%
-sequenceDiagram
-    participant C as Client
-    participant GW as API Gateway
-    participant Ctrl as Controller
-    participant Svc as Service Layer
-    participant Repo as Repository
-    participant DB as PostgreSQL
-
-    C->>+GW: GET /partners/(partner_id)/commission-report
-    GW->>+Ctrl: Route request
-    Ctrl->>+Svc: getCommissionReport()
-
-    Svc->>+Repo: findByParent(parentId)
-    Repo->>+DB: SELECT ... WHERE parent_id = ?
-    DB-->>-Repo: ResultSet
-    Repo-->>-Svc: List of results
-
-    Svc-->>-Ctrl: Result
-    Ctrl-->>-GW: Response
-    GW-->>-C: 200 OK
-```
+<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-partner-integrations--get-partners-partner_id-commission-report.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners/{partner_id}/commission-report sequence diagram</object></div>

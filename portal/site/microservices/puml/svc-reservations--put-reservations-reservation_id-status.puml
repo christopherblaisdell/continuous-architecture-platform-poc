@@ -1,0 +1,58 @@
+@startuml svc-reservations--put-reservations-reservation_id-status
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #c77b30
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title PUT /reservations/{reservation_id}/status\nTransition reservation status
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
+queue "Kafka" as Kafka #F0E6FF
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-reservations.html#/Reservation%20Status/transitionStatus View in Swagger UI]]
+end note
+
+Client -> GW : PUT /reservations/{reservation_id}/status
+activate GW #c77b30
+GW -> Svc : route request
+activate Svc #c77b30
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : SELECT ... FOR UPDATE
+activate DB #FCE4EC
+DB --> Svc : Current row
+deactivate DB
+note right of Svc : Replace mutable fields
+
+Svc -> DB : UPDATE ... SET ...
+activate DB #FCE4EC
+DB --> Svc : Updated row
+deactivate DB
+
+== Async Events ==
+
+Svc ->> Kafka : reservation.status_changed
+
+Svc --> GW : 200 OK
+deactivate Svc
+GW --> Client : 200 OK
+deactivate GW
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml svc-guest-profiles--post-guests
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #059669
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+    NoteBorderColor #c77b30
+    NoteBackgroundColor #FEF3E7
+}
+
+title POST /guests\nRegister a new guest
+
+participant "Client" as Client
+participant "API Gateway" as GW #DBEAFE
+participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
+queue "Kafka" as Kafka #F0E6FF
+database "PostgreSQL" as DB #FCE4EC
+
+note over Svc
+  [[/services/api/svc-guest-profiles.html#/Guests/createGuest View in Swagger UI]]
+end note
+
+Client -> GW : POST /guests
+activate GW #059669
+GW -> Svc : route request
+activate Svc #059669
+
+note right of Svc : Validate request body
+
+== Database ==
+
+Svc -> DB : INSERT INTO ...
+activate DB #FCE4EC
+DB --> Svc : Created row
+deactivate DB
+
+== Async Events ==
+
+Svc ->> Kafka : guest.registered
+
+Svc --> GW : 201 Created
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml
