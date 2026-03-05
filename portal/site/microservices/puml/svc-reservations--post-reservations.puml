@@ -23,7 +23,7 @@ participant "API Gateway" as GW #DBEAFE
 participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
 participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
-participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFF8F0
+participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFE0E0
 queue "Kafka" as Kafka #F0E6FF
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
@@ -51,9 +51,9 @@ activate TC #DBEAFE
 TC --> Svc : OK
 deactivate TC
 
-Svc -> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process deposit payment]]
+Svc -[#DC2626]> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process deposit payment]]
 activate Pay #DBEAFE
-Pay --> Svc : OK
+Pay --[#DC2626]> Svc : OK
 deactivate Pay
 
 == Database ==

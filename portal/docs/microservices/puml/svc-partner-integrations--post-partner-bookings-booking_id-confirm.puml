@@ -22,7 +22,7 @@ participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #E8F4F8
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFF8F0
+participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
@@ -44,9 +44,9 @@ activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res
 
-Svc -> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process commission]]
+Svc -[#DC2626]> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process commission]]
 activate Pay #DBEAFE
-Pay --> Svc : OK
+Pay --[#DC2626]> Svc : OK
 deactivate Pay
 
 == Database ==

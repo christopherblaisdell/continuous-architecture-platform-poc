@@ -22,7 +22,7 @@ participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
 participant "svc-inventory-procurement" as Svc [[/microservices/svc-inventory-procurement/]] #E8F4F8
 participant "Gear Inventory" as GI [[/microservices/svc-gear-inventory/]] #FFF8F0
-participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFF8F0
+participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FFE0E0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
@@ -44,9 +44,9 @@ activate GI #DBEAFE
 GI --> Svc : OK
 deactivate GI
 
-Svc -> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process PO payment]]
+Svc -[#DC2626]> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process PO payment]]
 activate Pay #DBEAFE
-Pay --> Svc : OK
+Pay --[#DC2626]> Svc : OK
 deactivate Pay
 
 == Database ==

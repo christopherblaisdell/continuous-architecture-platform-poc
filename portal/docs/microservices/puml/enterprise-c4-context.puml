@@ -4,6 +4,8 @@
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
+AddRelTag("pci", $lineColor="#DC2626", $textColor="#DC2626", $legendText="PCI Data Flow")
+
 title NovaTrek Adventures — Enterprise Architecture
 
 Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
@@ -47,7 +49,6 @@ System_Boundary(External, "External") {
 
 System_Boundary(Support, "Support") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications", $link="/microservices/svc-notifications/#integration-context")
-    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments", $link="/microservices/svc-payments/#integration-context")
     Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Loyalty Rewards", $link="/microservices/svc-loyalty-rewards/#integration-context")
     Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "Media Gallery", $link="/microservices/svc-media-gallery/#integration-context")
     Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Analytics", $link="/microservices/svc-analytics/#integration-context")
@@ -56,15 +57,19 @@ System_Boundary(Support, "Support") {
     Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement", $link="/microservices/svc-inventory-procurement/#integration-context")
 }
 
+System_Boundary(PCI_Zone, "PCI DSS Compliance Zone") {
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments (PCI scope)", $link="/microservices/svc-payments/#integration-context")
+}
+
 System_Ext(DocuSign_API, "DocuSign API", "Third-party service")
 System_Ext(Firebase_Cloud_Messaging, "Firebase Cloud Messaging", "Third-party service")
-System_Ext(Fraud_Detection_API, "Fraud Detection API", "Third-party service")
+System_Ext(Fraud_Detection_API, "Fraud Detection API", "PCI-certified third-party")
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
 System_Ext(IDVerify_API, "IDVerify API", "Third-party service")
 System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service")
+System_Ext(Payment_Gateway, "Payment Gateway", "PCI-certified third-party")
 System_Ext(SendGrid_API, "SendGrid API", "Third-party service")
 System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")
-System_Ext(Stripe_API, "Stripe API", "Third-party service")
 System_Ext(Twilio_API, "Twilio API", "Third-party service")
 
 Rel(web_guest_portal, svc_reservations, "4 screens", "HTTPS")
@@ -91,11 +96,11 @@ Rel(app_guest_mobile, svc_notifications, "8 screens", "HTTPS")
 
 Rel(svc_reservations, svc_guest_profiles, "2 calls", "HTTPS")
 Rel(svc_reservations, svc_trip_catalog, "2 calls", "HTTPS")
-Rel(svc_reservations, svc_notifications, "3 calls", "HTTPS")
+Rel(svc_reservations, svc_notifications, "2 calls", "HTTPS")
 Rel(svc_partner_integrations, svc_reservations, "2 calls", "HTTPS")
 Rel(svc_partner_integrations, svc_guest_profiles, "1 calls", "HTTPS")
 Rel(svc_partner_integrations, svc_trip_catalog, "1 calls", "HTTPS")
-Rel(svc_partner_integrations, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_partner_integrations, svc_notifications, "1 calls", "HTTPS")
 Rel(svc_guest_profiles, svc_reservations, "1 calls", "HTTPS")
 Rel(svc_guest_profiles, svc_notifications, "1 calls", "HTTPS")
 Rel(svc_transport_logistics, svc_reservations, "2 calls", "HTTPS")
@@ -118,6 +123,12 @@ Rel(svc_notifications, svc_reservations, "1 calls", "HTTPS")
 Rel(svc_notifications, svc_guest_profiles, "2 calls", "HTTPS")
 Rel(svc_notifications, svc_transport_logistics, "1 calls", "HTTPS")
 
+Rel(svc_inventory_procurement, svc_payments, "1 calls", "HTTPS", $tags="pci")
+Rel(svc_loyalty_rewards, svc_payments, "1 calls", "HTTPS", $tags="pci")
+Rel(svc_partner_integrations, svc_payments, "1 calls", "HTTPS", $tags="pci")
+Rel(svc_payments, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_reservations, svc_payments, "1 calls", "HTTPS", $tags="pci")
+
 Rel(svc_analytics, Snowflake_Data_Cloud, "Integrates", "HTTPS")
 Rel(svc_guest_profiles, IDVerify_API, "Integrates", "HTTPS")
 Rel(svc_location_services, Google_Maps_Platform, "Integrates", "HTTPS")
@@ -125,10 +136,11 @@ Rel(svc_media_gallery, Google_Maps_Platform, "Integrates", "HTTPS")
 Rel(svc_notifications, Firebase_Cloud_Messaging, "Integrates", "HTTPS")
 Rel(svc_notifications, SendGrid_API, "Integrates", "HTTPS")
 Rel(svc_notifications, Twilio_API, "Integrates", "HTTPS")
-Rel(svc_payments, Fraud_Detection_API, "Integrates", "HTTPS")
-Rel(svc_payments, Stripe_API, "Integrates", "HTTPS")
+Rel(svc_payments, Fraud_Detection_API, "Integrates", "HTTPS", $tags="pci")
+Rel(svc_payments, Payment_Gateway, "Integrates", "HTTPS", $tags="pci")
 Rel(svc_safety_compliance, DocuSign_API, "Integrates", "HTTPS")
 Rel(svc_transport_logistics, Google_Maps_Platform, "Integrates", "HTTPS")
 Rel(svc_weather, OpenWeather_API, "Integrates", "HTTPS")
+Rel(Payment_Gateway, Stripe_API, "Process card txn", "HTTPS", $tags="pci")
 
 @enduml

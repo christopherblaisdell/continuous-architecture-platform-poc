@@ -4,6 +4,8 @@
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
+AddRelTag("pci", $lineColor="#DC2626", $textColor="#DC2626", $legendText="PCI Data Flow")
+
 header [[/microservices/ ⬆ All Microservices]]
 
 title svc-inventory-procurement — Integration Context
@@ -23,6 +25,6 @@ Rel(web_ops_dashboard, svc_inventory_procurement, "Uses API", "HTTPS")
 Rel(svc_inventory_procurement, svc_inventory_procurement_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_inventory_procurement, svc_gear_inventory, "Verify item catalog", "HTTPS")
 Rel(svc_inventory_procurement, svc_notifications, "Notify procurement team", "HTTPS")
-Rel(svc_inventory_procurement, svc_payments, "Process PO payment", "HTTPS")
+Rel(svc_inventory_procurement, svc_payments, "Process PO payment", "HTTPS", $tags="pci")
 
 @enduml

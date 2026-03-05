@@ -4,6 +4,8 @@
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
+AddRelTag("pci", $lineColor="#DC2626", $textColor="#DC2626", $legendText="PCI Data Flow")
+
 header [[/microservices/ ⬆ All Microservices]]
 
 title svc-payments — Integration Context
@@ -22,19 +24,19 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
-System_Ext(Fraud_Detection_API, "Fraud Detection API", "Third-party service")
-System_Ext(Stripe_API, "Stripe API", "Third-party service")
+System_Ext(Fraud_Detection_API, "Fraud Detection API", "PCI-certified third-party")
+System_Ext(Payment_Gateway, "Payment Gateway", "PCI-certified third-party")
 
 Rel(app_guest_mobile, svc_payments, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_payments, "Uses API", "HTTPS")
 Rel(web_ops_dashboard, svc_payments, "Uses API", "HTTPS")
-Rel(svc_inventory_procurement, svc_payments, "Process PO payment", "HTTPS")
-Rel(svc_loyalty_rewards, svc_payments, "Process reward credit", "HTTPS")
-Rel(svc_partner_integrations, svc_payments, "Process commission", "HTTPS")
-Rel(svc_reservations, svc_payments, "Process deposit payment", "HTTPS")
+Rel(svc_inventory_procurement, svc_payments, "Process PO payment", "HTTPS", $tags="pci")
+Rel(svc_loyalty_rewards, svc_payments, "Process reward credit", "HTTPS", $tags="pci")
+Rel(svc_partner_integrations, svc_payments, "Process commission", "HTTPS", $tags="pci")
+Rel(svc_reservations, svc_payments, "Process deposit payment", "HTTPS", $tags="pci")
 Rel(svc_payments, svc_payments_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_payments, svc_notifications, "2 calls", "HTTPS")
-Rel(svc_payments, Fraud_Detection_API, "Screen transaction", "HTTPS")
-Rel(svc_payments, Stripe_API, "Process payment, Process refund", "HTTPS")
+Rel(svc_payments, Fraud_Detection_API, "Screen transaction", "HTTPS", $tags="pci")
+Rel(svc_payments, Payment_Gateway, "Process refund via gateway, Tokenize & route payment", "HTTPS", $tags="pci")
 
 @enduml

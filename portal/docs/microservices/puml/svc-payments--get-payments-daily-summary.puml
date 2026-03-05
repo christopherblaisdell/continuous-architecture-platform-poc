@@ -20,7 +20,7 @@ title GET /payments/daily-summary\nGet daily payment summary
 
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW #DBEAFE
-participant "svc-payments" as Svc [[/microservices/svc-payments/]] #E8F4F8
+participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FFE0E0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
