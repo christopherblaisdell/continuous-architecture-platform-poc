@@ -1811,8 +1811,8 @@ def generate_event_catalog_page():
 
         lines.append(f"## {domain_name}")
         lines.append("")
-        lines.append("| Event | Channel | Producer | Consumers | Description |")
-        lines.append("|-------|---------|----------|-----------|-------------|")
+        lines.append("| Event | Channel | Producer | Consumers | Schema |")
+        lines.append("|-------|---------|----------|-----------|--------|")
 
         for evt_name, evt in sorted(events):
             producer = evt["producer"]
@@ -1824,7 +1824,7 @@ def generate_event_catalog_page():
                 f"| `{evt['channel']}` "
                 f"| [{producer}](../microservices/{producer}/) "
                 f"| {consumer_links} "
-                f"| {evt['summary']} |"
+                f"| [:material-code-json:](../events-ui/{producer}.html \"View event schema\") |"
             )
         lines.append("")
 
@@ -1853,6 +1853,7 @@ def generate_event_catalog_page():
         lines.append(f"- **Trigger:** {trigger_link}")
         lines.append(f"- **Domain:** {evt['domain']}")
         lines.append(f"- **Description:** {evt['summary']}")
+        lines.append(f"- **Schema:** [:material-code-json: View Event Schema](../events-ui/{evt['producer']}.html)")
         lines.append("")
         lines.append("**Consumers:**")
         lines.append("")
@@ -1870,8 +1871,8 @@ def generate_event_catalog_page():
         "describing its published events in detail."
     )
     lines.append("")
-    lines.append("| Service | Spec File |")
-    lines.append("|---------|-----------|")
+    lines.append("| Service | Spec File | Interactive Viewer |")
+    lines.append("|---------|-----------|-------------------|")
     events_dir = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
     if os.path.isdir(events_dir):
         for fname in sorted(os.listdir(events_dir)):
@@ -1879,7 +1880,8 @@ def generate_event_catalog_page():
                 svc = fname.replace(".events.yaml", "")
                 lines.append(
                     f"| [{svc}](../microservices/{svc}/) "
-                    f"| [`{fname}`](../events/{fname}) |"
+                    f"| [`{fname}`](../events/{fname}) "
+                    f"| [:material-code-json: View Schema](../events-ui/{svc}.html) |"
                 )
     lines.append("")
 
