@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Items/searchGearItems){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-gear-items.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-items sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-gear-items.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-items sequence diagram</object></div>
 
 ---
 
@@ -48,7 +48,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Items/addGearItem){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--post-gear-items.svg" type="image/svg+xml" style="max-width: 100%;">POST /gear-items sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--post-gear-items.svg" type="image/svg+xml" style="max-width: 100%;">POST /gear-items sequence diagram</object></div>
 
 ---
 
@@ -58,7 +58,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Items/getGearItem){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-gear-items-item_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-items/{item_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-gear-items-item_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-items/{item_id} sequence diagram</object></div>
 
 ---
 
@@ -68,7 +68,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Items/updateGearItem){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--patch-gear-items-item_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /gear-items/{item_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--patch-gear-items-item_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /gear-items/{item_id} sequence diagram</object></div>
 
 ---
 
@@ -78,7 +78,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Packages/listGearPackages){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-gear-packages.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-packages sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-gear-packages.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-packages sequence diagram</object></div>
 
 ---
 
@@ -88,7 +88,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Packages/getGearPackage){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-gear-packages-package_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-packages/{package_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-gear-packages-package_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-packages/{package_id} sequence diagram</object></div>
 
 ---
 
@@ -98,7 +98,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Assignments/createGearAssignment){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--post-gear-assignments.svg" type="image/svg+xml" style="max-width: 100%;">POST /gear-assignments sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--post-gear-assignments.svg" type="image/svg+xml" style="max-width: 100%;">POST /gear-assignments sequence diagram</object></div>
 
 ---
 
@@ -108,7 +108,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Assignments/getGearAssignment){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-gear-assignments-assignment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-assignments/{assignment_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-gear-assignments-assignment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-assignments/{assignment_id} sequence diagram</object></div>
 
 ---
 
@@ -118,7 +118,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Gear%20Assignments/returnGearAssignment){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--delete-gear-assignments-assignment_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /gear-assignments/{assignment_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--delete-gear-assignments-assignment_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /gear-assignments/{assignment_id} sequence diagram</object></div>
 
 ---
 
@@ -128,7 +128,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Maintenance/logMaintenanceEvent){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--put-gear-items-item_id-maintenance.svg" type="image/svg+xml" style="max-width: 100%;">PUT /gear-items/{item_id}/maintenance sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--put-gear-items-item_id-maintenance.svg" type="image/svg+xml" style="max-width: 100%;">PUT /gear-items/{item_id}/maintenance sequence diagram</object></div>
 
 ---
 
@@ -138,7 +138,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Maintenance/getMaintenanceHistory){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-gear-items-item_id-maintenance-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-items/{item_id}/maintenance-history sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-gear-items-item_id-maintenance-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /gear-items/{item_id}/maintenance-history sequence diagram</object></div>
 
 ---
 
@@ -148,4 +148,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-gear-inventory.html#/Inventory%20Levels/getInventoryLevels){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-gear-inventory--get-inventory-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /inventory-levels sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--get-inventory-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /inventory-levels sequence diagram</object></div>

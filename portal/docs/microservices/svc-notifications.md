@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Notifications/listNotifications){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-notifications--get-notifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--get-notifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications sequence diagram</object></div>
 
 ---
 
@@ -48,7 +48,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Notifications/sendNotification){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-notifications--post-notifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-notifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications sequence diagram</object></div>
 
 ---
 
@@ -58,7 +58,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Notifications/getNotification){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-notifications--get-notifications-notification_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications/{notification_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--get-notifications-notification_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications/{notification_id} sequence diagram</object></div>
 
 ---
 
@@ -68,7 +68,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Notifications/sendBulkNotifications){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-notifications--post-notifications-bulk.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications/bulk sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-notifications-bulk.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications/bulk sequence diagram</object></div>
 
 ---
 
@@ -78,7 +78,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Templates/listTemplates){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-notifications--get-templates.svg" type="image/svg+xml" style="max-width: 100%;">GET /templates sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--get-templates.svg" type="image/svg+xml" style="max-width: 100%;">GET /templates sequence diagram</object></div>
 
 ---
 
@@ -88,4 +88,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Templates/createTemplate){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-notifications--post-templates.svg" type="image/svg+xml" style="max-width: 100%;">POST /templates sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-templates.svg" type="image/svg+xml" style="max-width: 100%;">POST /templates sequence diagram</object></div>

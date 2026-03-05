@@ -36,7 +36,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Members/getMemberBalance){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-loyalty-rewards--get-members-guest_id-balance.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/balance sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-loyalty-rewards--get-members-guest_id-balance.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/balance sequence diagram</object></div>
 
 ---
 
@@ -44,7 +44,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/earnPoints){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-loyalty-rewards--post-members-guest_id-earn.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/earn sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-loyalty-rewards--post-members-guest_id-earn.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/earn sequence diagram</object></div>
 
 ---
 
@@ -52,7 +52,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/redeemPoints){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-loyalty-rewards--post-members-guest_id-redeem.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/redeem sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-loyalty-rewards--post-members-guest_id-redeem.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/redeem sequence diagram</object></div>
 
 ---
 
@@ -60,7 +60,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/getMemberTransactions){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-loyalty-rewards--get-members-guest_id-transactions.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/transactions sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-loyalty-rewards--get-members-guest_id-transactions.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/transactions sequence diagram</object></div>
 
 ---
 
@@ -68,4 +68,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Tiers/listTiers){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-loyalty-rewards--get-tiers.svg" type="image/svg+xml" style="max-width: 100%;">GET /tiers sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-loyalty-rewards--get-tiers.svg" type="image/svg+xml" style="max-width: 100%;">GET /tiers sequence diagram</object></div>

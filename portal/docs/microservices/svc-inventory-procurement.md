@@ -38,7 +38,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--post-purchase-orders.svg" type="image/svg+xml" style="max-width: 100%;">POST /purchase-orders sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--post-purchase-orders.svg" type="image/svg+xml" style="max-width: 100%;">POST /purchase-orders sequence diagram</object></div>
 
 ---
 
@@ -46,7 +46,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /purchase-orders/{po_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /purchase-orders/{po_id} sequence diagram</object></div>
 
 ---
 
@@ -56,7 +56,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /purchase-orders/{po_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /purchase-orders/{po_id} sequence diagram</object></div>
 
 ---
 
@@ -64,7 +64,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--get-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">GET /suppliers sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">GET /suppliers sequence diagram</object></div>
 
 ---
 
@@ -72,7 +72,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--post-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">POST /suppliers sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--post-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">POST /suppliers sequence diagram</object></div>
 
 ---
 
@@ -82,7 +82,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--get-stock-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /stock-levels sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-stock-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /stock-levels sequence diagram</object></div>
 
 ---
 
@@ -92,7 +92,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--post-stock-adjustments.svg" type="image/svg+xml" style="max-width: 100%;">POST /stock-adjustments sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--post-stock-adjustments.svg" type="image/svg+xml" style="max-width: 100%;">POST /stock-adjustments sequence diagram</object></div>
 
 ---
 
@@ -102,4 +102,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-inventory-procurement--get-reorder-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /reorder-alerts sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-inventory-procurement--get-reorder-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /reorder-alerts sequence diagram</object></div>

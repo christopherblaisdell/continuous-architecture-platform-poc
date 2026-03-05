@@ -36,7 +36,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/listCheckIns){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-check-in--get-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--get-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins sequence diagram</object></div>
 
 ---
 
@@ -46,7 +46,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/createCheckIn){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-check-in--post-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins sequence diagram</object></div>
 
 ---
 
@@ -54,7 +54,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/getCheckIn){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-check-in--get-check-ins-check_in_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins/{check_in_id} sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--get-check-ins-check_in_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins/{check_in_id} sequence diagram</object></div>
 
 ---
 
@@ -64,7 +64,7 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/verifyGear){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/gear-verification sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/gear-verification sequence diagram</object></div>
 
 ---
 
@@ -74,4 +74,4 @@ tags:
 
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/assignWristband){ .md-button }
 
-<div style="overflow-x: auto; width: 100%;"><object data="svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/wristband-assignment sequence diagram</object></div>
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/wristband-assignment sequence diagram</object></div>
