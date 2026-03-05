@@ -154,6 +154,34 @@
   line-height: 1.5;
 }
 
+/* ── Home page sections ── */
+.home-section {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.home-section h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--md-primary-fg-color);
+}
+
+/* Wide variant for side-by-side layout */
+.portal-grid--wide {
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+}
+
+/* Flat card (no hover lift, for info display) */
+.portal-card--flat {
+  cursor: default;
+}
+.portal-card--flat:hover {
+  transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
 /* ── Status indicators ── */
 .status {
   display: inline-block;
