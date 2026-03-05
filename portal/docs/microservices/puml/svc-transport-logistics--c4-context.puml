@@ -6,14 +6,14 @@ LAYOUT_TOP_DOWN()
 
 title svc-transport-logistics — Integration Context
 
-Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
 
 System_Boundary(boundary, "NovaTrek Platform") {
-    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Transport Logistics Service")
-    ContainerDb(svc_transport_logistics_db, "PostgreSQL 15", "transport schema", "Primary data store")
-    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
-    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Transport Logistics Service", $link="/microservices/svc-transport-logistics/")
+    ContainerDb(svc_transport_logistics_db, "PostgreSQL 15", "transport schema", "Primary data store", $link="/microservices/svc-transport-logistics/#data-store")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support", $link="/microservices/svc-location-services/")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/")
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")

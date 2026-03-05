@@ -6,13 +6,13 @@ LAYOUT_TOP_DOWN()
 
 title svc-analytics — Integration Context
 
-Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
 
 System_Boundary(boundary, "NovaTrek Platform") {
-    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Analytics Service")
-    ContainerDb(svc_analytics_db, "Oracle Database 19c", "ANALYTICS schema", "Primary data store")
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
-    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations")
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Analytics Service", $link="/microservices/svc-analytics/")
+    ContainerDb(svc_analytics_db, "Oracle Database 19c", "ANALYTICS schema", "Primary data store", $link="/microservices/svc-analytics/#data-store")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/")
 }
 
 System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")

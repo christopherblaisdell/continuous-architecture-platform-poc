@@ -6,19 +6,19 @@ LAYOUT_TOP_DOWN()
 
 title svc-safety-compliance — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App")
-Person(web_guest_portal, "Guest Portal", "Web App")
-Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/applications/web-ops-dashboard/")
 
 System_Boundary(boundary, "NovaTrek Platform") {
-    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance Service")
-    ContainerDb(svc_safety_compliance_db, "PostgreSQL 15", "safety schema", "Primary data store")
-    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations")
-    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics")
-    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog")
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
-    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance Service", $link="/microservices/svc-safety-compliance/")
+    ContainerDb(svc_safety_compliance_db, "PostgreSQL 15", "safety schema", "Primary data store", $link="/microservices/svc-safety-compliance/#data-store")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations", $link="/microservices/svc-check-in/")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics", $link="/microservices/svc-gear-inventory/")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity", $link="/microservices/svc-guest-profiles/")
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management", $link="/microservices/svc-guide-management/")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
 }
 
 System_Ext(DocuSign_API, "DocuSign API", "Third-party service")

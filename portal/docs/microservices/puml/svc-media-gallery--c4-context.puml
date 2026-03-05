@@ -6,13 +6,13 @@ LAYOUT_TOP_DOWN()
 
 title svc-media-gallery — Integration Context
 
-Person(app_guest_mobile, "Adventure App", "Mobile App")
-Person(web_guest_portal, "Guest Portal", "Web App")
+Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app-guest-mobile/")
+Person(web_guest_portal, "Guest Portal", "Web App", $link="/applications/web-guest-portal/")
 
 System_Boundary(boundary, "NovaTrek Platform") {
-    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "Media Gallery Service")
-    ContainerDb(svc_media_gallery_db, "PostgreSQL 15 + S3-Compatible Object Store", "media schema", "Primary data store")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "Media Gallery Service", $link="/microservices/svc-media-gallery/")
+    ContainerDb(svc_media_gallery_db, "PostgreSQL 15 + S3-Compatible Object Store", "media schema", "Primary data store", $link="/microservices/svc-media-gallery/#data-store")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/")
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
