@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /guests/{guest_id}/payment-history
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-payments/#get-guestsguest_idpayment-history-retrieve-payment-history-for-a-guest route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

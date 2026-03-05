@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /members/{guest_id}/earn
 activate GW #059669
-GW -> Svc : [[/microservices/svc-loyalty-rewards/#post-membersguest_idearn-award-points-to-a-member route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

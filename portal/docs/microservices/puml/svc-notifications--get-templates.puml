@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /templates
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-notifications/#get-templates-list-notification-templates route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /analytics/guest-satisfaction
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-analytics/#get-analyticsguest-satisfaction-get-guest-satisfaction-metrics route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

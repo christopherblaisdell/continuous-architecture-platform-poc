@@ -27,7 +27,7 @@ end note
 
 Client -> GW : DELETE /gear-assignments/{assignment_id}
 activate GW #dc2626
-GW -> Svc : [[/microservices/svc-gear-inventory/#delete-gear-assignmentsassignment_id-return-gear-close-assignment route request]]
+GW -> Svc : route request
 activate Svc #dc2626
 
 == Database ==

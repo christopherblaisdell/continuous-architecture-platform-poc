@@ -28,7 +28,7 @@ end note
 
 Client -> GW : GET /weather/alerts
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-weather/#get-weatheralerts-get-active-weather-alerts-for-a-region route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Cross-Service Integration ==

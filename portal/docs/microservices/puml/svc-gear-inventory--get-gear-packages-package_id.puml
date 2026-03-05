@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /gear-packages/{package_id}
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-gear-inventory/#get-gear-packagespackage_id-get-gear-package-details route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

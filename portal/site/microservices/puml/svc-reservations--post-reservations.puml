@@ -30,7 +30,7 @@ end note
 
 Client -> GW : POST /reservations
 activate GW #059669
-GW -> Svc : [[/microservices/svc-reservations/#post-reservations-create-a-new-reservation route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

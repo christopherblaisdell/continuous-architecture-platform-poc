@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PUT /trips/{trip_id}/pricing
 activate GW #c77b30
-GW -> Svc : [[/microservices/svc-trip-catalog/#put-tripstrip_idpricing-replace-pricing-tiers route request]]
+GW -> Svc : route request
 activate Svc #c77b30
 
 note right of Svc : Validate request body

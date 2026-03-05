@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /trails/{trail_id}/waypoints
 activate GW #059669
-GW -> Svc : [[/microservices/svc-trail-management/#post-trailstrail_idwaypoints-add-a-waypoint-to-a-trail route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

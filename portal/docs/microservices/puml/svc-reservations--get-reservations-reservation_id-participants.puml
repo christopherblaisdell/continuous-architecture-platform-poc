@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /reservations/{reservation_id}/participants
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-reservations/#get-reservationsreservation_idparticipants-get-reservation-participants route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

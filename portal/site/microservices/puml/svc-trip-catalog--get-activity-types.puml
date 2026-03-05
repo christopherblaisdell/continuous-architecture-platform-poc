@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /activity-types
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-trip-catalog/#get-activity-types-list-available-activity-types route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /partner-bookings/{booking_id}
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-partner-integrations/#get-partner-bookingsbooking_id-get-partner-booking-details route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

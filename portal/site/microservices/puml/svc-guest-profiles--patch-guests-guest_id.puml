@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /guests/{guest_id}
 activate GW #7c3aed
-GW -> Svc : [[/microservices/svc-guest-profiles/#patch-guestsguest_id-update-guest-profile route request]]
+GW -> Svc : route request
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

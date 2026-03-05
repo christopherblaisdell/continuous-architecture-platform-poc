@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /gear-assignments
 activate GW #059669
-GW -> Svc : [[/microservices/svc-gear-inventory/#post-gear-assignments-assign-gear-to-a-participant route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

@@ -31,7 +31,7 @@ end note
 
 Client -> GW : POST /schedule-requests
 activate GW #059669
-GW -> Svc : [[/microservices/svc-scheduling-orchestrator/#post-schedule-requests-request-optimal-schedule-for-a-trip route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

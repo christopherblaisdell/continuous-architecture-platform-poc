@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /analytics/guide-performance/{guide_id}
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-analytics/#get-analyticsguide-performanceguide_id-get-performance-metrics-for-a-specific-guide route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

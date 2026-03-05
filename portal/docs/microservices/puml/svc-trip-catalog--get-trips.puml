@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /trips
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-trip-catalog/#get-trips-search-trips-with-filters route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

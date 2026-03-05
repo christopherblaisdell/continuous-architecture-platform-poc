@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /members/{guest_id}/transactions
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-loyalty-rewards/#get-membersguest_idtransactions-list-point-transactions-for-a-member route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

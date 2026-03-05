@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /partner-bookings/{booking_id}
 activate GW #7c3aed
-GW -> Svc : [[/microservices/svc-partner-integrations/#patch-partner-bookingsbooking_id-update-a-partner-booking route request]]
+GW -> Svc : route request
 activate Svc #7c3aed
 
 note right of Svc : Validate request body
