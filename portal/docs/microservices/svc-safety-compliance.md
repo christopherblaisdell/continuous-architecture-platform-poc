@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-safety-compliance C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -44,6 +42,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--get-waivers.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--get-waivers.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/waivers` -- Guest signs a safety waiver { .endpoint-post }
@@ -51,6 +51,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/signWaiver){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--post-waivers.svg" type="image/svg+xml" style="max-width: 100%;">POST /waivers sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--post-waivers.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -60,6 +62,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--get-waivers-waiver_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers/{waiver_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--get-waivers-waiver_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/incidents` -- File an incident report { .endpoint-post }
@@ -67,6 +71,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/createIncident){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--post-incidents.svg" type="image/svg+xml" style="max-width: 100%;">POST /incidents sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--post-incidents.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -76,6 +82,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--get-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /incidents/{incident_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--get-incidents-incident_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### PATCH `/incidents/{incident_id}` -- Update an incident report (add follow-up, change status) { .endpoint-patch }
@@ -83,6 +91,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/updateIncident){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--patch-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /incidents/{incident_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--patch-incidents-incident_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -92,6 +102,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--get-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">GET /safety-inspections sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--get-safety-inspections.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/safety-inspections` -- Record a safety inspection { .endpoint-post }
@@ -99,6 +111,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Inspections/createSafetyInspection){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-safety-compliance--post-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">POST /safety-inspections sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-safety-compliance--post-safety-inspections.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

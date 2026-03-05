@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-media-gallery C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-media-gallery--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -44,6 +42,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--get-media.svg" type="image/svg+xml" style="max-width: 100%;">GET /media sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-media-gallery--get-media.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/media` -- Upload a media item { .endpoint-post }
@@ -54,6 +54,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--post-media.svg" type="image/svg+xml" style="max-width: 100%;">POST /media sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-media-gallery--post-media.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/media/{media_id}` -- Get media item details { .endpoint-get }
@@ -61,6 +63,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Media/getMedia){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--get-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /media/{media_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-media-gallery--get-media-media_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -72,6 +76,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--delete-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /media/{media_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-media-gallery--delete-media-media_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/media/{media_id}/share` -- Create a shareable link for a media item { .endpoint-post }
@@ -81,6 +87,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-media-gallery.html#/Sharing/createShareLink){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-media-gallery--post-media-media_id-share.svg" type="image/svg+xml" style="max-width: 100%;">POST /media/{media_id}/share sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-media-gallery--post-media-media_id-share.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

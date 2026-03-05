@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-notifications C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -46,6 +44,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--get-notifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--get-notifications.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/notifications` -- Send a notification { .endpoint-post }
@@ -55,6 +55,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Notifications/sendNotification){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-notifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--post-notifications.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -66,6 +68,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--get-notifications-notification_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications/{notification_id} sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--get-notifications-notification_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/notifications/bulk` -- Send bulk notifications { .endpoint-post }
@@ -75,6 +79,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Notifications/sendBulkNotifications){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-notifications-bulk.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications/bulk sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--post-notifications-bulk.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -86,6 +92,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--get-templates.svg" type="image/svg+xml" style="max-width: 100%;">GET /templates sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--get-templates.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/templates` -- Create a notification template { .endpoint-post }
@@ -95,6 +103,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-notifications.html#/Templates/createTemplate){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-notifications--post-templates.svg" type="image/svg+xml" style="max-width: 100%;">POST /templates sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-notifications--post-templates.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-payments C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-payments--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -46,6 +44,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--post-payments.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-payments--post-payments.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/payments/{payment_id}` -- Retrieve payment details { .endpoint-get }
@@ -55,6 +55,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/getPayment){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-payments-payment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/{payment_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-payments--get-payments-payment_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -66,6 +68,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--post-payments-payment_id-refund.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments/{payment_id}/refund sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-payments--post-payments-payment_id-refund.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/guests/{guest_id}/payment-history` -- Retrieve payment history for a guest { .endpoint-get }
@@ -76,6 +80,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-guests-guest_id-payment-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/payment-history sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-payments--get-guests-guest_id-payment-history.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/payments/daily-summary` -- Get daily payment summary { .endpoint-get }
@@ -85,6 +91,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Reporting/getDailySummary){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-payments--get-payments-daily-summary.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/daily-summary sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-payments--get-payments-daily-summary.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 

@@ -20,9 +20,7 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-scheduling-orchestrator C4 context diagram</object></div>
 
----
-
-## :material-database: Data Store
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-scheduling-orchestrator--c4-context.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 | Property | Detail |
 |----------|--------|
@@ -46,6 +44,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--post-schedule-requests.svg" type="image/svg+xml" style="max-width: 100%;">POST /schedule-requests sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-scheduling-orchestrator--post-schedule-requests.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/schedule-requests/{request_id}` -- Get schedule request status and result { .endpoint-get }
@@ -55,6 +55,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-scheduling-orchestrator.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--get-schedule-requests-request_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /schedule-requests/{request_id} sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-scheduling-orchestrator--get-schedule-requests-request_id.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
@@ -66,6 +68,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--get-schedule-optimization.svg" type="image/svg+xml" style="max-width: 100%;">GET /schedule-optimization sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-scheduling-orchestrator--get-schedule-optimization.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### GET `/schedule-conflicts` -- List scheduling conflicts { .endpoint-get }
@@ -76,6 +80,8 @@ tags:
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--get-schedule-conflicts.svg" type="image/svg+xml" style="max-width: 100%;">GET /schedule-conflicts sequence diagram</object></div>
 
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-scheduling-orchestrator--get-schedule-conflicts.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
+
 ---
 
 ### POST `/schedule-conflicts/resolve` -- Resolve a scheduling conflict { .endpoint-post }
@@ -85,6 +91,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-scheduling-orchestrator.html){ .md-button }
 
 <div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.svg" type="image/svg+xml" style="max-width: 100%;">POST /schedule-conflicts/resolve sequence diagram</object></div>
+
+<p style="text-align: right; margin-top: -0.5em;"><a href="../svg/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.svg" target="_blank" title="Open diagram in full screen">:material-fullscreen: View full screen</a></p>
 
 ---
 
