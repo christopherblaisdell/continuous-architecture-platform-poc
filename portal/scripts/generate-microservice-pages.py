@@ -639,6 +639,123 @@ def _safe_alias(name):
     return re.sub(r'[^a-zA-Z0-9]', '_', name)
 
 
+def build_enterprise_c4_puml():
+    """Build an enterprise-level C4 Container diagram showing ALL services.
+
+    Groups services by domain inside System_Boundary elements, shows the
+    three frontend applications as Person elements, external third-party
+    systems as System_Ext, and inter-domain relationships as aggregated arrows.
+    """
+    # Collect all edges
+    svc_to_domain = {}
+    for domain, info in DOMAINS.items():
+        for svc in info["services"]:
+            svc_to_domain[svc] = domain
+
+    # Service-to-service edges
+    svc_edges = {}       # (from_svc, to_svc) -> count
+    ext_edges = {}       # (from_svc, ext_label) -> count
+    ext_labels = set()
+
+    for (caller, method, path), targets in CROSS_SERVICE_CALLS.items():
+        for entry in targets:
+            label = entry[1]
+            target_svc = label_to_svc_name(label)
+            if target_svc:
+                key = (caller, target_svc)
+                svc_edges[key] = svc_edges.get(key, 0) + 1
+            elif label not in ("Event Bus", "Object Store"):
+                key = (caller, label)
+                ext_edges[key] = ext_edges.get(key, 0) + 1
+                ext_labels.add(label)
+
+    # Aggregate to domain-level relationships to avoid spaghetti
+    domain_edges = {}  # (from_domain, to_domain) -> total_count
+    for (f, t), cnt in svc_edges.items():
+        fd = svc_to_domain.get(f, "Support")
+        td = svc_to_domain.get(t, "Support")
+        if fd != td:
+            key = (fd, td)
+            domain_edges[key] = domain_edges.get(key, 0) + cnt
+
+    # App-to-service edges (aggregated to domain)
+    app_domain_edges = {}  # (app, domain) -> count
+    for svc, consumers in APP_CONSUMERS.items():
+        domain = svc_to_domain.get(svc, "Support")
+        for app_name, _ in consumers:
+            key = (app_name, domain)
+            app_domain_edges[key] = app_domain_edges.get(key, 0) + 1
+
+    L = []
+    L.append("@startuml")
+    L.append("!include <c4/C4_Container>")
+    L.append("")
+    L.append("LAYOUT_WITH_LEGEND()")
+    L.append("LAYOUT_TOP_DOWN()")
+    L.append("")
+    L.append("title NovaTrek Adventures — Enterprise Architecture")
+    L.append("")
+
+    # Frontend applications as Person elements
+    app_order = ["web-guest-portal", "web-ops-dashboard", "app-guest-mobile"]
+    for app in app_order:
+        app_title = APP_TITLES.get(app, app)
+        app_type = "Web App" if app.startswith("web-") else "Mobile App"
+        L.append(f'Person({_safe_alias(app)}, "{app_title}", "{app_type}", $link="/applications/{app}/")')
+    L.append("")
+
+    # Domain boundaries with services
+    domain_order = [
+        "Operations", "Guest Identity", "Booking", "Product Catalog",
+        "Safety", "Logistics", "Guide Management", "External", "Support",
+    ]
+
+    for domain_name in domain_order:
+        info = DOMAINS[domain_name]
+        svcs = info["services"]
+        boundary_alias = _safe_alias(domain_name)
+        L.append(f'System_Boundary({boundary_alias}, "{domain_name}") {{')
+        for svc in svcs:
+            svc_title = svc.replace("svc-", "").replace("-", " ").title()
+            L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{svc_title}", $link="/microservices/{svc}/#integration-context")')
+        L.append("}")
+        L.append("")
+
+    # External systems
+    for ext in sorted(ext_labels):
+        L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+    L.append("")
+
+    # Relationships: apps to domains
+    for app in app_order:
+        app_alias = _safe_alias(app)
+        targets = sorted(set(d for (a, d) in app_domain_edges if a == app))
+        for domain_name in targets:
+            # Link to first service in that domain as representative
+            first_svc = DOMAINS[domain_name]["services"][0]
+            count = app_domain_edges[(app, domain_name)]
+            L.append(f'Rel({app_alias}, {_safe_alias(first_svc)}, "{count} screens", "HTTPS")')
+
+    L.append("")
+
+    # Relationships: inter-domain (aggregated)
+    for (fd, td), cnt in sorted(domain_edges.items()):
+        from_svc = DOMAINS[fd]["services"][0]
+        to_svc = DOMAINS[td]["services"][0]
+        L.append(f'Rel({_safe_alias(from_svc)}, {_safe_alias(to_svc)}, "{cnt} calls", "HTTPS")')
+
+    L.append("")
+
+    # Relationships: services to external systems (service-level, not domain-level)
+    for (svc, ext), cnt in sorted(ext_edges.items()):
+        L.append(f'Rel({_safe_alias(svc)}, {_safe_alias(ext)}, "Integrates", "HTTPS")')
+
+    L.append("")
+    L.append("@enduml")
+
+    return "\n".join(L)
+
+
 def build_c4_context_puml(svc_name):
     """Build a C4 Container-level context diagram for a microservice.
 
@@ -1294,6 +1411,23 @@ def generate_index_page(all_services):
     lines.append("---")
     lines.append("")
 
+    # Enterprise C4 diagram
+    lines.append("## Enterprise Architecture")
+    lines.append("")
+    lines.append(
+        '<object data="svg/enterprise-c4-context.svg" type="image/svg+xml" '
+        'style="width:100%;max-width:1400px"></object>'
+    )
+    lines.append("")
+    lines.append(
+        '<p style="text-align: right; margin-top: -0.5em;">'
+        '<a href="svg/enterprise-c4-context.svg" target="_blank">'
+        ':material-fullscreen: View full screen</a></p>'
+    )
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
     domain_order = [
         "Operations", "Guest Identity", "Booking", "Product Catalog",
         "Safety", "Logistics", "Guide Management", "External", "Support",
@@ -1395,8 +1529,15 @@ def main():
             f.write(c4_puml)
         all_pumls.append(c4_path)
 
+    # Generate enterprise rollup C4 diagram
+    enterprise_puml = build_enterprise_c4_puml()
+    enterprise_path = os.path.join(PUML_DIR, "enterprise-c4-context.puml")
+    with open(enterprise_path, "w") as f:
+        f.write(enterprise_puml)
+    all_pumls.append(enterprise_path)
+
     total_ep = sum(s[2] for s in all_services)
-    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context)")
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise)")
 
     # Render all PUMLs to SVG
     print("  Rendering SVGs with PlantUML...")
