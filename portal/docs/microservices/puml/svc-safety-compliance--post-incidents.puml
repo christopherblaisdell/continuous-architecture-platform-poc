@@ -19,6 +19,8 @@ title POST /incidents\nFile an incident report
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-safety-compliance" as Svc [[/microservices/svc-safety-compliance/]] #E8F4F8
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #FFF8F0
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
@@ -32,6 +34,18 @@ GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body
+
+== Cross-Service Integration ==
+
+Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get guest contact info]]
+activate GP #DBEAFE
+GP --> Svc : OK
+deactivate GP
+
+Svc -> GM : [[/microservices/svc-guide-management/#get-guidesguide_id-get-guide-by-id Get assigned guide]]
+activate GM #DBEAFE
+GM --> Svc : OK
+deactivate GM
 
 == Database ==
 

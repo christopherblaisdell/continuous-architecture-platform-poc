@@ -19,6 +19,7 @@ title POST /guests\nRegister a new guest
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
+participant "IDVerify API" as ExtID #F5F5F5
 queue "Kafka" as Kafka #F0E6FF
 database "PostgreSQL" as DB #FCE4EC
 
@@ -32,6 +33,13 @@ GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body
+
+== Cross-Service Integration ==
+
+Svc -> ExtID : Verify identity document
+activate ExtID #DBEAFE
+ExtID --> Svc : OK
+deactivate ExtID
 
 == Database ==
 

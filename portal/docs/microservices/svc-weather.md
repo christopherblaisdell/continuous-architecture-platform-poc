@@ -20,10 +20,10 @@ tags:
 
 | Property | Detail |
 |----------|--------|
-| **Engine** | Redis 7 + PostgreSQL 15 |
+| **Engine** | Valkey 8 + PostgreSQL 15 |
 | **Schema** | `weather` |
 | **Primary Tables** | `weather_stations`, `forecast_cache`, `alert_history` |
-| **Key Features** | Redis TTL cache for current conditions (5-min TTL) | External weather API response caching and aggregation | Severe weather alert deduplication |
+| **Key Features** | Valkey TTL cache for current conditions (5-min TTL) | External weather API response caching and aggregation | Severe weather alert deduplication |
 | **Estimated Volume** | ~10K weather reads/day, ~100 external API fetches/day |
 
 ---

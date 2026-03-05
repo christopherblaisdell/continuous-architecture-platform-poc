@@ -20,10 +20,10 @@ tags:
 
 | Property | Detail |
 |----------|--------|
-| **Engine** | TimescaleDB (PostgreSQL 15) |
-| **Schema** | `analytics` |
-| **Primary Tables** | `booking_metrics`, `revenue_metrics`, `utilization_metrics`, `satisfaction_scores`, `safety_metrics`, `guide_performance` |
-| **Key Features** | TimescaleDB hypertables for time-series aggregation | Continuous aggregates for real-time dashboards | 30-day raw retention, 2-year aggregate retention |
+| **Engine** | Oracle Database 19c |
+| **Schema** | `ANALYTICS` |
+| **Primary Tables** | `BOOKING_METRICS`, `REVENUE_METRICS`, `UTILIZATION_METRICS`, `SATISFACTION_SCORES`, `SAFETY_METRICS`, `GUIDE_PERFORMANCE` |
+| **Key Features** | Oracle Partitioning for time-series data (range partitioning by month) | Materialized views with fast refresh for real-time dashboards | Oracle Advanced Analytics (DBMS_PREDICTIVE_ANALYTICS) for trend forecasting |
 | **Estimated Volume** | ~50K metric inserts/day (event-driven) |
 
 ---

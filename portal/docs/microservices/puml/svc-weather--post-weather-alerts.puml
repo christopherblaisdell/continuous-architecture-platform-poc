@@ -19,7 +19,7 @@ title POST /weather/alerts\nCreate a weather alert (internal)
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-weather" as Svc [[/microservices/svc-weather/]] #E8F4F8
-database "Redis + PG" as DB #FCE4EC
+database "Valkey + PG" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-weather.html#/Alerts/createWeatherAlert View in Swagger UI]]

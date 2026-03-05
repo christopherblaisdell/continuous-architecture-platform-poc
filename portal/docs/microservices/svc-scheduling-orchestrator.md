@@ -20,10 +20,10 @@ tags:
 
 | Property | Detail |
 |----------|--------|
-| **Engine** | PostgreSQL 15 + Redis 7 |
+| **Engine** | PostgreSQL 15 + Valkey 8 |
 | **Schema** | `scheduling` |
 | **Primary Tables** | `schedule_requests`, `daily_schedules`, `schedule_conflicts`, `optimization_runs` |
-| **Key Features** | Optimistic locking per ADR-011 | Redis for schedule lock cache and optimization queue | JSONB columns for constraint parameters |
+| **Key Features** | Optimistic locking per ADR-011 | Valkey for schedule lock cache and optimization queue | JSONB columns for constraint parameters |
 | **Estimated Volume** | ~500 schedule requests/day |
 
 ---

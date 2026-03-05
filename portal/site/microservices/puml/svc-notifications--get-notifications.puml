@@ -19,7 +19,7 @@ title GET /notifications\nList notifications
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #E8F4F8
-database "PG + Redis" as DB #FCE4EC
+database "PG + Valkey" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-notifications.html#/Notifications/listNotifications View in Swagger UI]]

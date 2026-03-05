@@ -20,7 +20,9 @@ participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-database "PostgreSQL" as DB #FCE4EC
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
+database "Couchbase" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-loyalty-rewards.html#/Transactions/earnPoints View in Swagger UI]]
@@ -40,18 +42,27 @@ activate Res #DBEAFE
 Res --> Svc : OK
 deactivate Res
 
+Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get member profile]]
+activate GP #DBEAFE
+GP --> Svc : OK
+deactivate GP
+
 == Database ==
 
-Svc -> DB : SELECT parent WHERE id = ?
+Svc -> DB : GET parent document by key
 activate DB #FCE4EC
-DB --> Svc : Parent row
+DB --> Svc : Document
 deactivate DB
 note right of DB : 404 if parent not found
 
-Svc -> DB : INSERT INTO ...
+Svc -> DB : INSERT document
 activate DB #FCE4EC
-DB --> Svc : Created row
+DB --> Svc : Document
 deactivate DB
+
+== Async Events ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send earn confirmation]]
 
 Svc --> GW : 201 Created
 deactivate Svc

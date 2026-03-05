@@ -20,6 +20,8 @@ participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-safety-compliance" as Svc [[/microservices/svc-safety-compliance/]] #E8F4F8
 participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
+participant "DocuSign API" as DS #F5F5F5
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
 database "PostgreSQL" as DB #FCE4EC
 
 note over Svc
@@ -40,12 +42,21 @@ activate GP #DBEAFE
 GP --> Svc : OK
 deactivate GP
 
+Svc -> DS : Verify digital signature
+activate DS #DBEAFE
+DS --> Svc : OK
+deactivate DS
+
 == Database ==
 
 Svc -> DB : INSERT INTO ...
 activate DB #FCE4EC
 DB --> Svc : Created row
 deactivate DB
+
+== Async Events ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send waiver copy]]
 
 Svc --> GW : 201 Created
 deactivate Svc

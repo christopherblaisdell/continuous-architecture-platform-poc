@@ -19,7 +19,7 @@ title GET /analytics/safety-metrics\nGet safety and incident metrics
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-analytics" as Svc [[/microservices/svc-analytics/]] #E8F4F8
-database "TimescaleDB" as DB #FCE4EC
+database "Oracle" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-analytics.html#/Safety/getSafetyMetrics View in Swagger UI]]

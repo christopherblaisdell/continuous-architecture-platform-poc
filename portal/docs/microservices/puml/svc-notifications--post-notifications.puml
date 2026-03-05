@@ -19,8 +19,10 @@ title POST /notifications\nSend a notification
 participant "Client" as Client
 participant "API Gateway" as GW #DBEAFE
 participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #E8F4F8
-participant "Email/SMS Provider" as ExtMsg #F5F5F5
-database "PG + Redis" as DB #FCE4EC
+participant "SendGrid API" as SG #F5F5F5
+participant "Twilio API" as TW #F5F5F5
+participant "Firebase Cloud Messaging" as FCM #F5F5F5
+database "PG + Valkey" as DB #FCE4EC
 
 note over Svc
   [[/services/api/svc-notifications.html#/Notifications/sendNotification View in Swagger UI]]
@@ -42,7 +44,9 @@ deactivate DB
 
 == Async Events ==
 
-Svc ->> ExtMsg : Deliver message
+Svc ->> SG : Deliver email
+Svc ->> TW : Deliver SMS
+Svc ->> FCM : Send push notification
 
 Svc --> GW : 201 Created
 deactivate Svc
