@@ -29,7 +29,7 @@ end note
 
 Client -> GW : POST /check-ins
 activate GW #059669
-GW -> Svc : [[/microservices/svc-check-in/#post-check-ins-initiate-check-in-for-a-participant route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

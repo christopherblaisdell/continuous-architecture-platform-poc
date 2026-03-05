@@ -27,7 +27,7 @@ end note
 
 Client -> GW : DELETE /reservations/{reservation_id}
 activate GW #dc2626
-GW -> Svc : [[/microservices/svc-reservations/#delete-reservationsreservation_id-cancel-a-reservation route request]]
+GW -> Svc : route request
 activate Svc #dc2626
 
 == Database ==

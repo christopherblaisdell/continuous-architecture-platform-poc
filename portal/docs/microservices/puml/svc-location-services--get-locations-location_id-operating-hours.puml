@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /locations/{location_id}/operating-hours
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-location-services/#get-locationslocation_idoperating-hours-get-operating-hours-for-a-location route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

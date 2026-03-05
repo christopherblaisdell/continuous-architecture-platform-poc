@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /partners/{partner_id}/commission-report
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-partner-integrations/#get-partnerspartner_idcommission-report-get-commission-report-for-a-partner route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

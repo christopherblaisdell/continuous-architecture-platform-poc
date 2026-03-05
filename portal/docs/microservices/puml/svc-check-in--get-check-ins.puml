@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /check-ins
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-check-in/#get-check-ins-list-check-ins-by-reservation route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

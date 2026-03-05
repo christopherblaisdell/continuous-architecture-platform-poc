@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /trips/{trip_id}/pricing
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-trip-catalog/#get-tripstrip_idpricing-get-pricing-tiers route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /notifications/bulk
 activate GW #059669
-GW -> Svc : [[/microservices/svc-notifications/#post-notificationsbulk-send-bulk-notifications route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

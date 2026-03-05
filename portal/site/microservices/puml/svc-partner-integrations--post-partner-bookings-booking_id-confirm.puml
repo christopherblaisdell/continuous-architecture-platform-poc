@@ -29,7 +29,7 @@ end note
 
 Client -> GW : POST /partner-bookings/{booking_id}/confirm
 activate GW #059669
-GW -> Svc : [[/microservices/svc-partner-integrations/#post-partner-bookingsbooking_idconfirm-confirm-a-pending-partner-booking route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

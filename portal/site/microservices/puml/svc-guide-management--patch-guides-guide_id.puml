@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /guides/{guide_id}
 activate GW #7c3aed
-GW -> Svc : [[/microservices/svc-guide-management/#patch-guidesguide_id-update-guide-profile route request]]
+GW -> Svc : route request
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

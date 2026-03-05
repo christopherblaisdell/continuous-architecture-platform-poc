@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /guides/available
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-guide-management/#get-guidesavailable-find-available-guides-for-a-date-activity-and-region route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

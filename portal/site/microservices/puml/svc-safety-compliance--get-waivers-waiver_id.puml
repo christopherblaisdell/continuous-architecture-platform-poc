@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /waivers/{waiver_id}
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-safety-compliance/#get-waiverswaiver_id-get-a-specific-waiver route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

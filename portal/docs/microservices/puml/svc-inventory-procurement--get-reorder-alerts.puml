@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /reorder-alerts
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-inventory-procurement/#get-reorder-alerts-get-active-reorder-alerts route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

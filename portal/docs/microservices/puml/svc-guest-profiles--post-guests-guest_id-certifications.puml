@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /guests/{guest_id}/certifications
 activate GW #059669
-GW -> Svc : [[/microservices/svc-guest-profiles/#post-guestsguest_idcertifications-add-a-certification route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

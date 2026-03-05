@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /suppliers
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-inventory-procurement/#get-suppliers-list-all-suppliers route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

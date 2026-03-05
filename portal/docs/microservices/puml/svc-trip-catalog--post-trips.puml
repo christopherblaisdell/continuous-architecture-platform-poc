@@ -27,7 +27,7 @@ end note
 
 Client -> GW : POST /trips
 activate GW #059669
-GW -> Svc : [[/microservices/svc-trip-catalog/#post-trips-create-a-new-trip-definition route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

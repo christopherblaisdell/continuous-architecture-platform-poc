@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /payments/{payment_id}
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

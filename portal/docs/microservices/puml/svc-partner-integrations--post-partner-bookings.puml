@@ -28,7 +28,7 @@ end note
 
 Client -> GW : POST /partner-bookings
 activate GW #059669
-GW -> Svc : [[/microservices/svc-partner-integrations/#post-partner-bookings-external-partner-creates-a-booking route request]]
+GW -> Svc : route request
 activate Svc #059669
 
 note right of Svc : Validate request body

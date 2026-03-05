@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /locations/{location_id}
 activate GW #7c3aed
-GW -> Svc : [[/microservices/svc-location-services/#patch-locationslocation_id-update-location-details route request]]
+GW -> Svc : route request
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

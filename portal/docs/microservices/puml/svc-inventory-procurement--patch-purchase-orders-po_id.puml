@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PATCH /purchase-orders/{po_id}
 activate GW #7c3aed
-GW -> Svc : [[/microservices/svc-inventory-procurement/#patch-purchase-orderspo_id-update-purchase-order-status-or-line-items route request]]
+GW -> Svc : route request
 activate Svc #7c3aed
 
 note right of Svc : Validate request body

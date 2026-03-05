@@ -27,7 +27,7 @@ end note
 
 Client -> GW : PUT /gear-items/{item_id}/maintenance
 activate GW #c77b30
-GW -> Svc : [[/microservices/svc-gear-inventory/#put-gear-itemsitem_idmaintenance-log-a-maintenance-event route request]]
+GW -> Svc : route request
 activate Svc #c77b30
 
 note right of Svc : Validate request body

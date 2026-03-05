@@ -27,7 +27,7 @@ end note
 
 Client -> GW : GET /tiers
 activate GW #2563eb
-GW -> Svc : [[/microservices/svc-loyalty-rewards/#get-tiers-list-all-loyalty-tiers-and-their-thresholds route request]]
+GW -> Svc : route request
 activate Svc #2563eb
 
 == Database ==

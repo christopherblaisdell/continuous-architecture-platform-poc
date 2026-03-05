@@ -607,10 +607,9 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     L.append("")
 
     # Request flow
-    self_anchor = endpoint_anchor(svc_name, method, path)
     L.append(f"Client -> GW : {method} {path}")
     L.append(f"activate GW {method_color}")
-    L.append(f"GW -> Svc : [[/microservices/{svc_name}/{self_anchor} route request]]")
+    L.append("GW -> Svc : route request")
     L.append(f"activate Svc {method_color}")
     L.append("")
 
