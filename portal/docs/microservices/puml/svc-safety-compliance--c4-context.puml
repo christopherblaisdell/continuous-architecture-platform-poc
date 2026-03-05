@@ -1,0 +1,38 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-safety-compliance — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance Service")
+    ContainerDb(svc_safety_compliance_db, "PostgreSQL 15", "safety schema", "Primary data store")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+}
+
+System_Ext(DocuSign_API, "DocuSign API", "Third-party service")
+
+Rel(app_guest_mobile, svc_safety_compliance, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_safety_compliance, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_safety_compliance, "Uses API", "HTTPS")
+Rel(svc_check_in, svc_safety_compliance, "2 calls", "HTTPS")
+Rel(svc_gear_inventory, svc_safety_compliance, "Check waiver status", "HTTPS")
+Rel(svc_trail_management, svc_safety_compliance, "Update trail safety assessment", "HTTPS")
+Rel(svc_safety_compliance, svc_safety_compliance_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_safety_compliance, svc_guest_profiles, "2 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_guide_management, "Get assigned guide", "HTTPS")
+Rel(svc_safety_compliance, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_safety_compliance, DocuSign_API, "Verify digital signature", "HTTPS")
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-trail-management — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Trail Management Service")
+    ContainerDb(svc_trail_management_db, "PostGIS (PostgreSQL 15)", "trails schema", "Primary data store")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support")
+}
+
+
+Rel(app_guest_mobile, svc_trail_management, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_trail_management, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_trail_management, "Uses API", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_trail_management, "Verify trail conditions", "HTTPS")
+Rel(svc_trail_management, svc_trail_management_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_trail_management, svc_location_services, "Get trail coordinates", "HTTPS")
+Rel(svc_trail_management, svc_notifications, "Alert park rangers", "HTTPS")
+Rel(svc_trail_management, svc_safety_compliance, "Update trail safety assessment", "HTTPS")
+Rel(svc_trail_management, svc_weather, "Correlate weather data", "HTTPS")
+
+@enduml

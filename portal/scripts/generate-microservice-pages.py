@@ -631,6 +631,143 @@ APP_TITLES = {
 
 
 # ============================================================
+# C4 Context Diagram Generation
+# ============================================================
+
+def _safe_alias(name):
+    """Create a valid PlantUML alias from a service or system name."""
+    return re.sub(r'[^a-zA-Z0-9]', '_', name)
+
+
+def build_c4_context_puml(svc_name):
+    """Build a C4 Container-level context diagram for a microservice.
+
+    Shows the service at the center with:
+      - Its database
+      - Services it calls (outbound)
+      - Services that call it (inbound)
+      - External third-party systems
+      - Consuming frontend applications
+    """
+    domain, color = get_domain_info(svc_name)
+    ds = DATA_STORES.get(svc_name, {})
+
+    # Collect outbound relationships: services and externals this svc calls
+    outbound_svcs = {}   # svc_name -> set of action descriptions
+    outbound_ext = {}    # ext_label -> set of action descriptions
+    for (caller, method, path), targets in CROSS_SERVICE_CALLS.items():
+        if caller != svc_name:
+            continue
+        for entry in targets:
+            label = entry[1]
+            action = entry[2]
+            target_svc = label_to_svc_name(label)
+            if target_svc:
+                outbound_svcs.setdefault(target_svc, set()).add(action)
+            elif label not in ("Event Bus", "Object Store"):
+                outbound_ext.setdefault(label, set()).add(action)
+
+    # Collect inbound relationships: services that call this svc
+    inbound_svcs = {}  # svc_name -> set of action descriptions
+    for (caller, method, path), targets in CROSS_SERVICE_CALLS.items():
+        for entry in targets:
+            label = entry[1]
+            target_svc = label_to_svc_name(label)
+            if target_svc == svc_name and caller != svc_name:
+                action = entry[2]
+                inbound_svcs.setdefault(caller, set()).add(action)
+
+    # Consuming applications
+    apps = APP_CONSUMERS.get(svc_name, [])
+    app_names = sorted(set(a for a, _ in apps))
+
+    L = []
+    L.append("@startuml")
+    L.append("!include <c4/C4_Container>")
+    L.append("")
+    L.append("LAYOUT_WITH_LEGEND()")
+    L.append("LAYOUT_TOP_DOWN()")
+    L.append("")
+    L.append(f'title {svc_name} — Integration Context')
+    L.append("")
+
+    # Frontend applications at the top
+    for app in app_names:
+        app_title = APP_TITLES.get(app, app)
+        app_type = "Web App" if app.startswith("web-") else "Mobile App"
+        tech = "React" if "guest-portal" in app else "Angular" if "ops-dashboard" in app else "React Native"
+        a = _safe_alias(app)
+        L.append(f'Person({a}, "{app_title}", "{app_type}")')
+
+    L.append("")
+
+    # The service itself (center)
+    svc_title = svc_name.replace("svc-", "").replace("-", " ").title()
+    L.append(f'System_Boundary(boundary, "NovaTrek Platform") {{')
+    L.append(f'    Container({_safe_alias(svc_name)}, "{svc_name}", "Java / Spring Boot", "{svc_title} Service")')
+
+    # Database
+    if ds:
+        engine = ds.get("engine", "PostgreSQL 15")
+        schema = ds.get("schema", "")
+        db_alias = f"{_safe_alias(svc_name)}_db"
+        L.append(f'    ContainerDb({db_alias}, "{engine}", "{schema} schema", "Primary data store")')
+
+    # Inbound peer services inside the boundary
+    for peer in sorted(inbound_svcs.keys()):
+        peer_domain, _ = get_domain_info(peer)
+        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}")')
+
+    # Outbound peer services inside the boundary
+    for peer in sorted(outbound_svcs.keys()):
+        if peer in inbound_svcs:
+            continue  # already added
+        peer_domain, _ = get_domain_info(peer)
+        L.append(f'    Container({_safe_alias(peer)}, "{peer}", "Java / Spring Boot", "{peer_domain}")')
+
+    L.append("}")
+    L.append("")
+
+    # External systems outside boundary
+    for ext in sorted(outbound_ext.keys()):
+        L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+    L.append("")
+
+    # Relationships — apps to this service
+    svc_alias = _safe_alias(svc_name)
+    for app in app_names:
+        a = _safe_alias(app)
+        L.append(f'Rel({a}, {svc_alias}, "Uses API", "HTTPS")')
+
+    # Relationships — inbound services
+    for peer in sorted(inbound_svcs.keys()):
+        actions = sorted(inbound_svcs[peer])
+        label = actions[0] if len(actions) == 1 else f"{len(actions)} calls"
+        L.append(f'Rel({_safe_alias(peer)}, {svc_alias}, "{label}", "HTTPS")')
+
+    # Relationships — database
+    if ds:
+        L.append(f'Rel({svc_alias}, {db_alias}, "Reads/Writes", "SQL/TCP")')
+
+    # Relationships — outbound services
+    for peer in sorted(outbound_svcs.keys()):
+        actions = sorted(outbound_svcs[peer])
+        label = actions[0] if len(actions) == 1 else f"{len(actions)} calls"
+        L.append(f'Rel({svc_alias}, {_safe_alias(peer)}, "{label}", "HTTPS")')
+
+    # Relationships — external systems
+    for ext in sorted(outbound_ext.keys()):
+        actions = sorted(outbound_ext[ext])
+        label = actions[0] if len(actions) == 1 else ", ".join(actions[:2])
+        L.append(f'Rel({svc_alias}, {_safe_alias(ext)}, "{label}", "HTTPS")')
+
+    L.append("")
+    L.append("@enduml")
+
+    return "\n".join(L)
+
+
+# ============================================================
 # Helper Functions
 # ============================================================
 
@@ -1009,6 +1146,20 @@ def generate_service_page(svc_name, spec, svg_files):
     lines.append("---")
     lines.append("")
 
+    # C4 Context Diagram
+    c4_svg = f"{svc_name}--c4-context.svg"
+    if c4_svg in svg_files:
+        lines.append("## :material-map: Integration Context")
+        lines.append("")
+        lines.append(
+            f'<div style="overflow-x: auto; width: 100%;">'
+            f'<object data="../svg/{c4_svg}" type="image/svg+xml" '
+            f'style="max-width: 100%;">{svc_name} C4 context diagram</object></div>'
+        )
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
     lines.append("## :material-database: Data Store")
     lines.append("")
 
@@ -1225,8 +1376,16 @@ def main():
 
         all_services.append((svc_name, title, len(endpoints), version, domain))
 
+    # Generate C4 context diagrams for each service
+    for svc_name, _, _, _, _ in all_services:
+        c4_puml = build_c4_context_puml(svc_name)
+        c4_path = os.path.join(PUML_DIR, f"{svc_name}--c4-context.puml")
+        with open(c4_path, "w") as f:
+            f.write(c4_puml)
+        all_pumls.append(c4_path)
+
     total_ep = sum(s[2] for s in all_services)
-    print(f"\n  Generated {len(all_pumls)} PUML files")
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context)")
 
     # Render all PUMLs to SVG
     print("  Rendering SVGs with PlantUML...")

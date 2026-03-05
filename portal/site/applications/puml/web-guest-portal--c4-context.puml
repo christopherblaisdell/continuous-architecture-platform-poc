@@ -1,0 +1,43 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title web-guest-portal — Service Dependencies
+
+Person(user, "Guest", "NovaTrek customer")
+
+Container(web_guest_portal, "NovaTrek Guest Portal", "React 18", "Web application")
+
+System_Boundary(platform, "NovaTrek Platform") {
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "4 screens")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "2 screens")
+    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "2 screens")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "3 screens")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "2 screens")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "4 screens")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "1 screens")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "1 screens")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "2 screens")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "1 screens")
+}
+
+System_Ext(DocuSign_API, "DocuSign API", "Third-party service")
+System_Ext(Stripe_API, "Stripe API", "Third-party service")
+
+Rel(user, web_guest_portal, "Uses", "HTTPS")
+Rel(web_guest_portal, svc_guest_profiles, "4 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_loyalty_rewards, "2 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_media_gallery, "2 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_notifications, "3 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_payments, "2 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_reservations, "4 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_safety_compliance, "1 screen", "REST/HTTPS")
+Rel(web_guest_portal, svc_trail_management, "1 screen", "REST/HTTPS")
+Rel(web_guest_portal, svc_trip_catalog, "2 screens", "REST/HTTPS")
+Rel(web_guest_portal, svc_weather, "1 screen", "REST/HTTPS")
+Rel(web_guest_portal, DocuSign_API, "Uses", "HTTPS")
+Rel(web_guest_portal, Stripe_API, "Uses", "HTTPS")
+
+@enduml

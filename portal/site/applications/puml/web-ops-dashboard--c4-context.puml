@@ -1,0 +1,55 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title web-ops-dashboard — Service Dependencies
+
+Person(user, "Guest", "NovaTrek customer")
+
+Container(web_ops_dashboard, "NovaTrek Operations Dashboard", "Angular 17", "Web application")
+
+System_Boundary(platform, "NovaTrek Platform") {
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "1 screens")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "1 screens")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "2 screens")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "2 screens")
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "3 screens")
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "1 screens")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "2 screens")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "1 screens")
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "1 screens")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "2 screens")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "4 screens")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "2 screens")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "2 screens")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "2 screens")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "1 screens")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "1 screens")
+}
+
+System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
+System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")
+
+Rel(user, web_ops_dashboard, "Uses", "HTTPS")
+Rel(web_ops_dashboard, svc_analytics, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_check_in, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_gear_inventory, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_guest_profiles, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_guide_management, "3 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_inventory_procurement, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_location_services, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_notifications, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_partner_integrations, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_payments, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_reservations, "4 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_safety_compliance, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_scheduling_orchestrator, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_trail_management, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_transport_logistics, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, svc_weather, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, Google_Maps_Platform, "Uses", "HTTPS")
+Rel(web_ops_dashboard, Snowflake_Data_Cloud, "Uses", "HTTPS")
+
+@enduml

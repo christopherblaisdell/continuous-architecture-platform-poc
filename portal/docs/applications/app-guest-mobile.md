@@ -17,6 +17,12 @@ tags:
 
 ---
 
+## :material-map: Service Dependencies
+
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/app-guest-mobile--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">app-guest-mobile C4 context diagram</object></div>
+
+---
+
 ## :material-cellphone: Screens (7 total)
 
 This application interacts with **14 microservices** across 7 screens.

@@ -1,0 +1,36 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-scheduling-orchestrator — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator Service")
+    ContainerDb(svc_scheduling_orchestrator_db, "PostgreSQL 15 + Valkey 8", "scheduling schema", "Primary data store")
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Support")
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Support")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Product Catalog")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support")
+}
+
+
+Rel(app_guest_mobile, svc_scheduling_orchestrator, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_scheduling_orchestrator, "Uses API", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_scheduling_orchestrator_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_scheduling_orchestrator, svc_analytics, "Log optimization metrics", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_guide_management, "3 calls", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_location_services, "Check location capacity", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_trail_management, "Verify trail conditions", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_trip_catalog, "2 calls", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_weather, "Get forecast", "HTTPS")
+
+@enduml

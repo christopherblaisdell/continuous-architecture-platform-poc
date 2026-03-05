@@ -1,0 +1,41 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-guest-profiles — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+Person(web_ops_dashboard, "Operations Dashboard", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Profiles Service")
+    ContainerDb(svc_guest_profiles_db, "PostgreSQL 15", "guests schema", "Primary data store")
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations")
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Logistics")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Support")
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "External")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety")
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Support")
+}
+
+System_Ext(IDVerify_API, "IDVerify API", "Third-party service")
+
+Rel(app_guest_mobile, svc_guest_profiles, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_guest_profiles, "Uses API", "HTTPS")
+Rel(web_ops_dashboard, svc_guest_profiles, "Uses API", "HTTPS")
+Rel(svc_check_in, svc_guest_profiles, "Validate guest identity", "HTTPS")
+Rel(svc_gear_inventory, svc_guest_profiles, "Validate guest", "HTTPS")
+Rel(svc_loyalty_rewards, svc_guest_profiles, "Get member profile", "HTTPS")
+Rel(svc_partner_integrations, svc_guest_profiles, "Validate guest identity", "HTTPS")
+Rel(svc_reservations, svc_guest_profiles, "2 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_guest_profiles, "2 calls", "HTTPS")
+Rel(svc_guest_profiles, svc_guest_profiles_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_guest_profiles, svc_analytics, "Get satisfaction scores", "HTTPS")
+Rel(svc_guest_profiles, svc_reservations, "Query past bookings", "HTTPS")
+Rel(svc_guest_profiles, IDVerify_API, "Verify identity document", "HTTPS")
+
+@enduml

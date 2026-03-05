@@ -1,0 +1,30 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title svc-loyalty-rewards — Integration Context
+
+Person(app_guest_mobile, "Adventure App", "Mobile App")
+Person(web_guest_portal, "Guest Portal", "Web App")
+
+System_Boundary(boundary, "NovaTrek Platform") {
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Loyalty Rewards Service")
+    ContainerDb(svc_loyalty_rewards_db, "Couchbase 7", "loyalty schema", "Primary data store")
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Identity")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support")
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking")
+}
+
+
+Rel(app_guest_mobile, svc_loyalty_rewards, "Uses API", "HTTPS")
+Rel(web_guest_portal, svc_loyalty_rewards, "Uses API", "HTTPS")
+Rel(svc_loyalty_rewards, svc_loyalty_rewards_db, "Reads/Writes", "SQL/TCP")
+Rel(svc_loyalty_rewards, svc_guest_profiles, "Get member profile", "HTTPS")
+Rel(svc_loyalty_rewards, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_loyalty_rewards, svc_payments, "Process reward credit", "HTTPS")
+Rel(svc_loyalty_rewards, svc_reservations, "Verify completed booking", "HTTPS")
+
+@enduml

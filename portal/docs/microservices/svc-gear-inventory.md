@@ -16,6 +16,12 @@ tags:
 
 ---
 
+## :material-map: Integration Context
+
+<div style="overflow-x: auto; width: 100%;"><object data="../svg/svc-gear-inventory--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-gear-inventory C4 context diagram</object></div>
+
+---
+
 ## :material-database: Data Store
 
 | Property | Detail |
