@@ -1,0 +1,1184 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Executive presentation for the Continuous Architecture Platform powered by AI-assisted workflows">
+      
+      
+        <meta name="author" content="Christopher Blaisdell">
+      
+      
+      
+        <link rel="prev" href="../publishing-pipeline/">
+      
+      
+        <link rel="next" href="../closing-the-loop/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Live Demo - Continuous Architecture Platform — The Case for Adoption</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/presentation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#live-demo-the-architecture-portal" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Continuous Architecture Platform — The Case for Adoption" class="md-header__button md-logo" aria-label="Continuous Architecture Platform — The Case for Adoption" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 3h8a2 2 0 0 1 2-2 2 2 0 0 1 2 2h8v2h-1v11h-5.75L17 22h-2l-1.75-6h-2.5L9 22H7l1.75-6H3V5H2zm3 2v9h14V5z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Continuous Architecture Platform — The Case for Adoption
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Live Demo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../problem/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Problem
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../solution/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Solution
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cost-evidence/" class="md-tabs__link">
+          
+  
+  
+  Evidence
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../shared-workspace/" class="md-tabs__link">
+          
+  
+  
+  How It Works
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Live Demo
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../closing-the-loop/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Closing the Loop
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../roadmap/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Roadmap
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../the-ask/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Ask
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Continuous Architecture Platform — The Case for Adoption" class="md-nav__button md-logo" aria-label="Continuous Architecture Platform — The Case for Adoption" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 3h8a2 2 0 0 1 2-2 2 2 0 0 1 2 2h8v2h-1v11h-5.75L17 22h-2l-1.75-6h-2.5L9 22H7l1.75-6H3V5H2zm3 2v9h14V5z"/></svg>
+
+    </a>
+    Continuous Architecture Platform — The Case for Adoption
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../problem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    The Problem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    The Solution
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Evidence
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Evidence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cost-evidence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cost: 208x Cheaper
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quality-evidence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quality: 96.1%
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    How It Works
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            How It Works
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shared-workspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shared Workspace
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../markdown-first/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Markdown-First
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../publishing-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Publishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Live Demo
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Live Demo
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#everything-on-this-page-was-generated-by-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Everything on This Page Was Generated by AI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visit-the-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visit the Portal
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visit the Portal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#httpsmango-sand-083b8ce0f4azurestaticappsnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      https://mango-sand-083b8ce0f.4.azurestaticapps.net
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guided-tour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guided Tour
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Guided Tour">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-enterprise-system-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Enterprise System Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-microservice-deep-dive-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Microservice Deep-Dive Pages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-swagger-ui-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Swagger UI Pages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-sequence-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Sequence Diagrams
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#by-the-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      By the Numbers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-demonstrates" class="md-nav__link">
+    <span class="md-ellipsis">
+      What This Demonstrates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What This Demonstrates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-innovation-that-makes-this-continuous" class="md-nav__link">
+    <span class="md-ellipsis">
+      The innovation that makes this continuous
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../closing-the-loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Closing the Loop
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Roadmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-ask/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    The Ask
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="live-demo-the-architecture-portal">Live Demo: The Architecture Portal</h1>
+<h2 id="everything-on-this-page-was-generated-by-ai">Everything on This Page Was Generated by AI</h2>
+<p>The NovaTrek Architecture Portal is a live, deployed website built entirely during this proof of concept. Every page, every diagram, every Swagger UI — generated from OpenAPI specs and workspace context by AI-assisted workflows.</p>
+<hr />
+<h2 id="visit-the-portal">Visit the Portal</h2>
+<div class="cta-box">
+<h3 id="httpsmango-sand-083b8ce0f4azurestaticappsnet"><a href="https://mango-sand-083b8ce0f.4.azurestaticapps.net">https://mango-sand-083b8ce0f.4.azurestaticapps.net</a></h3>
+<p>Open in a new tab to explore alongside this presentation.</p>
+</div>
+<hr />
+<h2 id="guided-tour">Guided Tour</h2>
+<h3 id="1-enterprise-system-context">1. Enterprise System Context</h3>
+<p><strong>What to look at:</strong> The enterprise-level C4 diagram showing all 19 microservices grouped by domain.</p>
+<p><strong>Key features:</strong></p>
+<ul>
+<li>Every service box is <strong>clickable</strong> — click to navigate to the service's deep-dive page</li>
+<li>The <strong>PCI DSS Compliance Zone</strong> highlights payment data flows in red</li>
+<li>External systems (Payment Gateway, Stripe API, mapping providers) are shown in gray</li>
+<li>Cross-domain relationships show which services communicate</li>
+</ul>
+<p><strong>Where to find it:</strong> Navigate to any microservice page and look for the "System Context" section, or find the Enterprise C4 on the portal home page.</p>
+<hr />
+<h3 id="2-microservice-deep-dive-pages">2. Microservice Deep-Dive Pages</h3>
+<p><strong>What to look at:</strong> Pick any microservice — for example, <code>svc-check-in</code> (the most connected service).</p>
+<p><strong>Key features on each page:</strong></p>
+<ul>
+<li><strong>Service metadata</strong> — domain, owner, version, data store technology</li>
+<li><strong>Endpoint documentation</strong> — every API endpoint with a clickable SVG sequence diagram</li>
+<li><strong>Cross-service integrations</strong> — which services this one calls, with deep links to the target endpoint</li>
+<li><strong>C4 context diagram</strong> — all upstream and downstream dependencies</li>
+<li><strong>Links to Swagger UI</strong> — interactive API documentation for this service</li>
+</ul>
+<p><strong>What to notice:</strong> Click a relationship arrow in the C4 diagram. It navigates to the <strong>specific endpoint</strong> on the target service's page — not just the service, but the exact operation. This is what "navigable architecture" means.</p>
+<hr />
+<h3 id="3-swagger-ui-pages">3. Swagger UI Pages</h3>
+<p><strong>What to look at:</strong> The interactive API documentation for any service.</p>
+<p><strong>Where to find it:</strong> Portal Home &gt; Service Catalog &gt; click any service tile.</p>
+<p><strong>Key features:</strong></p>
+<ul>
+<li>Full OpenAPI spec rendered as interactive documentation</li>
+<li>Every endpoint expandable with request/response schemas</li>
+<li>Download link for the raw YAML spec</li>
+<li>Navigation back to the Service Catalog and Portal Home</li>
+</ul>
+<hr />
+<h3 id="4-sequence-diagrams">4. Sequence Diagrams</h3>
+<p><strong>What to look at:</strong> The SVG sequence diagrams on any microservice page.</p>
+<p><strong>Key features:</strong></p>
+<ul>
+<li>Each endpoint has its own sequence diagram showing the request lifecycle</li>
+<li>External service calls are shown as interactions between participants</li>
+<li><strong>PCI-tagged flows</strong> (on svc-payments) have red arrows and pink backgrounds</li>
+<li>Diagrams are SVGs with clickable elements — participant boxes link to the target service's page</li>
+<li>Fullscreen view available for detailed analysis</li>
+</ul>
+<hr />
+<h2 id="by-the-numbers">By the Numbers</h2>
+<p>This portal was generated from:</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>19 OpenAPI YAML specs</td>
+<td>19 microservice deep-dive pages</td>
+</tr>
+<tr>
+<td>Cross-service integration map</td>
+<td>139 endpoint sequence diagrams (SVG)</td>
+</tr>
+<tr>
+<td>Service dependency graph</td>
+<td>20 C4 context diagrams (SVG)</td>
+</tr>
+<tr>
+<td>Application consumer definitions</td>
+<td>3 application pages + 25 integration diagrams (SVG)</td>
+</tr>
+<tr>
+<td>Service metadata</td>
+<td>19 Swagger UI pages (interactive HTML)</td>
+</tr>
+<tr>
+<td>Architecture content</td>
+<td>57 total Markdown pages</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 301 published artifacts</strong> from a workspace of OpenAPI specs and architecture content.</p>
+<hr />
+<h2 id="what-this-demonstrates">What This Demonstrates</h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Evidence in the Portal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Diagrams are auto-generated"</td>
+<td>184 SVGs rendered from PlantUML source, all generated from specs</td>
+</tr>
+<tr>
+<td>"Cross-links are maintained automatically"</td>
+<td>Every C4 arrow links to a real endpoint on the target service page</td>
+</tr>
+<tr>
+<td>"Swagger UI is embedded"</td>
+<td>19 interactive API doc pages with inline JSON specs</td>
+</tr>
+<tr>
+<td>"PCI compliance is visualized"</td>
+<td>Red data flow lines in enterprise C4 and per-service diagrams</td>
+</tr>
+<tr>
+<td>"Everything is searchable"</td>
+<td>Use the search bar — full-text search across all 57 pages</td>
+</tr>
+<tr>
+<td>"Publishing is automated"</td>
+<td>The entire portal deploys in under 30 seconds via <code>swa deploy</code></td>
+</tr>
+</tbody>
+</table>
+<div class="key-insight">
+<p><strong>This portal required zero manual diagram creation, zero manual cross-linking, and zero manual page authoring.</strong> The generators read OpenAPI specs and produce everything. When a spec changes, the portal updates automatically on the next build.</p>
+</div>
+<div class="cta-box">
+<h3 id="the-innovation-that-makes-this-continuous">The innovation that makes this continuous</h3>
+<p><a href="../closing-the-loop/">Closing the Loop: The PROMOTE Step</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../publishing-pipeline/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CI/CD Publishing">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                CI/CD Publishing
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../closing-the-loop/" class="md-footer__link md-footer__link--next" aria-label="Next: Closing the Loop">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Closing the Loop
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "content.tabs.link", "toc.integrate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../javascripts/site-name-link.js"></script>
+      
+    
+  </body>
+</html>
