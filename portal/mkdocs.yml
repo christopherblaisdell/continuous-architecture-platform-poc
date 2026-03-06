@@ -146,6 +146,23 @@ nav:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
   - Service Catalog: services/index.md
+  - Solutions:
+    - solutions/index.md
+    - _NTK-10001: solutions/_NTK-10001-add-elevation-to-trail-response.md
+    - _NTK-10002: solutions/_NTK-10002-adventure-category-classification.md
+    - _NTK-10003: solutions/_NTK-10003-unregistered-guest-self-checkin.md
+    - _NTK-10004: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
+    - _NTK-10005: solutions/_NTK-10005-wristband-rfid-field.md
+  - Business Capabilities: capabilities/index.md
+  - Tickets:
+    - tickets/index.md
+    - NTK-10001: tickets/NTK-10001.md
+    - NTK-10002: tickets/NTK-10002.md
+    - NTK-10003: tickets/NTK-10003.md
+    - NTK-10004: tickets/NTK-10004.md
+    - NTK-10005: tickets/NTK-10005.md
+    - NTK-10006: tickets/NTK-10006.md
+    - NTK-10007: tickets/NTK-10007.md
   - Applications:
     - applications/index.md
     - web-guest-portal:

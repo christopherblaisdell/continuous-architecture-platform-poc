@@ -1,0 +1,335 @@
+#!/usr/bin/env python3
+"""Generate Solution Design pages for the NovaTrek Architecture Portal.
+
+Reads solution design folders from architecture/solutions/ and generates:
+  - An index page listing all solutions with status, capabilities, and services
+  - Per-solution pages with the master document content and cross-links
+
+Usage:
+    python3 portal/scripts/generate-solution-pages.py
+"""
+
+import os
+import re
+import yaml
+
+WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SOLUTIONS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "solutions")
+METADATA_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "metadata")
+OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "solutions")
+
+
+def load_yaml(path):
+    with open(path, encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def parse_solution_metadata(solution_dir):
+    """Extract metadata from a solution folder."""
+    folder_name = os.path.basename(solution_dir)
+
+    # Extract ticket ID from folder name: _NTK-XXXXX-slug
+    ticket_match = re.match(r"_?(NTK-\d+)", folder_name)
+    ticket_id = ticket_match.group(1) if ticket_match else folder_name
+
+    # Find master document
+    master_doc = None
+    master_content = ""
+    for f in os.listdir(solution_dir):
+        if f.endswith("-solution-design.md"):
+            master_doc = f
+            with open(os.path.join(solution_dir, f), encoding="utf-8") as fh:
+                master_content = fh.read()
+            break
+
+    if not master_content:
+        return None
+
+    # Parse header table from master doc
+    meta = {
+        "ticket_id": ticket_id,
+        "folder": folder_name,
+        "title": "",
+        "version": "",
+        "status": "",
+        "author": "",
+        "date": "",
+    }
+
+    # Extract title from first H1
+    title_match = re.search(r"^#\s+(.+)$", master_content, re.MULTILINE)
+    if title_match:
+        meta["title"] = title_match.group(1).strip()
+        # Remove ticket prefix from title for display
+        meta["title"] = re.sub(r"^NTK-\d+\s*[-—]\s*", "", meta["title"])
+        meta["title"] = re.sub(r"^Solution Design:\s*", "", meta["title"])
+
+    # Parse header table fields
+    for line in master_content.split("\n"):
+        line_lower = line.lower()
+        if "| version" in line_lower or "| version" in line_lower:
+            parts = line.split("|")
+            if len(parts) >= 3:
+                meta["version"] = parts[2].strip()
+        elif "| status" in line_lower:
+            parts = line.split("|")
+            if len(parts) >= 3:
+                meta["status"] = parts[2].strip()
+        elif "| author" in line_lower:
+            parts = line.split("|")
+            if len(parts) >= 3:
+                meta["author"] = parts[2].strip()
+        elif "| date" in line_lower or "| last updated" in line_lower:
+            parts = line.split("|")
+            if len(parts) >= 3:
+                meta["date"] = parts[2].strip()
+
+    # Read capabilities mapping
+    caps_path = os.path.join(solution_dir, "3.solution", "c.capabilities", "capabilities.md")
+    meta["capabilities"] = []
+    if os.path.exists(caps_path):
+        with open(caps_path, encoding="utf-8") as fh:
+            caps_content = fh.read()
+        # Parse capability table rows
+        for line in caps_content.split("\n"):
+            cap_match = re.match(r"\|\s*(CAP-[\d.]+)\s+(.+?)\s*\|\s*(\w+)", line)
+            if cap_match:
+                meta["capabilities"].append({
+                    "id": cap_match.group(1),
+                    "name": cap_match.group(2).strip(),
+                    "impact": cap_match.group(3).strip(),
+                })
+
+    # Detect available sections
+    meta["has_requirements"] = os.path.isdir(os.path.join(solution_dir, "1.requirements"))
+    meta["has_analysis"] = os.path.isdir(os.path.join(solution_dir, "2.analysis"))
+    meta["has_decisions"] = os.path.exists(os.path.join(solution_dir, "3.solution", "d.decisions", "decisions.md"))
+    meta["has_impacts"] = os.path.isdir(os.path.join(solution_dir, "3.solution", "i.impacts"))
+    meta["has_user_stories"] = os.path.exists(os.path.join(solution_dir, "3.solution", "u.user.stories", "user-stories.md"))
+    meta["has_guidance"] = os.path.exists(os.path.join(solution_dir, "3.solution", "g.guidance", "guidance.md"))
+    meta["has_risks"] = os.path.exists(os.path.join(solution_dir, "3.solution", "r.risks", "risks.md"))
+
+    # Count impact files
+    impacts_dir = os.path.join(solution_dir, "3.solution", "i.impacts")
+    meta["impact_count"] = 0
+    if os.path.isdir(impacts_dir):
+        meta["impact_count"] = sum(1 for d in os.listdir(impacts_dir) if d.startswith("impact."))
+
+    meta["master_content"] = master_content
+
+    return meta
+
+
+def find_related_services(meta, tickets_data):
+    """Find services from tickets.yaml for this solution."""
+    if not tickets_data:
+        return []
+    for t in tickets_data.get("tickets", []):
+        if t.get("key") == meta["ticket_id"]:
+            return t.get("components", [])
+    return []
+
+
+def find_related_decisions(meta, tickets_data):
+    """Find ADR references from tickets.yaml."""
+    if not tickets_data:
+        return []
+    for t in tickets_data.get("tickets", []):
+        if t.get("key") == meta["ticket_id"]:
+            return t.get("decisions", [])
+    return []
+
+
+def generate_solution_page(meta, tickets_data):
+    """Generate a per-solution Markdown page."""
+    services = find_related_services(meta, tickets_data)
+    decisions = find_related_decisions(meta, tickets_data)
+
+    lines = []
+    lines.append("---")
+    lines.append(f"title: \"{meta['ticket_id']} — {meta['title']}\"")
+    lines.append(f"description: \"Solution design for {meta['ticket_id']}\"")
+    lines.append("---")
+    lines.append("")
+    lines.append(f"# {meta['ticket_id']} — {meta['title']}")
+    lines.append("")
+
+    # Metadata card
+    lines.append("| Field | Value |")
+    lines.append("|-------|-------|")
+    if meta["status"]:
+        lines.append(f"| **Status** | {meta['status']} |")
+    if meta["version"]:
+        lines.append(f"| **Version** | {meta['version']} |")
+    if meta["author"]:
+        lines.append(f"| **Author** | {meta['author']} |")
+    if meta["date"]:
+        lines.append(f"| **Date** | {meta['date']} |")
+    lines.append(f"| **Ticket** | {meta['ticket_id']} |")
+    lines.append("")
+
+    # Capabilities
+    if meta["capabilities"]:
+        lines.append("## Affected Capabilities")
+        lines.append("")
+        lines.append("| Capability | Impact |")
+        lines.append("|-----------|--------|")
+        for cap in meta["capabilities"]:
+            cap_anchor = cap["id"].lower().replace(".", "")
+            lines.append(f"| [{cap['id']} {cap['name']}](../capabilities/index.md#{cap_anchor}) | {cap['impact']} |")
+        lines.append("")
+
+    # Services
+    if services:
+        lines.append("## Affected Services")
+        lines.append("")
+        for svc in services:
+            if svc.startswith("svc-"):
+                lines.append(f"- [{svc}](../microservices/{svc}.md)")
+            else:
+                lines.append(f"- {svc}")
+        lines.append("")
+
+    # Decisions
+    if decisions:
+        lines.append("## Architecture Decisions")
+        lines.append("")
+        for dec in decisions:
+            lines.append(f"- {dec}")
+        lines.append("")
+
+    # Solution contents inventory
+    lines.append("## Solution Contents")
+    lines.append("")
+    sections = []
+    if meta["has_requirements"]:
+        sections.append("Requirements")
+    if meta["has_analysis"]:
+        sections.append("Analysis")
+    if meta["has_decisions"]:
+        sections.append("Decisions")
+    if meta["has_impacts"]:
+        sections.append(f"Impact Assessments ({meta['impact_count']})")
+    if meta["has_user_stories"]:
+        sections.append("User Stories")
+    if meta["has_guidance"]:
+        sections.append("Implementation Guidance")
+    if meta["has_risks"]:
+        sections.append("Risk Assessment")
+    if meta["capabilities"]:
+        sections.append("Capability Mapping")
+
+    for s in sections:
+        lines.append(f"- {s}")
+    lines.append("")
+
+    # Master document content (skip the header we already rendered)
+    content = meta["master_content"]
+    # Remove CONFLUENCE-PUBLISH comment
+    content = re.sub(r"<!--\s*CONFLUENCE-PUBLISH\s*-->", "", content).strip()
+    # Remove the first H1 and the header table (we rendered our own)
+    # Find "## " which starts first real section
+    section_start = content.find("\n## ")
+    if section_start > 0:
+        content = content[section_start:]
+
+    lines.append("---")
+    lines.append("")
+    lines.append(content)
+
+    return "\n".join(lines)
+
+
+def generate_index_page(solutions, tickets_data):
+    """Generate the solution designs index page."""
+    lines = []
+    lines.append("---")
+    lines.append("title: Solution Designs")
+    lines.append("description: Architecture solution designs for NovaTrek Adventures")
+    lines.append("---")
+    lines.append("")
+    lines.append("# Solution Designs")
+    lines.append("")
+    lines.append("Architecture solution designs produced through the continuous architecture workflow.")
+    lines.append("Each solution maps business requirements to service changes with full capability traceability.")
+    lines.append("")
+
+    # Summary stats
+    total = len(solutions)
+    approved = sum(1 for s in solutions if "APPROVED" in s.get("status", "").upper())
+    lines.append(f"**{total}** solution designs | **{approved}** approved")
+    lines.append("")
+
+    # Table
+    lines.append("| Ticket | Solution | Status | Capabilities | Services |")
+    lines.append("|--------|----------|--------|-------------|----------|")
+    for s in sorted(solutions, key=lambda x: x["ticket_id"]):
+        slug = s["folder"]
+        title_short = s["title"][:50] + ("..." if len(s["title"]) > 50 else "")
+        status = s.get("status", "—")
+        caps = ", ".join(c["id"] for c in s.get("capabilities", []))
+        services = find_related_services(s, tickets_data)
+        svc_str = ", ".join(services[:3])
+        if len(services) > 3:
+            svc_str += f" (+{len(services) - 3})"
+        lines.append(f"| {s['ticket_id']} | [{title_short}]({slug}.md) | {status} | {caps} | {svc_str} |")
+    lines.append("")
+
+    # Capability coverage
+    all_caps = {}
+    for s in solutions:
+        for c in s.get("capabilities", []):
+            cap_id = c["id"]
+            if cap_id not in all_caps:
+                all_caps[cap_id] = []
+            all_caps[cap_id].append(s["ticket_id"])
+
+    if all_caps:
+        lines.append("## Capability Coverage")
+        lines.append("")
+        lines.append("Capabilities shaped by solution designs:")
+        lines.append("")
+        lines.append("| Capability | Solutions |")
+        lines.append("|-----------|----------|")
+        for cap_id in sorted(all_caps.keys()):
+            tickets = ", ".join(all_caps[cap_id])
+            lines.append(f"| {cap_id} | {tickets} |")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def main():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    # Load tickets for cross-referencing
+    tickets_path = os.path.join(METADATA_DIR, "tickets.yaml")
+    tickets_data = load_yaml(tickets_path) if os.path.exists(tickets_path) else None
+
+    # Discover and parse solutions
+    solutions = []
+    if os.path.isdir(SOLUTIONS_DIR):
+        for entry in sorted(os.listdir(SOLUTIONS_DIR)):
+            sol_dir = os.path.join(SOLUTIONS_DIR, entry)
+            if os.path.isdir(sol_dir) and entry.startswith("_NTK-"):
+                meta = parse_solution_metadata(sol_dir)
+                if meta:
+                    solutions.append(meta)
+
+    # Generate index
+    index_content = generate_index_page(solutions, tickets_data)
+    with open(os.path.join(OUTPUT_DIR, "index.md"), "w", encoding="utf-8") as f:
+        f.write(index_content)
+
+    # Generate per-solution pages
+    for meta in solutions:
+        page_content = generate_solution_page(meta, tickets_data)
+        page_path = os.path.join(OUTPUT_DIR, f"{meta['folder']}.md")
+        with open(page_path, "w", encoding="utf-8") as f:
+            f.write(page_content)
+
+    print(f"  Generated {len(solutions)} solution pages + index in portal/docs/solutions/")
+
+
+if __name__ == "__main__":
+    main()
