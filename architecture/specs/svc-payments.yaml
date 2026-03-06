@@ -4,7 +4,7 @@ info:
   description: |
     Manages payments, refunds, and billing for adventure bookings at NovaTrek Adventures.
     Handles payment processing, refund workflows, and financial reporting for all reservation transactions.
-  version: 1.0.0
+  version: 1.1.0
   contact:
     name: NovaTrek Platform Team
     email: platform@novatrek.example.com
@@ -23,6 +23,8 @@ tags:
     description: Payment processing and retrieval
   - name: Refunds
     description: Refund operations
+  - name: Disputes
+    description: Dispute lifecycle and escalation workflows
   - name: Reporting
     description: Financial reporting and summaries
 
@@ -154,6 +156,269 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /disputes:
+    post:
+      operationId: createDispute
+      summary: Create a refund dispute
+      description: |
+        Opens a dispute for a payment. The system evaluates the refund request against
+        the configured refund policy and assigns an escalation tier (AUTO, AGENT, MANAGER).
+        Auto-approved disputes are resolved immediately with a refund.
+      tags: [Disputes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeRequest'
+      responses:
+        '201':
+          description: Dispute created (may be auto-resolved if policy-eligible)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: An active dispute already exists for this payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    get:
+      operationId: listDisputes
+      summary: List disputes with optional filters
+      tags: [Disputes]
+      parameters:
+        - name: status
+          in: query
+          description: Filter by dispute status
+          schema:
+            $ref: '#/components/schemas/DisputeStatus'
+        - name: tier
+          in: query
+          description: Filter by escalation tier
+          schema:
+            $ref: '#/components/schemas/DisputeTier'
+        - name: assigned_to
+          in: query
+          description: Filter by assigned agent or manager
+          schema:
+            type: string
+        - name: guest_id
+          in: query
+          description: Filter by guest identifier
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Paginated dispute list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisputeListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /disputes/{dispute_id}:
+    get:
+      operationId: getDispute
+      summary: Retrieve dispute details
+      tags: [Disputes]
+      parameters:
+        - $ref: '#/components/parameters/DisputeId'
+      responses:
+        '200':
+          description: Dispute details with audit trail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    patch:
+      operationId: updateDispute
+      summary: Update a dispute (assign, add notes, escalate)
+      description: Supports field-level updates. Requires role matching the dispute tier.
+      tags: [Disputes]
+      parameters:
+        - $ref: '#/components/parameters/DisputeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeUpdateRequest'
+      responses:
+        '200':
+          description: Dispute updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Insufficient role for this dispute tier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Concurrent modification (version mismatch)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /disputes/{dispute_id}/resolve:
+    post:
+      operationId: resolveDispute
+      summary: Resolve a dispute with refund decision
+      description: |
+        Resolves the dispute with a decision (FULL_REFUND, PARTIAL_REFUND, DENIED).
+        If approved, a refund record is created automatically. The resolver's role
+        must match the dispute tier (AGENT or MANAGER).
+      tags: [Disputes]
+      parameters:
+        - $ref: '#/components/parameters/DisputeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeResolution'
+      responses:
+        '200':
+          description: Dispute resolved; refund created if approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Resolver role does not match required tier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: Dispute is not in a resolvable state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /chargebacks:
+    post:
+      operationId: ingestChargeback
+      summary: Ingest a chargeback notification from payment processor
+      description: |
+        Creates a dispute record from an external chargeback notification.
+        Chargebacks are auto-escalated to MANAGER tier.
+      tags: [Disputes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargebackNotification'
+      responses:
+        '201':
+          description: Chargeback dispute created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Chargeback dispute already exists for this processor reference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /refund-policy/evaluate:
+    post:
+      operationId: evaluateRefundPolicy
+      summary: Evaluate refund eligibility against policy (dry-run)
+      description: |
+        Returns the policy evaluation result without creating a dispute.
+        Useful for showing guests their expected refund amount before submission.
+      tags: [Disputes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [payment_id, reason]
+              properties:
+                payment_id:
+                  type: string
+                  format: uuid
+                reason:
+                  $ref: '#/components/schemas/DisputeType'
+                cancellation_date:
+                  type: string
+                  format: date-time
+                  description: When the cancellation occurs (defaults to now)
+      responses:
+        '200':
+          description: Policy evaluation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyEvaluation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /payments/daily-summary:
     get:
       operationId: getDailySummary
@@ -200,6 +465,14 @@ components:
       in: path
       required: true
       description: Unique payment identifier
+      schema:
+        type: string
+        format: uuid
+    DisputeId:
+      name: dispute_id
+      in: path
+      required: true
+      description: Unique dispute identifier
       schema:
         type: string
         format: uuid
@@ -418,6 +691,218 @@ components:
                 type: string
               issue:
                 type: string
+
+    DisputeType:
+      type: string
+      enum:
+        - CANCELLATION
+        - SERVICE_COMPLAINT
+        - WEATHER
+        - CHARGEBACK
+        - OTHER
+
+    DisputeStatus:
+      type: string
+      enum:
+        - OPENED
+        - UNDER_REVIEW
+        - ESCALATED
+        - RESOLVED
+        - CLOSED
+
+    DisputeTier:
+      type: string
+      enum:
+        - AUTO
+        - AGENT
+        - MANAGER
+
+    DisputeResolutionType:
+      type: string
+      enum:
+        - FULL_REFUND
+        - PARTIAL_REFUND
+        - DENIED
+
+    DisputeRequest:
+      type: object
+      required: [payment_id, guest_id, type, amount_requested]
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          description: Payment to dispute
+        guest_id:
+          type: string
+          format: uuid
+          description: Guest requesting the refund
+        type:
+          $ref: '#/components/schemas/DisputeType'
+        amount_requested:
+          type: number
+          format: double
+          minimum: 0.01
+          description: Refund amount requested
+        reason:
+          type: string
+          maxLength: 1000
+          description: Guest-supplied reason for the dispute
+        cancellation_date:
+          type: string
+          format: date-time
+          description: When the cancellation occurs (for policy evaluation)
+
+    Dispute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        payment_id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        guest_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/DisputeType'
+        status:
+          $ref: '#/components/schemas/DisputeStatus'
+        tier:
+          $ref: '#/components/schemas/DisputeTier'
+        amount_requested:
+          type: number
+          format: double
+        amount_approved:
+          type: number
+          format: double
+          nullable: true
+        resolution:
+          $ref: '#/components/schemas/DisputeResolutionType'
+        justification:
+          type: string
+          description: Structured reason for the resolution decision
+        assigned_to:
+          type: string
+          nullable: true
+          description: Agent or manager handling the dispute
+        policy_evaluation:
+          $ref: '#/components/schemas/PolicyEvaluation'
+        _rev:
+          type: integer
+          description: Optimistic locking version
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    DisputeUpdateRequest:
+      type: object
+      properties:
+        assigned_to:
+          type: string
+          description: Assign to an agent or manager
+        notes:
+          type: string
+          maxLength: 2000
+          description: Internal notes on the dispute
+        status:
+          type: string
+          enum: [UNDER_REVIEW, ESCALATED]
+          description: Advance dispute status (forward-only)
+        _rev:
+          type: integer
+          description: Required for optimistic locking
+
+    DisputeResolution:
+      type: object
+      required: [decision, justification, resolver_id]
+      properties:
+        decision:
+          $ref: '#/components/schemas/DisputeResolutionType'
+        amount_approved:
+          type: number
+          format: double
+          minimum: 0
+          description: Required when decision is PARTIAL_REFUND
+        justification:
+          type: string
+          maxLength: 2000
+          description: Reason for the decision (required for audit)
+        resolver_id:
+          type: string
+          description: Agent or manager resolving the dispute
+
+    ChargebackNotification:
+      type: object
+      required: [processor_reference, amount, reason_code]
+      properties:
+        processor_reference:
+          type: string
+          description: External chargeback reference from payment processor
+        payment_processor_reference:
+          type: string
+          description: Original payment processor reference (to match the payment)
+        amount:
+          type: number
+          format: double
+          description: Chargeback amount
+        reason_code:
+          type: string
+          description: Processor-defined reason code
+        reason_description:
+          type: string
+          description: Human-readable chargeback reason
+        deadline:
+          type: string
+          format: date
+          description: Response deadline from the processor
+
+    PolicyEvaluation:
+      type: object
+      properties:
+        eligible:
+          type: boolean
+          description: Whether the refund is policy-eligible
+        refund_percentage:
+          type: number
+          format: double
+          description: Recommended refund percentage per policy
+        refund_amount:
+          type: number
+          format: double
+          description: Calculated refund amount
+        tier:
+          $ref: '#/components/schemas/DisputeTier'
+        policy_matched:
+          type: string
+          description: Name of the policy rule that matched
+        evaluation_details:
+          type: string
+          description: Human-readable explanation of the policy evaluation
+
+    DisputeListResponse:
+      type: object
+      properties:
+        disputes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dispute'
+        total_count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
 
   responses:
     BadRequest:

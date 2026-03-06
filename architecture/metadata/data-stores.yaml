@@ -1305,6 +1305,8 @@ svc-payments:
   - refunds
   - payment_methods
   - daily_summaries
+  - disputes
+  - refund_policy_evaluations
   features:
   - PCI-DSS compliant token storage (no raw card data)
   - Idempotent payment processing via request keys
@@ -2488,3 +2490,22 @@ svc-wildlife-tracking:
         type: GIST (PostGIS)
       - name: idx_habitat_activity
         columns: activity_level
+
+svc-reviews:
+  engine: PostgreSQL 15
+  schema: reviews
+  tables:
+  - reviews
+  - review_helpful_votes
+  - rating_aggregates
+  features:
+  - Reservation-gated review submission (cross-ref svc-reservations)
+  - Optimistic locking on review records (_rev field)
+  - Pre-computed rating aggregates per trip and per guide
+  - Full-text search on review body via tsvector index
+  volume: ~500 reviews/day, ~50,000 reads/day
+  connection_pool:
+    min: 5
+    max: 20
+    idle_timeout: 5min
+  backup: Daily pg_dump, 30-day retention

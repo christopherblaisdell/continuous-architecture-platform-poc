@@ -663,3 +663,20 @@ svc-wildlife-tracking:
     target:
       method: GET
       path: /daily-schedules
+
+svc-reviews:
+  POST /reviews:
+  - alias: Res
+    label: Reservations
+    action: Validate reservation exists and is COMPLETED
+    async: false
+    target:
+      method: GET
+      path: /reservations/{reservation_id}
+  - alias: GP
+    label: Guest Profiles
+    action: Validate guest identity
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}

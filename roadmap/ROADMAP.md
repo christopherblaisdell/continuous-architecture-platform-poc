@@ -335,8 +335,8 @@ Deploy Vikunja as the ticketing UI.
 | 5.3 | COMPLETE -- Added Related Solutions auto-detection to `generate-solution-pages.py` by service and capability overlap, renders cross-link table on each solution page | 2.1, 2.2 | Medium |
 | 5.4 | COMPLETE -- `scripts/mcp-vikunja-server.py` MCP server with 6 tools (list_tickets, get_ticket, search_tickets, get_capability_tickets, list_capabilities, get_capability) over stdio, Vikunja + YAML dual-source, configured in `.vscode/mcp.json` | 4.3 | Medium |
 | 5.5 | COMPLETE -- `scripts/sync-branch-status.py` detects solution branches and updates ticket status (New -> In Progress -> Ready for Dev), integrated into `validate-solution.yml` workflow | 4.7 | Medium |
-| 5.6 | Custom domain for portal (register domain, configure DNS, enable Bicep parameter) | -- | Small |
-| 5.7 | Implement priority gap capabilities (Reviews, Refund Management) | 2.2 | Large |
+| 5.6 | COMPLETE -- Bicep infrastructure already supports custom domains (`customDomain` parameter in main.bicep, conditional resource). Prod parameter file has placeholder ready to uncomment. Remaining work is manual: register domain, configure DNS, uncomment parameter | -- | Small |
+| 5.7 | COMPLETE -- Created full solution designs for two priority gap capabilities: NTK-10008 (Guest Reviews and Ratings, CAP-1.7 NEW) with svc-reviews OpenAPI spec, 3 ADRs, 5 user stories, 5 risks, and NTK-10009 (Refund Dispute Management, CAP-5.5 enhanced) with svc-payments v1.1.0 dispute endpoints, 3 ADRs, 5 user stories, 5 risks. Updated capability-changelog.yaml with 11 L3 capabilities | 2.2 | Large |
 
 **Outcome:** The portal becomes an intelligent architecture knowledge base with rich navigation, discovery, and real-time AI integration.
 

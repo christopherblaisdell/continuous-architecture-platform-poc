@@ -7,7 +7,7 @@ tags:
 
 # svc-payments
 
-**NovaTrek Payments Service** &nbsp;|&nbsp; <span style="background: #64748b15; color: #64748b; border: 1px solid #64748b40; padding: 0.15rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 600;">Support</span> &nbsp;|&nbsp; `v1.0.0` &nbsp;|&nbsp; *NovaTrek Platform Team*
+**NovaTrek Payments Service** &nbsp;|&nbsp; <span style="background: #64748b15; color: #64748b; border: 1px solid #64748b40; padding: 0.15rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 600;">Support</span> &nbsp;|&nbsp; `v1.1.0` &nbsp;|&nbsp; *NovaTrek Platform Team*
 
 > Manages payments, refunds, and billing for adventure bookings at NovaTrek Adventures.
 
@@ -29,7 +29,7 @@ tags:
 |----------|--------|
 | **Engine** | PostgreSQL 15 |
 | **Schema** | `payments` |
-| **Tables** | `payments`, `refunds`, `payment_methods`, `daily_summaries` |
+| **Tables** | `payments`, `refunds`, `payment_methods`, `daily_summaries`, `disputes`, `refund_policy_evaluations` |
 | **Estimated Volume** | ~2,500 transactions/day |
 | **Connection Pool** | min 10 / max 30 / idle timeout 5min |
 | **Backup Strategy** | Continuous WAL archiving, daily base backup, 7-year retention (financial) |
@@ -106,7 +106,15 @@ tags:
 
 ---
 
-## :material-api: Endpoints (5 total)
+## :material-lightbulb: Solutions Affecting This Service
+
+| Ticket | Solution | Capabilities | Date |
+|--------|----------|-------------|------|
+| NTK-10009 | [Refund and Dispute Management Workflows](../solutions/_NTK-10009-refund-dispute-management.md) | `CAP-5.5`, `CAP-5.4` | 2026-03-06 |
+
+---
+
+## :material-api: Endpoints (12 total)
 
 ---
 
@@ -147,6 +155,72 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/getGuestPaymentHistory){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-guests-guest_id-payment-history.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-guests-guest_id-payment-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/payment-history sequence diagram</object></div>
+
+---
+
+### GET `/disputes` -- List disputes with optional filters { .endpoint-get }
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/listDisputes){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--get-disputes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-disputes.svg" type="image/svg+xml" style="max-width: 100%;">GET /disputes sequence diagram</object></div>
+
+---
+
+### POST `/disputes` -- Create a refund dispute { .endpoint-post }
+
+> Opens a dispute for a payment. The system evaluates the refund request against
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/createDispute){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--post-disputes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-disputes.svg" type="image/svg+xml" style="max-width: 100%;">POST /disputes sequence diagram</object></div>
+
+---
+
+### GET `/disputes/{dispute_id}` -- Retrieve dispute details { .endpoint-get }
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/getDispute){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--get-disputes-dispute_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-disputes-dispute_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /disputes/{dispute_id} sequence diagram</object></div>
+
+---
+
+### PATCH `/disputes/{dispute_id}` -- Update a dispute (assign, add notes, escalate) { .endpoint-patch }
+
+> Supports field-level updates. Requires role matching the dispute tier.
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/updateDispute){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--patch-disputes-dispute_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--patch-disputes-dispute_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /disputes/{dispute_id} sequence diagram</object></div>
+
+---
+
+### POST `/disputes/{dispute_id}/resolve` -- Resolve a dispute with refund decision { .endpoint-post }
+
+> Resolves the dispute with a decision (FULL_REFUND, PARTIAL_REFUND, DENIED).
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/resolveDispute){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--post-disputes-dispute_id-resolve.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-disputes-dispute_id-resolve.svg" type="image/svg+xml" style="max-width: 100%;">POST /disputes/{dispute_id}/resolve sequence diagram</object></div>
+
+---
+
+### POST `/chargebacks` -- Ingest a chargeback notification from payment processor { .endpoint-post }
+
+> Creates a dispute record from an external chargeback notification.
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/ingestChargeback){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--post-chargebacks.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-chargebacks.svg" type="image/svg+xml" style="max-width: 100%;">POST /chargebacks sequence diagram</object></div>
+
+---
+
+### POST `/refund-policy/evaluate` -- Evaluate refund eligibility against policy (dry-run) { .endpoint-post }
+
+> Returns the policy evaluation result without creating a dispute.
+
+[:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/evaluateRefundPolicy){ .md-button }
+
+<div class="diagram-wrap"><a href="../svg/svc-payments--post-refund-policy-evaluate.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-refund-policy-evaluate.svg" type="image/svg+xml" style="max-width: 100%;">POST /refund-policy/evaluate sequence diagram</object></div>
 
 ---
 

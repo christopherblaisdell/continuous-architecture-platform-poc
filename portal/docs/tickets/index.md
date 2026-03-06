@@ -10,7 +10,7 @@ Each ticket tracks affected services, capabilities, and links to its solution de
 Capability mappings for solved tickets are derived from the
 [Capability Changelog](../capabilities/index.md) (single source of truth).
 
-**7** tickets | **5** with solution designs
+**9** tickets | **7** with solution designs
 
 ## Critical Priority
 
@@ -26,6 +26,8 @@ Capability mappings for solved tickets are derived from the
 | [NTK-10002](NTK-10002.md) | Adventure Category Classification for Check-In UI Patte | In Progress | CAP-2.1, CAP-1.2 | [View](../solutions/_NTK-10002-adventure-category-classification.md) |
 | [NTK-10004](NTK-10004.md) | Guide Schedule Overwrite Bug in Scheduling Orchestrator | New | CAP-2.2 | [View](../solutions/_NTK-10004-guide-schedule-overwrite-bug.md) |
 | [NTK-10007](NTK-10007.md) | Guest Loyalty Referral Program with Campaign Management | New | CAP-1.4, CAP-5.3 | — |
+| [NTK-10008](NTK-10008.md) | Guest Reviews and Ratings Platform | New | CAP-1.7, CAP-1.2 | [View](../solutions/_NTK-10008-guest-reviews-and-ratings.md) |
+| [NTK-10009](NTK-10009.md) | Refund and Dispute Management Workflows | New | CAP-5.5, CAP-5.4 | [View](../solutions/_NTK-10009-refund-dispute-management.md) |
 
 ## Medium Priority
 

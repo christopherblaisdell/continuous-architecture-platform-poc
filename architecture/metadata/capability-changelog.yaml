@@ -102,3 +102,61 @@ entries:
         l3_capabilities:
           - name: Wristband RFID Capture
             description: Optional RFID tag ID (hex, 8-16 chars) validated and stored at check-in with uniqueness constraint
+
+  - ticket: NTK-10008
+    date: 2026-03-06
+    solution: _NTK-10008-guest-reviews-and-ratings
+    summary: Guest reviews and ratings platform with moderation pipeline
+    capabilities:
+      - id: CAP-1.7
+        impact: new
+        description: New svc-reviews service enables guest review submission, moderation, and aggregated ratings
+        l3_capabilities:
+          - name: Reservation-Gated Review Submission
+            description: Reviews authenticated via COMPLETED reservation status — prevents fake reviews
+          - name: Moderation Pipeline
+            description: Reviews enter PENDING_MODERATION and require approval (automated or manual) before publication
+          - name: Aggregated Rating Summaries
+            description: Pre-computed per-trip and per-guide average ratings with distribution histograms
+          - name: Category Ratings
+            description: Optional per-category breakdown (safety, guide quality, value, scenery, difficulty accuracy)
+          - name: Community Curation
+            description: Helpful vote mechanism allows guests to surface the most useful reviews
+      - id: CAP-1.2
+        impact: enhanced
+        description: Trip catalog pages display aggregated guest ratings from svc-reviews
+        l3_capabilities:
+          - name: Social Proof on Trip Pages
+            description: Trip detail pages show average rating, review count, and rating distribution
+    decisions:
+      - ADR-NTK10008-001
+      - ADR-NTK10008-002
+      - ADR-NTK10008-003
+
+  - ticket: NTK-10009
+    date: 2026-03-06
+    solution: _NTK-10009-refund-dispute-management
+    summary: Structured refund dispute workflows with policy engine and tiered escalation
+    capabilities:
+      - id: CAP-5.5
+        impact: enhanced
+        description: svc-payments extended with dispute lifecycle, YAML-driven refund policy engine, and three-tier escalation
+        l3_capabilities:
+          - name: Dispute Lifecycle Management
+            description: Full dispute lifecycle (OPENED, UNDER_REVIEW, ESCALATED, RESOLVED) with audit trail
+          - name: YAML-Driven Refund Policy Engine
+            description: Codified cancellation windows and refund percentages evaluated automatically per ADR-004 pattern
+          - name: Three-Tier Escalation
+            description: Auto-approve (policy-eligible), agent review (edge cases), manager escalation (high-value)
+          - name: Chargeback Ingestion
+            description: Payment processor chargeback webhooks create dispute records auto-escalated to manager tier
+      - id: CAP-5.4
+        impact: enhanced
+        description: Dispute resolution records provide structured audit trail for financial reconciliation
+        l3_capabilities:
+          - name: Dispute Audit Trail
+            description: All resolution decisions include policy evaluation, resolver identity, justification, and outcome
+    decisions:
+      - ADR-NTK10009-001
+      - ADR-NTK10009-002
+      - ADR-NTK10009-003
