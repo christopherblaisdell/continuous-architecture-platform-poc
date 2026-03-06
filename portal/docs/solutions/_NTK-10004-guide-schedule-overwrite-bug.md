@@ -12,9 +12,9 @@ description: "Solution design for NTK-10004"
 
 ## Affected Capabilities
 
-| Capability | Impact |
-|-----------|--------|
-| [CAP-2.2 Schedule Planning and Optimization](../capabilities/index.md#cap-22) | Fixed |
+| Capability | Impact | Description |
+|-----------|--------|-------------|
+| [CAP-2.2 Schedule Planning and Optimization](../capabilities/index.md#cap-22-schedule-planning-and-optimization) | fixed | Schedule updates now use PATCH semantics with optimistic locking to prevent data loss |
 
 ## Affected Services
 

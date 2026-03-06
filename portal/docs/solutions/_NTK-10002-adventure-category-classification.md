@@ -12,10 +12,10 @@ description: "Solution design for NTK-10002"
 
 ## Affected Capabilities
 
-| Capability | Impact |
-|-----------|--------|
-| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21) | Enhanced |
-| [CAP-1.2 Adventure Discovery and Browsing](../capabilities/index.md#cap-12) | Enhanced |
+| Capability | Impact | Description |
+|-----------|--------|-------------|
+| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21-day-of-adventure-check-in) | enhanced | Check-in UI now renders different flows based on adventure category (Pattern 1/2/3) |
+| [CAP-1.2 Adventure Discovery and Browsing](../capabilities/index.md#cap-12-adventure-discovery-and-browsing) | enhanced | Adventure catalog exposes category classification for consumer services |
 
 ## Affected Services
 

@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #dc2626
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Operations Dashboard Service Dependencies]]
@@ -19,12 +19,12 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 title Transport Dispatch\nNovaTrek Operations Dashboard
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-transport-logistics" as TL [[/microservices/svc-transport-logistics/]] #E8F4F8
-participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #E8F4F8
-participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
-participant "Google Maps Platform" as GM #F5F5F5
+participant "Browser" as App [[/applications/web-ops-dashboard/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-transport-logistics" as TL [[/microservices/svc-transport-logistics/]] #CFFAFE
+participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #F1F5F9
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+participant "Google Maps Platform" as GM #F3F4F6
 
 User -> App : Open Transport Dispatch
 activate App #dc2626
@@ -34,27 +34,27 @@ activate GW #dc2626
 == Backend Integration ==
 
 GW -> TL : [[/microservices/svc-transport-logistics/#get-transport-requestsrequest_id-get-transport-request-details List transport requests]]
-activate TL #DBEAFE
+activate TL #CFFAFE
 TL --> GW : OK
 deactivate TL
 
 GW -> TL : [[/microservices/svc-transport-logistics/#post-transport-requests-request-transport-for-a-reservation Create transport request]]
-activate TL #DBEAFE
+activate TL #CFFAFE
 TL --> GW : OK
 deactivate TL
 
 GW -> LS : [[/microservices/svc-location-services/#get-locationslocation_id-get-location-details Get pickup locations]]
-activate LS #DBEAFE
+activate LS #F1F5F9
 LS --> GW : OK
 deactivate LS
 
 GW -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Get booking details]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> GW : OK
 deactivate Res
 
 GW -> GM : Calculate optimal route
-activate GM #DBEAFE
+activate GM #F3F4F6
 GM --> GW : OK
 deactivate GM
 

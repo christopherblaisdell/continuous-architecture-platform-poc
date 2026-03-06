@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-reservations/#integration-context ⬆ svc-reservations Integration Context]]
@@ -19,9 +19,9 @@ header [[/microservices/svc-reservations/#integration-context ⬆ svc-reservatio
 title GET /reservations/{reservation_id}\nGet reservation details
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
-database "PostgreSQL" as DB [[/microservices/svc-reservations/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #D1FAE5
+database "PostgreSQL" as DB [[/microservices/svc-reservations/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-reservations.html#/Reservations/getReservation View in Swagger UI]]
@@ -35,7 +35,7 @@ activate Svc #2563eb
 == Database ==
 
 Svc -> DB : SELECT ... WHERE id = ?
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Row
 deactivate DB
 note right of DB : Returns 404 if not found

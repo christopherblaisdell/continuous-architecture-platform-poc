@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #dc2626
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Operations Dashboard Service Dependencies]]
@@ -19,11 +19,11 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 title Guide Assignment\nNovaTrek Operations Dashboard
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-guide-management" as GM [[/microservices/svc-guide-management/]] #E8F4F8
-participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
-participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
+participant "Browser" as App [[/applications/web-ops-dashboard/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-guide-management" as GM [[/microservices/svc-guide-management/]] #E0E7FF
+participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #DBEAFE
+participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #FEF3C7
 
 User -> App : Open Guide Assignment
 activate App #dc2626
@@ -33,12 +33,12 @@ activate GW #dc2626
 == Backend Integration ==
 
 GW -> GM : [[/microservices/svc-guide-management/#get-guides-search-guides-with-filters List certified guides]]
-activate GM #DBEAFE
+activate GM #E0E7FF
 GM --> GW : OK
 deactivate GM
 
 GW -> GM : [[/microservices/svc-guide-management/#get-guidesguide_idavailability-get-guide-availability-windows Check availability]]
-activate GM #DBEAFE
+activate GM #E0E7FF
 GM --> GW : OK
 deactivate GM
 
@@ -48,7 +48,7 @@ SO --> GW : OK
 deactivate SO
 
 GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_id-get-trail-details Verify trail status]]
-activate TM #DBEAFE
+activate TM #FEF3C7
 TM --> GW : OK
 deactivate TM
 

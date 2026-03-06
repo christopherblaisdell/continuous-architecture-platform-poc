@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-partner-integrations/#integration-context ⬆ svc-partner-integrations Integration Context]]
@@ -19,9 +19,9 @@ header [[/microservices/svc-partner-integrations/#integration-context ⬆ svc-pa
 title GET /partners/{partner_id}/commission-report\nGet commission report for a partner
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #E8F4F8
-database "PostgreSQL" as DB [[/microservices/svc-partner-integrations/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #F3E8FF
+database "PostgreSQL" as DB [[/microservices/svc-partner-integrations/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-partner-integrations.html#/Partners/getCommissionReport View in Swagger UI]]
@@ -35,7 +35,7 @@ activate Svc #2563eb
 == Database ==
 
 Svc -> DB : SELECT ... WHERE parent_id = ?
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : ResultSet
 deactivate DB
 

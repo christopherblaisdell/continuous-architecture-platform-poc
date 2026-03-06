@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adventure App Service Dependencies]]
@@ -19,12 +19,12 @@ header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adven
 title Live Trip Map\nNovaTrek Adventure App
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Mobile App" as App [[/applications/app-guest-mobile/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #E8F4F8
-participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
-participant "svc-weather" as WX [[/microservices/svc-weather/]] #E8F4F8
-participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
+participant "Mobile App" as App [[/applications/app-guest-mobile/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #F1F5F9
+participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #FEF3C7
+participant "svc-weather" as WX [[/microservices/svc-weather/]] #F1F5F9
+participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #DBEAFE
 
 User -> App : Open Live Trip Map
 activate App #059669
@@ -34,22 +34,22 @@ activate GW #059669
 == Backend Integration ==
 
 GW -> LS : [[/microservices/svc-location-services/#get-locations-list-all-locations Get nearby locations]]
-activate LS #DBEAFE
+activate LS #F1F5F9
 LS --> GW : OK
 deactivate LS
 
 GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_id-get-trail-details Get trail waypoints]]
-activate TM #DBEAFE
+activate TM #FEF3C7
 TM --> GW : OK
 deactivate TM
 
 GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions Get trail conditions]]
-activate TM #DBEAFE
+activate TM #FEF3C7
 TM --> GW : OK
 deactivate TM
 
 GW -> WX : [[/microservices/svc-weather/#get-weathercurrent-get-current-weather-conditions Get current weather]]
-activate WX #DBEAFE
+activate WX #F1F5F9
 WX --> GW : OK
 deactivate WX
 

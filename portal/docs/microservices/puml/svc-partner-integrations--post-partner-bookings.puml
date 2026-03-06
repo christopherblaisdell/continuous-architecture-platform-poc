@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-partner-integrations/#integration-context ⬆ svc-partner-integrations Integration Context]]
@@ -19,12 +19,12 @@ header [[/microservices/svc-partner-integrations/#integration-context ⬆ svc-pa
 title POST /partner-bookings\nExternal partner creates a booking
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #E8F4F8
-participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
-participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
-participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-database "PostgreSQL" as DB [[/microservices/svc-partner-integrations/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-partner-integrations" as Svc [[/microservices/svc-partner-integrations/]] #F3E8FF
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FEF3C7
+participant "Reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+database "PostgreSQL" as DB [[/microservices/svc-partner-integrations/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-partner-integrations.html#/Partner%20Bookings/createPartnerBooking View in Swagger UI]]
@@ -40,24 +40,24 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Validate guest identity]]
-activate GP #DBEAFE
+activate GP #EDE9FE
 GP --> Svc : OK
 deactivate GP
 
 Svc -> TC : [[/microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details Check trip availability]]
-activate TC #DBEAFE
+activate TC #FEF3C7
 TC --> Svc : OK
 deactivate TC
 
 Svc -> Res : [[/microservices/svc-reservations/#post-reservations-create-a-new-reservation Create reservation]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> Svc : OK
 deactivate Res
 
 == Database ==
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

@@ -176,7 +176,7 @@ architecture/solutions/_NTK-XXXXX-slug/
 ├── 2.analysis/                            (simple explanation)
 └── 3.solution/
     ├── a.assumptions/
-    ├── c.capabilities/capabilities.md     (REQUIRED — capability mapping)
+    ├── c.capabilities/capabilities.md     (descriptive — references capability-changelog.yaml)
     ├── d.decisions/decisions.md           (MADR format)
     ├── g.guidance/                        (implementation advice — optional)
     ├── i.impacts/                         (per-service impact assessments)
@@ -186,11 +186,23 @@ architecture/solutions/_NTK-XXXXX-slug/
 
 ### Capability Rollup (REQUIRED)
 
-Every solution MUST include capability mapping:
+Every solution MUST record capability changes in the **single source of truth**:
 
-1. Create `3.solution/c.capabilities/capabilities.md` listing affected CAP-X.Y IDs with impact type (enhanced, fixed, new)
-2. Draft a `capability-changelog.yaml` entry with L3 capabilities that emerge from the solution
-3. Update `architecture/metadata/tickets.yaml` with capability mappings
+1. **Add an entry to `architecture/metadata/capability-changelog.yaml`** with:
+   - `ticket`: NTK-XXXXX
+   - `date`: ISO 8601
+   - `solution`: folder name (e.g., `_NTK-10003-unregistered-guest-self-checkin`)
+   - `summary`: one-line summary of the architectural change
+   - `capabilities`: array of affected capabilities, each with:
+     - `id`: CAP-X.Y
+     - `impact`: enhanced | fixed | new
+     - `description`: what changed for this capability
+     - `l3_capabilities`: array of emergent L3 capabilities (name + description)
+   - `decisions`: array of ADR references (if applicable)
+
+2. **Update `3.solution/c.capabilities/capabilities.md`** with a narrative summary listing affected CAP-X.Y IDs. This file is **descriptive only** — it references the changelog, not the other way around. Generators read from the changelog.
+
+3. **Do NOT duplicate capability or decision data in `tickets.yaml`**. For solved tickets, capability mappings and decisions are derived from the changelog by generators. Only unsolved tickets use `planned_capabilities` in tickets.yaml (planning estimates).
 
 ### Ticket Client
 
@@ -209,8 +221,8 @@ Query tickets from `architecture/metadata/tickets.yaml`:
 | File | Purpose |
 |------|---------|
 | `architecture/metadata/capabilities.yaml` | L1/L2 capability definitions (34 capabilities) |
-| `architecture/metadata/capability-changelog.yaml` | Append-only log of capability changes per solution |
-| `architecture/metadata/tickets.yaml` | Ticket registry with capability mappings |
+| `architecture/metadata/capability-changelog.yaml` | **Single source of truth** for all capability changes per solution (L3 emergence, decisions) |
+| `architecture/metadata/tickets.yaml` | Ticket registry with service mappings; `planned_capabilities` for unsolved tickets only |
 
 ### Prior-Art Discovery (REQUIRED before new solutions)
 

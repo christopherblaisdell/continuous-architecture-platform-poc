@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #dc2626
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Operations Dashboard Service Dependencies]]
@@ -19,10 +19,10 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 title Inventory Management\nNovaTrek Operations Dashboard
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
-participant "svc-inventory-procurement" as IP [[/microservices/svc-inventory-procurement/]] #E8F4F8
+participant "Browser" as App [[/applications/web-ops-dashboard/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #CFFAFE
+participant "svc-inventory-procurement" as IP [[/microservices/svc-inventory-procurement/]] #F1F5F9
 
 User -> App : Open Inventory Management
 activate App #dc2626
@@ -32,17 +32,17 @@ activate GW #dc2626
 == Backend Integration ==
 
 GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-items-search-gear-inventory Get inventory levels]]
-activate GI #DBEAFE
+activate GI #CFFAFE
 GI --> GW : OK
 deactivate GI
 
 GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details Check gear assignments]]
-activate GI #DBEAFE
+activate GI #CFFAFE
 GI --> GW : OK
 deactivate GI
 
 GW -> IP : [[/microservices/svc-inventory-procurement/#post-purchase-orders-create-a-new-purchase-order Create purchase order]]
-activate IP #DBEAFE
+activate IP #F1F5F9
 IP --> GW : OK
 deactivate IP
 

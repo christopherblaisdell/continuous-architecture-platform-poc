@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty-rewards Integration Context]]
@@ -19,9 +19,9 @@ header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty
 title GET /tiers\nList all loyalty tiers and their thresholds
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
-database "Couchbase" as DB [[/microservices/svc-loyalty-rewards/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #F1F5F9
+database "Couchbase" as DB [[/microservices/svc-loyalty-rewards/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-loyalty-rewards.html#/Tiers/listTiers View in Swagger UI]]
@@ -35,7 +35,7 @@ activate Svc #2563eb
 == Database ==
 
 Svc -> DB : N1QL: SELECT WHERE filters
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Document set
 deactivate DB
 

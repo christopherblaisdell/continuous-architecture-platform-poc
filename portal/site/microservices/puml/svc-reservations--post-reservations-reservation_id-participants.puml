@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-reservations/#integration-context ⬆ svc-reservations Integration Context]]
@@ -19,10 +19,10 @@ header [[/microservices/svc-reservations/#integration-context ⬆ svc-reservatio
 title POST /reservations/{reservation_id}/participants\nAdd a participant to a reservation
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #E8F4F8
-participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
-database "PostgreSQL" as DB [[/microservices/svc-reservations/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-reservations" as Svc [[/microservices/svc-reservations/]] #D1FAE5
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #EDE9FE
+database "PostgreSQL" as DB [[/microservices/svc-reservations/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-reservations.html#/Reservations/addParticipant View in Swagger UI]]
@@ -38,20 +38,20 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Validate participant]]
-activate GP #DBEAFE
+activate GP #EDE9FE
 GP --> Svc : OK
 deactivate GP
 
 == Database ==
 
 Svc -> DB : SELECT parent WHERE id = ?
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Parent row
 deactivate DB
 note right of DB : 404 if parent not found
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

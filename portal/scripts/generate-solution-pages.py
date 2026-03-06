@@ -5,6 +5,9 @@ Reads solution design folders from architecture/solutions/ and generates:
   - An index page listing all solutions with status, capabilities, and services
   - Per-solution pages with the master document content and cross-links
 
+Capability mappings are derived from capability-changelog.yaml (single source
+of truth), NOT from solution capabilities.md files.
+
 Usage:
     python3 portal/scripts/generate-solution-pages.py
 """
@@ -24,7 +27,53 @@ def load_yaml(path):
         return yaml.safe_load(f)
 
 
-def parse_solution_metadata(solution_dir):
+def heading_slug(text):
+    """Reproduce MkDocs heading anchor generation."""
+    slug = text.lower()
+    slug = re.sub(r"[^a-z0-9 -]", "", slug)
+    slug = slug.replace(" ", "-")
+    slug = re.sub(r"-+", "-", slug)
+    return slug.strip("-")
+
+
+def build_cap_names(caps_data):
+    """Build a lookup dict: cap_id -> cap_name from capabilities.yaml."""
+    names = {}
+    for domain in caps_data.get("domains", []):
+        for cap in domain.get("capabilities", []):
+            names[cap["id"]] = cap.get("name", "")
+    return names
+
+
+def build_changelog_index(changelog_data):
+    """Build lookup dicts from capability-changelog.yaml.
+
+    Returns:
+        by_solution: {solution_folder: [{"id": ..., "impact": ..., "description": ...}]}
+        decisions_by_solution: {solution_folder: [ADR-xxx, ...]}
+    """
+    by_solution = {}
+    decisions_by_solution = {}
+    for entry in changelog_data.get("entries", []):
+        sol = entry.get("solution", "")
+        if not sol:
+            continue
+        if sol not in by_solution:
+            by_solution[sol] = []
+            decisions_by_solution[sol] = []
+        for cap in entry.get("capabilities", []):
+            by_solution[sol].append({
+                "id": cap["id"],
+                "impact": cap.get("impact", ""),
+                "description": cap.get("description", ""),
+            })
+        for dec in entry.get("decisions", []):
+            if dec not in decisions_by_solution[sol]:
+                decisions_by_solution[sol].append(dec)
+    return by_solution, decisions_by_solution
+
+
+def parse_solution_metadata(solution_dir, changelog_caps):
     """Extract metadata from a solution folder."""
     folder_name = os.path.basename(solution_dir)
 
@@ -33,11 +82,9 @@ def parse_solution_metadata(solution_dir):
     ticket_id = ticket_match.group(1) if ticket_match else folder_name
 
     # Find master document
-    master_doc = None
     master_content = ""
     for f in os.listdir(solution_dir):
         if f.endswith("-solution-design.md"):
-            master_doc = f
             with open(os.path.join(solution_dir, f), encoding="utf-8") as fh:
                 master_content = fh.read()
             break
@@ -84,21 +131,8 @@ def parse_solution_metadata(solution_dir):
             if len(parts) >= 3:
                 meta["date"] = parts[2].strip()
 
-    # Read capabilities mapping
-    caps_path = os.path.join(solution_dir, "3.solution", "c.capabilities", "capabilities.md")
-    meta["capabilities"] = []
-    if os.path.exists(caps_path):
-        with open(caps_path, encoding="utf-8") as fh:
-            caps_content = fh.read()
-        # Parse capability table rows
-        for line in caps_content.split("\n"):
-            cap_match = re.match(r"\|\s*(CAP-[\d.]+)\s+(.+?)\s*\|\s*(\w+)", line)
-            if cap_match:
-                meta["capabilities"].append({
-                    "id": cap_match.group(1),
-                    "name": cap_match.group(2).strip(),
-                    "impact": cap_match.group(3).strip(),
-                })
+    # Capabilities from changelog (single source of truth)
+    meta["capabilities"] = changelog_caps.get(folder_name, [])
 
     # Detect available sections
     meta["has_requirements"] = os.path.isdir(os.path.join(solution_dir, "1.requirements"))
@@ -130,20 +164,15 @@ def find_related_services(meta, tickets_data):
     return []
 
 
-def find_related_decisions(meta, tickets_data):
-    """Find ADR references from tickets.yaml."""
-    if not tickets_data:
-        return []
-    for t in tickets_data.get("tickets", []):
-        if t.get("key") == meta["ticket_id"]:
-            return t.get("decisions", [])
-    return []
+def find_related_decisions(meta, changelog_decisions):
+    """Find ADR references from capability-changelog.yaml."""
+    return changelog_decisions.get(meta.get("folder", ""), [])
 
 
-def generate_solution_page(meta, tickets_data):
+def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names):
     """Generate a per-solution Markdown page."""
     services = find_related_services(meta, tickets_data)
-    decisions = find_related_decisions(meta, tickets_data)
+    decisions = find_related_decisions(meta, changelog_decisions)
 
     lines = []
     lines.append("---")
@@ -168,15 +197,19 @@ def generate_solution_page(meta, tickets_data):
     lines.append(f"| **Ticket** | {meta['ticket_id']} |")
     lines.append("")
 
-    # Capabilities
+    # Capabilities (from capability-changelog.yaml)
     if meta["capabilities"]:
         lines.append("## Affected Capabilities")
         lines.append("")
-        lines.append("| Capability | Impact |")
-        lines.append("|-----------|--------|")
+        lines.append("| Capability | Impact | Description |")
+        lines.append("|-----------|--------|-------------|")
         for cap in meta["capabilities"]:
-            cap_anchor = cap["id"].lower().replace(".", "")
-            lines.append(f"| [{cap['id']} {cap['name']}](../capabilities/index.md#{cap_anchor}) | {cap['impact']} |")
+            cap_id = cap["id"]
+            cap_name = cap_names.get(cap_id, "")
+            cap_anchor = heading_slug(f"{cap_id} {cap_name}")
+            desc = cap.get("description", "")
+            display = f"{cap_id} {cap_name}" if cap_name else cap_id
+            lines.append(f"| [{display}](../capabilities/index.md#{cap_anchor}) | {cap['impact']} | {desc} |")
         lines.append("")
 
     # Services
@@ -302,9 +335,19 @@ def generate_index_page(solutions, tickets_data):
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # Load tickets for cross-referencing
+    # Load tickets for cross-referencing (services/components)
     tickets_path = os.path.join(METADATA_DIR, "tickets.yaml")
     tickets_data = load_yaml(tickets_path) if os.path.exists(tickets_path) else None
+
+    # Load capability changelog (single source of truth for capability mappings)
+    changelog_path = os.path.join(METADATA_DIR, "capability-changelog.yaml")
+    changelog_data = load_yaml(changelog_path) if os.path.exists(changelog_path) else {}
+    changelog_caps, changelog_decisions = build_changelog_index(changelog_data)
+
+    # Load capability names for anchor generation
+    caps_path = os.path.join(METADATA_DIR, "capabilities.yaml")
+    caps_data = load_yaml(caps_path) if os.path.exists(caps_path) else {}
+    cap_names = build_cap_names(caps_data)
 
     # Discover and parse solutions
     solutions = []
@@ -312,7 +355,7 @@ def main():
         for entry in sorted(os.listdir(SOLUTIONS_DIR)):
             sol_dir = os.path.join(SOLUTIONS_DIR, entry)
             if os.path.isdir(sol_dir) and entry.startswith("_NTK-"):
-                meta = parse_solution_metadata(sol_dir)
+                meta = parse_solution_metadata(sol_dir, changelog_caps)
                 if meta:
                     solutions.append(meta)
 
@@ -323,7 +366,7 @@ def main():
 
     # Generate per-solution pages
     for meta in solutions:
-        page_content = generate_solution_page(meta, tickets_data)
+        page_content = generate_solution_page(meta, tickets_data, changelog_decisions, cap_names)
         page_path = os.path.join(OUTPUT_DIR, f"{meta['folder']}.md")
         with open(page_path, "w", encoding="utf-8") as f:
             f.write(page_content)

@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #7c3aed
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-transport-logistics Integration Context]]
@@ -19,9 +19,9 @@ header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-tra
 title PATCH /vehicles/{vehicle_id}\nUpdate vehicle information
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logistics/]] #E8F4F8
-database "PostgreSQL" as DB [[/microservices/svc-transport-logistics/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logistics/]] #CFFAFE
+database "PostgreSQL" as DB [[/microservices/svc-transport-logistics/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-transport-logistics.html View in Swagger UI]]
@@ -37,13 +37,13 @@ note right of Svc : Validate request body
 == Database ==
 
 Svc -> DB : SELECT ... FOR UPDATE
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Current row
 deactivate DB
 note right of Svc : Merge changed fields only
 
 Svc -> DB : UPDATE ... SET ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Updated row
 deactivate DB
 

@@ -15,9 +15,9 @@ description: "Solution design for NTK-10005"
 
 ## Affected Capabilities
 
-| Capability | Impact |
-|-----------|--------|
-| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21) | Enhanced |
+| Capability | Impact | Description |
+|-----------|--------|-------------|
+| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21-day-of-adventure-check-in) | enhanced | Check-in record now captures wristband RFID tag ID for location tracking |
 
 ## Affected Services
 

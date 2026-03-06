@@ -15,11 +15,11 @@ description: "Solution design for NTK-10003"
 
 ## Affected Capabilities
 
-| Capability | Impact |
-|-----------|--------|
-| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21) | Enhanced |
-| [CAP-1.1 Guest Identity and Profile Management](../capabilities/index.md#cap-11) | Enhanced |
-| [CAP-1.3 Reservation Management](../capabilities/index.md#cap-13) | Enhanced |
+| Capability | Impact | Description |
+|-----------|--------|-------------|
+| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21-day-of-adventure-check-in) | enhanced | Check-in flow now supports walk-up guests without prior reservation |
+| [CAP-1.1 Guest Identity and Profile Management](../capabilities/index.md#cap-11-guest-identity-and-profile-management) | enhanced | Temporary guest profiles created for unregistered walk-up guests |
+| [CAP-1.3 Reservation Management](../capabilities/index.md#cap-13-reservation-management) | enhanced | Just-in-time reservation creation for walk-up guests |
 
 ## Affected Services
 
