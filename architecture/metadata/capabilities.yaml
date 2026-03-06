@@ -1,0 +1,258 @@
+# NovaTrek Adventures — Business Capability Map
+# Source of truth for L1/L2 capabilities. L3 capabilities emerge from solution designs.
+# See roadmap/ROADMAP.md Section 3 for coverage summary.
+
+domains:
+
+  - id: CAP-1
+    name: Guest Experience
+    description: Capabilities that directly serve guest-facing journeys from discovery through post-adventure engagement
+    capabilities:
+
+      - id: CAP-1.1
+        name: Guest Identity and Profile Management
+        status: implemented
+        services: [svc-guest-profiles]
+        description: Create, verify, merge, and manage guest identity records
+
+      - id: CAP-1.2
+        name: Adventure Discovery and Browsing
+        status: implemented
+        services: [svc-trip-catalog, svc-trail-management]
+        description: Search, filter, and browse available adventures and trails
+
+      - id: CAP-1.3
+        name: Reservation Management
+        status: implemented
+        services: [svc-reservations]
+        description: Create, modify, cancel, and look up adventure reservations
+
+      - id: CAP-1.4
+        name: Loyalty and Rewards
+        status: implemented
+        services: [svc-loyalty-rewards]
+        description: Points earning, tier progression, and reward redemption
+
+      - id: CAP-1.5
+        name: Guest Communications
+        status: implemented
+        services: [svc-notifications]
+        description: Multi-channel notifications (email, SMS, push) for guest interactions
+
+      - id: CAP-1.6
+        name: Trip Media and Memories
+        status: implemented
+        services: [svc-media-gallery]
+        description: Photo and video capture, storage, and sharing for completed adventures
+
+      - id: CAP-1.7
+        name: Reviews and Feedback
+        status: not-implemented
+        services: []
+        description: Guest trip reviews, ratings, and social proof for adventure selection
+        priority: high
+        gap_rationale: Guest trip reviews drive bookings; no social proof mechanism exists
+
+      - id: CAP-1.8
+        name: Personalized Recommendations
+        status: not-implemented
+        services: []
+        description: AI-driven adventure suggestions based on guest history, preferences, and behavior
+        priority: medium
+        gap_rationale: Increases average booking value; currently flat catalog with no personalization
+
+  - id: CAP-2
+    name: Adventure Operations
+    description: Capabilities supporting day-of-adventure execution from check-in through adventure completion
+    capabilities:
+
+      - id: CAP-2.1
+        name: Day-of-Adventure Check-In
+        status: implemented
+        services: [svc-check-in]
+        description: Guest arrival processing, identity verification, wristband assignment, safety briefing
+
+      - id: CAP-2.2
+        name: Schedule Planning and Optimization
+        status: implemented
+        services: [svc-scheduling-orchestrator]
+        description: Daily schedule creation, slot management, and capacity optimization
+
+      - id: CAP-2.3
+        name: Guide Assignment and Management
+        status: implemented
+        services: [svc-guide-management]
+        description: Guide roster, certification tracking, adventure assignment, and availability
+
+      - id: CAP-2.4
+        name: Trail Operations
+        status: implemented
+        services: [svc-trail-management]
+        description: Trail condition monitoring, elevation data, difficulty classification
+
+      - id: CAP-2.5
+        name: Transport Coordination
+        status: implemented
+        services: [svc-transport-logistics]
+        description: Vehicle dispatch, route planning, and guest transport scheduling
+
+  - id: CAP-3
+    name: Safety and Risk
+    description: Capabilities ensuring guest and staff safety throughout all adventure operations
+    capabilities:
+
+      - id: CAP-3.1
+        name: Waiver and Compliance Management
+        status: implemented
+        services: [svc-safety-compliance]
+        description: Digital waiver collection, age verification, regulatory compliance tracking
+
+      - id: CAP-3.2
+        name: Incident Reporting and Response
+        status: implemented
+        services: [svc-safety-compliance]
+        description: Incident logging, investigation workflow, and regulatory reporting
+
+      - id: CAP-3.3
+        name: Emergency Response Coordination
+        status: implemented
+        services: [svc-safety-compliance]
+        description: Emergency protocol activation, rescue dispatch, and communication coordination
+
+      - id: CAP-3.4
+        name: Wildlife and Environmental Monitoring
+        status: implemented
+        services: [svc-safety-compliance, svc-trail-management]
+        description: Wildlife sighting reporting, trail closure triggers, environmental risk assessment
+
+      - id: CAP-3.5
+        name: Weather Monitoring and Alerting
+        status: implemented
+        services: [svc-weather]
+        description: Weather condition tracking, severe weather alerts, and adventure cancellation triggers
+
+  - id: CAP-4
+    name: Resource Management
+    description: Capabilities for managing physical assets, inventory, and facilities
+    capabilities:
+
+      - id: CAP-4.1
+        name: Gear Inventory and Tracking
+        status: implemented
+        services: [svc-gear-inventory]
+        description: Equipment checkout, return tracking, maintenance scheduling
+
+      - id: CAP-4.2
+        name: Procurement and Vendor Management
+        status: implemented
+        services: [svc-inventory-procurement]
+        description: Purchase orders, vendor relationships, and supply chain management
+
+      - id: CAP-4.3
+        name: Location and Capacity Management
+        status: implemented
+        services: [svc-location-services]
+        description: Venue capacity tracking, geospatial boundaries, location metadata
+
+      - id: CAP-4.4
+        name: Vehicle Fleet Management
+        status: implemented
+        services: [svc-transport-logistics]
+        description: Vehicle inventory, maintenance scheduling, utilization tracking
+
+      - id: CAP-4.5
+        name: Facility and Venue Management
+        status: not-implemented
+        services: []
+        description: Facility maintenance, venue reservations, and infrastructure management
+        priority: low
+        gap_rationale: Currently handled informally through svc-location-services
+
+  - id: CAP-5
+    name: Revenue and Finance
+    description: Capabilities for payment processing, pricing, financial reporting, and revenue optimization
+    capabilities:
+
+      - id: CAP-5.1
+        name: Payment Processing
+        status: implemented
+        services: [svc-payments]
+        description: Payment authorization, capture, and settlement across payment methods
+
+      - id: CAP-5.2
+        name: Trip Pricing and Yield Management
+        status: partial
+        services: [svc-trip-catalog]
+        description: Dynamic pricing, seasonal rates, and demand-based yield optimization
+        gap_rationale: Basic pricing exists; no dynamic pricing or yield management
+
+      - id: CAP-5.3
+        name: Analytics and Business Intelligence
+        status: implemented
+        services: [svc-analytics]
+        description: Operational dashboards, booking trends, revenue analytics
+
+      - id: CAP-5.4
+        name: Financial Reporting and Reconciliation
+        status: partial
+        services: [svc-payments]
+        description: Revenue reporting, payment reconciliation, tax calculation
+        gap_rationale: Basic payment records exist; no reconciliation or tax reporting
+
+      - id: CAP-5.5
+        name: Refund and Dispute Management
+        status: partial
+        services: [svc-payments]
+        description: Refund processing, chargeback management, dispute resolution workflows
+        gap_rationale: Basic refund endpoint exists but no dispute workflows
+
+  - id: CAP-6
+    name: Partner Ecosystem
+    description: Capabilities for managing third-party partnerships, booking channels, and commission structures
+    capabilities:
+
+      - id: CAP-6.1
+        name: Third-Party Booking Channels
+        status: implemented
+        services: [svc-partner-integrations]
+        description: OTA integrations, partner API gateway, booking ingestion
+
+      - id: CAP-6.2
+        name: Affiliate and Commission Management
+        status: partial
+        services: [svc-partner-integrations]
+        description: Commission calculation, partner payout, and affiliate tracking
+        gap_rationale: Basic partner bookings exist; no commission calculation or payouts
+
+      - id: CAP-6.3
+        name: Channel Rate Parity Management
+        status: not-implemented
+        services: []
+        description: Ensuring consistent pricing across direct and partner booking channels
+        priority: medium
+        gap_rationale: Partners may undercut direct pricing; no parity enforcement
+
+  - id: CAP-7
+    name: Platform Services
+    description: Shared infrastructure capabilities consumed by multiple domain services
+    capabilities:
+
+      - id: CAP-7.1
+        name: Notification Delivery (Multi-Channel)
+        status: implemented
+        services: [svc-notifications]
+        description: Email, SMS, push notification delivery with template management
+
+      - id: CAP-7.2
+        name: Geospatial and Location Services
+        status: implemented
+        services: [svc-location-services]
+        description: Geocoding, geofencing, distance calculation, and map tile serving
+
+      - id: CAP-7.3
+        name: Search and Discovery Engine
+        status: not-implemented
+        services: []
+        description: Cross-entity full-text search with relevance ranking and faceted filtering
+        priority: medium
+        gap_rationale: No cross-entity search or relevance ranking exists

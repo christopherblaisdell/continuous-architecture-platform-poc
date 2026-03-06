@@ -1,0 +1,163 @@
+# NovaTrek Adventures — Ticket Registry
+# YAML-first ticket tracking. Source of truth before Vikunja deployment.
+# Migrated from phases/phase-1-ai-tool-cost-comparison/workspace/scripts/mock-data/tickets.json
+# Capability mappings added retrospectively based on solution designs.
+
+tickets:
+
+  - key: NTK-10001
+    summary: Add Elevation Profile Data to Trail Response
+    status: Ready for Dev
+    priority: Medium
+    assignee: alex.chen
+    reporter: jordan.blake
+    labels: [api-enhancement, svc-trail-management]
+    created: 2025-01-15
+    updated: 2025-02-01
+    sprint: Sprint 24-3
+    components: [svc-trail-management, trail-geo-data]
+    solution: _NTK-10001-add-elevation-to-trail-response
+    capabilities:
+      - id: CAP-2.4
+        impact: enhanced
+    user_story: |
+      As a guest planning a hike,
+      I want to see elevation gain, loss, and profile data on the trail page,
+      So that I can assess the physical difficulty and plan my route.
+
+  - key: NTK-10002
+    summary: Adventure Category Classification for Check-In UI Patterns
+    status: In Progress
+    priority: High
+    assignee: maya.rodriguez
+    reporter: jordan.blake
+    labels: [api-enhancement, svc-check-in, svc-adventure-catalog]
+    created: 2025-01-20
+    updated: 2025-02-10
+    sprint: Sprint 24-4
+    components: [svc-check-in, svc-adventure-catalog]
+    solution: _NTK-10002-adventure-category-classification
+    capabilities:
+      - id: CAP-2.1
+        impact: enhanced
+      - id: CAP-1.2
+        impact: enhanced
+    decisions: [ADR-004, ADR-005]
+    user_story: |
+      As an operations manager,
+      I want check-in kiosks to render different UI flows based on adventure category,
+      So that guests receive the appropriate safety checks and equipment for their adventure type.
+
+  - key: NTK-10003
+    summary: Support Unregistered Guest Self-Service Check-In
+    status: In Progress
+    priority: Critical
+    assignee: alex.chen
+    reporter: sam.patel
+    labels: [api-enhancement, svc-check-in, svc-guest-identity, critical-path]
+    created: 2025-01-22
+    updated: 2025-02-12
+    sprint: Sprint 24-4
+    components: [svc-check-in, svc-guest-identity, svc-scheduling-orchestrator]
+    solution: _NTK-10003-unregistered-guest-self-checkin
+    capabilities:
+      - id: CAP-2.1
+        impact: enhanced
+      - id: CAP-1.1
+        impact: enhanced
+      - id: CAP-1.3
+        impact: enhanced
+    decisions: [ADR-006, ADR-007, ADR-008, ADR-009]
+    user_story: |
+      As an unregistered walk-up guest,
+      I want to check in at a self-service kiosk using my reservation confirmation code,
+      So that I can begin my adventure without waiting in line at a staffed counter.
+
+  - key: NTK-10004
+    summary: Guide Schedule Overwrite Bug in Scheduling Orchestrator
+    status: New
+    priority: High
+    assignee: null
+    reporter: sam.patel
+    labels: [bug, svc-scheduling-orchestrator, data-integrity]
+    created: 2025-02-05
+    updated: 2025-02-05
+    sprint: null
+    components: [svc-scheduling-orchestrator]
+    solution: _NTK-10004-guide-schedule-overwrite-bug
+    capabilities:
+      - id: CAP-2.2
+        impact: fixed
+    decisions: [ADR-010, ADR-011]
+    user_story: |
+      As a scheduling coordinator,
+      I want concurrent schedule updates to merge safely without overwriting each other,
+      So that guides retain their correct certifications and assignment qualifications.
+
+  - key: NTK-10005
+    summary: Add Wristband RFID Field to Check-In Record
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: maya.rodriguez
+    labels: [api-enhancement, svc-check-in]
+    created: 2025-02-08
+    updated: 2025-02-08
+    sprint: null
+    components: [svc-check-in]
+    solution: _NTK-10005-wristband-rfid-field
+    capabilities:
+      - id: CAP-2.1
+        impact: enhanced
+    user_story: |
+      As a park operations technician,
+      I want to associate an RFID wristband tag with each guest at check-in,
+      So that the guest can be tracked for safety during their adventure.
+
+  - key: NTK-10006
+    summary: Real-Time Adventure Tracking and Emergency Alerting System
+    status: New
+    priority: Critical
+    assignee: null
+    reporter: sam.patel
+    labels: [new-capability, safety, real-time, multi-service]
+    created: 2025-02-15
+    updated: 2025-02-15
+    sprint: null
+    components: [svc-adventure-tracking, svc-emergency-response, svc-check-in, svc-notifications, svc-safety-compliance]
+    solution: null
+    capabilities:
+      - id: CAP-3.3
+        impact: enhanced
+      - id: CAP-3.2
+        impact: enhanced
+      - id: CAP-2.1
+        impact: enhanced
+    new_services: [svc-adventure-tracking, svc-emergency-response]
+    user_story: |
+      As a park safety officer,
+      I want real-time GPS tracking of all guests on active adventures with automated emergency alerting,
+      So that rescue response times are reduced and insurance tracking mandates are met.
+
+  - key: NTK-10007
+    summary: Guest Loyalty Referral Program with Campaign Management
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [new-capability, loyalty, revenue, multi-service]
+    created: 2025-02-18
+    updated: 2025-02-18
+    sprint: null
+    components: [svc-referral-engine, svc-campaign-management, svc-loyalty-rewards, svc-guest-profiles, svc-notifications]
+    solution: null
+    capabilities:
+      - id: CAP-1.4
+        impact: enhanced
+      - id: CAP-5.3
+        impact: enhanced
+    new_services: [svc-referral-engine, svc-campaign-management]
+    user_story: |
+      As a loyal NovaTrek guest,
+      I want to share a referral code with friends and earn bonus loyalty points when they complete their first adventure,
+      So that I am rewarded for bringing new guests to NovaTrek.
