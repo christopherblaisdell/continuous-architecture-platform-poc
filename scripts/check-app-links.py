@@ -2,7 +2,7 @@
 """Check which application step endpoints match spec paths."""
 import yaml, os, re
 
-specs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "portal", "docs", "specs")
+specs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "architecture", "specs")
 summaries = {}
 for f in sorted(os.listdir(specs_dir)):
     if not f.endswith(".yaml"):

@@ -2,7 +2,7 @@
 """
 Generate AsyncAPI UI pages for the NovaTrek Architecture Portal.
 
-Reads AsyncAPI YAML specs from portal/docs/events/ and generates one HTML page
+Reads AsyncAPI YAML specs from architecture/events/ and generates one HTML page
 per producing service under portal/docs/events-ui/. Each page embeds the spec
 inline and renders it with the AsyncAPI React component (CDN-loaded).
 
@@ -16,7 +16,7 @@ import os
 import yaml
 
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-EVENTS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
+EVENTS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "events")
 EVENTS_UI_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events-ui")
 
 ASYNCAPI_HTML_TEMPLATE = """\
