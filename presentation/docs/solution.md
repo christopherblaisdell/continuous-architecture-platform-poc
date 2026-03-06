@@ -97,7 +97,7 @@ This is not a slide deck about a future state. Everything described here **alrea
 
 | Component | Status | Evidence |
 |-----------|--------|----------|
-| AI-assisted workflow | Proven | 5 scenarios executed, 96.1% quality |
+| AI-assisted workflow | Proven | 5 scenarios executed, 39 files produced |
 | Enhanced architecture workspace | Built | Existing specs + AI instructions + standards + domain model |
 | Markdown-first artifacts | Produced | 39 files across 5 scenarios |
 | Automated publishing pipeline | Live | Architecture portal deployed at Azure Static Web Apps |

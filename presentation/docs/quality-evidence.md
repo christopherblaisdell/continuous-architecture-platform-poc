@@ -1,31 +1,32 @@
-# Quality Evidence: 96.1% on First Execution
+# Output Analysis: What the AI Produced
 
-## Five Scenarios. 155 Quality Checks. 149 Passed.
+## Five Scenarios. 39 Architecture Files. Head-to-Head Comparison.
 
-We didn't just measure cost. We measured **quality** — running 5 representative architecture scenarios through a structured evaluation framework with specific quality criteria per scenario.
+We didn't just measure cost. We measured **what was actually produced** — running 5 representative architecture scenarios and comparing Copilot's output against Roo Code's on completeness, accuracy, and adherence to standards.
 
 ---
 
-## The Scorecard
+## The Five Scenarios
 
-**SC-01 — Ticket Triage** (Wristband RFID field addition)
-<div class="score-bar"><div class="fill" style="width: 92%">23/25 — 92%</div></div>
+**SC-01 — Ticket Triage** (Wristband RFID field addition)  
+Produced: Solution design, 2 ADRs, impact assessment, user stories, assumptions  
+**Outcome**: Identified cross-service impacts, proposed phased rollout
 
-**SC-02 — Classification Design** (Adventure category to check-in pattern mapping)
-<div class="score-bar"><div class="fill" style="width: 94%">33/35 — 94%</div></div>
+**SC-02 — Classification Design** (Adventure category to check-in pattern mapping)  
+Produced: Solution design with configuration-driven approach, 2 ADRs, implementation guidance  
+**Outcome**: Recommended YAML-based classification with Pattern 3 fallback for safety
 
-**SC-03 — Production Investigation** (Guide schedule overwrite bug)
-<div class="score-bar"><div class="fill" style="width: 100%">30/30 — 100%</div></div>
+**SC-03 — Production Investigation** (Guide schedule overwrite bug)  
+Produced: Investigation report citing specific log entries and source code lines, 2 ADRs, 3-phase remediation plan  
+**Outcome**: Root cause traced to entity replacement anti-pattern, recommended PATCH semantics + optimistic locking
 
-**SC-04 — Architecture Update** (Elevation data Swagger spec modification)
-<div class="score-bar"><div class="fill" style="width: 96%">24/25 — 96%</div></div>
+**SC-04 — Architecture Update** (Elevation data Swagger spec modification)  
+Produced: Updated OpenAPI spec, impact assessment, implementation guidance  
+**Outcome**: Enhanced existing fields with better descriptions and constraints
 
-**SC-05 — Complex Cross-Service Design** (Unregistered guest self check-in)
-<div class="score-bar"><div class="fill" style="width: 98%">39/40 — 98%</div></div>
-
-<div class="big-number">149/155</div>
-
-**Total: 96.1% standards compliance across all scenarios.**
+**SC-05 — Complex Cross-Service Design** (Unregistered guest self check-in)  
+Produced: Solution design spanning 6 services, 3 ADRs, 14 user stories, PlantUML diagrams  
+**Outcome**: Designed session-scoped temporary guest profile with bounded context enforcement
 
 ---
 
@@ -89,20 +90,18 @@ The evaluation covered five dimensions. Copilot won or tied in every one:
 | Dimension | Winner | Evidence |
 |-----------|:------:|---------|
 | **Completeness** | Copilot | 39 files vs 37; Roo Code missing `simple.explanation.md` and `assumptions.md` in the hardest scenario |
-| **Accuracy** | Copilot | Zero fabrication vs 4 fabricated OpenAPI fields |
-| **Standards Compliance** | Copilot | 149/155 (96.1%) across all 5 scenarios |
+| **Accuracy** | Copilot | Zero fabrication vs 4 fabricated OpenAPI fields (see below) |
+| **Standards Adherence** | Copilot | Followed MADR format, arc42 structure, C4 notation across all scenarios |
 | **Tool Utilization** | Copilot | Fetched MR-5001 detail for deeper investigation; Roo Code stopped at the list view |
 | **ADR Quality** | Copilot | More detailed consequences sections with source code line references |
 
 ---
 
-## What This Means
+## What This Demonstrates
 
 <div class="key-insight" markdown>
-**The AI produces architecture artifacts at 96.1% quality on its first attempt** — using the same standards (arc42, MADR, C4, ISO 25010) that the architecture practice mandates. This is not a rough draft that needs heavy editing. It's production-quality output that needs a final review pass.
+**The AI produced 39 complete architecture artifacts following corporate standards** (arc42, MADR, C4, ISO 25010) across 5 scenarios. These aren't rough drafts — they're structured documents that follow templates, cite specific source code lines, and cross-reference actual workspace files. And the better-performing tool is also the **208x cheaper** one.
 </div>
-
-And the better-performing tool is also the **208x cheaper** one.
 
 <div class="cta-box" markdown>
 

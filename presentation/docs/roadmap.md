@@ -16,9 +16,9 @@ The Continuous Architecture Platform is delivered in six phases. Each phase deli
 
 **March 2026**
 
-Compared GitHub Copilot Pro+ against Roo Code + OpenRouter across 5 architecture scenarios. Established cost (208x per-run advantage) and quality (96.1%) benchmarks. Produced ADR-001 recommending Copilot Pro+.
+Compared GitHub Copilot Pro+ against Roo Code + OpenRouter across 5 architecture scenarios. Established cost advantage (208x per-run) and output completeness. Produced ADR-001 recommending Copilot Pro+.
 
-**Delivered:** Cost comparison data, quality scorecard, billing model research, toolchain recommendation.
+**Delivered:** Cost comparison data, output analysis, billing model research, toolchain recommendation.
 
 </div>
 
@@ -90,7 +90,7 @@ Measure and improve the platform's effectiveness. Track quality scores over time
 
 | Capability | Status | Phase |
 |-----------|:------:|:-----:|
-| AI produces 96.1% quality artifacts | **Proven** | 1 |
+| AI produces complete architecture artifacts | **Proven** | 1 |
 | Copilot is 208x cheaper per run | **Proven** | 1 |
 | MkDocs publishes 301 artifacts automatically | **Proven** | 6 |
 | PCI compliance zones in architecture diagrams | **Proven** | 6 |

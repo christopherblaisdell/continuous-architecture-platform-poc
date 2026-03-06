@@ -28,7 +28,7 @@ nav:
   - The Solution: solution.md
   - Evidence:
     - "Cost: 208x Cheaper": cost-evidence.md
-    - "Quality: 96.1%": quality-evidence.md
+    - "Output Analysis": quality-evidence.md
   - How It Works:
     - Enhanced Workspace: shared-workspace.md
     - Markdown-First: markdown-first.md

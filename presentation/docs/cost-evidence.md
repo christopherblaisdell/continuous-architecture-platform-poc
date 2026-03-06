@@ -145,8 +145,8 @@ Copilot's cost line is **flat** regardless of volume. OpenRouter's grows linearl
 
 <div class="cta-box" markdown>
 
-### But is the quality comparable?
+### What did the AI actually produce?
 
-[Quality Evidence: 96.1% on First Execution](quality-evidence.md)
+[Output Analysis: What Was Produced in 5 Scenarios](quality-evidence.md)
 
 </div>
