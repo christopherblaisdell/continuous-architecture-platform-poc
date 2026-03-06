@@ -1,0 +1,200 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 240,
+      "height": 600,
+      "backgroundColor": "#2C3E50",
+      "strokeColor": "#2C3E50"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 15,
+      "y": 15,
+      "text": "Operations Dashboard",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "menu_active",
+      "x": 15,
+      "y": 80,
+      "text": "Live Tracking",
+      "fontSize": 14,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "menu_2",
+      "x": 15,
+      "y": 120,
+      "text": "Adventures Today",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_3",
+      "x": 15,
+      "y": 160,
+      "text": "Alerts & Incidents",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_header",
+      "x": 240,
+      "y": 0,
+      "width": 560,
+      "height": 60,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "x": 260,
+      "y": 15,
+      "text": "Live Adventure Tracking - 15 Active Adventures",
+      "fontSize": 18,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "map_area",
+      "x": 240,
+      "y": 80,
+      "width": 560,
+      "height": 350,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "map_placeholder",
+      "x": 400,
+      "y": 250,
+      "text": "[ Live Map with Guest Positions ]",
+      "fontSize": 14,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "rectangle",
+      "id": "stats_area",
+      "x": 240,
+      "y": 450,
+      "width": 560,
+      "height": 150,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_box_1",
+      "x": 260,
+      "y": 470,
+      "width": 130,
+      "height": 100,
+      "backgroundColor": "#E3F2FD",
+      "strokeColor": "#2196F3"
+    },
+    {
+      "type": "text",
+      "id": "stat_label_1",
+      "x": 275,
+      "y": 485,
+      "text": "Guests on Trail",
+      "fontSize": 12,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "stat_value_1",
+      "x": 310,
+      "y": 520,
+      "text": "245",
+      "fontSize": 20,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_box_2",
+      "x": 420,
+      "y": 470,
+      "width": 130,
+      "height": 100,
+      "backgroundColor": "#FCE4EC",
+      "strokeColor": "#E91E63"
+    },
+    {
+      "type": "text",
+      "id": "stat_label_2",
+      "x": 440,
+      "y": 485,
+      "text": "Critical Alerts",
+      "fontSize": 12,
+      "strokeColor": "#AD1457"
+    },
+    {
+      "type": "text",
+      "id": "stat_value_2",
+      "x": 465,
+      "y": 520,
+      "text": "2",
+      "fontSize": 20,
+      "strokeColor": "#AD1457"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_box_3",
+      "x": 580,
+      "y": 470,
+      "width": 200,
+      "height": 100,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "stat_label_3",
+      "x": 600,
+      "y": 485,
+      "text": "Avg Response Time",
+      "fontSize": 12,
+      "strokeColor": "#E65100"
+    },
+    {
+      "type": "text",
+      "id": "stat_value_3",
+      "x": 650,
+      "y": 520,
+      "text": "4.2 min",
+      "fontSize": 20,
+      "strokeColor": "#E65100"
+    }
+  ],
+  "appState": {
+    "name": "Operations Dashboard - Live Tracking",
+    "viewport": {
+      "enableVaporMode": false,
+      "isResizing": false,
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "currentItemBackgroundColor": "#ffffff",
+    "currentItemOpacity": 100,
+    "fileTitle": "ops-dashboard-tracking",
+    "gridMode": false
+  }
+}

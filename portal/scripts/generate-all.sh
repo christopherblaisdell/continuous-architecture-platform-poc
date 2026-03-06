@@ -33,42 +33,49 @@ echo ""
 # ------------------------------------------------------------------
 # Step 1: Generate Swagger UI pages from OpenAPI specs
 # ------------------------------------------------------------------
-echo "[1/6] Generating Swagger UI pages..."
+echo "[1/7] Generating Swagger UI pages..."
 python3 "$SCRIPT_DIR/generate-swagger-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
 # Step 2: Generate microservice pages (MD + PUML + SVG)
 # ------------------------------------------------------------------
-echo "[2/6] Generating microservice pages..."
+echo "[2/7] Generating microservice pages..."
 python3 "$SCRIPT_DIR/generate-microservice-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
 # Step 3: Generate application pages (MD + PUML + SVG)
 # ------------------------------------------------------------------
-echo "[3/6] Generating application pages..."
+echo "[3/7] Generating application pages..."
 python3 "$SCRIPT_DIR/generate-application-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 4: Generate AsyncAPI event pages
+# Step 4: Generate wireframe pages from Excalidraw JSON
 # ------------------------------------------------------------------
-echo "[4/6] Generating AsyncAPI event pages..."
+echo "[4/7] Generating wireframe pages..."
+python3 "$SCRIPT_DIR/generate-wireframe-pages.py"
+echo ""
+
+# ------------------------------------------------------------------
+# Step 5: Generate AsyncAPI event pages
+# ------------------------------------------------------------------
+echo "[5/7] Generating AsyncAPI event pages..."
 python3 "$SCRIPT_DIR/generate-event-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 5: Generate standalone PlantUML diagrams
+# Step 6: Generate standalone PlantUML diagrams
 # ------------------------------------------------------------------
-echo "[5/6] Generating standalone PlantUML diagrams..."
+echo "[6/7] Generating standalone PlantUML diagrams..."
 bash "$SCRIPT_DIR/generate-svgs.sh"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 6: Build MkDocs site
+# Step 7: Build MkDocs site
 # ------------------------------------------------------------------
-echo "[6/6] Building MkDocs site..."
+echo "[7/7] Building MkDocs site..."
 cd "$PORTAL_DIR"
 python3 -m mkdocs build
 
@@ -78,6 +85,9 @@ cp -r docs/services/api site/services/ 2>/dev/null || true
 cp -r "$REPO_ROOT/architecture/specs" site/ 2>/dev/null || true
 cp -r docs/microservices/svg site/microservices/ 2>/dev/null || true
 cp -r docs/applications/svg site/applications/ 2>/dev/null || true
+cp -r docs/applications/*/wireframes/*.svg site/applications/*/wireframes/ 2>/dev/null || true
+cp -r docs/applications/*/wireframes/*.html site/applications/*/wireframes/ 2>/dev/null || true
+cp -r docs/applications/*/wireframes/*.excalidraw site/applications/*/wireframes/ 2>/dev/null || true
 cp -r docs/events-ui site/ 2>/dev/null || true
 cp -r docs/diagrams/svg site/diagrams/ 2>/dev/null || mkdir -p site/diagrams && true
 cp staticwebapp.config.json site/ 2>/dev/null || true

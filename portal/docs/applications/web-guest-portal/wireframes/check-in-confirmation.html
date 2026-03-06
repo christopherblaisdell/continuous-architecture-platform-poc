@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Check-In Confirmation Flow</title>
+    <script async src="https://cdn.jsdelivr.net/npm/excalidraw@0.15.0/dist/excalidraw.production.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
+        #root { width: 100vw; height: 100vh; }
+        .header { position: absolute; top: 10px; left: 10px; z-index: 10; background: white; padding: 10px 15px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 16px; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guest Check-In Confirmation Flow</h1>
+    </div>
+    <div id="root"></div>
+    <script>
+        const excalidrawAPI = window.ExcalidrawAPI;
+        const excalidrawData = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "header", "x": 0, "y": 0, "width": 800, "height": 60, "backgroundColor": "#4C63D2", "strokeColor": "#4C63D2"}, {"type": "text", "id": "header_text", "x": 20, "y": 15, "text": "Check-In Confirmation", "fontSize": 24, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "content_area", "x": 40, "y": 100, "width": 720, "height": 300, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "confirmation_title", "x": 60, "y": 120, "text": "Adventure: Sunrise Ridge Trail", "fontSize": 18, "strokeColor": "#333333"}, {"type": "rectangle", "id": "info_box", "x": 60, "y": 160, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#CCCCCC"}, {"type": "text", "id": "guest_label", "x": 80, "y": 180, "text": "Guest: Alex Chen", "fontSize": 14, "strokeColor": "#666666"}, {"type": "text", "id": "time_label", "x": 80, "y": 210, "text": "Check-in: 08:30 AM", "fontSize": 14, "strokeColor": "#666666"}, {"type": "text", "id": "group_label", "x": 80, "y": 240, "text": "Group Size: 4 guests", "fontSize": 14, "strokeColor": "#666666"}, {"type": "rectangle", "id": "safety_box", "x": 400, "y": 160, "width": 300, "height": 100, "backgroundColor": "#FFF3E0", "strokeColor": "#FFB74D"}, {"type": "text", "id": "safety_label", "x": 420, "y": 180, "text": "Safety Briefing: COMPLETED", "fontSize": 14, "strokeColor": "#E65100"}, {"type": "text", "id": "waiver_label", "x": 420, "y": 210, "text": "Waivers: SIGNED", "fontSize": 14, "strokeColor": "#E65100"}, {"type": "text", "id": "wristband_label", "x": 420, "y": 240, "text": "Wristband: #3F8A1D", "fontSize": 14, "strokeColor": "#E65100"}, {"type": "rectangle", "id": "button_start", "x": 340, "y": 430, "width": 150, "height": 50, "backgroundColor": "#4CAF50", "strokeColor": "#2E7D32"}, {"type": "text", "id": "button_start_text", "x": 365, "y": 460, "text": "START ADVENTURE", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "button_edit", "x": 520, "y": 430, "width": 100, "height": 50, "backgroundColor": "#E8E8E8", "strokeColor": "#999999"}, {"type": "text", "id": "button_edit_text", "x": 535, "y": 460, "text": "EDIT", "fontSize": 14, "strokeColor": "#333333"}], "appState": {"name": "Guest Check-In Confirmation Flow", "viewport": {"enableVaporMode": false, "isResizing": false, "offset": {"x": 0, "y": 0}}, "currentItemBackgroundColor": "#ffffff", "currentItemEndArrowType": null, "currentItemEndBinding": null, "currentItemFillStyle": "hachure", "currentItemFontFamily": 1, "currentItemFontSize": 16, "currentItemLeftArrowType": null, "currentItemOpacity": 100, "currentItemRoughness": 1, "currentItemStrokeColor": "#000000", "currentItemStrokeSharpness": "sharp", "currentItemStrokeStyle": "solid", "currentItemStrokeWidth": 2, "currentItemTextAlign": "left", "currentItemVerticalAlign": "top", "editingElement": null, "editingGroupId": null, "fileTitle": "check-in-web-portal", "gridMode": false, "gridModeEnabled": false, "gridSize": 20, "lastPointerDownWith": "mouse", "objectsSnapModeEnabled": false, "openSidebar": true, "collaborators": [], "showStockImages": false, "toast": null}};
+        
+        excalidrawAPI.render(
+            document.getElementById("root"),
+            {
+                elements: excalidrawData.elements,
+                appState: {
+                    ...excalidrawData.appState,
+                    readOnly: true
+                },
+                onChange: () => {}
+            }
+        );
+    </script>
+</body>
+</html>
