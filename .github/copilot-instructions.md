@@ -179,6 +179,59 @@ All PlantUML diagrams MUST follow C4 model notation from `architecture-standards
 - Always include a legend for non-obvious notations
 - Level 1 (System Context) for cross-system overviews; Level 2 (Container) for service internals; Level 3 (Component) for within-service detail
 
+### Wireframe Management
+
+**Location**: `portal/docs/applications/{app}/wireframes/`
+
+All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`). The system automatically generates:
+- SVG previews for embedding in documentation
+- Interactive HTML viewers for design collaboration
+- Markdown wrapper pages linking design to architecture
+
+**When to Reference Wireframes:**
+- Proposing UI changes that affect guest experience or operations workflows
+- Designing new application screens for feature tickets
+- Analyzing user flow requirements in solution designs
+- Understanding guest vs. operator interaction models
+
+**Wireframing Workflow:**
+
+1. **Edit locally (VS Code)**:
+   - Install extension: Search "Excalidraw" in VS Code extensions (or manually: `pomdtr.excalidraw-editor`)
+   - Open `.excalidraw` files from `portal/docs/applications/{app}/wireframes/`
+   - Edit directly in VS Code with live preview
+
+2. **Or edit online**:
+   - Upload `.excalidraw` JSON to [excalidraw.com](https://excalidraw.com)
+   - Design the screen, export as JSON
+   - Download and save to `portal/docs/applications/{app}/wireframes/`
+
+3. **Regenerate pages**:
+   - Run `bash portal/scripts/generate-all.sh` to render SVG + HTML + markdown
+   - Or run just `python3 portal/scripts/generate-wireframe-pages.py` to update only wireframes
+
+4. **Publish**:
+   - Commit `.excalidraw` JSON, `.md`, `.svg`, and `.html` files
+   - CI/CD automatically deploys to Mango Sand portal
+
+**Wireframe Naming Convention**:
+- Kebab-case, descriptive: `check-in-confirmation.excalidraw`, `live-tracking.excalidraw`
+- Avoid version numbers in filenames — use git history
+
+**Current Wireframes**:
+- **web-guest-portal**:
+  - `check-in-confirmation.excalidraw` — Guest check-in completion screen
+- **web-ops-dashboard**:
+  - `live-tracking.excalidraw` — Operations dashboard showing real-time adventure tracking map
+- **app-guest-mobile**:
+  - `adventure-selection.excalidraw` — Mobile app adventure search and booking screen
+
+**When Proposing Wireframe Changes:**
+- If a ticket requires UI/UX work, propose or update wireframes as part of the solution design
+- Include a reference: "See wireframe: portal/docs/applications/{app}/wireframes/{name}.md for visual design"
+- Wireframe changes should precede API contract changes — design flows first, then define integration points
+- Wireframes inform API schema decisions (e.g., which fields are displayed, how data is paginated or filtered)
+
 ### arc42 Template
 
 Reference `architecture-standards/arc42/` for the full arc42 template structure. Solution designs should map to arc42 sections where applicable:
