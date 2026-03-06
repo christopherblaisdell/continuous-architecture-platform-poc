@@ -1,0 +1,105 @@
+# ===========================================================================
+# Sync Vikunja Tickets to tickets.yaml
+# ===========================================================================
+# Pulls status and priority changes from Vikunja back into tickets.yaml
+# and commits the result. Three trigger modes:
+#   1. Scheduled: every 30 minutes during business hours (Mon-Fri 8-18 ET)
+#   2. Manual: workflow_dispatch for on-demand sync
+#   3. Webhook relay: repository_dispatch event from external webhook handler
+# ===========================================================================
+
+name: Sync Vikunja Tickets
+
+on:
+  schedule:
+    # Every 30 minutes, Mon-Fri, 12:00-22:00 UTC (8 AM - 6 PM ET)
+    - cron: '*/30 12-22 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      direction:
+        description: 'Sync direction'
+        required: false
+        default: 'pull'
+        type: choice
+        options:
+          - pull
+          - push
+          - both
+      dry_run:
+        description: 'Dry run (no changes committed)'
+        required: false
+        default: false
+        type: boolean
+  repository_dispatch:
+    types: [vikunja-sync]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync Tickets
+    runs-on: ubuntu-latest
+    # Skip scheduled runs if Vikunja is not configured
+    if: >-
+      github.event_name != 'schedule' ||
+      (vars.VIKUNJA_URL != '' && secrets.VIKUNJA_TOKEN != '')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Determine sync parameters
+        id: params
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "direction=${{ inputs.direction }}" >> "$GITHUB_OUTPUT"
+            echo "dry_run=${{ inputs.dry_run }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "direction=pull" >> "$GITHUB_OUTPUT"
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+          else
+            # Scheduled run — pull only
+            echo "direction=pull" >> "$GITHUB_OUTPUT"
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run ticket sync
+        env:
+          VIKUNJA_URL: ${{ vars.VIKUNJA_URL }}
+          VIKUNJA_TOKEN: ${{ secrets.VIKUNJA_TOKEN }}
+        run: |
+          FLAGS="--direction ${{ steps.params.outputs.direction }}"
+          if [ "${{ steps.params.outputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+          python3 portal/scripts/sync-tickets.py $FLAGS
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet architecture/metadata/tickets.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat architecture/metadata/tickets.yaml
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true' && steps.params.outputs.dry_run != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add architecture/metadata/tickets.yaml
+          git commit -m "chore: sync ticket status from Vikunja [skip ci]"
+          git push
