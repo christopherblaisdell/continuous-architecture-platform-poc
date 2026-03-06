@@ -1,0 +1,85 @@
+@startuml partner-booking-flow
+' NovaTrek Adventures - Partner / OTA Booking Flow
+' External partner submits a booking through the integration API
+
+title NovaTrek Adventures - Partner Booking Flow
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2E86AB
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+}
+
+' ============================================================
+' Participants
+' ============================================================
+participant "Partner System" as partner
+participant "API Gateway" as gateway
+participant "svc-partner-\nintegrations" as integrations
+participant "svc-reservations" as reservations [[/services/svc-reservations/]]
+participant "svc-trip-catalog" as catalog [[/services/svc-trip-catalog/]]
+participant "svc-payments" as payments
+queue "Kafka" as kafka
+
+' ============================================================
+' Partner Authentication
+' ============================================================
+partner -> gateway : POST /partner/bookings\n(API key + booking payload)
+gateway -> gateway : validate API key + rate limit
+gateway -> integrations : submitPartnerBooking(partnerId, bookingPayload)
+integrations -> integrations : validate partner credentials + contract status
+
+alt Partner credentials invalid or contract expired
+    integrations --> gateway : 401 Unauthorized / 403 Forbidden
+    gateway --> partner : error response
+end
+
+' ============================================================
+' Trip Availability Check
+' ============================================================
+integrations -> catalog : [[/services/svc-trip-catalog/ checkAvailability(tripId, date, partySize)]]
+
+alt Trip available
+    catalog --> integrations : available (spotsRemaining, pricing)
+else Trip sold out or date unavailable
+    catalog --> integrations : unavailable (reason, alternativeDates)
+    integrations --> gateway : 409 Conflict - trip unavailable
+    gateway --> partner : unavailable response with alternatives
+end
+
+' ============================================================
+' Reservation Creation
+' ============================================================
+integrations -> reservations : [[/services/svc-reservations/ createPartnerReservation(\n  tripId, guestDetails, partnerId)]]
+reservations -> reservations : create reservation (source=PARTNER)
+reservations --> integrations : reservationId, totalAmount
+
+' ============================================================
+' Commission Calculation and Payment
+' ============================================================
+integrations -> integrations : calculateCommission(\n  partnerId, totalAmount, contractTerms)
+integrations -> payments : processPartnerPayment(\n  amount, commissionRate, partnerBillingRef)
+
+alt Payment processed successfully
+    payments --> integrations : payment confirmed (txnId, netAmount)
+    integrations -> reservations : [[/services/svc-reservations/ confirmReservation(reservationId)]]
+    reservations -> kafka : publish reservation.created
+    reservations --> integrations : reservation CONFIRMED
+
+    integrations --> gateway : 201 Created\n(reservationId, confirmationCode, netAmount)
+    gateway --> partner : booking confirmation response
+else Payment processing failed
+    payments --> integrations : payment failed (errorCode, message)
+    integrations -> reservations : [[/services/svc-reservations/ cancelReservation(reservationId)]]
+    reservations --> integrations : reservation CANCELLED
+    integrations --> gateway : 402 Payment Required
+    gateway --> partner : payment error response
+end
+
+@enduml
