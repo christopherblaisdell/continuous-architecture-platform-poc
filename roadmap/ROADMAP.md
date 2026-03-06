@@ -330,11 +330,11 @@ Deploy Vikunja as the ticketing UI.
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 5.1 | Capability health dashboard (churn analysis, staleness detection) | 2.2 | Medium |
-| 5.2 | Solution search -- full-text search across all solution designs | 2.1 | Medium |
-| 5.3 | Related Solutions auto-detection (same service or capability overlap) | 2.1, 2.2 | Medium |
-| 5.4 | Build MCP server for real-time AI access to Vikunja | 4.3 | Medium |
-| 5.5 | Automated ticket-to-branch status synchronization via webhooks | 4.7 | Medium |
+| 5.1 | COMPLETE -- Added Capability Health Dashboard to `generate-capability-pages.py` with staleness detection (active/aging/stale/untouched), churn analysis, L3 emergence counts, and per-capability health table | 2.2 | Medium |
+| 5.2 | COMPLETE -- MkDocs Material built-in search covers full-text search across all portal content including solution designs | 2.1 | Medium |
+| 5.3 | COMPLETE -- Added Related Solutions auto-detection to `generate-solution-pages.py` by service and capability overlap, renders cross-link table on each solution page | 2.1, 2.2 | Medium |
+| 5.4 | COMPLETE -- `scripts/mcp-vikunja-server.py` MCP server with 6 tools (list_tickets, get_ticket, search_tickets, get_capability_tickets, list_capabilities, get_capability) over stdio, Vikunja + YAML dual-source, configured in `.vscode/mcp.json` | 4.3 | Medium |
+| 5.5 | COMPLETE -- `scripts/sync-branch-status.py` detects solution branches and updates ticket status (New -> In Progress -> Ready for Dev), integrated into `validate-solution.yml` workflow | 4.7 | Medium |
 | 5.6 | Custom domain for portal (register domain, configure DNS, enable Bicep parameter) | -- | Small |
 | 5.7 | Implement priority gap capabilities (Reviews, Refund Management) | 2.2 | Large |
 

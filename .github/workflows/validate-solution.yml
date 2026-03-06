@@ -87,3 +87,50 @@ jobs:
 
       - name: Build portal (validates generators and cross-links)
         run: bash portal/scripts/generate-all.sh
+
+  # -------------------------------------------------------------------
+  # Update ticket status based on branch/PR state
+  # -------------------------------------------------------------------
+  sync-branch-status:
+    runs-on: ubuntu-latest
+    name: Sync Branch Status
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Sync ticket status from branches
+        env:
+          VIKUNJA_URL: ${{ vars.VIKUNJA_URL }}
+          VIKUNJA_TOKEN: ${{ secrets.VIKUNJA_TOKEN }}
+        run: python3 scripts/sync-branch-status.py
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet architecture/metadata/tickets.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit status updates
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add architecture/metadata/tickets.yaml
+          git commit -m "chore: sync ticket status from branch state [skip ci]"
+          git push

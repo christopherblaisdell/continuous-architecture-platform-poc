@@ -169,7 +169,35 @@ def find_related_decisions(meta, changelog_decisions):
     return changelog_decisions.get(meta.get("folder", ""), [])
 
 
-def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names):
+def find_related_solutions(meta, all_solutions, tickets_data):
+    """Find related solutions by service or capability overlap."""
+    my_folder = meta.get("folder", "")
+    my_caps = set(c["id"] for c in meta.get("capabilities", []))
+    my_services = set(find_related_services(meta, tickets_data))
+
+    related = []
+    for other in all_solutions:
+        if other["folder"] == my_folder:
+            continue
+        other_caps = set(c["id"] for c in other.get("capabilities", []))
+        other_services = set(find_related_services(other, tickets_data))
+
+        shared_caps = my_caps & other_caps
+        shared_svcs = my_services & other_services
+
+        if shared_caps or shared_svcs:
+            related.append({
+                "ticket_id": other["ticket_id"],
+                "title": other["title"],
+                "folder": other["folder"],
+                "shared_caps": sorted(shared_caps),
+                "shared_services": sorted(shared_svcs),
+            })
+
+    return related
+
+
+def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, all_solutions=None):
     """Generate a per-solution Markdown page."""
     services = find_related_services(meta, tickets_data)
     decisions = find_related_decisions(meta, changelog_decisions)
@@ -255,6 +283,22 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names):
     for s in sections:
         lines.append(f"- {s}")
     lines.append("")
+
+    # Related Solutions (auto-detected by service or capability overlap)
+    if all_solutions:
+        related = find_related_solutions(meta, all_solutions, tickets_data)
+        if related:
+            lines.append("## Related Solutions")
+            lines.append("")
+            lines.append("Solutions that share services or capabilities with this design:")
+            lines.append("")
+            lines.append("| Solution | Shared Capabilities | Shared Services |")
+            lines.append("|----------|-------------------|-----------------|")
+            for r in related:
+                caps_str = ", ".join(r["shared_caps"]) if r["shared_caps"] else "—"
+                svcs_str = ", ".join(r["shared_services"]) if r["shared_services"] else "—"
+                lines.append(f"| [{r['ticket_id']} — {r['title'][:40]}]({r['folder']}.md) | {caps_str} | {svcs_str} |")
+            lines.append("")
 
     # Master document content (skip the header we already rendered)
     content = meta["master_content"]
@@ -366,7 +410,7 @@ def main():
 
     # Generate per-solution pages
     for meta in solutions:
-        page_content = generate_solution_page(meta, tickets_data, changelog_decisions, cap_names)
+        page_content = generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, all_solutions=solutions)
         page_path = os.path.join(OUTPUT_DIR, f"{meta['folder']}.md")
         with open(page_path, "w", encoding="utf-8") as f:
             f.write(page_content)

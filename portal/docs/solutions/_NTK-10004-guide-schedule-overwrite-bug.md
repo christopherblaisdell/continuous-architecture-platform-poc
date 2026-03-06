@@ -35,6 +35,14 @@ description: "Solution design for NTK-10004"
 - Risk Assessment
 - Capability Mapping
 
+## Related Solutions
+
+Solutions that share services or capabilities with this design:
+
+| Solution | Shared Capabilities | Shared Services |
+|----------|-------------------|-----------------|
+| [NTK-10003 — Unregistered Guest Self-Service Check-in](_NTK-10003-unregistered-guest-self-checkin.md) | — | svc-scheduling-orchestrator |
+
 ---
 
 
