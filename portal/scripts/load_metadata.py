@@ -29,6 +29,16 @@ ALL_SERVICES = set()
 for _info in DOMAINS.values():
     ALL_SERVICES.update(_info["services"])
 
+# Service → domain light color lookup
+_SVC_TO_LIGHT = {}
+for _dname, _dinfo in DOMAINS.items():
+    for _svc in _dinfo["services"]:
+        _SVC_TO_LIGHT[_svc] = _dinfo["light"]
+
+def get_service_light_color(svc_name):
+    """Return the pastel background color for a service's domain."""
+    return _SVC_TO_LIGHT.get(svc_name, "#F1F5F9")
+
 # ── Label Mappings ──
 LABEL_TO_SVC = _load("label-to-svc.yaml")
 

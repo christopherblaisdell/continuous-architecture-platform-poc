@@ -50,7 +50,11 @@ def endpoint_anchor(target_svc, target_method, target_path):
 # -- Application metadata loaded from YAML (architecture/metadata/applications.yaml) --
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from load_metadata import APPLICATIONS  # noqa: E402
+from load_metadata import APPLICATIONS, get_service_light_color  # noqa: E402
+
+# ── Infrastructure Colors (same constants as microservice generator) ──
+COLOR_GATEWAY    = "#E0F2FE"   # sky-100   — API entry point
+COLOR_EXTERNAL   = "#F3F4F6"   # gray-100  — outside boundary
 
 # ============================================================
 # Reverse Index: svc_name -> [(app_name, screen_name), ...]
@@ -104,19 +108,19 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
     L.append(f"@startuml {fname}")
     L.append("")
 
-    # Skinparam
+    # Skinparam — neutral defaults; per-participant colors set inline
     L.append("skinparam backgroundColor #FEFEFE")
     L.append("skinparam shadowing false")
     L.append('skinparam defaultFontName "Segoe UI"')
     L.append("skinparam sequence {")
     L.append(f"    ArrowColor {color}")
-    L.append("    ParticipantBorderColor #2E86AB")
-    L.append("    ParticipantBackgroundColor #E8F4F8")
-    L.append("    LifeLineBorderColor #A23B72")
-    L.append("    BoxBorderColor #F18F01")
-    L.append("    BoxBackgroundColor #FFF8F0")
-    L.append("    NoteBorderColor #c77b30")
-    L.append("    NoteBackgroundColor #FEF3E7")
+    L.append("    ParticipantBorderColor #374151")
+    L.append("    ParticipantBackgroundColor #F9FAFB")
+    L.append("    LifeLineBorderColor #6B7280")
+    L.append("    BoxBorderColor #94A3B8")
+    L.append("    BoxBackgroundColor #F8FAFC")
+    L.append("    NoteBorderColor #64748B")
+    L.append("    NoteBackgroundColor #F8FAFC")
     L.append("}")
     L.append("")
 
@@ -128,10 +132,10 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
     L.append(f"title {screen_name}\\n{app_info['title']}")
     L.append("")
 
-    # Participants
+    # Participants — colored by domain
     L.append(f'actor "Guest" as User [[/actors/#guest]]')
-    L.append(f'participant "{client_label}" as App [[/applications/{app_name}/]] #DBEAFE')
-    L.append(f'participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE')
+    L.append(f'participant "{client_label}" as App [[/applications/{app_name}/]] {COLOR_GATEWAY}')
+    L.append(f'participant "API Gateway" as GW [[/actors/#api-gateway]] {COLOR_GATEWAY}')
 
     # Collect unique participants in order
     declared = set()
@@ -141,9 +145,10 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
             continue
         declared.add(alias)
         if svc:
-            L.append(f'participant "{svc}" as {alias} [[/microservices/{svc}/]] #E8F4F8')
+            svc_color = get_service_light_color(svc)
+            L.append(f'participant "{svc}" as {alias} [[/microservices/{svc}/]] {svc_color}')
         else:
-            L.append(f'participant "{label}" as {alias} #F5F5F5')
+            L.append(f'participant "{label}" as {alias} {COLOR_EXTERNAL}')
 
     L.append("")
 
@@ -174,8 +179,9 @@ def build_journey_puml(app_name, app_info, screen_name, screen):
         else:
             link_text = action
 
+        svc_act_color = get_service_light_color(svc) if svc else COLOR_EXTERNAL
         L.append(f"GW {arrow} {alias} : {link_text}")
-        L.append(f"activate {alias} #DBEAFE")
+        L.append(f"activate {alias} {svc_act_color}")
         L.append(f"{alias} {return_arrow} GW : OK")
         L.append(f"deactivate {alias}")
         L.append("")

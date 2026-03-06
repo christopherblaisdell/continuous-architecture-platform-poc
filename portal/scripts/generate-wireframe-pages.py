@@ -149,15 +149,17 @@ def generate_wireframe_page(wireframe_dir: Path, excalidraw_file: Path) -> None:
     md_filename = f"{wireframe_name}.md"
     md_path = wireframe_dir / md_filename
     
+    # MkDocs builds {name}.md → {name}/index.html (directory URLs),
+    # so assets in the parent wireframes/ folder need ../ prefix.
     md_content = f"""# {name}
 
 ## Preview
 
-<object data="{svg_filename}" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
+<object data="../{svg_filename}" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
 
 ## Interactive Viewer
 
-**[Open Interactive Editor →]({html_filename})**
+**[Open Interactive Editor →](../{html_filename})**
 
 Open in the interactive Excalidraw viewer to explore the wireframe with zoom and pan controls.
 

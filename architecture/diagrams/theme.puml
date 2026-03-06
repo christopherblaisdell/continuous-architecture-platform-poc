@@ -1,0 +1,62 @@
+' NovaTrek Diagram Color Standard
+' Include this file in all hand-crafted PlantUML diagrams.
+' Source of truth: architecture/metadata/domains.yaml
+'
+' Usage:
+'   !include ../theme.puml          (from Sequence/, Components/, etc.)
+'   !include theme.puml             (from architecture/diagrams/ root)
+
+' ── Skinparam Defaults (sequence diagrams) ──
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
+}
+
+' ── Skinparam Defaults (component/context diagrams) ──
+skinparam rectangle {
+    BorderColor #374151
+    BackgroundColor #FFFFFF
+}
+skinparam component {
+    BackgroundColor #F9FAFB
+    BorderColor #374151
+}
+skinparam roundCorner 8
+
+' ── Domain Colors ──
+' Strong = border/accent    Light = participant background
+'
+' Operations:       strong #2563eb   light #DBEAFE
+' Guest Identity:   strong #7c3aed   light #EDE9FE
+' Booking:          strong #059669   light #D1FAE5
+' Product Catalog:  strong #d97706   light #FEF3C7
+' Safety:           strong #dc2626   light #FEE2E2
+' Logistics:        strong #0891b2   light #CFFAFE
+' Guide Management: strong #4f46e5   light #E0E7FF
+' External:         strong #9333ea   light #F3E8FF
+' Support:          strong #64748b   light #F1F5F9
+
+' ── Infrastructure Colors ──
+' Database (SQL):   #FEF9C3  (yellow-100 — data at rest)
+' Cache (Redis):    #FECDD3  (rose-200  — hot/fast data)
+' Event Bus:        #F5F3FF  (violet-50 — async events)
+' API Gateway:      #E0F2FE  (sky-100   — entry point)
+' External Actor:   #F3F4F6  (gray-100  — outside boundary)
+' PCI Service:      #FEE2E2  (red-100   — compliance alert)
+
+' ── HTTP Method Arrow Colors ──
+' GET:    #2563eb  (blue)
+' POST:   #059669  (green)
+' PUT:    #c77b30  (amber-brown)
+' PATCH:  #7c3aed  (purple)
+' DELETE: #dc2626  (red)
+' Async:  #7C3AED  dashed (violet)
+' PCI:    #DC2626  dashed (red)
