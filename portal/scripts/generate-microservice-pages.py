@@ -14,6 +14,7 @@ Usage:
 
 import os
 import re
+import shutil
 import subprocess
 import unicodedata
 import yaml
@@ -25,6 +26,7 @@ SPECS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "specs")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "microservices")
 PUML_DIR = os.path.join(OUTPUT_DIR, "puml")
 SVG_DIR = os.path.join(OUTPUT_DIR, "svg")
+OVERRIDE_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "diagrams", "endpoints")
 
 # -- Metadata loaded from YAML files (architecture/metadata/) --
 # Architects edit YAML, commit, push -- CI rebuilds automatically.
@@ -1458,6 +1460,7 @@ def main():
     os.makedirs(SVG_DIR, exist_ok=True)
 
     spec_files = sorted(f for f in os.listdir(SPECS_DIR) if f.endswith(".yaml"))
+    override_count = 0
 
     # Pre-load all endpoint summaries for cross-service deep linking
     for spec_file in spec_files:
@@ -1497,9 +1500,15 @@ def main():
                 ep["tags"],
             )
             fname = make_puml_filename(svc_name, ep["method"], ep["path"])
+            override_path = os.path.join(OVERRIDE_DIR, f"{fname}.puml")
             puml_path = os.path.join(PUML_DIR, f"{fname}.puml")
-            with open(puml_path, "w") as f:
-                f.write(puml_content)
+            if os.path.isfile(override_path):
+                # Architect-crafted override takes precedence
+                shutil.copy2(override_path, puml_path)
+                override_count += 1
+            else:
+                with open(puml_path, "w") as f:
+                    f.write(puml_content)
             all_pumls.append(puml_path)
 
         all_services.append((svc_name, title, len(endpoints), version, domain))
@@ -1527,7 +1536,8 @@ def main():
     all_pumls.append(event_flow_path)
 
     total_ep = sum(s[2] for s in all_services)
-    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise + 1 event flow)")
+    override_msg = f" ({override_count} architect overrides)" if override_count else ""
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise + 1 event flow){override_msg}")
 
     # Render all PUMLs to SVG
     print("  Rendering SVGs with PlantUML...")
