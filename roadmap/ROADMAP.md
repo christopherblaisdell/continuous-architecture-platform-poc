@@ -53,6 +53,7 @@ The Continuous Architecture Platform replaces point-in-time architecture documen
 | No branch-per-solution workflow | No review gate, no CI validation | Phase 1 |
 | No ADR promotion | Ticket-scoped decisions invisible globally | Phase 2 |
 | Corporate data in template | Solution design template has corporate URLs | Phase 0 |
+| No Confluence mirror | Enterprise stakeholders cannot consume architecture docs in their standard wiki | Phase 6 |
 
 ---
 
@@ -226,6 +227,10 @@ Every ticket uses structured user story format with:
 | Actor Catalog | Static | `architecture/metadata/actors.yaml` |
 | Decisions | Static | `decisions/` |
 
+### Confluence Mirror (Read-Only)
+
+Every page published to Azure SWA is simultaneously published to Confluence Cloud as a **read-only mirror**. Git remains the single source of truth. The `mark` CLI tool (Go binary) converts portal Markdown to Confluence Storage Format and publishes via the Confluence REST API. A pre-processing script (`confluence-prepare.py`) injects `mark` metadata headers, rewrites internal links to Confluence page titles, converts MkDocs Material syntax (admonitions, content tabs, `<object>` SVGs) to Confluence-compatible equivalents, and adds a "do-not-edit" banner. Pages are locked after publish so only the CI service account can modify them. See [CONFLUENCE-PUBLISHING-PLAN.md](../research/CONFLUENCE-PUBLISHING-PLAN.md) for the complete design.
+
 ### Cross-Linking Web
 
 When fully implemented, every artifact connects:
@@ -335,6 +340,71 @@ Deploy Vikunja as the ticketing UI.
 
 **Outcome:** The portal becomes an intelligent architecture knowledge base with rich navigation, discovery, and real-time AI integration.
 
+### Phase 6: Confluence Publishing (Short Term)
+
+Publish the NovaTrek Architecture Portal as a read-only mirror in Confluence Cloud. The same `git push` that deploys to Azure SWA also publishes to Confluence — one pipeline, two outputs, zero manual steps. See [CONFLUENCE-PUBLISHING-PLAN.md](../research/CONFLUENCE-PUBLISHING-PLAN.md) for the full design, tool evaluation, and transformation pipeline.
+
+**Tool:** `mark` by Kovetskiy (Go binary, MIT license) — purpose-built for Git Markdown to Confluence publishing.
+
+**Architecture:**
+
+```
+Git Push to main
+      │
+      ▼
+  GitHub Actions
+      │
+  ┌───┴───┐
+  │       │
+  ▼       ▼
+Azure   mark
+ SWA    publish
+  │       │
+  ▼       ▼
+Portal  Confluence
+(primary) (mirror)
+```
+
+| Step | Task | Depends On | Effort |
+|------|------|-----------|--------|
+| 6.1 | Create Confluence Cloud free-tier instance (`novatrek.atlassian.net`) | -- | Small |
+| 6.2 | Create ARCH space with root parent pages (Design Standards, Solutions, Capabilities, etc.) | 6.1 | Small |
+| 6.3 | Generate API token, store as GitHub secrets (`CONFLUENCE_API_TOKEN`, `CONFLUENCE_USERNAME`) | 6.1 | Small |
+| 6.4 | Install `mark` locally, validate manual publish of 1 page | 6.1 | Small |
+| 6.5 | Write `portal/scripts/confluence-prepare.py` — header injection, link rewriting, admonition conversion, SVG handling, banner insertion | 2.6 | Medium |
+| 6.6 | Implement `<object>` to `<img>` conversion for SVG diagrams | 6.5 | Small |
+| 6.7 | Implement MkDocs admonition to Confluence macro conversion (`!!! note` to `{note}`) | 6.5 | Small |
+| 6.8 | Implement internal link rewriting (relative MD paths to Confluence page titles) | 6.5 | Small |
+| 6.9 | Implement content tab fallback (tabs to H3 sections) and MkDocs syntax stripping | 6.5 | Small |
+| 6.10 | Test full publish of all ~80 pages via `mark` CLI | 6.5-6.9 | Medium |
+| 6.11 | Add `publish-confluence` job to GitHub Actions deploy workflow | 6.10 | Small |
+| 6.12 | Add `validate-confluence` dry-run job for PR validation | 6.11 | Small |
+| 6.13 | Write `portal/scripts/confluence-lock-pages.py` — set edit restrictions after publish | 6.11 | Small |
+| 6.14 | Write `portal/scripts/confluence-drift-check.py` — detect unauthorized edits | 6.13 | Small |
+| 6.15 | Create scheduled drift-check workflow (daily, weekdays) | 6.14 | Small |
+| 6.16 | Update `copilot-instructions.md` with Confluence publishing workflow | 6.11 | Small |
+
+**Drift Prevention (4 layers):**
+
+1. **Page restrictions** — only CI service account can edit
+2. **`do-not-edit` label** — visual signal on every page
+3. **Banner warning** — every page starts with "auto-generated from Git" notice
+4. **Overwrite on deploy** — `mark` replaces full page body on every pipeline run
+
+**What will look different in Confluence:**
+
+| Feature | Azure SWA (Material) | Confluence |
+|---------|---------------------|------------|
+| SVG interactivity | Clickable links in diagrams | Static images (banner links to portal) |
+| Content tabs | Tabbed sections | Sequential H3 sections |
+| Dark mode | Toggle switch | Not available |
+| Admonitions | Material-styled callouts | Confluence Info/Warning/Note macros |
+| Swagger UI | Interactive API explorer | Link to Azure SWA |
+
+**Cost:** $0/month (Confluence Cloud free tier, 10 users, 2 GB storage)
+
+**Outcome:** Enterprise stakeholders consume architecture documentation in their standard wiki. Content is always identical to the portal. Zero manual synchronization.
+
 ---
 
 ## 8. Architecture Review Checklist
@@ -381,6 +451,7 @@ Six months from now, an architect picking up a new check-in ticket should be abl
 5. See which **ADRs** shaped the check-in domain
 6. Understand the **current service state** through microservice pages referencing all impacting solutions
 7. Start their new solution with **full context** -- not from a blank page, but from accumulated knowledge
+8. Find the **same content in Confluence** if that is their preferred consumption surface — always in sync, never diverged
 
 That is continuous architecture. Not documentation that decays, but knowledge that compounds.
 
@@ -395,3 +466,4 @@ This roadmap synthesizes three detailed analysis documents:
 | [CAPABILITY-MAP-ANALYSIS.md](../CAPABILITY-MAP-ANALYSIS.md) | Business capability identification and gap analysis | 34 L2 capabilities, coverage assessment, rollup model |
 | [TICKETING-INTEGRATION-ANALYSIS.md](../TICKETING-INTEGRATION-ANALYSIS.md) | Ticketing tool evaluation and integration plan | Vikunja recommendation, ticket structure, AI access patterns |
 | [SOLUTION-DESIGN-LIFECYCLE-ANALYSIS.md](../SOLUTION-DESIGN-LIFECYCLE-ANALYSIS.md) | Solution design creation, source control, and publishing | Branching strategy, folder structure, portal generators, ADR promotion |
+| [CONFLUENCE-PUBLISHING-PLAN.md](../research/CONFLUENCE-PUBLISHING-PLAN.md) | Confluence Cloud mirror — tool selection, transformation pipeline, CI/CD, drift prevention | `mark` tool selection, `confluence-prepare.py` design, 4-layer drift prevention, page hierarchy mapping |
