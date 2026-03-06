@@ -120,8 +120,20 @@ cp -r docs/events-ui site/ 2>/dev/null || true
 cp -r docs/diagrams/svg site/diagrams/ 2>/dev/null || mkdir -p site/diagrams && true
 cp staticwebapp.config.json site/ 2>/dev/null || true
 
+# ------------------------------------------------------------------
+# Step 11: Prepare Confluence staging (optional)
+# ------------------------------------------------------------------
+if [[ "${CONFLUENCE:-}" == "1" || "${1:-}" == "--confluence" ]]; then
+  echo ""
+  echo "[11] Preparing Confluence staging directory..."
+  python3 "$SCRIPT_DIR/confluence-prepare.py"
+fi
+
 echo ""
 echo "============================================================"
 echo "Build complete!"
 echo "  Site output: $PORTAL_DIR/site/"
+if [[ "${CONFLUENCE:-}" == "1" || "${1:-}" == "--confluence" ]]; then
+  echo "  Confluence: $PORTAL_DIR/confluence/"
+fi
 echo "============================================================"

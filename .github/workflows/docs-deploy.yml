@@ -124,3 +124,92 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: close
+
+  # -------------------------------------------------------------------------
+  # Validate Confluence output (dry-run on PRs)
+  # -------------------------------------------------------------------------
+  validate-confluence:
+    runs-on: ubuntu-latest
+    name: Validate Confluence Output
+    needs: build
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install pyyaml
+
+      - name: Prepare Confluence pages
+        run: python3 portal/scripts/confluence-prepare.py
+
+      - name: Install mark
+        run: |
+          curl -sL https://github.com/kovetskiy/mark/releases/latest/download/mark_linux_amd64 \
+            -o /usr/local/bin/mark
+          chmod +x /usr/local/bin/mark
+
+      - name: Dry-run Confluence publish
+        run: |
+          mark \
+            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --username "${{ secrets.CONFLUENCE_USERNAME }}" \
+            --password "${{ secrets.CONFLUENCE_API_TOKEN }}" \
+            --files "portal/confluence/**/*.md" \
+            --dry-run \
+            --color
+
+  # -------------------------------------------------------------------------
+  # Publish to Confluence (on push to main)
+  # -------------------------------------------------------------------------
+  publish-confluence:
+    runs-on: ubuntu-latest
+    name: Publish to Confluence
+    needs: [build, deploy]
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install pyyaml requests
+
+      - name: Prepare Confluence pages
+        run: python3 portal/scripts/confluence-prepare.py
+
+      - name: Install mark
+        run: |
+          curl -sL https://github.com/kovetskiy/mark/releases/latest/download/mark_linux_amd64 \
+            -o /usr/local/bin/mark
+          chmod +x /usr/local/bin/mark
+
+      - name: Publish to Confluence
+        run: |
+          mark \
+            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --username "${{ secrets.CONFLUENCE_USERNAME }}" \
+            --password "${{ secrets.CONFLUENCE_API_TOKEN }}" \
+            --files "portal/confluence/**/*.md" \
+            --color \
+            --ci
+
+      - name: Lock published pages
+        run: |
+          python3 portal/scripts/confluence-lock-pages.py \
+            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --username "${{ secrets.CONFLUENCE_USERNAME }}" \
+            --api-token "${{ secrets.CONFLUENCE_API_TOKEN }}" \
+            --space "ARCH" \
+            --label "auto-generated"

@@ -103,6 +103,14 @@ tags:
 
 ---
 
+## :material-lightbulb: Solutions Affecting This Service
+
+| Ticket | Solution | Capabilities | Date |
+|--------|----------|-------------|------|
+| NTK-10001 | [Add Elevation Profile Data to Trail Response](../solutions/_NTK-10001-add-elevation-to-trail-response.md) | `CAP-2.4` | 2025-02-01 |
+
+---
+
 ## :material-api: Endpoints (9 total)
 
 ---

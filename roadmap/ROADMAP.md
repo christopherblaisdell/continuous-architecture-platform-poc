@@ -251,11 +251,11 @@ Scrub corporate identifiers from all published content.
 
 | Step | Task | Effort |
 |------|------|--------|
-| 0.1 | Replace corporate URLs in solution design template (`nbcu-ot.atlassian.net`, `gitlab.use.ucdp.net`, `udx-architecture`, `upr-services`) with NovaTrek equivalents | Small |
-| 0.2 | Replace "Mango Sand" references with "NovaTrek Architecture Portal" throughout docs | Small |
-| 0.3 | Replace "UDX" references with "NovaTrek" in analysis documents | Small |
-| 0.4 | Run `scripts/audit-data-isolation.sh` and fix any remaining violations | Small |
-| 0.5 | Add "Mango Sand" to audit script pattern list to catch future leaks | Small |
+| 0.1 | COMPLETE — Replaced corporate URLs in solution design template with NovaTrek equivalents | Small |
+| 0.2 | COMPLETE — Replaced auto-generated Azure SWA name references with "NovaTrek Architecture Portal" throughout docs | Small |
+| 0.3 | COMPLETE — Replaced corporate org references with "NovaTrek" in analysis documents | Small |
+| 0.4 | COMPLETE — Ran audit script, all violations resolved | Small |
+| 0.5 | COMPLETE — Added Azure SWA auto-name pattern to audit script | Small |
 
 ### Phase 1: Foundation (Immediate)
 
@@ -287,7 +287,7 @@ Build generators and publish solution designs, capabilities, and tickets to the 
 | 2.1 | Write `portal/scripts/generate-solution-pages.py` -- index + per-solution pages | 1.2 | Medium |
 | 2.2 | Write `portal/scripts/generate-capability-pages.py` -- capability map with timeline | 1.6, 1.7 | Medium |
 | 2.3 | Write `portal/scripts/generate-ticket-pages.py` -- index + per-ticket pages | 1.8 | Medium |
-| 2.4 | Update `generate-microservice-pages.py` to include "Solutions Affecting This Service" | 2.1 | Small |
+| 2.4 | COMPLETE -- Updated `generate-microservice-pages.py` to include "Solutions Affecting This Service" section with cross-links to solution pages, capability IDs, and dates | 2.1 | Small |
 | 2.5 | Add Solution Designs, Business Capabilities, and User Stories nav sections to `portal/mkdocs.yml` | 2.1-2.3 | Small |
 | 2.6 | Wire all generators into `portal/scripts/generate-all.sh` | 2.1-2.3 | Small |
 | 2.7 | Promote ADR-006 through ADR-008 from NTK-10003 to global `decisions/` | -- | Small |
@@ -371,18 +371,18 @@ Portal  Confluence
 | 6.2 | Create ARCH space with root parent pages (Design Standards, Solutions, Capabilities, etc.) | 6.1 | Small |
 | 6.3 | Generate API token, store as GitHub secrets (`CONFLUENCE_API_TOKEN`, `CONFLUENCE_USERNAME`) | 6.1 | Small |
 | 6.4 | Install `mark` locally, validate manual publish of 1 page | 6.1 | Small |
-| 6.5 | Write `portal/scripts/confluence-prepare.py` — header injection, link rewriting, admonition conversion, SVG handling, banner insertion | 2.6 | Medium |
-| 6.6 | Implement `<object>` to `<img>` conversion for SVG diagrams | 6.5 | Small |
-| 6.7 | Implement MkDocs admonition to Confluence macro conversion (`!!! note` to `{note}`) | 6.5 | Small |
-| 6.8 | Implement internal link rewriting (relative MD paths to Confluence page titles) | 6.5 | Small |
-| 6.9 | Implement content tab fallback (tabs to H3 sections) and MkDocs syntax stripping | 6.5 | Small |
+| 6.5 | COMPLETE -- `portal/scripts/confluence-prepare.py` with header injection, link rewriting, admonition conversion, SVG handling, banner insertion | 2.6 | Medium |
+| 6.6 | COMPLETE -- `<object>` to `![](img)` conversion for SVG diagrams | 6.5 | Small |
+| 6.7 | COMPLETE -- MkDocs admonition to Confluence macro conversion (`!!! note` to `{note}`) | 6.5 | Small |
+| 6.8 | COMPLETE -- Internal link rewriting (relative MD paths to Confluence page titles) | 6.5 | Small |
+| 6.9 | COMPLETE -- Content tab fallback (tabs to H3 sections) and MkDocs syntax stripping (attribute lists, Material emoji, HTML comments) | 6.5 | Small |
 | 6.10 | Test full publish of all ~80 pages via `mark` CLI | 6.5-6.9 | Medium |
-| 6.11 | Add `publish-confluence` job to GitHub Actions deploy workflow | 6.10 | Small |
-| 6.12 | Add `validate-confluence` dry-run job for PR validation | 6.11 | Small |
-| 6.13 | Write `portal/scripts/confluence-lock-pages.py` — set edit restrictions after publish | 6.11 | Small |
-| 6.14 | Write `portal/scripts/confluence-drift-check.py` — detect unauthorized edits | 6.13 | Small |
-| 6.15 | Create scheduled drift-check workflow (daily, weekdays) | 6.14 | Small |
-| 6.16 | Update `copilot-instructions.md` with Confluence publishing workflow | 6.11 | Small |
+| 6.11 | COMPLETE -- Added `publish-confluence` job to `docs-deploy.yml` (prepare, mark publish, lock pages) | 6.10 | Small |
+| 6.12 | COMPLETE -- Added `validate-confluence` dry-run job to `docs-deploy.yml` for PR validation | 6.11 | Small |
+| 6.13 | COMPLETE -- `portal/scripts/confluence-lock-pages.py` sets edit restrictions on auto-generated pages | 6.11 | Small |
+| 6.14 | COMPLETE -- `portal/scripts/confluence-drift-check.py` detects unauthorized edits via editor and content hash checks | 6.13 | Small |
+| 6.15 | COMPLETE -- `.github/workflows/confluence-drift-check.yml` scheduled weekdays 6 AM UTC | 6.14 | Small |
+| 6.16 | COMPLETE -- Added Confluence Publishing section to `copilot-instructions.md` with commands, CI/CD, secrets | 6.11 | Small |
 
 **Drift Prevention (4 layers):**
 

@@ -632,4 +632,88 @@ python3 portal/scripts/utilities/openrouter-cost.py summary --file generation-id
 | `portal/scripts/utilities/openrouter-cost.py` | Queries OpenRouter API for exact per-request costs |
 | `portal/scripts/utilities/cost-measurement.py` | Content-based estimation from git diffs + cost comparison reports |
 
+---
+
+## Confluence Publishing (Read-Only Mirror)
+
+The NovaTrek Architecture Portal is mirrored to Confluence Cloud as a **read-only copy**. The portal (MkDocs Material on Azure Static Web Apps) remains the source of truth; Confluence receives an automated mirror on every push to `main`.
+
+### Architecture: One Push, Two Outputs
+
+```
+git push main
+  └─ GitHub Actions docs-deploy.yml
+       ├─ deploy job → Azure Static Web Apps (primary portal)
+       └─ publish-confluence job → Confluence Cloud (read-only mirror)
+```
+
+### Confluence Targets
+
+| Parameter | Value |
+|-----------|-------|
+| Instance | `novatrek.atlassian.net` |
+| Space key | `ARCH` |
+| Label | `auto-generated` |
+| Tool | `mark` CLI (Kovetskiy, Go binary, MIT license) |
+
+### Publishing Pipeline
+
+1. **`portal/scripts/confluence-prepare.py`** — Transforms MkDocs Markdown into Confluence-compatible format:
+   - Injects `mark` headers (Space, Parent, Title, Label)
+   - Adds "do not edit" banner and portal link callout
+   - Converts admonitions (`!!! note` → `{note:title=...}`)
+   - Replaces `<object>` SVG embeds with `![](img)` references
+   - Rewrites internal links (relative paths → Confluence page titles)
+   - Strips MkDocs-specific syntax (attribute lists, Material emoji, HTML comments)
+   - Output: `portal/confluence/` staging directory
+
+2. **`mark --ci`** — Publishes staged Markdown to Confluence via REST API
+
+3. **`portal/scripts/confluence-lock-pages.py`** — Sets edit restrictions on all `auto-generated` pages so only the CI service account can modify them
+
+### Drift Prevention (4 Layers)
+
+| Layer | Mechanism | Script/Workflow |
+|-------|-----------|-----------------|
+| 1. Page locking | Edit restrictions via REST API | `portal/scripts/confluence-lock-pages.py` |
+| 2. Do-not-edit banner | Visible warning at top of every page | Injected by `confluence-prepare.py` |
+| 3. CI overwrite | Every push to main overwrites Confluence | `publish-confluence` job in `docs-deploy.yml` |
+| 4. Drift detection | Scheduled check for unauthorized edits | `portal/scripts/confluence-drift-check.py` + `.github/workflows/confluence-drift-check.yml` |
+
+### Commands
+
+```bash
+# Generate Confluence staging (local testing)
+python3 portal/scripts/confluence-prepare.py
+
+# Dry-run publish (validates without writing)
+mark --ci --base-url "$CONFLUENCE_BASE_URL" -u "$CONFLUENCE_USERNAME" -p "$CONFLUENCE_API_TOKEN" -f "portal/confluence/*.md" --dry-run
+
+# Lock pages after publishing
+python3 portal/scripts/confluence-lock-pages.py \
+    --base-url "$CONFLUENCE_BASE_URL" \
+    --username "$CONFLUENCE_USERNAME" \
+    --api-token "$CONFLUENCE_API_TOKEN" \
+    --space "ARCH" --label "auto-generated"
+
+# Run drift check
+export CONFLUENCE_BASE_URL CONFLUENCE_USERNAME CONFLUENCE_API_TOKEN CONFLUENCE_SPACE
+python3 portal/scripts/confluence-drift-check.py --staging-dir portal/confluence
+```
+
+### CI/CD Integration
+
+- **On PR**: `validate-confluence` job runs `confluence-prepare.py` + `mark --dry-run` to catch formatting errors
+- **On push to main**: `publish-confluence` job runs full pipeline (prepare → publish → lock)
+- **Scheduled**: `confluence-drift-check.yml` runs weekdays at 6 AM UTC to detect unauthorized edits
+
+### GitHub Secrets/Variables Required
+
+| Type | Name | Purpose |
+|------|------|---------|
+| Variable | `CONFLUENCE_BASE_URL` | e.g., `https://novatrek.atlassian.net/wiki` |
+| Variable | `CONFLUENCE_SPACE` | Space key (e.g., `ARCH`) |
+| Secret | `CONFLUENCE_USERNAME` | Service account email |
+| Secret | `CONFLUENCE_API_TOKEN` | Confluence API token |
+
 See [COST-MEASUREMENT-METHODOLOGY.md](../phases/phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) for the full methodology.
