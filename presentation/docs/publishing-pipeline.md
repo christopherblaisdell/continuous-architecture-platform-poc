@@ -1,8 +1,8 @@
-# Automated Publishing: Replace the Manual Confluence Step
+# Automated Publishing: Replace the Manual Wiki Step
 
-## git push to Main. Documentation Updates Automatically.
+## Version Control Push. Documentation Updates Automatically.
 
-Today, updating Confluence after checking specs into Git is a voluntary manual step — and it gets skipped. The platform replaces that step with an automated pipeline: a `git push` triggers a build that publishes the entire architecture portal. No manual copy-paste. No "I'll update Confluence later."
+Today, updating wiki pages after checking specs into version control is a voluntary manual step — and it gets skipped. The platform replaces that step with an automated pipeline: a version control push triggers a build that publishes the entire architecture portal. No manual copy-paste. No "I'll update the wiki later."
 
 ---
 
@@ -10,7 +10,7 @@ Today, updating Confluence after checking specs into Git is a voluntary manual s
 
 ``` mermaid
 flowchart LR
-    A[git push to main] --> B[GitHub Actions]
+    A[Version control push] --> B[CI/CD Pipeline]
     B --> C[Python generators\nrun against specs]
     C --> D[MkDocs build]
     D --> E[Deploy to Azure\nStatic Web Apps]
@@ -51,7 +51,7 @@ The architecture portal that exists today — built entirely during this proof o
 
 <div class="big-number">301</div>
 
-**artifacts published automatically from a single `git push`.**
+**artifacts published automatically from a single version control push.**
 
 ---
 
@@ -98,44 +98,44 @@ A system-level view of all 19 microservices grouped by domain, with:
 
 ---
 
-## Confluence Sync (Optional)
+## Wiki Sync (Optional)
 
-For organizations that require Confluence as the canonical documentation platform:
+For organizations that require wiki integration as the canonical documentation platform:
 
 ``` mermaid
 flowchart TD
-    A[Markdown in Git] --> B[MkDocs Build]
-    A --> C[Confluence API Sync]
+    A[Markdown in Version Control] --> B[MkDocs Build]
+    A --> C[Wiki API Sync]
     B --> D[Architecture Portal]
-    C --> E[Confluence Space]
+    C --> E[Wiki Platform]
 
     D -.-> F[Architects browse\nportal for navigation]
-    E -.-> G[Stakeholders browse\nConfluence for familiarity]
+    E -.-> G[Stakeholders browse\nwiki for familiarity]
 
     style A fill:#00897b,color:#fff
     style D fill:#ff8f00,color:#fff
     style E fill:#1565c0,color:#fff
 ```
 
-The Confluence sync publishes the same Markdown content as Confluence pages via the Atlassian API. Key principles:
+The wiki sync publishes the same Markdown content as wiki pages via REST API. Key principles:
 
-- **Git remains the source of truth** — edits happen in Markdown, not in Confluence
-- **Confluence pages are read-only mirrors** — a banner indicates the source is in git
-- **Same content, two renderers** — MkDocs for architects (rich navigation, diagrams), Confluence for stakeholders (familiar interface)
-- **No dual maintenance** — one `git push` updates both
+- **Version control remains the source of truth** — edits happen in Markdown, not in the wiki
+- **Wiki pages are read-only mirrors** — a banner indicates the source is in version control
+- **Same content, two renderers** — MkDocs for architects (rich navigation, diagrams), wiki for stakeholders (familiar interface)
+- **No dual maintenance** — one version control push updates both
 
 ---
 
 ## Before and After
 
-| Aspect | Before (Manual Confluence Step) | After (Automated Pipeline) |
+| Aspect | Before (Manual Wiki Step) | After (Automated Pipeline) |
 |--------|:---:|:---:|
-| Publish a design update | Voluntary Confluence update (often skipped) | `git push` (automatic, never skipped) |
-| Update a diagram | PlantUML in Git, then manually re-render for Confluence | Edit PlantUML in Git, push (auto-renders to portal) |
-| Cross-service links | Manually maintained in Confluence (break constantly) | Auto-generated from dependency graph |
-| Search across all designs | Confluence search (often miss results) | MkDocs search (full-text, instant) |
+| Publish a design update | Voluntary wiki update (often skipped) | Version control push (automatic, never skipped) |
+| Update a diagram | Diagram source in version control, then manually re-render for wiki | Edit diagram source, push (auto-renders to portal) |
+| Cross-service links | Manually maintained in wiki (break constantly) | Auto-generated from dependency graph |
+| Search across all designs | Wiki search (often miss results) | MkDocs search (full-text, instant) |
 | Verify spec matches rendered docs | Manual comparison | Same spec file generates the portal page |
-| Add a new service | Check spec into Git + create Confluence pages manually | Add spec to Git, push (portal page auto-generated) |
+| Add a new service | Check spec in + create wiki pages manually | Add spec to repository, push (portal page auto-generated) |
 
 <div class="cta-box" markdown>
 

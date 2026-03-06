@@ -1,49 +1,47 @@
-# Markdown-First: Extending What We Already Do
+# Markdown-First: Extending What Teams Already Do
 
-## We Already Author in Text Formats — Now We Complete the Picture
+## Many Teams Already Author in Text Formats — Extending the Pattern
 
-Our architects already author OpenAPI specs in YAML and diagrams in PlantUML — text formats checked into Git. The platform extends this practice to **solution designs, ADRs, and impact assessments** in Markdown, completing the set of version-controlled architecture artifacts.
+Many architecture practices already author OpenAPI specs in YAML and diagrams in PlantUML or Mermaid — text formats checked into version control. The platform extends this practice to **solution designs, ADRs, and impact assessments** in Markdown, completing the set of version-controlled architecture artifacts.
 
 ---
 
-## What We Have vs What We Add
+## Extending Version-Controlled Artifacts
 
-| Artifact | Today | With the Platform |
+| Artifact | Current State (Industry Pattern) | With the Platform |
 |----------|:---:|:---:|
-| **OpenAPI specs** | In Git (gated) | In Git (same) + AI-assisted updates |
-| **PlantUML diagrams** | In Git | In Git (same) + auto-rendered to portal |
-| **Solution designs** | Confluence (manual) or ticket attachments | Markdown in Git + auto-published |
-| **Architecture Decision Records** | In ticket branches (not discoverable) | Markdown in Git + global searchable log |
-| **Impact assessments** | Confluence or email | Markdown in Git + version-controlled |
-| **Service documentation** | Confluence (voluntary updates) | Auto-generated from specs in Git |
-| **Cross-service links** | Manually maintained in Confluence | Auto-generated from dependency graph |
+| **OpenAPI specs** | Version-controlled (gated) | Version-controlled (same) + AI-assisted updates |
+| **Diagram source** (PlantUML, Mermaid) | Version-controlled | Version-controlled (same) + auto-rendered to portal |
+| **Solution designs** | Manual wiki or ticket attachments | Markdown in version control + auto-published |
+| **Architecture Decision Records** | In ticket branches (not discoverable) | Markdown in version control + global searchable log |
+| **Impact assessments** | Wiki or email | Markdown in version control |
+| **Service documentation** | Manual wiki updates (often skipped) | Auto-generated from specs |
+| **Cross-service links** | Manually maintained in wiki | Auto-generated from dependency graph |
 
 ---
 
-## What Changes in Practice
-
-### Current Workflow
+## Current Industry Pattern
 
 ```
-1. Architect updates OpenAPI specs and PlantUML diagrams in Git
-2. Changes are checked into master (governance gate — this works well)
-3. Architect is supposed to update Confluence service pages manually
+1. Architect updates OpenAPI specs and diagram source files in version control
+2. Changes are checked in (governance gate — this typically works well)
+3. Architect is supposed to update wiki service pages manually
 4. Sometimes this happens, often it doesn't
-5. Solution design lives in a ticket branch or Confluence — not discoverable later
+5. Solution design lives in a ticket branch or wiki — not discoverable later
 6. ADRs stay in ticket context, never promoted to a global log
 7. After deployment, nobody reconciles design intent vs actual implementation
 ```
 
-### Enhanced Workflow
+## Enhanced Workflow
 
 ```
-1. AI reads the existing Git repo (specs, diagrams, previous designs)
+1. AI agent reads the version-controlled repository (specs, diagrams, previous designs)
 2. AI scaffolds solution design from template in VS Code
 3. Architect reviews and refines (with AI assistance)
 4. Specs, diagrams, and solution design committed together
 5. Pull request for architecture review with line-by-line diffs
 6. Merge to main triggers automated publishing to browsable portal
-7. Optionally synced to Confluence via API (no manual step)
+7. Optionally synced to wiki via API (no manual step)
 8. AI reads the design in future sessions (full context)
 9. PROMOTE step reconciles design intent with actual implementation
 ```

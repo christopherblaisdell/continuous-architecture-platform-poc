@@ -1,8 +1,8 @@
-# The Ask: What We Need to Move Forward
+# The Ask: What's Required to Adopt This
 
-## Build on Our Existing Strengths
+## Build on Existing Strengths
 
-We already source-control specs and diagrams in Git with production gating. We've proven the platform works by building on that foundation. We've measured the cost and quality. We've built a live demonstration. Here's what we need to adopt it.
+Many architecture teams already source-control specs and diagrams with production gating. This platform builds on that foundation. The POC measured cost and quality using NovaTrek Adventures as a synthetic case study. Here's what organizations need to adopt it.
 
 ---
 
@@ -24,39 +24,39 @@ We already source-control specs and diagrams in Git with production gating. We'v
 
 ---
 
-### 2. Solution Designs in Markdown (Extending Our Git-First Practice)
+### 2. Solution Designs in Markdown (Extending Version Control)
 
-We already author specs and diagrams in text formats and check them into Git. This extends that practice:
+Many teams already author specs and diagrams in text formats and version-control them. This extends that practice:
 
-- **New** solution designs and ADRs are authored in Markdown in the same architecture repo
-- **Existing** specs, diagrams, and Confluence content stay exactly where they are
+- **New** solution designs and ADRs are authored in Markdown in the architecture repository
+- **Existing** specs, diagrams, and wiki content stay exactly where they are
 - The AI generates correctly formatted Markdown automatically — architects don't need to learn syntax
 
-**What this enables:** Version-controlled designs alongside specs, pull request reviews on architecture decisions, AI context for future sessions, automated publishing that replaces the manual Confluence step.
+**What this enables:** Version-controlled designs alongside specs, pull request reviews on architecture decisions, AI context for future sessions, automated publishing that replaces manual wiki updates.
 
 ---
 
 ### 3. Automated Publishing Pipeline
 
 - Azure Static Web Apps deployment (free tier — $0/month)
-- GitHub Actions workflow triggered on push to main
+- GitHub Actions workflow triggered on version control push
 - Builds MkDocs site + copies non-Markdown assets
 - Deploys in under 30 seconds
 
-**What this replaces:** The voluntary manual Confluence update step — the one that gets skipped, causing documentation to fall behind the artifacts already in Git.
+**What this replaces:** The voluntary manual wiki update step — the one that gets skipped, causing documentation to fall behind version-controlled artifacts.
 
 ---
 
-### 4. Optional: Confluence API Access
+### 4. Optional: Wiki API Access
 
-For organizations that require Confluence:
+For organizations that require wiki integration:
 
-- Same Markdown source publishes to both MkDocs and Confluence
-- Git remains the source of truth
-- Confluence pages become read-only mirrors
-- Requires Confluence REST API access (write permission to architecture space)
+- Same Markdown source publishes to both MkDocs and wiki platform
+- Version control remains the source of truth
+- Wiki pages become read-only mirrors
+- Requires wiki REST API access (write permission to architecture space)
 
-**This is optional.** The platform works without Confluence sync.
+**This is optional.** The platform works without wiki sync.
 
 ---
 

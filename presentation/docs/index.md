@@ -25,9 +25,9 @@
 
 ## The Pitch in 60 Seconds
 
-Our architecture practice already source-controls OpenAPI specs and PlantUML diagrams in Git, with production gating. The **Continuous Architecture Platform** builds on that foundation — adding an AI assistant that reads those artifacts, produces architecture designs following your standards, and **automatically publishes a browsable architecture portal** — for **$39/month per seat**.
+Many architecture practices already source-control OpenAPI specs and PlantUML diagrams in Git, with production gating. The **Continuous Architecture Platform** builds on that foundation — adding an AI assistant that reads those artifacts, produces architecture designs following established standards, and **automatically publishes a browsable architecture portal** — for **$39/month per seat**.
 
-No more manual Confluence updates that get skipped. No more design-to-reality drift that compounds with every project. Proven with 5 complex architecture scenarios. 208x cheaper per run than per-token alternatives. Live portal with 301 auto-generated artifacts.
+No more manual wiki updates that get skipped. No more design-to-reality drift that compounds with every project. Demonstrated with 5 complex architecture scenarios using NovaTrek Adventures as a synthetic case study. 208x cheaper per run than per-token alternatives. Live portal with 301 auto-generated artifacts.
 
 <div class="key-insight" markdown>
 **This is not a proposal.** This is a demonstration. The evidence on the following pages comes from actual billing data, actual execution results, and an actual live architecture portal — all built during this proof of concept.

@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-ask-what-we-need-to-move-forward" class="md-skip">
+        <a href="#the-ask-whats-required-to-adopt-this" class="md-skip">
           Skip to content
         </a>
       
@@ -803,9 +803,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#build-on-our-existing-strengths" class="md-nav__link">
+  <a href="#build-on-existing-strengths" class="md-nav__link">
     <span class="md-ellipsis">
-      Build on Our Existing Strengths
+      Build on Existing Strengths
     </span>
   </a>
   
@@ -831,9 +831,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-solution-designs-in-markdown-extending-our-git-first-practice" class="md-nav__link">
+  <a href="#2-solution-designs-in-markdown-extending-version-control" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Solution Designs in Markdown (Extending Our Git-First Practice)
+      2. Solution Designs in Markdown (Extending Version Control)
     </span>
   </a>
   
@@ -849,9 +849,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-optional-confluence-api-access" class="md-nav__link">
+  <a href="#4-optional-wiki-api-access" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Optional: Confluence API Access
+      4. Optional: Wiki API Access
     </span>
   </a>
   
@@ -946,9 +946,9 @@
 
 
 
-<h1 id="the-ask-what-we-need-to-move-forward">The Ask: What We Need to Move Forward</h1>
-<h2 id="build-on-our-existing-strengths">Build on Our Existing Strengths</h2>
-<p>We already source-control specs and diagrams in Git with production gating. We've proven the platform works by building on that foundation. We've measured the cost and quality. We've built a live demonstration. Here's what we need to adopt it.</p>
+<h1 id="the-ask-whats-required-to-adopt-this">The Ask: What's Required to Adopt This</h1>
+<h2 id="build-on-existing-strengths">Build on Existing Strengths</h2>
+<p>Many architecture teams already source-control specs and diagrams with production gating. This platform builds on that foundation. The POC measured cost and quality using NovaTrek Adventures as a synthetic case study. Here's what organizations need to adopt it.</p>
 <hr />
 <h2 id="four-approvals">Four Approvals</h2>
 <h3 id="1-github-copilot-pro-licenses">1. GitHub Copilot Pro+ Licenses</h3>
@@ -964,33 +964,33 @@
 </ul>
 <p><strong>Pilot scope:</strong> Start with the architecture practice team. Measure quality and adoption for 1 month before expanding.</p>
 <hr />
-<h3 id="2-solution-designs-in-markdown-extending-our-git-first-practice">2. Solution Designs in Markdown (Extending Our Git-First Practice)</h3>
-<p>We already author specs and diagrams in text formats and check them into Git. This extends that practice:</p>
+<h3 id="2-solution-designs-in-markdown-extending-version-control">2. Solution Designs in Markdown (Extending Version Control)</h3>
+<p>Many teams already author specs and diagrams in text formats and version-control them. This extends that practice:</p>
 <ul>
-<li><strong>New</strong> solution designs and ADRs are authored in Markdown in the same architecture repo</li>
-<li><strong>Existing</strong> specs, diagrams, and Confluence content stay exactly where they are</li>
+<li><strong>New</strong> solution designs and ADRs are authored in Markdown in the architecture repository</li>
+<li><strong>Existing</strong> specs, diagrams, and wiki content stay exactly where they are</li>
 <li>The AI generates correctly formatted Markdown automatically — architects don't need to learn syntax</li>
 </ul>
-<p><strong>What this enables:</strong> Version-controlled designs alongside specs, pull request reviews on architecture decisions, AI context for future sessions, automated publishing that replaces the manual Confluence step.</p>
+<p><strong>What this enables:</strong> Version-controlled designs alongside specs, pull request reviews on architecture decisions, AI context for future sessions, automated publishing that replaces manual wiki updates.</p>
 <hr />
 <h3 id="3-automated-publishing-pipeline">3. Automated Publishing Pipeline</h3>
 <ul>
 <li>Azure Static Web Apps deployment (free tier — $0/month)</li>
-<li>GitHub Actions workflow triggered on push to main</li>
+<li>GitHub Actions workflow triggered on version control push</li>
 <li>Builds MkDocs site + copies non-Markdown assets</li>
 <li>Deploys in under 30 seconds</li>
 </ul>
-<p><strong>What this replaces:</strong> The voluntary manual Confluence update step — the one that gets skipped, causing documentation to fall behind the artifacts already in Git.</p>
+<p><strong>What this replaces:</strong> The voluntary manual wiki update step — the one that gets skipped, causing documentation to fall behind version-controlled artifacts.</p>
 <hr />
-<h3 id="4-optional-confluence-api-access">4. Optional: Confluence API Access</h3>
-<p>For organizations that require Confluence:</p>
+<h3 id="4-optional-wiki-api-access">4. Optional: Wiki API Access</h3>
+<p>For organizations that require wiki integration:</p>
 <ul>
-<li>Same Markdown source publishes to both MkDocs and Confluence</li>
-<li>Git remains the source of truth</li>
-<li>Confluence pages become read-only mirrors</li>
-<li>Requires Confluence REST API access (write permission to architecture space)</li>
+<li>Same Markdown source publishes to both MkDocs and wiki platform</li>
+<li>Version control remains the source of truth</li>
+<li>Wiki pages become read-only mirrors</li>
+<li>Requires wiki REST API access (write permission to architecture space)</li>
 </ul>
-<p><strong>This is optional.</strong> The platform works without Confluence sync.</p>
+<p><strong>This is optional.</strong> The platform works without wiki sync.</p>
 <hr />
 <h2 id="total-cost">Total Cost</h2>
 <table>

@@ -1,40 +1,40 @@
 # The Problem: The Last Mile of Architecture Documentation
 
-## We Already Did the Hard Part
+## Many Teams Already Do the Hard Part
 
-Our architecture practice does what most organizations struggle to achieve:
+Many architecture practices have achieved what most organizations struggle with:
 
-- **OpenAPI specs are source-controlled** in Git — our central architecture repository
-- **PlantUML diagrams** (component and sequence) are version-controlled alongside specs
-- **No Swagger goes to production** without being checked into master — a governance gate
+- **OpenAPI specs are source-controlled** in a central repository
+- **Diagram source files** (PlantUML, Mermaid, etc.) are version-controlled alongside specs
+- **Production gating** — no API changes ship without approval in the architecture repo
 - Architects work from authoritative, version-controlled artifacts
 
 This is a strong foundation. But two critical gaps erode its value over time.
 
 ---
 
-## Gap 1: Confluence Is Manual and Voluntary
+## Gap 1: Browsable Documentation Is Manual and Voluntary
 
-We maintain Confluence pages for each microservice — the browsable reference that architects, developers, and stakeholders consult when they need to understand a service.
+Most teams maintain wiki pages for each microservice — the browsable reference that architects, developers, and stakeholders consult when they need to understand a service.
 
-**Updating those pages is completely voluntary.**
+**Updating those pages is often voluntary and gets skipped.**
 
 1. An architect designs a solution, updates specs and diagrams
-2. Changes are checked into master in the architecture Git repo (the gate works)
-3. The architect is *supposed to* go to Confluence and update the service pages
+2. Changes are checked into the architecture repository (the gate works)
+3. The architect is *supposed to* update the wiki pages
 4. Sometimes they do. Often they don't.
 
-The result: **Confluence falls behind the source-controlled artifacts.** When the next architect goes to assess the current state of a service, the Confluence pages may reflect a state from two or three projects ago.
+The result: **Browsable documentation falls behind the source-controlled artifacts.** When the next architect assesses the current state of a service, the wiki pages may reflect a state from two or three projects ago.
 
 | What's Source-Controlled (Current) | What's Manual and Voluntary (Falls Behind) |
 |-----------------------------------|-------------------------------------------|
-| OpenAPI/Swagger specs (gated) | Confluence service pages |
-| PlantUML component diagrams | Rendered diagram updates in Confluence |
-| PlantUML sequence diagrams | Cross-service navigation and linking |
+| OpenAPI/Swagger specs (gated) | Wiki service pages |
+| Diagram source files (PlantUML, etc.) | Rendered diagram updates in wiki |
+| Cross-service dependency mappings | Interactive navigation and linking |
 | Architecture decision rationale (in branches) | ADR promotion to a discoverable global log |
 
 <div class="key-insight" markdown>
-**The artifacts are current in Git. The documentation that people actually browse is not.**
+**The artifacts are current in version control. The documentation that people actually browse is not.**
 </div>
 
 ---
@@ -79,17 +79,17 @@ By Project 5, finding the **actual current state** of a service requires reading
 
 ## What It Costs
 
-The Git gating gives us authoritative API contracts at design time. But the **documentation people actually browse** — Confluence pages, rendered diagrams, the searchable service catalog — falls further behind with every project.
+Production gating gives teams authoritative API contracts at design time. But the **documentation people actually browse** — wiki pages, rendered diagrams, the searchable service catalog — falls further behind with every project.
 
 | Hidden Cost | Impact |
 |------------|--------|
-| Re-investigation | Architects re-read source code because Confluence pages are stale |
-| Stale browsable docs | Stakeholders consult Confluence pages that no longer reflect the current state |
+| Re-investigation | Architects re-read source code because wiki pages are stale |
+| Stale browsable docs | Stakeholders consult wiki pages that no longer reflect the current state |
 | Lost decisions | ADRs stay in ticket branches, never promoted to a searchable global log |
 | Knowledge silos | The architect who did the last project is the only one who knows what changed |
 | Design-reality gap | Specs describe intended design, not necessarily what was built and deployed |
 
-The platform we've built solves every one of these problems — and it builds directly on the Git-based foundation we already have.
+The platform demonstrated here solves every one of these problems — building on the version-controlled foundation that already exists.
 
 <div class="cta-box" markdown>
 
