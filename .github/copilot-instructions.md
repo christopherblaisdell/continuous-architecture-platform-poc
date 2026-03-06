@@ -181,9 +181,10 @@ All PlantUML diagrams MUST follow C4 model notation from `architecture-standards
 
 ### Wireframe Management
 
-**Location**: `portal/docs/applications/{app}/wireframes/`
+**Source location**: `architecture/wireframes/{app}/` (architect-edited Excalidraw JSON)
+**Generated output**: `portal/docs/applications/{app}/wireframes/` (SVG, HTML, MD — produced by CI)
 
-All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`). The system automatically generates:
+All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`) under `architecture/wireframes/`. CI automatically generates:
 - SVG previews for embedding in documentation
 - Interactive HTML viewers for design collaboration
 - Markdown wrapper pages linking design to architecture
@@ -198,21 +199,17 @@ All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`). The sy
 
 1. **Edit locally (VS Code)**:
    - Install extension: Search "Excalidraw" in VS Code extensions (or manually: `pomdtr.excalidraw-editor`)
-   - Open `.excalidraw` files from `portal/docs/applications/{app}/wireframes/`
+   - Open `.excalidraw` files from `architecture/wireframes/{app}/`
    - Edit directly in VS Code with live preview
 
 2. **Or edit online**:
    - Upload `.excalidraw` JSON to [excalidraw.com](https://excalidraw.com)
    - Design the screen, export as JSON
-   - Download and save to `portal/docs/applications/{app}/wireframes/`
+   - Download and save to `architecture/wireframes/{app}/`
 
-3. **Regenerate pages**:
-   - Run `bash portal/scripts/generate-all.sh` to render SVG + HTML + markdown
-   - Or run just `python3 portal/scripts/generate-wireframe-pages.py` to update only wireframes
-
-4. **Publish**:
-   - Commit `.excalidraw` JSON, `.md`, `.svg`, and `.html` files
-   - CI/CD automatically deploys to Mango Sand portal
+3. **Publish**:
+   - Commit only the `.excalidraw` source file and push
+   - CI automatically generates SVG + HTML + MD and deploys to Mango Sand portal
 
 **Wireframe Naming Convention**:
 - Kebab-case, descriptive: `check-in-confirmation.excalidraw`, `live-tracking.excalidraw`
@@ -220,15 +217,15 @@ All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`). The sy
 
 **Current Wireframes**:
 - **web-guest-portal**:
-  - `check-in-confirmation.excalidraw` — Guest check-in completion screen
+  - `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw` — Guest check-in completion screen
 - **web-ops-dashboard**:
-  - `live-tracking.excalidraw` — Operations dashboard showing real-time adventure tracking map
+  - `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw` — Operations dashboard showing real-time adventure tracking map
 - **app-guest-mobile**:
-  - `adventure-selection.excalidraw` — Mobile app adventure search and booking screen
+  - `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw` — Mobile app adventure search and booking screen
 
 **When Proposing Wireframe Changes:**
 - If a ticket requires UI/UX work, propose or update wireframes as part of the solution design
-- Include a reference: "See wireframe: portal/docs/applications/{app}/wireframes/{name}.md for visual design"
+- Include a reference: "See wireframe: architecture/wireframes/{app}/{name}.excalidraw for source design"
 - Wireframe changes should precede API contract changes — design flows first, then define integration points
 - Wireframes inform API schema decisions (e.g., which fields are displayed, how data is paginated or filtered)
 

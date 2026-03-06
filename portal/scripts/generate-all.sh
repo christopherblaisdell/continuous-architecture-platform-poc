@@ -85,9 +85,16 @@ cp -r docs/services/api site/services/ 2>/dev/null || true
 cp -r "$REPO_ROOT/architecture/specs" site/ 2>/dev/null || true
 cp -r docs/microservices/svg site/microservices/ 2>/dev/null || true
 cp -r docs/applications/svg site/applications/ 2>/dev/null || true
-cp -r docs/applications/*/wireframes/*.svg site/applications/*/wireframes/ 2>/dev/null || true
-cp -r docs/applications/*/wireframes/*.html site/applications/*/wireframes/ 2>/dev/null || true
-cp -r docs/applications/*/wireframes/*.excalidraw site/applications/*/wireframes/ 2>/dev/null || true
+
+# Copy wireframe assets (SVG + HTML) into matching site directories
+for wf_dir in docs/applications/*/wireframes; do
+  app_name="$(basename "$(dirname "$wf_dir")")"
+  target="site/applications/$app_name/wireframes"
+  mkdir -p "$target"
+  cp -f "$wf_dir"/*.svg "$target/" 2>/dev/null || true
+  cp -f "$wf_dir"/*.html "$target/" 2>/dev/null || true
+done
+
 cp -r docs/events-ui site/ 2>/dev/null || true
 cp -r docs/diagrams/svg site/diagrams/ 2>/dev/null || mkdir -p site/diagrams && true
 cp staticwebapp.config.json site/ 2>/dev/null || true

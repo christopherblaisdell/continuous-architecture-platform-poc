@@ -2,14 +2,17 @@
 
 Quick reference for creating and managing wireframes in the Mango Sand portal.
 
+## Source Location
+
+Wireframe source files live under `architecture/wireframes/{app}/` — the same root as all other architect-edited artifacts (specs, metadata, events). CI generates SVG, HTML, and Markdown pages into `portal/docs/applications/{app}/wireframes/`.
+
 ## Editing Wireframes
 
 ### Option 1: VS Code (Recommended)
-1. Open any `.excalidraw` file in VS Code
+1. Open any `.excalidraw` file from `architecture/wireframes/{app}/` in VS Code
 2. VS Code will show a preview pane (Excalidraw Editor extension)
 3. Edit directly with live preview
-4. Save (Ctrl+S / Cmd+S)
-5. Run regeneration (see below)
+4. Save (Cmd+S)
 
 ### Option 2: Web Editor (excalidraw.com)
 1. Navigate to [excalidraw.com](https://excalidraw.com)
@@ -17,42 +20,34 @@ Quick reference for creating and managing wireframes in the Mango Sand portal.
 3. Design your screen
 4. Export as JSON
 5. Save JSON back to the `.excalidraw` file in the repo
-6. Run regeneration
 
-## Regenerating Wireframe Pages
+## Publishing
 
-After editing `.excalidraw` files, regenerate the pages:
+Commit only the `.excalidraw` source file and push to `main`. CI automatically:
 
-```bash
-# Full regeneration (all generators + MkDocs build)
-bash portal/scripts/generate-all.sh
+1. Runs `generate-wireframe-pages.py` (reads from `architecture/wireframes/`)
+2. Generates SVG + HTML + MD into `portal/docs/applications/{app}/wireframes/`
+3. Builds MkDocs site and deploys to Mango Sand portal
 
-# Just wireframes (faster)
-python3 portal/scripts/generate-wireframe-pages.py
-```
-
-This creates:
-- `.svg` — static preview image
-- `.html` — interactive Excalidraw viewer (with zoom/pan)
-- `.md` — MkDocs wrapper page with info + embeds
+No manual regeneration or committing of generated files required.
 
 ## Current Wireframes
 
 ### Web Guest Portal
-- **Location**: `portal/docs/applications/web-guest-portal/wireframes/`
-- **check-in-confirmation.excalidraw** — Guest check-in completion flow with guest info, safety checklist, wristband ID
+- **Source**: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
+- Guest check-in completion flow with guest info, safety checklist, wristband ID
 
 **See on site**: [Check-in Confirmation](https://mango-sand-083b8ce0f.4.azurestaticapps.net/applications/web-guest-portal/wireframes/check-in-confirmation/)
 
 ### Web Operations Dashboard
-- **Location**: `portal/docs/applications/web-ops-dashboard/wireframes/`
-- **live-tracking.excalidraw** — Real-time adventure map with guest positions, alerts, and stats
+- **Source**: `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw`
+- Real-time adventure map with guest positions, alerts, and stats
 
 **See on site**: [Live Tracking](https://mango-sand-083b8ce0f.4.azurestaticapps.net/applications/web-ops-dashboard/wireframes/live-tracking/)
 
 ### Mobile Guest App
-- **Location**: `portal/docs/applications/app-guest-mobile/wireframes/`
-- **adventure-selection.excalidraw** — Adventure listings with filters, availability, and booking
+- **Source**: `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw`
+- Adventure listings with filters, availability, and booking
 
 **See on site**: [Adventure Selection](https://mango-sand-083b8ce0f.4.azurestaticapps.net/applications/app-guest-mobile/wireframes/adventure-selection/)
 
@@ -61,48 +56,48 @@ This creates:
 1. Create new `.excalidraw` file:
    ```bash
    # Name it kebab-case, descriptive
-   touch portal/docs/applications/{app}/wireframes/feature-screen-name.excalidraw
+   touch architecture/wireframes/{app}/feature-screen-name.excalidraw
    ```
 
 2. Design in VS Code or excalidraw.com
 
 3. If using web editor, export JSON and save to the file above
 
-4. Regenerate:
-   ```bash
-   python3 portal/scripts/generate-wireframe-pages.py
-   ```
+4. Add nav entry to `portal/mkdocs.yml` under the app's Wireframes section
 
-5. Update MkDocs nav if needed (usually automatic for existing apps)
-
-6. Commit all files:
+5. Commit and push:
    ```bash
-   git add portal/docs/applications/*/wireframes/
+   git add architecture/wireframes/{app}/feature-screen-name.excalidraw portal/mkdocs.yml
    git commit -m "Add wireframe: feature-screen-name"
+   git push
    ```
+
+CI handles all generation and deployment.
 
 ## File Structure
 
 ```
-portal/docs/applications/
+architecture/wireframes/              ← SOURCE (architect-edited)
 ├── web-guest-portal/
-│   ├── index.md
-│   └── wireframes/
-│       ├── check-in-confirmation.excalidraw  ← Source (edit this)
-│       ├── check-in-confirmation.md          ← Generated wrapper
-│       ├── check-in-confirmation.svg         ← Generated preview
-│       └── check-in-confirmation.html        ← Generated viewer
+│   └── check-in-confirmation.excalidraw
 ├── web-ops-dashboard/
-│   ├── index.md
+│   └── live-tracking.excalidraw
+└── app-guest-mobile/
+    └── adventure-selection.excalidraw
+
+portal/docs/applications/             ← GENERATED (by CI)
+├── web-guest-portal/
 │   └── wireframes/
-│       ├── live-tracking.excalidraw
+│       ├── check-in-confirmation.md     ← Generated wrapper
+│       ├── check-in-confirmation.svg    ← Generated preview
+│       └── check-in-confirmation.html   ← Generated viewer
+├── web-ops-dashboard/
+│   └── wireframes/
 │       ├── live-tracking.md
 │       ├── live-tracking.svg
 │       └── live-tracking.html
 └── app-guest-mobile/
-    ├── index.md
     └── wireframes/
-        ├── adventure-selection.excalidraw
         ├── adventure-selection.md
         ├── adventure-selection.svg
         └── adventure-selection.html
@@ -119,12 +114,12 @@ portal/docs/applications/
 
 ## Linking in Architecture Documents
 
-When proposing UI/UX changes in solution designs, reference wireframes like:
+When proposing UI/UX changes in solution designs, reference wireframes by source path:
 
 ```markdown
 ### User Interface
 
-See wireframe: [Check-in Confirmation Screen](../../applications/web-guest-portal/wireframes/check-in-confirmation.md)
+See wireframe source: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
 
 The user flow is:
 1. Guest scans wristband (captured in `#wristbandRfid`)
