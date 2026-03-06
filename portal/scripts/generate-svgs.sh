@@ -2,9 +2,10 @@
 # Generate SVGs from all PlantUML diagrams
 set -e
 
-ROOT="/Users/christopherblaisdell/Documents/continuous-architecture-platform-poc-2"
-SRC="$ROOT/phase-1-ai-tool-cost-comparison/workspace/corporate-services/diagrams"
-WI="$ROOT/phase-1-ai-tool-cost-comparison/workspace/work-items/tickets"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+SRC="$ROOT/phases/phase-1-ai-tool-cost-comparison/workspace/corporate-services/diagrams"
+WI="$ROOT/phases/phase-1-ai-tool-cost-comparison/workspace/work-items/tickets"
 OUT="$ROOT/portal/docs/diagrams/svg"
 
 mkdir -p "$OUT"

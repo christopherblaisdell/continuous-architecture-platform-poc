@@ -14,7 +14,7 @@
 
 1. **Never imply real corporate connections.** When referencing JIRA, Elastic, or GitLab tools, always clarify they are local mock scripts
 2. **Never fabricate data.** Only use data returned by the mock scripts or present in workspace files
-3. **Never introduce corporate identifiers.** Run `./scripts/audit-data-isolation.sh` to verify before committing
+3. **Never introduce corporate identifiers.** Run `./portal/scripts/utilities/audit-data-isolation.sh` to verify before committing
 4. **Always use the NovaTrek Adventures domain** for any new synthetic data
 5. **Never reference real company names, products, or internal systems** in generated content
 6. **Never generate fake URLs** that resolve to real domains — use `*.novatrek.example.com` exclusively
@@ -42,12 +42,12 @@ Compare AI toolchains (GitHub Copilot vs Roo Code + OpenRouter) by executing 5 a
 | `portal/docs/microservices/` | Generated microservice pages, PUML source files, and SVG output |
 | `portal/scripts/generate-microservice-pages.py` | Generates all 19 microservice pages with PlantUML SVG sequence diagrams |
 | `portal/staticwebapp.config.json` | Azure Static Web App configuration (routes, headers, CSP) |
-| `phase-1-ai-tool-cost-comparison/workspace/` | Synthetic workspace for Phase 1 evaluation |
-| `phase-1-ai-tool-cost-comparison/workspace/scripts/` | Mock JIRA, Elastic, GitLab tools (local JSON, no network) |
-| `phase-1-ai-tool-cost-comparison/outputs/` | Run-by-run results for Copilot and Roo Code executions |
-| `phase-1-ai-tool-cost-comparison/scripts/capture-run.sh` | Script to snapshot workspace into outputs after a run |
-| `scripts/audit-data-isolation.sh` | Pre-commit audit for corporate data leakage |
-| `roadmap/ROADMAP.md` | Phased delivery roadmap |
+| `phases/phase-1-ai-tool-cost-comparison/workspace/` | Synthetic workspace for Phase 1 evaluation |
+| `phases/phase-1-ai-tool-cost-comparison/workspace/scripts/` | Mock JIRA, Elastic, GitLab tools (local JSON, no network) |
+| `phases/phase-1-ai-tool-cost-comparison/outputs/` | Run-by-run results for Copilot and Roo Code executions |
+| `phases/phase-1-ai-tool-cost-comparison/scripts/capture-run.sh` | Script to snapshot workspace into outputs after a run |
+| `portal/scripts/utilities/audit-data-isolation.sh` | Pre-commit audit for corporate data leakage |
+| `docs/roadmap/ROADMAP.md` | Phased delivery roadmap |
 
 ---
 
@@ -461,27 +461,27 @@ See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](research/DEEP-RESEARCH-RESULTS-CO
 | Pricing model | Pay-per-token, variable |
 | Model used | Claude Opus 4.6 |
 | Token-level visibility | Full -- exact per-request costs via API |
-| Cost retrieval | `python3 scripts/openrouter-cost.py` (automated API queries) |
+| Cost retrieval | `python3 portal/scripts/utilities/openrouter-cost.py` (automated API queries) |
 | Activity dashboard | https://openrouter.ai/activity |
 
-OpenRouter provides exact costs. Use `scripts/openrouter-cost.py` to retrieve:
+OpenRouter provides exact costs. Use `portal/scripts/utilities/openrouter-cost.py` to retrieve:
 
 ```bash
 # Check credit balance
-python3 scripts/openrouter-cost.py balance
+python3 portal/scripts/utilities/openrouter-cost.py balance
 
 # Cost for a specific generation
-python3 scripts/openrouter-cost.py generation gen-xxxxxxxxxxxxxxxx
+python3 portal/scripts/utilities/openrouter-cost.py generation gen-xxxxxxxxxxxxxxxx
 
 # Bulk cost summary from a file of generation IDs
-python3 scripts/openrouter-cost.py summary --file generation-ids.txt --format json
+python3 portal/scripts/utilities/openrouter-cost.py summary --file generation-ids.txt --format json
 ```
 
 ### Cost Measurement Scripts
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/openrouter-cost.py` | Queries OpenRouter API for exact per-request costs |
-| `scripts/cost-measurement.py` | Content-based estimation from git diffs + cost comparison reports |
+| `portal/scripts/utilities/openrouter-cost.py` | Queries OpenRouter API for exact per-request costs |
+| `portal/scripts/utilities/cost-measurement.py` | Content-based estimation from git diffs + cost comparison reports |
 
-See [COST-MEASUREMENT-METHODOLOGY.md](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) for the full methodology.
+See [COST-MEASUREMENT-METHODOLOGY.md](../phases/phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) for the full methodology.
