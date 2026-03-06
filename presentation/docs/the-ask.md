@@ -18,7 +18,7 @@ We already source-control specs and diagrams in Git with production gating. We'v
 - Fixed subscription — no variable costs, no runaway billing
 - Includes Claude Opus 4.6 access with unlimited autonomous tool calls
 - Native VS Code integration — no infrastructure to manage
-- Proven: 96.1% quality, 208x cheaper than per-token alternatives
+- Proven: 39 architecture files produced across 5 scenarios, 208x cheaper than per-token alternatives
 
 **Pilot scope:** Start with the architecture practice team. Measure quality and adoption for 1 month before expanding.
 
@@ -77,7 +77,7 @@ For organizations that require Confluence:
 
 | Concern | Answer |
 |---------|--------|
-| "What if the AI quality isn't good enough?" | 96.1% measured across 5 scenarios. Start with a 1-month pilot. |
+| "What if the AI output isn't usable?" | 39 complete architecture files produced in 5 scenarios, all following MADR/arc42/C4 standards. Start with a 1-month pilot. |
 | "What if costs increase?" | Fixed $39/month subscription. Even at 2x, cheaper than alternatives. |
 | "What if architects don't adopt it?" | Architects already work in Git with text-format specs. The AI handles Markdown formatting. The workflow extends what they already do. |
 | "What if we need to go back?" | Markdown is portable. Export to any format. No vendor lock-in. |
@@ -116,7 +116,7 @@ Start a 1-month pilot. Measure quality and adoption. Scale based on data.
 | Claim | Source |
 |-------|--------|
 | 208x cheaper per run | Actual billing data from Phase 1 execution |
-| 96.1% quality score | 149/155 across 5 evaluated scenarios |
+| 39 architecture files produced | 5 evaluated scenarios following MADR/arc42/C4 standards |
 | 301 artifacts published automatically | Live portal at mango-sand-083b8ce0f.4.azurestaticapps.net |
 | 95%+ knowledge gap rate | Phase 1 post-execution analysis (CLOSING-THE-LOOP.md) |
 | $0 publishing infrastructure cost | Azure Static Web Apps free tier + open source MkDocs |
