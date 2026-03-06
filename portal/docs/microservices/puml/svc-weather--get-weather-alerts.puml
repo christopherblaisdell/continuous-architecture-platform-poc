@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-weather/#integration-context ⬆ svc-weather Integration Context]]
@@ -19,11 +19,11 @@ header [[/microservices/svc-weather/#integration-context ⬆ svc-weather Integra
 title GET /weather/alerts\nGet active weather alerts for a region
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-weather" as Svc [[/microservices/svc-weather/]] #E8F4F8
-participant "OpenWeather API" as ExtWx [[/actors/#openweather-api]] #F5F5F5
-participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "Valkey + PG" as DB [[/microservices/svc-weather/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-weather" as Svc [[/microservices/svc-weather/]] #F1F5F9
+participant "OpenWeather API" as ExtWx [[/actors/#openweather-api]] #F3F4F6
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "Valkey + PG" as DB [[/microservices/svc-weather/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-weather.html#/Alerts/getWeatherAlerts View in Swagger UI]]
@@ -37,14 +37,14 @@ activate Svc #2563eb
 == Cross-Service Integration ==
 
 Svc -> ExtWx : Fetch active alerts
-activate ExtWx #DBEAFE
+activate ExtWx #F3F4F6
 ExtWx --> Svc : OK
 deactivate ExtWx
 
 == Database ==
 
 Svc -> DB : SELECT ... WHERE filters
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Page of results
 deactivate DB
 

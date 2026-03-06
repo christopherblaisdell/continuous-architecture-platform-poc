@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-payments/#integration-context ⬆ svc-payments Integration Context]]
@@ -19,11 +19,11 @@ header [[/microservices/svc-payments/#integration-context ⬆ svc-payments Integ
 title POST /payments/{payment_id}/refund\nInitiate a refund
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FFE0E0
-participant "Payment Gateway" as PGW [[/actors/#payment-gateway]] #FFE0E0
-participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB [[/microservices/svc-payments/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FEE2E2
+participant "Payment Gateway" as PGW [[/actors/#payment-gateway]] #FEE2E2
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "PostgreSQL" as DB [[/microservices/svc-payments/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-payments.html#/Refunds/refundPayment View in Swagger UI]]
@@ -39,20 +39,20 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -[#DC2626]> PGW : Process refund via gateway
-activate PGW #DBEAFE
+activate PGW #F3F4F6
 PGW --[#DC2626]> Svc : OK
 deactivate PGW
 
 == Database ==
 
 Svc -> DB : SELECT parent WHERE id = ?
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Parent row
 deactivate DB
 note right of DB : 404 if parent not found
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

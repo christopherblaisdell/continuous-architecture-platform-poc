@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-guest-profiles/#integration-context ⬆ svc-guest-profiles Integration Context]]
@@ -19,11 +19,11 @@ header [[/microservices/svc-guest-profiles/#integration-context ⬆ svc-guest-pr
 title GET /guests/{guest_id}/adventure-history\nGet guest adventure history
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
-participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-participant "Analytics" as AN [[/microservices/svc-analytics/]] #FFF8F0
-database "PostgreSQL" as DB [[/microservices/svc-guest-profiles/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "Reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+participant "Analytics" as AN [[/microservices/svc-analytics/]] #F1F5F9
+database "PostgreSQL" as DB [[/microservices/svc-guest-profiles/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-guest-profiles.html#/History/getGuestAdventureHistory View in Swagger UI]]
@@ -37,19 +37,19 @@ activate Svc #2563eb
 == Cross-Service Integration ==
 
 Svc -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations Query past bookings]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> Svc : OK
 deactivate Res
 
 Svc -> AN : [[/microservices/svc-analytics/ Get satisfaction scores]]
-activate AN #DBEAFE
+activate AN #F1F5F9
 AN --> Svc : OK
 deactivate AN
 
 == Database ==
 
 Svc -> DB : SELECT ... WHERE parent_id = ?
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : ResultSet
 deactivate DB
 

@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #dc2626
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Operations Dashboard Service Dependencies]]
@@ -19,13 +19,13 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 title Daily Schedule Board\nNovaTrek Operations Dashboard
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
-participant "svc-guide-management" as GM [[/microservices/svc-guide-management/]] #E8F4F8
-participant "svc-weather" as WX [[/microservices/svc-weather/]] #E8F4F8
-participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #E8F4F8
-participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #E8F4F8
+participant "Browser" as App [[/applications/web-ops-dashboard/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-scheduling-orchestrator" as SO [[/microservices/svc-scheduling-orchestrator/]] #DBEAFE
+participant "svc-guide-management" as GM [[/microservices/svc-guide-management/]] #E0E7FF
+participant "svc-weather" as WX [[/microservices/svc-weather/]] #F1F5F9
+participant "svc-trail-management" as TM [[/microservices/svc-trail-management/]] #FEF3C7
+participant "svc-location-services" as LS [[/microservices/svc-location-services/]] #F1F5F9
 
 User -> App : Open Daily Schedule Board
 activate App #dc2626
@@ -40,22 +40,22 @@ SO --> GW : OK
 deactivate SO
 
 GW -> GM : [[/microservices/svc-guide-management/#get-guidesavailable-find-available-guides-for-a-date-activity-and-region Get available guides]]
-activate GM #DBEAFE
+activate GM #E0E7FF
 GM --> GW : OK
 deactivate GM
 
 GW -> WX : [[/microservices/svc-weather/#get-weatherforecast-get-weather-forecast Get weather forecast]]
-activate WX #DBEAFE
+activate WX #F1F5F9
 WX --> GW : OK
 deactivate WX
 
 GW -> TM : [[/microservices/svc-trail-management/#get-trailstrail_idconditions-get-current-trail-conditions Get trail conditions]]
-activate TM #DBEAFE
+activate TM #FEF3C7
 TM --> GW : OK
 deactivate TM
 
 GW -> LS : [[/microservices/svc-location-services/#get-locationslocation_idcapacity-get-current-capacity-utilization Get location capacity]]
-activate LS #DBEAFE
+activate LS #F1F5F9
 LS --> GW : OK
 deactivate LS
 

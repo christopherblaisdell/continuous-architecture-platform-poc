@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty-rewards Integration Context]]
@@ -19,12 +19,12 @@ header [[/microservices/svc-loyalty-rewards/#integration-context ⬆ svc-loyalty
 title POST /members/{guest_id}/earn\nAward points to a member
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #E8F4F8
-participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
-participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "Couchbase" as DB [[/microservices/svc-loyalty-rewards/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-loyalty-rewards" as Svc [[/microservices/svc-loyalty-rewards/]] #F1F5F9
+participant "Reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "Couchbase" as DB [[/microservices/svc-loyalty-rewards/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-loyalty-rewards.html#/Transactions/earnPoints View in Swagger UI]]
@@ -40,25 +40,25 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Verify completed booking]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> Svc : OK
 deactivate Res
 
 Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get member profile]]
-activate GP #DBEAFE
+activate GP #EDE9FE
 GP --> Svc : OK
 deactivate GP
 
 == Database ==
 
 Svc -> DB : GET parent document by key
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Document
 deactivate DB
 note right of DB : 404 if parent not found
 
 Svc -> DB : INSERT document
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Document
 deactivate DB
 

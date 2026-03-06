@@ -15,9 +15,9 @@ description: "Solution design for NTK-10001"
 
 ## Affected Capabilities
 
-| Capability | Impact |
-|-----------|--------|
-| [CAP-2.4 Trail Operations](../capabilities/index.md#cap-24) | Enhanced |
+| Capability | Impact | Description |
+|-----------|--------|-------------|
+| [CAP-2.4 Trail Operations](../capabilities/index.md#cap-24-trail-operations) | enhanced | Trail response now includes elevation gain/loss and elevation profile array |
 
 ## Affected Services
 

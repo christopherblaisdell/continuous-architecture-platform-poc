@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adventure App Service Dependencies]]
@@ -19,12 +19,12 @@ header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adven
 title Photo Upload\nNovaTrek Adventure App
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Mobile App" as App [[/applications/app-guest-mobile/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-media-gallery" as MG [[/microservices/svc-media-gallery/]] #E8F4F8
-participant "Object Store" as S3 #F5F5F5
-participant "Google Maps Platform" as GM #F5F5F5
-participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #E8F4F8
+participant "Mobile App" as App [[/applications/app-guest-mobile/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-media-gallery" as MG [[/microservices/svc-media-gallery/]] #F1F5F9
+participant "Object Store" as S3 #F3F4F6
+participant "Google Maps Platform" as GM #F3F4F6
+participant "svc-notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
 
 User -> App : Open Photo Upload
 activate App #059669
@@ -34,27 +34,27 @@ activate GW #059669
 == Backend Integration ==
 
 GW -> MG : [[/microservices/svc-media-gallery/#post-media-upload-a-media-item Upload photo]]
-activate MG #DBEAFE
+activate MG #F1F5F9
 MG --> GW : OK
 deactivate MG
 
 GW -> S3 : Store binary file
-activate S3 #DBEAFE
+activate S3 #F3F4F6
 S3 --> GW : OK
 deactivate S3
 
 GW -> GM : Reverse geocode GPS
-activate GM #DBEAFE
+activate GM #F3F4F6
 GM --> GW : OK
 deactivate GM
 
 GW -> MG : [[/microservices/svc-media-gallery/#post-mediamedia_idshare-create-a-shareable-link-for-a-media-item Create share link]]
-activate MG #DBEAFE
+activate MG #F1F5F9
 MG --> GW : OK
 deactivate MG
 
 GW ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send share notification]]
-activate Ntfy #DBEAFE
+activate Ntfy #F1F5F9
 Ntfy -->> GW : OK
 deactivate Ntfy
 

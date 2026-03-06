@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-transport-logistics Integration Context]]
@@ -19,13 +19,13 @@ header [[/microservices/svc-transport-logistics/#integration-context ⬆ svc-tra
 title POST /transport-requests\nRequest transport for a reservation
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logistics/]] #E8F4F8
-participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-participant "Location Svc" as LS [[/microservices/svc-location-services/]] #FFF8F0
-participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F5F5F5
-participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PostgreSQL" as DB [[/microservices/svc-transport-logistics/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logistics/]] #CFFAFE
+participant "Reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+participant "Location Svc" as LS [[/microservices/svc-location-services/]] #F1F5F9
+participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F3F4F6
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "PostgreSQL" as DB [[/microservices/svc-transport-logistics/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-transport-logistics.html View in Swagger UI]]
@@ -41,24 +41,24 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details Get booking details]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> Svc : OK
 deactivate Res
 
 Svc -> LS : [[/microservices/svc-location-services/#get-locationslocation_id-get-location-details Validate pickup location]]
-activate LS #DBEAFE
+activate LS #F1F5F9
 LS --> Svc : OK
 deactivate LS
 
 Svc -> ExtMap : Calculate optimal route
-activate ExtMap #DBEAFE
+activate ExtMap #F3F4F6
 ExtMap --> Svc : OK
 deactivate ExtMap
 
 == Database ==
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

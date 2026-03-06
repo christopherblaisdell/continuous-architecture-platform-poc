@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/web-guest-portal/#service-dependencies ⬆ NovaTrek Guest Portal Service Dependencies]]
@@ -19,11 +19,11 @@ header [[/applications/web-guest-portal/#service-dependencies ⬆ NovaTrek Guest
 title Guest Profile\nNovaTrek Guest Portal
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Browser" as App [[/applications/web-guest-portal/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-guest-profiles" as GP [[/microservices/svc-guest-profiles/]] #E8F4F8
-participant "svc-loyalty-rewards" as LR [[/microservices/svc-loyalty-rewards/]] #E8F4F8
-participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
+participant "Browser" as App [[/applications/web-guest-portal/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-guest-profiles" as GP [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "svc-loyalty-rewards" as LR [[/microservices/svc-loyalty-rewards/]] #F1F5F9
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
 
 User -> App : Open Guest Profile
 activate App #2563eb
@@ -33,22 +33,22 @@ activate GW #2563eb
 == Backend Integration ==
 
 GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile Get guest profile]]
-activate GP #DBEAFE
+activate GP #EDE9FE
 GP --> GW : OK
 deactivate GP
 
 GW -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_idadventure-history-get-guest-adventure-history Get adventure history]]
-activate GP #DBEAFE
+activate GP #EDE9FE
 GP --> GW : OK
 deactivate GP
 
 GW -> LR : [[/microservices/svc-loyalty-rewards/#get-membersguest_idbalance-get-loyalty-member-balance-and-tier-info Get loyalty balance]]
-activate LR #DBEAFE
+activate LR #F1F5F9
 LR --> GW : OK
 deactivate LR
 
 GW -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations Get upcoming bookings]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> GW : OK
 deactivate Res
 

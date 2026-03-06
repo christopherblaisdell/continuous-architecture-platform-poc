@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #dc2626
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Operations Dashboard Service Dependencies]]
@@ -19,12 +19,12 @@ header [[/applications/web-ops-dashboard/#service-dependencies ⬆ NovaTrek Oper
 title Analytics Dashboard\nNovaTrek Operations Dashboard
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Browser" as App [[/applications/web-ops-dashboard/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-analytics" as AN [[/microservices/svc-analytics/]] #E8F4F8
-participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #E8F4F8
-participant "svc-payments" as Pay [[/microservices/svc-payments/]] #E8F4F8
-participant "Snowflake Data Cloud" as SF #F5F5F5
+participant "Browser" as App [[/applications/web-ops-dashboard/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-analytics" as AN [[/microservices/svc-analytics/]] #F1F5F9
+participant "svc-reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+participant "svc-payments" as Pay [[/microservices/svc-payments/]] #F1F5F9
+participant "Snowflake Data Cloud" as SF #F3F4F6
 
 User -> App : Open Analytics Dashboard
 activate App #dc2626
@@ -34,22 +34,22 @@ activate GW #dc2626
 == Backend Integration ==
 
 GW -> AN : [[/microservices/svc-analytics/#get-analyticsbookings-get-booking-analytics-for-a-period Get booking metrics]]
-activate AN #DBEAFE
+activate AN #F1F5F9
 AN --> GW : OK
 deactivate AN
 
 GW -> Res : [[/microservices/svc-reservations/#get-reservations-search-reservations Get reservation stats]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> GW : OK
 deactivate Res
 
 GW -> Pay : [[/microservices/svc-payments/#get-paymentsdaily-summary-get-daily-payment-summary Get revenue summary]]
-activate Pay #DBEAFE
+activate Pay #F1F5F9
 Pay --> GW : OK
 deactivate Pay
 
 GW -> SF : Query data warehouse
-activate SF #DBEAFE
+activate SF #F3F4F6
 SF --> GW : OK
 deactivate SF
 

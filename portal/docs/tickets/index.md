@@ -7,6 +7,8 @@ description: NovaTrek Adventures architecture ticket registry
 
 Architecture ticket registry with capability traceability.
 Each ticket tracks affected services, capabilities, and links to its solution design.
+Capability mappings for solved tickets are derived from the
+[Capability Changelog](../capabilities/index.md) (single source of truth).
 
 **7** tickets | **5** with solution designs
 

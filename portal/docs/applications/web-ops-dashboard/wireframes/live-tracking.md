@@ -2,11 +2,11 @@
 
 ## Preview
 
-<object data="live-tracking.svg" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
+<object data="../live-tracking.svg" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
 
 ## Interactive Viewer
 
-**[Open Interactive Editor →](live-tracking.html)**
+**[Open Interactive Editor →](../live-tracking.html)**
 
 Open in the interactive Excalidraw viewer to explore the wireframe with zoom and pan controls.
 

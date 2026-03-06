@@ -1,17 +1,8 @@
 @startuml svc-check-in--post-check-ins
 
-skinparam backgroundColor #FEFEFE
-skinparam shadowing false
-skinparam defaultFontName "Segoe UI"
+!include ../theme.puml
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
 }
 
 header [[/microservices/svc-check-in/#integration-context ⬆ svc-check-in Integration Context]]
@@ -19,15 +10,15 @@ header [[/microservices/svc-check-in/#integration-context ⬆ svc-check-in Integ
 title POST /check-ins\nInitiate check-in for a participant\n<size:10><color:#7c3aed>ARCHITECT OVERRIDE — enriched with internal behavior</color></size>
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-check-in" as Svc [[/microservices/svc-check-in/]] #E8F4F8
-participant "Reservations" as Res [[/microservices/svc-reservations/]] #FFF8F0
-participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #FFF8F0
-participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FFF8F0
-participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FFF8F0
-participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "Redis" as Cache #FFE0B2
-database "PostgreSQL" as DB [[/microservices/svc-check-in/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-check-in" as Svc [[/microservices/svc-check-in/]] #DBEAFE
+participant "Reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "Trip Catalog" as TC [[/microservices/svc-trip-catalog/]] #FEF3C7
+participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FEE2E2
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "Redis" as Cache #FECDD3
+database "PostgreSQL" as DB [[/microservices/svc-check-in/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-check-in.html#/Check-Ins/createCheckIn View in Swagger UI]]
@@ -43,7 +34,7 @@ note right of Svc : Validate request body\n(reservation_id, guest_id required)
 == Reservation Validation ==
 
 Svc -> Res : [[/microservices/svc-reservations/#get-reservationsreservation_id-get-reservation-details GET /reservations/{id}]]
-activate Res #DBEAFE
+activate Res #D1FAE5
 Res --> Svc : Reservation details\n(adventure_category, trip_id, status)
 deactivate Res
 note right of Svc : Reject if status != CONFIRMED
@@ -51,7 +42,7 @@ note right of Svc : Reject if status != CONFIRMED
 == Guest Identity — Session Cache ==
 
 Svc -> Cache : GET session:{kiosk_token}:{guest_id}
-activate Cache #FFE0B2
+activate Cache #FECDD3
 alt Cache HIT
     Cache --> Svc : Cached guest profile
     deactivate Cache
@@ -59,11 +50,11 @@ else Cache MISS
     Cache --> Svc : null
     deactivate Cache
     Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile GET /guests/{guest_id}]]
-    activate GP #DBEAFE
+    activate GP #EDE9FE
     GP --> Svc : Guest profile
     deactivate GP
     Svc -> Cache : SET session:{kiosk_token}:{guest_id}\nTTL 15 min (ADR-009)
-    activate Cache #FFE0B2
+    activate Cache #FECDD3
     Cache --> Svc : OK
     deactivate Cache
 end
@@ -71,7 +62,7 @@ end
 == Adventure Classification (ADR-004, ADR-005) ==
 
 Svc -> TC : [[/microservices/svc-trip-catalog/#get-tripstrip_id-get-trip-details GET /trips/{trip_id}]]
-activate TC #DBEAFE
+activate TC #FEF3C7
 TC --> Svc : Trip details\n(adventure_category)
 deactivate TC
 
@@ -80,7 +71,7 @@ note right of Svc : Map adventure_category\nto check-in pattern\nvia configurati
 alt Pattern 2 or Pattern 3 (guided/full service)
     == Waiver Validation ==
     Svc -> Safety : [[/microservices/svc-safety-compliance/#get-waivers-list-waivers-by-guest GET /waivers?guest_id={guest_id}]]
-    activate Safety #DBEAFE
+    activate Safety #FEE2E2
     Safety --> Svc : Active waivers
     deactivate Safety
     note right of Svc : Reject if no valid\nwaiver on file
@@ -92,12 +83,12 @@ end
 
 group Transaction boundary (PostgreSQL)
     Svc -> DB : INSERT INTO check_ins\n(check_in_id, reservation_id,\nguest_id, adventure_category,\ncheck_in_pattern, status)
-    activate DB #FCE4EC
+    activate DB #FEF9C3
     DB --> Svc : Created row
     deactivate DB
 
     Svc -> DB : INSERT INTO wristband_assignments\n(wristband_id, check_in_id,\nrfid_tag, assigned_at)
-    activate DB #FCE4EC
+    activate DB #FEF9C3
     DB --> Svc : Created row
     deactivate DB
 end

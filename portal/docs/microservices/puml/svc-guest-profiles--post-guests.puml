@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-guest-profiles/#integration-context ⬆ svc-guest-profiles Integration Context]]
@@ -19,11 +19,11 @@ header [[/microservices/svc-guest-profiles/#integration-context ⬆ svc-guest-pr
 title POST /guests\nRegister a new guest
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #E8F4F8
-participant "IDVerify API" as ExtID [[/actors/#idverify-api]] #F5F5F5
-queue "Kafka" as Kafka [[/actors/#event-bus]] #F0E6FF
-database "PostgreSQL" as DB [[/microservices/svc-guest-profiles/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-guest-profiles" as Svc [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "IDVerify API" as ExtID [[/actors/#idverify-api]] #F3F4F6
+queue "Kafka" as Kafka [[/actors/#event-bus]] #F5F3FF
+database "PostgreSQL" as DB [[/microservices/svc-guest-profiles/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-guest-profiles.html#/Guests/createGuest View in Swagger UI]]
@@ -39,14 +39,14 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> ExtID : Verify identity document
-activate ExtID #DBEAFE
+activate ExtID #F3F4F6
 ExtID --> Svc : OK
 deactivate ExtID
 
 == Database ==
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

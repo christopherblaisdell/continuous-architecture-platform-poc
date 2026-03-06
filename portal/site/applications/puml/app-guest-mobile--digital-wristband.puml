@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adventure App Service Dependencies]]
@@ -19,10 +19,10 @@ header [[/applications/app-guest-mobile/#service-dependencies ⬆ NovaTrek Adven
 title Digital Wristband\nNovaTrek Adventure App
 
 actor "Guest" as User [[/actors/#guest]]
-participant "Mobile App" as App [[/applications/app-guest-mobile/]] #DBEAFE
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-check-in" as CI [[/microservices/svc-check-in/]] #E8F4F8
-participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #E8F4F8
+participant "Mobile App" as App [[/applications/app-guest-mobile/]] #E0F2FE
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-check-in" as CI [[/microservices/svc-check-in/]] #DBEAFE
+participant "svc-gear-inventory" as GI [[/microservices/svc-gear-inventory/]] #CFFAFE
 
 User -> App : Open Digital Wristband
 activate App #059669
@@ -37,7 +37,7 @@ CI --> GW : OK
 deactivate CI
 
 GW -> GI : [[/microservices/svc-gear-inventory/#get-gear-assignmentsassignment_id-get-gear-assignment-details Verify gear assignment]]
-activate GI #DBEAFE
+activate GI #CFFAFE
 GI --> GW : OK
 deactivate GI
 

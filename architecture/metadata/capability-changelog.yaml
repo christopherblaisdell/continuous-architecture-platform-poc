@@ -1,7 +1,13 @@
 # NovaTrek Adventures — Capability Changelog
-# Append-only log of capability changes driven by solution designs.
-# Each entry maps a ticket to the capabilities it shaped.
+# SINGLE SOURCE OF TRUTH for all capability changes driven by solution designs.
+# Each entry maps a ticket/solution to the capabilities it shaped.
 # L3 capabilities emerge here; L1 and L2 are defined in capabilities.yaml.
+#
+# DATA MODEL:
+# - This file is the authoritative record of which capabilities each solution affects.
+# - tickets.yaml does NOT duplicate capability mappings for solved tickets.
+# - Solution capabilities.md files reference this changelog, not the other way around.
+# - Generators derive all capability-solution relationships from this file.
 
 entries:
 

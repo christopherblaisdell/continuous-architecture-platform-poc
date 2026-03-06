@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-scheduling-orchestrator/#integration-context ⬆ svc-scheduling-orchestrator Integration Context]]
@@ -19,11 +19,11 @@ header [[/microservices/svc-scheduling-orchestrator/#integration-context ⬆ svc
 title POST /schedule-conflicts/resolve\nResolve a scheduling conflict
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-scheduling-orchestrator" as Svc [[/microservices/svc-scheduling-orchestrator/]] #E8F4F8
-participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #FFF8F0
-participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #FFF8F0
-database "PG + Valkey" as DB [[/microservices/svc-scheduling-orchestrator/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-scheduling-orchestrator" as Svc [[/microservices/svc-scheduling-orchestrator/]] #DBEAFE
+participant "Guide Mgmt" as GM [[/microservices/svc-guide-management/]] #E0E7FF
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "PG + Valkey" as DB [[/microservices/svc-scheduling-orchestrator/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-scheduling-orchestrator.html View in Swagger UI]]
@@ -39,14 +39,14 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> GM : [[/microservices/svc-guide-management/#patch-guidesguide_id-update-guide-profile Reassign guide]]
-activate GM #DBEAFE
+activate GM #E0E7FF
 GM --> Svc : OK
 deactivate GM
 
 == Database ==
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

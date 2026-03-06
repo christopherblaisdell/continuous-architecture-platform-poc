@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #059669
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-location-services/#integration-context ⬆ svc-location-services Integration Context]]
@@ -19,10 +19,10 @@ header [[/microservices/svc-location-services/#integration-context ⬆ svc-locat
 title POST /locations\nCreate a new location
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-location-services" as Svc [[/microservices/svc-location-services/]] #E8F4F8
-participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F5F5F5
-database "PostGIS" as DB [[/microservices/svc-location-services/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-location-services" as Svc [[/microservices/svc-location-services/]] #F1F5F9
+participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F3F4F6
+database "PostGIS" as DB [[/microservices/svc-location-services/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-location-services.html View in Swagger UI]]
@@ -38,14 +38,14 @@ note right of Svc : Validate request body
 == Cross-Service Integration ==
 
 Svc -> ExtMap : Geocode address
-activate ExtMap #DBEAFE
+activate ExtMap #F3F4F6
 ExtMap --> Svc : OK
 deactivate ExtMap
 
 == Database ==
 
 Svc -> DB : INSERT INTO ...
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Created row
 deactivate DB
 

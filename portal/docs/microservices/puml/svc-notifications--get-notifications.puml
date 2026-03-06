@@ -5,13 +5,13 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam sequence {
     ArrowColor #2563eb
-    ParticipantBorderColor #2E86AB
-    ParticipantBackgroundColor #E8F4F8
-    LifeLineBorderColor #A23B72
-    BoxBorderColor #F18F01
-    BoxBackgroundColor #FFF8F0
-    NoteBorderColor #c77b30
-    NoteBackgroundColor #FEF3E7
+    ParticipantBorderColor #374151
+    ParticipantBackgroundColor #F9FAFB
+    LifeLineBorderColor #6B7280
+    BoxBorderColor #94A3B8
+    BoxBackgroundColor #F8FAFC
+    NoteBorderColor #64748B
+    NoteBackgroundColor #F8FAFC
 }
 
 header [[/microservices/svc-notifications/#integration-context ⬆ svc-notifications Integration Context]]
@@ -19,9 +19,9 @@ header [[/microservices/svc-notifications/#integration-context ⬆ svc-notificat
 title GET /notifications\nList notifications
 
 participant "Client" as Client [[/applications/]]
-participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE
-participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #E8F4F8
-database "PG + Valkey" as DB [[/microservices/svc-notifications/#data-store]] #FCE4EC
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-notifications" as Svc [[/microservices/svc-notifications/]] #F1F5F9
+database "PG + Valkey" as DB [[/microservices/svc-notifications/#data-store]] #FEF9C3
 
 note over Svc
   [[/services/api/svc-notifications.html#/Notifications/listNotifications View in Swagger UI]]
@@ -35,7 +35,7 @@ activate Svc #2563eb
 == Database ==
 
 Svc -> DB : SELECT ... WHERE filters
-activate DB #FCE4EC
+activate DB #FEF9C3
 DB --> Svc : Page of results
 deactivate DB
 
