@@ -1,0 +1,25 @@
+# PCI DSS compliance scope and sensitive data flow paths.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+services:
+- svc-payments
+externals:
+- Fraud Detection API
+- Payment Gateway
+- Stripe API
+data_flows:
+- - svc-inventory-procurement
+  - svc-payments
+- - svc-loyalty-rewards
+  - svc-payments
+- - svc-partner-integrations
+  - svc-payments
+- - svc-payments
+  - Fraud Detection API
+- - svc-payments
+  - Payment Gateway
+- - svc-payments
+  - Stripe API
+- - svc-reservations
+  - svc-payments

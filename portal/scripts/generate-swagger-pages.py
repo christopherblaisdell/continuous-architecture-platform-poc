@@ -24,58 +24,10 @@ PORTAL_DOCS = os.path.join(WORKSPACE_ROOT, "portal", "docs")
 API_OUTPUT = os.path.join(PORTAL_DOCS, "services", "api")
 SPECS_OUTPUT = os.path.join(PORTAL_DOCS, "specs")
 
-# Domain classification for the service catalog
-DOMAINS = {
-    "Operations": {
-        "color": "#2563eb",
-        "icon": "clipboard-check",
-        "services": ["svc-check-in", "svc-scheduling-orchestrator"]
-    },
-    "Guest Identity": {
-        "color": "#7c3aed",
-        "icon": "account-group",
-        "services": ["svc-guest-profiles"]
-    },
-    "Booking": {
-        "color": "#059669",
-        "icon": "calendar-check",
-        "services": ["svc-reservations"]
-    },
-    "Product Catalog": {
-        "color": "#d97706",
-        "icon": "map-marker-path",
-        "services": ["svc-trip-catalog", "svc-trail-management"]
-    },
-    "Safety": {
-        "color": "#dc2626",
-        "icon": "shield-alert",
-        "services": ["svc-safety-compliance"]
-    },
-    "Logistics": {
-        "color": "#0891b2",
-        "icon": "truck-delivery",
-        "services": ["svc-transport-logistics", "svc-gear-inventory"]
-    },
-    "Guide Management": {
-        "color": "#4f46e5",
-        "icon": "account-tie",
-        "services": ["svc-guide-management"]
-    },
-    "External": {
-        "color": "#9333ea",
-        "icon": "handshake",
-        "services": ["svc-partner-integrations"]
-    },
-    "Support": {
-        "color": "#64748b",
-        "icon": "cog",
-        "services": [
-            "svc-notifications", "svc-payments", "svc-loyalty-rewards",
-            "svc-media-gallery", "svc-analytics", "svc-weather",
-            "svc-location-services", "svc-inventory-procurement"
-        ]
-    }
-}
+# ── Metadata loaded from YAML files (portal/docs/metadata/) ──
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from load_metadata import DOMAINS  # noqa: E402
 
 SWAGGER_HTML_TEMPLATE = """\
 <!DOCTYPE html>

@@ -1,0 +1,81 @@
+# Domain event catalog -- channels, producers, consumers, and triggers.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+reservation.created:
+  channel: novatrek.booking.reservation.created
+  producer: svc-reservations
+  trigger:
+    method: POST
+    path: /reservations
+  consumers:
+  - svc-scheduling-orchestrator
+  - svc-analytics
+  domain: Booking
+  summary: Published when a new reservation is confirmed
+reservation.status_changed:
+  channel: novatrek.booking.reservation.status-changed
+  producer: svc-reservations
+  trigger:
+    method: PUT
+    path: /reservations/{reservation_id}/status
+  consumers:
+  - svc-notifications
+  - svc-analytics
+  domain: Booking
+  summary: Published when a reservation status transitions
+guest.registered:
+  channel: novatrek.guest-identity.guest.registered
+  producer: svc-guest-profiles
+  trigger:
+    method: POST
+    path: /guests
+  consumers:
+  - svc-loyalty-rewards
+  - svc-analytics
+  domain: Guest Identity
+  summary: Published when a new guest profile is created
+checkin.completed:
+  channel: novatrek.operations.checkin.completed
+  producer: svc-check-in
+  trigger:
+    method: POST
+    path: /check-ins
+  consumers:
+  - svc-analytics
+  - svc-notifications
+  domain: Operations
+  summary: Published when a guest completes the check-in process
+schedule.published:
+  channel: novatrek.operations.schedule.published
+  producer: svc-scheduling-orchestrator
+  trigger:
+    method: POST
+    path: /schedule-requests
+  consumers:
+  - svc-guide-management
+  - svc-notifications
+  domain: Operations
+  summary: Published when a daily schedule is finalized
+payment.processed:
+  channel: novatrek.support.payment.processed
+  producer: svc-payments
+  trigger:
+    method: POST
+    path: /payments
+  consumers:
+  - svc-reservations
+  - svc-notifications
+  domain: Support
+  summary: Published when a payment is successfully processed
+incident.reported:
+  channel: novatrek.safety.incident.reported
+  producer: svc-safety-compliance
+  trigger:
+    method: POST
+    path: /incidents
+  consumers:
+  - svc-notifications
+  - svc-analytics
+  domain: Safety
+  summary: Published when a safety incident is reported

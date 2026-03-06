@@ -1,0 +1,746 @@
+# Frontend application definitions with screen flows for user journey diagrams.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+web-guest-portal:
+  title: NovaTrek Guest Portal
+  type: Web
+  type_icon: ':material-web:'
+  tech: React 18, TypeScript, Vite, Tailwind CSS
+  team: Guest Experience Team
+  color: '#2563eb'
+  description: Public-facing website where guests browse adventures, make reservations, manage their profiles, and track loyalty
+    rewards.
+  client_label: Browser
+  client_icon: browser
+  screens:
+    Trip Browser:
+      description: Search and explore available adventures with trail info, weather forecasts, and photo galleries.
+      steps:
+      - alias: TC
+        label: svc-trip-catalog
+        service: svc-trip-catalog
+        action: Search available trips
+        method: GET
+        path: /trips
+        async: false
+      - alias: TC
+        label: svc-trip-catalog
+        service: svc-trip-catalog
+        action: Get trip details
+        method: GET
+        path: /trips/{trip_id}
+        async: false
+      - alias: TM
+        label: svc-trail-management
+        service: svc-trail-management
+        action: Get trail conditions
+        method: GET
+        path: /trails/{trail_id}/conditions
+        async: false
+      - alias: WX
+        label: svc-weather
+        service: svc-weather
+        action: Get weather forecast
+        method: GET
+        path: /weather/forecast
+        async: false
+      - alias: MG
+        label: svc-media-gallery
+        service: svc-media-gallery
+        action: Load trip photos
+        method: GET
+        path: /media
+        async: false
+    Booking Flow:
+      description: End-to-end reservation flow from trip selection through payment confirmation.
+      steps:
+      - alias: TC
+        label: svc-trip-catalog
+        service: svc-trip-catalog
+        action: Check trip availability
+        method: GET
+        path: /trips/{trip_id}
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get guest profile
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Create reservation
+        method: POST
+        path: /reservations
+        async: false
+      - alias: Pay
+        label: svc-payments
+        service: svc-payments
+        action: Process payment
+        method: POST
+        path: /payments
+        async: false
+      - alias: Stripe
+        label: Stripe API
+        action: Charge card
+        async: false
+    Guest Profile:
+      description: View and edit guest profile, certifications, past adventures, and loyalty tier.
+      steps:
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get guest profile
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get adventure history
+        method: GET
+        path: /guests/{guest_id}/adventure-history
+        async: false
+      - alias: LR
+        label: svc-loyalty-rewards
+        service: svc-loyalty-rewards
+        action: Get loyalty balance
+        method: GET
+        path: /members/{guest_id}/balance
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get upcoming bookings
+        method: GET
+        path: /reservations
+        async: false
+    Reservation Management:
+      description: View, modify, or cancel existing reservations and process refunds.
+      steps:
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: List reservations
+        method: GET
+        path: /reservations
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get reservation details
+        method: GET
+        path: /reservations/{reservation_id}
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Update reservation status
+        method: PUT
+        path: /reservations/{reservation_id}/status
+        async: false
+      - alias: Pay
+        label: svc-payments
+        service: svc-payments
+        action: Process refund
+        method: POST
+        path: /payments/{payment_id}/refund
+        async: false
+      - alias: Ntfy
+        label: svc-notifications
+        service: svc-notifications
+        action: Send cancellation notice
+        method: POST
+        path: /notifications
+        async: true
+    Loyalty Dashboard:
+      description: View loyalty points balance, tier status, transaction history, and available rewards.
+      steps:
+      - alias: LR
+        label: svc-loyalty-rewards
+        service: svc-loyalty-rewards
+        action: Get member balance
+        method: GET
+        path: /members/{guest_id}/balance
+        async: false
+      - alias: LR
+        label: svc-loyalty-rewards
+        service: svc-loyalty-rewards
+        action: Get transaction history
+        method: GET
+        path: /members/{guest_id}/transactions
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get guest profile
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+    Waiver Signing:
+      description: Review and digitally sign safety waivers before trip departure.
+      steps:
+      - alias: SC
+        label: svc-safety-compliance
+        service: svc-safety-compliance
+        action: Get required waivers
+        method: GET
+        path: /waivers
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get guest profile
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+      - alias: SC
+        label: svc-safety-compliance
+        service: svc-safety-compliance
+        action: Submit signed waiver
+        method: POST
+        path: /waivers
+        async: false
+      - alias: DS
+        label: DocuSign API
+        action: Verify digital signature
+        async: false
+      - alias: Ntfy
+        label: svc-notifications
+        service: svc-notifications
+        action: Send waiver copy
+        method: POST
+        path: /notifications
+        async: true
+    Trip Gallery:
+      description: Browse and share photos and videos from past adventures.
+      steps:
+      - alias: MG
+        label: svc-media-gallery
+        service: svc-media-gallery
+        action: List trip media
+        method: GET
+        path: /media
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get reservation details
+        method: GET
+        path: /reservations/{reservation_id}
+        async: false
+      - alias: MG
+        label: svc-media-gallery
+        service: svc-media-gallery
+        action: Create share link
+        method: POST
+        path: /media/{media_id}/share
+        async: false
+      - alias: Ntfy
+        label: svc-notifications
+        service: svc-notifications
+        action: Send share notification
+        method: POST
+        path: /notifications
+        async: true
+web-ops-dashboard:
+  title: NovaTrek Operations Dashboard
+  type: Web
+  type_icon: ':material-monitor-dashboard:'
+  tech: Angular 17, TypeScript, PrimeNG, NgRx
+  team: NovaTrek Operations Team
+  color: '#dc2626'
+  description: Internal staff dashboard for managing daily operations including scheduling, check-ins, safety incidents, inventory,
+    and analytics.
+  client_label: Browser
+  client_icon: browser
+  screens:
+    Daily Schedule Board:
+      description: View and manage the day's adventure schedule with guide assignments, weather conditions, and trail status.
+      steps:
+      - alias: SO
+        label: svc-scheduling-orchestrator
+        service: svc-scheduling-orchestrator
+        action: Get daily schedules
+        method: GET
+        path: /schedule-optimization
+        async: false
+      - alias: GM
+        label: svc-guide-management
+        service: svc-guide-management
+        action: Get available guides
+        method: GET
+        path: /guides/available
+        async: false
+      - alias: WX
+        label: svc-weather
+        service: svc-weather
+        action: Get weather forecast
+        method: GET
+        path: /weather/forecast
+        async: false
+      - alias: TM
+        label: svc-trail-management
+        service: svc-trail-management
+        action: Get trail conditions
+        method: GET
+        path: /trails/{trail_id}/conditions
+        async: false
+      - alias: LS
+        label: svc-location-services
+        service: svc-location-services
+        action: Get location capacity
+        method: GET
+        path: /locations/{location_id}/capacity
+        async: false
+    Check-In Station:
+      description: 'Staff-assisted check-in workflow: verify reservation, validate identity, check waivers, assign gear, and
+        issue wristband.'
+      steps:
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Lookup reservation
+        method: GET
+        path: /reservations/{reservation_id}
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Verify guest identity
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+      - alias: SC
+        label: svc-safety-compliance
+        service: svc-safety-compliance
+        action: Check waiver status
+        method: GET
+        path: /waivers
+        async: false
+      - alias: CI
+        label: svc-check-in
+        service: svc-check-in
+        action: Create check-in
+        method: POST
+        path: /check-ins
+        async: false
+      - alias: GI
+        label: svc-gear-inventory
+        service: svc-gear-inventory
+        action: Assign gear package
+        method: POST
+        path: /gear-assignments
+        async: false
+    Guide Assignment:
+      description: Assign guides to scheduled adventures based on certification, availability, and guest preferences.
+      steps:
+      - alias: GM
+        label: svc-guide-management
+        service: svc-guide-management
+        action: List certified guides
+        method: GET
+        path: /guides
+        async: false
+      - alias: GM
+        label: svc-guide-management
+        service: svc-guide-management
+        action: Check availability
+        method: GET
+        path: /guides/{guide_id}/availability
+        async: false
+      - alias: SO
+        label: svc-scheduling-orchestrator
+        service: svc-scheduling-orchestrator
+        action: Submit schedule request
+        method: POST
+        path: /schedule-requests
+        async: false
+      - alias: TM
+        label: svc-trail-management
+        service: svc-trail-management
+        action: Verify trail status
+        method: GET
+        path: /trails/{trail_id}
+        async: false
+    Safety Incident Board:
+      description: Log and manage safety incidents with guest contact, guide notification, and regulatory reporting.
+      steps:
+      - alias: SC
+        label: svc-safety-compliance
+        service: svc-safety-compliance
+        action: List active incidents
+        method: GET
+        path: /incidents/{incident_id}
+        async: false
+      - alias: SC
+        label: svc-safety-compliance
+        service: svc-safety-compliance
+        action: Log new incident
+        method: POST
+        path: /incidents
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get guest contact info
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+      - alias: GM
+        label: svc-guide-management
+        service: svc-guide-management
+        action: Get assigned guide
+        method: GET
+        path: /guides/{guide_id}
+        async: false
+      - alias: Ntfy
+        label: svc-notifications
+        service: svc-notifications
+        action: Send safety alerts
+        method: POST
+        path: /notifications
+        async: true
+    Inventory Management:
+      description: Track gear inventory levels, manage assignments, and create procurement orders.
+      steps:
+      - alias: GI
+        label: svc-gear-inventory
+        service: svc-gear-inventory
+        action: Get inventory levels
+        method: GET
+        path: /gear-items
+        async: false
+      - alias: GI
+        label: svc-gear-inventory
+        service: svc-gear-inventory
+        action: Check gear assignments
+        method: GET
+        path: /gear-assignments/{assignment_id}
+        async: false
+      - alias: IP
+        label: svc-inventory-procurement
+        service: svc-inventory-procurement
+        action: Create purchase order
+        method: POST
+        path: /purchase-orders
+        async: false
+    Transport Dispatch:
+      description: Coordinate guest transport with route optimization, vehicle assignment, and real-time tracking.
+      steps:
+      - alias: TL
+        label: svc-transport-logistics
+        service: svc-transport-logistics
+        action: List transport requests
+        method: GET
+        path: /transport-requests/{request_id}
+        async: false
+      - alias: TL
+        label: svc-transport-logistics
+        service: svc-transport-logistics
+        action: Create transport request
+        method: POST
+        path: /transport-requests
+        async: false
+      - alias: LS
+        label: svc-location-services
+        service: svc-location-services
+        action: Get pickup locations
+        method: GET
+        path: /locations/{location_id}
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get booking details
+        method: GET
+        path: /reservations/{reservation_id}
+        async: false
+      - alias: GM
+        label: Google Maps Platform
+        action: Calculate optimal route
+        async: false
+    Analytics Dashboard:
+      description: Business intelligence views for booking trends, revenue, utilization, and guest satisfaction.
+      steps:
+      - alias: AN
+        label: svc-analytics
+        service: svc-analytics
+        action: Get booking metrics
+        method: GET
+        path: /analytics/bookings
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get reservation stats
+        method: GET
+        path: /reservations
+        async: false
+      - alias: Pay
+        label: svc-payments
+        service: svc-payments
+        action: Get revenue summary
+        method: GET
+        path: /payments/daily-summary
+        async: false
+      - alias: SF
+        label: Snowflake Data Cloud
+        action: Query data warehouse
+        async: false
+    Partner Bookings:
+      description: Manage partner-originated bookings, commission tracking, and reconciliation.
+      steps:
+      - alias: PI
+        label: svc-partner-integrations
+        service: svc-partner-integrations
+        action: List partner bookings
+        method: GET
+        path: /partner-bookings/{booking_id}
+        async: false
+      - alias: PI
+        label: svc-partner-integrations
+        service: svc-partner-integrations
+        action: Confirm booking
+        method: POST
+        path: /partner-bookings/{booking_id}/confirm
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get reservation details
+        method: GET
+        path: /reservations/{reservation_id}
+        async: false
+      - alias: Pay
+        label: svc-payments
+        service: svc-payments
+        action: Get payment status
+        method: GET
+        path: /payments/{payment_id}
+        async: false
+app-guest-mobile:
+  title: NovaTrek Adventure App
+  type: Mobile
+  type_icon: ':material-cellphone:'
+  tech: React Native 0.74, TypeScript, Expo
+  team: Guest Experience Team
+  color: '#059669'
+  description: Native mobile app for on-trip guest experiences including self check-in, live maps, photo sharing, and real-time
+    weather and trail alerts.
+  client_label: Mobile App
+  client_icon: mobile
+  screens:
+    Self Check-In:
+      description: Guest self-service check-in with QR code scan, identity verification, waiver confirmation, and wristband
+        activation.
+      steps:
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Lookup reservation by QR
+        method: GET
+        path: /reservations/{reservation_id}
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Verify guest identity
+        method: GET
+        path: /guests/{guest_id}
+        async: false
+      - alias: SC
+        label: svc-safety-compliance
+        service: svc-safety-compliance
+        action: Validate waiver status
+        method: GET
+        path: /waivers
+        async: false
+      - alias: CI
+        label: svc-check-in
+        service: svc-check-in
+        action: Create check-in record
+        method: POST
+        path: /check-ins
+        async: false
+      - alias: GI
+        label: svc-gear-inventory
+        service: svc-gear-inventory
+        action: Confirm gear assignment
+        method: GET
+        path: /gear-assignments/{assignment_id}
+        async: false
+    Live Trip Map:
+      description: Real-time interactive map showing current trail position, nearby waypoints, weather overlay, and group
+        location.
+      steps:
+      - alias: LS
+        label: svc-location-services
+        service: svc-location-services
+        action: Get nearby locations
+        method: GET
+        path: /locations
+        async: false
+      - alias: TM
+        label: svc-trail-management
+        service: svc-trail-management
+        action: Get trail waypoints
+        method: GET
+        path: /trails/{trail_id}
+        async: false
+      - alias: TM
+        label: svc-trail-management
+        service: svc-trail-management
+        action: Get trail conditions
+        method: GET
+        path: /trails/{trail_id}/conditions
+        async: false
+      - alias: WX
+        label: svc-weather
+        service: svc-weather
+        action: Get current weather
+        method: GET
+        path: /weather/current
+        async: false
+      - alias: SO
+        label: svc-scheduling-orchestrator
+        service: svc-scheduling-orchestrator
+        action: Get group schedule
+        method: GET
+        path: /schedule-requests/{request_id}
+        async: false
+    Photo Upload:
+      description: Capture and upload adventure photos with GPS metadata, auto-tagging, and instant sharing.
+      steps:
+      - alias: MG
+        label: svc-media-gallery
+        service: svc-media-gallery
+        action: Upload photo
+        method: POST
+        path: /media
+        async: false
+      - alias: S3
+        label: Object Store
+        action: Store binary file
+        async: false
+      - alias: GM
+        label: Google Maps Platform
+        action: Reverse geocode GPS
+        async: false
+      - alias: MG
+        label: svc-media-gallery
+        service: svc-media-gallery
+        action: Create share link
+        method: POST
+        path: /media/{media_id}/share
+        async: false
+      - alias: Ntfy
+        label: svc-notifications
+        service: svc-notifications
+        action: Send share notification
+        method: POST
+        path: /notifications
+        async: true
+    My Reservations:
+      description: View upcoming and past reservations with trip details, payment history, and modification options.
+      steps:
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: List my reservations
+        method: GET
+        path: /reservations
+        async: false
+      - alias: TC
+        label: svc-trip-catalog
+        service: svc-trip-catalog
+        action: Get trip details
+        method: GET
+        path: /trips/{trip_id}
+        async: false
+      - alias: Pay
+        label: svc-payments
+        service: svc-payments
+        action: Get payment details
+        method: GET
+        path: /payments/{payment_id}
+        async: false
+    Weather and Trail Alerts:
+      description: Push-notification-driven alerts for severe weather, trail closures, and safety advisories.
+      steps:
+      - alias: WX
+        label: svc-weather
+        service: svc-weather
+        action: Get weather alerts
+        method: GET
+        path: /weather/alerts
+        async: false
+      - alias: TM
+        label: svc-trail-management
+        service: svc-trail-management
+        action: Get trail closures
+        method: GET
+        path: /trails/{trail_id}/conditions
+        async: false
+      - alias: ExtWx
+        label: OpenWeather API
+        action: Fetch severe alerts
+        async: false
+      - alias: Ntfy
+        label: svc-notifications
+        service: svc-notifications
+        action: Receive push notification
+        method: POST
+        path: /notifications
+        async: true
+    Digital Wristband:
+      description: Display NFC-enabled digital wristband for tap-to-verify at activity stations and equipment pickup.
+      steps:
+      - alias: CI
+        label: svc-check-in
+        service: svc-check-in
+        action: Get check-in status
+        method: GET
+        path: /check-ins/{check_in_id}
+        async: false
+      - alias: GI
+        label: svc-gear-inventory
+        service: svc-gear-inventory
+        action: Verify gear assignment
+        method: GET
+        path: /gear-assignments/{assignment_id}
+        async: false
+    Earn Loyalty Points:
+      description: View point earnings after trip completion, tier progress, and available redemption offers.
+      steps:
+      - alias: LR
+        label: svc-loyalty-rewards
+        service: svc-loyalty-rewards
+        action: Get member balance
+        method: GET
+        path: /members/{guest_id}/balance
+        async: false
+      - alias: LR
+        label: svc-loyalty-rewards
+        service: svc-loyalty-rewards
+        action: Earn points
+        method: POST
+        path: /members/{guest_id}/earn
+        async: false
+      - alias: Res
+        label: svc-reservations
+        service: svc-reservations
+        action: Get completed bookings
+        method: GET
+        path: /reservations
+        async: false
+      - alias: GP
+        label: svc-guest-profiles
+        service: svc-guest-profiles
+        action: Get guest profile
+        method: GET
+        path: /guests/{guest_id}
+        async: false

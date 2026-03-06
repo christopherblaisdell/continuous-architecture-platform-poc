@@ -1,0 +1,2111 @@
+# Database schemas, tables, and infrastructure for all 19 microservices.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+svc-check-in:
+  engine: PostgreSQL 15
+  schema: checkin
+  tables:
+  - check_ins
+  - gear_verifications
+  - wristband_assignments
+  features:
+  - Indexes on reservation_id and check_in_date
+  - TTL-based cleanup of stale check-ins (older than 24h)
+  - Composite unique constraint on (reservation_id, participant_id)
+  volume: ~5,000 check-ins/day peak season
+  connection_pool:
+    min: 5
+    max: 20
+    idle_timeout: 10min
+  backup: Continuous WAL archiving, daily base backup, 7-day PITR
+  table_details:
+    check_ins:
+      description: Primary check-in records for each guest arrival
+      columns:
+      - name: check_in_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL, FK -> svc-reservations
+      - name: participant_id
+        type: UUID
+        constraints: NOT NULL
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: adventure_category
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: check_in_pattern
+        type: SMALLINT
+        constraints: NOT NULL, CHECK (1-3)
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'pending'
+      - name: checked_in_at
+        type: TIMESTAMPTZ
+        constraints: DEFAULT NOW()
+      - name: checked_in_by
+        type: VARCHAR(100)
+        constraints: NULL (staff ID or 'self')
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_checkin_reservation
+        columns: reservation_id
+      - name: idx_checkin_date
+        columns: checked_in_at
+      - name: idx_checkin_guest
+        columns: guest_id, checked_in_at DESC
+      - name: uq_checkin_participant
+        columns: reservation_id, participant_id
+        type: UNIQUE
+    gear_verifications:
+      description: Gear assignment verification records linked to check-ins
+      columns:
+      - name: verification_id
+        type: UUID
+        constraints: PK
+      - name: check_in_id
+        type: UUID
+        constraints: NOT NULL, FK -> check_ins
+      - name: gear_assignment_id
+        type: UUID
+        constraints: NOT NULL
+      - name: verified_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: notes
+        type: TEXT
+        constraints: 'NULL'
+      - name: verified_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_gear_ver_checkin
+        columns: check_in_id
+    wristband_assignments:
+      description: Digital wristband NFC assignments for checked-in guests
+      columns:
+      - name: assignment_id
+        type: UUID
+        constraints: PK
+      - name: check_in_id
+        type: UUID
+        constraints: NOT NULL, FK -> check_ins
+      - name: wristband_nfc_id
+        type: VARCHAR(64)
+        constraints: NOT NULL, UNIQUE
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      - name: assigned_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: deactivated_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      indexes:
+      - name: idx_wristband_nfc
+        columns: wristband_nfc_id
+        type: UNIQUE
+      - name: idx_wristband_checkin
+        columns: check_in_id
+svc-reservations:
+  engine: PostgreSQL 15
+  schema: reservations
+  tables:
+  - reservations
+  - participants
+  - status_history
+  features:
+  - Optimistic locking via _rev field
+  - Composite index on (guest_id, trip_date)
+  - Monthly partitioning by reservation_date
+  volume: ~2,000 new reservations/day
+  connection_pool:
+    min: 10
+    max: 40
+    idle_timeout: 10min
+  backup: Continuous WAL archiving, daily base backup, 30-day PITR
+  table_details:
+    reservations:
+      description: Core reservation records for adventure bookings
+      columns:
+      - name: reservation_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL
+      - name: confirmation_code
+        type: VARCHAR(12)
+        constraints: NOT NULL, UNIQUE
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'confirmed'
+      - name: trip_date
+        type: DATE
+        constraints: NOT NULL
+      - name: party_size
+        type: INTEGER
+        constraints: NOT NULL, CHECK (> 0)
+      - name: total_amount
+        type: DECIMAL(10,2)
+        constraints: NOT NULL
+      - name: currency
+        type: CHAR(3)
+        constraints: NOT NULL, DEFAULT 'USD'
+      - name: _rev
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 1
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_res_guest_date
+        columns: guest_id, trip_date
+      - name: idx_res_trip_date
+        columns: trip_id, trip_date
+      - name: idx_res_confirmation
+        columns: confirmation_code
+        type: UNIQUE
+      - name: idx_res_status
+        columns: status
+    participants:
+      description: Individual participants linked to a reservation
+      columns:
+      - name: participant_id
+        type: UUID
+        constraints: PK
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL, FK -> reservations
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: role
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'guest'
+      - name: waiver_signed
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT FALSE
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_part_reservation
+        columns: reservation_id
+      - name: idx_part_guest
+        columns: guest_id
+    status_history:
+      description: Audit trail of reservation status transitions
+      columns:
+      - name: history_id
+        type: UUID
+        constraints: PK
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL, FK -> reservations
+      - name: old_status
+        type: VARCHAR(20)
+        constraints: 'NULL'
+      - name: new_status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: changed_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: reason
+        type: TEXT
+        constraints: 'NULL'
+      - name: changed_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_hist_reservation
+        columns: reservation_id, changed_at DESC
+svc-scheduling-orchestrator:
+  engine: PostgreSQL 15 + Valkey 8
+  schema: scheduling
+  tables:
+  - schedule_requests
+  - daily_schedules
+  - schedule_conflicts
+  - optimization_runs
+  features:
+  - Optimistic locking per ADR-011
+  - Valkey for schedule lock cache and optimization queue
+  - JSONB columns for constraint parameters
+  volume: ~500 schedule requests/day
+  connection_pool:
+    min: 5
+    max: 20
+    idle_timeout: 10min
+  backup: Continuous WAL archiving, daily base backup, 14-day PITR
+  table_details:
+    schedule_requests:
+      description: Incoming requests to create or modify daily schedules
+      columns:
+      - name: request_id
+        type: UUID
+        constraints: PK
+      - name: schedule_date
+        type: DATE
+        constraints: NOT NULL
+      - name: requested_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: constraints
+        type: JSONB
+        constraints: NOT NULL, DEFAULT '{}'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_sched_req_date
+        columns: schedule_date
+      - name: idx_sched_req_status
+        columns: status
+    daily_schedules:
+      description: Published daily schedules with optimistic locking
+      columns:
+      - name: schedule_id
+        type: UUID
+        constraints: PK
+      - name: schedule_date
+        type: DATE
+        constraints: NOT NULL, UNIQUE
+      - name: assignments
+        type: JSONB
+        constraints: NOT NULL
+      - name: _rev
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 1
+      - name: published_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_daily_sched_date
+        columns: schedule_date
+        type: UNIQUE
+    schedule_conflicts:
+      description: Detected conflicts during schedule optimization
+      columns:
+      - name: conflict_id
+        type: UUID
+        constraints: PK
+      - name: schedule_id
+        type: UUID
+        constraints: NOT NULL, FK -> daily_schedules
+      - name: conflict_type
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: details
+        type: JSONB
+        constraints: NOT NULL
+      - name: resolved
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT FALSE
+      - name: detected_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_conflict_schedule
+        columns: schedule_id
+    optimization_runs:
+      description: Execution history of schedule optimization algorithms
+      columns:
+      - name: run_id
+        type: UUID
+        constraints: PK
+      - name: schedule_date
+        type: DATE
+        constraints: NOT NULL
+      - name: algorithm
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: duration_ms
+        type: INTEGER
+        constraints: NOT NULL
+      - name: score
+        type: DECIMAL(5,2)
+        constraints: 'NULL'
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: started_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: completed_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      indexes:
+      - name: idx_opt_run_date
+        columns: schedule_date
+svc-guest-profiles:
+  engine: PostgreSQL 15
+  schema: guests
+  tables:
+  - guest_profiles
+  - certifications
+  - medical_info
+  - emergency_contacts
+  - adventure_history
+  features:
+  - PII encrypted at rest (AES-256)
+  - Composite index on (last_name, date_of_birth)
+  - Soft delete with GDPR data retention policy
+  volume: ~800 new profiles/day peak season
+  connection_pool:
+    min: 10
+    max: 30
+    idle_timeout: 10min
+  backup: Continuous WAL archiving, daily base backup, 90-day PITR (GDPR)
+  table_details:
+    guest_profiles:
+      description: Core guest identity records with PII encryption
+      columns:
+      - name: guest_id
+        type: UUID
+        constraints: PK
+      - name: first_name
+        type: VARCHAR(100)
+        constraints: NOT NULL, ENCRYPTED
+      - name: last_name
+        type: VARCHAR(100)
+        constraints: NOT NULL, ENCRYPTED
+      - name: email
+        type: VARCHAR(255)
+        constraints: NOT NULL, UNIQUE, ENCRYPTED
+      - name: phone
+        type: VARCHAR(30)
+        constraints: NULL, ENCRYPTED
+      - name: date_of_birth
+        type: DATE
+        constraints: NOT NULL
+      - name: loyalty_tier
+        type: VARCHAR(20)
+        constraints: DEFAULT 'bronze'
+      - name: identity_verified
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT FALSE
+      - name: deleted_at
+        type: TIMESTAMPTZ
+        constraints: NULL (soft delete)
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_guest_email
+        columns: email
+        type: UNIQUE
+      - name: idx_guest_name_dob
+        columns: last_name, date_of_birth
+      - name: idx_guest_loyalty
+        columns: loyalty_tier
+    certifications:
+      description: Guest adventure certifications (scuba, climbing, etc.)
+      columns:
+      - name: cert_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL, FK -> guest_profiles
+      - name: cert_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: issuer
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: issued_date
+        type: DATE
+        constraints: NOT NULL
+      - name: expiry_date
+        type: DATE
+        constraints: 'NULL'
+      - name: document_url
+        type: TEXT
+        constraints: 'NULL'
+      indexes:
+      - name: idx_cert_guest
+        columns: guest_id
+      - name: idx_cert_expiry
+        columns: expiry_date
+    medical_info:
+      description: Guest medical conditions and allergy records (encrypted PII)
+      columns:
+      - name: medical_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL, FK -> guest_profiles
+      - name: conditions
+        type: JSONB
+        constraints: ENCRYPTED
+      - name: allergies
+        type: JSONB
+        constraints: ENCRYPTED
+      - name: emergency_medications
+        type: JSONB
+        constraints: ENCRYPTED
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_medical_guest
+        columns: guest_id
+        type: UNIQUE
+    emergency_contacts:
+      description: Emergency contact information for each guest
+      columns:
+      - name: contact_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL, FK -> guest_profiles
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL, ENCRYPTED
+      - name: phone
+        type: VARCHAR(30)
+        constraints: NOT NULL, ENCRYPTED
+      - name: relationship
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: is_primary
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      indexes:
+      - name: idx_emg_guest
+        columns: guest_id
+    adventure_history:
+      description: Record of completed adventures per guest for profile display
+      columns:
+      - name: history_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL, FK -> guest_profiles
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL
+      - name: trip_date
+        type: DATE
+        constraints: NOT NULL
+      - name: adventure_category
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: rating
+        type: SMALLINT
+        constraints: NULL, CHECK (1-5)
+      - name: completed_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_hist_guest
+        columns: guest_id, trip_date DESC
+svc-trip-catalog:
+  engine: PostgreSQL 15
+  schema: catalog
+  tables:
+  - trips
+  - trip_schedules
+  - pricing_tiers
+  - requirements
+  - regions
+  - activity_types
+  features:
+  - Full-text search index on trip name and description
+  - Materialized view for availability calendar
+  - JSONB columns for flexible requirement definitions
+  volume: ~50 catalog updates/day, ~10K availability reads/day
+  connection_pool:
+    min: 5
+    max: 25
+    idle_timeout: 10min
+  backup: Daily pg_dump, 14-day retention
+  table_details:
+    trips:
+      description: Master adventure trip catalog entries
+      columns:
+      - name: trip_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: description
+        type: TEXT
+        constraints: NOT NULL
+      - name: adventure_category
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: region_id
+        type: UUID
+        constraints: NOT NULL, FK -> regions
+      - name: difficulty_level
+        type: SMALLINT
+        constraints: NOT NULL, CHECK (1-5)
+      - name: duration_hours
+        type: DECIMAL(4,1)
+        constraints: NOT NULL
+      - name: min_participants
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 1
+      - name: max_participants
+        type: INTEGER
+        constraints: NOT NULL
+      - name: base_price
+        type: DECIMAL(10,2)
+        constraints: NOT NULL
+      - name: currency
+        type: CHAR(3)
+        constraints: DEFAULT 'USD'
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_trip_category
+        columns: adventure_category
+      - name: idx_trip_region
+        columns: region_id
+      - name: idx_trip_search
+        columns: name, description
+        type: GIN (tsvector)
+    trip_schedules:
+      description: Available dates and time slots for each trip
+      columns:
+      - name: schedule_id
+        type: UUID
+        constraints: PK
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL, FK -> trips
+      - name: trip_date
+        type: DATE
+        constraints: NOT NULL
+      - name: start_time
+        type: TIME
+        constraints: NOT NULL
+      - name: available_spots
+        type: INTEGER
+        constraints: NOT NULL
+      - name: booked_spots
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 0
+      indexes:
+      - name: idx_sched_trip_date
+        columns: trip_id, trip_date
+      - name: idx_sched_avail
+        columns: trip_date, available_spots
+    pricing_tiers:
+      description: Dynamic pricing tiers based on season, demand, and group size
+      columns:
+      - name: tier_id
+        type: UUID
+        constraints: PK
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL, FK -> trips
+      - name: tier_name
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: multiplier
+        type: DECIMAL(3,2)
+        constraints: NOT NULL
+      - name: effective_from
+        type: DATE
+        constraints: NOT NULL
+      - name: effective_to
+        type: DATE
+        constraints: 'NULL'
+      indexes:
+      - name: idx_pricing_trip
+        columns: trip_id, effective_from
+svc-trail-management:
+  engine: PostGIS (PostgreSQL 15)
+  schema: trails
+  tables:
+  - trails
+  - waypoints
+  - closures
+  - condition_reports
+  features:
+  - PostGIS geometry columns for trail routes and waypoints
+  - Spatial indexes (GiST) for proximity queries
+  - Time-series condition data with hypertable extension
+  volume: ~200 condition updates/day, ~5K trail reads/day
+  connection_pool:
+    min: 5
+    max: 15
+    idle_timeout: 10min
+  backup: Daily pg_dump with PostGIS extensions, 14-day retention
+  table_details:
+    trails:
+      description: Trail definitions with geospatial route geometry
+      columns:
+      - name: trail_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: difficulty
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: length_km
+        type: DECIMAL(6,2)
+        constraints: NOT NULL
+      - name: elevation_gain_m
+        type: INTEGER
+        constraints: 'NULL'
+      - name: route
+        type: GEOMETRY(LineString, 4326)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'open'
+      - name: region_id
+        type: UUID
+        constraints: NOT NULL
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_trail_route
+        columns: route
+        type: GiST spatial
+      - name: idx_trail_status
+        columns: status
+      - name: idx_trail_region
+        columns: region_id
+    waypoints:
+      description: Points of interest and navigation markers along trails
+      columns:
+      - name: waypoint_id
+        type: UUID
+        constraints: PK
+      - name: trail_id
+        type: UUID
+        constraints: NOT NULL, FK -> trails
+      - name: name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: location
+        type: GEOMETRY(Point, 4326)
+        constraints: NOT NULL
+      - name: waypoint_type
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: elevation_m
+        type: INTEGER
+        constraints: 'NULL'
+      - name: sequence_order
+        type: INTEGER
+        constraints: NOT NULL
+      indexes:
+      - name: idx_wp_trail
+        columns: trail_id, sequence_order
+      - name: idx_wp_location
+        columns: location
+        type: GiST spatial
+    condition_reports:
+      description: Time-series trail condition observations from guides and sensors
+      columns:
+      - name: report_id
+        type: UUID
+        constraints: PK
+      - name: trail_id
+        type: UUID
+        constraints: NOT NULL, FK -> trails
+      - name: condition
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: details
+        type: TEXT
+        constraints: 'NULL'
+      - name: reported_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: reported_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_cond_trail_time
+        columns: trail_id, reported_at DESC
+svc-safety-compliance:
+  engine: PostgreSQL 15
+  schema: safety
+  tables:
+  - waivers
+  - incidents
+  - safety_inspections
+  - audit_log
+  features:
+  - Immutable audit log (append-only)
+  - Digital signature verification for waivers
+  - Regulatory compliance retention (7 years)
+  volume: ~3,000 waiver checks/day
+  connection_pool:
+    min: 5
+    max: 20
+    idle_timeout: 10min
+  backup: Continuous WAL archiving, daily base backup, 7-year retention (regulatory)
+  table_details:
+    waivers:
+      description: Signed liability waivers with digital signature verification
+      columns:
+      - name: waiver_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL
+      - name: waiver_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: signed_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: signature_ref
+        type: VARCHAR(255)
+        constraints: NULL (DocuSign envelope ID)
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'pending'
+      - name: expires_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_waiver_guest_trip
+        columns: guest_id, trip_id
+      - name: idx_waiver_status
+        columns: status
+    incidents:
+      description: Safety incident reports with severity classification
+      columns:
+      - name: incident_id
+        type: UUID
+        constraints: PK
+      - name: trip_id
+        type: UUID
+        constraints: 'NULL'
+      - name: location_id
+        type: UUID
+        constraints: 'NULL'
+      - name: severity
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: description
+        type: TEXT
+        constraints: NOT NULL
+      - name: reported_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: reported_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: resolved_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: resolution_notes
+        type: TEXT
+        constraints: 'NULL'
+      indexes:
+      - name: idx_incident_severity
+        columns: severity, reported_at DESC
+      - name: idx_incident_trip
+        columns: trip_id
+    audit_log:
+      description: Immutable append-only audit trail for regulatory compliance
+      columns:
+      - name: log_id
+        type: BIGSERIAL
+        constraints: PK
+      - name: entity_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: entity_id
+        type: UUID
+        constraints: NOT NULL
+      - name: action
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: actor
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: details
+        type: JSONB
+        constraints: NOT NULL
+      - name: logged_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_audit_entity
+        columns: entity_type, entity_id
+      - name: idx_audit_time
+        columns: logged_at
+svc-gear-inventory:
+  engine: PostgreSQL 15
+  schema: gear
+  tables:
+  - gear_items
+  - gear_packages
+  - gear_assignments
+  - maintenance_records
+  - inventory_levels
+  features:
+  - RFID tag tracking via unique identifiers
+  - Scheduled maintenance alerts with cron triggers
+  - Location-based inventory partitioning
+  volume: ~1,500 assignments/day peak season
+  connection_pool:
+    min: 5
+    max: 20
+    idle_timeout: 10min
+  backup: Daily pg_dump, 30-day retention
+  table_details:
+    gear_items:
+      description: Individual gear items tracked by RFID tag
+      columns:
+      - name: item_id
+        type: UUID
+        constraints: PK
+      - name: rfid_tag
+        type: VARCHAR(64)
+        constraints: NOT NULL, UNIQUE
+      - name: gear_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: size
+        type: VARCHAR(20)
+        constraints: 'NULL'
+      - name: condition
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'good'
+      - name: location_id
+        type: UUID
+        constraints: NOT NULL
+      - name: last_inspected
+        type: DATE
+        constraints: 'NULL'
+      - name: acquired_date
+        type: DATE
+        constraints: NOT NULL
+      indexes:
+      - name: idx_gear_rfid
+        columns: rfid_tag
+        type: UNIQUE
+      - name: idx_gear_type_loc
+        columns: gear_type, location_id
+      - name: idx_gear_condition
+        columns: condition
+    gear_assignments:
+      description: Gear lent to guests for specific check-ins
+      columns:
+      - name: assignment_id
+        type: UUID
+        constraints: PK
+      - name: check_in_id
+        type: UUID
+        constraints: NOT NULL
+      - name: item_id
+        type: UUID
+        constraints: NOT NULL, FK -> gear_items
+      - name: assigned_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: returned_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: condition_on_return
+        type: VARCHAR(20)
+        constraints: 'NULL'
+      indexes:
+      - name: idx_assign_checkin
+        columns: check_in_id
+      - name: idx_assign_item
+        columns: item_id
+      - name: idx_assign_outstanding
+        columns: returned_at
+        type: WHERE returned_at IS NULL
+    maintenance_records:
+      description: Maintenance and inspection history for gear items
+      columns:
+      - name: record_id
+        type: UUID
+        constraints: PK
+      - name: item_id
+        type: UUID
+        constraints: NOT NULL, FK -> gear_items
+      - name: maintenance_type
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: performed_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: notes
+        type: TEXT
+        constraints: 'NULL'
+      - name: performed_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: next_due
+        type: DATE
+        constraints: 'NULL'
+      indexes:
+      - name: idx_maint_item
+        columns: item_id, performed_at DESC
+      - name: idx_maint_due
+        columns: next_due
+svc-transport-logistics:
+  engine: PostgreSQL 15
+  schema: transport
+  tables:
+  - routes
+  - route_schedules
+  - transport_requests
+  - vehicles
+  features:
+  - Time-window optimization for route scheduling
+  - Vehicle capacity tracking with overbooking prevention
+  - GPS coordinate storage for pickup and dropoff points
+  volume: ~300 transport requests/day
+  connection_pool:
+    min: 3
+    max: 10
+    idle_timeout: 10min
+  backup: Daily pg_dump, 14-day retention
+  table_details:
+    vehicles:
+      description: Fleet vehicles with capacity and maintenance status
+      columns:
+      - name: vehicle_id
+        type: UUID
+        constraints: PK
+      - name: registration
+        type: VARCHAR(20)
+        constraints: NOT NULL, UNIQUE
+      - name: vehicle_type
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: capacity
+        type: INTEGER
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'available'
+      - name: current_location
+        type: POINT
+        constraints: 'NULL'
+      - name: last_service_date
+        type: DATE
+        constraints: 'NULL'
+      indexes:
+      - name: idx_vehicle_status
+        columns: status
+      - name: idx_vehicle_type
+        columns: vehicle_type
+    transport_requests:
+      description: Guest and staff transport requests with pickup windows
+      columns:
+      - name: request_id
+        type: UUID
+        constraints: PK
+      - name: route_id
+        type: UUID
+        constraints: NOT NULL, FK -> routes
+      - name: vehicle_id
+        type: UUID
+        constraints: NULL, FK -> vehicles
+      - name: passenger_count
+        type: INTEGER
+        constraints: NOT NULL
+      - name: pickup_time
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: pickup_location
+        type: POINT
+        constraints: NOT NULL
+      - name: dropoff_location
+        type: POINT
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_treq_route
+        columns: route_id
+      - name: idx_treq_pickup
+        columns: pickup_time
+      - name: idx_treq_vehicle
+        columns: vehicle_id
+svc-guide-management:
+  engine: PostgreSQL 15
+  schema: guides
+  tables:
+  - guides
+  - certifications
+  - guide_schedules
+  - availability_windows
+  - ratings
+  features:
+  - Certification expiry tracking with automated alerts
+  - Availability window overlap detection constraints
+  - Weighted rating aggregation with recency bias
+  volume: ~100 schedule updates/day, ~500 availability queries/day
+  connection_pool:
+    min: 3
+    max: 15
+    idle_timeout: 10min
+  backup: Daily pg_dump, 30-day retention
+  table_details:
+    guides:
+      description: Adventure guide profiles and qualifications
+      columns:
+      - name: guide_id
+        type: UUID
+        constraints: PK
+      - name: first_name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: last_name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: email
+        type: VARCHAR(255)
+        constraints: NOT NULL, UNIQUE
+      - name: phone
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: hire_date
+        type: DATE
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'active'
+      - name: avg_rating
+        type: DECIMAL(3,2)
+        constraints: 'NULL'
+      - name: total_trips
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 0
+      indexes:
+      - name: idx_guide_email
+        columns: email
+        type: UNIQUE
+      - name: idx_guide_status
+        columns: status
+      - name: idx_guide_rating
+        columns: avg_rating DESC NULLS LAST
+    certifications:
+      description: Guide adventure certifications with expiry tracking
+      columns:
+      - name: cert_id
+        type: UUID
+        constraints: PK
+      - name: guide_id
+        type: UUID
+        constraints: NOT NULL, FK -> guides
+      - name: cert_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: level
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: issued_date
+        type: DATE
+        constraints: NOT NULL
+      - name: expiry_date
+        type: DATE
+        constraints: NOT NULL
+      - name: verified
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT FALSE
+      indexes:
+      - name: idx_gcert_guide
+        columns: guide_id
+      - name: idx_gcert_expiry
+        columns: expiry_date
+    availability_windows:
+      description: Time blocks when a guide is available for scheduling
+      columns:
+      - name: window_id
+        type: UUID
+        constraints: PK
+      - name: guide_id
+        type: UUID
+        constraints: NOT NULL, FK -> guides
+      - name: start_time
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: end_time
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: recurrence
+        type: VARCHAR(20)
+        constraints: 'NULL'
+      indexes:
+      - name: idx_avail_guide_time
+        columns: guide_id, start_time
+    ratings:
+      description: Guest ratings and reviews for guides
+      columns:
+      - name: rating_id
+        type: UUID
+        constraints: PK
+      - name: guide_id
+        type: UUID
+        constraints: NOT NULL, FK -> guides
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL
+      - name: score
+        type: SMALLINT
+        constraints: NOT NULL, CHECK (1-5)
+      - name: comment
+        type: TEXT
+        constraints: 'NULL'
+      - name: rated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_rating_guide
+        columns: guide_id, rated_at DESC
+svc-partner-integrations:
+  engine: PostgreSQL 15
+  schema: partners
+  tables:
+  - partners
+  - partner_bookings
+  - commission_records
+  - reconciliation_log
+  features:
+  - Partner API key management with rotation policy
+  - Commission calculation engine with tiered rates
+  - Idempotency keys for booking creation
+  volume: ~400 partner bookings/day
+  connection_pool:
+    min: 3
+    max: 10
+    idle_timeout: 10min
+  backup: Daily pg_dump, 30-day retention
+  table_details:
+    partners:
+      description: External partner organizations and their API credentials
+      columns:
+      - name: partner_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: api_key_hash
+        type: VARCHAR(128)
+        constraints: NOT NULL
+      - name: commission_rate
+        type: DECIMAL(4,2)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'active'
+      - name: key_rotated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_partner_status
+        columns: status
+    partner_bookings:
+      description: Bookings originated from partner channels
+      columns:
+      - name: booking_id
+        type: UUID
+        constraints: PK
+      - name: partner_id
+        type: UUID
+        constraints: NOT NULL, FK -> partners
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL
+      - name: idempotency_key
+        type: VARCHAR(64)
+        constraints: NOT NULL, UNIQUE
+      - name: commission_amount
+        type: DECIMAL(10,2)
+        constraints: NOT NULL
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_pb_partner
+        columns: partner_id
+      - name: idx_pb_idempotency
+        columns: idempotency_key
+        type: UNIQUE
+      - name: idx_pb_reservation
+        columns: reservation_id
+svc-payments:
+  engine: PostgreSQL 15
+  schema: payments
+  tables:
+  - payments
+  - refunds
+  - payment_methods
+  - daily_summaries
+  features:
+  - PCI-DSS compliant token storage (no raw card data)
+  - Idempotent payment processing via request keys
+  - Double-entry ledger for financial reconciliation
+  volume: ~2,500 transactions/day
+  connection_pool:
+    min: 10
+    max: 30
+    idle_timeout: 5min
+  backup: Continuous WAL archiving, daily base backup, 7-year retention (financial)
+  table_details:
+    payments:
+      description: Payment transaction records with tokenized card references
+      columns:
+      - name: payment_id
+        type: UUID
+        constraints: PK
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: amount
+        type: DECIMAL(10,2)
+        constraints: NOT NULL
+      - name: currency
+        type: CHAR(3)
+        constraints: NOT NULL
+      - name: payment_method_id
+        type: UUID
+        constraints: NOT NULL, FK -> payment_methods
+      - name: gateway_ref
+        type: VARCHAR(255)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: idempotency_key
+        type: VARCHAR(64)
+        constraints: NOT NULL, UNIQUE
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_pay_reservation
+        columns: reservation_id
+      - name: idx_pay_guest
+        columns: guest_id
+      - name: idx_pay_idempotency
+        columns: idempotency_key
+        type: UNIQUE
+      - name: idx_pay_status
+        columns: status, created_at DESC
+    refunds:
+      description: Refund records linked to original payments
+      columns:
+      - name: refund_id
+        type: UUID
+        constraints: PK
+      - name: payment_id
+        type: UUID
+        constraints: NOT NULL, FK -> payments
+      - name: amount
+        type: DECIMAL(10,2)
+        constraints: NOT NULL
+      - name: reason
+        type: TEXT
+        constraints: NOT NULL
+      - name: gateway_ref
+        type: VARCHAR(255)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_refund_payment
+        columns: payment_id
+    payment_methods:
+      description: Tokenized payment instruments (no raw card data stored)
+      columns:
+      - name: method_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: token
+        type: VARCHAR(255)
+        constraints: NOT NULL (gateway token)
+      - name: card_last_four
+        type: CHAR(4)
+        constraints: NOT NULL
+      - name: card_brand
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: expiry_month
+        type: SMALLINT
+        constraints: NOT NULL
+      - name: expiry_year
+        type: SMALLINT
+        constraints: NOT NULL
+      - name: is_default
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT FALSE
+      indexes:
+      - name: idx_pm_guest
+        columns: guest_id
+svc-notifications:
+  engine: PostgreSQL 15 + Valkey 8
+  schema: notifications
+  tables:
+  - notifications
+  - templates
+  - delivery_log
+  - channel_preferences
+  features:
+  - Valkey queue for async delivery processing
+  - Template versioning with rollback support
+  - 'Multi-channel delivery: email, SMS, push, in-app'
+  volume: ~15,000 notifications/day
+  connection_pool:
+    min: 5
+    max: 25
+    idle_timeout: 10min
+  backup: Daily pg_dump, 30-day retention
+  table_details:
+    notifications:
+      description: Notification dispatch records with delivery tracking
+      columns:
+      - name: notification_id
+        type: UUID
+        constraints: PK
+      - name: recipient_id
+        type: UUID
+        constraints: NOT NULL
+      - name: template_id
+        type: UUID
+        constraints: NOT NULL, FK -> templates
+      - name: channel
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: subject
+        type: VARCHAR(255)
+        constraints: 'NULL'
+      - name: body
+        type: TEXT
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'queued'
+      - name: scheduled_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: sent_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_notif_recipient
+        columns: recipient_id, created_at DESC
+      - name: idx_notif_status
+        columns: status
+      - name: idx_notif_scheduled
+        columns: scheduled_at
+        type: WHERE status = 'scheduled'
+    templates:
+      description: Notification content templates with version history
+      columns:
+      - name: template_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: channel
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: subject_template
+        type: TEXT
+        constraints: 'NULL'
+      - name: body_template
+        type: TEXT
+        constraints: NOT NULL
+      - name: version
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 1
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_tpl_name_channel
+        columns: name, channel
+    delivery_log:
+      description: Delivery attempt history for debugging and retry logic
+      columns:
+      - name: log_id
+        type: UUID
+        constraints: PK
+      - name: notification_id
+        type: UUID
+        constraints: NOT NULL, FK -> notifications
+      - name: attempt
+        type: SMALLINT
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: provider_response
+        type: JSONB
+        constraints: 'NULL'
+      - name: attempted_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_dlog_notif
+        columns: notification_id
+svc-analytics:
+  engine: Oracle Database 19c
+  schema: ANALYTICS
+  tables:
+  - BOOKING_METRICS
+  - REVENUE_METRICS
+  - UTILIZATION_METRICS
+  - SATISFACTION_SCORES
+  - SAFETY_METRICS
+  - GUIDE_PERFORMANCE
+  features:
+  - Oracle Partitioning for time-series data (range partitioning by month)
+  - Materialized views with fast refresh for real-time dashboards
+  - Oracle Advanced Analytics (DBMS_PREDICTIVE_ANALYTICS) for trend forecasting
+  volume: ~50K metric inserts/day (event-driven)
+  connection_pool:
+    min: 5
+    max: 20
+    idle_timeout: 10min
+  backup: Oracle RMAN incremental backup, 90-day retention
+  table_details:
+    BOOKING_METRICS:
+      description: Aggregated booking KPIs partitioned by month
+      columns:
+      - name: METRIC_ID
+        type: NUMBER(19)
+        constraints: PK
+      - name: METRIC_DATE
+        type: DATE
+        constraints: NOT NULL
+      - name: REGION_ID
+        type: VARCHAR2(36)
+        constraints: NOT NULL
+      - name: BOOKINGS_COUNT
+        type: NUMBER(10)
+        constraints: NOT NULL
+      - name: CANCELLATION_COUNT
+        type: NUMBER(10)
+        constraints: NOT NULL, DEFAULT 0
+      - name: TOTAL_REVENUE
+        type: NUMBER(12,2)
+        constraints: NOT NULL
+      - name: AVG_PARTY_SIZE
+        type: NUMBER(4,1)
+        constraints: 'NULL'
+      - name: CREATED_AT
+        type: TIMESTAMP WITH TIME ZONE
+        constraints: NOT NULL
+      indexes:
+      - name: IDX_BM_DATE_REGION
+        columns: METRIC_DATE, REGION_ID
+    REVENUE_METRICS:
+      description: Daily revenue aggregation across payment channels
+      columns:
+      - name: METRIC_ID
+        type: NUMBER(19)
+        constraints: PK
+      - name: METRIC_DATE
+        type: DATE
+        constraints: NOT NULL
+      - name: CHANNEL
+        type: VARCHAR2(30)
+        constraints: NOT NULL
+      - name: GROSS_REVENUE
+        type: NUMBER(12,2)
+        constraints: NOT NULL
+      - name: REFUND_TOTAL
+        type: NUMBER(12,2)
+        constraints: NOT NULL, DEFAULT 0
+      - name: NET_REVENUE
+        type: NUMBER(12,2)
+        constraints: GENERATED ALWAYS AS (GROSS_REVENUE - REFUND_TOTAL)
+      - name: TRANSACTION_COUNT
+        type: NUMBER(10)
+        constraints: NOT NULL
+      indexes:
+      - name: IDX_RM_DATE
+        columns: METRIC_DATE
+    GUIDE_PERFORMANCE:
+      description: Guide performance metrics for scheduling optimization
+      columns:
+      - name: METRIC_ID
+        type: NUMBER(19)
+        constraints: PK
+      - name: GUIDE_ID
+        type: VARCHAR2(36)
+        constraints: NOT NULL
+      - name: METRIC_DATE
+        type: DATE
+        constraints: NOT NULL
+      - name: TRIPS_LED
+        type: NUMBER(5)
+        constraints: NOT NULL
+      - name: AVG_RATING
+        type: NUMBER(3,2)
+        constraints: 'NULL'
+      - name: INCIDENTS_COUNT
+        type: NUMBER(5)
+        constraints: NOT NULL, DEFAULT 0
+      - name: UTILIZATION_PCT
+        type: NUMBER(5,2)
+        constraints: 'NULL'
+      indexes:
+      - name: IDX_GP_GUIDE_DATE
+        columns: GUIDE_ID, METRIC_DATE
+svc-loyalty-rewards:
+  engine: Couchbase 7
+  schema: loyalty
+  tables:
+  - members
+  - point_transactions
+  - tiers
+  - redemptions
+  features:
+  - Document-oriented member profiles with flexible reward schemas
+  - N1QL queries for tier recalculation and point aggregation
+  - Sub-document operations for atomic point balance updates
+  volume: ~1,000 transactions/day
+  connection_pool:
+    min: 5
+    max: 15
+    idle_timeout: 30s
+  backup: XDCR to standby cluster, daily cbbackupmgr
+  table_details:
+    members:
+      description: Loyalty member documents with point balances and tier status
+      columns:
+      - name: document_key
+        type: String
+        constraints: members::{guest_id}
+      - name: guest_id
+        type: String
+        constraints: NOT NULL
+      - name: tier
+        type: String
+        constraints: NOT NULL (bronze/silver/gold/platinum)
+      - name: points_balance
+        type: Number
+        constraints: NOT NULL
+      - name: lifetime_points
+        type: Number
+        constraints: NOT NULL
+      - name: tier_qualified_at
+        type: ISO8601 String
+        constraints: NOT NULL
+      - name: enrolled_at
+        type: ISO8601 String
+        constraints: NOT NULL
+      indexes:
+      - name: idx_member_tier
+        columns: tier
+        type: N1QL GSI
+      - name: idx_member_points
+        columns: points_balance DESC
+        type: N1QL GSI
+    point_transactions:
+      description: Point earn and redeem transaction ledger
+      columns:
+      - name: document_key
+        type: String
+        constraints: txn::{transaction_id}
+      - name: transaction_id
+        type: String
+        constraints: NOT NULL
+      - name: guest_id
+        type: String
+        constraints: NOT NULL
+      - name: type
+        type: String
+        constraints: NOT NULL (earn/redeem/expire/adjust)
+      - name: points
+        type: Number
+        constraints: NOT NULL
+      - name: description
+        type: String
+        constraints: NOT NULL
+      - name: reference_id
+        type: String
+        constraints: NULL (reservation or trip ID)
+      - name: created_at
+        type: ISO8601 String
+        constraints: NOT NULL
+      indexes:
+      - name: idx_txn_guest
+        columns: guest_id, created_at DESC
+        type: N1QL GSI
+    redemptions:
+      description: Reward redemption records against point balances
+      columns:
+      - name: document_key
+        type: String
+        constraints: redemption::{redemption_id}
+      - name: redemption_id
+        type: String
+        constraints: NOT NULL
+      - name: guest_id
+        type: String
+        constraints: NOT NULL
+      - name: reward_type
+        type: String
+        constraints: NOT NULL
+      - name: points_spent
+        type: Number
+        constraints: NOT NULL
+      - name: status
+        type: String
+        constraints: NOT NULL
+      - name: redeemed_at
+        type: ISO8601 String
+        constraints: NOT NULL
+      indexes:
+      - name: idx_redeem_guest
+        columns: guest_id
+        type: N1QL GSI
+svc-media-gallery:
+  engine: PostgreSQL 15 + S3-Compatible Object Store
+  schema: media
+  tables:
+  - media_items
+  - share_links
+  - albums
+  features:
+  - S3-compatible storage for photos and videos
+  - Presigned URLs for secure direct upload and download
+  - Automatic thumbnail generation on upload
+  volume: ~500 uploads/day peak season
+  connection_pool:
+    min: 3
+    max: 15
+    idle_timeout: 10min
+  backup: Daily pg_dump, S3 cross-region replication
+  table_details:
+    media_items:
+      description: Metadata for uploaded photos and videos (binary stored in S3)
+      columns:
+      - name: media_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: trip_id
+        type: UUID
+        constraints: 'NULL'
+      - name: media_type
+        type: VARCHAR(20)
+        constraints: NOT NULL (photo/video)
+      - name: s3_key
+        type: VARCHAR(512)
+        constraints: NOT NULL
+      - name: thumbnail_key
+        type: VARCHAR(512)
+        constraints: 'NULL'
+      - name: file_size_bytes
+        type: BIGINT
+        constraints: NOT NULL
+      - name: width
+        type: INTEGER
+        constraints: 'NULL'
+      - name: height
+        type: INTEGER
+        constraints: 'NULL'
+      - name: gps_lat
+        type: DECIMAL(9,6)
+        constraints: 'NULL'
+      - name: gps_lng
+        type: DECIMAL(9,6)
+        constraints: 'NULL'
+      - name: uploaded_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_media_guest
+        columns: guest_id, uploaded_at DESC
+      - name: idx_media_trip
+        columns: trip_id
+    share_links:
+      description: Shareable links for media items with expiry
+      columns:
+      - name: link_id
+        type: UUID
+        constraints: PK
+      - name: media_id
+        type: UUID
+        constraints: NOT NULL, FK -> media_items
+      - name: token
+        type: VARCHAR(128)
+        constraints: NOT NULL, UNIQUE
+      - name: expires_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_share_token
+        columns: token
+        type: UNIQUE
+      - name: idx_share_expiry
+        columns: expires_at
+    albums:
+      description: Guest-created photo albums grouping media items
+      columns:
+      - name: album_id
+        type: UUID
+        constraints: PK
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: cover_media_id
+        type: UUID
+        constraints: NULL, FK -> media_items
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_album_guest
+        columns: guest_id
+svc-location-services:
+  engine: PostGIS (PostgreSQL 15)
+  schema: locations
+  tables:
+  - locations
+  - capacity_records
+  - operating_hours
+  features:
+  - PostGIS geometry for geofencing and proximity queries
+  - Real-time capacity tracking with threshold alerts
+  - Timezone-aware operating hours management
+  volume: ~100 updates/day, ~2K reads/day
+  connection_pool:
+    min: 3
+    max: 10
+    idle_timeout: 10min
+  backup: Daily pg_dump, 14-day retention
+  table_details:
+    locations:
+      description: Adventure locations and facilities with geospatial boundaries
+      columns:
+      - name: location_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: location_type
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: boundary
+        type: GEOMETRY(Polygon, 4326)
+        constraints: NOT NULL
+      - name: center_point
+        type: GEOMETRY(Point, 4326)
+        constraints: NOT NULL
+      - name: max_capacity
+        type: INTEGER
+        constraints: NOT NULL
+      - name: timezone
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      indexes:
+      - name: idx_loc_boundary
+        columns: boundary
+        type: GiST spatial
+      - name: idx_loc_center
+        columns: center_point
+        type: GiST spatial
+      - name: idx_loc_type
+        columns: location_type
+    capacity_records:
+      description: Real-time occupancy tracking for locations
+      columns:
+      - name: record_id
+        type: UUID
+        constraints: PK
+      - name: location_id
+        type: UUID
+        constraints: NOT NULL, FK -> locations
+      - name: current_count
+        type: INTEGER
+        constraints: NOT NULL
+      - name: recorded_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_cap_loc_time
+        columns: location_id, recorded_at DESC
+svc-inventory-procurement:
+  engine: PostgreSQL 15
+  schema: procurement
+  tables:
+  - purchase_orders
+  - po_line_items
+  - suppliers
+  - stock_levels
+  - stock_adjustments
+  - reorder_alerts
+  features:
+  - Purchase order approval workflow with state machine
+  - Automatic reorder point calculation based on consumption
+  - Supplier lead time tracking for delivery estimates
+  volume: ~50 POs/day, ~200 stock adjustments/day
+  connection_pool:
+    min: 3
+    max: 10
+    idle_timeout: 10min
+  backup: Daily pg_dump, 30-day retention
+  table_details:
+    purchase_orders:
+      description: Purchase orders with approval state machine
+      columns:
+      - name: po_id
+        type: UUID
+        constraints: PK
+      - name: supplier_id
+        type: UUID
+        constraints: NOT NULL, FK -> suppliers
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'draft'
+      - name: total_amount
+        type: DECIMAL(10,2)
+        constraints: NOT NULL
+      - name: currency
+        type: CHAR(3)
+        constraints: NOT NULL, DEFAULT 'USD'
+      - name: approved_by
+        type: VARCHAR(100)
+        constraints: 'NULL'
+      - name: submitted_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: approved_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_po_supplier
+        columns: supplier_id
+      - name: idx_po_status
+        columns: status
+    suppliers:
+      description: Approved suppliers with performance tracking
+      columns:
+      - name: supplier_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: contact_email
+        type: VARCHAR(255)
+        constraints: NOT NULL
+      - name: lead_time_days
+        type: INTEGER
+        constraints: NOT NULL
+      - name: rating
+        type: DECIMAL(3,2)
+        constraints: 'NULL'
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      indexes:
+      - name: idx_supplier_active
+        columns: active
+    stock_levels:
+      description: Current stock quantities with reorder thresholds
+      columns:
+      - name: stock_id
+        type: UUID
+        constraints: PK
+      - name: item_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: location_id
+        type: UUID
+        constraints: NOT NULL
+      - name: quantity_on_hand
+        type: INTEGER
+        constraints: NOT NULL
+      - name: reorder_point
+        type: INTEGER
+        constraints: NOT NULL
+      - name: reorder_quantity
+        type: INTEGER
+        constraints: NOT NULL
+      - name: last_counted_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      indexes:
+      - name: idx_stock_item_loc
+        columns: item_type, location_id
+        type: UNIQUE
+      - name: idx_stock_reorder
+        columns: quantity_on_hand
+        type: WHERE quantity_on_hand <= reorder_point
+svc-weather:
+  engine: Valkey 8 + PostgreSQL 15
+  schema: weather
+  tables:
+  - weather_stations
+  - forecast_cache
+  - alert_history
+  features:
+  - Valkey TTL cache for current conditions (5-min TTL)
+  - External weather API response caching and aggregation
+  - Severe weather alert deduplication
+  volume: ~10K weather reads/day, ~100 external API fetches/day
+  connection_pool:
+    min: 3
+    max: 10
+    idle_timeout: 10min
+  backup: Daily pg_dump, 7-day retention (cache data is ephemeral)
+  table_details:
+    weather_stations:
+      description: Registered weather station locations for data sourcing
+      columns:
+      - name: station_id
+        type: UUID
+        constraints: PK
+      - name: name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: latitude
+        type: DECIMAL(9,6)
+        constraints: NOT NULL
+      - name: longitude
+        type: DECIMAL(9,6)
+        constraints: NOT NULL
+      - name: provider
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      indexes:
+      - name: idx_ws_provider
+        columns: provider
+    alert_history:
+      description: Archived severe weather alerts with deduplication
+      columns:
+      - name: alert_id
+        type: UUID
+        constraints: PK
+      - name: station_id
+        type: UUID
+        constraints: NOT NULL, FK -> weather_stations
+      - name: alert_type
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: severity
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: message
+        type: TEXT
+        constraints: NOT NULL
+      - name: external_id
+        type: VARCHAR(100)
+        constraints: NOT NULL, UNIQUE (dedup key)
+      - name: issued_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: expires_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      indexes:
+      - name: idx_alert_station
+        columns: station_id, issued_at DESC
+      - name: idx_alert_dedup
+        columns: external_id
+        type: UNIQUE

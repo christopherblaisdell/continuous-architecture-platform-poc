@@ -1,0 +1,165 @@
+# Per-service consuming application map (which app screens call which services).
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+svc-trip-catalog:
+- app: web-guest-portal
+  screen: Trip Browser
+- app: web-guest-portal
+  screen: Booking Flow
+- app: app-guest-mobile
+  screen: My Reservations
+svc-trail-management:
+- app: web-guest-portal
+  screen: Trip Browser
+- app: web-ops-dashboard
+  screen: Daily Schedule Board
+- app: web-ops-dashboard
+  screen: Guide Assignment
+- app: app-guest-mobile
+  screen: Live Trip Map
+- app: app-guest-mobile
+  screen: Weather and Trail Alerts
+svc-weather:
+- app: web-guest-portal
+  screen: Trip Browser
+- app: web-ops-dashboard
+  screen: Daily Schedule Board
+- app: app-guest-mobile
+  screen: Live Trip Map
+- app: app-guest-mobile
+  screen: Weather and Trail Alerts
+svc-media-gallery:
+- app: web-guest-portal
+  screen: Trip Browser
+- app: web-guest-portal
+  screen: Trip Gallery
+- app: app-guest-mobile
+  screen: Photo Upload
+svc-guest-profiles:
+- app: web-guest-portal
+  screen: Booking Flow
+- app: web-guest-portal
+  screen: Guest Profile
+- app: web-guest-portal
+  screen: Waiver Signing
+- app: web-ops-dashboard
+  screen: Check-In Station
+- app: web-ops-dashboard
+  screen: Safety Incident Board
+- app: app-guest-mobile
+  screen: Self Check-In
+- app: app-guest-mobile
+  screen: Earn Loyalty Points
+svc-reservations:
+- app: web-guest-portal
+  screen: Booking Flow
+- app: web-guest-portal
+  screen: Guest Profile
+- app: web-guest-portal
+  screen: Reservation Management
+- app: web-guest-portal
+  screen: Trip Gallery
+- app: web-ops-dashboard
+  screen: Check-In Station
+- app: web-ops-dashboard
+  screen: Transport Dispatch
+- app: web-ops-dashboard
+  screen: Analytics Dashboard
+- app: web-ops-dashboard
+  screen: Partner Bookings
+- app: app-guest-mobile
+  screen: Self Check-In
+- app: app-guest-mobile
+  screen: My Reservations
+- app: app-guest-mobile
+  screen: Earn Loyalty Points
+svc-payments:
+- app: web-guest-portal
+  screen: Booking Flow
+- app: web-guest-portal
+  screen: Reservation Management
+- app: web-ops-dashboard
+  screen: Analytics Dashboard
+- app: web-ops-dashboard
+  screen: Partner Bookings
+- app: app-guest-mobile
+  screen: My Reservations
+svc-loyalty-rewards:
+- app: web-guest-portal
+  screen: Guest Profile
+- app: web-guest-portal
+  screen: Loyalty Dashboard
+- app: app-guest-mobile
+  screen: Earn Loyalty Points
+svc-notifications:
+- app: web-guest-portal
+  screen: Reservation Management
+- app: web-guest-portal
+  screen: Waiver Signing
+- app: web-guest-portal
+  screen: Trip Gallery
+- app: web-ops-dashboard
+  screen: Safety Incident Board
+- app: app-guest-mobile
+  screen: Photo Upload
+- app: app-guest-mobile
+  screen: Weather and Trail Alerts
+svc-safety-compliance:
+- app: web-guest-portal
+  screen: Waiver Signing
+- app: web-ops-dashboard
+  screen: Check-In Station
+- app: web-ops-dashboard
+  screen: Safety Incident Board
+- app: app-guest-mobile
+  screen: Self Check-In
+svc-check-in:
+- app: web-ops-dashboard
+  screen: Check-In Station
+- app: app-guest-mobile
+  screen: Self Check-In
+- app: app-guest-mobile
+  screen: Digital Wristband
+svc-gear-inventory:
+- app: web-ops-dashboard
+  screen: Check-In Station
+- app: web-ops-dashboard
+  screen: Inventory Management
+- app: app-guest-mobile
+  screen: Self Check-In
+- app: app-guest-mobile
+  screen: Digital Wristband
+svc-scheduling-orchestrator:
+- app: web-ops-dashboard
+  screen: Daily Schedule Board
+- app: web-ops-dashboard
+  screen: Guide Assignment
+- app: app-guest-mobile
+  screen: Live Trip Map
+svc-guide-management:
+- app: web-ops-dashboard
+  screen: Daily Schedule Board
+- app: web-ops-dashboard
+  screen: Guide Assignment
+- app: web-ops-dashboard
+  screen: Safety Incident Board
+svc-location-services:
+- app: web-ops-dashboard
+  screen: Daily Schedule Board
+- app: web-ops-dashboard
+  screen: Transport Dispatch
+- app: app-guest-mobile
+  screen: Live Trip Map
+svc-transport-logistics:
+- app: web-ops-dashboard
+  screen: Transport Dispatch
+svc-inventory-procurement:
+- app: web-ops-dashboard
+  screen: Inventory Management
+svc-analytics:
+- app: web-ops-dashboard
+  screen: Analytics Dashboard
+svc-partner-integrations:
+- app: web-ops-dashboard
+  screen: Partner Bookings

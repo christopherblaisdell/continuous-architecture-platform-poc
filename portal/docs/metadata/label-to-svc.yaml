@@ -1,0 +1,16 @@
+# Mapping from short display labels to service names (used in PUML diagrams).
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+Reservations: svc-reservations
+Guest Profiles: svc-guest-profiles
+Trip Catalog: svc-trip-catalog
+Trail Mgmt: svc-trail-management
+Guide Mgmt: svc-guide-management
+Weather Svc: svc-weather
+Location Svc: svc-location-services
+Gear Inventory: svc-gear-inventory
+Payments Svc: svc-payments
+Notifications: svc-notifications
+Safety Compliance: svc-safety-compliance
+Analytics: svc-analytics
