@@ -140,6 +140,14 @@ tags:
 
 ---
 
+## :material-lightbulb: Solutions Affecting This Service
+
+| Ticket | Solution | Capabilities | Date |
+|--------|----------|-------------|------|
+| NTK-10008 | [Guest Reviews and Ratings Platform](../solutions/_NTK-10008-guest-reviews-and-ratings.md) | `CAP-1.7`, `CAP-1.2` | 2026-03-06 |
+
+---
+
 ## :material-api: Endpoints (9 total)
 
 ---

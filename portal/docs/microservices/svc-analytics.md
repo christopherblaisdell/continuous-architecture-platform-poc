@@ -100,6 +100,14 @@ tags:
 
 ---
 
+## :material-lightbulb: Solutions Affecting This Service
+
+| Ticket | Solution | Capabilities | Date |
+|--------|----------|-------------|------|
+| NTK-10009 | [Refund and Dispute Management Workflows](../solutions/_NTK-10009-refund-dispute-management.md) | `CAP-5.5`, `CAP-5.4` | 2026-03-06 |
+
+---
+
 ## :material-api: Endpoints (6 total)
 
 ---

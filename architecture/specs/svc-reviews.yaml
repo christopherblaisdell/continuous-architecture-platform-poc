@@ -1,0 +1,695 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Reviews Service
+  description: |
+    Manages guest reviews, ratings, and social proof for NovaTrek Adventures.
+    Supports star ratings, written reviews, moderation workflows, and aggregated
+    rating summaries per trip and guide. Reviews are tied to completed reservations
+    to ensure authenticity — only guests with a COMPLETED reservation can submit reviews.
+  version: 1.0.0
+  contact:
+    name: Guest Experience Team
+    email: guest-experience@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/reviews/v1
+    description: Production
+  - url: https://api-staging.novatrek.example.com/reviews/v1
+    description: Staging
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Reviews
+    description: Guest review submission and retrieval
+  - name: Ratings
+    description: Aggregated rating summaries
+  - name: Moderation
+    description: Review moderation workflows
+
+paths:
+  /reviews:
+    post:
+      operationId: submitReview
+      summary: Submit a guest review
+      description: |
+        Creates a review for a completed reservation. The service validates that
+        the guest_id matches the reservation owner and that the reservation status
+        is COMPLETED. Each guest may submit one review per reservation.
+      tags: [Reviews]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+      responses:
+        '201':
+          description: Review submitted successfully (status PENDING_MODERATION)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Reservation not found or not completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Guest has already reviewed this reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    get:
+      operationId: listReviews
+      summary: List reviews with optional filters
+      description: Returns paginated reviews filtered by trip, guest, guide, or rating range. Only APPROVED reviews are returned for public queries.
+      tags: [Reviews]
+      parameters:
+        - name: trip_id
+          in: query
+          description: Filter by trip identifier (cross-ref svc-trip-catalog)
+          schema:
+            type: string
+            format: uuid
+        - name: guest_id
+          in: query
+          description: Filter by guest identifier (cross-ref svc-guest-profiles)
+          schema:
+            type: string
+            format: uuid
+        - name: guide_id
+          in: query
+          description: Filter by guide identifier (cross-ref svc-guide-management)
+          schema:
+            type: string
+            format: uuid
+        - name: min_rating
+          in: query
+          description: Minimum star rating (inclusive)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - name: max_rating
+          in: query
+          description: Maximum star rating (inclusive)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - name: sort
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum: [newest, oldest, highest_rated, lowest_rated, most_helpful]
+            default: newest
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Paginated list of approved reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /reviews/{review_id}:
+    get:
+      operationId: getReview
+      summary: Retrieve a specific review
+      tags: [Reviews]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+      responses:
+        '200':
+          description: Review details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    patch:
+      operationId: updateReview
+      summary: Update a review (guest edit or moderation action)
+      description: |
+        Guests may update their review text and rating while in PENDING_MODERATION status.
+        Moderators may update the moderation_status field to APPROVED or REJECTED.
+      tags: [Reviews]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewUpdateRequest'
+      responses:
+        '200':
+          description: Review updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Guest cannot edit review after approval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Concurrent modification (version mismatch)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      operationId: deleteReview
+      summary: Delete a review
+      description: Soft-deletes a review. Only the review author or a moderator can delete.
+      tags: [Reviews]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+      responses:
+        '204':
+          description: Review deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Not authorized to delete this review
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /reviews/{review_id}/helpful:
+    post:
+      operationId: markReviewHelpful
+      summary: Mark a review as helpful
+      description: Increments the helpful_count for a review. Each guest can mark a review helpful once.
+      tags: [Reviews]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [guest_id]
+              properties:
+                guest_id:
+                  type: string
+                  format: uuid
+                  description: Guest marking this review as helpful
+      responses:
+        '200':
+          description: Helpful count updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  review_id:
+                    type: string
+                    format: uuid
+                  helpful_count:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Guest has already marked this review helpful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /trips/{trip_id}/rating-summary:
+    get:
+      operationId: getTripRatingSummary
+      summary: Get aggregated rating summary for a trip
+      description: |
+        Returns the average rating, total review count, and rating distribution
+        histogram for a trip. Only counts APPROVED reviews.
+      tags: [Ratings]
+      parameters:
+        - name: trip_id
+          in: path
+          required: true
+          description: Trip identifier (cross-ref svc-trip-catalog)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Rating summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /guides/{guide_id}/rating-summary:
+    get:
+      operationId: getGuideRatingSummary
+      summary: Get aggregated rating summary for a guide
+      description: |
+        Returns the average rating, total review count, and rating distribution
+        for a specific guide. Derived from reviews where the guide led the adventure.
+      tags: [Ratings]
+      parameters:
+        - name: guide_id
+          in: path
+          required: true
+          description: Guide identifier (cross-ref svc-guide-management)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Guide rating summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /moderation/queue:
+    get:
+      operationId: getModerationQueue
+      summary: List reviews pending moderation
+      description: Returns reviews in PENDING_MODERATION status, ordered by submission date. Requires MODERATOR role.
+      tags: [Moderation]
+      parameters:
+        - name: priority
+          in: query
+          description: Filter by moderation priority
+          schema:
+            type: string
+            enum: [LOW, NORMAL, HIGH, FLAGGED]
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Moderation queue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Requires MODERATOR role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /moderation/{review_id}/decide:
+    post:
+      operationId: moderateReview
+      summary: Approve or reject a review
+      description: |
+        Sets the moderation decision for a review. APPROVED reviews become publicly visible.
+        REJECTED reviews are hidden with the rejection reason recorded.
+      tags: [Moderation]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModerationDecision'
+      responses:
+        '200':
+          description: Moderation decision recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Requires MODERATOR role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    ReviewId:
+      name: review_id
+      in: path
+      required: true
+      description: Unique review identifier
+      schema:
+        type: string
+        format: uuid
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of results to return
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Offset:
+      name: offset
+      in: query
+      description: Number of results to skip for pagination
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  schemas:
+    ReviewRequest:
+      type: object
+      required: [reservation_id, guest_id, trip_id, overall_rating]
+      properties:
+        reservation_id:
+          type: string
+          format: uuid
+          description: Completed reservation identifier (cross-ref svc-reservations)
+        guest_id:
+          type: string
+          format: uuid
+          description: Guest submitting the review (cross-ref svc-guest-profiles)
+        trip_id:
+          type: string
+          format: uuid
+          description: Trip being reviewed (cross-ref svc-trip-catalog)
+        guide_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Guide who led the adventure (cross-ref svc-guide-management)
+        overall_rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Star rating (1-5)
+        category_ratings:
+          $ref: '#/components/schemas/CategoryRatings'
+        title:
+          type: string
+          maxLength: 200
+          description: Review headline
+          example: "Breathtaking glacier hike with expert guides"
+        body:
+          type: string
+          maxLength: 5000
+          description: Full review text
+        visit_date:
+          type: string
+          format: date
+          description: Date the adventure took place
+
+    CategoryRatings:
+      type: object
+      description: Optional per-category ratings (1-5 scale)
+      properties:
+        safety:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Safety procedures and equipment
+        guide_quality:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Guide knowledge and professionalism
+        value_for_money:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Value relative to price
+        scenery:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Natural beauty and environment
+        difficulty_accuracy:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Accuracy of advertised difficulty level
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        guest_id:
+          type: string
+          format: uuid
+        trip_id:
+          type: string
+          format: uuid
+        guide_id:
+          type: string
+          format: uuid
+          nullable: true
+        overall_rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        category_ratings:
+          $ref: '#/components/schemas/CategoryRatings'
+        title:
+          type: string
+        body:
+          type: string
+        visit_date:
+          type: string
+          format: date
+        moderation_status:
+          $ref: '#/components/schemas/ModerationStatus'
+        helpful_count:
+          type: integer
+          default: 0
+        _rev:
+          type: integer
+          description: Optimistic locking version
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ReviewUpdateRequest:
+      type: object
+      properties:
+        overall_rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        category_ratings:
+          $ref: '#/components/schemas/CategoryRatings'
+        title:
+          type: string
+          maxLength: 200
+        body:
+          type: string
+          maxLength: 5000
+        _rev:
+          type: integer
+          description: Required for optimistic locking — must match current version
+
+    ModerationStatus:
+      type: string
+      enum:
+        - PENDING_MODERATION
+        - APPROVED
+        - REJECTED
+        - FLAGGED
+
+    ModerationDecision:
+      type: object
+      required: [decision]
+      properties:
+        decision:
+          type: string
+          enum: [APPROVED, REJECTED]
+        rejection_reason:
+          type: string
+          maxLength: 500
+          description: Required when decision is REJECTED
+        moderator_id:
+          type: string
+          description: Moderator who made the decision
+
+    RatingSummary:
+      type: object
+      properties:
+        entity_id:
+          type: string
+          format: uuid
+          description: Trip or guide identifier
+        average_rating:
+          type: number
+          format: double
+          description: Weighted average of approved reviews
+          example: 4.3
+        total_reviews:
+          type: integer
+          example: 127
+        distribution:
+          type: object
+          description: Count of reviews per star rating
+          properties:
+            "1":
+              type: integer
+            "2":
+              type: integer
+            "3":
+              type: integer
+            "4":
+              type: integer
+            "5":
+              type: integer
+        category_averages:
+          $ref: '#/components/schemas/CategoryRatings'
+
+    ReviewListResponse:
+      type: object
+      properties:
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+        total_count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request body is invalid
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              issue:
+                type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnprocessableEntity:
+      description: Request understood but cannot be processed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

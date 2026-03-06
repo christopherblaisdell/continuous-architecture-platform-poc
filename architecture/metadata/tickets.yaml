@@ -141,3 +141,48 @@ tickets:
       As a loyal NovaTrek guest,
       I want to share a referral code with friends and earn bonus loyalty points when they complete their first adventure,
       So that I am rewarded for bringing new guests to NovaTrek.
+
+  - key: NTK-10008
+    summary: Guest Reviews and Ratings Platform
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [new-capability, svc-reviews, guest-experience]
+    created: 2025-02-20
+    updated: 2025-02-20
+    sprint: null
+    components: [svc-reviews, svc-reservations, svc-trip-catalog, svc-guest-profiles]
+    solution: _NTK-10008-guest-reviews-and-ratings
+    planned_capabilities:
+      - id: CAP-1.7
+        impact: new
+      - id: CAP-1.2
+        impact: enhanced
+    new_services: [svc-reviews]
+    user_story: |
+      As a guest who completed an adventure,
+      I want to leave a star rating and written review for my trip,
+      So that future guests can make informed booking decisions based on real experiences.
+
+  - key: NTK-10009
+    summary: Refund and Dispute Management Workflows
+    status: New
+    priority: High
+    assignee: null
+    reporter: sam.patel
+    labels: [capability-gap, svc-payments, finance]
+    created: 2025-02-22
+    updated: 2025-02-22
+    sprint: null
+    components: [svc-payments, svc-reservations, svc-notifications, svc-analytics]
+    solution: _NTK-10009-refund-dispute-management
+    planned_capabilities:
+      - id: CAP-5.5
+        impact: enhanced
+      - id: CAP-5.4
+        impact: enhanced
+    user_story: |
+      As a guest services manager,
+      I want structured dispute workflows with escalation tiers and automated notifications,
+      So that refund requests are resolved consistently and chargebacks are minimized.

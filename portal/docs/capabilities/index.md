@@ -13,9 +13,9 @@ L2 capabilities map to services. L3 capabilities emerge from solution designs.
 
 | Status | Count | Percentage |
 |--------|-------|-----------|
-| Implemented | 25 | 73.5% |
-| Partial | 4 | 11.8% |
-| Not Implemented | 5 | 14.7% |
+| Implemented | 27 | 79.4% |
+| Partial | 3 | 8.8% |
+| Not Implemented | 4 | 11.8% |
 | **Total L2 Capabilities** | **34** | |
 
 ## Capability Health Dashboard
@@ -28,25 +28,25 @@ a capability is modified by solutions.
 
 | Metric | Value |
 |--------|-------|
-| Active (last 90 days) | 0 |
+| Active (last 90 days) | 4 |
 | Aging (90-180 days) | 0 |
-| Stale (>180 days) | 6 |
-| Untouched (no solutions) | 28 |
+| Stale (>180 days) | 5 |
+| Untouched (no solutions) | 25 |
 | High churn (4+ solutions) | 0 |
-| Emergent L3 capabilities | 10 |
-| Architecture decisions | 18 |
+| Emergent L3 capabilities | 21 |
+| Architecture decisions | 30 |
 
 ### Per-Capability Health
 
 | Capability | Status | Solutions | Last Touched | Staleness | Churn | L3s | ADRs |
 |-----------|--------|-----------|-------------|-----------|-------|-----|------|
 | CAP-1.1 Guest Identity and Profile Management | IMPLEMENTED | 1 | 2025-02-12 | STALE | LOW | 1 | 4 |
-| CAP-1.2 Adventure Discovery and Browsing | IMPLEMENTED | 1 | 2025-02-10 | STALE | LOW | 1 | 2 |
+| CAP-1.2 Adventure Discovery and Browsing | IMPLEMENTED | 2 | 2026-03-06 | ACTIVE | MODERATE | 2 | 5 |
 | CAP-1.3 Reservation Management | IMPLEMENTED | 1 | 2025-02-12 | STALE | LOW | 0 | 4 |
 | CAP-1.4 Loyalty and Rewards | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.5 Guest Communications | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.6 Trip Media and Memories | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-1.7 Reviews and Feedback | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-1.7 Reviews and Feedback | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 5 | 3 |
 | CAP-1.8 Personalized Recommendations | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 3 | 2025-02-12 | STALE | MODERATE | 5 | 6 |
 | CAP-2.2 Schedule Planning and Optimization | IMPLEMENTED | 1 | 2025-02-05 | STALE | LOW | 2 | 2 |
@@ -66,8 +66,8 @@ a capability is modified by solutions.
 | CAP-5.1 Payment Processing | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-5.2 Trip Pricing and Yield Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-5.3 Analytics and Business Intelligence | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-5.4 Financial Reporting and Reconciliation | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-5.5 Refund and Dispute Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-5.4 Financial Reporting and Reconciliation | PARTIAL | 1 | 2026-03-06 | ACTIVE | LOW | 1 | 3 |
+| CAP-5.5 Refund and Dispute Management | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 4 | 3 |
 | CAP-6.1 Third-Party Booking Channels | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-6.2 Affiliate and Commission Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-6.3 Channel Rate Parity Management | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
@@ -79,11 +79,11 @@ a capability is modified by solutions.
 
 | Domain | L2 Capabilities | Implemented | Partial | Gaps |
 |--------|----------------|-------------|---------|------|
-| CAP-1 Guest Experience | 8 | 6 | 0 | 2 (Reviews and Feedback, Personalized Recommendations) |
+| CAP-1 Guest Experience | 8 | 7 | 0 | 1 (Personalized Recommendations) |
 | CAP-2 Adventure Operations | 5 | 5 | 0 | 0 |
 | CAP-3 Safety and Risk | 5 | 5 | 0 | 0 |
 | CAP-4 Resource Management | 5 | 4 | 0 | 1 (Facility and Venue Management) |
-| CAP-5 Revenue and Finance | 5 | 2 | 3 | 0 |
+| CAP-5 Revenue and Finance | 5 | 3 | 2 | 0 |
 | CAP-6 Partner Ecosystem | 3 | 1 | 1 | 1 (Channel Rate Parity Management) |
 | CAP-7 Platform Services | 3 | 2 | 0 | 1 (Search and Discovery Engine) |
 
@@ -122,10 +122,12 @@ Search, filter, and browse available adventures and trails
 | Date | Ticket | Impact | Summary |
 |------|--------|--------|---------|
 | 2025-02-10 | [NTK-10002](../solutions/_NTK-10002-adventure-category-classification.md) | enhanced | Configuration-driven adventure category classification for check-in UI patterns |
+| 2026-03-06 | [NTK-10008](../solutions/_NTK-10008-guest-reviews-and-ratings.md) | enhanced | Guest reviews and ratings platform with moderation pipeline |
 
 #### Emergent L3 Capabilities
 
 - **Adventure Category Taxonomy** — YAML-driven classification of 25 adventure types into 3 check-in patterns
+- **Social Proof on Trip Pages** — Trip detail pages show average rating, review count, and rating distribution
 
 ### CAP-1.3 Reservation Management
 
@@ -167,12 +169,25 @@ Photo and video capture, storage, and sharing for completed adventures
 
 ### CAP-1.7 Reviews and Feedback
 
-**Status:** NOT IMPLEMENTED
+**Status:** IMPLEMENTED
 
 Guest trip reviews, ratings, and social proof for adventure selection
 
-**Priority:** HIGH
-**Gap Rationale:** Guest trip reviews drive bookings; no social proof mechanism exists
+**Services:** [svc-reviews](../microservices/svc-reviews.md)
+
+#### Solution Timeline
+
+| Date | Ticket | Impact | Summary |
+|------|--------|--------|---------|
+| 2026-03-06 | [NTK-10008](../solutions/_NTK-10008-guest-reviews-and-ratings.md) | new | Guest reviews and ratings platform with moderation pipeline |
+
+#### Emergent L3 Capabilities
+
+- **Reservation-Gated Review Submission** — Reviews authenticated via COMPLETED reservation status — prevents fake reviews
+- **Moderation Pipeline** — Reviews enter PENDING_MODERATION and require approval (automated or manual) before publication
+- **Aggregated Rating Summaries** — Pre-computed per-trip and per-guide average ratings with distribution histograms
+- **Category Ratings** — Optional per-category breakdown (safety, guide quality, value, scenery, difficulty accuracy)
+- **Community Curation** — Helpful vote mechanism allows guests to surface the most useful reviews
 
 ### CAP-1.8 Personalized Recommendations
 
@@ -389,13 +404,36 @@ Revenue reporting, payment reconciliation, tax calculation
 
 **Services:** [svc-payments](../microservices/svc-payments.md)
 
+#### Solution Timeline
+
+| Date | Ticket | Impact | Summary |
+|------|--------|--------|---------|
+| 2026-03-06 | [NTK-10009](../solutions/_NTK-10009-refund-dispute-management.md) | enhanced | Structured refund dispute workflows with policy engine and tiered escalation |
+
+#### Emergent L3 Capabilities
+
+- **Dispute Audit Trail** — All resolution decisions include policy evaluation, resolver identity, justification, and outcome
+
 ### CAP-5.5 Refund and Dispute Management
 
-**Status:** PARTIAL
+**Status:** IMPLEMENTED
 
 Refund processing, chargeback management, dispute resolution workflows
 
 **Services:** [svc-payments](../microservices/svc-payments.md)
+
+#### Solution Timeline
+
+| Date | Ticket | Impact | Summary |
+|------|--------|--------|---------|
+| 2026-03-06 | [NTK-10009](../solutions/_NTK-10009-refund-dispute-management.md) | enhanced | Structured refund dispute workflows with policy engine and tiered escalation |
+
+#### Emergent L3 Capabilities
+
+- **Dispute Lifecycle Management** — Full dispute lifecycle (OPENED, UNDER_REVIEW, ESCALATED, RESOLVED) with audit trail
+- **YAML-Driven Refund Policy Engine** — Codified cancellation windows and refund percentages evaluated automatically per ADR-004 pattern
+- **Three-Tier Escalation** — Auto-approve (policy-eligible), agent review (edge cases), manager escalation (high-value)
+- **Chargeback Ingestion** — Payment processor chargeback webhooks create dispute records auto-escalated to manager tier
 
 ## CAP-6 Partner Ecosystem
 

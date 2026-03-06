@@ -47,11 +47,9 @@ domains:
 
       - id: CAP-1.7
         name: Reviews and Feedback
-        status: not-implemented
-        services: []
+        status: implemented
+        services: [svc-reviews]
         description: Guest trip reviews, ratings, and social proof for adventure selection
-        priority: high
-        gap_rationale: Guest trip reviews drive bookings; no social proof mechanism exists
 
       - id: CAP-1.8
         name: Personalized Recommendations
@@ -201,10 +199,9 @@ domains:
 
       - id: CAP-5.5
         name: Refund and Dispute Management
-        status: partial
+        status: implemented
         services: [svc-payments]
         description: Refund processing, chargeback management, dispute resolution workflows
-        gap_rationale: Basic refund endpoint exists but no dispute workflows
 
   - id: CAP-6
     name: Partner Ecosystem

@@ -11,7 +11,7 @@ tags:
 
 <p class="subtitle">Deep-Dive Architecture Documentation for Every NovaTrek Service</p>
 
-<span class="version-badge">21 Services &middot; 159 Endpoints</span>
+<span class="version-badge">22 Services &middot; 176 Endpoints</span>
 
 </div>
 
@@ -88,5 +88,6 @@ Each microservice page provides **PlantUML sequence diagrams** for every API end
 | **NovaTrek Loyalty Rewards Service**<br><small>`svc-loyalty-rewards`</small> | `1.0.0` | 5 endpoints | [:material-arrow-right: Open](svc-loyalty-rewards.md){ .md-button } |
 | **NovaTrek Media Gallery Service**<br><small>`svc-media-gallery`</small> | `1.0.2` | 5 endpoints | [:material-arrow-right: Open](svc-media-gallery.md){ .md-button } |
 | **NovaTrek Notifications Service**<br><small>`svc-notifications`</small> | `1.0.0` | 6 endpoints | [:material-arrow-right: Open](svc-notifications.md){ .md-button } |
-| **NovaTrek Payments Service**<br><small>`svc-payments`</small> | `1.0.0` | 5 endpoints | [:material-arrow-right: Open](svc-payments.md){ .md-button } |
+| **NovaTrek Payments Service**<br><small>`svc-payments`</small> | `1.1.0` | 12 endpoints | [:material-arrow-right: Open](svc-payments.md){ .md-button } |
+| **NovaTrek Reviews Service**<br><small>`svc-reviews`</small> | `1.0.0` | 10 endpoints | [:material-arrow-right: Open](svc-reviews.md){ .md-button } |
 | **NovaTrek Weather Service**<br><small>`svc-weather`</small> | `1.0.0` | 5 endpoints | [:material-arrow-right: Open](svc-weather.md){ .md-button } |
