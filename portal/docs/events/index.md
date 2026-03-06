@@ -12,7 +12,7 @@ tags:
 
 <p class="subtitle">Domain Events Published and Consumed Across NovaTrek Services</p>
 
-<span class="version-badge">7 Events &middot; 6 Producers &middot; 6 Consumers</span>
+<span class="version-badge">9 Events &middot; 8 Producers &middot; 8 Consumers</span>
 
 </div>
 
@@ -50,7 +50,9 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
+| **emergency.triggered** | `novatrek.safety.emergency.triggered` | [svc-emergency-response](../microservices/svc-emergency-response/) | [svc-notifications](../microservices/svc-notifications/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/), [svc-safety-compliance](../microservices/svc-safety-compliance/), [svc-analytics](../microservices/svc-analytics/) | [:material-code-json:](../events-ui/svc-emergency-response.html "View event schema") |
 | **incident.reported** | `novatrek.safety.incident.reported` | [svc-safety-compliance](../microservices/svc-safety-compliance/) | [svc-notifications](../microservices/svc-notifications/), [svc-analytics](../microservices/svc-analytics/) | [:material-code-json:](../events-ui/svc-safety-compliance.html "View event schema") |
+| **wildlife_alert.issued** | `novatrek.safety.wildlife-alert.issued` | [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/) | [svc-notifications](../microservices/svc-notifications/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/), [svc-trail-management](../microservices/svc-trail-management/), [svc-analytics](../microservices/svc-analytics/) | [:material-code-json:](../events-ui/svc-wildlife-tracking.html "View event schema") |
 
 ## Support
 
@@ -75,6 +77,22 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 
 - [svc-analytics](../microservices/svc-analytics/)
 - [svc-notifications](../microservices/svc-notifications/)
+
+### emergency.triggered
+
+- **Channel:** `novatrek.safety.emergency.triggered`
+- **Producer:** [svc-emergency-response](../microservices/svc-emergency-response/)
+- **Trigger:** [`POST /emergencies`](../microservices/svc-emergency-response/#post-emergencies-trigger-a-new-emergency-alert-sos)
+- **Domain:** Safety
+- **Description:** Published when a new emergency SOS is triggered by a guest or staff member
+- **Schema:** [:material-code-json: View Event Schema](../events-ui/svc-emergency-response.html)
+
+**Consumers:**
+
+- [svc-notifications](../microservices/svc-notifications/)
+- [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/)
+- [svc-safety-compliance](../microservices/svc-safety-compliance/)
+- [svc-analytics](../microservices/svc-analytics/)
 
 ### guest.registered
 
@@ -160,6 +178,22 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 - [svc-guide-management](../microservices/svc-guide-management/)
 - [svc-notifications](../microservices/svc-notifications/)
 
+### wildlife_alert.issued
+
+- **Channel:** `novatrek.safety.wildlife-alert.issued`
+- **Producer:** [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/)
+- **Trigger:** [`POST /alerts`](../microservices/svc-wildlife-tracking/#post-alerts-issue-a-wildlife-alert-for-a-trail-or-region)
+- **Domain:** Safety
+- **Description:** Published when a dangerous wildlife alert is issued for trails in a region
+- **Schema:** [:material-code-json: View Event Schema](../events-ui/svc-wildlife-tracking.html)
+
+**Consumers:**
+
+- [svc-notifications](../microservices/svc-notifications/)
+- [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/)
+- [svc-trail-management](../microservices/svc-trail-management/)
+- [svc-analytics](../microservices/svc-analytics/)
+
 ---
 
 ## AsyncAPI Specifications
@@ -169,8 +203,10 @@ Each producing service has an AsyncAPI 3.0 specification file describing its pub
 | Service | Spec File | Interactive Viewer |
 |---------|-----------|-------------------|
 | [svc-check-in](../microservices/svc-check-in/) | [`svc-check-in.events.yaml`](../events/svc-check-in.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-check-in.html) |
+| [svc-emergency-response](../microservices/svc-emergency-response/) | [`svc-emergency-response.events.yaml`](../events/svc-emergency-response.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-emergency-response.html) |
 | [svc-guest-profiles](../microservices/svc-guest-profiles/) | [`svc-guest-profiles.events.yaml`](../events/svc-guest-profiles.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-guest-profiles.html) |
 | [svc-payments](../microservices/svc-payments/) | [`svc-payments.events.yaml`](../events/svc-payments.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-payments.html) |
 | [svc-reservations](../microservices/svc-reservations/) | [`svc-reservations.events.yaml`](../events/svc-reservations.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-reservations.html) |
 | [svc-safety-compliance](../microservices/svc-safety-compliance/) | [`svc-safety-compliance.events.yaml`](../events/svc-safety-compliance.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-safety-compliance.html) |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | [`svc-scheduling-orchestrator.events.yaml`](../events/svc-scheduling-orchestrator.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-scheduling-orchestrator.html) |
+| [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/) | [`svc-wildlife-tracking.events.yaml`](../events/svc-wildlife-tracking.events.yaml) | [:material-code-json: View Schema](../events-ui/svc-wildlife-tracking.html) |

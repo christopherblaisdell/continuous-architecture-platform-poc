@@ -12,7 +12,7 @@ tags:
 
 <p class="subtitle">NovaTrek Adventures — Microservice API Reference</p>
 
-<span class="version-badge">19 Services</span>
+<span class="version-badge">21 Services</span>
 
 </div>
 
@@ -50,7 +50,9 @@ Browse the complete inventory of NovaTrek microservices. Each service links to i
 
 | Service | Version | Owner | API Reference |
 |---------|---------|-------|---------------|
+| **NovaTrek Emergency Response Service**<br><small>`svc-emergency-response`</small><br><small>Manages emergency alerts, SOS signals from guests on active adventures,</small> | `1.0.0` | NovaTrek Safety and Compliance Team | [:material-api: **Swagger UI** (10 endpoints)](api/svc-emergency-response.html){ .md-button } |
 | **NovaTrek Safety and Compliance Service**<br><small>`svc-safety-compliance`</small><br><small>Manages guest safety waivers, incident reporting, safety inspections, and</small> | `1.0.0` | NovaTrek Safety Operations | [:material-api: **Swagger UI** (8 endpoints)](api/svc-safety-compliance.html){ .md-button } |
+| **NovaTrek Wildlife Tracking Service**<br><small>`svc-wildlife-tracking`</small><br><small>Monitors wildlife activity near NovaTrek adventure trails, processes</small> | `1.0.0` | NovaTrek Safety and Compliance Team | [:material-api: **Swagger UI** (10 endpoints)](api/svc-wildlife-tracking.html){ .md-button } |
 
 ## Logistics
 

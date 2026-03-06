@@ -81,7 +81,9 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | Operations | See [microservice page](../microservices/svc-scheduling-orchestrator/) for full details |
 | [svc-trail-management](../microservices/svc-trail-management/) | Product Catalog | See [microservice page](../microservices/svc-trail-management/) for full details |
 | [svc-trip-catalog](../microservices/svc-trip-catalog/) | Product Catalog | See [microservice page](../microservices/svc-trip-catalog/) for full details |
+| [svc-emergency-response](../microservices/svc-emergency-response/) | Safety | See [microservice page](../microservices/svc-emergency-response/) for full details |
 | [svc-safety-compliance](../microservices/svc-safety-compliance/) | Safety | See [microservice page](../microservices/svc-safety-compliance/) for full details |
+| [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/) | Safety | See [microservice page](../microservices/svc-wildlife-tracking/) for full details |
 | [svc-analytics](../microservices/svc-analytics/) | Support | See [microservice page](../microservices/svc-analytics/) for full details |
 | [svc-inventory-procurement](../microservices/svc-inventory-procurement/) | Support | See [microservice page](../microservices/svc-inventory-procurement/) for full details |
 | [svc-location-services](../microservices/svc-location-services/) | Support | See [microservice page](../microservices/svc-location-services/) for full details |
@@ -276,6 +278,7 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 **Referenced by:**
 
 - [svc-check-in](../microservices/svc-check-in/)
+- [svc-emergency-response](../microservices/svc-emergency-response/)
 - [svc-gear-inventory](../microservices/svc-gear-inventory/)
 - [svc-guest-profiles](../microservices/svc-guest-profiles/)
 - [svc-location-services](../microservices/svc-location-services/)
@@ -289,6 +292,7 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - [svc-trail-management](../microservices/svc-trail-management/)
 - [svc-trip-catalog](../microservices/svc-trip-catalog/)
 - [svc-weather](../microservices/svc-weather/)
+- [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/)
 
 ### web-guest-portal
 
@@ -323,6 +327,7 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 
 - [svc-analytics](../microservices/svc-analytics/)
 - [svc-check-in](../microservices/svc-check-in/)
+- [svc-emergency-response](../microservices/svc-emergency-response/)
 - [svc-gear-inventory](../microservices/svc-gear-inventory/)
 - [svc-guest-profiles](../microservices/svc-guest-profiles/)
 - [svc-guide-management](../microservices/svc-guide-management/)
@@ -337,6 +342,7 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - [svc-trail-management](../microservices/svc-trail-management/)
 - [svc-transport-logistics](../microservices/svc-transport-logistics/)
 - [svc-weather](../microservices/svc-weather/)
+- [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/)
 
 ### svc-analytics
 
@@ -349,6 +355,12 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - **Type:** Internal Microservice
 - **Domain:** Operations
 - **Details:** [svc-check-in Microservice Page](../microservices/svc-check-in/)
+
+### svc-emergency-response
+
+- **Type:** Internal Microservice
+- **Domain:** Safety
+- **Details:** [svc-emergency-response Microservice Page](../microservices/svc-emergency-response/)
 
 ### svc-gear-inventory
 
@@ -451,3 +463,9 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - **Type:** Internal Microservice
 - **Domain:** Support
 - **Details:** [svc-weather Microservice Page](../microservices/svc-weather/)
+
+### svc-wildlife-tracking
+
+- **Type:** Internal Microservice
+- **Domain:** Safety
+- **Details:** [svc-wildlife-tracking Microservice Page](../microservices/svc-wildlife-tracking/)
