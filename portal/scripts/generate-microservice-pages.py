@@ -39,7 +39,16 @@ from load_metadata import (  # noqa: E402
     DATA_STORES, CROSS_SERVICE_CALLS,
     EVENT_CATALOG, EVENTS_BY_PRODUCER, EVENTS_BY_CONSUMER,
     APP_CONSUMERS, APP_TITLES, ACTORS, ACTOR_SERVICE_USAGE,
+    get_service_light_color,
 )
+
+# ── Infrastructure Colors (fixed, not domain-dependent) ──
+COLOR_DATABASE   = "#FEF9C3"   # yellow-100 — data at rest
+COLOR_CACHE      = "#FECDD3"   # rose-200  — hot/fast data
+COLOR_EVENT_BUS  = "#F5F3FF"   # violet-50 — async events
+COLOR_GATEWAY    = "#E0F2FE"   # sky-100   — API entry point
+COLOR_EXTERNAL   = "#F3F4F6"   # gray-100  — outside boundary
+COLOR_PCI        = "#FEE2E2"   # red-100   — PCI compliance
 
 # Pre-loaded endpoint summaries: (svc_name, METHOD, /path) -> summary
 ALL_ENDPOINT_SUMMARIES = {}
@@ -495,19 +504,19 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     L.append(f"@startuml {fname}")
     L.append("")
 
-    # Skinparam
+    # Skinparam — neutral defaults; per-participant colors set inline
     L.append("skinparam backgroundColor #FEFEFE")
     L.append("skinparam shadowing false")
     L.append('skinparam defaultFontName "Segoe UI"')
     L.append("skinparam sequence {")
     L.append(f"    ArrowColor {method_color}")
-    L.append("    ParticipantBorderColor #2E86AB")
-    L.append("    ParticipantBackgroundColor #E8F4F8")
-    L.append("    LifeLineBorderColor #A23B72")
-    L.append("    BoxBorderColor #F18F01")
-    L.append("    BoxBackgroundColor #FFF8F0")
-    L.append("    NoteBorderColor #c77b30")
-    L.append("    NoteBackgroundColor #FEF3E7")
+    L.append("    ParticipantBorderColor #374151")
+    L.append("    ParticipantBackgroundColor #F9FAFB")
+    L.append("    LifeLineBorderColor #6B7280")
+    L.append("    BoxBorderColor #94A3B8")
+    L.append("    BoxBackgroundColor #F8FAFC")
+    L.append("    NoteBorderColor #64748B")
+    L.append("    NoteBackgroundColor #F8FAFC")
     L.append("}")
     L.append("")
 
@@ -520,10 +529,10 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     L.append(f"title {title_text}\\n{summary}")
     L.append("")
 
-    # Participants - clickable
+    # Participants - clickable, colored by domain
     L.append(f'participant "Client" as Client [[/applications/]]')
-    L.append(f'participant "API Gateway" as GW [[/actors/#api-gateway]] #DBEAFE')
-    svc_bg = "#FFE0E0" if svc_name in PCI_SERVICES else "#E8F4F8"
+    L.append(f'participant "API Gateway" as GW [[/actors/#api-gateway]] {COLOR_GATEWAY}')
+    svc_bg = COLOR_PCI if svc_name in PCI_SERVICES else get_service_light_color(svc_name)
     L.append(f'participant "{svc_name}" as Svc [[/microservices/{svc_name}/]] {svc_bg}')
 
     declared = set()
@@ -535,21 +544,21 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
         declared.add(alias)
         target_svc = label_to_svc_name(label)
         if target_svc:
-            color = "#FFE0E0" if target_svc in PCI_SERVICES else "#FFF8F0"
+            color = COLOR_PCI if target_svc in PCI_SERVICES else get_service_light_color(target_svc)
             L.append(f'participant "{label}" as {alias} [[/microservices/{target_svc}/]] {color}')
         elif label == "Event Bus":
-            L.append(f'queue "Kafka" as {alias} [[/actors/#event-bus]] #F0E6FF')
+            L.append(f'queue "Kafka" as {alias} [[/actors/#event-bus]] {COLOR_EVENT_BUS}')
         elif label in PCI_EXTERNALS:
             actor_link = actor_anchor(label)
-            L.append(f'participant "{label}" as {alias} [[/actors/#{actor_link}]] #FFE0E0')
+            L.append(f'participant "{label}" as {alias} [[/actors/#{actor_link}]] {COLOR_PCI}')
         else:
             actor_link = actor_anchor(label)
             if label in ACTORS:
-                L.append(f'participant "{label}" as {alias} [[/actors/#{actor_link}]] #F5F5F5')
+                L.append(f'participant "{label}" as {alias} [[/actors/#{actor_link}]] {COLOR_EXTERNAL}')
             else:
-                L.append(f'participant "{label}" as {alias} #F5F5F5')
+                L.append(f'participant "{label}" as {alias} {COLOR_EXTERNAL}')
 
-    L.append(f'database "{db_label}" as DB [[/microservices/{svc_name}/#data-store]] #FCE4EC')
+    L.append(f'database "{db_label}" as DB [[/microservices/{svc_name}/#data-store]] {COLOR_DATABASE}')
     L.append("")
 
     # Swagger link note
@@ -594,7 +603,8 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
                 L.append(f"Svc {pci_arrow} {alias} : [[/microservices/{target_svc}/{anchor} {action}]]")
             else:
                 L.append(f"Svc {pci_arrow} {alias} : {action}")
-            L.append(f"activate {alias} #DBEAFE")
+            act_color = get_service_light_color(target_svc) if target_svc else COLOR_EXTERNAL
+            L.append(f"activate {alias} {act_color}")
             L.append(f"{alias} {pci_return} Svc : OK")
             L.append(f"deactivate {alias}")
             L.append("")
@@ -630,56 +640,56 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
     if method == "GET":
         if has_path_param_at_end(path):
             L.append(f"Svc -> DB : {_q['by_id']}")
-            L.append("activate DB #FCE4EC")
+            L.append(f"activate DB {COLOR_DATABASE}")
             L.append(f"DB --> Svc : {_r['one']}")
             L.append("deactivate DB")
             L.append("note right of DB : Returns 404 if not found")
         elif is_sub_resource(path):
             L.append(f"Svc -> DB : {_q['by_parent']}")
-            L.append("activate DB #FCE4EC")
+            L.append(f"activate DB {COLOR_DATABASE}")
             L.append(f"DB --> Svc : {_r['set']}")
             L.append("deactivate DB")
         else:
             L.append(f"Svc -> DB : {_q['filter']}")
-            L.append("activate DB #FCE4EC")
+            L.append(f"activate DB {COLOR_DATABASE}")
             L.append(f"DB --> Svc : {_r['page']}")
             L.append("deactivate DB")
 
     elif method == "POST":
         if is_sub_resource(path):
             L.append(f"Svc -> DB : {_q['chk_par']}")
-            L.append("activate DB #FCE4EC")
+            L.append(f"activate DB {COLOR_DATABASE}")
             L.append(f"DB --> Svc : {_r['parent']}")
             L.append("deactivate DB")
             L.append("note right of DB : 404 if parent not found")
             L.append("")
         L.append(f"Svc -> DB : {_q['insert']}")
-        L.append("activate DB #FCE4EC")
+        L.append(f"activate DB {COLOR_DATABASE}")
         L.append(f"DB --> Svc : {_r['created']}")
         L.append("deactivate DB")
 
     elif method in ("PUT", "PATCH"):
         L.append(f"Svc -> DB : {_q['lock']}")
-        L.append("activate DB #FCE4EC")
+        L.append(f"activate DB {COLOR_DATABASE}")
         L.append(f"DB --> Svc : {_r['current']}")
         L.append("deactivate DB")
         note = _merge_note if method == "PATCH" else _replace_note
         L.append(f"note right of Svc : {note}")
         L.append("")
         L.append(f"Svc -> DB : {_q['update']}")
-        L.append("activate DB #FCE4EC")
+        L.append(f"activate DB {COLOR_DATABASE}")
         L.append(f"DB --> Svc : {_r['updated']}")
         L.append("deactivate DB")
 
     elif method == "DELETE":
         L.append(f"Svc -> DB : {_q['by_id']}")
-        L.append("activate DB #FCE4EC")
+        L.append(f"activate DB {COLOR_DATABASE}")
         L.append(f"DB --> Svc : {_r['one']}")
         L.append("deactivate DB")
         L.append("note right of DB : Returns 404 if not found")
         L.append("")
         L.append(f"Svc -> DB : {_q['delete']}")
-        L.append("activate DB #FCE4EC")
+        L.append(f"activate DB {COLOR_DATABASE}")
         L.append("DB --> Svc : OK")
         L.append("deactivate DB")
 
