@@ -39,6 +39,7 @@ from load_metadata import (  # noqa: E402
     DATA_STORES, CROSS_SERVICE_CALLS,
     EVENT_CATALOG, EVENTS_BY_PRODUCER, EVENTS_BY_CONSUMER,
     APP_CONSUMERS, APP_TITLES, ACTORS, ACTOR_SERVICE_USAGE,
+    SOLUTIONS_BY_SERVICE,
     get_service_light_color,
 )
 
@@ -860,6 +861,29 @@ def generate_service_page(svc_name, spec, svg_files):
     lines.append("")
     lines.append("---")
     lines.append("")
+
+    # Solutions Affecting This Service
+    solutions = SOLUTIONS_BY_SERVICE.get(svc_name, [])
+    if solutions:
+        lines.append("## :material-lightbulb: Solutions Affecting This Service")
+        lines.append("")
+        lines.append("| Ticket | Solution | Capabilities | Date |")
+        lines.append("|--------|----------|-------------|------|")
+        for sol in solutions:
+            ticket = sol["ticket"]
+            folder = sol["folder"]
+            summary = sol["summary"]
+            caps = ", ".join(f"`{c}`" for c in sol["capabilities"]) if sol["capabilities"] else "--"
+            date = sol["date"] or "--"
+            lines.append(
+                f"| {ticket} "
+                f"| [{summary}](../solutions/{folder}.md) "
+                f"| {caps} "
+                f"| {date} |"
+            )
+        lines.append("")
+        lines.append("---")
+        lines.append("")
 
     lines.append(f"## :material-api: Endpoints ({len(endpoints)} total)")
     lines.append("")

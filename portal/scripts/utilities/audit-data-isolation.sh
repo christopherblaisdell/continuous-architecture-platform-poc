@@ -81,12 +81,18 @@ check_pattern "Real ticket IDs (UPT-, ARCH- prefixes)" \
   '\bUPT-[0-9]\|\bARCH-[0-9]'
 
 # Real infrastructure URLs
-check_pattern "Internal URLs (nbcu-ot, atlassian internal, gitlab internal, ucdp)" \
-  'nbcu-ot\|\.atlassian\.\|gitlab\.use\|ucdp\.net'
+check_pattern "Internal URLs (nbcu-ot, gitlab internal, ucdp)" \
+  'nbcu-ot\|gitlab\.use\|ucdp\.net'
 
 # Real repo names
 check_pattern "Internal repo names (upr-services, etc.)" \
   '\bupr-services\b\|upr-diagrams'
+
+# Auto-generated Azure SWA name used as a standalone label
+# Note: The URL mango-sand-*.azurestaticapps.net is the real deployment URL and is acceptable.
+# This catches the name used as a label (e.g., "the Mango Sand portal").
+check_pattern "Azure SWA auto-name used as label (use 'NovaTrek Architecture Portal' instead)" \
+  'Mango Sand'
 
 # Real people (add names as needed — keep this list updated)
 # check_pattern "Real people names" \

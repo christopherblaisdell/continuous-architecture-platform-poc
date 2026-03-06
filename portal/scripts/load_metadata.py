@@ -202,3 +202,42 @@ def _convert_applications(raw):
     return result
 
 APPLICATIONS = _convert_applications(_raw_apps)
+
+
+# ── Solutions by Service ──
+# Build a mapping: service_name -> list of solutions affecting that service
+# Sources: tickets.yaml (components) + capability-changelog.yaml (solution metadata)
+
+_tickets_data = _load("tickets.yaml")
+_changelog_data = _load("capability-changelog.yaml")
+
+# Build solution metadata from changelog
+_SOLUTION_META = {}
+for _entry in (_changelog_data or {}).get("entries", []):
+    _SOLUTION_META[_entry["solution"]] = {
+        "ticket": _entry["ticket"],
+        "date": str(_entry.get("date", "")),
+        "summary": _entry.get("summary", ""),
+        "capabilities": [c["id"] for c in _entry.get("capabilities", [])],
+    }
+
+# Build service -> solutions mapping from tickets
+SOLUTIONS_BY_SERVICE = {}
+for _t in (_tickets_data or {}).get("tickets", []):
+    _sol = _t.get("solution")
+    if not _sol:
+        continue
+    _meta = _SOLUTION_META.get(_sol, {})
+    _sol_info = {
+        "folder": _sol,
+        "ticket": _t["key"],
+        "summary": _t.get("summary", _meta.get("summary", "")),
+        "date": _meta.get("date", ""),
+        "capabilities": _meta.get("capabilities", []),
+    }
+    for _comp in _t.get("components", []):
+        SOLUTIONS_BY_SERVICE.setdefault(_comp, []).append(_sol_info)
+
+# Sort each service's solutions by date (newest first)
+for _svc in SOLUTIONS_BY_SERVICE:
+    SOLUTIONS_BY_SERVICE[_svc].sort(key=lambda s: s["date"], reverse=True)
