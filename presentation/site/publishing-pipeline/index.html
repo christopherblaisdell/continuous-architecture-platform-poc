@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#automated-publishing-replace-the-manual-confluence-step" class="md-skip">
+        <a href="#automated-publishing-replace-the-manual-wiki-step" class="md-skip">
           Skip to content
         </a>
       
@@ -714,9 +714,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#git-push-to-main-documentation-updates-automatically" class="md-nav__link">
+  <a href="#version-control-push-documentation-updates-automatically" class="md-nav__link">
     <span class="md-ellipsis">
-      git push to Main. Documentation Updates Automatically.
+      Version Control Push. Documentation Updates Automatically.
     </span>
   </a>
   
@@ -792,9 +792,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#confluence-sync-optional" class="md-nav__link">
+  <a href="#wiki-sync-optional" class="md-nav__link">
     <span class="md-ellipsis">
-      Confluence Sync (Optional)
+      Wiki Sync (Optional)
     </span>
   </a>
   
@@ -944,13 +944,13 @@
 
 
 
-<h1 id="automated-publishing-replace-the-manual-confluence-step">Automated Publishing: Replace the Manual Confluence Step</h1>
-<h2 id="git-push-to-main-documentation-updates-automatically">git push to Main. Documentation Updates Automatically.</h2>
-<p>Today, updating Confluence after checking specs into Git is a voluntary manual step — and it gets skipped. The platform replaces that step with an automated pipeline: a <code>git push</code> triggers a build that publishes the entire architecture portal. No manual copy-paste. No "I'll update Confluence later."</p>
+<h1 id="automated-publishing-replace-the-manual-wiki-step">Automated Publishing: Replace the Manual Wiki Step</h1>
+<h2 id="version-control-push-documentation-updates-automatically">Version Control Push. Documentation Updates Automatically.</h2>
+<p>Today, updating wiki pages after checking specs into version control is a voluntary manual step — and it gets skipped. The platform replaces that step with an automated pipeline: a version control push triggers a build that publishes the entire architecture portal. No manual copy-paste. No "I'll update the wiki later."</p>
 <hr />
 <h2 id="the-pipeline">The Pipeline</h2>
 <pre class="mermaid"><code>flowchart LR
-    A[git push to main] --&gt; B[GitHub Actions]
+    A[Version control push] --&gt; B[CI/CD Pipeline]
     B --&gt; C[Python generators\nrun against specs]
     C --&gt; D[MkDocs build]
     D --&gt; E[Deploy to Azure\nStatic Web Apps]
@@ -1029,7 +1029,7 @@
 </table>
 <div class="big-number">301</div>
 
-<p><strong>artifacts published automatically from a single <code>git push</code>.</strong></p>
+<p><strong>artifacts published automatically from a single version control push.</strong></p>
 <hr />
 <h2 id="what-the-generators-produce">What the Generators Produce</h2>
 <h3 id="microservice-pages">Microservice Pages</h3>
@@ -1089,26 +1089,26 @@
 <p>The Insiders sponsorship ($15/month) unlocks premium features like social cards, blog support, and advanced search. Not required for the base platform.</p>
 </div>
 <hr />
-<h2 id="confluence-sync-optional">Confluence Sync (Optional)</h2>
-<p>For organizations that require Confluence as the canonical documentation platform:</p>
+<h2 id="wiki-sync-optional">Wiki Sync (Optional)</h2>
+<p>For organizations that require wiki integration as the canonical documentation platform:</p>
 <pre class="mermaid"><code>flowchart TD
-    A[Markdown in Git] --&gt; B[MkDocs Build]
-    A --&gt; C[Confluence API Sync]
+    A[Markdown in Version Control] --&gt; B[MkDocs Build]
+    A --&gt; C[Wiki API Sync]
     B --&gt; D[Architecture Portal]
-    C --&gt; E[Confluence Space]
+    C --&gt; E[Wiki Platform]
 
     D -.-&gt; F[Architects browse\nportal for navigation]
-    E -.-&gt; G[Stakeholders browse\nConfluence for familiarity]
+    E -.-&gt; G[Stakeholders browse\nwiki for familiarity]
 
     style A fill:#00897b,color:#fff
     style D fill:#ff8f00,color:#fff
     style E fill:#1565c0,color:#fff</code></pre>
-<p>The Confluence sync publishes the same Markdown content as Confluence pages via the Atlassian API. Key principles:</p>
+<p>The wiki sync publishes the same Markdown content as wiki pages via REST API. Key principles:</p>
 <ul>
-<li><strong>Git remains the source of truth</strong> — edits happen in Markdown, not in Confluence</li>
-<li><strong>Confluence pages are read-only mirrors</strong> — a banner indicates the source is in git</li>
-<li><strong>Same content, two renderers</strong> — MkDocs for architects (rich navigation, diagrams), Confluence for stakeholders (familiar interface)</li>
-<li><strong>No dual maintenance</strong> — one <code>git push</code> updates both</li>
+<li><strong>Version control remains the source of truth</strong> — edits happen in Markdown, not in the wiki</li>
+<li><strong>Wiki pages are read-only mirrors</strong> — a banner indicates the source is in version control</li>
+<li><strong>Same content, two renderers</strong> — MkDocs for architects (rich navigation, diagrams), wiki for stakeholders (familiar interface)</li>
+<li><strong>No dual maintenance</strong> — one version control push updates both</li>
 </ul>
 <hr />
 <h2 id="before-and-after">Before and After</h2>
@@ -1116,29 +1116,29 @@
 <thead>
 <tr>
 <th>Aspect</th>
-<th style="text-align: center;">Before (Manual Confluence Step)</th>
+<th style="text-align: center;">Before (Manual Wiki Step)</th>
 <th style="text-align: center;">After (Automated Pipeline)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Publish a design update</td>
-<td style="text-align: center;">Voluntary Confluence update (often skipped)</td>
-<td style="text-align: center;"><code>git push</code> (automatic, never skipped)</td>
+<td style="text-align: center;">Voluntary wiki update (often skipped)</td>
+<td style="text-align: center;">Version control push (automatic, never skipped)</td>
 </tr>
 <tr>
 <td>Update a diagram</td>
-<td style="text-align: center;">PlantUML in Git, then manually re-render for Confluence</td>
-<td style="text-align: center;">Edit PlantUML in Git, push (auto-renders to portal)</td>
+<td style="text-align: center;">Diagram source in version control, then manually re-render for wiki</td>
+<td style="text-align: center;">Edit diagram source, push (auto-renders to portal)</td>
 </tr>
 <tr>
 <td>Cross-service links</td>
-<td style="text-align: center;">Manually maintained in Confluence (break constantly)</td>
+<td style="text-align: center;">Manually maintained in wiki (break constantly)</td>
 <td style="text-align: center;">Auto-generated from dependency graph</td>
 </tr>
 <tr>
 <td>Search across all designs</td>
-<td style="text-align: center;">Confluence search (often miss results)</td>
+<td style="text-align: center;">Wiki search (often miss results)</td>
 <td style="text-align: center;">MkDocs search (full-text, instant)</td>
 </tr>
 <tr>
@@ -1148,8 +1148,8 @@
 </tr>
 <tr>
 <td>Add a new service</td>
-<td style="text-align: center;">Check spec into Git + create Confluence pages manually</td>
-<td style="text-align: center;">Add spec to Git, push (portal page auto-generated)</td>
+<td style="text-align: center;">Check spec in + create wiki pages manually</td>
+<td style="text-align: center;">Add spec to repository, push (portal page auto-generated)</td>
 </tr>
 </tbody>
 </table>

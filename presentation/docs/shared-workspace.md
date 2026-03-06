@@ -1,6 +1,6 @@
-# Shared Workspace: AI Sees What the Architect Sees
+# Shared Workspace: The AI Agent Reads What Architects Maintain
 
-## The Secret to 96.1% Quality: Full Context
+## The Secret to Accurate Output: Full Context
 
 The AI doesn't hallucinate when it can **read the actual source material**. The key architectural decision in this platform is simple: put everything in the workspace.
 
@@ -8,7 +8,7 @@ The AI doesn't hallucinate when it can **read the actual source material**. The 
 
 ## What Lives in the Workspace
 
-The architecture workspace is a git repository containing every artifact an architect needs:
+The architecture workspace demonstrated here uses NovaTrek Adventures as a synthetic case study — a complete version-controlled repository containing every artifact an architect needs:
 
 | Artifact Type | Count | Purpose |
 |--------------|:-----:|---------|

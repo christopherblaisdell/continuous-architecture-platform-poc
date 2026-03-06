@@ -2,7 +2,7 @@
 
 ## The Innovation That Makes Architecture Continuous
 
-Our architecture practice has two gaps that compound over time: Confluence pages that fall behind Git because updating them is voluntary, and a design-to-reality divergence that no one reconciles after deployment. The first gap is closed by automated publishing. The second requires something new.
+Many architecture practices face two gaps that compound over time: browsable documentation that falls behind version control because updating it is voluntary, and a design-to-reality divergence that no one reconciles after deployment. The first gap is closed by automated publishing. The second requires something new.
 
 **The PROMOTE step closes the design-to-reality gap — verifying what was built matches what was designed, and recording the actual state as the new baseline.**
 
@@ -12,7 +12,7 @@ Our architecture practice has two gaps that compound over time: Confluence pages
 
 ### Gap 1: Browsable Documentation Falls Behind (Solved by Automated Publishing)
 
-Specs and diagrams are checked into Git — but the browsable Confluence pages that architects and stakeholders actually consult are updated manually and voluntarily. The automated publishing pipeline (Pillar 4) closes this gap: a `git push` generates an always-current portal.
+Specs and diagrams are version-controlled — but the browsable wiki pages that architects and stakeholders actually consult are updated manually and voluntarily. The automated publishing pipeline (Pillar 4) closes this gap: a version control push generates an always-current portal.
 
 ### Gap 2: Design Intent vs Production Reality (Solved by PROMOTE)
 
@@ -35,9 +35,9 @@ This isn't a discipline failure — it's a structural one. There is no step in t
 
 ## What Gets Lost Without PROMOTE
 
-Consider a real scenario from our proof of concept — the guide schedule overwrite bug (NTK-10004):
+Consider a scenario from the NovaTrek Adventures synthetic case study — the guide schedule overwrite bug (NTK-10004):
 
-**During the project, we captured:**
+**During the project, the AI captured:**
 
 - 4 ERROR log entries with timestamps and trace IDs
 - Root cause analysis: `SchedulingService.java` using `save(incoming)` instead of field-level merge
@@ -52,19 +52,19 @@ Consider a real scenario from our proof of concept — the guide schedule overwr
 - The ADRs sit in a ticket branch, never promoted to a searchable global log
 - The next architect investigating a scheduling issue **starts from scratch**
 
-This happens for **every project**. The specs in Git describe intended designs. Confluence (when updated at all) describes an older state. And the actual production code may differ from both.
+This happens for **every project**. The specs in version control describe intended designs. Browsable documentation (when updated at all) describes an older state. And the actual production code may differ from both.
 
 ---
 
 ## The Fix: PROMOTE
 
-We've added a step that every architecture workflow was missing:
+The platform adds a step that many architecture workflows are missing:
 
 ```
 INTAKE → INVESTIGATE → DESIGN → BUILD → DEPLOY → PROMOTE → DONE
 ```
 
-The PROMOTE step, executed by the same AI assistant that did the design work:
+The PROMOTE step, executed by the same AI agent that did the design work:
 
 | Action | What It Does |
 |--------|-------------|

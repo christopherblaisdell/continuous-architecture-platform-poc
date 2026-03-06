@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markdown-first-extending-what-we-already-do" class="md-skip">
+        <a href="#markdown-first-extending-what-teams-already-do" class="md-skip">
           Skip to content
         </a>
       
@@ -691,53 +691,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#we-already-author-in-text-formats-now-we-complete-the-picture" class="md-nav__link">
+  <a href="#many-teams-already-author-in-text-formats-extending-the-pattern" class="md-nav__link">
     <span class="md-ellipsis">
-      We Already Author in Text Formats — Now We Complete the Picture
+      Many Teams Already Author in Text Formats — Extending the Pattern
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-we-have-vs-what-we-add" class="md-nav__link">
+  <a href="#extending-version-controlled-artifacts" class="md-nav__link">
     <span class="md-ellipsis">
-      What We Have vs What We Add
+      Extending Version-Controlled Artifacts
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-changes-in-practice" class="md-nav__link">
+  <a href="#current-industry-pattern" class="md-nav__link">
     <span class="md-ellipsis">
-      What Changes in Practice
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What Changes in Practice">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#current-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Current Workflow
+      Current Industry Pattern
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#enhanced-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       Enhanced Workflow
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -926,76 +911,75 @@
 
 
 
-<h1 id="markdown-first-extending-what-we-already-do">Markdown-First: Extending What We Already Do</h1>
-<h2 id="we-already-author-in-text-formats-now-we-complete-the-picture">We Already Author in Text Formats — Now We Complete the Picture</h2>
-<p>Our architects already author OpenAPI specs in YAML and diagrams in PlantUML — text formats checked into Git. The platform extends this practice to <strong>solution designs, ADRs, and impact assessments</strong> in Markdown, completing the set of version-controlled architecture artifacts.</p>
+<h1 id="markdown-first-extending-what-teams-already-do">Markdown-First: Extending What Teams Already Do</h1>
+<h2 id="many-teams-already-author-in-text-formats-extending-the-pattern">Many Teams Already Author in Text Formats — Extending the Pattern</h2>
+<p>Many architecture practices already author OpenAPI specs in YAML and diagrams in PlantUML or Mermaid — text formats checked into version control. The platform extends this practice to <strong>solution designs, ADRs, and impact assessments</strong> in Markdown, completing the set of version-controlled architecture artifacts.</p>
 <hr />
-<h2 id="what-we-have-vs-what-we-add">What We Have vs What We Add</h2>
+<h2 id="extending-version-controlled-artifacts">Extending Version-Controlled Artifacts</h2>
 <table>
 <thead>
 <tr>
 <th>Artifact</th>
-<th style="text-align: center;">Today</th>
+<th style="text-align: center;">Current State (Industry Pattern)</th>
 <th style="text-align: center;">With the Platform</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>OpenAPI specs</strong></td>
-<td style="text-align: center;">In Git (gated)</td>
-<td style="text-align: center;">In Git (same) + AI-assisted updates</td>
+<td style="text-align: center;">Version-controlled (gated)</td>
+<td style="text-align: center;">Version-controlled (same) + AI-assisted updates</td>
 </tr>
 <tr>
-<td><strong>PlantUML diagrams</strong></td>
-<td style="text-align: center;">In Git</td>
-<td style="text-align: center;">In Git (same) + auto-rendered to portal</td>
+<td><strong>Diagram source</strong> (PlantUML, Mermaid)</td>
+<td style="text-align: center;">Version-controlled</td>
+<td style="text-align: center;">Version-controlled (same) + auto-rendered to portal</td>
 </tr>
 <tr>
 <td><strong>Solution designs</strong></td>
-<td style="text-align: center;">Confluence (manual) or ticket attachments</td>
-<td style="text-align: center;">Markdown in Git + auto-published</td>
+<td style="text-align: center;">Manual wiki or ticket attachments</td>
+<td style="text-align: center;">Markdown in version control + auto-published</td>
 </tr>
 <tr>
 <td><strong>Architecture Decision Records</strong></td>
 <td style="text-align: center;">In ticket branches (not discoverable)</td>
-<td style="text-align: center;">Markdown in Git + global searchable log</td>
+<td style="text-align: center;">Markdown in version control + global searchable log</td>
 </tr>
 <tr>
 <td><strong>Impact assessments</strong></td>
-<td style="text-align: center;">Confluence or email</td>
-<td style="text-align: center;">Markdown in Git + version-controlled</td>
+<td style="text-align: center;">Wiki or email</td>
+<td style="text-align: center;">Markdown in version control</td>
 </tr>
 <tr>
 <td><strong>Service documentation</strong></td>
-<td style="text-align: center;">Confluence (voluntary updates)</td>
-<td style="text-align: center;">Auto-generated from specs in Git</td>
+<td style="text-align: center;">Manual wiki updates (often skipped)</td>
+<td style="text-align: center;">Auto-generated from specs</td>
 </tr>
 <tr>
 <td><strong>Cross-service links</strong></td>
-<td style="text-align: center;">Manually maintained in Confluence</td>
+<td style="text-align: center;">Manually maintained in wiki</td>
 <td style="text-align: center;">Auto-generated from dependency graph</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="what-changes-in-practice">What Changes in Practice</h2>
-<h3 id="current-workflow">Current Workflow</h3>
-<div class="highlight"><pre><span></span><code>1. Architect updates OpenAPI specs and PlantUML diagrams in Git
-2. Changes are checked into master (governance gate — this works well)
-3. Architect is supposed to update Confluence service pages manually
+<h2 id="current-industry-pattern">Current Industry Pattern</h2>
+<div class="highlight"><pre><span></span><code>1. Architect updates OpenAPI specs and diagram source files in version control
+2. Changes are checked in (governance gate — this typically works well)
+3. Architect is supposed to update wiki service pages manually
 4. Sometimes this happens, often it doesn&#39;t
-5. Solution design lives in a ticket branch or Confluence — not discoverable later
+5. Solution design lives in a ticket branch or wiki — not discoverable later
 6. ADRs stay in ticket context, never promoted to a global log
 7. After deployment, nobody reconciles design intent vs actual implementation
 </code></pre></div>
-<h3 id="enhanced-workflow">Enhanced Workflow</h3>
-<div class="highlight"><pre><span></span><code>1. AI reads the existing Git repo (specs, diagrams, previous designs)
+<h2 id="enhanced-workflow">Enhanced Workflow</h2>
+<div class="highlight"><pre><span></span><code>1. AI agent reads the version-controlled repository (specs, diagrams, previous designs)
 2. AI scaffolds solution design from template in VS Code
 3. Architect reviews and refines (with AI assistance)
 4. Specs, diagrams, and solution design committed together
 5. Pull request for architecture review with line-by-line diffs
 6. Merge to main triggers automated publishing to browsable portal
-7. Optionally synced to Confluence via API (no manual step)
+7. Optionally synced to wiki via API (no manual step)
 8. AI reads the design in future sessions (full context)
 9. PROMOTE step reconciles design intent with actual implementation
 </code></pre></div>

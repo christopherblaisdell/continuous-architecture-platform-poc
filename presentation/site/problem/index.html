@@ -480,18 +480,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#we-already-did-the-hard-part" class="md-nav__link">
+  <a href="#many-teams-already-do-the-hard-part" class="md-nav__link">
     <span class="md-ellipsis">
-      We Already Did the Hard Part
+      Many Teams Already Do the Hard Part
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#gap-1-confluence-is-manual-and-voluntary" class="md-nav__link">
+  <a href="#gap-1-browsable-documentation-is-manual-and-voluntary" class="md-nav__link">
     <span class="md-ellipsis">
-      Gap 1: Confluence Is Manual and Voluntary
+      Gap 1: Browsable Documentation Is Manual and Voluntary
     </span>
   </a>
   
@@ -889,26 +889,26 @@
 
 
 <h1 id="the-problem-the-last-mile-of-architecture-documentation">The Problem: The Last Mile of Architecture Documentation</h1>
-<h2 id="we-already-did-the-hard-part">We Already Did the Hard Part</h2>
-<p>Our architecture practice does what most organizations struggle to achieve:</p>
+<h2 id="many-teams-already-do-the-hard-part">Many Teams Already Do the Hard Part</h2>
+<p>Many architecture practices have achieved what most organizations struggle with:</p>
 <ul>
-<li><strong>OpenAPI specs are source-controlled</strong> in Git — our central architecture repository</li>
-<li><strong>PlantUML diagrams</strong> (component and sequence) are version-controlled alongside specs</li>
-<li><strong>No Swagger goes to production</strong> without being checked into master — a governance gate</li>
+<li><strong>OpenAPI specs are source-controlled</strong> in a central repository</li>
+<li><strong>Diagram source files</strong> (PlantUML, Mermaid, etc.) are version-controlled alongside specs</li>
+<li><strong>Production gating</strong> — no API changes ship without approval in the architecture repo</li>
 <li>Architects work from authoritative, version-controlled artifacts</li>
 </ul>
 <p>This is a strong foundation. But two critical gaps erode its value over time.</p>
 <hr />
-<h2 id="gap-1-confluence-is-manual-and-voluntary">Gap 1: Confluence Is Manual and Voluntary</h2>
-<p>We maintain Confluence pages for each microservice — the browsable reference that architects, developers, and stakeholders consult when they need to understand a service.</p>
-<p><strong>Updating those pages is completely voluntary.</strong></p>
+<h2 id="gap-1-browsable-documentation-is-manual-and-voluntary">Gap 1: Browsable Documentation Is Manual and Voluntary</h2>
+<p>Most teams maintain wiki pages for each microservice — the browsable reference that architects, developers, and stakeholders consult when they need to understand a service.</p>
+<p><strong>Updating those pages is often voluntary and gets skipped.</strong></p>
 <ol>
 <li>An architect designs a solution, updates specs and diagrams</li>
-<li>Changes are checked into master in the architecture Git repo (the gate works)</li>
-<li>The architect is <em>supposed to</em> go to Confluence and update the service pages</li>
+<li>Changes are checked into the architecture repository (the gate works)</li>
+<li>The architect is <em>supposed to</em> update the wiki pages</li>
 <li>Sometimes they do. Often they don't.</li>
 </ol>
-<p>The result: <strong>Confluence falls behind the source-controlled artifacts.</strong> When the next architect goes to assess the current state of a service, the Confluence pages may reflect a state from two or three projects ago.</p>
+<p>The result: <strong>Browsable documentation falls behind the source-controlled artifacts.</strong> When the next architect assesses the current state of a service, the wiki pages may reflect a state from two or three projects ago.</p>
 <table>
 <thead>
 <tr>
@@ -919,15 +919,15 @@
 <tbody>
 <tr>
 <td>OpenAPI/Swagger specs (gated)</td>
-<td>Confluence service pages</td>
+<td>Wiki service pages</td>
 </tr>
 <tr>
-<td>PlantUML component diagrams</td>
-<td>Rendered diagram updates in Confluence</td>
+<td>Diagram source files (PlantUML, etc.)</td>
+<td>Rendered diagram updates in wiki</td>
 </tr>
 <tr>
-<td>PlantUML sequence diagrams</td>
-<td>Cross-service navigation and linking</td>
+<td>Cross-service dependency mappings</td>
+<td>Interactive navigation and linking</td>
 </tr>
 <tr>
 <td>Architecture decision rationale (in branches)</td>
@@ -936,7 +936,7 @@
 </tbody>
 </table>
 <div class="key-insight">
-<p><strong>The artifacts are current in Git. The documentation that people actually browse is not.</strong></p>
+<p><strong>The artifacts are current in version control. The documentation that people actually browse is not.</strong></p>
 </div>
 <hr />
 <h2 id="gap-2-design-intent-vs-production-reality">Gap 2: Design Intent vs Production Reality</h2>
@@ -968,7 +968,7 @@ Project 3:  THREE layers of drift have accumulated
 <p>By Project 5, finding the <strong>actual current state</strong> of a service requires reading production source code, interviewing developers, and guessing at which artifacts are still accurate. The source-controlled specs — which should be the authoritative baseline — describe what was <em>designed</em>, not necessarily what <em>exists</em>.</p>
 <hr />
 <h2 id="what-it-costs">What It Costs</h2>
-<p>The Git gating gives us authoritative API contracts at design time. But the <strong>documentation people actually browse</strong> — Confluence pages, rendered diagrams, the searchable service catalog — falls further behind with every project.</p>
+<p>Production gating gives teams authoritative API contracts at design time. But the <strong>documentation people actually browse</strong> — wiki pages, rendered diagrams, the searchable service catalog — falls further behind with every project.</p>
 <table>
 <thead>
 <tr>
@@ -979,11 +979,11 @@ Project 3:  THREE layers of drift have accumulated
 <tbody>
 <tr>
 <td>Re-investigation</td>
-<td>Architects re-read source code because Confluence pages are stale</td>
+<td>Architects re-read source code because wiki pages are stale</td>
 </tr>
 <tr>
 <td>Stale browsable docs</td>
-<td>Stakeholders consult Confluence pages that no longer reflect the current state</td>
+<td>Stakeholders consult wiki pages that no longer reflect the current state</td>
 </tr>
 <tr>
 <td>Lost decisions</td>
@@ -999,7 +999,7 @@ Project 3:  THREE layers of drift have accumulated
 </tr>
 </tbody>
 </table>
-<p>The platform we've built solves every one of these problems — and it builds directly on the Git-based foundation we already have.</p>
+<p>The platform demonstrated here solves every one of these problems — building on the version-controlled foundation that already exists.</p>
 <div class="cta-box">
 <h3 id="ready-to-see-the-solution">Ready to see the solution?</h3>
 <p><a href="../solution/">The Solution: Continuous Architecture Platform</a></p>

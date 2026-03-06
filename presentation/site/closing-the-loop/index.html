@@ -932,12 +932,12 @@
 
 <h1 id="closing-the-loop-the-promote-step">Closing the Loop: The PROMOTE Step</h1>
 <h2 id="the-innovation-that-makes-architecture-continuous">The Innovation That Makes Architecture Continuous</h2>
-<p>Our architecture practice has two gaps that compound over time: Confluence pages that fall behind Git because updating them is voluntary, and a design-to-reality divergence that no one reconciles after deployment. The first gap is closed by automated publishing. The second requires something new.</p>
+<p>Many architecture practices face two gaps that compound over time: browsable documentation that falls behind version control because updating it is voluntary, and a design-to-reality divergence that no one reconciles after deployment. The first gap is closed by automated publishing. The second requires something new.</p>
 <p><strong>The PROMOTE step closes the design-to-reality gap — verifying what was built matches what was designed, and recording the actual state as the new baseline.</strong></p>
 <hr />
 <h2 id="the-two-gaps">The Two Gaps</h2>
 <h3 id="gap-1-browsable-documentation-falls-behind-solved-by-automated-publishing">Gap 1: Browsable Documentation Falls Behind (Solved by Automated Publishing)</h3>
-<p>Specs and diagrams are checked into Git — but the browsable Confluence pages that architects and stakeholders actually consult are updated manually and voluntarily. The automated publishing pipeline (Pillar 4) closes this gap: a <code>git push</code> generates an always-current portal.</p>
+<p>Specs and diagrams are version-controlled — but the browsable wiki pages that architects and stakeholders actually consult are updated manually and voluntarily. The automated publishing pipeline (Pillar 4) closes this gap: a version control push generates an always-current portal.</p>
 <h3 id="gap-2-design-intent-vs-production-reality-solved-by-promote">Gap 2: Design Intent vs Production Reality (Solved by PROMOTE)</h3>
 <p>This is the harder problem. Architecture designs describe <em>intent</em>. But developers sometimes deviate during implementation. After deployment:</p>
 <table>
@@ -972,8 +972,8 @@
 <p>This isn't a discipline failure — it's a structural one. There is no step in the workflow for it.</p>
 <hr />
 <h2 id="what-gets-lost-without-promote">What Gets Lost Without PROMOTE</h2>
-<p>Consider a real scenario from our proof of concept — the guide schedule overwrite bug (NTK-10004):</p>
-<p><strong>During the project, we captured:</strong></p>
+<p>Consider a scenario from the NovaTrek Adventures synthetic case study — the guide schedule overwrite bug (NTK-10004):</p>
+<p><strong>During the project, the AI captured:</strong></p>
 <ul>
 <li>4 ERROR log entries with timestamps and trace IDs</li>
 <li>Root cause analysis: <code>SchedulingService.java</code> using <code>save(incoming)</code> instead of field-level merge</li>
@@ -988,13 +988,13 @@
 <li>The ADRs sit in a ticket branch, never promoted to a searchable global log</li>
 <li>The next architect investigating a scheduling issue <strong>starts from scratch</strong></li>
 </ul>
-<p>This happens for <strong>every project</strong>. The specs in Git describe intended designs. Confluence (when updated at all) describes an older state. And the actual production code may differ from both.</p>
+<p>This happens for <strong>every project</strong>. The specs in version control describe intended designs. Browsable documentation (when updated at all) describes an older state. And the actual production code may differ from both.</p>
 <hr />
 <h2 id="the-fix-promote">The Fix: PROMOTE</h2>
-<p>We've added a step that every architecture workflow was missing:</p>
+<p>The platform adds a step that many architecture workflows are missing:</p>
 <div class="highlight"><pre><span></span><code>INTAKE → INVESTIGATE → DESIGN → BUILD → DEPLOY → PROMOTE → DONE
 </code></pre></div>
-<p>The PROMOTE step, executed by the same AI assistant that did the design work:</p>
+<p>The PROMOTE step, executed by the same AI agent that did the design work:</p>
 <table>
 <thead>
 <tr>
