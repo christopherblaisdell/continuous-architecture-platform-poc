@@ -316,12 +316,12 @@ Deploy Vikunja as the ticketing UI.
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 4.1 | Create `infra/modules/vikunja.bicep` and `infra/modules/container-apps-env.bicep` | -- | Medium |
-| 4.2 | Add Vikunja parameters to `infra/parameters/prod.bicepparam` | 4.1 | Small |
-| 4.3 | Deploy Vikunja to Azure Container Apps | 4.1, 4.2 | Medium |
-| 4.4 | Create NovaTrek project and seed capability labels | 4.3 | Small |
-| 4.5 | Import tickets from `tickets.yaml` via Vikunja API | 4.3 | Small |
-| 4.6 | Write `portal/scripts/sync-tickets.py` for bidirectional sync | 4.3 | Medium |
+| 4.1 | COMPLETE -- Created `infra/modules/container-apps-env.bicep` (Log Analytics + managed environment) and `infra/modules/vikunja.bicep` (Container App with SQLite, ingress, volumes) | -- | Medium |
+| 4.2 | COMPLETE -- Added Vikunja parameters to `infra/parameters/prod.bicepparam` (commented out, uncomment to deploy) and wired modules into `main.bicep` with `deployVikunja` flag | 4.1 | Small |
+| 4.3 | Deploy Vikunja to Azure Container Apps (uncomment params, run `deploy.sh`) | 4.1, 4.2 | Medium |
+| 4.4 | COMPLETE -- `scripts/vikunja-seed.py` creates NovaTrek project and seeds 34 capability labels + 4 status labels | 4.3 | Small |
+| 4.5 | COMPLETE -- `scripts/vikunja-seed.py` imports all 7 tickets with descriptions, priorities, and label associations | 4.3 | Small |
+| 4.6 | COMPLETE -- `portal/scripts/sync-tickets.py` bidirectional sync (push new YAML tickets, pull status/priority changes from Vikunja) | 4.3 | Medium |
 | 4.7 | Configure webhooks for automated sync on ticket changes | 4.6 | Medium |
 
 **Outcome:** Vikunja provides a UI for ticket management. `sync-tickets.py` keeps `tickets.yaml` in sync. Portal pages generated from YAML as before.
