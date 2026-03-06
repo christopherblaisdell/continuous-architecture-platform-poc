@@ -76,9 +76,9 @@ check_pattern "Internal tool names (VSFlow, real tool names)" \
 check_pattern "Real microservice names (ms-acp, ms-hotel, ms-checkout, etc.)" \
   'ms-acp\|ms-hotel\|ms-checkout\|ms-guest\|ms-orders\|ms-biometrics\|ms-ohip\|ms-presence\|ms-entitlements'
 
-# Real ticket ID patterns
+# Real ticket ID patterns (use word boundary to prevent matching DEEP-RESEARCH-1 etc.)
 check_pattern "Real ticket IDs (UPT-, ARCH- prefixes)" \
-  'UPT-[0-9]\|ARCH-[0-9]'
+  '\bUPT-[0-9]\|\bARCH-[0-9]'
 
 # Real infrastructure URLs
 check_pattern "Internal URLs (nbcu-ot, atlassian internal, gitlab internal, ucdp)" \

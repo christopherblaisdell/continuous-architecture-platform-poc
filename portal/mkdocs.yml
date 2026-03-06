@@ -109,7 +109,6 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Service Catalog: services/index.md
   - Design Standards:
     - standards/index.md
     - arc42 Template:
@@ -146,6 +145,7 @@ nav:
     - Quality Model:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
+  - Service Catalog: services/index.md
   - Applications:
     - applications/index.md
     - web-guest-portal:

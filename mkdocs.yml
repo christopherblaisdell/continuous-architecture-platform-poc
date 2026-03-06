@@ -58,6 +58,14 @@ theme:
 plugins:
   - search
   - tags
+  - exclude:
+      glob:
+        - "phase-1-ai-tool-cost-comparison/workspace/corporate-services/**"
+        - "phase-1-ai-tool-cost-comparison/workspace/source-code/**"
+        - "phase-1-ai-tool-cost-comparison/workspace/scripts/**"
+        - "phase-1-ai-tool-cost-comparison/workspace/work-items/**"
+        - "phase-1-ai-tool-cost-comparison/outputs/**"
+        - "phase-1-ai-tool-cost-comparison/scripts/**"
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
@@ -106,6 +114,10 @@ nav:
       - Overview: README.md
       - Roadmap: roadmap/ROADMAP.md
       - Closing the Loop: CLOSING-THE-LOOP.md
+  - Architecture Practice:
+      - Capability Map Analysis: CAPABILITY-MAP-ANALYSIS.md
+      - Solution Design Lifecycle: SOLUTION-DESIGN-LIFECYCLE-ANALYSIS.md
+      - Ticketing Integration: TICKETING-INTEGRATION-ANALYSIS.md
   - Decisions:
       - Decision Log: decisions/README.md
       - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
