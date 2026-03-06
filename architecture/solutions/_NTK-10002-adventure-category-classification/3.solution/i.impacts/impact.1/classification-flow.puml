@@ -1,0 +1,75 @@
+@startuml NTK-10002 Classification Flow
+title Adventure Category Classification - Decision Flow
+skinparam activityBackgroundColor #F5F5F5
+skinparam activityBorderColor #333333
+
+start
+
+:Guest initiates check-in;
+
+:Retrieve reservation details\nfrom **svc-reservations**;
+
+note right
+  Reservation includes:
+  - reservation_id
+  - booking_source
+  - adventure_category
+  - activity_type (legacy)
+end note
+
+:Read **booking_source**\nfrom reservation;
+
+if (Feature flag\n**use-category-classification**\nenabled?) then (yes)
+
+  if (booking_source has\noverride rule?) then (yes)
+
+    :Apply booking source override;
+
+    note right
+      PARTNER_API -> Pattern 1
+      WALK_IN -> Pattern 3
+    end note
+
+    :Return override pattern;
+
+  else (no)
+
+    :Read **adventure_category**\nfrom reservation;
+
+    if (adventure_category is\nnull or empty?) then (yes)
+
+      :Apply fallback rule;
+      :Return **Pattern 3**\n(Full Service);
+
+    else (no)
+
+      :Lookup adventure_category\nin classification table;
+
+      if (Category found\nin table?) then (yes)
+
+        :Return mapped pattern;
+
+      else (no)
+
+        :Category not recognized;
+        :Apply fallback rule;
+        :Return **Pattern 3**\n(Full Service);
+
+      endif
+
+    endif
+
+  endif
+
+else (no)
+
+  :Use legacy activity_type\nbased classification;
+  :Return legacy pattern;
+
+endif
+
+:Render check-in UI flow\nbased on determined pattern;
+
+stop
+
+@enduml

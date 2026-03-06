@@ -151,6 +151,69 @@ All tools are local Python scripts reading JSON files from `scripts/mock-data/`.
 
 ---
 
+## Solution Design Workflow
+
+### Branching Convention
+
+Every solution design is developed on a dedicated branch and merged via pull request. Branch names follow the pattern:
+
+```
+solution/NTK-XXXXX-slug
+```
+
+Examples:
+- `solution/NTK-10003-unregistered-guest-checkin`
+- `solution/NTK-10006-adventure-tracking`
+
+### Solution Folder Structure
+
+All solutions live in `architecture/solutions/`. Each solution uses this folder structure:
+
+```
+architecture/solutions/_NTK-XXXXX-slug/
+├── NTK-XXXXX-solution-design.md          (master document)
+├── 1.requirements/                        (ticket report)
+├── 2.analysis/                            (simple explanation)
+└── 3.solution/
+    ├── a.assumptions/
+    ├── c.capabilities/capabilities.md     (REQUIRED — capability mapping)
+    ├── d.decisions/decisions.md           (MADR format)
+    ├── g.guidance/                        (implementation advice — optional)
+    ├── i.impacts/                         (per-service impact assessments)
+    ├── r.risks/
+    └── u.user.stories/
+```
+
+### Capability Rollup (REQUIRED)
+
+Every solution MUST include capability mapping:
+
+1. Create `3.solution/c.capabilities/capabilities.md` listing affected CAP-X.Y IDs with impact type (enhanced, fixed, new)
+2. Draft a `capability-changelog.yaml` entry with L3 capabilities that emerge from the solution
+3. Update `architecture/metadata/tickets.yaml` with capability mappings
+
+### Ticket Client
+
+Query tickets from `architecture/metadata/tickets.yaml`:
+
+| Command | Purpose |
+|---------|---------|
+| `python3 scripts/ticket-client.py --list` | List all tickets |
+| `python3 scripts/ticket-client.py --list --status "New"` | Filter by status |
+| `python3 scripts/ticket-client.py --list --capability CAP-2.1` | Filter by capability |
+| `python3 scripts/ticket-client.py --list --service svc-check-in` | Filter by service |
+| `python3 scripts/ticket-client.py --ticket NTK-10003` | Full ticket detail |
+
+### Metadata Files
+
+| File | Purpose |
+|------|---------|
+| `architecture/metadata/capabilities.yaml` | L1/L2 capability definitions (34 capabilities) |
+| `architecture/metadata/capability-changelog.yaml` | Append-only log of capability changes per solution |
+| `architecture/metadata/tickets.yaml` | Ticket registry with capability mappings |
+
+---
+
 ## Architecture Standards
 
 ### MADR (Markdown Any Decision Record)
