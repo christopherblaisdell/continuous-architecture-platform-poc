@@ -20,3 +20,10 @@ param tags = {
 
 // Uncomment and set when custom domain is ready:
 // param customDomain = 'docs.novatrek.example.com'
+
+// ---------------------------------------------------------------------------
+// Vikunja Ticketing (uncomment to deploy)
+// ---------------------------------------------------------------------------
+// param deployVikunja = true
+// param containerAppsEnvName = 'cae-cap-ticketing-prod'
+// param vikunjaAppName = 'ca-vikunja-prod'

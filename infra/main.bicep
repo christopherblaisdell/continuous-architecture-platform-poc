@@ -47,6 +47,15 @@ param tags object = {}
 @description('Custom domain to configure (optional, leave empty to skip)')
 param customDomain string = ''
 
+@description('Deploy Vikunja ticketing instance (requires Container Apps)')
+param deployVikunja bool = false
+
+@description('Name for the Container Apps Environment (used when deployVikunja is true)')
+param containerAppsEnvName string = 'cae-cap-${uniqueString(resourceGroup().id)}'
+
+@description('Name for the Vikunja Container App (used when deployVikunja is true)')
+param vikunjaAppName string = 'ca-vikunja'
+
 // ---------------------------------------------------------------------------
 // Variables
 // ---------------------------------------------------------------------------
@@ -106,3 +115,33 @@ output staticWebAppId string = staticWebApp.id
 
 @description('The API key for CI/CD deployment (retrieve via az CLI after deployment)')
 output deploymentTokenCommand string = 'az staticwebapp secrets list --name ${staticWebAppName} --query "properties.apiKey" -o tsv'
+
+// ---------------------------------------------------------------------------
+// Container Apps Environment (conditional — for Vikunja)
+// ---------------------------------------------------------------------------
+
+module containerAppsEnv 'modules/container-apps-env.bicep' = if (deployVikunja) {
+  name: 'container-apps-env'
+  params: {
+    name: containerAppsEnvName
+    location: location
+    tags: defaultTags
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Vikunja Ticketing (conditional)
+// ---------------------------------------------------------------------------
+
+module vikunja 'modules/vikunja.bicep' = if (deployVikunja) {
+  name: 'vikunja'
+  params: {
+    name: vikunjaAppName
+    location: location
+    containerAppsEnvId: deployVikunja ? containerAppsEnv.outputs.id : ''
+    tags: defaultTags
+  }
+}
+
+@description('Vikunja URL (empty if not deployed)')
+output vikunjaUrl string = deployVikunja ? vikunja.outputs.url : ''
