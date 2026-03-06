@@ -1,0 +1,94 @@
+asyncapi: 3.0.0
+info:
+  title: svc-emergency-response Events
+  version: 1.0.0
+  description: Domain events published by the NovaTrek Emergency Response Service
+  contact:
+    name: NovaTrek Safety and Compliance Team
+
+defaultContentType: application/json
+
+channels:
+  emergencyTriggered:
+    address: novatrek.safety.emergency.triggered
+    messages:
+      emergencyTriggered:
+        $ref: '#/components/messages/EmergencyTriggered'
+
+operations:
+  publishEmergencyTriggered:
+    action: send
+    channel:
+      $ref: '#/channels/emergencyTriggered'
+    summary: Published when a new emergency SOS is triggered by a guest or staff member
+
+components:
+  messages:
+    EmergencyTriggered:
+      name: EmergencyTriggered
+      title: Emergency Triggered
+      summary: A new emergency SOS has been triggered on an active adventure
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/EmergencyTriggeredPayload'
+
+  schemas:
+    EmergencyTriggeredPayload:
+      type: object
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - emergency_id
+        - guest_id
+        - reservation_id
+        - type
+        - severity
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: emergency.triggered
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        emergency_id:
+          type: string
+          format: uuid
+          description: ID of the emergency incident
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the guest involved
+        reservation_id:
+          type: string
+          format: uuid
+          description: Active reservation associated with the emergency
+        type:
+          type: string
+          enum: [sos, medical, weather, wildlife, equipment_failure, lost_party]
+          description: Type of emergency
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+          description: Severity assessment
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              format: double
+            longitude:
+              type: number
+              format: double
+            altitude_meters:
+              type: number
+              format: double
+              nullable: true
+        reported_by:
+          type: string
+          description: Staff ID or 'guest' if self-reported

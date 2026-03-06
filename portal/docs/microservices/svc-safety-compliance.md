@@ -189,3 +189,11 @@ tags:
 | Event | Channel | Trigger | Consumers |
 |-------|---------|---------|-----------|
 | [`incident.reported`](/events/#incidentreported) | `novatrek.safety.incident.reported` | [`POST /incidents`](#post-incidents-file-an-incident-report) | [svc-notifications](../svc-notifications/), [svc-analytics](../svc-analytics/) |
+
+---
+
+## :material-broadcast-off: Events Consumed
+
+| Event | Producer | Channel |
+|-------|----------|---------|
+| [`emergency.triggered`](/events/#emergencytriggered) | [svc-emergency-response](../svc-emergency-response/) | `novatrek.safety.emergency.triggered` |

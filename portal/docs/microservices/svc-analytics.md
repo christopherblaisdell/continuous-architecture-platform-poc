@@ -171,3 +171,5 @@ tags:
 | [`guest.registered`](/events/#guestregistered) | [svc-guest-profiles](../svc-guest-profiles/) | `novatrek.guest-identity.guest.registered` |
 | [`checkin.completed`](/events/#checkincompleted) | [svc-check-in](../svc-check-in/) | `novatrek.operations.checkin.completed` |
 | [`incident.reported`](/events/#incidentreported) | [svc-safety-compliance](../svc-safety-compliance/) | `novatrek.safety.incident.reported` |
+| [`emergency.triggered`](/events/#emergencytriggered) | [svc-emergency-response](../svc-emergency-response/) | `novatrek.safety.emergency.triggered` |
+| [`wildlife_alert.issued`](/events/#wildlife_alertissued) | [svc-wildlife-tracking](../svc-wildlife-tracking/) | `novatrek.safety.wildlife-alert.issued` |

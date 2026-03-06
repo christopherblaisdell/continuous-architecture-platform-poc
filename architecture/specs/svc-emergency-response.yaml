@@ -1,0 +1,603 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Emergency Response Service
+  description: |
+    Manages emergency alerts, SOS signals from guests on active adventures,
+    coordinates rescue operations with guides and external emergency services,
+    and tracks incident escalation workflows. Integrates with guest profiles
+    for medical information, location services for GPS coordinates, and
+    notifications for multi-channel alerting.
+  version: 1.0.0
+  contact:
+    name: NovaTrek Safety and Compliance Team
+    email: emergency@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/emergency/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /emergencies:
+    get:
+      operationId: listEmergencies
+      summary: List emergency incidents with optional filters
+      tags: [Emergencies]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, dispatched, resolved, cancelled]
+          description: Filter by emergency status
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+          description: Filter by severity level
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter by incident date (ISO 8601)
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of emergency incidents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmergencyList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: triggerEmergency
+      summary: Trigger a new emergency alert (SOS)
+      description: |
+        Creates a new emergency incident from a guest SOS signal or staff report.
+        Automatically notifies on-duty guides, dispatches rescue resources, and
+        escalates to external emergency services if severity is critical.
+      tags: [Emergencies]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmergencyRequest'
+      responses:
+        '201':
+          description: Emergency created and alerts dispatched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emergency'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /emergencies/{emergency_id}:
+    get:
+      operationId: getEmergency
+      summary: Get emergency incident details
+      tags: [Emergencies]
+      parameters:
+        - $ref: '#/components/parameters/EmergencyId'
+      responses:
+        '200':
+          description: Emergency incident details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emergency'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      operationId: updateEmergencyStatus
+      summary: Update emergency status or add resolution notes
+      tags: [Emergencies]
+      parameters:
+        - $ref: '#/components/parameters/EmergencyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmergencyUpdate'
+      responses:
+        '200':
+          description: Emergency updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emergency'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /emergencies/{emergency_id}/timeline:
+    get:
+      operationId: getEmergencyTimeline
+      summary: Get the full event timeline for an emergency
+      tags: [Emergencies]
+      parameters:
+        - $ref: '#/components/parameters/EmergencyId'
+      responses:
+        '200':
+          description: Ordered list of timeline events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineList'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    post:
+      operationId: addTimelineEntry
+      summary: Add a timeline entry to an active emergency
+      tags: [Emergencies]
+      parameters:
+        - $ref: '#/components/parameters/EmergencyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimelineEntryRequest'
+      responses:
+        '201':
+          description: Timeline entry added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineEntry'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /emergencies/{emergency_id}/dispatch:
+    post:
+      operationId: dispatchRescueTeam
+      summary: Dispatch a rescue team to the emergency location
+      tags: [Dispatch]
+      parameters:
+        - $ref: '#/components/parameters/EmergencyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DispatchRequest'
+      responses:
+        '201':
+          description: Rescue team dispatched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DispatchRecord'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Emergency already has an active dispatch
+
+  /rescue-teams:
+    get:
+      operationId: listRescueTeams
+      summary: List available rescue teams and their current status
+      tags: [Dispatch]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, deployed, off-duty]
+        - name: region
+          in: query
+          schema:
+            type: string
+          description: Filter by operating region
+      responses:
+        '200':
+          description: List of rescue teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RescueTeamList'
+
+  /emergency-contacts/{guest_id}:
+    get:
+      operationId: getGuestEmergencyContacts
+      summary: Get emergency contacts for a guest
+      tags: [Contacts]
+      parameters:
+        - name: guest_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Guest emergency contact information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmergencyContactList'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      operationId: updateGuestEmergencyContacts
+      summary: Update emergency contacts for a guest
+      tags: [Contacts]
+      parameters:
+        - name: guest_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmergencyContactList'
+      responses:
+        '200':
+          description: Emergency contacts updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmergencyContactList'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    EmergencyId:
+      name: emergency_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    PageToken:
+      name: page_token
+      in: query
+      schema:
+        type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict with current resource state
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    EmergencyRequest:
+      type: object
+      required:
+        - guest_id
+        - reservation_id
+        - type
+        - severity
+        - location
+      properties:
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the guest triggering the SOS
+        reservation_id:
+          type: string
+          format: uuid
+          description: Active reservation associated with the emergency
+        type:
+          type: string
+          enum: [sos, medical, weather, wildlife, equipment_failure, lost_party]
+          description: Type of emergency
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+          description: Initial severity assessment
+        location:
+          $ref: '#/components/schemas/GeoLocation'
+        description:
+          type: string
+          maxLength: 2000
+          description: Free-text description of the emergency
+        reported_by:
+          type: string
+          description: Staff ID or 'guest' if self-reported
+
+    EmergencyUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [active, dispatched, resolved, cancelled]
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        resolution_notes:
+          type: string
+          maxLength: 5000
+        _rev:
+          type: string
+          description: Optimistic locking revision token
+
+    Emergency:
+      type: object
+      properties:
+        emergency_id:
+          type: string
+          format: uuid
+        guest_id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        severity:
+          type: string
+        status:
+          type: string
+        location:
+          $ref: '#/components/schemas/GeoLocation'
+        description:
+          type: string
+        reported_by:
+          type: string
+        dispatch_id:
+          type: string
+          format: uuid
+          nullable: true
+        resolution_notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        _rev:
+          type: string
+
+    EmergencyList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Emergency'
+        next_page_token:
+          type: string
+          nullable: true
+        total_count:
+          type: integer
+
+    GeoLocation:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        altitude_meters:
+          type: number
+          format: double
+          nullable: true
+        accuracy_meters:
+          type: number
+          format: double
+          nullable: true
+        source:
+          type: string
+          enum: [gps, wristband_nfc, manual, cell_tower]
+
+    TimelineEntry:
+      type: object
+      properties:
+        entry_id:
+          type: string
+          format: uuid
+        emergency_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          enum: [created, status_change, dispatch, update, escalation, resolution]
+        description:
+          type: string
+        actor:
+          type: string
+          description: User or system that created the entry
+        timestamp:
+          type: string
+          format: date-time
+
+    TimelineEntryRequest:
+      type: object
+      required:
+        - event_type
+        - description
+      properties:
+        event_type:
+          type: string
+          enum: [update, escalation]
+        description:
+          type: string
+          maxLength: 2000
+        actor:
+          type: string
+
+    TimelineList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimelineEntry'
+
+    DispatchRequest:
+      type: object
+      required:
+        - rescue_team_id
+      properties:
+        rescue_team_id:
+          type: string
+          format: uuid
+        priority:
+          type: string
+          enum: [normal, urgent, immediate]
+          default: urgent
+        notes:
+          type: string
+          maxLength: 2000
+
+    DispatchRecord:
+      type: object
+      properties:
+        dispatch_id:
+          type: string
+          format: uuid
+        emergency_id:
+          type: string
+          format: uuid
+        rescue_team_id:
+          type: string
+          format: uuid
+        priority:
+          type: string
+        status:
+          type: string
+          enum: [dispatched, en_route, on_scene, returning, completed]
+        dispatched_at:
+          type: string
+          format: date-time
+        eta_minutes:
+          type: integer
+          nullable: true
+
+    RescueTeamList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RescueTeam'
+
+    RescueTeam:
+      type: object
+      properties:
+        team_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        region:
+          type: string
+        status:
+          type: string
+          enum: [available, deployed, off-duty]
+        member_count:
+          type: integer
+        certifications:
+          type: array
+          items:
+            type: string
+        current_location:
+          $ref: '#/components/schemas/GeoLocation'
+
+    EmergencyContactList:
+      type: object
+      properties:
+        guest_id:
+          type: string
+          format: uuid
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyContact'
+
+    EmergencyContact:
+      type: object
+      properties:
+        name:
+          type: string
+        relationship:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+          nullable: true
+        is_primary:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true

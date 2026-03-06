@@ -155,6 +155,7 @@ nav:
     - microservices/index.md
     - svc-analytics: microservices/svc-analytics.md
     - svc-check-in: microservices/svc-check-in.md
+    - svc-emergency-response: microservices/svc-emergency-response.md
     - svc-gear-inventory: microservices/svc-gear-inventory.md
     - svc-guest-profiles: microservices/svc-guest-profiles.md
     - svc-guide-management: microservices/svc-guide-management.md
@@ -172,6 +173,7 @@ nav:
     - svc-transport-logistics: microservices/svc-transport-logistics.md
     - svc-trip-catalog: microservices/svc-trip-catalog.md
     - svc-weather: microservices/svc-weather.md
+    - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
   - Event Catalog: events/index.md
   - Actor Catalog: actors/index.md
   - Tags: tags.md

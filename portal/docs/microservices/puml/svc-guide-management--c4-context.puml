@@ -13,12 +13,14 @@ Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/application
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management Service", $link="/microservices/svc-guide-management/")
     ContainerDb(svc_guide_management_db, "PostgreSQL 15", "guides schema", "Primary data store", $link="/microservices/svc-guide-management/#data-store")
+    Container(svc_emergency_response, "svc-emergency-response", "Java / Spring Boot", "Safety", $link="/microservices/svc-emergency-response/#integration-context")
     Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety", $link="/microservices/svc-safety-compliance/#integration-context")
     Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
 }
 
 
 Rel(web_ops_dashboard, svc_guide_management, "Uses API", "HTTPS")
+Rel(svc_emergency_response, svc_guide_management, "2 calls", "HTTPS")
 Rel(svc_safety_compliance, svc_guide_management, "Get assigned guide", "HTTPS")
 Rel(svc_scheduling_orchestrator, svc_guide_management, "3 calls", "HTTPS")
 Rel(svc_guide_management, svc_guide_management_db, "Reads/Writes", "SQL/TCP")

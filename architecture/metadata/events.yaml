@@ -79,3 +79,29 @@ incident.reported:
   - svc-analytics
   domain: Safety
   summary: Published when a safety incident is reported
+emergency.triggered:
+  channel: novatrek.safety.emergency.triggered
+  producer: svc-emergency-response
+  trigger:
+    method: POST
+    path: /emergencies
+  consumers:
+  - svc-notifications
+  - svc-scheduling-orchestrator
+  - svc-safety-compliance
+  - svc-analytics
+  domain: Safety
+  summary: Published when a new emergency SOS is triggered by a guest or staff member
+wildlife_alert.issued:
+  channel: novatrek.safety.wildlife-alert.issued
+  producer: svc-wildlife-tracking
+  trigger:
+    method: POST
+    path: /alerts
+  consumers:
+  - svc-notifications
+  - svc-scheduling-orchestrator
+  - svc-trail-management
+  - svc-analytics
+  domain: Safety
+  summary: Published when a dangerous wildlife alert is issued for trails in a region

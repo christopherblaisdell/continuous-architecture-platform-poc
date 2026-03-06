@@ -45,6 +45,10 @@
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
+         <loc>https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-emergency-response/</loc>
+         <lastmod>2026-03-06</lastmod>
+    </url>
+    <url>
          <loc>https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-gear-inventory/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
@@ -110,6 +114,10 @@
     </url>
     <url>
          <loc>https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-weather/</loc>
+         <lastmod>2026-03-06</lastmod>
+    </url>
+    <url>
+         <loc>https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-wildlife-tracking/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>

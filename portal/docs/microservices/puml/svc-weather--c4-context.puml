@@ -17,6 +17,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     ContainerDb(svc_weather_db, "Valkey 8 + PostgreSQL 15", "weather schema", "Primary data store", $link="/microservices/svc-weather/#data-store")
     Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Operations", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
     Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Product Catalog", $link="/microservices/svc-trail-management/#integration-context")
+    Container(svc_wildlife_tracking, "svc-wildlife-tracking", "Java / Spring Boot", "Safety", $link="/microservices/svc-wildlife-tracking/#integration-context")
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
@@ -27,6 +28,7 @@ Rel(web_guest_portal, svc_weather, "Uses API", "HTTPS")
 Rel(web_ops_dashboard, svc_weather, "Uses API", "HTTPS")
 Rel(svc_scheduling_orchestrator, svc_weather, "Get forecast", "HTTPS")
 Rel(svc_trail_management, svc_weather, "Correlate weather data", "HTTPS")
+Rel(svc_wildlife_tracking, svc_weather, "Get current conditions at sighting location", "HTTPS")
 Rel(svc_weather, svc_weather_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_weather, svc_notifications, "Distribute severe weather alerts", "HTTPS")
 Rel(svc_weather, OpenWeather_API, "Fetch active alerts, Fetch current conditions", "HTTPS")

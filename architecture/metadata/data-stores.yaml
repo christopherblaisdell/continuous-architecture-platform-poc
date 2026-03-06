@@ -2109,3 +2109,382 @@ svc-weather:
       - name: idx_alert_dedup
         columns: external_id
         type: UNIQUE
+svc-emergency-response:
+  engine: PostgreSQL 15
+  schema: emergency
+  tables:
+  - emergencies
+  - emergency_timeline
+  - dispatch_records
+  - rescue_teams
+  - emergency_contacts
+  features:
+  - Indexes on guest_id and reservation_id for fast lookup
+  - Optimistic locking via _rev column on emergencies table
+  - Composite index on (status, severity) for active incident filtering
+  - TTL-based archival of resolved emergencies after 90 days
+  volume: ~50 emergencies/month (peak season)
+  connection_pool:
+    min: 5
+    max: 15
+    idle_timeout: 10min
+  backup: Continuous WAL archiving, daily base backup, 30-day PITR
+  table_details:
+    emergencies:
+      description: Primary emergency incident records triggered by SOS or staff report
+      columns:
+      - name: emergency_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL
+      - name: type
+        type: VARCHAR(30)
+        constraints: NOT NULL
+      - name: severity
+        type: VARCHAR(10)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'active'
+      - name: latitude
+        type: DOUBLE PRECISION
+        constraints: NOT NULL
+      - name: longitude
+        type: DOUBLE PRECISION
+        constraints: NOT NULL
+      - name: altitude_meters
+        type: DOUBLE PRECISION
+        constraints: 'NULL'
+      - name: description
+        type: TEXT
+        constraints: 'NULL'
+      - name: reported_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: dispatch_id
+        type: UUID
+        constraints: 'NULL'
+      - name: resolution_notes
+        type: TEXT
+        constraints: 'NULL'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: resolved_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: _rev
+        type: VARCHAR(36)
+        constraints: NOT NULL
+      indexes:
+      - name: idx_emergency_guest
+        columns: guest_id
+      - name: idx_emergency_reservation
+        columns: reservation_id
+      - name: idx_emergency_active
+        columns: status, severity
+      - name: idx_emergency_date
+        columns: created_at DESC
+    emergency_timeline:
+      description: Chronological event log for each emergency incident
+      columns:
+      - name: entry_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: emergency_id
+        type: UUID
+        constraints: NOT NULL, FK -> emergencies
+      - name: event_type
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: description
+        type: TEXT
+        constraints: NOT NULL
+      - name: actor
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: timestamp
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_timeline_emergency
+        columns: emergency_id, timestamp
+    dispatch_records:
+      description: Rescue team dispatch records linked to emergencies
+      columns:
+      - name: dispatch_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: emergency_id
+        type: UUID
+        constraints: NOT NULL, FK -> emergencies
+      - name: rescue_team_id
+        type: UUID
+        constraints: NOT NULL, FK -> rescue_teams
+      - name: priority
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'urgent'
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'dispatched'
+      - name: dispatched_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: eta_minutes
+        type: INTEGER
+        constraints: 'NULL'
+      indexes:
+      - name: idx_dispatch_emergency
+        columns: emergency_id
+      - name: idx_dispatch_team
+        columns: rescue_team_id
+    rescue_teams:
+      description: Registry of available rescue teams and their operational status
+      columns:
+      - name: team_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: region
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'available'
+      - name: member_count
+        type: INTEGER
+        constraints: NOT NULL
+      - name: certifications
+        type: TEXT[]
+        constraints: 'NULL'
+      indexes:
+      - name: idx_team_status
+        columns: status
+      - name: idx_team_region
+        columns: region
+    emergency_contacts:
+      description: Guest emergency contact information for SOS notifications
+      columns:
+      - name: contact_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: relationship
+        type: VARCHAR(50)
+        constraints: NOT NULL
+      - name: phone
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: email
+        type: VARCHAR(200)
+        constraints: 'NULL'
+      - name: is_primary
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT false
+      indexes:
+      - name: idx_contact_guest
+        columns: guest_id
+svc-wildlife-tracking:
+  engine: PostgreSQL 15
+  schema: wildlife
+  tables:
+  - sightings
+  - wildlife_alerts
+  - species
+  - habitat_zones
+  features:
+  - PostGIS extension for geospatial queries on sighting locations
+  - Indexes on species_id and trail_id for sighting lookups
+  - Optimistic locking via _rev on wildlife_alerts
+  - Automatic alert generation when dangerous species sighted near trails
+  volume: ~200 sightings/month peak season
+  connection_pool:
+    min: 3
+    max: 10
+    idle_timeout: 10min
+  backup: Daily base backup, 14-day PITR
+  table_details:
+    sightings:
+      description: Wildlife sighting reports from guides, guests, and automated sensors
+      columns:
+      - name: sighting_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: species_id
+        type: UUID
+        constraints: NOT NULL, FK -> species
+      - name: latitude
+        type: DOUBLE PRECISION
+        constraints: NOT NULL
+      - name: longitude
+        type: DOUBLE PRECISION
+        constraints: NOT NULL
+      - name: altitude_meters
+        type: DOUBLE PRECISION
+        constraints: 'NULL'
+      - name: reported_by
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: reporter_type
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'guide'
+      - name: observation_notes
+        type: TEXT
+        constraints: 'NULL'
+      - name: animal_count
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 1
+      - name: behavior
+        type: VARCHAR(20)
+        constraints: 'NULL'
+      - name: photo_url
+        type: TEXT
+        constraints: 'NULL'
+      - name: trail_id
+        type: UUID
+        constraints: 'NULL'
+      - name: alert_triggered
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT false
+      - name: reported_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_sighting_species
+        columns: species_id
+      - name: idx_sighting_trail
+        columns: trail_id
+      - name: idx_sighting_date
+        columns: reported_at DESC
+      - name: idx_sighting_location
+        columns: latitude, longitude
+        type: GIST (PostGIS)
+    wildlife_alerts:
+      description: Active wildlife alerts affecting trail corridors
+      columns:
+      - name: alert_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: species_id
+        type: UUID
+        constraints: NOT NULL, FK -> species
+      - name: sighting_id
+        type: UUID
+        constraints: NULL, FK -> sightings
+      - name: threat_level
+        type: VARCHAR(10)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'active'
+      - name: affected_trail_ids
+        type: UUID[]
+        constraints: NOT NULL
+      - name: radius_meters
+        type: DOUBLE PRECISION
+        constraints: 'NULL'
+      - name: recommended_action
+        type: VARCHAR(20)
+        constraints: 'NULL'
+      - name: notes
+        type: TEXT
+        constraints: 'NULL'
+      - name: issued_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: expires_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: cancelled_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: _rev
+        type: VARCHAR(36)
+        constraints: NOT NULL
+      indexes:
+      - name: idx_walert_status
+        columns: status
+      - name: idx_walert_species
+        columns: species_id
+      - name: idx_walert_issued
+        columns: issued_at DESC
+    species:
+      description: Master species registry with threat classifications
+      columns:
+      - name: species_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: common_name
+        type: VARCHAR(100)
+        constraints: NOT NULL, UNIQUE
+      - name: scientific_name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: threat_level
+        type: VARCHAR(10)
+        constraints: NOT NULL, DEFAULT 'none'
+      - name: category
+        type: VARCHAR(20)
+        constraints: NOT NULL
+      - name: description
+        type: TEXT
+        constraints: 'NULL'
+      - name: safety_guidance
+        type: TEXT
+        constraints: 'NULL'
+      - name: regions
+        type: TEXT[]
+        constraints: 'NULL'
+      - name: active_seasons
+        type: TEXT[]
+        constraints: 'NULL'
+      indexes:
+      - name: idx_species_threat
+        columns: threat_level
+      - name: idx_species_name
+        columns: common_name
+    habitat_zones:
+      description: Defined geographic zones with known wildlife populations
+      columns:
+      - name: zone_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: name
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: boundary
+        type: GEOMETRY(Polygon, 4326)
+        constraints: NOT NULL
+      - name: primary_species
+        type: UUID[]
+        constraints: 'NULL'
+      - name: activity_level
+        type: VARCHAR(10)
+        constraints: NOT NULL, DEFAULT 'low'
+      - name: season
+        type: VARCHAR(10)
+        constraints: 'NULL'
+      - name: overlapping_trail_ids
+        type: UUID[]
+        constraints: 'NULL'
+      indexes:
+      - name: idx_habitat_boundary
+        columns: boundary
+        type: GIST (PostGIS)
+      - name: idx_habitat_activity
+        columns: activity_level

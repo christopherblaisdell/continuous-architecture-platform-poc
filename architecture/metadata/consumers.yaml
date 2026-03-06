@@ -163,3 +163,13 @@ svc-analytics:
 svc-partner-integrations:
 - app: web-ops-dashboard
   screen: Partner Bookings
+svc-emergency-response:
+- app: web-ops-dashboard
+  screen: Safety Incident Board
+- app: app-guest-mobile
+  screen: Weather and Trail Alerts
+svc-wildlife-tracking:
+- app: web-ops-dashboard
+  screen: Safety Incident Board
+- app: app-guest-mobile
+  screen: Weather and Trail Alerts

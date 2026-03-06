@@ -566,3 +566,100 @@ svc-analytics:
     label: Snowflake Data Cloud
     action: Export aggregated metrics
     async: true
+svc-emergency-response:
+  POST /emergencies:
+  - alias: GP
+    label: Guest Profiles
+    action: Retrieve guest medical info and emergency contacts
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: Loc
+    label: Location Svc
+    action: Get last known guest GPS position
+    async: false
+    target:
+      method: GET
+      path: /locations/{device_id}
+  - alias: Guide
+    label: Guide Mgmt
+    action: Identify nearest on-duty guide
+    async: false
+    target:
+      method: GET
+      path: /guides/on-duty
+  - alias: Ntfy
+    label: Notifications
+    action: Send emergency alerts to staff and guests
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  - alias: Safety
+    label: Safety Compliance
+    action: Log emergency as safety incident
+    async: true
+    target:
+      method: POST
+      path: /incidents
+  POST /emergencies/{emergency_id}/dispatch:
+  - alias: Guide
+    label: Guide Mgmt
+    action: Check guide availability for rescue
+    async: false
+    target:
+      method: GET
+      path: /guides/on-duty
+  - alias: Ntfy
+    label: Notifications
+    action: Notify dispatched rescue team
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-wildlife-tracking:
+  POST /sightings:
+  - alias: Trail
+    label: Trail Mgmt
+    action: Identify nearest trails to sighting location
+    async: false
+    target:
+      method: GET
+      path: /trails
+  - alias: Wthr
+    label: Weather Svc
+    action: Get current conditions at sighting location
+    async: false
+    target:
+      method: GET
+      path: /weather/current
+  POST /alerts:
+  - alias: Trail
+    label: Trail Mgmt
+    action: Recommend trail closure for affected corridors
+    async: false
+    target:
+      method: GET
+      path: /trails
+  - alias: Ntfy
+    label: Notifications
+    action: Alert operations staff and active guides
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  - alias: Safety
+    label: Safety Compliance
+    action: Log wildlife alert as compliance record
+    async: true
+    target:
+      method: POST
+      path: /incidents
+  - alias: Sched
+    label: Scheduling Orchestrator
+    action: Check for affected scheduled trips
+    async: false
+    target:
+      method: GET
+      path: /daily-schedules

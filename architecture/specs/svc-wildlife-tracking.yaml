@@ -1,0 +1,645 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Wildlife Tracking Service
+  description: |
+    Monitors wildlife activity near NovaTrek adventure trails, processes
+    sighting reports from guides and guests, issues wildlife alerts for
+    trail closures, and provides habitat data for trip planning. Integrates
+    with trail management for corridor safety and safety compliance for
+    regulatory reporting.
+  version: 1.0.0
+  contact:
+    name: NovaTrek Safety and Compliance Team
+    email: wildlife@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/wildlife/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /sightings:
+    get:
+      operationId: listSightings
+      summary: List wildlife sighting reports with filters
+      tags: [Sightings]
+      parameters:
+        - name: species
+          in: query
+          schema:
+            type: string
+          description: Filter by species name
+        - name: threat_level
+          in: query
+          schema:
+            type: string
+            enum: [none, low, moderate, high, extreme]
+        - name: trail_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter sightings near a specific trail
+        - name: since
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Only return sightings after this timestamp
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of wildlife sightings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SightingList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: reportSighting
+      summary: Report a new wildlife sighting
+      description: |
+        Records a wildlife sighting from a guide or guest. If the species is
+        classified as dangerous and the sighting is near an active trail,
+        automatically triggers a wildlife alert and notifies trail management.
+      tags: [Sightings]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SightingRequest'
+      responses:
+        '201':
+          description: Sighting recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sighting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /sightings/{sighting_id}:
+    get:
+      operationId: getSighting
+      summary: Get details of a specific wildlife sighting
+      tags: [Sightings]
+      parameters:
+        - $ref: '#/components/parameters/SightingId'
+      responses:
+        '200':
+          description: Sighting details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sighting'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /alerts:
+    get:
+      operationId: listWildlifeAlerts
+      summary: List active wildlife alerts
+      tags: [Alerts]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, expired, cancelled]
+        - name: trail_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: threat_level
+          in: query
+          schema:
+            type: string
+            enum: [low, moderate, high, extreme]
+      responses:
+        '200':
+          description: List of wildlife alerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertList'
+
+    post:
+      operationId: issueWildlifeAlert
+      summary: Issue a wildlife alert for a trail or region
+      description: |
+        Creates a new wildlife alert that may trigger trail closures,
+        schedule modifications, and guest notifications. High and extreme
+        threat alerts automatically recommend trail closure to svc-trail-management.
+      tags: [Alerts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertRequest'
+      responses:
+        '201':
+          description: Wildlife alert issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WildlifeAlert'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /alerts/{alert_id}:
+    get:
+      operationId: getWildlifeAlert
+      summary: Get wildlife alert details
+      tags: [Alerts]
+      parameters:
+        - $ref: '#/components/parameters/AlertId'
+      responses:
+        '200':
+          description: Alert details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WildlifeAlert'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      operationId: updateWildlifeAlert
+      summary: Update alert status or details
+      tags: [Alerts]
+      parameters:
+        - $ref: '#/components/parameters/AlertId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertUpdate'
+      responses:
+        '200':
+          description: Alert updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WildlifeAlert'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /species:
+    get:
+      operationId: listSpecies
+      summary: List known species in the wildlife database
+      tags: [Species]
+      parameters:
+        - name: threat_level
+          in: query
+          schema:
+            type: string
+            enum: [none, low, moderate, high, extreme]
+        - name: region
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tracked species
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpeciesList'
+
+  /species/{species_id}:
+    get:
+      operationId: getSpecies
+      summary: Get species details and behavioral data
+      tags: [Species]
+      parameters:
+        - name: species_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Species details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Species'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /habitat-zones:
+    get:
+      operationId: listHabitatZones
+      summary: List habitat zones with activity levels
+      tags: [Habitat]
+      parameters:
+        - name: species_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: trail_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Habitat zone data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitatZoneList'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    SightingId:
+      name: sighting_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    AlertId:
+      name: alert_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    PageToken:
+      name: page_token
+      in: query
+      schema:
+        type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict with current resource state
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    SightingRequest:
+      type: object
+      required:
+        - species_id
+        - location
+        - reported_by
+      properties:
+        species_id:
+          type: string
+          format: uuid
+        location:
+          $ref: '#/components/schemas/GeoLocation'
+        reported_by:
+          type: string
+          description: Guide ID or guest ID who reported the sighting
+        reporter_type:
+          type: string
+          enum: [guide, guest, ranger, automated_sensor]
+          default: guide
+        observation_notes:
+          type: string
+          maxLength: 2000
+        animal_count:
+          type: integer
+          minimum: 1
+          default: 1
+        behavior:
+          type: string
+          enum: [resting, feeding, moving, aggressive, with_young, unknown]
+        photo_url:
+          type: string
+          format: uri
+          nullable: true
+        trail_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Nearest trail if known
+
+    Sighting:
+      type: object
+      properties:
+        sighting_id:
+          type: string
+          format: uuid
+        species_id:
+          type: string
+          format: uuid
+        species_name:
+          type: string
+        threat_level:
+          type: string
+        location:
+          $ref: '#/components/schemas/GeoLocation'
+        reported_by:
+          type: string
+        reporter_type:
+          type: string
+        observation_notes:
+          type: string
+          nullable: true
+        animal_count:
+          type: integer
+        behavior:
+          type: string
+        photo_url:
+          type: string
+          nullable: true
+        trail_id:
+          type: string
+          format: uuid
+          nullable: true
+        alert_triggered:
+          type: boolean
+          description: Whether this sighting triggered an automatic wildlife alert
+        reported_at:
+          type: string
+          format: date-time
+
+    SightingList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sighting'
+        next_page_token:
+          type: string
+          nullable: true
+        total_count:
+          type: integer
+
+    AlertRequest:
+      type: object
+      required:
+        - species_id
+        - threat_level
+        - affected_trail_ids
+      properties:
+        species_id:
+          type: string
+          format: uuid
+        sighting_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Originating sighting, if alert was triggered by a report
+        threat_level:
+          type: string
+          enum: [low, moderate, high, extreme]
+        affected_trail_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+        radius_meters:
+          type: number
+          format: double
+          description: Alert radius around the sighting location
+        recommended_action:
+          type: string
+          enum: [monitor, reroute, close_trail, evacuate]
+        expires_at:
+          type: string
+          format: date-time
+          description: Auto-expiry if not manually cancelled
+        notes:
+          type: string
+          maxLength: 2000
+
+    AlertUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [active, expired, cancelled]
+        threat_level:
+          type: string
+          enum: [low, moderate, high, extreme]
+        recommended_action:
+          type: string
+          enum: [monitor, reroute, close_trail, evacuate]
+        notes:
+          type: string
+        _rev:
+          type: string
+          description: Optimistic locking revision
+
+    WildlifeAlert:
+      type: object
+      properties:
+        alert_id:
+          type: string
+          format: uuid
+        species_id:
+          type: string
+          format: uuid
+        species_name:
+          type: string
+        sighting_id:
+          type: string
+          format: uuid
+          nullable: true
+        threat_level:
+          type: string
+        status:
+          type: string
+        affected_trail_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        radius_meters:
+          type: number
+        recommended_action:
+          type: string
+        notes:
+          type: string
+          nullable: true
+        issued_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        _rev:
+          type: string
+
+    AlertList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WildlifeAlert'
+        total_count:
+          type: integer
+
+    Species:
+      type: object
+      properties:
+        species_id:
+          type: string
+          format: uuid
+        common_name:
+          type: string
+        scientific_name:
+          type: string
+        threat_level:
+          type: string
+          enum: [none, low, moderate, high, extreme]
+        category:
+          type: string
+          enum: [mammal, bird, reptile, amphibian, insect, fish]
+        description:
+          type: string
+        safety_guidance:
+          type: string
+          description: What to do if encountered
+        regions:
+          type: array
+          items:
+            type: string
+        active_seasons:
+          type: array
+          items:
+            type: string
+            enum: [spring, summer, fall, winter]
+        typical_habitats:
+          type: array
+          items:
+            type: string
+
+    SpeciesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Species'
+
+    HabitatZoneList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitatZone'
+
+    HabitatZone:
+      type: object
+      properties:
+        zone_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        boundary:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeoLocation'
+          description: Polygon boundary points
+        primary_species:
+          type: array
+          items:
+            type: string
+        activity_level:
+          type: string
+          enum: [dormant, low, moderate, high]
+        season:
+          type: string
+        overlapping_trail_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+
+    GeoLocation:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        altitude_meters:
+          type: number
+          format: double
+          nullable: true
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true

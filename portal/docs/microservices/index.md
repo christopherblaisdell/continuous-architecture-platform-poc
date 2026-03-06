@@ -11,7 +11,7 @@ tags:
 
 <p class="subtitle">Deep-Dive Architecture Documentation for Every NovaTrek Service</p>
 
-<span class="version-badge">19 Services &middot; 139 Endpoints</span>
+<span class="version-badge">21 Services &middot; 159 Endpoints</span>
 
 </div>
 
@@ -55,7 +55,9 @@ Each microservice page provides **PlantUML sequence diagrams** for every API end
 
 | Service | Version | Endpoints | Page |
 |---------|---------|-----------|------|
+| **NovaTrek Emergency Response Service**<br><small>`svc-emergency-response`</small> | `1.0.0` | 10 endpoints | [:material-arrow-right: Open](svc-emergency-response.md){ .md-button } |
 | **NovaTrek Safety and Compliance Service**<br><small>`svc-safety-compliance`</small> | `1.0.0` | 8 endpoints | [:material-arrow-right: Open](svc-safety-compliance.md){ .md-button } |
+| **NovaTrek Wildlife Tracking Service**<br><small>`svc-wildlife-tracking`</small> | `1.0.0` | 10 endpoints | [:material-arrow-right: Open](svc-wildlife-tracking.md){ .md-button } |
 
 ## Logistics
 
