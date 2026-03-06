@@ -18,6 +18,63 @@ L2 capabilities map to services. L3 capabilities emerge from solution designs.
 | Not Implemented | 5 | 14.7% |
 | **Total L2 Capabilities** | **34** | |
 
+## Capability Health Dashboard
+
+Health metrics derived from the capability changelog. Staleness measures
+days since last solution touched a capability. Churn measures how frequently
+a capability is modified by solutions.
+
+### Health Summary
+
+| Metric | Value |
+|--------|-------|
+| Active (last 90 days) | 0 |
+| Aging (90-180 days) | 0 |
+| Stale (>180 days) | 6 |
+| Untouched (no solutions) | 28 |
+| High churn (4+ solutions) | 0 |
+| Emergent L3 capabilities | 10 |
+| Architecture decisions | 18 |
+
+### Per-Capability Health
+
+| Capability | Status | Solutions | Last Touched | Staleness | Churn | L3s | ADRs |
+|-----------|--------|-----------|-------------|-----------|-------|-----|------|
+| CAP-1.1 Guest Identity and Profile Management | IMPLEMENTED | 1 | 2025-02-12 | STALE | LOW | 1 | 4 |
+| CAP-1.2 Adventure Discovery and Browsing | IMPLEMENTED | 1 | 2025-02-10 | STALE | LOW | 1 | 2 |
+| CAP-1.3 Reservation Management | IMPLEMENTED | 1 | 2025-02-12 | STALE | LOW | 0 | 4 |
+| CAP-1.4 Loyalty and Rewards | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-1.5 Guest Communications | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-1.6 Trip Media and Memories | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-1.7 Reviews and Feedback | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-1.8 Personalized Recommendations | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 3 | 2025-02-12 | STALE | MODERATE | 5 | 6 |
+| CAP-2.2 Schedule Planning and Optimization | IMPLEMENTED | 1 | 2025-02-05 | STALE | LOW | 2 | 2 |
+| CAP-2.3 Guide Assignment and Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-2.4 Trail Operations | IMPLEMENTED | 1 | 2025-02-01 | STALE | LOW | 1 | 0 |
+| CAP-2.5 Transport Coordination | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-3.1 Waiver and Compliance Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-3.2 Incident Reporting and Response | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-3.3 Emergency Response Coordination | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-3.4 Wildlife and Environmental Monitoring | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-3.5 Weather Monitoring and Alerting | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-4.1 Gear Inventory and Tracking | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-4.2 Procurement and Vendor Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-4.3 Location and Capacity Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-4.4 Vehicle Fleet Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-4.5 Facility and Venue Management | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-5.1 Payment Processing | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-5.2 Trip Pricing and Yield Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-5.3 Analytics and Business Intelligence | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-5.4 Financial Reporting and Reconciliation | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-5.5 Refund and Dispute Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-6.1 Third-Party Booking Channels | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-6.2 Affiliate and Commission Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-6.3 Channel Rate Parity Management | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-7.1 Notification Delivery (Multi-Channel) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-7.2 Geospatial and Location Services | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-7.3 Search and Discovery Engine | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+
 ## Domain Overview
 
 | Domain | L2 Capabilities | Implemented | Partial | Gaps |

@@ -32,6 +32,81 @@ def status_badge(status):
     return mapping.get(status, status.upper())
 
 
+def compute_health_metrics(changelog_by_cap, caps_data):
+    """Compute health metrics for each capability and overall."""
+    from datetime import datetime, date as date_type
+
+    today = date_type.today()
+    metrics = {}
+
+    for domain in caps_data.get("domains", []):
+        for cap in domain.get("capabilities", []):
+            cap_id = cap["id"]
+            timeline = changelog_by_cap.get(cap_id, [])
+
+            dates = []
+            for entry in timeline:
+                d = entry.get("date", "")
+                if d:
+                    try:
+                        dates.append(datetime.strptime(str(d), "%Y-%m-%d").date())
+                    except ValueError:
+                        pass
+
+            dates.sort()
+            solution_count = len(timeline)
+            first_touched = dates[0] if dates else None
+            last_touched = dates[-1] if dates else None
+            days_since_last = (today - last_touched).days if last_touched else None
+
+            # Staleness: >180 days since last change = stale, >90 = aging
+            if days_since_last is None:
+                staleness = "untouched"
+            elif days_since_last > 180:
+                staleness = "stale"
+            elif days_since_last > 90:
+                staleness = "aging"
+            else:
+                staleness = "active"
+
+            # Churn: >3 solutions in timeline = high churn
+            if solution_count >= 4:
+                churn = "high"
+            elif solution_count >= 2:
+                churn = "moderate"
+            elif solution_count == 1:
+                churn = "low"
+            else:
+                churn = "none"
+
+            l3_count = sum(len(e.get("l3_capabilities", [])) for e in timeline)
+            decision_count = len(set(d for e in timeline for d in e.get("decisions", [])))
+
+            metrics[cap_id] = {
+                "solution_count": solution_count,
+                "first_touched": first_touched,
+                "last_touched": last_touched,
+                "days_since_last": days_since_last,
+                "staleness": staleness,
+                "churn": churn,
+                "l3_count": l3_count,
+                "decision_count": decision_count,
+                "status": cap.get("status", ""),
+            }
+
+    return metrics
+
+
+def staleness_label(staleness):
+    """Return display label for staleness."""
+    return {
+        "active": "ACTIVE",
+        "aging": "AGING",
+        "stale": "STALE",
+        "untouched": "UNTOUCHED",
+    }.get(staleness, staleness.upper())
+
+
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -97,6 +172,56 @@ def main():
     lines.append(f"| Partial | {partial} | {round(partial / total_l2 * 100, 1) if total_l2 else 0}% |")
     lines.append(f"| Not Implemented | {not_impl} | {round(not_impl / total_l2 * 100, 1) if total_l2 else 0}% |")
     lines.append(f"| **Total L2 Capabilities** | **{total_l2}** | |")
+    lines.append("")
+
+    # Health metrics
+    health = compute_health_metrics(changelog_by_cap, caps_data)
+
+    active_count = sum(1 for m in health.values() if m["staleness"] == "active")
+    aging_count = sum(1 for m in health.values() if m["staleness"] == "aging")
+    stale_count = sum(1 for m in health.values() if m["staleness"] == "stale")
+    untouched_count = sum(1 for m in health.values() if m["staleness"] == "untouched")
+    high_churn = sum(1 for m in health.values() if m["churn"] == "high")
+    total_l3 = sum(m["l3_count"] for m in health.values())
+    total_decisions = sum(m["decision_count"] for m in health.values())
+
+    lines.append("## Capability Health Dashboard")
+    lines.append("")
+    lines.append("Health metrics derived from the capability changelog. Staleness measures")
+    lines.append("days since last solution touched a capability. Churn measures how frequently")
+    lines.append("a capability is modified by solutions.")
+    lines.append("")
+    lines.append("### Health Summary")
+    lines.append("")
+    lines.append("| Metric | Value |")
+    lines.append("|--------|-------|")
+    lines.append(f"| Active (last 90 days) | {active_count} |")
+    lines.append(f"| Aging (90-180 days) | {aging_count} |")
+    lines.append(f"| Stale (>180 days) | {stale_count} |")
+    lines.append(f"| Untouched (no solutions) | {untouched_count} |")
+    lines.append(f"| High churn (4+ solutions) | {high_churn} |")
+    lines.append(f"| Emergent L3 capabilities | {total_l3} |")
+    lines.append(f"| Architecture decisions | {total_decisions} |")
+    lines.append("")
+
+    # Per-capability health table
+    lines.append("### Per-Capability Health")
+    lines.append("")
+    lines.append("| Capability | Status | Solutions | Last Touched | Staleness | Churn | L3s | ADRs |")
+    lines.append("|-----------|--------|-----------|-------------|-----------|-------|-----|------|")
+    for domain in caps_data.get("domains", []):
+        for cap in domain.get("capabilities", []):
+            c_id = cap["id"]
+            c_name = cap["name"]
+            m = health.get(c_id, {})
+            status = status_badge(cap.get("status", ""))
+            sol_count = m.get("solution_count", 0)
+            last = str(m.get("last_touched", "—")) if m.get("last_touched") else "—"
+            stale_lbl = staleness_label(m.get("staleness", "untouched"))
+            churn_lbl = m.get("churn", "none").upper()
+            l3 = m.get("l3_count", 0)
+            adrs = m.get("decision_count", 0)
+            lines.append(f"| {c_id} {c_name} | {status} | {sol_count} | {last} | {stale_lbl} | {churn_lbl} | {l3} | {adrs} |")
     lines.append("")
 
     # Domain overview table
