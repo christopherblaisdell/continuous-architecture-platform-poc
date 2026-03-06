@@ -212,6 +212,29 @@ Query tickets from `architecture/metadata/tickets.yaml`:
 | `architecture/metadata/capability-changelog.yaml` | Append-only log of capability changes per solution |
 | `architecture/metadata/tickets.yaml` | Ticket registry with capability mappings |
 
+### Prior-Art Discovery (REQUIRED before new solutions)
+
+Before creating a new solution design, search for prior art:
+
+1. **Check capability history**: `python3 scripts/ticket-client.py --list --capability CAP-X.Y` to find tickets that touched the same capabilities
+2. **Review existing solutions**: Read the capability mapping in `architecture/solutions/_NTK-*/3.solution/c.capabilities/capabilities.md` for related work
+3. **Check the changelog**: Review `architecture/metadata/capability-changelog.yaml` for L3 capabilities that may overlap
+4. **Reference prior decisions**: Search `decisions/` for ADRs that constrain the design space
+5. **Document findings**: Reference prior solutions in the new solution's master document under a "Prior Art" or "Related Solutions" section
+
+### Portal Generators
+
+When solutions, capabilities, or tickets are added or modified, regenerate the portal pages:
+
+| Generator | Command | Output |
+|-----------|---------|--------|
+| Solution pages | `python3 portal/scripts/generate-solution-pages.py` | `portal/docs/solutions/` |
+| Capability pages | `python3 portal/scripts/generate-capability-pages.py` | `portal/docs/capabilities/` |
+| Ticket pages | `python3 portal/scripts/generate-ticket-pages.py` | `portal/docs/tickets/` |
+| All generators | `bash portal/scripts/generate-all.sh` | Full portal rebuild |
+
+After modifying metadata YAML files, always run `bash portal/scripts/generate-all.sh` to regenerate all portal pages before committing.
+
 ---
 
 ## Architecture Standards
