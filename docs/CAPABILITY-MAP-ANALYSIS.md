@@ -369,10 +369,281 @@ Legend: [G] = Implemented   [A] = Partial   [R] = Not Implemented
 
 ---
 
-## 7. Next Steps
+## 7. Capability Rollup — Making Ticket Solutions Grow the Architecture
 
-1. **Immediate**: Create `architecture/metadata/capabilities.yaml` with the 34 capabilities defined in Section 2
-2. **Short term**: Write the capability page generator and wire it into `generate-all.sh`
-3. **Short term**: Register a custom domain and enable the Bicep custom domain parameter
-4. **Medium term**: Implement the 6 missing capabilities as new services or extensions to existing services (requires new OpenAPI specs, metadata entries, and ADRs for each)
-5. **Ongoing**: Maintain the capability map as the service portfolio evolves — the generator ensures it stays current with metadata changes
+### 7.1 The Problem: Architecture Amnesia
+
+Today, when an architect solutions a ticket (e.g., NTK-10003 "Unregistered Guest Self-Check-In"), the work produces valuable artifacts:
+
+- Impact assessments per service (`i.impacts/impact.1/impact.1.md` for svc-check-in, etc.)
+- Architecture decisions in MADR format (`d.decisions/decisions.md`)
+- User stories with acceptance criteria
+- PlantUML sequence diagrams showing new flows
+
+But these artifacts are **orphaned once the ticket closes**. They live in a ticket folder, disconnected from the capability map, the service pages, and the architecture metadata. The next architect who picks up a related ticket starts from scratch — reading old specs, re-discovering service boundaries, re-learning the same integration patterns. The architecture does not accumulate intelligence. It resets.
+
+The current flow is:
+
+```
+Ticket → Solution Design → Impact Files → (manual) → Update metadata YAML → (manual) → Rebuild portal
+                                         ↑
+                                    This step gets skipped
+```
+
+The metadata YAML files (`cross-service-calls.yaml`, `data-stores.yaml`, `microservices.yaml`) are the source of truth for the portal, but nothing in the ticket workflow forces or even reminds the architect to update them. Impact files describe service changes in rich detail, but that detail evaporates when the ticket closes.
+
+**What is missing**: A declared, traceable link from ticket → capability, and a workflow that makes capability rollup a natural byproduct of solutioning — not an afterthought.
+
+### 7.2 The Rollup Model
+
+The goal is a **three-layer traceability chain**:
+
+```
+L1 Capability
+  └── L2 Capability
+        └── L3 Capability (ticket-scoped feature / user story)
+              └── Service Impact (API changes, schema changes, new events)
+```
+
+Today, ticket solutions produce the bottom layer (service impacts) and sometimes the third layer (user stories). But there is no declared link upward to L2 and L1 capabilities. Adding that link requires two things:
+
+1. **A capability reference in every ticket solution** (the upward link)
+2. **A capability changelog that accumulates over time** (the memory)
+
+### 7.3 Ticket-to-Capability Declaration
+
+Add a new metadata section to every solution design master document. This declares which capabilities the ticket touches and how:
+
+**In the solution design header table:**
+
+```markdown
+| Field | Value |
+|-------|-------|
+| Version | 1.0 |
+| Status | DRAFT |
+| Ticket | NTK-10003 |
+| Capabilities | CAP-1.1 (extends), CAP-2.1 (extends), CAP-1.3 (depends) |
+```
+
+**And a new file in the solution folder: `3.solution/c.capabilities/capabilities.md`:**
+
+```markdown
+# Capability Impact
+
+## Capabilities Modified
+
+| Capability ID | Capability Name | Impact Type | Description |
+|--------------|----------------|-------------|-------------|
+| CAP-2.1 | Day-of-Adventure Check-In | EXTENDS | Adds reservation-based lookup flow for unregistered guests — new orchestration path in check-in lifecycle |
+| CAP-1.1 | Guest Identity and Profile Management | EXTENDS | Introduces temporary guest profile creation with 90-day TTL and merge-on-return semantics |
+
+## Capabilities Depended Upon (Read-Only)
+
+| Capability ID | Capability Name | Usage |
+|--------------|----------------|-------|
+| CAP-1.3 | Reservation Management | Reads reservation data to verify guest identity during kiosk check-in |
+| CAP-3.1 | Waiver and Compliance Management | Reads waiver status to determine safety compliance before check-in completion |
+
+## Proposed New L3 Capabilities
+
+| Parent | L3 ID | L3 Name | Description |
+|--------|-------|---------|-------------|
+| CAP-2.1 | CAP-2.1.4 | Reservation-Based Guest Lookup | Kiosk lookup flow using confirmation code, last name, adventure date, and party size |
+| CAP-1.1 | CAP-1.1.3 | Temporary Guest Profile Lifecycle | Create, merge, and expire temporary profiles for walk-in or unregistered guests |
+```
+
+**Impact types:**
+- `EXTENDS` — Adds new behavior to an existing capability (new endpoint, new flow, new data)
+- `MODIFIES` — Changes existing behavior of a capability (schema change, logic change)
+- `CREATES` — Introduces a brand new L2 or L3 capability
+- `DEPENDS` — Uses the capability read-only (no changes, but documents the dependency)
+- `DEPRECATES` — Marks a capability or sub-capability as being phased out
+
+### 7.4 Capability Changelog (Architecture Memory)
+
+Create `architecture/metadata/capability-changelog.yaml` — an append-only log that accumulates every capability-touching change:
+
+```yaml
+changelog:
+  - ticket: NTK-10003
+    date: 2026-02-20
+    status: APPROVED
+    capabilities:
+      - id: CAP-2.1
+        impact: extends
+        summary: "Reservation-based kiosk lookup for unregistered guests"
+        l3_added:
+          - id: CAP-2.1.4
+            name: "Reservation-Based Guest Lookup"
+      - id: CAP-1.1
+        impact: extends
+        summary: "Temporary guest profile with 90-day TTL"
+        l3_added:
+          - id: CAP-1.1.3
+            name: "Temporary Guest Profile Lifecycle"
+    services_impacted:
+      - svc-check-in
+      - svc-guest-profiles
+      - svc-safety-compliance
+      - svc-reservations
+    decisions:
+      - ADR-006-orchestrator-pattern-checkin
+      - ADR-007-four-field-identity-verification
+      - ADR-008-temporary-guest-profile
+
+  - ticket: NTK-10005
+    date: 2026-03-03
+    status: DRAFT
+    capabilities:
+      - id: CAP-2.1
+        impact: modifies
+        summary: "RFID wristband tag field added to check-in schema"
+    services_impacted:
+      - svc-check-in
+    decisions: []
+```
+
+This file is the **architecture memory**. It answers questions that are currently unanswerable:
+
+- "What has changed about our check-in capability in the last 6 months?" — Filter by `CAP-2.1`
+- "Which tickets drove changes to svc-guest-profiles?" — Filter by `services_impacted`
+- "How has our Guest Experience domain evolved?" — Filter by `CAP-1.*`
+- "Which capabilities have the most churn?" — Count entries per capability ID
+- "What L3 capabilities have emerged from ticket work?" — Aggregate `l3_added` entries
+
+### 7.5 Capability Evolution in the Portal
+
+The capability page generator (Section 4.3) should consume the changelog to produce:
+
+1. **Capability Timeline** — Per-capability page showing when changes occurred, which tickets drove them, and what L3 capabilities emerged:
+
+   ```
+   ## CAP-2.1: Day-of-Adventure Check-In
+
+   ### Evolution Timeline
+
+   | Date | Ticket | Change | L3 Added |
+   |------|--------|--------|----------|
+   | 2026-02-20 | NTK-10003 | Reservation-based kiosk lookup | CAP-2.1.4 |
+   | 2026-03-03 | NTK-10005 | RFID wristband tag field | — |
+   ```
+
+2. **Service-to-Capability Matrix** — Auto-generated from the changelog, showing which services realize which capabilities and how they evolved over time
+
+3. **Capability Health Indicators** — Capabilities with high churn might indicate poor initial design. Capabilities with zero tickets might be stale or over-engineered.
+
+4. **Decision Traceability** — Each capability page links to all ADRs that shaped it, and each ADR links back to the capabilities it affected
+
+### 7.6 The Rollup Workflow
+
+Here is how the rollup works in practice during ticket solutioning:
+
+```
+1. Architect picks up ticket
+   │
+2. Reads ticket requirements (1.requirements/)
+   │
+3. Opens capabilities.yaml — finds relevant L1/L2 capabilities
+   │
+4. Creates 3.solution/c.capabilities/capabilities.md
+   │  ├── Declares which capabilities are EXTENDED/MODIFIED/CREATED
+   │  ├── Identifies L3 capabilities being added
+   │  └── Documents capability dependencies (read-only usage)
+   │
+5. Writes impact files per service (3.solution/i.impacts/)
+   │  └── Each impact references the capability it serves
+   │
+6. Solution is approved
+   │
+7. Architect updates architecture metadata:
+   │  ├── capabilities.yaml — adds new L3 entries if any
+   │  ├── capability-changelog.yaml — appends ticket entry
+   │  ├── cross-service-calls.yaml — if new integrations
+   │  ├── microservices.yaml — if new endpoints
+   │  └── events.yaml — if new domain events
+   │
+8. Portal generator runs (CI or manual)
+   │  ├── Capability pages regenerated with timeline
+   │  ├── Service pages show capability associations
+   │  └── Capability map heatmap reflects current state
+   │
+9. Architecture is now richer than before the ticket
+```
+
+**Step 7 is the critical difference.** Today it is optional and often skipped. In this model, capability rollup is an explicit deliverable of every solution design — the architect cannot mark a solution as APPROVED without the capability declaration and changelog entry.
+
+### 7.7 AI-Assisted Rollup (Platform Automation)
+
+The AI agent (Copilot or Roo Code) can automate parts of this rollup during solutioning:
+
+1. **Auto-suggest capabilities**: When the agent reads a ticket, it can match keywords and affected services against `capabilities.yaml` to pre-populate `c.capabilities/capabilities.md`
+
+2. **Changelog generation**: After the solution is approved, the agent can auto-generate the `capability-changelog.yaml` entry from the capabilities declaration and impact files
+
+3. **Metadata diff**: The agent can compare the solution's impact files against the current metadata YAML files and generate a "metadata update PR" showing exactly what changed:
+   - New endpoint in `cross-service-calls.yaml`
+   - New table in `data-stores.yaml`
+   - New L3 capability in `capabilities.yaml`
+
+4. **Staleness detection**: The agent can flag capabilities that have not been touched by any ticket in a configurable period, suggesting they may need review or retirement
+
+5. **Conflict detection**: If two in-flight tickets both declare `MODIFIES CAP-2.1`, the agent can surface the potential conflict before either solution is approved
+
+### 7.8 L3 Capabilities — The Emergent Layer
+
+L1 and L2 capabilities are defined top-down in the capability map (Section 2). They are stable and business-aligned. **L3 capabilities emerge bottom-up from ticket work.** They are the specific features and flows that realize the higher-level capabilities.
+
+Over time, the L3 layer becomes the most valuable part of the capability map because it captures the **actual architecture** — not what was planned, but what was built:
+
+```
+CAP-2.1 Day-of-Adventure Check-In (L2 — planned)
+  ├── CAP-2.1.1 Standard Guest Check-In (L3 — baseline)
+  ├── CAP-2.1.2 Group Check-In (L3 — NTK-10001)
+  ├── CAP-2.1.3 Guide-Assisted Check-In (L3 — NTK-10002)
+  ├── CAP-2.1.4 Reservation-Based Guest Lookup (L3 — NTK-10003)
+  └── CAP-2.1.5 RFID Wristband Assignment (L3 — NTK-10005)
+```
+
+Each L3 links to:
+- The ticket that created it
+- The services that implement it
+- The ADRs that shaped its design
+- The user stories that define its acceptance criteria
+
+This is how architecture becomes a **living, growing record** instead of a point-in-time snapshot that immediately starts decaying.
+
+### 7.9 Preventing Architecture Amnesia — Checklist
+
+Add this to the architecture review checklist (copilot-instructions.md and solution design templates):
+
+- [ ] Capability IDs declared in solution design header (`Capabilities` field)
+- [ ] `3.solution/c.capabilities/capabilities.md` created with impact types
+- [ ] New L3 capabilities identified and named
+- [ ] `capability-changelog.yaml` entry drafted
+- [ ] Existing metadata YAML files updated to reflect new endpoints, schemas, or integrations
+- [ ] Portal regenerated to verify capability pages reflect the changes
+
+### 7.10 Rollup Summary
+
+| Layer | Source | Updated By | Frequency |
+|-------|--------|-----------|-----------|
+| L1 Capability | `capabilities.yaml` | Business/architecture leadership | Rarely (annual strategy) |
+| L2 Capability | `capabilities.yaml` | Solution architects | Occasionally (new domain area) |
+| L3 Capability | `capabilities.yaml` + `capability-changelog.yaml` | Ticket solutioning | Every ticket |
+| Service Impact | `cross-service-calls.yaml`, `data-stores.yaml`, etc. | Ticket solutioning | Every ticket |
+| Portal View | Generated from all of the above | CI pipeline | Every push |
+
+The key insight: **L1 and L2 are top-down and stable. L3 is bottom-up and emergent. The changelog is the bridge that makes bottom-up work accumulate into top-down visibility.**
+
+---
+
+## 8. Next Steps
+
+1. **Immediate**: Create `architecture/metadata/capabilities.yaml` with the 34 L2 capabilities defined in Section 2
+2. **Immediate**: Create `architecture/metadata/capability-changelog.yaml` with retrospective entries for existing tickets (NTK-10001 through NTK-10005)
+3. **Short term**: Add `3.solution/c.capabilities/` to the solution design folder template so every future ticket includes capability declarations
+4. **Short term**: Write the capability page generator (`portal/scripts/generate-capability-pages.py`) consuming both `capabilities.yaml` and `capability-changelog.yaml`, and wire it into `generate-all.sh`
+5. **Short term**: Register a custom domain and enable the Bicep custom domain parameter
+6. **Medium term**: Update `copilot-instructions.md` and Roo Code instructions with the capability rollup checklist (Section 7.9) so the AI agent auto-suggests capability mappings during solutioning
+7. **Medium term**: Implement the 6 missing capabilities as new services or extensions to existing services (requires new OpenAPI specs, metadata entries, and ADRs for each)
+8. **Ongoing**: Every ticket solution must produce a capability declaration and changelog entry — this is what makes the architecture grow instead of reset
