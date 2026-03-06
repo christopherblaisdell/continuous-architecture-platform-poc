@@ -21,12 +21,12 @@ from urllib.parse import quote
 
 # Paths
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SPECS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "specs")
+SPECS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "specs")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "microservices")
 PUML_DIR = os.path.join(OUTPUT_DIR, "puml")
 SVG_DIR = os.path.join(OUTPUT_DIR, "svg")
 
-# -- Metadata loaded from YAML files (portal/docs/metadata/) --
+# -- Metadata loaded from YAML files (architecture/metadata/) --
 # Architects edit YAML, commit, push -- CI rebuilds automatically.
 # No need to edit this Python file for metadata changes.
 import sys
@@ -1055,7 +1055,8 @@ def generate_index_page(all_services):
 # Event Catalog Page Generation
 # ============================================================
 
-EVENTS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
+EVENTS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "events")
+EVENTS_OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
 
 
 def build_event_flow_puml():
@@ -1254,7 +1255,7 @@ def generate_event_catalog_page():
     lines.append("")
     lines.append("| Service | Spec File | Interactive Viewer |")
     lines.append("|---------|-----------|-------------------|")
-    events_dir = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
+    events_dir = os.path.join(WORKSPACE_ROOT, "architecture", "events")
     if os.path.isdir(events_dir):
         for fname in sorted(os.listdir(events_dir)):
             if fname.endswith(".events.yaml"):
@@ -1560,9 +1561,9 @@ def main():
         f.write(index_page)
 
     # Generate Event Catalog page
-    os.makedirs(EVENTS_DIR, exist_ok=True)
+    os.makedirs(EVENTS_OUTPUT_DIR, exist_ok=True)
     event_catalog_page = generate_event_catalog_page()
-    event_catalog_path = os.path.join(EVENTS_DIR, "index.md")
+    event_catalog_path = os.path.join(EVENTS_OUTPUT_DIR, "index.md")
     with open(event_catalog_path, "w") as f:
         f.write(event_catalog_page)
     print(f"  Event Catalog: {event_catalog_path}")
@@ -1580,7 +1581,7 @@ def main():
     print(f"  PUML: {PUML_DIR}/")
     print(f"  SVGs: {SVG_DIR}/")
     print(f"  Pages: {OUTPUT_DIR}/")
-    print(f"  Events: {EVENTS_DIR}/")
+    print(f"  Events: {EVENTS_OUTPUT_DIR}/")
     print(f"  Actors: {ACTORS_DIR}/")
 
 

@@ -2,7 +2,7 @@
 
 All portal generators import metadata from this module instead of
 embedding large Python dictionaries inline. The YAML files under
-portal/docs/metadata/ are the single source of truth.
+architecture/metadata/ are the single source of truth.
 
 Architects edit the YAML files, commit, push -- CI rebuilds everything.
 """
@@ -11,7 +11,7 @@ import os
 import yaml
 
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-METADATA_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "metadata")
+METADATA_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "metadata")
 
 
 def _load(filename):

@@ -12,13 +12,16 @@ build/
 # ===========================================================================
 # Generated portal artifacts — DO NOT EDIT
 # These are rebuilt by portal/scripts/generate-all.sh from:
-#   - OpenAPI specs (portal/docs/specs/*.yaml)
-#   - YAML metadata (portal/docs/metadata/*.yaml)
-#   - AsyncAPI specs (portal/docs/events/*.yaml)
+#   - OpenAPI specs (architecture/specs/*.yaml)
+#   - YAML metadata (architecture/metadata/*.yaml)
+#   - AsyncAPI specs (architecture/events/*.yaml)
 # ===========================================================================
 
 # Generated Swagger UI HTML pages
 portal/docs/services/api/
+
+# Specs copied to portal during build (source of truth: architecture/specs/)
+portal/docs/specs/
 
 # Generated microservice pages (MD + PUML + SVG)
 portal/docs/microservices/*.md

@@ -75,7 +75,7 @@ python3 -m mkdocs build
 # Copy non-markdown assets that MkDocs does not copy automatically
 echo "  Copying assets into site/..."
 cp -r docs/services/api site/services/ 2>/dev/null || true
-cp -r docs/specs site/ 2>/dev/null || true
+cp -r "$REPO_ROOT/architecture/specs" site/ 2>/dev/null || true
 cp -r docs/microservices/svg site/microservices/ 2>/dev/null || true
 cp -r docs/applications/svg site/applications/ 2>/dev/null || true
 cp -r docs/events-ui site/ 2>/dev/null || true

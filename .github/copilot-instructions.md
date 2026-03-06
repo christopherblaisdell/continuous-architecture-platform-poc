@@ -33,10 +33,12 @@ Compare AI toolchains (GitHub Copilot vs Roo Code + OpenRouter) by executing 5 a
 
 | Path | Purpose |
 |------|---------|
+| `architecture/` | **Architect workspace** — YAML metadata, OpenAPI specs, AsyncAPI event specs |
+| `architecture/specs/` | OpenAPI YAML specs for all 19 services (single source of truth) |
+| `architecture/metadata/` | Domain classifications, data stores, cross-service calls, actors, etc. (10 YAML files) |
+| `architecture/events/` | AsyncAPI YAML specs for event schemas (6 producers, 7 events) |
 | `decisions/` | Global architecture decision log (11 ADRs) |
 | `portal/` | MkDocs Material documentation portal (source + build output) |
-| `portal/docs/specs/` | OpenAPI YAML specs for all 19 services (single source of truth) |
-| `portal/docs/events/` | AsyncAPI YAML specs for event schemas (6 producers, 7 events) |
 | `portal/docs/microservices/` | Generated microservice pages, PUML source files, and SVG output |
 | `portal/scripts/generate-microservice-pages.py` | Generates all 19 microservice pages with PlantUML SVG sequence diagrams |
 | `portal/staticwebapp.config.json` | Azure Static Web App configuration (routes, headers, CSP) |
@@ -366,7 +368,7 @@ The `cp` commands are required because MkDocs does not copy non-markdown assets 
 python3 portal/scripts/generate-microservice-pages.py
 ```
 
-This reads OpenAPI specs from `portal/docs/specs/`, generates PUML files in `portal/docs/microservices/puml/`, renders SVGs to `portal/docs/microservices/svg/`, and writes Markdown pages to `portal/docs/microservices/`.
+This reads OpenAPI specs from `architecture/specs/`, generates PUML files in `portal/docs/microservices/puml/`, renders SVGs to `portal/docs/microservices/svg/`, and writes Markdown pages to `portal/docs/microservices/`.
 
 **Key data structures in the generator:**
 

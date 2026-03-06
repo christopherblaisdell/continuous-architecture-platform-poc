@@ -22,7 +22,7 @@ from urllib.parse import quote
 
 # Paths
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SPECS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "specs")
+SPECS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "specs")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "applications")
 PUML_DIR = os.path.join(OUTPUT_DIR, "puml")
 SVG_DIR = os.path.join(OUTPUT_DIR, "svg")
@@ -47,7 +47,7 @@ def endpoint_anchor(target_svc, target_method, target_path):
     return "#" + heading_slug(target_method, target_path, summary)
 
 
-# -- Application metadata loaded from YAML (portal/docs/metadata/applications.yaml) --
+# -- Application metadata loaded from YAML (architecture/metadata/applications.yaml) --
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from load_metadata import APPLICATIONS  # noqa: E402

@@ -8,7 +8,7 @@ and renders it with Swagger UI, themed to match the portal's corporate style.
 
 Also generates:
   - portal/docs/services/index.md  (service catalog landing page)
-  - Copies YAML specs to portal/docs/specs/ for raw download links
+  - Copies YAML specs to portal/docs/specs/ for raw download links (source: architecture/specs/)
 
 Usage:
     python3 portal/scripts/generate-swagger-pages.py
@@ -19,12 +19,12 @@ import yaml
 import shutil
 
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SPECS_DIR = os.path.join(WORKSPACE_ROOT, "phase-1-ai-tool-cost-comparison", "workspace", "corporate-services", "services")
+SPECS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "specs")
 PORTAL_DOCS = os.path.join(WORKSPACE_ROOT, "portal", "docs")
 API_OUTPUT = os.path.join(PORTAL_DOCS, "services", "api")
 SPECS_OUTPUT = os.path.join(PORTAL_DOCS, "specs")
 
-# ── Metadata loaded from YAML files (portal/docs/metadata/) ──
+# ── Metadata loaded from YAML files (architecture/metadata/) ──
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from load_metadata import DOMAINS  # noqa: E402
