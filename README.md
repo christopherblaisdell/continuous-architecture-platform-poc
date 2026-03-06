@@ -53,7 +53,7 @@ A **continuous architecture platform** where:
 - Monthly cost-per-seat calculation for each option
 - Quality and standards compliance comparison
 
-**Details:** See [phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md)
+**Details:** See [phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md)
 
 ---
 
@@ -171,17 +171,16 @@ A **continuous architecture platform** where:
 
 | Document | Purpose |
 |----------|---------|
-| [Roadmap](roadmap/ROADMAP.md) | Phased timeline with milestones, deliverables, exit criteria, and risk register |
-| [Closing the Loop](CLOSING-THE-LOOP.md) | Analysis of the gap between point-in-time architecture and continuous state management, with a plan to fix it |
+| [Roadmap](docs/roadmap/ROADMAP.md) | Phased timeline with milestones, deliverables, exit criteria, and risk register |
+| [Closing the Loop](docs/CLOSING-THE-LOOP.md) | Analysis of the gap between point-in-time architecture and continuous state management, with a plan to fix it |
 | [ADR-001: AI Toolchain Selection](decisions/ADR-001-ai-toolchain-selection.md) | Formal decision record for Kong AI vs GitHub Copilot |
 | [ADR-002: Documentation Publishing Platform](decisions/ADR-002-documentation-publishing-platform.md) | Decision record for Material for MkDocs on Azure Static Web Apps |
 | [Context Window Utilization Analysis](research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md) | Empirical analysis of Roo Code vs Copilot context window efficiency |
-| [Phase 1 Plan](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) | Detailed plan for AI cost comparison with synthetic workspace |
-| [Phase 1 Outputs](phase-1-ai-tool-cost-comparison/outputs/README.md) | Run-by-run results for Copilot and Roo Code executions |
-| [Publishing Platform Plan](phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
+| [Phase 1 Plan](phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) | Detailed plan for AI cost comparison with synthetic workspace |
+| [Phase 1 Outputs](phases/phase-1-ai-tool-cost-comparison/outputs/README.md) | Run-by-run results for Copilot and Roo Code executions |
+| [Publishing Platform Plan](phases/phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) | Material for MkDocs → Azure Static Web Apps implementation plan |
 | [Architecture Decision Log](decisions/README.md) | Global index of all 11 architecture decisions with service and status views |
-| [Service Architecture Pages](services/README.md) | Living architecture baseline for 6 services touched by Phase 1 |
-| [Cost Measurement Methodology](phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) | Autonomous cost measurement approach, tool, and Copilot execution analysis |
+| [Cost Measurement Methodology](phases/phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md) | Autonomous cost measurement approach, tool, and Copilot execution analysis |
 
 ---
 
@@ -204,7 +203,7 @@ This repository is designed to contain **absolutely no corporate data**. Every a
 - Require **no credentials, tokens, or network access**
 - Are designed so the AI under test cannot distinguish them from real CLI tools
 
-**Pre-commit audit:** Run `./scripts/audit-data-isolation.sh` to verify no corporate data has leaked in. This script checks all tracked files against a pattern list of known corporate identifiers.
+**Pre-commit audit:** Run `./portal/scripts/utilities/audit-data-isolation.sh` to verify no corporate data has leaked in. This script checks all tracked files against a pattern list of known corporate identifiers.
 
 ---
 
@@ -213,41 +212,37 @@ This repository is designed to contain **absolutely no corporate data**. Every a
 ```
 continuous-architecture-platform-poc/
   README.md                                         # This document (project vision)
-  roadmap/
-    ROADMAP.md                                      # Phased roadmap with milestones and timeline
+  docs/
+    roadmap/
+      ROADMAP.md                                      # Phased roadmap with milestones and timeline
   decisions/
     README.md                                       # Global decision log (index of all ADRs)
     ADR-001-ai-toolchain-selection.md               # Kong AI vs GitHub Copilot decision
     ADR-002-documentation-publishing-platform.md    # Material for MkDocs selection
     ADR-003 through ADR-011                         # 9 promoted Phase 1 service decisions
-  services/
-    README.md                                       # Service index (6 services)
-    svc-check-in.md                                 # 6 ADRs, 3 tickets
-    svc-guest-profiles.md                           # 2 ADRs
-    svc-reservations.md                             # 2 ADRs
-    svc-scheduling-orchestrator.md                  # 2 ADRs
-    svc-trail-management.md                         # 1 ADR
-    svc-trip-catalog.md                             # 1 ADR
   research/
     CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md           # Roo Code vs Copilot context window efficiency
-  scripts/
-    cost-measurement.py                             # Autonomous cost measurement tool (stdlib only)
-    audit-data-isolation.sh                         # Pre-commit data isolation audit
-  phase-1-ai-tool-cost-comparison/                  # AI tool cost comparison (synthetic workspace + plan)
-    AI-TOOL-COST-COMPARISON-PLAN.md                 # Detailed Phase 1 plan
-    COST-MEASUREMENT-METHODOLOGY.md                 # Cost measurement approach, analysis, and results
-    workspace/                                      # Portable synthetic workspace for Phase 1 execution
-      novatrek-workspace.code-workspace
-      architecture-standards/
-      corporate-services/
-      source-code/
-      work-items/
-      scripts/
-      playbooks/
-      scenario-playbooks/
-      ...
-  phase-2-ai-workflow/                              # (future) AI-integrated workflow design
-  phase-3-docflow-pipelines/                         # (future) DocFlow v5 pipeline extensions
-  phase-4-artifact-graph/                           # (future) Navigable architecture artifact graph
-  phase-5-continuous-improvement/                   # (future) Quality metrics and feedback loops
+  portal/
+    scripts/
+      utilities/
+        cost-measurement.py                         # Autonomous cost measurement tool (stdlib only)
+        audit-data-isolation.sh                     # Pre-commit data isolation audit
+  phases/
+    phase-1-ai-tool-cost-comparison/                # AI tool cost comparison (synthetic workspace + plan)
+      AI-TOOL-COST-COMPARISON-PLAN.md               # Detailed Phase 1 plan
+      COST-MEASUREMENT-METHODOLOGY.md               # Cost measurement approach, analysis, and results
+      workspace/                                    # Portable synthetic workspace for Phase 1 execution
+        novatrek-workspace.code-workspace
+        architecture-standards/
+        corporate-services/
+        source-code/
+        work-items/
+        scripts/
+        playbooks/
+        scenario-playbooks/
+        ...
+    phase-2-ai-workflow/                            # (future) AI-integrated workflow design
+    phase-3-docflow-pipelines/                      # (future) DocFlow v5 pipeline extensions
+    phase-4-artifact-graph/                         # (future) Navigable architecture artifact graph
+    phase-5-continuous-improvement/                 # (future) Quality metrics and feedback loops
 ```

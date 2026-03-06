@@ -9,6 +9,9 @@ build/
 .vscode/
 *.swp
 
+# PowerPoint temp files
+~$*.pptx
+
 # ===========================================================================
 # Generated portal artifacts — DO NOT EDIT
 # These are rebuilt by portal/scripts/generate-all.sh from:

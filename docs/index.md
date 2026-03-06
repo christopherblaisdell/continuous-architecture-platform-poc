@@ -13,7 +13,6 @@ All content is authored in Markdown, stored in Git, and published automatically 
 | Section | Description |
 |---------|-------------|
 | **[Decisions](decisions/README.md)** | Architecture Decision Records (ADR-001 through ADR-011) |
-| **[Services](services/README.md)** | Service architecture pages for 6 NovaTrek microservices |
 | **[Phase 1](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md)** | AI toolchain cost and quality comparison (Copilot vs Roo Code) |
 | **[Roadmap](roadmap/ROADMAP.md)** | Phased delivery plan from Phase 1 through Phase 6 |
 | **[Research](research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md)** | Deep research findings on AI tooling and billing |
