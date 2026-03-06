@@ -5,7 +5,7 @@
 | **Author** | Christopher Blaisdell |
 | **Date** | 2026-03-06 |
 | **Status** | Proposed |
-| **Purpose** | Identify all business capabilities, assess implementation coverage, and plan integration into the Mango Sand architecture portal |
+| **Purpose** | Identify all business capabilities, assess implementation coverage, and plan integration into the NovaTrek Architecture Portal |
 
 ---
 
@@ -137,9 +137,9 @@ A business capability map describes WHAT an organization does, independent of HO
 
 ---
 
-## 4. How to Incorporate Capabilities into Mango Sand
+## 4. How to Incorporate Capabilities into the NovaTrek Architecture Portal
 
-The Mango Sand portal (Azure Static Web Apps at `https://mango-sand-083b8ce0f.4.azurestaticapps.net`) currently organizes architecture artifacts by **technical structure** — services, events, actors, applications. Adding a **business capability view** creates a top-down navigation layer that connects business language to technical implementation.
+The NovaTrek Architecture Portal (Azure Static Web Apps) currently organizes architecture artifacts by **technical structure** — services, events, actors, applications. Adding a **business capability view** creates a top-down navigation layer that connects business language to technical implementation.
 
 ### 4.1 New Portal Section: Business Capabilities
 

@@ -25,7 +25,7 @@ ROOT/
 ├── mkdocs.yml                           # Root MkDocs config (secondary site)
 ├── phase-1-ai-tool-cost-comparison/     # Phase 1 evaluation
 ├── phase-2-ai-workflow/                 # Empty (.gitkeep only)
-├── phase-3-vsflow-pipelines/            # Empty (.gitkeep only)
+├── phase-3-ci-pipelines/            # Empty (.gitkeep only)
 ├── phase-4-artifact-graph/              # Empty (.gitkeep only)
 ├── phase-5-continuous-improvement/       # Empty (.gitkeep only)
 ├── phase-6-documentation-publishing/    # Phase 6 plan
@@ -57,7 +57,7 @@ ROOT/
 ├── phases/                              # NEW — all 6 phases consolidated
 │   ├── phase-1-ai-tool-cost-comparison/
 │   ├── phase-2-ai-workflow/
-│   ├── phase-3-vsflow-pipelines/
+│   ├── phase-3-ci-pipelines/
 │   ├── phase-4-artifact-graph/
 │   ├── phase-5-continuous-improvement/
 │   └── phase-6-documentation-publishing/
@@ -81,7 +81,7 @@ ROOT/
 |------|--------|-----------|
 | `phase-1-ai-tool-cost-comparison/` | Move to `phases/phase-1-ai-tool-cost-comparison/` | Group all 6 phases together |
 | `phase-2-ai-workflow/` | Move to `phases/phase-2-ai-workflow/` | Group all 6 phases together |
-| `phase-3-vsflow-pipelines/` | Move to `phases/phase-3-vsflow-pipelines/` | Group all 6 phases together |
+| `phase-3-ci-pipelines/` | Move to `phases/phase-3-ci-pipelines/` | Group all 6 phases together |
 | `phase-4-artifact-graph/` | Move to `phases/phase-4-artifact-graph/` | Group all 6 phases together |
 | `phase-5-continuous-improvement/` | Move to `phases/phase-5-continuous-improvement/` | Group all 6 phases together |
 | `phase-6-documentation-publishing/` | Move to `phases/phase-6-documentation-publishing/` | Group all 6 phases together |
@@ -123,7 +123,7 @@ ROOT/
 mkdir -p phases
 git mv phase-1-ai-tool-cost-comparison phases/
 git mv phase-2-ai-workflow phases/
-git mv phase-3-vsflow-pipelines phases/
+git mv phase-3-ci-pipelines phases/
 git mv phase-4-artifact-graph phases/
 git mv phase-5-continuous-improvement phases/
 git mv phase-6-documentation-publishing phases/

@@ -209,7 +209,7 @@ All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`) under `
 
 3. **Publish**:
    - Commit only the `.excalidraw` source file and push
-   - CI automatically generates SVG + HTML + MD and deploys to Mango Sand portal
+   - CI automatically generates SVG + HTML + MD and deploys to NovaTrek Architecture Portal
 
 **Wireframe Naming Convention**:
 - Kebab-case, descriptive: `check-in-confirmation.excalidraw`, `live-tracking.excalidraw`

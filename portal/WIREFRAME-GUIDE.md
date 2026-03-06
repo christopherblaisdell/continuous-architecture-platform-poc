@@ -1,6 +1,6 @@
 # Wireframe Management Guide
 
-Quick reference for creating and managing wireframes in the Mango Sand portal.
+Quick reference for creating and managing wireframes in the NovaTrek Architecture Portal.
 
 ## Source Location
 
@@ -27,7 +27,7 @@ Commit only the `.excalidraw` source file and push to `main`. CI automatically:
 
 1. Runs `generate-wireframe-pages.py` (reads from `architecture/wireframes/`)
 2. Generates SVG + HTML + MD into `portal/docs/applications/{app}/wireframes/`
-3. Builds MkDocs site and deploys to Mango Sand portal
+3. Builds MkDocs site and deploys to NovaTrek Architecture Portal
 
 No manual regeneration or committing of generated files required.
 
