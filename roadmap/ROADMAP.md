@@ -322,7 +322,7 @@ Deploy Vikunja as the ticketing UI.
 | 4.4 | COMPLETE -- `scripts/vikunja-seed.py` creates NovaTrek project and seeds 34 capability labels + 4 status labels | 4.3 | Small |
 | 4.5 | COMPLETE -- `scripts/vikunja-seed.py` imports all 7 tickets with descriptions, priorities, and label associations | 4.3 | Small |
 | 4.6 | COMPLETE -- `portal/scripts/sync-tickets.py` bidirectional sync (push new YAML tickets, pull status/priority changes from Vikunja) | 4.3 | Medium |
-| 4.7 | Configure webhooks for automated sync on ticket changes | 4.6 | Medium |
+| 4.7 | COMPLETE -- Configured Vikunja webhook for task events + GitHub Actions `sync-vikunja.yml` workflow (cron every 30 min + manual dispatch + repository_dispatch) to pull Vikunja changes into tickets.yaml and auto-commit | 4.6 | Medium |
 
 **Outcome:** Vikunja provides a UI for ticket management. `sync-tickets.py` keeps `tickets.yaml` in sync. Portal pages generated from YAML as before.
 
