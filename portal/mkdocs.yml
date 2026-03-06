@@ -148,9 +148,18 @@ nav:
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
   - Applications:
     - applications/index.md
-    - web-guest-portal: applications/web-guest-portal.md
-    - web-ops-dashboard: applications/web-ops-dashboard.md
-    - app-guest-mobile: applications/app-guest-mobile.md
+    - web-guest-portal:
+      - applications/web-guest-portal.md
+      - Wireframes:
+        - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
+    - web-ops-dashboard:
+      - applications/web-ops-dashboard.md
+      - Wireframes:
+        - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
+    - app-guest-mobile:
+      - applications/app-guest-mobile.md
+      - Wireframes:
+        - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
   - Microservice Pages:
     - microservices/index.md
     - svc-analytics: microservices/svc-analytics.md
