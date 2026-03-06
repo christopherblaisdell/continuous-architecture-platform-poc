@@ -244,96 +244,123 @@ def add_cost_slide(prs):
     # Title
     title_box = slide.shapes.add_textbox(Inches(0.5), Inches(0.3), Inches(9), Inches(0.6))
     title_frame = title_box.text_frame
-    title_frame.text = "Cost Evidence: 208x Advantage"
+    title_frame.text = "Cost Evidence: The Vector Database Advantage"
     p = title_frame.paragraphs[0]
-    p.font.size = Pt(40)
+    p.font.size = Pt(38)
     p.font.bold = True
     p.font.color.rgb = DARK_GRAY
     
-    # Huge number
-    number_box = slide.shapes.add_textbox(Inches(0.5), Inches(1.2), Inches(4), Inches(1.5))
-    frame = number_box.text_frame
-    frame.text = "208x"
+    # HUGE CALLOUT BOX - Vector Database
+    vector_box = slide.shapes.add_shape(1, Inches(0.5), Inches(1.1), Inches(9), Inches(2.2))
+    vector_box.fill.solid()
+    vector_box.fill.fore_color.rgb = ORANGE
+    vector_box.line.width = Pt(3)
+    vector_box.line.color.rgb = DARK_GRAY
+    
+    vector_title = slide.shapes.add_textbox(Inches(0.7), Inches(1.3), Inches(8.6), Inches(0.5))
+    frame = vector_title.text_frame
+    frame.text = "THE ARCHITECTURAL DIFFERENCE"
     p = frame.paragraphs[0]
-    p.font.size = Pt(96)
+    p.font.size = Pt(28)
     p.font.bold = True
-    p.font.color.rgb = ORANGE
+    p.font.color.rgb = WHITE
     p.alignment = PP_ALIGN.CENTER
     
-    label_box = slide.shapes.add_textbox(Inches(0.5), Inches(2.7), Inches(4), Inches(0.4))
-    frame = label_box.text_frame
-    frame.text = "cheaper per run"
+    vector_content = slide.shapes.add_textbox(Inches(0.7), Inches(1.9), Inches(8.6), Inches(1.2))
+    frame = vector_content.text_frame
+    frame.word_wrap = True
+    frame.text = "GitHub Copilot pre-indexes our entire workspace into a VECTOR DATABASE. All our specs, diagrams, previous designs, domain knowledge - indexed once, used unlimited times. This is amortized across our fixed $39/month subscription.\n\nOpenRouter recalculates everything from scratch on every request. Pays per token, every time."
     p = frame.paragraphs[0]
-    p.font.size = Pt(20)
+    p.font.size = Pt(16)
+    p.font.color.rgb = WHITE
     p.alignment = PP_ALIGN.CENTER
+    p.line_spacing = 1.3
     
-    # The architectural difference
-    arch_box = slide.shapes.add_textbox(Inches(5), Inches(1.2), Inches(4.5), Inches(2.5))
-    frame = arch_box.text_frame
+    # Cost comparison - side by side
+    # GitHub Copilot side
+    copilot_box = slide.shapes.add_textbox(Inches(0.5), Inches(3.7), Inches(4.3), Inches(2.8))
+    frame = copilot_box.text_frame
     frame.word_wrap = True
     
     p = frame.paragraphs[0]
-    p.text = "The Architectural Difference:"
-    p.font.size = Pt(20)
+    p.text = "GitHub Copilot Pro+"
+    p.font.size = Pt(22)
     p.font.bold = True
     p.font.color.rgb = TEAL
     
     p = frame.add_paragraph()
-    p.text = "GitHub Copilot"
-    p.font.size = Pt(16)
+    p.text = "$39/month fixed subscription"
+    p.font.size = Pt(18)
     p.font.bold = True
-    p.space_before = Pt(12)
+    p.space_before = Pt(8)
     
-    p = frame.add_paragraph()
-    p.text = "Pre-indexes workspace in vector database. Amortized across fixed subscription. Richer context costs nothing extra."
-    p.font.size = Pt(14)
-    p.level = 1
+    copilot_points = [
+        "Vector database indexes workspace once",
+        "Richer context costs nothing extra",
+        "Intent-based billing: only human prompts count",
+        "Autonomous tool calls are FREE",
+        "As workspace grows, cost stays flat"
+    ]
     
-    p = frame.add_paragraph()
-    p.text = "OpenRouter (per-token billing)"
-    p.font.size = Pt(16)
-    p.font.bold = True
-    p.space_before = Pt(12)
+    for point in copilot_points:
+        p = frame.add_paragraph()
+        p.text = "✓ " + point
+        p.font.size = Pt(13)
+        p.space_before = Pt(4)
     
-    p = frame.add_paragraph()
-    p.text = "Recalculates entire context from scratch every request. Pays for every token, every time."
-    p.font.size = Pt(14)
-    p.level = 1
-    
-    # Comparison table
-    table_box = slide.shapes.add_textbox(Inches(0.5), Inches(3.8), Inches(9), Inches(2.8))
-    frame = table_box.text_frame
+    # OpenRouter side
+    openrouter_box = slide.shapes.add_textbox(Inches(5.2), Inches(3.7), Inches(4.3), Inches(2.8))
+    frame = openrouter_box.text_frame
     frame.word_wrap = True
     
     p = frame.paragraphs[0]
-    p.text = "5 Architecture Scenarios:"
+    p.text = "OpenRouter (Per-Token)"
+    p.font.size = Pt(22)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(150, 150, 150)
+    
+    p = frame.add_paragraph()
+    p.text = "$155.73 per run (variable)"
     p.font.size = Pt(18)
     p.font.bold = True
-    p.space_before = Pt(12)
+    p.space_before = Pt(8)
     
-    comparison_lines = [
-        "GitHub Copilot: $39/month subscription (fixed)",
-        "OpenRouter: $155.73 per run (variable, scales with context size)",
-        "Total workspace: 19 services, 11 ADRs, 500+ lines of domain knowledge",
-        "Intent-based billing: Only human prompts count, autonomous tool calls are free"
+    openrouter_points = [
+        "Recalculates context every request",
+        "Pays for every token, every time",
+        "No indexing - starts from scratch",
+        "Context size = direct cost",
+        "As workspace grows, cost scales linearly"
     ]
     
-    for line in comparison_lines:
+    for point in openrouter_points:
         p = frame.add_paragraph()
-        p.text = "• " + line
-        p.font.size = Pt(14)
-        p.space_before = Pt(6)
+        p.text = "✗ " + point
+        p.font.size = Pt(13)
+        p.space_before = Pt(4)
+    
+    # Bottom: 208x
+    result_box = slide.shapes.add_textbox(Inches(0.5), Inches(6.7), Inches(9), Inches(0.6))
+    frame = result_box.text_frame
+    frame.text = "Result: 208x cost advantage per run, and the gap widens as our workspace grows"
+    p = frame.paragraphs[0]
+    p.font.size = Pt(20)
+    p.font.bold = True
+    p.font.color.rgb = ORANGE
+    p.alignment = PP_ALIGN.CENTER
     
     # Speaker notes
     notes_slide = slide.notes_slide
-    notes_slide.notes_text_frame.text = """Cost model deep-dive:
-- We tested both toolchains on identical scenarios
-- GitHub Copilot: $39/month fixed subscription - unlimited context, unlimited autonomous tool calls
-- Intent-based billing: only human-typed prompts count (3x multiplier for Claude Opus 4.6)
-- OpenRouter: pay per token for EVERYTHING - context recalculated from scratch every time
-- 208x difference comes from architectural approach, not just pricing model
-- As our workspace grows (more ADRs, more designs), Copilot cost stays flat, OpenRouter scales linearly
-- This is a structural advantage, not a temporary pricing anomaly"""
+    notes_slide.notes_text_frame.text = """CRITICAL TALKING POINT - Vector Database Advantage:
+- This is THE most important slide - explains why 208x difference exists
+- GitHub Copilot: Pre-indexes our workspace into a vector database (semantic search index)
+- Indexing happens once, used unlimited times - amortized across fixed subscription
+- OpenRouter: No indexing. Recalculates entire context from scratch every request, pays per token
+- Intent-based billing: In Copilot, only human-typed prompts count. All autonomous tool calls are free.
+- As our workspace grows (more ADRs, more designs), Copilot cost stays $39/month flat
+- OpenRouter cost scales linearly with workspace size - bigger context = higher per-run cost
+- This is a structural architectural advantage, not a temporary pricing difference
+- Vector database is how Copilot achieves both low cost AND high accuracy"""
 
 def add_demo_slide(prs):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
