@@ -61,21 +61,42 @@ echo ""
 # ------------------------------------------------------------------
 # Step 5: Generate AsyncAPI event pages
 # ------------------------------------------------------------------
-echo "[5/7] Generating AsyncAPI event pages..."
+echo "[5/10] Generating AsyncAPI event pages..."
 python3 "$SCRIPT_DIR/generate-event-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 6: Generate standalone PlantUML diagrams
+# Step 6: Generate solution design pages
 # ------------------------------------------------------------------
-echo "[6/7] Generating standalone PlantUML diagrams..."
+echo "[6/10] Generating solution design pages..."
+python3 "$SCRIPT_DIR/generate-solution-pages.py"
+echo ""
+
+# ------------------------------------------------------------------
+# Step 7: Generate business capability pages
+# ------------------------------------------------------------------
+echo "[7/10] Generating business capability pages..."
+python3 "$SCRIPT_DIR/generate-capability-pages.py"
+echo ""
+
+# ------------------------------------------------------------------
+# Step 8: Generate ticket pages
+# ------------------------------------------------------------------
+echo "[8/10] Generating ticket pages..."
+python3 "$SCRIPT_DIR/generate-ticket-pages.py"
+echo ""
+
+# ------------------------------------------------------------------
+# Step 9: Generate standalone PlantUML diagrams
+# ------------------------------------------------------------------
+echo "[9/10] Generating standalone PlantUML diagrams..."
 bash "$SCRIPT_DIR/generate-svgs.sh"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 7: Build MkDocs site
+# Step 10: Build MkDocs site
 # ------------------------------------------------------------------
-echo "[7/7] Building MkDocs site..."
+echo "[10/10] Building MkDocs site..."
 cd "$PORTAL_DIR"
 python3 -m mkdocs build
 

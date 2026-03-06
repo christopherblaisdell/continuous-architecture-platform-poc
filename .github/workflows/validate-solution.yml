@@ -1,0 +1,89 @@
+# ===========================================================================
+# Validate Solution Design PRs
+# ===========================================================================
+# Runs on PRs that touch architecture/solutions/ or architecture/metadata/
+# Validates YAML syntax, solution folder structure, and portal build.
+# ===========================================================================
+
+name: Validate Solution Design
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'architecture/solutions/**'
+      - 'architecture/metadata/**'
+      - 'decisions/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Solution
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-docs.txt
+
+      - name: Validate YAML metadata
+        run: |
+          python3 -c "
+          import yaml, sys, glob
+          errors = 0
+          for f in glob.glob('architecture/metadata/*.yaml'):
+              try:
+                  with open(f) as fh:
+                      yaml.safe_load(fh)
+                  print(f'PASS: {f}')
+              except yaml.YAMLError as e:
+                  print(f'FAIL: {f} — {e}')
+                  errors += 1
+          sys.exit(errors)
+          "
+
+      - name: Validate solution folder structure
+        run: |
+          python3 -c "
+          import os, sys
+          errors = 0
+          solutions_dir = 'architecture/solutions'
+          for entry in sorted(os.listdir(solutions_dir)):
+              sol_dir = os.path.join(solutions_dir, entry)
+              if not os.path.isdir(sol_dir) or not entry.startswith('_NTK-'):
+                  continue
+              # Check for master document
+              has_master = any(f.endswith('-solution-design.md') for f in os.listdir(sol_dir))
+              if not has_master:
+                  print(f'FAIL: {entry} — missing master document (*-solution-design.md)')
+                  errors += 1
+              # Check for capabilities folder
+              caps_path = os.path.join(sol_dir, '3.solution', 'c.capabilities', 'capabilities.md')
+              if not os.path.exists(caps_path):
+                  print(f'FAIL: {entry} — missing 3.solution/c.capabilities/capabilities.md')
+                  errors += 1
+              else:
+                  print(f'PASS: {entry}')
+          sys.exit(errors)
+          "
+
+      - name: Verify data isolation
+        run: bash scripts/audit-data-isolation.sh
+
+      - name: Install PlantUML
+        run: sudo apt-get update && sudo apt-get install -y plantuml
+
+      - name: Build portal (validates generators and cross-links)
+        run: bash portal/scripts/generate-all.sh
