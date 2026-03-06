@@ -1,0 +1,568 @@
+# Cross-service integration map showing which endpoints call which services.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+svc-check-in:
+  POST /check-ins:
+  - alias: Res
+    label: Reservations
+    action: Verify reservation exists
+    async: false
+    target:
+      method: GET
+      path: /reservations/{reservation_id}
+  - alias: GP
+    label: Guest Profiles
+    action: Validate guest identity
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: TC
+    label: Trip Catalog
+    action: Get adventure category
+    async: false
+    target:
+      method: GET
+      path: /trips/{trip_id}
+  - alias: Safety
+    label: Safety Compliance
+    action: Validate active waiver
+    async: false
+    target:
+      method: GET
+      path: /waivers
+  - alias: Ntfy
+    label: Notifications
+    action: Send check-in confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  POST /check-ins/{check_in_id}/gear-verification:
+  - alias: Gear
+    label: Gear Inventory
+    action: Verify gear assignment
+    async: false
+    target:
+      method: GET
+      path: /gear-assignments/{assignment_id}
+  - alias: Safety
+    label: Safety Compliance
+    action: Log gear verification
+    async: false
+    target:
+      method: POST
+      path: /incidents
+svc-reservations:
+  POST /reservations:
+  - alias: GP
+    label: Guest Profiles
+    action: Validate guest identity
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: TC
+    label: Trip Catalog
+    action: Check trip availability
+    async: false
+    target:
+      method: GET
+      path: /trips/{trip_id}
+  - alias: Pay
+    label: Payments Svc
+    action: Process deposit payment
+    async: false
+    target:
+      method: POST
+      path: /payments
+  - alias: Kafka
+    label: Event Bus
+    action: reservation.created
+    async: true
+  - alias: Ntfy
+    label: Notifications
+    action: Send booking confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  PUT /reservations/{reservation_id}:
+  - alias: TC
+    label: Trip Catalog
+    action: Verify availability
+    async: false
+    target:
+      method: GET
+      path: /trips/{trip_id}
+  POST /reservations/{reservation_id}/participants:
+  - alias: GP
+    label: Guest Profiles
+    action: Validate participant
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  PUT /reservations/{reservation_id}/status:
+  - alias: Kafka
+    label: Event Bus
+    action: reservation.status_changed
+    async: true
+  - alias: Ntfy
+    label: Notifications
+    action: Send status update
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-scheduling-orchestrator:
+  POST /schedule-requests:
+  - alias: GM
+    label: Guide Mgmt
+    action: Check guide availability
+    async: false
+    target:
+      method: GET
+      path: /guides/{guide_id}/availability
+  - alias: TM
+    label: Trail Mgmt
+    action: Verify trail conditions
+    async: false
+    target:
+      method: GET
+      path: /trails/{trail_id}/conditions
+  - alias: WX
+    label: Weather Svc
+    action: Get forecast
+    async: false
+    target:
+      method: GET
+      path: /weather/forecast
+  - alias: TC
+    label: Trip Catalog
+    action: Get trip details
+    async: false
+    target:
+      method: GET
+      path: /trips/{trip_id}
+  - alias: Ntfy
+    label: Notifications
+    action: Notify assigned guides
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  POST /schedule-optimization:
+  - alias: GM
+    label: Guide Mgmt
+    action: Get all available guides
+    async: false
+    target:
+      method: GET
+      path: /guides/available
+  - alias: LS
+    label: Location Svc
+    action: Check location capacity
+    async: false
+    target:
+      method: GET
+      path: /locations/{location_id}/capacity
+  - alias: TC
+    label: Trip Catalog
+    action: Get trip requirements
+    async: false
+    target:
+      method: GET
+      path: /trips/{trip_id}
+  - alias: AN
+    label: Analytics
+    action: Log optimization metrics
+    async: true
+    target:
+      method: POST
+      path: /events
+  POST /schedule-conflicts/resolve:
+  - alias: GM
+    label: Guide Mgmt
+    action: Reassign guide
+    async: false
+    target:
+      method: PATCH
+      path: /guides/{guide_id}
+  - alias: Ntfy
+    label: Notifications
+    action: Notify affected parties
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-partner-integrations:
+  POST /partner-bookings:
+  - alias: GP
+    label: Guest Profiles
+    action: Validate guest identity
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: TC
+    label: Trip Catalog
+    action: Check trip availability
+    async: false
+    target:
+      method: GET
+      path: /trips/{trip_id}
+  - alias: Res
+    label: Reservations
+    action: Create reservation
+    async: false
+    target:
+      method: POST
+      path: /reservations
+  POST /partner-bookings/{booking_id}/confirm:
+  - alias: Res
+    label: Reservations
+    action: Confirm reservation
+    async: false
+    target:
+      method: PUT
+      path: /reservations/{reservation_id}/status
+  - alias: Pay
+    label: Payments Svc
+    action: Process commission
+    async: false
+    target:
+      method: POST
+      path: /payments
+  - alias: Ntfy
+    label: Notifications
+    action: Send partner confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-guest-profiles:
+  POST /guests:
+  - alias: ExtID
+    label: IDVerify API
+    action: Verify identity document
+    async: false
+  - alias: Kafka
+    label: Event Bus
+    action: guest.registered
+    async: true
+  GET /guests/{guest_id}/adventure-history:
+  - alias: Res
+    label: Reservations
+    action: Query past bookings
+    async: false
+    target:
+      method: GET
+      path: /reservations
+  - alias: AN
+    label: Analytics
+    action: Get satisfaction scores
+    async: false
+    target:
+      method: GET
+      path: /events
+svc-payments:
+  POST /payments:
+  - alias: FD
+    label: Fraud Detection API
+    action: Screen transaction
+    async: false
+  - alias: PGW
+    label: Payment Gateway
+    action: Tokenize & route payment
+    async: false
+  - alias: Ntfy
+    label: Notifications
+    action: Send payment receipt
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  POST /payments/{payment_id}/refund:
+  - alias: PGW
+    label: Payment Gateway
+    action: Process refund via gateway
+    async: false
+  - alias: Ntfy
+    label: Notifications
+    action: Send refund confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-notifications:
+  POST /notifications:
+  - alias: SG
+    label: SendGrid API
+    action: Deliver email
+    async: true
+  - alias: TW
+    label: Twilio API
+    action: Deliver SMS
+    async: true
+  - alias: FCM
+    label: Firebase Cloud Messaging
+    action: Send push notification
+    async: true
+  POST /notifications/bulk:
+  - alias: SG
+    label: SendGrid API
+    action: Deliver bulk emails
+    async: true
+  - alias: TW
+    label: Twilio API
+    action: Deliver bulk SMS
+    async: true
+  - alias: FCM
+    label: Firebase Cloud Messaging
+    action: Send bulk push notifications
+    async: true
+svc-safety-compliance:
+  POST /waivers:
+  - alias: GP
+    label: Guest Profiles
+    action: Validate guest identity
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: DS
+    label: DocuSign API
+    action: Verify digital signature
+    async: false
+  - alias: Ntfy
+    label: Notifications
+    action: Send waiver copy
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  POST /incidents:
+  - alias: GP
+    label: Guest Profiles
+    action: Get guest contact info
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: GM
+    label: Guide Mgmt
+    action: Get assigned guide
+    async: false
+    target:
+      method: GET
+      path: /guides/{guide_id}
+  - alias: Ntfy
+    label: Notifications
+    action: Send safety alert
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-gear-inventory:
+  POST /gear-assignments:
+  - alias: GP
+    label: Guest Profiles
+    action: Validate guest
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: Res
+    label: Reservations
+    action: Verify booking
+    async: false
+    target:
+      method: GET
+      path: /reservations/{reservation_id}
+  - alias: Safety
+    label: Safety Compliance
+    action: Check waiver status
+    async: false
+    target:
+      method: GET
+      path: /waivers
+svc-transport-logistics:
+  POST /transport-requests:
+  - alias: Res
+    label: Reservations
+    action: Get booking details
+    async: false
+    target:
+      method: GET
+      path: /reservations/{reservation_id}
+  - alias: LS
+    label: Location Svc
+    action: Validate pickup location
+    async: false
+    target:
+      method: GET
+      path: /locations/{location_id}
+  - alias: ExtMap
+    label: Google Maps Platform
+    action: Calculate optimal route
+    async: false
+  - alias: Ntfy
+    label: Notifications
+    action: Send transport details
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-loyalty-rewards:
+  POST /members/{guest_id}/earn:
+  - alias: Res
+    label: Reservations
+    action: Verify completed booking
+    async: false
+    target:
+      method: GET
+      path: /reservations/{reservation_id}
+  - alias: GP
+    label: Guest Profiles
+    action: Get member profile
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: Ntfy
+    label: Notifications
+    action: Send earn confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
+  POST /members/{guest_id}/redeem:
+  - alias: GP
+    label: Guest Profiles
+    action: Get member profile
+    async: false
+    target:
+      method: GET
+      path: /guests/{guest_id}
+  - alias: Pay
+    label: Payments Svc
+    action: Process reward credit
+    async: false
+    target:
+      method: POST
+      path: /payments
+  - alias: Ntfy
+    label: Notifications
+    action: Send redemption confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-media-gallery:
+  POST /media:
+  - alias: S3
+    label: Object Store
+    action: Upload binary file
+    async: false
+  - alias: ExtMap
+    label: Google Maps Platform
+    action: Reverse geocode GPS metadata
+    async: false
+  POST /media/{media_id}/share:
+  - alias: Ntfy
+    label: Notifications
+    action: Send share link
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-inventory-procurement:
+  POST /purchase-orders:
+  - alias: GI
+    label: Gear Inventory
+    action: Verify item catalog
+    async: false
+    target:
+      method: GET
+      path: /gear-items
+  - alias: Pay
+    label: Payments Svc
+    action: Process PO payment
+    async: false
+    target:
+      method: POST
+      path: /payments
+  - alias: Ntfy
+    label: Notifications
+    action: Notify procurement team
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-weather:
+  GET /weather/current:
+  - alias: ExtWx
+    label: OpenWeather API
+    action: Fetch current conditions
+    async: false
+  GET /weather/forecast:
+  - alias: ExtWx
+    label: OpenWeather API
+    action: Fetch multi-day forecast
+    async: false
+  GET /weather/alerts:
+  - alias: ExtWx
+    label: OpenWeather API
+    action: Fetch active alerts
+    async: false
+  - alias: Ntfy
+    label: Notifications
+    action: Distribute severe weather alerts
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-trail-management:
+  POST /trails/{trail_id}/conditions:
+  - alias: WX
+    label: Weather Svc
+    action: Correlate weather data
+    async: false
+    target:
+      method: GET
+      path: /weather/current
+  - alias: LS
+    label: Location Svc
+    action: Get trail coordinates
+    async: false
+    target:
+      method: GET
+      path: /locations/{location_id}
+  - alias: Safety
+    label: Safety Compliance
+    action: Update trail safety assessment
+    async: false
+    target:
+      method: POST
+      path: /incidents
+  - alias: Ntfy
+    label: Notifications
+    action: Alert park rangers
+    async: true
+    target:
+      method: POST
+      path: /notifications
+svc-location-services:
+  POST /locations:
+  - alias: ExtMap
+    label: Google Maps Platform
+    action: Geocode address
+    async: false
+svc-analytics:
+  POST /events:
+  - alias: ExtBI
+    label: Snowflake Data Cloud
+    action: Export aggregated metrics
+    async: true

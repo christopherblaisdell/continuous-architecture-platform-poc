@@ -1,0 +1,126 @@
+# External systems, frontend applications, human actors, and infrastructure.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+Guest:
+  type: Human
+  description: NovaTrek customer who books, checks in for, and participates in adventure trips.
+  interacts_with:
+  - web-guest-portal
+  - app-guest-mobile
+  domain: Guest Identity
+Operations Staff:
+  type: Human
+  description: On-site NovaTrek employees who manage daily operations including check-in, scheduling, gear assignment, and
+    incident response.
+  interacts_with:
+  - web-ops-dashboard
+  domain: Operations
+Adventure Guide:
+  type: Human
+  description: Certified outdoor guides who lead adventure trips, manage guest safety, and report incidents.
+  interacts_with:
+  - app-guest-mobile
+  - web-ops-dashboard
+  domain: Guide Management
+web-guest-portal:
+  type: Frontend Application
+  description: Public-facing web application for guests to browse trips, book reservations, manage profiles, sign waivers,
+    and view trip media.
+  technology: React SPA
+  team: Guest Experience Team
+  domain: Guest Identity
+web-ops-dashboard:
+  type: Frontend Application
+  description: Internal web application for operations staff to manage check-ins, daily schedules, guide assignments, safety
+    incidents, and partner bookings.
+  technology: React SPA
+  team: NovaTrek Operations Team
+  domain: Operations
+app-guest-mobile:
+  type: Frontend Application
+  description: Native mobile application for guests to self check-in, view live trip maps, receive weather alerts, upload
+    photos, and earn loyalty points.
+  technology: React Native
+  team: Guest Experience Team
+  domain: Guest Identity
+API Gateway:
+  type: Infrastructure
+  description: Central API Gateway that routes all external requests to backend microservices. Handles authentication, rate
+    limiting, and TLS termination.
+  technology: Azure API Management
+  domain: Platform
+Event Bus:
+  type: Infrastructure
+  description: Apache Kafka cluster used for asynchronous event-driven communication between microservices. All domain events
+    flow through dedicated Kafka topics.
+  technology: Apache Kafka
+  domain: Platform
+Object Store:
+  type: Infrastructure
+  description: Cloud object storage for media assets including trip photos, guide profile images, and waiver documents.
+  technology: Azure Blob Storage
+  domain: Platform
+Payment Gateway:
+  type: External System
+  description: PCI-certified payment processing gateway that handles credit card authorization, capture, and refund transactions.
+  technology: Stripe
+  pci: true
+  domain: Support
+Stripe API:
+  type: External System
+  description: Payment platform API for processing charges, managing payment methods, and handling disputes.
+  technology: Stripe REST API
+  pci: true
+  domain: Support
+Fraud Detection API:
+  type: External System
+  description: Third-party fraud prevention service that scores payment transactions for risk before authorization.
+  technology: REST API
+  pci: true
+  domain: Support
+DocuSign API:
+  type: External System
+  description: Electronic signature platform used for legally-binding adventure liability waivers and safety acknowledgments.
+  technology: DocuSign eSignature REST API
+  domain: Safety
+IDVerify API:
+  type: External System
+  description: Identity verification service used during check-in to validate guest identity against government-issued IDs.
+  technology: REST API
+  domain: Guest Identity
+Google Maps Platform:
+  type: External System
+  description: Geolocation and mapping service used for trail positioning, location tracking, and capacity management at adventure
+    sites.
+  technology: Google Maps REST API
+  domain: Logistics
+OpenWeather API:
+  type: External System
+  description: Weather data provider delivering current conditions, forecasts, and severe weather alerts for trail and adventure
+    locations.
+  technology: OpenWeather REST API
+  domain: Support
+Firebase Cloud Messaging:
+  type: External System
+  description: Push notification delivery service for real-time alerts to guest mobile devices (weather warnings, check-in
+    reminders, schedule changes).
+  technology: Firebase FCM
+  domain: Support
+SendGrid API:
+  type: External System
+  description: Transactional email delivery service for reservation confirmations, waiver requests, and loyalty point notifications.
+  technology: SendGrid REST API
+  domain: Support
+Twilio API:
+  type: External System
+  description: SMS and messaging service for check-in reminders, schedule updates, and emergency notifications to guests and
+    guides.
+  technology: Twilio REST API
+  domain: Support
+Snowflake Data Cloud:
+  type: External System
+  description: Cloud data warehouse used for business intelligence, analytics aggregation, and historical trend analysis across
+    all NovaTrek domains.
+  technology: Snowflake SQL API
+  domain: Support

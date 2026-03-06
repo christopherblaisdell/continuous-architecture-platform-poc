@@ -8,3 +8,38 @@ build/
 .idea/
 .vscode/
 *.swp
+
+# ===========================================================================
+# Generated portal artifacts — DO NOT EDIT
+# These are rebuilt by portal/scripts/generate-all.sh from:
+#   - OpenAPI specs (portal/docs/specs/*.yaml)
+#   - YAML metadata (portal/docs/metadata/*.yaml)
+#   - AsyncAPI specs (portal/docs/events/*.yaml)
+# ===========================================================================
+
+# Generated Swagger UI HTML pages
+portal/docs/services/api/
+
+# Generated microservice pages (MD + PUML + SVG)
+portal/docs/microservices/*.md
+portal/docs/microservices/puml/
+portal/docs/microservices/svg/
+
+# Generated application pages (MD + PUML + SVG)
+portal/docs/applications/*.md
+portal/docs/applications/puml/
+portal/docs/applications/svg/
+
+# Generated event UI pages
+portal/docs/events-ui/
+
+# Generated event catalog and actor catalog index pages
+portal/docs/events/index.md
+portal/docs/actors/index.md
+
+# Generated standalone diagram SVGs
+portal/docs/diagrams/svg/
+
+# MkDocs build output
+portal/site/
+site/

@@ -1,0 +1,7 @@
+# Display titles for frontend applications.
+# Source of truth for portal generation.
+# Edit this file, commit, push -- CI rebuilds the portal automatically.
+
+web-guest-portal: Guest Portal
+web-ops-dashboard: Operations Dashboard
+app-guest-mobile: Adventure App

@@ -20,6 +20,12 @@ on:
       - 'roadmap/**'
       - 'research/**'
       - 'phase-*/**'
+      - 'portal/docs/specs/**'
+      - 'portal/docs/metadata/**'
+      - 'portal/docs/events/**'
+      - 'portal/scripts/**'
+      - 'portal/mkdocs.yml'
+      - 'portal/staticwebapp.config.json'
       - 'README.md'
       - 'CLOSING-THE-LOOP.md'
       - 'staticwebapp.config.json'
@@ -35,6 +41,12 @@ on:
       - 'roadmap/**'
       - 'research/**'
       - 'phase-*/**'
+      - 'portal/docs/specs/**'
+      - 'portal/docs/metadata/**'
+      - 'portal/docs/events/**'
+      - 'portal/scripts/**'
+      - 'portal/mkdocs.yml'
+      - 'portal/staticwebapp.config.json'
       - 'README.md'
       - 'CLOSING-THE-LOOP.md'
       - 'staticwebapp.config.json'
@@ -65,17 +77,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-docs.txt
 
-      - name: Build MkDocs site
-        run: mkdocs build --strict
+      - name: Install PlantUML
+        run: sudo apt-get update && sudo apt-get install -y plantuml
 
-      - name: Copy Azure SWA config into build output
-        run: cp staticwebapp.config.json site/staticwebapp.config.json
+      - name: Generate artifacts and build site
+        run: bash portal/scripts/generate-all.sh
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: docs-site
-          path: site/
+          path: portal/site/
           retention-days: 1
 
   # -------------------------------------------------------------------------
