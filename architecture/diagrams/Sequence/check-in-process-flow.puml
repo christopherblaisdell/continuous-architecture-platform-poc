@@ -1,0 +1,83 @@
+@startuml check-in-process-flow
+' NovaTrek Adventures - Day-of-Adventure Check-In Flow
+' Guest arrives and checks in for their trip
+
+title NovaTrek Adventures - Check-In Process Flow
+
+skinparam backgroundColor #FEFEFE
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam sequence {
+    ArrowColor #2E86AB
+    ParticipantBorderColor #2E86AB
+    ParticipantBackgroundColor #E8F4F8
+    LifeLineBorderColor #A23B72
+    BoxBorderColor #F18F01
+    BoxBackgroundColor #FFF8F0
+}
+
+' ============================================================
+' Participants
+' ============================================================
+actor "Guest" as guest
+participant "Check-in Kiosk" as kiosk
+participant "svc-check-in" as checkin [[/services/svc-check-in/]]
+participant "svc-reservations" as reservations [[/services/svc-reservations/]]
+participant "svc-safety-compliance" as safety
+participant "svc-gear-inventory" as gear
+participant "svc-guide-management" as guides
+queue "Kafka" as kafka
+
+' ============================================================
+' QR Code Scan and Reservation Validation
+' ============================================================
+guest -> kiosk : scan QR code from booking confirmation
+kiosk -> checkin : [[/services/svc-check-in/ initiateCheckIn(qrCodeData)]]
+checkin -> reservations : [[/services/svc-reservations/ getReservation(reservationId)]]
+
+alt Reservation found and valid for today
+    reservations --> checkin : reservation details (status=CONFIRMED, date=today)
+else Reservation not found or wrong date
+    reservations --> checkin : reservation invalid
+    checkin --> kiosk : "Reservation not found. Visit guest services."
+    kiosk --> guest : display error message
+end
+
+' ============================================================
+' Safety Waiver Verification
+' ============================================================
+checkin -> safety : verifyWaiverStatus(guestId, tripType)
+
+alt Waiver signed and current
+    safety --> checkin : waiver valid (signedDate, expiryDate)
+else Waiver missing or expired
+    safety --> checkin : waiver required
+    checkin --> kiosk : redirect to digital waiver
+    kiosk --> guest : display waiver for signature
+    guest -> kiosk : sign digital waiver
+    kiosk -> safety : submitWaiver(guestId, signature, tripType)
+    safety --> kiosk : waiver recorded
+    kiosk -> checkin : [[/services/svc-check-in/ waiverCompleted(guestId)]]
+end
+
+' ============================================================
+' Gear Assignment Verification
+' ============================================================
+checkin -> gear : verifyGearAssignment(reservationId)
+gear -> gear : locate reserved gear package
+gear --> checkin : gear package ready (items list, locker #17)
+
+checkin -> checkin : generate wristband data
+
+' ============================================================
+' Wristband Assignment and Guide Notification
+' ============================================================
+checkin --> kiosk : checkIn complete - assign wristband
+kiosk --> guest : "Collect wristband. Gear at Locker #17. Meet at Trailhead B."
+
+checkin -> kafka : publish checkin.completed
+kafka -> guides : consume checkin.completed
+guides -> guides : update group roster for assigned guide
+guides --> guides : notify guide via mobile app
+
+@enduml
