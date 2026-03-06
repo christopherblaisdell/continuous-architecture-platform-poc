@@ -316,9 +316,9 @@ Deploy Vikunja as the ticketing UI.
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 4.1 | COMPLETE -- Created `infra/modules/container-apps-env.bicep` (Log Analytics + managed environment) and `infra/modules/vikunja.bicep` (Container App with SQLite, ingress, volumes) | -- | Medium |
-| 4.2 | COMPLETE -- Added Vikunja parameters to `infra/parameters/prod.bicepparam` (commented out, uncomment to deploy) and wired modules into `main.bicep` with `deployVikunja` flag | 4.1 | Small |
-| 4.3 | Deploy Vikunja to Azure Container Apps (uncomment params, run `deploy.sh`) | 4.1, 4.2 | Medium |
+| 4.1 | COMPLETE -- Created `infra/modules/container-apps-env.bicep` (Log Analytics + managed environment) and `infra/modules/vikunja.bicep` (Container App with Azure Files persistent storage, init container for permissions) | -- | Medium |
+| 4.2 | COMPLETE -- Added Vikunja parameters to `infra/parameters/prod.bicepparam` and wired modules into `main.bicep` with `deployVikunja` flag, Azure Storage Account and File Share for SQLite persistence | 4.1 | Small |
+| 4.3 | COMPLETE -- Deployed Vikunja v2.1.0 to Azure Container Apps (`ca-vikunja-prod`) with Azure Files persistent storage, registered admin user, seeded 38 labels + 7 tickets | 4.1, 4.2 | Medium |
 | 4.4 | COMPLETE -- `scripts/vikunja-seed.py` creates NovaTrek project and seeds 34 capability labels + 4 status labels | 4.3 | Small |
 | 4.5 | COMPLETE -- `scripts/vikunja-seed.py` imports all 7 tickets with descriptions, priorities, and label associations | 4.3 | Small |
 | 4.6 | COMPLETE -- `portal/scripts/sync-tickets.py` bidirectional sync (push new YAML tickets, pull status/priority changes from Vikunja) | 4.3 | Medium |

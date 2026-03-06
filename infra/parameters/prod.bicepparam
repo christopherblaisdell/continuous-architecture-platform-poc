@@ -22,8 +22,9 @@ param tags = {
 // param customDomain = 'docs.novatrek.example.com'
 
 // ---------------------------------------------------------------------------
-// Vikunja Ticketing (uncomment to deploy)
+// Vikunja Ticketing
 // ---------------------------------------------------------------------------
-// param deployVikunja = true
-// param containerAppsEnvName = 'cae-cap-ticketing-prod'
-// param vikunjaAppName = 'ca-vikunja-prod'
+param deployVikunja = true
+param containerAppsEnvName = 'cae-cap-ticketing-prod'
+param vikunjaAppName = 'ca-vikunja-prod'
+param vikunjaJwtSecret = 'novatrek-poc-jwt-secret-2025'
