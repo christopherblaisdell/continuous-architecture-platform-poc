@@ -56,6 +56,10 @@ param containerAppsEnvName string = 'cae-cap-${uniqueString(resourceGroup().id)}
 @description('Name for the Vikunja Container App (used when deployVikunja is true)')
 param vikunjaAppName string = 'ca-vikunja'
 
+@description('JWT secret for Vikunja (used when deployVikunja is true)')
+@secure()
+param vikunjaJwtSecret string = ''
+
 // ---------------------------------------------------------------------------
 // Variables
 // ---------------------------------------------------------------------------
@@ -139,6 +143,8 @@ module vikunja 'modules/vikunja.bicep' = if (deployVikunja) {
     name: vikunjaAppName
     location: location
     containerAppsEnvId: deployVikunja ? containerAppsEnv.outputs.id : ''
+    containerAppsEnvName: containerAppsEnvName
+    jwtSecret: vikunjaJwtSecret
     tags: defaultTags
   }
 }
