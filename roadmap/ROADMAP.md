@@ -376,7 +376,7 @@ Portal  Confluence
 | 6.7 | COMPLETE -- MkDocs admonition to Confluence macro conversion (`!!! note` to `{note}`) | 6.5 | Small |
 | 6.8 | COMPLETE -- Internal link rewriting (relative MD paths to Confluence page titles) | 6.5 | Small |
 | 6.9 | COMPLETE -- Content tab fallback (tabs to H3 sections) and MkDocs syntax stripping (attribute lists, Material emoji, HTML comments) | 6.5 | Small |
-| 6.10 | COMPLETE -- Full publish of 84 pages to Confluence ARCH space via `mark` CLI, 0 errors. Fixed parent/title collision for nested index pages (grandparent resolution). Page locking requires Confluence Standard plan (free-tier limitation); 3 other drift prevention layers active. | 6.5-6.9 | Medium |
+| 6.10 | COMPLETE -- Full publish of 84 pages to Confluence ARCH space via `mark` CLI, 0 errors. Fixed parent/title collision for nested index pages (grandparent resolution). Fixed internal link rewriting to use `ac:` prefix for mark inter-page links (including angle-bracket syntax for space-containing titles). Fixed portal fallback URLs with `/../` path segments. Page locking requires Confluence Standard plan (free-tier limitation); 3 other drift prevention layers active. | 6.5-6.9 | Medium |
 | 6.11 | COMPLETE -- Added `publish-confluence` job to `docs-deploy.yml` (prepare, mark publish, lock pages) | 6.10 | Small |
 | 6.12 | COMPLETE -- Added `validate-confluence` dry-run job to `docs-deploy.yml` for PR validation | 6.11 | Small |
 | 6.13 | COMPLETE -- `portal/scripts/confluence-lock-pages.py` sets edit restrictions on auto-generated pages (requires Standard plan) | 6.11 | Small |
