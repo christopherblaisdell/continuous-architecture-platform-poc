@@ -239,9 +239,8 @@ def rewrite_internal_links(content, link_map, current_file):
 def rewrite_image_paths(content, current_file):
     """Rewrite image paths for Confluence compatibility.
 
-    SVG images are converted to portal URLs since Confluence does not
-    reliably render SVGs as inline attachments.  PNG/JPG images keep
-    their disk-relative paths so mark can upload them as attachments.
+    All images (SVG, PNG, JPG) are resolved to disk-relative paths so
+    mark can upload them as Confluence attachments.
     """
     basename = os.path.basename(current_file)
     current_dir = os.path.dirname(current_file)
@@ -266,13 +265,8 @@ def rewrite_image_paths(content, current_file):
             resolved = os.path.normpath(os.path.join(virtual_dir, img_path))
         else:
             resolved = os.path.normpath(os.path.join(current_dir, img_path))
-        resolved_url = resolved.replace(os.sep, "/")
 
-        # SVGs → portal URL (Confluence can't render inline SVGs reliably)
-        if img_path.endswith(".svg"):
-            return f"{prefix}{PORTAL_BASE_URL}/{resolved_url}{suffix}"
-
-        # PNGs/JPGs → disk-relative path for mark to upload as attachment
+        # All images → disk-relative path for mark to upload as attachment
         new_path = os.path.relpath(resolved, current_dir).replace(os.sep, "/")
         return f"{prefix}{new_path}{suffix}"
 
