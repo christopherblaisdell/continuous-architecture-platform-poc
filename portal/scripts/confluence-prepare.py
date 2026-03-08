@@ -135,15 +135,38 @@ def build_link_map(file_map):
     return link_map
 
 
+def _lookup_link_map(link_map, resolved):
+    """Try multiple key variants to find a title in the link map."""
+    title = link_map.get(resolved)
+    if not title and not resolved.endswith(".md"):
+        title = link_map.get(resolved + ".md")
+    if not title:
+        title = link_map.get(resolved + "/index.md")
+    if not title and resolved.endswith("/"):
+        title = link_map.get(resolved.rstrip("/"))
+        if not title:
+            title = link_map.get(resolved + "index.md")
+    return title
+
+
 def rewrite_internal_links(content, link_map, current_file):
     """Rewrite relative Markdown links to Confluence page titles."""
     current_dir = os.path.dirname(current_file)
+
+    # For non-index files, MkDocs adds a virtual directory level
+    # e.g., microservices/svc-check-in.md → URL: microservices/svc-check-in/
+    basename = os.path.basename(current_file)
+    if basename != "index.md":
+        stem = os.path.splitext(basename)[0]
+        virtual_dir = os.path.join(current_dir, stem) if current_dir else stem
+    else:
+        virtual_dir = current_dir
 
     def _replace_link(match):
         text = match.group(1)
         href = match.group(2)
 
-        # Skip external links
+        # Skip external links and same-page anchors
         if href.startswith(("http://", "https://", "mailto:", "#")):
             return match.group(0)
 
@@ -153,22 +176,86 @@ def rewrite_internal_links(content, link_map, current_file):
             href, anchor = href.split("#", 1)
             anchor = "#" + anchor
 
-        # Resolve relative path
+        # Absolute paths (site-root-relative) → portal URLs
+        if href.startswith("/"):
+            url_path = href.lstrip("/")
+            return f"[{text}]({PORTAL_BASE_URL}/{url_path}{anchor})"
+
+        # Try both URL-relative (virtual dir) and source-relative (disk dir)
         if href:
-            resolved = os.path.normpath(os.path.join(current_dir, href))
-            # Try with and without .md
-            title = link_map.get(resolved)
-            if not title and not resolved.endswith(".md"):
-                title = link_map.get(resolved + ".md")
-            if not title and resolved.endswith("/"):
-                title = link_map.get(resolved + "index.md")
+            resolved_virtual = os.path.normpath(os.path.join(virtual_dir, href))
+            resolved_source = os.path.normpath(os.path.join(current_dir, href))
+
+            title = _lookup_link_map(link_map, resolved_virtual)
+            if not title:
+                title = _lookup_link_map(link_map, resolved_source)
 
             if title:
-                return f"[{text}]({title}{anchor})"
+                # Use mark's ac: prefix for inter-page Confluence links
+                # mark doesn't support anchors with ac: links, so fall back
+                # to the portal URL when an anchor is present.
+                if anchor:
+                    url_path = resolved_source.replace(os.sep, "/")
+                    if url_path.startswith(".."):
+                        url_path = resolved_virtual.replace(os.sep, "/")
+                    parts = [p for p in url_path.split("/") if p != ".."]
+                    url_path = "/".join(parts)
+                    if url_path.endswith(".md"):
+                        url_path = url_path[:-3] + "/"
+                    return f"[{text}]({PORTAL_BASE_URL}/{url_path}{anchor})"
+                # Use angle brackets for titles with spaces (mark requirement)
+                if " " in title:
+                    return f"[{text}](<ac:{title}>)"
+                return f"[{text}](ac:{title})"
+
+            # Unresolvable → portal URL fallback (prefer source-relative path)
+            url_path = resolved_source.replace(os.sep, "/")
+            if url_path.startswith(".."):
+                url_path = resolved_virtual.replace(os.sep, "/")
+            # Normalize away leading ../
+            parts = url_path.split("/")
+            parts = [p for p in parts if p != ".."]
+            url_path = "/".join(parts)
+            if url_path.endswith(".md"):
+                url_path = url_path[:-3] + "/"
+            return f"[{text}]({PORTAL_BASE_URL}/{url_path}{anchor})"
 
         return match.group(0)
 
-    return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', _replace_link, content)
+    # Negative lookbehind (?<!!) to skip image references ![alt](path)
+    return re.sub(r'(?<!!)\[([^\]]+)\]\(([^)]+)\)', _replace_link, content)
+
+
+def rewrite_image_paths(content, current_file):
+    """Fix image paths for mark CLI (resolves from disk, not MkDocs URLs).
+
+    MkDocs renders non-index files one directory level deeper than their
+    disk location (e.g., dir/page.md → URL dir/page/).  Relative image
+    paths written for MkDocs therefore need adjustment so that mark can
+    find the files on disk.
+    """
+    basename = os.path.basename(current_file)
+    if basename == "index.md":
+        return content  # index files have matching depth
+
+    current_dir = os.path.dirname(current_file)
+    stem = os.path.splitext(basename)[0]
+    virtual_dir = os.path.join(current_dir, stem) if current_dir else stem
+
+    def _fix_img_path(match):
+        prefix = match.group(1)   # ![alt](
+        img_path = match.group(2)
+        suffix = match.group(3)   # )
+
+        if img_path.startswith(("http://", "https://", "/")):
+            return match.group(0)
+
+        # Resolve from MkDocs virtual location, then relativize to disk
+        resolved = os.path.normpath(os.path.join(virtual_dir, img_path))
+        new_path = os.path.relpath(resolved, current_dir).replace(os.sep, "/")
+        return f"{prefix}{new_path}{suffix}"
+
+    return re.sub(r'(!\[[^\]]*\]\()([^)]+)(\))', _fix_img_path, content)
 
 
 # ── Admonition Conversion ──
@@ -499,6 +586,7 @@ def process_all_files(dry_run=False):
             content = convert_admonitions(content)
             content = convert_object_tags(content)
             content = convert_content_tabs(content)
+            content = rewrite_image_paths(content, rel_path)
             content = rewrite_internal_links(content, link_map, rel_path)
             content = inject_headers(content, title, parent, labels)
             content = insert_banner(content)
