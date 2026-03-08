@@ -114,6 +114,16 @@ def _title_from_path(path):
     if basename == "index":
         parent_dir = os.path.basename(os.path.dirname(path))
         return parent_dir.replace("-", " ").title() if parent_dir else "Home"
+
+    # Preserve NTK ticket IDs and svc- prefixes as-is
+    # e.g., "NTK-10008" stays "NTK-10008", "svc-reviews" stays "svc-reviews"
+    if re.match(r'^(NTK-\d+)', basename):
+        return basename  # Return the full filename stem (NTK-10008)
+    if basename.startswith("svc-"):
+        return basename  # svc-reviews stays svc-reviews
+    if basename.startswith("_NTK-"):
+        return basename  # _NTK-10008-guest-reviews stays as-is
+
     return basename.replace("-", " ").title()
 
 
@@ -227,20 +237,21 @@ def rewrite_internal_links(content, link_map, current_file):
 
 
 def rewrite_image_paths(content, current_file):
-    """Fix image paths for mark CLI (resolves from disk, not MkDocs URLs).
+    """Rewrite image paths for Confluence compatibility.
 
-    MkDocs renders non-index files one directory level deeper than their
-    disk location (e.g., dir/page.md → URL dir/page/).  Relative image
-    paths written for MkDocs therefore need adjustment so that mark can
-    find the files on disk.
+    SVG images are converted to portal URLs since Confluence does not
+    reliably render SVGs as inline attachments.  PNG/JPG images keep
+    their disk-relative paths so mark can upload them as attachments.
     """
     basename = os.path.basename(current_file)
-    if basename == "index.md":
-        return content  # index files have matching depth
-
     current_dir = os.path.dirname(current_file)
-    stem = os.path.splitext(basename)[0]
-    virtual_dir = os.path.join(current_dir, stem) if current_dir else stem
+
+    # For non-index files, MkDocs adds a virtual directory level
+    if basename != "index.md":
+        stem = os.path.splitext(basename)[0]
+        virtual_dir = os.path.join(current_dir, stem) if current_dir else stem
+    else:
+        virtual_dir = current_dir
 
     def _fix_img_path(match):
         prefix = match.group(1)   # ![alt](
@@ -250,8 +261,18 @@ def rewrite_image_paths(content, current_file):
         if img_path.startswith(("http://", "https://", "/")):
             return match.group(0)
 
-        # Resolve from MkDocs virtual location, then relativize to disk
-        resolved = os.path.normpath(os.path.join(virtual_dir, img_path))
+        # Resolve the URL-relative path to a docs-relative path
+        if basename != "index.md":
+            resolved = os.path.normpath(os.path.join(virtual_dir, img_path))
+        else:
+            resolved = os.path.normpath(os.path.join(current_dir, img_path))
+        resolved_url = resolved.replace(os.sep, "/")
+
+        # SVGs → portal URL (Confluence can't render inline SVGs reliably)
+        if img_path.endswith(".svg"):
+            return f"{prefix}{PORTAL_BASE_URL}/{resolved_url}{suffix}"
+
+        # PNGs/JPGs → disk-relative path for mark to upload as attachment
         new_path = os.path.relpath(resolved, current_dir).replace(os.sep, "/")
         return f"{prefix}{new_path}{suffix}"
 
@@ -319,10 +340,10 @@ def convert_object_tags(content):
         alt = match.group(2) or "Diagram"
         return f"![{alt}]({data})"
 
-    # Match <object data="..." ...>alt text</object>
-    # Also handle <div class="diagram-wrap">...<object>...</object>...</div>
+    # Match <div class="diagram-wrap"> containing expand link + <object>
+    # The expand link (<a ...>⤢</a>) and wrapper div are stripped entirely
     content = re.sub(
-        r'<div class="diagram-wrap">.*?<object\s+data="([^"]+)"[^>]*>(.*?)</object>.*?</div>',
+        r'<div class="diagram-wrap">\s*(?:<a[^>]*>[^<]*</a>\s*)?<object\s+data="([^"]+)"[^>]*>(.*?)</object>\s*</div>',
         lambda m: f"![{m.group(2) or 'Diagram'}]({m.group(1)})",
         content,
         flags=re.DOTALL,
@@ -398,6 +419,48 @@ def strip_mkdocs_syntax(content):
         content,
         flags=re.DOTALL,
     )
+
+    # ── MkDocs Material HTML cleanup ──
+    # Remove <div> wrappers with Material CSS classes (hero, portal-grid, etc.)
+    content = re.sub(r'<div[^>]*(?:class="[^"]*")[^>]*(?:\s+markdown)?>', '', content)
+    content = re.sub(r'</div>', '', content)
+
+    # Convert <a> portal card links to plain markdown links, extracting
+    # the href and nested heading text
+    def _convert_portal_card(match):
+        href = match.group(1)
+        inner = match.group(2)
+        # Extract the heading text (### Title)
+        heading_match = re.search(r'###\s+(.+)', inner)
+        # Extract description text (non-heading, non-empty lines)
+        desc_lines = []
+        for line in inner.split('\n'):
+            line = line.strip()
+            if line and not line.startswith('#') and not line.startswith('<'):
+                desc_lines.append(line)
+        desc = ' '.join(desc_lines).strip()
+        if heading_match:
+            title = heading_match.group(1).strip()
+            if desc:
+                return f"- **[{title}]({href})** — {desc}"
+            return f"- **[{title}]({href})**"
+        return f"- [{desc or href}]({href})"
+
+    content = re.sub(
+        r'<a\s+href="([^"]+)"[^>]*>\s*(?:<span[^>]*>[^<]*</span>\s*)?(.*?)</a>',
+        _convert_portal_card,
+        content,
+        flags=re.DOTALL,
+    )
+
+    # Remove standalone <span> tags with Material CSS classes
+    content = re.sub(r'<span[^>]*class="[^"]*"[^>]*>([^<]*)</span>', r'\1', content)
+
+    # Remove <p> tags with Material CSS classes
+    content = re.sub(r'<p[^>]*class="[^"]*"[^>]*>([^<]*)</p>', r'\1', content)
+
+    # Remove inline style spans (badges, etc.) — keep inner text
+    content = re.sub(r'<span\s+style="[^"]*">([^<]*)</span>', r'\1', content)
 
     # Clean up multiple blank lines
     content = re.sub(r'\n{3,}', '\n\n', content)
@@ -545,8 +608,8 @@ def process_all_files(dry_run=False):
             shutil.rmtree(CONFLUENCE_DIR)
         os.makedirs(CONFLUENCE_DIR, exist_ok=True)
 
-    processed = 0
-    skipped = 0
+    # ── Pass 1: Compute titles and parents for all pages ──
+    page_meta = []  # list of (rel_path, filepath, title, parent, grandparent)
 
     for root, _dirs, files in os.walk(DOCS_DIR):
         for filename in sorted(files):
@@ -557,10 +620,8 @@ def process_all_files(dry_run=False):
                 continue
 
             if should_exclude(rel_path):
-                skipped += 1
                 continue
 
-            # Look up nav metadata
             nav_info = nav_map.get(rel_path, {})
             title = nav_info.get("title", _title_from_path(rel_path))
             parent = nav_info.get("parent", "NovaTrek Architecture Portal")
@@ -569,41 +630,68 @@ def process_all_files(dry_run=False):
             if parent is None:
                 parent = "NovaTrek Architecture Portal"
 
-            # Index pages whose title matches the parent section name (case-insensitive)
-            # ARE the landing page for that section. Promote them: use the exact
-            # section name as title and the grandparent section as parent.
-            if title.lower() == parent.lower():
-                title = parent  # Use exact section name casing
+            # Promote section landing pages: when a page IS the section's
+            # landing page (index.md, or a page whose slug matches the
+            # nav section name), adopt the section name as title and move
+            # the parent up to the grandparent.
+            is_landing = filename == "index.md"
+            if not is_landing and parent:
+                t = title.lower().replace("-", " ").replace("_", " ").strip()
+                s = parent.lower().replace("-", " ").replace("_", " ").strip()
+                is_landing = (t == s)
+
+            if is_landing and parent and parent != "NovaTrek Architecture Portal":
+                title = parent
                 parent = grandparent if grandparent else "NovaTrek Architecture Portal"
 
-            labels = derive_labels(rel_path, title)
+            page_meta.append((rel_path, filepath, title, parent, grandparent))
 
-            with open(filepath, encoding="utf-8") as f:
-                content = f.read()
+    # ── Pass 1b: Fix orphaned parents ──
+    # Build set of all page titles that will exist
+    all_titles = {m[2] for m in page_meta}
+    all_titles.add("NovaTrek Architecture Portal")  # always exists (space root)
 
-            # Apply transformations in order
-            content = strip_mkdocs_syntax(content)
-            content = convert_admonitions(content)
-            content = convert_object_tags(content)
-            content = convert_content_tabs(content)
-            content = rewrite_image_paths(content, rel_path)
-            content = rewrite_internal_links(content, link_map, rel_path)
-            content = inject_headers(content, title, parent, labels)
-            content = insert_banner(content)
-            content = add_portal_link(content, rel_path)
+    fixed_meta = []
+    for rel_path, filepath, title, parent, grandparent in page_meta:
+        if parent not in all_titles and grandparent:
+            parent = grandparent if grandparent in all_titles else "NovaTrek Architecture Portal"
+        fixed_meta.append((rel_path, filepath, title, parent))
 
-            if dry_run:
-                print(f"  [DRY RUN] {rel_path}")
-                print(f"            Title: {title}")
-                print(f"            Parent: {parent}")
-                print(f"            Labels: {', '.join(labels)}")
-            else:
-                dst = os.path.join(CONFLUENCE_DIR, rel_path)
-                os.makedirs(os.path.dirname(dst), exist_ok=True)
-                with open(dst, "w", encoding="utf-8") as f:
-                    f.write(content)
+    # ── Pass 2: Transform and write files ──
+    processed = 0
+    skipped_count = sum(1 for root, _d, files in os.walk(DOCS_DIR)
+                        for f in files if f.endswith(".md") and should_exclude(
+                            os.path.relpath(os.path.join(root, f), DOCS_DIR).replace(os.sep, "/")))
 
-            processed += 1
+    for rel_path, filepath, title, parent in fixed_meta:
+        labels = derive_labels(rel_path, title)
+
+        with open(filepath, encoding="utf-8") as f:
+            content = f.read()
+
+        # Apply transformations in order
+        content = convert_object_tags(content)
+        content = convert_admonitions(content)
+        content = strip_mkdocs_syntax(content)
+        content = convert_content_tabs(content)
+        content = rewrite_image_paths(content, rel_path)
+        content = rewrite_internal_links(content, link_map, rel_path)
+        content = inject_headers(content, title, parent, labels)
+        content = insert_banner(content)
+        content = add_portal_link(content, rel_path)
+
+        if dry_run:
+            print(f"  [DRY RUN] {rel_path}")
+            print(f"            Title: {title}")
+            print(f"            Parent: {parent}")
+            print(f"            Labels: {', '.join(labels)}")
+        else:
+            dst = os.path.join(CONFLUENCE_DIR, rel_path)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            with open(dst, "w", encoding="utf-8") as f:
+                f.write(content)
+
+        processed += 1
 
     # Copy image assets (SVGs, PNGs)
     if not dry_run:
@@ -624,7 +712,7 @@ def process_all_files(dry_run=False):
 
     print(f"\n  Confluence preparation complete:")
     print(f"    Processed: {processed} pages")
-    print(f"    Skipped:   {skipped} files (excluded paths)")
+    print(f"    Skipped:   {skipped_count} files (excluded paths)")
     if not dry_run:
         print(f"    Output:    {CONFLUENCE_DIR}")
 
