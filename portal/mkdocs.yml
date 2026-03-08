@@ -153,6 +153,8 @@ nav:
     - _NTK-10003: solutions/_NTK-10003-unregistered-guest-self-checkin.md
     - _NTK-10004: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
     - _NTK-10005: solutions/_NTK-10005-wristband-rfid-field.md
+    - _NTK-10008: solutions/_NTK-10008-guest-reviews-and-ratings.md
+    - _NTK-10009: solutions/_NTK-10009-refund-dispute-management.md
   - Business Capabilities: capabilities/index.md
   - Tickets:
     - tickets/index.md
@@ -163,6 +165,8 @@ nav:
     - NTK-10005: tickets/NTK-10005.md
     - NTK-10006: tickets/NTK-10006.md
     - NTK-10007: tickets/NTK-10007.md
+    - NTK-10008: tickets/NTK-10008.md
+    - NTK-10009: tickets/NTK-10009.md
   - Applications:
     - applications/index.md
     - web-guest-portal:
@@ -199,6 +203,7 @@ nav:
     - svc-transport-logistics: microservices/svc-transport-logistics.md
     - svc-trip-catalog: microservices/svc-trip-catalog.md
     - svc-weather: microservices/svc-weather.md
+    - svc-reviews: microservices/svc-reviews.md
     - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
   - Event Catalog: events/index.md
   - Actor Catalog: actors/index.md
