@@ -189,6 +189,14 @@ jobs:
       - name: Prepare Confluence pages
         run: python3 portal/scripts/confluence-prepare.py
 
+      - name: Delete existing Confluence pages (clean slate)
+        run: |
+          python3 portal/scripts/confluence-delete-space-content.py \
+            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --username "${{ secrets.CONFLUENCE_USERNAME }}" \
+            --api-token "${{ secrets.CONFLUENCE_API_TOKEN }}" \
+            --space "ARCH"
+
       - name: Install mark
         run: |
           curl -sL https://github.com/kovetskiy/mark/releases/latest/download/mark_linux_amd64 \
