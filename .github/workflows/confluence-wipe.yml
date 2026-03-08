@@ -1,0 +1,76 @@
+# ===========================================================================
+# Wipe Confluence Space Content
+# ===========================================================================
+# Manually-triggered workflow to delete all pages from the ARCH Confluence
+# space (except the space homepage). Use this to reset the space before a
+# clean republish.
+#
+# After running this, trigger Deploy Documentation to republish all pages.
+# ===========================================================================
+
+name: Wipe Confluence Space
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (list pages without deleting)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      confirm:
+        description: 'Type WIPE to confirm deletion'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  wipe:
+    runs-on: ubuntu-latest
+    name: Delete All Confluence Pages
+    if: github.event.inputs.confirm == 'WIPE' || github.event.inputs.dry_run == 'true'
+    steps:
+      - name: Validate confirmation
+        if: github.event.inputs.dry_run == 'false' && github.event.inputs.confirm != 'WIPE'
+        run: |
+          echo "ERROR: You must type WIPE to confirm deletion."
+          exit 1
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Delete Confluence pages
+        run: |
+          DRY_RUN_FLAG=""
+          if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
+
+          python3 portal/scripts/confluence-delete-space-content.py \
+            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --username "${{ secrets.CONFLUENCE_USERNAME }}" \
+            --api-token "${{ secrets.CONFLUENCE_API_TOKEN }}" \
+            --space "ARCH" \
+            $DRY_RUN_FLAG
+
+      - name: Summary
+        run: |
+          if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            echo "## Dry Run Complete" >> $GITHUB_STEP_SUMMARY
+            echo "No pages were deleted. Review the logs above to see what would be removed." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## Confluence Space Wiped" >> $GITHUB_STEP_SUMMARY
+            echo "All pages in the ARCH space have been deleted." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Next step:** Run the [Deploy Documentation](../workflows/docs-deploy.yml) workflow to republish." >> $GITHUB_STEP_SUMMARY
+          fi
