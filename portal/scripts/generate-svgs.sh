@@ -18,7 +18,7 @@ while IFS= read -r -d '' f; do
   plantuml -tsvg -o "$OUT" "$f"
   echo "  -> OK"
   count=$((count + 1))
-done < <(find "$SRC" -name "*.puml" ! -name "include.puml" ! -name "templates.puml" -print0)
+done < <(find "$SRC" -name "*.puml" ! -name "include.puml" ! -name "templates.puml" ! -name "theme.puml" ! -path "*/endpoints/*" -print0)
 
 echo ""
 echo "Generated $count SVG files from architecture/diagrams/"

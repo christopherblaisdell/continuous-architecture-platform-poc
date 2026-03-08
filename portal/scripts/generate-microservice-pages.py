@@ -1573,6 +1573,11 @@ def main():
     override_msg = f" ({override_count} architect overrides)" if override_count else ""
     print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise + 1 event flow){override_msg}")
 
+    # Copy theme.puml so architect overrides can resolve !include ../theme.puml
+    theme_src = os.path.join(WORKSPACE_ROOT, "architecture", "diagrams", "theme.puml")
+    if os.path.isfile(theme_src):
+        shutil.copy2(theme_src, os.path.join(OUTPUT_DIR, "theme.puml"))
+
     # Render all PUMLs to SVG
     print("  Rendering SVGs with PlantUML...")
     result = subprocess.run(
