@@ -367,19 +367,19 @@ Portal  Confluence
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 6.1 | Create Confluence Cloud free-tier instance (`novatrek.atlassian.net`) | -- | Small |
-| 6.2 | Create ARCH space with root parent pages (Design Standards, Solutions, Capabilities, etc.) | 6.1 | Small |
-| 6.3 | Generate API token, store as GitHub secrets (`CONFLUENCE_API_TOKEN`, `CONFLUENCE_USERNAME`) | 6.1 | Small |
-| 6.4 | Install `mark` locally, validate manual publish of 1 page | 6.1 | Small |
+| 6.1 | COMPLETE -- Confluence Cloud free-tier instance created (`christopherblaisdell.atlassian.net`), API access verified | -- | Small |
+| 6.2 | COMPLETE -- ARCH space created (homepage ID 1310899), parent pages auto-created by mark during publish | 6.1 | Small |
+| 6.3 | COMPLETE -- API token generated, GitHub secrets stored (`CONFLUENCE_API_TOKEN`, `CONFLUENCE_USERNAME`, `CONFLUENCE_BASE_URL`, `CONFLUENCE_SPACE`) | 6.1 | Small |
+| 6.4 | COMPLETE -- `mark` v15.3.0 installed via Homebrew, single page test publish validated | 6.1 | Small |
 | 6.5 | COMPLETE -- `portal/scripts/confluence-prepare.py` with header injection, link rewriting, admonition conversion, SVG handling, banner insertion | 2.6 | Medium |
 | 6.6 | COMPLETE -- `<object>` to `![](img)` conversion for SVG diagrams | 6.5 | Small |
 | 6.7 | COMPLETE -- MkDocs admonition to Confluence macro conversion (`!!! note` to `{note}`) | 6.5 | Small |
 | 6.8 | COMPLETE -- Internal link rewriting (relative MD paths to Confluence page titles) | 6.5 | Small |
 | 6.9 | COMPLETE -- Content tab fallback (tabs to H3 sections) and MkDocs syntax stripping (attribute lists, Material emoji, HTML comments) | 6.5 | Small |
-| 6.10 | Test full publish of all ~80 pages via `mark` CLI | 6.5-6.9 | Medium |
+| 6.10 | COMPLETE -- Full publish of 84 pages to Confluence ARCH space via `mark` CLI, 0 errors. Fixed parent/title collision for nested index pages (grandparent resolution). Page locking requires Confluence Standard plan (free-tier limitation); 3 other drift prevention layers active. | 6.5-6.9 | Medium |
 | 6.11 | COMPLETE -- Added `publish-confluence` job to `docs-deploy.yml` (prepare, mark publish, lock pages) | 6.10 | Small |
 | 6.12 | COMPLETE -- Added `validate-confluence` dry-run job to `docs-deploy.yml` for PR validation | 6.11 | Small |
-| 6.13 | COMPLETE -- `portal/scripts/confluence-lock-pages.py` sets edit restrictions on auto-generated pages | 6.11 | Small |
+| 6.13 | COMPLETE -- `portal/scripts/confluence-lock-pages.py` sets edit restrictions on auto-generated pages (requires Standard plan) | 6.11 | Small |
 | 6.14 | COMPLETE -- `portal/scripts/confluence-drift-check.py` detects unauthorized edits via editor and content hash checks | 6.13 | Small |
 | 6.15 | COMPLETE -- `.github/workflows/confluence-drift-check.yml` scheduled weekdays 6 AM UTC | 6.14 | Small |
 | 6.16 | COMPLETE -- Added Confluence Publishing section to `copilot-instructions.md` with commands, CI/CD, secrets | 6.11 | Small |
