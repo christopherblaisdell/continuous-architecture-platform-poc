@@ -477,6 +477,11 @@ def process_all_files(dry_run=False):
             if parent is None:
                 parent = "NovaTrek Architecture Portal"
 
+            # Confluence cannot have a page with the same title as its parent
+            # in the same space. For index pages that collide, parent up one level.
+            if title == parent:
+                parent = "NovaTrek Architecture Portal"
+
             labels = derive_labels(rel_path, title)
 
             with open(filepath, encoding="utf-8") as f:
