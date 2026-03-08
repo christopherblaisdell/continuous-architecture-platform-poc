@@ -90,20 +90,22 @@ def parse_mkdocs_nav():
     return file_map
 
 
-def _walk_nav(items, parent_title, file_map):
+def _walk_nav(items, parent_title, file_map, grandparent_title=None):
     """Recursively walk the nav tree."""
     for item in items:
         if isinstance(item, str):
             # Plain file reference (no title)
-            file_map[item] = {"title": _title_from_path(item), "parent": parent_title}
+            file_map[item] = {"title": _title_from_path(item), "parent": parent_title,
+                              "grandparent": grandparent_title}
         elif isinstance(item, dict):
             for key, val in item.items():
                 if isinstance(val, str):
                     # "Title: path.md"
-                    file_map[val] = {"title": key, "parent": parent_title}
+                    file_map[val] = {"title": key, "parent": parent_title,
+                                     "grandparent": grandparent_title}
                 elif isinstance(val, list):
                     # "Section Title: [children]"
-                    _walk_nav(val, key, file_map)
+                    _walk_nav(val, key, file_map, grandparent_title=parent_title)
 
 
 def _title_from_path(path):
@@ -428,7 +430,9 @@ def derive_labels(rel_path, title):
     elif parts[0] == "standards":
         labels.append("standard")
         if len(parts) > 1:
-            labels.append(parts[1])
+            slug = parts[1].replace(".md", "")
+            if slug != "index":
+                labels.append(slug)
     elif parts[0] == "applications":
         labels.append("application")
     elif parts[0] == "events":
@@ -473,14 +477,17 @@ def process_all_files(dry_run=False):
             nav_info = nav_map.get(rel_path, {})
             title = nav_info.get("title", _title_from_path(rel_path))
             parent = nav_info.get("parent", "NovaTrek Architecture Portal")
+            grandparent = nav_info.get("grandparent")
 
             if parent is None:
                 parent = "NovaTrek Architecture Portal"
 
-            # Confluence cannot have a page with the same title as its parent
-            # in the same space. For index pages that collide, parent up one level.
-            if title == parent:
-                parent = "NovaTrek Architecture Portal"
+            # Index pages whose title matches the parent section name (case-insensitive)
+            # ARE the landing page for that section. Promote them: use the exact
+            # section name as title and the grandparent section as parent.
+            if title.lower() == parent.lower():
+                title = parent  # Use exact section name casing
+                parent = grandparent if grandparent else "NovaTrek Architecture Portal"
 
             labels = derive_labels(rel_path, title)
 
