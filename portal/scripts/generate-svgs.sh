@@ -12,13 +12,21 @@ OUT="$ROOT/portal/docs/diagrams/svg"
 mkdir -p "$OUT"
 
 count=0
+failed=0
 while IFS= read -r -d '' f; do
   name=$(basename "$f" .puml)
   echo "Generating: $name"
-  plantuml -tsvg -o "$OUT" "$f"
-  echo "  -> OK"
-  count=$((count + 1))
+  if plantuml -tsvg -o "$OUT" "$f" 2>&1; then
+    echo "  -> OK"
+    count=$((count + 1))
+  else
+    echo "  -> WARNING: PlantUML failed for $name (non-fatal)"
+    failed=$((failed + 1))
+  fi
 done < <(find "$SRC" -name "*.puml" ! -name "include.puml" ! -name "templates.puml" ! -name "theme.puml" ! -path "*/endpoints/*" -print0)
 
 echo ""
 echo "Generated $count SVG files from architecture/diagrams/"
+if [ $failed -gt 0 ]; then
+  echo "WARNING: $failed diagrams failed to render (non-fatal)"
+fi
