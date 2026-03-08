@@ -263,18 +263,18 @@ Build the metadata backbone and establish the solution design workflow.
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 1.1 | Create `architecture/solutions/` directory | -- | Small |
-| 1.2 | Migrate 5 existing solutions from Phase 1 workspace to `architecture/solutions/` | 1.1 | Small |
-| 1.3 | Add `c.capabilities/` folder to the solution folder template | 1.1 | Small |
-| 1.4 | Enhance solution design template with capability mapping, metadata header, changelog sections | 1.3 | Small |
-| 1.5 | Publish enhanced template to portal at `standards/solution-design/` | 1.4 | Small |
-| 1.6 | Create `architecture/metadata/capabilities.yaml` with 34 L2 capabilities | -- | Small |
-| 1.7 | Create `architecture/metadata/capability-changelog.yaml` with retrospective entries for NTK-10001 through NTK-10005 | 1.6 | Medium |
-| 1.8 | Create `architecture/metadata/tickets.yaml` -- migrate 7 tickets from mock JSON, add capability mappings | 1.6 | Small |
-| 1.9 | Write `scripts/ticket-client.py` -- YAML-reading CLI with capability/service filtering | 1.8 | Small |
+| 1.1 | COMPLETE -- Created `architecture/solutions/` directory | -- | Small |
+| 1.2 | COMPLETE -- Migrated 5 existing solutions from Phase 1 workspace to `architecture/solutions/` | 1.1 | Small |
+| 1.3 | COMPLETE -- Added `c.capabilities/` folder to the solution folder template | 1.1 | Small |
+| 1.4 | COMPLETE -- Enhanced solution design template with capability mapping, metadata header, changelog sections | 1.3 | Small |
+| 1.5 | COMPLETE -- Published enhanced template to portal at `standards/solution-design/` | 1.4 | Small |
+| 1.6 | COMPLETE -- Created `architecture/metadata/capabilities.yaml` with 34 L2 capabilities | -- | Small |
+| 1.7 | COMPLETE -- Created `architecture/metadata/capability-changelog.yaml` with retrospective entries for NTK-10001 through NTK-10005 | 1.6 | Medium |
+| 1.8 | COMPLETE -- Created `architecture/metadata/tickets.yaml` -- migrated 7 tickets from mock JSON with capability mappings | 1.6 | Small |
+| 1.9 | COMPLETE -- Wrote `scripts/ticket-client.py` -- YAML-reading CLI with capability/service filtering | 1.8 | Small |
 | 1.10 | COMPLETE -- Created branch ruleset (ID 13600522) on `main` requiring PRs and `validate-solution` status check, with admin bypass. Repo made public to enable rulesets on free plan | -- | Small |
-| 1.11 | Document branch naming convention (`solution/NTK-XXXXX-slug`) in copilot-instructions.md | -- | Small |
-| 1.12 | Add PR template (`.github/pull_request_template.md`) with architecture review checklist | -- | Small |
+| 1.11 | COMPLETE -- Documented branch naming convention (`solution/NTK-XXXXX-slug`) in copilot-instructions.md | -- | Small |
+| 1.12 | COMPLETE -- Added PR template (`.github/pull_request_template.md`) with architecture review checklist | -- | Small |
 
 **Outcome:** Solution designs have a canonical home, the template supports capability rollup, the metadata backbone exists, and the branch-based review workflow is documented.
 
@@ -284,15 +284,15 @@ Build generators and publish solution designs, capabilities, and tickets to the 
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 2.1 | Write `portal/scripts/generate-solution-pages.py` -- index + per-solution pages | 1.2 | Medium |
-| 2.2 | Write `portal/scripts/generate-capability-pages.py` -- capability map with timeline | 1.6, 1.7 | Medium |
-| 2.3 | Write `portal/scripts/generate-ticket-pages.py` -- index + per-ticket pages | 1.8 | Medium |
+| 2.1 | COMPLETE -- Wrote `portal/scripts/generate-solution-pages.py` -- index + per-solution pages | 1.2 | Medium |
+| 2.2 | COMPLETE -- Wrote `portal/scripts/generate-capability-pages.py` -- capability map with timeline | 1.6, 1.7 | Medium |
+| 2.3 | COMPLETE -- Wrote `portal/scripts/generate-ticket-pages.py` -- index + per-ticket pages | 1.8 | Medium |
 | 2.4 | COMPLETE -- Updated `generate-microservice-pages.py` to include "Solutions Affecting This Service" section with cross-links to solution pages, capability IDs, and dates | 2.1 | Small |
-| 2.5 | Add Solution Designs, Business Capabilities, and User Stories nav sections to `portal/mkdocs.yml` | 2.1-2.3 | Small |
-| 2.6 | Wire all generators into `portal/scripts/generate-all.sh` | 2.1-2.3 | Small |
-| 2.7 | Promote ADR-006 through ADR-008 from NTK-10003 to global `decisions/` | -- | Small |
-| 2.8 | Create CI workflow (`.github/workflows/validate-solution.yml`) for PR validation | 1.10 | Medium |
-| 2.9 | Test full pipeline: branch, solution, PR, CI, merge, deploy | 2.6, 2.8 | Small |
+| 2.5 | COMPLETE -- Added Solution Designs, Business Capabilities, Tickets, and nav sections to `portal/mkdocs.yml` | 2.1-2.3 | Small |
+| 2.6 | COMPLETE -- Wired all generators into `portal/scripts/generate-all.sh` | 2.1-2.3 | Small |
+| 2.7 | COMPLETE -- Promoted ADR-006 through ADR-008 from NTK-10003 to global `decisions/` | -- | Small |
+| 2.8 | COMPLETE -- Created CI workflow (`.github/workflows/validate-solution.yml`) for PR validation | 1.10 | Medium |
+| 2.9 | COMPLETE -- Tested full pipeline: branch, solution, PR, CI, merge, deploy | 2.6, 2.8 | Small |
 
 **Outcome:** Solution designs, capability pages, and ticket pages are live on the portal with cross-links. Branch CI validates solutions before merge.
 
@@ -302,11 +302,11 @@ Make the AI agent fully aware of the continuous architecture workflow.
 
 | Step | Task | Depends On | Effort |
 |------|------|-----------|--------|
-| 3.1 | Update `copilot-instructions.md` with solution design lifecycle and branching requirement | 1.4, 1.11 | Small |
-| 3.2 | Add capability rollup checklist to AI instructions | 1.6 | Small |
-| 3.3 | Add prior-art discovery workflow to AI instructions | 1.2 | Small |
-| 3.4 | Add ticket commands (`ticket-client.py`) to AI instructions | 1.9 | Small |
-| 3.5 | Test AI agent -- create a new solution on a dedicated branch using the enhanced workflow | 3.1-3.4 | Medium |
+| 3.1 | COMPLETE -- Updated `copilot-instructions.md` with solution design lifecycle and branching requirement | 1.4, 1.11 | Small |
+| 3.2 | COMPLETE -- Added capability rollup checklist to AI instructions | 1.6 | Small |
+| 3.3 | COMPLETE -- Added prior-art discovery workflow to AI instructions | 1.2 | Small |
+| 3.4 | COMPLETE -- Added ticket commands (`ticket-client.py`) to AI instructions | 1.9 | Small |
+| 3.5 | COMPLETE -- Tested AI agent -- created NTK-10008 and NTK-10009 solutions on dedicated branches using the enhanced workflow | 3.1-3.4 | Medium |
 
 **Outcome:** AI agent automatically produces capability-mapped solutions on dedicated branches with the same review workflow as human architects.
 
