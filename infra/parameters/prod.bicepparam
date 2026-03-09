@@ -18,8 +18,7 @@ param tags = {
   environment: 'production'
 }
 
-// Uncomment and set when custom domain is ready:
-// param customDomain = 'docs.novatrek.example.com'
+param customDomain = 'novatrek.cc'
 
 // ---------------------------------------------------------------------------
 // Vikunja Ticketing
