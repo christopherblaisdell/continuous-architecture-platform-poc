@@ -158,7 +158,7 @@ jobs:
       - name: Dry-run Confluence publish
         run: |
           mark \
-            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --base-url "${{ vars.CONFLUENCE_BASE_URL }}" \
             --username "${{ secrets.CONFLUENCE_USERNAME }}" \
             --password "${{ secrets.CONFLUENCE_API_TOKEN }}" \
             --files "portal/confluence/**/*.md" \
@@ -198,7 +198,7 @@ jobs:
       - name: Publish to Confluence
         run: |
           mark \
-            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --base-url "${{ vars.CONFLUENCE_BASE_URL }}" \
             --username "${{ secrets.CONFLUENCE_USERNAME }}" \
             --password "${{ secrets.CONFLUENCE_API_TOKEN }}" \
             --files "portal/confluence/**/*.md" \
@@ -208,7 +208,7 @@ jobs:
       - name: Lock published pages
         run: |
           python3 portal/scripts/confluence-lock-pages.py \
-            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --base-url "${{ vars.CONFLUENCE_BASE_URL }}" \
             --username "${{ secrets.CONFLUENCE_USERNAME }}" \
             --api-token "${{ secrets.CONFLUENCE_API_TOKEN }}" \
             --space "ARCH" \
