@@ -29,6 +29,7 @@ nav:
   - Evidence:
     - "Cost: 208x Cheaper": cost-evidence.md
     - "Output Analysis": quality-evidence.md
+    - "Roo Code + Kong Failures": roo-kong-failures.md
   - How It Works:
     - Enhanced Workspace: shared-workspace.md
     - Markdown-First: markdown-first.md
