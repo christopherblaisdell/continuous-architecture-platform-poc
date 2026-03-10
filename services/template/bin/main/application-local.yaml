@@ -1,0 +1,26 @@
+# ===========================================================================
+# Local Development Profile
+# ===========================================================================
+# Used with Docker Compose (docker-compose.yml in project root).
+# Run with: SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+# ===========================================================================
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/novatrek_dev
+    username: novatrekadmin
+    password: localdev123
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+
+logging:
+  level:
+    com.novatrek: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
