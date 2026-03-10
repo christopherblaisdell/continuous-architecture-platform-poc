@@ -47,6 +47,9 @@ param deployServiceBus bool = true
 @description('Deploy budget alert')
 param deployBudget bool = true
 
+@description('Location override for PostgreSQL (some subscriptions restrict certain regions)')
+param postgresLocation string = location
+
 // ---------------------------------------------------------------------------
 // Variables
 // ---------------------------------------------------------------------------
@@ -140,7 +143,7 @@ module acaEnv 'modules/container-apps-env.bicep' = {
     name: 'cae-${envSuffix}'
     location: location
     tags: defaultTags
-    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsId
+    logAnalyticsWorkspaceName: monitoring.outputs.logAnalyticsName
   }
 }
 
@@ -163,11 +166,13 @@ module keyVault 'modules/key-vault.bicep' = {
 // PostgreSQL Flexible Server
 // ---------------------------------------------------------------------------
 
+var postgresName = 'pg-${envSuffix}-${uniqueString(resourceGroup().id)}'
+
 module postgresql 'modules/postgresql.bicep' = {
   name: 'deploy-psql'
   params: {
-    name: 'psql-${envSuffix}'
-    location: location
+    name: postgresName
+    location: postgresLocation
     tags: defaultTags
     skuName: environment == 'prod' ? 'Standard_B2s' : 'Standard_B1ms'
     skuTier: 'Burstable'

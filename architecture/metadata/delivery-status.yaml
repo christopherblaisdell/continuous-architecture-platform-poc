@@ -9,7 +9,18 @@ waves:
   0:
     name: Foundation
     description: Shared infrastructure — no microservices
-    status: ready
+    status: deployed
+    deployed_date: '2026-03-10'
+    resources:
+      - crnovatrekdev (Container Registry, eastus2)
+      - sb-novatrek-dev (Service Bus, eastus2, 8 queues)
+      - log-novatrek-dev (Log Analytics, eastus2)
+      - stnovatrekdev (Storage Account, eastus2, 3 containers)
+      - appi-novatrek-dev (Application Insights, eastus2)
+      - cae-novatrek-dev (Container Apps Environment, eastus2)
+      - kv-novatrek-dev (Key Vault, eastus2)
+      - id-novatrek-dev (Managed Identity, eastus2)
+      - pg-novatrek-dev-* (PostgreSQL Flexible Server, centralus, 19 databases)
   1:
     name: Guest Identity and Product Catalog
     description: Core data services with no upstream dependencies

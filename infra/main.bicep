@@ -60,6 +60,9 @@ param vikunjaAppName string = 'ca-vikunja'
 @secure()
 param vikunjaJwtSecret string = ''
 
+@description('Name for the Log Analytics workspace used by Container Apps (used when deployVikunja is true)')
+param logAnalyticsWorkspaceName string = ''
+
 // ---------------------------------------------------------------------------
 // Variables
 // ---------------------------------------------------------------------------
@@ -130,6 +133,7 @@ module containerAppsEnv 'modules/container-apps-env.bicep' = if (deployVikunja) 
     name: containerAppsEnvName
     location: location
     tags: defaultTags
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
 }
 

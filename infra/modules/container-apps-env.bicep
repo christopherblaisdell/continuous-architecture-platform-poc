@@ -12,30 +12,15 @@ param location string
 @description('Tags to apply')
 param tags object = {}
 
-@description('Log Analytics workspace ID for diagnostics (optional)')
-param logAnalyticsWorkspaceId string = ''
+@description('Log Analytics workspace name (used to retrieve shared key)')
+param logAnalyticsWorkspaceName string
 
 // ---------------------------------------------------------------------------
-// Log Analytics Workspace (created if not provided)
+// Reference existing Log Analytics workspace to retrieve keys
 // ---------------------------------------------------------------------------
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if (empty(logAnalyticsWorkspaceId)) {
-  name: '${name}-logs'
-  location: location
-  tags: tags
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    retentionInDays: 30
-  }
-}
-
-var effectiveLogAnalyticsId = !empty(logAnalyticsWorkspaceId) ? logAnalyticsWorkspaceId : logAnalytics.id
-
-// Need to retrieve the shared key for the Container Apps Environment
-resource logAnalyticsRef 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = if (empty(logAnalyticsWorkspaceId)) {
-  name: '${name}-logs'
+resource logAnalyticsRef 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
+  name: logAnalyticsWorkspaceName
 }
 
 // ---------------------------------------------------------------------------
@@ -50,8 +35,8 @@ resource containerAppsEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: empty(logAnalyticsWorkspaceId) ? logAnalytics.properties.customerId : ''
-        sharedKey: empty(logAnalyticsWorkspaceId) ? logAnalytics.listKeys().primarySharedKey : ''
+        customerId: logAnalyticsRef.properties.customerId
+        sharedKey: logAnalyticsRef.listKeys().primarySharedKey
       }
     }
   }
@@ -71,4 +56,4 @@ output name string = containerAppsEnv.name
 output defaultDomain string = containerAppsEnv.properties.defaultDomain
 
 @description('Log Analytics workspace ID used')
-output logAnalyticsWorkspaceId string = effectiveLogAnalyticsId
+output logAnalyticsWorkspaceId string = logAnalyticsRef.id
