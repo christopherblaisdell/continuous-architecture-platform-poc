@@ -240,7 +240,7 @@ Generate a C4-style capability map diagram showing:
 The current portal URL is:
 
 ```
-https://mango-sand-083b8ce0f.4.azurestaticapps.net
+https://architecture.novatrek.cc
 ```
 
 This is the auto-generated Azure Static Web Apps hostname, which is not memorable or professional. Here are the options for adding a friendlier URL:

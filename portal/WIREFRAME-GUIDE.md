@@ -37,19 +37,19 @@ No manual regeneration or committing of generated files required.
 - **Source**: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
 - Guest check-in completion flow with guest info, safety checklist, wristband ID
 
-**See on site**: [Check-in Confirmation](https://mango-sand-083b8ce0f.4.azurestaticapps.net/applications/web-guest-portal/wireframes/check-in-confirmation/)
+**See on site**: [Check-in Confirmation](https://architecture.novatrek.cc/applications/web-guest-portal/wireframes/check-in-confirmation/)
 
 ### Web Operations Dashboard
 - **Source**: `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw`
 - Real-time adventure map with guest positions, alerts, and stats
 
-**See on site**: [Live Tracking](https://mango-sand-083b8ce0f.4.azurestaticapps.net/applications/web-ops-dashboard/wireframes/live-tracking/)
+**See on site**: [Live Tracking](https://architecture.novatrek.cc/applications/web-ops-dashboard/wireframes/live-tracking/)
 
 ### Mobile Guest App
 - **Source**: `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw`
 - Adventure listings with filters, availability, and booking
 
-**See on site**: [Adventure Selection](https://mango-sand-083b8ce0f.4.azurestaticapps.net/applications/app-guest-mobile/wireframes/adventure-selection/)
+**See on site**: [Adventure Selection](https://architecture.novatrek.cc/applications/app-guest-mobile/wireframes/adventure-selection/)
 
 ## Adding New Wireframes
 

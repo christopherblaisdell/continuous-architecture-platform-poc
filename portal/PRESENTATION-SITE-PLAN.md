@@ -159,7 +159,7 @@ Content:
 **File:** `docs/live-demo.md`
 
 Content:
-- Link to the live portal: `https://mango-sand-083b8ce0f.4.azurestaticapps.net`
+- Link to the live portal: `https://architecture.novatrek.cc`
 - Guided tour of key pages:
   - Enterprise C4 diagram with clickable services and PCI compliance zone
   - Microservice deep-dive page (e.g., svc-check-in) with endpoint sequence diagrams

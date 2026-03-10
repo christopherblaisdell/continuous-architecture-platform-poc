@@ -10,7 +10,7 @@ The NovaTrek Architecture Portal is a live, deployed website built entirely duri
 
 <div class="cta-box" markdown>
 
-### [https://mango-sand-083b8ce0f.4.azurestaticapps.net](https://mango-sand-083b8ce0f.4.azurestaticapps.net)
+### [https://architecture.novatrek.cc](https://architecture.novatrek.cc)
 
 Open in a new tab to explore alongside this presentation.
 

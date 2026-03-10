@@ -32,7 +32,7 @@ DOCS_DIR = os.path.join(PORTAL_DIR, "docs")
 CONFLUENCE_DIR = os.path.join(PORTAL_DIR, "confluence")
 MKDOCS_YML = os.path.join(PORTAL_DIR, "mkdocs.yml")
 
-PORTAL_BASE_URL = "https://mango-sand-083b8ce0f.4.azurestaticapps.net"
+PORTAL_BASE_URL = "https://architecture.novatrek.cc"
 CONFLUENCE_SPACE = "ARCH"
 
 # Directories to exclude from publishing

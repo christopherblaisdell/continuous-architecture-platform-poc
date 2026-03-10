@@ -190,7 +190,7 @@ Scale: 1 (poor) — 5 (excellent)
 ```
 Azure Resource Group: rg-continuous-architecture
 ├── Static Web App: NovaTrek Architecture Portal
-│   └── https://mango-sand-083b8ce0f.4.azurestaticapps.net
+│   └── https://architecture.novatrek.cc
 │
 ├── Container App: Vikunja Ticketing
 │   ├── Image: vikunja/vikunja:latest
