@@ -57,10 +57,10 @@ jobs:
           fi
 
           python3 portal/scripts/confluence-delete-space-content.py \
-            --base-url "https://${{ vars.CONFLUENCE_DOMAIN }}.atlassian.net/wiki" \
+            --base-url "${{ vars.CONFLUENCE_BASE_URL }}" \
             --username "${{ secrets.CONFLUENCE_USERNAME }}" \
             --api-token "${{ secrets.CONFLUENCE_API_TOKEN }}" \
-            --space "ARCH" \
+            --space "${{ vars.CONFLUENCE_SPACE }}" \
             $DRY_RUN_FLAG
 
       - name: Summary
