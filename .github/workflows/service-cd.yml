@@ -1,0 +1,72 @@
+# ===========================================================================
+# Service CD — Reusable Deploy Workflow
+# ===========================================================================
+# Deploys a container image to Azure Container Apps. Called by per-service
+# orchestrator workflows after CI completes.
+# ===========================================================================
+
+name: "Service CD (Reusable)"
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+        description: 'Service name (e.g., svc-check-in)'
+      environment:
+        required: true
+        type: string
+        description: 'Target environment (dev, prod)'
+      image-tag:
+        required: true
+        type: string
+        description: 'Full Docker image reference'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: "Deploy ${{ inputs.service-name }} → ${{ inputs.environment }}"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Container Apps
+        run: |
+          az containerapp update \
+            --name "ca-${{ inputs.service-name }}" \
+            --resource-group "rg-novatrek-${{ inputs.environment }}" \
+            --image "${{ inputs.image-tag }}" \
+            --set-env-vars "SPRING_PROFILES_ACTIVE=${{ inputs.environment }}"
+
+      - name: Verify deployment health
+        run: |
+          FQDN=$(az containerapp show \
+            --name "ca-${{ inputs.service-name }}" \
+            --resource-group "rg-novatrek-${{ inputs.environment }}" \
+            --query "properties.configuration.ingress.fqdn" -o tsv)
+
+          echo "Checking health at https://${FQDN}/actuator/health"
+
+          for i in $(seq 1 30); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://${FQDN}/actuator/health" || true)
+            if [ "${STATUS}" = "200" ]; then
+              echo "Service healthy after ${i} attempts"
+              exit 0
+            fi
+            echo "Waiting for health check... (attempt ${i}/30)"
+            sleep 10
+          done
+          echo "Health check failed after 5 minutes"
+          exit 1

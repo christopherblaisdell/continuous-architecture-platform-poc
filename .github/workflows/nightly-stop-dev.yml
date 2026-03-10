@@ -1,0 +1,47 @@
+# ===========================================================================
+# Nightly Stop Dev — Cost Control
+# ===========================================================================
+# Stops dev databases and scales services to zero at 8 PM EST (1 AM UTC)
+# on weekdays to save money overnight.
+# ===========================================================================
+
+name: "Nightly Stop Dev"
+
+on:
+  schedule:
+    - cron: '0 1 * * 2-6'  # 1 AM UTC (8 PM EST) Tue-Sat (Mon-Fri evenings)
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  stop:
+    name: "Stop Dev Resources"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Stop PostgreSQL
+        run: |
+          az postgres flexible-server stop \
+            --resource-group rg-novatrek-dev \
+            --name psql-novatrek-dev \
+          || echo "PostgreSQL may already be stopped"
+
+      - name: Scale all services to zero
+        run: |
+          APPS=$(az containerapp list -g rg-novatrek-dev --query "[].name" -o tsv 2>/dev/null || echo "")
+          for APP in ${APPS}; do
+            echo "Scaling ${APP} to 0..."
+            az containerapp update -n "${APP}" -g rg-novatrek-dev \
+              --min-replicas 0 --max-replicas 0 \
+            || echo "Failed to scale ${APP}"
+          done
+          echo "All dev resources stopped."

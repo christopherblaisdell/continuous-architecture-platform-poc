@@ -1,0 +1,119 @@
+# ===========================================================================
+# Adventure Category → Check-In Pattern Classification (ADR-004)
+# ===========================================================================
+# Configuration-driven classification — NOT hardcoded.
+# Unknown categories default to Pattern 3 (Full Service) per ADR-005.
+# ===========================================================================
+
+adventure_categories:
+  # Pattern 1 — Basic Self-Check-In (Low Risk)
+  hiking_easy:
+    pattern: 1
+    safety_level: low
+    description: Easy day hikes on maintained trails
+  nature_walk:
+    pattern: 1
+    safety_level: low
+    description: Guided nature walks
+  bird_watching:
+    pattern: 1
+    safety_level: low
+    description: Bird watching excursions
+  photography_tour:
+    pattern: 1
+    safety_level: low
+    description: Photography tours
+
+  # Pattern 2 — Guided Check-In (Medium Risk)
+  hiking_moderate:
+    pattern: 2
+    safety_level: medium
+    description: Moderate hikes with elevation gain
+  kayaking:
+    pattern: 2
+    safety_level: medium
+    description: Flatwater kayaking
+  mountain_biking:
+    pattern: 2
+    safety_level: medium
+    description: Mountain biking on groomed trails
+  horseback_riding:
+    pattern: 2
+    safety_level: medium
+    description: Guided horseback riding
+  snorkeling:
+    pattern: 2
+    safety_level: medium
+    description: Guided snorkeling excursions
+  fishing:
+    pattern: 2
+    safety_level: medium
+    description: Guided fishing trips
+  camping:
+    pattern: 2
+    safety_level: medium
+    description: Overnight camping with guide
+
+  # Pattern 3 — Full Service Check-In (High Risk)
+  rock_climbing:
+    pattern: 3
+    safety_level: high
+    description: Rock climbing with full gear
+  whitewater_rafting:
+    pattern: 3
+    safety_level: high
+    description: Whitewater rafting Class III+
+  canyoneering:
+    pattern: 3
+    safety_level: high
+    description: Technical canyoneering
+  glacier_trekking:
+    pattern: 3
+    safety_level: high
+    description: Glacier trekking with crampons
+  scuba_diving:
+    pattern: 3
+    safety_level: high
+    description: Certified scuba diving
+  paragliding:
+    pattern: 3
+    safety_level: high
+    description: Tandem paragliding
+  zip_lining:
+    pattern: 3
+    safety_level: high
+    description: High-altitude zip lining
+  bungee_jumping:
+    pattern: 3
+    safety_level: high
+    description: Bungee jumping
+  backcountry_skiing:
+    pattern: 3
+    safety_level: high
+    description: Backcountry skiing with avalanche gear
+  via_ferrata:
+    pattern: 3
+    safety_level: high
+    description: Via ferrata climbing routes
+  multi_day_expedition:
+    pattern: 3
+    safety_level: high
+    description: Multi-day wilderness expeditions
+  cave_exploration:
+    pattern: 3
+    safety_level: high
+    description: Cave and cavern exploration
+  night_hiking:
+    pattern: 3
+    safety_level: high
+    description: Night hiking with headlamps
+  wildlife_safari:
+    pattern: 3
+    safety_level: high
+    description: Wildlife safari in wilderness areas
+
+  # ADR-005 — Unknown categories MUST default to Pattern 3 (safety requirement)
+  _default:
+    pattern: 3
+    safety_level: high
+    description: Unknown category — defaults to highest safety level
