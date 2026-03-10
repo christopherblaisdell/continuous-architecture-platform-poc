@@ -1,0 +1,302 @@
+# ===========================================================================
+# Delivery Status — NovaTrek Adventures
+# ===========================================================================
+# Tracks deployment progress for each microservice across delivery waves.
+# Updated as services progress through build → deploy → prod stages.
+# ===========================================================================
+
+waves:
+  0:
+    name: Foundation
+    description: Shared infrastructure — no microservices
+    status: ready
+  1:
+    name: Guest Identity and Product Catalog
+    description: Core data services with no upstream dependencies
+    status: not-started
+  2:
+    name: Booking and Payments
+    description: Transaction core — reservations and payment processing
+    status: not-started
+  3:
+    name: Day-of-Adventure Operations
+    description: Check-in flow — the most complex orchestration
+    status: not-started
+  4:
+    name: Guide and Transport Operations
+    description: Guide management, transport logistics, location services
+    status: not-started
+  5:
+    name: Analytics, Loyalty, and Media
+    description: Supporting services for reporting and engagement
+    status: not-started
+  6:
+    name: External Integrations
+    description: Partner integrations, weather, procurement, emergency
+    status: not-started
+  7:
+    name: New Capabilities
+    description: Ticket-driven new services (reviews, tracking, referrals)
+    status: not-started
+
+# ---------------------------------------------------------------------------
+# Per-Service Delivery Status
+# ---------------------------------------------------------------------------
+services:
+  # --- Wave 1 ---
+  svc-guest-profiles:
+    wave: 1
+    domain: Guest Identity
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-trip-catalog:
+    wave: 1
+    domain: Product Catalog
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-trail-management:
+    wave: 1
+    domain: Product Catalog
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  # --- Wave 2 ---
+  svc-reservations:
+    wave: 2
+    domain: Booking
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-payments:
+    wave: 2
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-notifications:
+    wave: 2
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  # --- Wave 3 ---
+  svc-check-in:
+    wave: 3
+    domain: Operations
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-scheduling-orchestrator:
+    wave: 3
+    domain: Operations
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-gear-inventory:
+    wave: 3
+    domain: Logistics
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-safety-compliance:
+    wave: 3
+    domain: Safety
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  # --- Wave 4 ---
+  svc-guide-management:
+    wave: 4
+    domain: Guide Management
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-transport-logistics:
+    wave: 4
+    domain: Logistics
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-location-services:
+    wave: 4
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  # --- Wave 5 ---
+  svc-analytics:
+    wave: 5
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-loyalty-rewards:
+    wave: 5
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-media-gallery:
+    wave: 5
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  # --- Wave 6 ---
+  svc-partner-integrations:
+    wave: 6
+    domain: External
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-weather:
+    wave: 6
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-inventory-procurement:
+    wave: 6
+    domain: Support
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-emergency-response:
+    wave: 6
+    domain: Safety
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started
+
+  svc-wildlife-tracking:
+    wave: 6
+    domain: Safety
+    stages:
+      bicep-module: not-started
+      db-schema: not-started
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: not-started
+      smoke-tested: not-started
+      deployed-prod: not-started

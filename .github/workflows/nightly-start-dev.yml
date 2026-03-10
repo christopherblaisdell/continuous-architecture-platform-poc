@@ -1,0 +1,47 @@
+# ===========================================================================
+# Nightly Start Dev — Cost Control
+# ===========================================================================
+# Starts dev databases and restores service scaling at 8 AM EST (1 PM UTC)
+# on weekdays for the development team.
+# ===========================================================================
+
+name: "Nightly Start Dev"
+
+on:
+  schedule:
+    - cron: '0 13 * * 1-5'  # 1 PM UTC (8 AM EST) Mon-Fri mornings
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  start:
+    name: "Start Dev Resources"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Start PostgreSQL
+        run: |
+          az postgres flexible-server start \
+            --resource-group rg-novatrek-dev \
+            --name psql-novatrek-dev \
+          || echo "PostgreSQL may already be running"
+
+      - name: Restore service scaling
+        run: |
+          APPS=$(az containerapp list -g rg-novatrek-dev --query "[].name" -o tsv 2>/dev/null || echo "")
+          for APP in ${APPS}; do
+            echo "Restoring ${APP} scaling (0-2)..."
+            az containerapp update -n "${APP}" -g rg-novatrek-dev \
+              --min-replicas 0 --max-replicas 2 \
+            || echo "Failed to restore ${APP}"
+          done
+          echo "All dev resources restored."

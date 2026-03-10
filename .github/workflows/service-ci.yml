@@ -1,0 +1,84 @@
+# ===========================================================================
+# Service CI — Reusable Build, Test, and Scan Workflow
+# ===========================================================================
+# Called by each per-service workflow. Builds Java service, runs tests,
+# scans dependencies, builds Docker image, pushes to ACR.
+# ===========================================================================
+
+name: "Service CI (Reusable)"
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+        description: 'Service name (e.g., svc-check-in)'
+      java-version:
+        required: false
+        type: string
+        default: '21'
+      working-directory:
+        required: false
+        type: string
+        default: ''
+    outputs:
+      image-tag:
+        description: "Full Docker image tag"
+        value: ${{ jobs.build.outputs.image-tag }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    name: "Build ${{ inputs.service-name }}"
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.image-tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java ${{ inputs.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ inputs.java-version }}
+          cache: 'gradle'
+
+      - name: Build and test
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+        run: ./gradlew build test
+
+      - name: OWASP dependency check
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+        run: ./gradlew dependencyCheckAnalyze
+        continue-on-error: true
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Build and push Docker image
+        id: meta
+        run: |
+          TAG="${{ github.sha }}"
+          IMAGE="${{ secrets.ACR_LOGIN_SERVER }}/${{ inputs.service-name }}:${TAG}"
+          docker build -t "${IMAGE}" ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+          docker push "${IMAGE}"
+          echo "image-tag=${IMAGE}" >> "$GITHUB_OUTPUT"
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.image-tag }}
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          format: 'table'

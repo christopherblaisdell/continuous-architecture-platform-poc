@@ -1,0 +1,70 @@
+# ===========================================================================
+# Database Migrations — Flyway
+# ===========================================================================
+# Runs Flyway migrations for a specific microservice schema.
+# Called by per-service CD workflows after deployment.
+# ===========================================================================
+
+name: "Database Migrations (Flyway)"
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+        description: 'Service name (e.g., svc-check-in)'
+      environment:
+        required: true
+        type: string
+        description: 'Target environment (dev, prod)'
+      schema-name:
+        required: false
+        type: string
+        description: 'Database schema name (defaults to service name without svc- prefix)'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  migrate:
+    name: "Migrate ${{ inputs.service-name }} → ${{ inputs.environment }}"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Determine schema name
+        id: schema
+        run: |
+          SCHEMA="${{ inputs.schema-name }}"
+          if [ -z "${SCHEMA}" ]; then
+            SCHEMA=$(echo "${{ inputs.service-name }}" | sed 's/^svc-//' | tr '-' '_')
+          fi
+          echo "name=${SCHEMA}" >> "$GITHUB_OUTPUT"
+
+      - name: Run Flyway migrations
+        run: |
+          DB_HOST=$(az postgres flexible-server show \
+            --resource-group "rg-novatrek-${{ inputs.environment }}" \
+            --name "psql-novatrek-${{ inputs.environment }}" \
+            --query "fullyQualifiedDomainName" -o tsv)
+
+          docker run --rm \
+            -v "${{ github.workspace }}/services/${{ inputs.service-name }}/src/main/resources/db/migration:/flyway/sql" \
+            flyway/flyway:latest \
+            -url="jdbc:postgresql://${DB_HOST}:5432/novatrek_${{ inputs.environment }}" \
+            -schemas="${{ steps.schema.outputs.name }}" \
+            -user="${{ secrets.POSTGRES_ADMIN_USER }}" \
+            -password="${{ secrets.POSTGRES_ADMIN_PASSWORD }}" \
+            -connectRetries=5 \
+            -cleanDisabled=true \
+            migrate
