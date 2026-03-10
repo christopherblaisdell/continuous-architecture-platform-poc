@@ -239,7 +239,7 @@ For content that lives on Azure SWA only (Swagger UI, interactive viewers), Conf
 ```markdown
 > **Interactive Version Available**
 > This page has an interactive version with live API exploration at:
-> [View on NovaTrek Architecture Portal](https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-check-in/)
+> [View on NovaTrek Architecture Portal](https://architecture.novatrek.cc/microservices/svc-check-in/)
 ```
 
 Implemented as a Confluence Info macro:
@@ -249,7 +249,7 @@ Implemented as a Confluence Info macro:
   <ac:rich-text-body>
     <p><strong>Interactive Version Available</strong><br/>
     This page has an interactive version with live API exploration at:
-    <a href="https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-check-in/">View on NovaTrek Architecture Portal</a></p>
+    <a href="https://architecture.novatrek.cc/microservices/svc-check-in/">View on NovaTrek Architecture Portal</a></p>
   </ac:rich-text-body>
 </ac:structured-macro>
 ```
@@ -296,7 +296,7 @@ See also: [svc-guest-profiles](svc-guest-profiles.md)
 
 > **Interactive Version Available**
 > View the full interactive version with clickable SVG diagrams and Swagger UI at:
-> [NovaTrek Architecture Portal](https://mango-sand-083b8ce0f.4.azurestaticapps.net/microservices/svc-check-in/)
+> [NovaTrek Architecture Portal](https://architecture.novatrek.cc/microservices/svc-check-in/)
 
 ## Overview
 The Check-In service handles day-of-adventure guest registration...
@@ -571,7 +571,7 @@ The existing `docs-deploy.yml` workflow gains a new job: `publish-confluence`.
       - name: Prepare Confluence pages
         run: python3 portal/scripts/confluence-prepare.py
         env:
-          PORTAL_BASE_URL: https://mango-sand-083b8ce0f.4.azurestaticapps.net
+          PORTAL_BASE_URL: https://architecture.novatrek.cc
 
       - name: Publish to Confluence (dry-run on PR)
         run: |
@@ -735,7 +735,7 @@ Every Confluence page starts with an Info macro warning:
 
 ```markdown
 > **This page is auto-generated from Git. Do not edit here.**
-> Source: [NovaTrek Architecture Portal](https://mango-sand-083b8ce0f.4.azurestaticapps.net)
+> Source: [NovaTrek Architecture Portal](https://architecture.novatrek.cc)
 > Any changes made on this Confluence page will be overwritten on the next deploy.
 ```
 
@@ -880,7 +880,7 @@ MKDOCS_YML = PORTAL_DIR / "mkdocs.yml"
 SPACE_KEY = "ARCH"
 PORTAL_BASE_URL = os.environ.get(
     "PORTAL_BASE_URL",
-    "https://mango-sand-083b8ce0f.4.azurestaticapps.net"
+    "https://architecture.novatrek.cc"
 )
 
 DO_NOT_EDIT_BANNER = """

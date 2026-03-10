@@ -770,7 +770,7 @@ def add_live_demo_slide(prs):
     p.alignment = PP_ALIGN.CENTER
     
     p = frame.add_paragraph()
-    p.text = "https://mango-sand-083b8ce0f.4.azurestaticapps.net"
+    p.text = "https://architecture.novatrek.cc"
     p.font.size = Pt(20)
     p.font.color.rgb = WHITE
     p.alignment = PP_ALIGN.CENTER
@@ -778,7 +778,7 @@ def add_live_demo_slide(prs):
     
     # Make it a hyperlink
     run = p.runs[0]
-    run.hyperlink.address = "https://mango-sand-083b8ce0f.4.azurestaticapps.net"
+    run.hyperlink.address = "https://architecture.novatrek.cc"
     
     # What to explore
     explore_box = slide.shapes.add_textbox(Inches(0.5), Inches(4), Inches(9), Inches(3))
