@@ -26,6 +26,7 @@
 15. [Best Practices Checklist](#best-practices-checklist)
 16. [Cost Projections](#cost-projections)
 17. [Appendix: Quick Reference Commands](#appendix-quick-reference-commands)
+18. [Prerequisites and Open Items](#prerequisites-and-open-items)
 
 ---
 
@@ -1817,6 +1818,147 @@ az acr repository list --name crnovatrekdev -o table
 # Clean up old images (keep last 5 tags per service)
 az acr run --registry crnovatrekdev --cmd "acr purge --filter 'svc-check-in:.*' --keep 5 --ago 30d" /dev/null
 ```
+
+---
+
+## 18. Prerequisites and Open Items
+
+These are the things that must exist or be decided before Wave 0 can begin. Nothing in the plan above works without these.
+
+### Must Have Before Wave 0
+
+#### Azure Subscription and Billing
+
+| Item | Status | Action |
+|------|--------|--------|
+| Azure subscription (pay-as-you-go or EA) | Not provisioned | Create subscription, link billing account |
+| Subscription-level RBAC | Not configured | Grant Contributor to deployment identity, Reader to developers |
+| Azure AD tenant | Exists (assumed) | Verify tenant, enable Azure AD auth for PostgreSQL |
+| Resource providers registered | Not done | Register `Microsoft.App`, `Microsoft.DBforPostgreSQL`, `Microsoft.ServiceBus`, `Microsoft.KeyVault`, `Microsoft.ContainerRegistry` |
+| Spending limit / budget alert | Not configured | Set monthly budget in Azure Cost Management ($50 dev, $200 prod) before deploying anything |
+
+#### GitHub Configuration
+
+| Item | Status | Action |
+|------|--------|--------|
+| GitHub repository for service code | Does not exist | Decide: **monorepo** (add `services/` to this repo) or **separate repo** (new `novatrek/platform` repo). Monorepo recommended for PoC — simplifies CI/CD, Bicep, and cross-service changes |
+| GitHub Environments (dev, prod) | Not created | Create environments in repo settings with protection rules (prod requires approval) |
+| GitHub OIDC federation to Azure | Not configured | Create User-Assigned Managed Identity in Azure, add Federated Credential for `repo:novatrek/platform:environment:dev` and `:environment:prod` |
+| GitHub Secrets | Not set | Required: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` (OIDC — no password secrets needed) |
+| Branch protection on main | Not configured | Require: CI passing, 1 approval, squash merge |
+
+#### Service Code Bootstrapping
+
+The workspace currently contains **OpenAPI specs and architecture documentation only** — there is no actual Java source code for the 22 microservices. Each service needs to be scaffolded:
+
+| Artifact | What Needs to Be Created |
+|----------|-------------------------|
+| **Spring Boot project template** | A shared Gradle archetype/template with: Spring Boot 3.x, Java 21, Spring Web, Spring Data JPA, Flyway, Actuator, Micrometer, OpenTelemetry agent, Resilience4j, Spring Cloud Azure (Key Vault, Service Bus) |
+| **Shared parent build** (if monorepo) | Root `build.gradle.kts` with shared dependency versions, BOM alignment, code quality plugins (Checkstyle, SpotBugs, JaCoCo) |
+| **Dockerfile template** | Multi-stage: JDK build stage → JRE distroless runtime stage. Standard for all services |
+| **Per-service scaffolding** | For each of the 22 services: controller stubs matching the OpenAPI spec, JPA entities matching the data store schema, Flyway baseline migration SQL, `application.yaml` + `application-{env}.yaml` |
+| **Code generation option** | Consider OpenAPI Generator to produce server stubs from the existing specs. Eliminates manual transcription errors and guarantees spec-code alignment from day one |
+
+#### Database Schema Bootstrapping
+
+The data store schemas are documented in `architecture/metadata/data-stores.yaml` but no actual SQL exists:
+
+| Item | Action |
+|------|--------|
+| **Flyway baseline migrations** | For each service, create `V1__baseline.sql` with `CREATE SCHEMA`, `CREATE TABLE`, indexes, constraints as documented in data-stores.yaml |
+| **Seed data scripts** | Create `R__seed_data.sql` (repeatable Flyway migrations) with test data for dev/ephemeral environments |
+| **PostGIS setup** | svc-trail-management requires `CREATE EXTENSION postgis` — verify the PostgreSQL Flexible Server tier supports it |
+| **Encryption setup** | svc-guest-profiles requires application-level AES-256 encryption for PII columns — need encryption key in Key Vault and Java encryption utility |
+
+### Decisions — Resolved
+
+| # | Decision | Choice | Rationale |
+|---|----------|--------|-----------|
+| 1 | **Monorepo vs polyrepo** | **Polyrepo** — separate `novatrek/platform` repo for service code | Architecture repo stays focused on docs, specs, and metadata. Service repo gets its own CI/CD, branch protection, and team ownership. Cross-repo references via Git submodules or shared Bicep registry if needed |
+| 2 | **API gateway routing** | **ACA built-in ingress** ($0/mo) | Free Envoy-based path routing is sufficient for all waves. Revisit Azure API Management only if consumer-specific rate limiting or API keys are needed (Wave 6+ partner integrations) |
+| 3 | **API versioning strategy** | **URL path versioning** (`/v1/check-ins`) | Most debuggable, easiest to route at ingress layer. Locked in from day one — all OpenAPI specs must include `/v1` prefix |
+| 4 | **Event broker** | **Azure Service Bus** | Native dead-letter queues, scheduled delivery, message sessions. Basic tier (~$0.05/100K ops) for dev, Standard ($10/mo) for prod topics/subscriptions |
+| 5 | **Dapr vs direct SDK** | **Direct Azure SDKs** (no Dapr) | Fewer moving parts, faster cold starts (~1-2s saved), simpler debugging. Use `spring-cloud-azure-starter-servicebus` for pub/sub, `RestClient` for service-to-service calls |
+| 6 | **Azure AD B2C tenant** | **Deferred to Wave 4+** | Waves 0-3 deploy without authentication to focus on getting microservice orchestration right. B2C added as a clean layer once core flows work end-to-end |
+| 7 | **Log aggregation format** | **JSON structured logging** | Logback JSON encoder in the Spring Boot template. Enables KQL queries in Log Analytics: `| where service == "svc-check-in"`. Local dev uses pretty-print profile via `jq` |
+| 8 | **Correlation ID propagation** | **OpenTelemetry** (W3C Trace Context) | `micrometer-tracing-bridge-otel` + `opentelemetry-exporter-otlp`. Auto-propagated across HTTP calls. Distributed tracing in Application Insights with zero custom code |
+
+### Custom Domain Setup
+
+| Domain | Purpose | Status | Action |
+|--------|---------|--------|--------|
+| `api.novatrek.cc` | API gateway for all microservices | DNS not created | Add Cloudflare CNAME pointing to ACA Environment FQDN |
+| `api-dev.novatrek.cc` | Dev API gateway | DNS not created | Add after dev environment is provisioned |
+| Wildcard `*.pr.novatrek.cc` | Ephemeral PR environments | DNS not created | Add wildcard CNAME to ACA Environment |
+
+### Local Development Experience
+
+Developers need to run services locally without Azure dependencies:
+
+| Tool | Purpose |
+|------|--------|
+| **Docker Compose** | Local PostgreSQL 15, Redis 7, RabbitMQ (Service Bus substitute) |
+| **Testcontainers** | Spin up database containers in integration tests — no Docker Compose needed for CI |
+| **Spring Boot DevTools** | Hot reload during local development |
+| **`application-local.yaml`** | Profile with `localhost` connection strings, debug logging |
+| **Makefile or Taskfile** | `make run-svc-check-in`, `make test-all`, `make docker-build-all` |
+
+### Monitoring, Alerts, and SLOs
+
+The plan defines observability infrastructure but not what to monitor:
+
+| Alert | Condition | Severity | Action |
+|-------|-----------|----------|--------|
+| Service unhealthy | Health check fails for > 5 minutes | Critical | Page on-call |
+| Error rate spike | > 5% 5xx responses in 5-minute window | High | Notify team channel |
+| Latency degradation | P95 response time > 2s for any service | Medium | Investigate |
+| Dead-letter queue depth | DLQ message count > 0 | High | Investigate failed events |
+| Database connection exhaustion | Active connections > 80% of pool max | High | Scale pool or investigate leak |
+| Container restart loop | > 3 restarts in 10 minutes | Critical | Check logs, rollback revision |
+| Budget threshold | Actual spend > 80% of monthly budget | Medium | Review resource usage |
+| Certificate expiry | Managed cert expires in < 14 days | Medium | Should auto-renew — investigate if not |
+| Disk usage (PostgreSQL) | Storage > 80% capacity | High | Increase storage or purge old data |
+
+### Azure Policy Assignments
+
+Enforce guardrails at the subscription level so mistakes are caught before deploy:
+
+| Policy | Effect | Purpose |
+|--------|--------|---------|
+| Require tags on resource groups | Deny | Prevent untagged resources from being created |
+| Deny public IP addresses | Deny | No public IPs except ACA ingress and SWA |
+| Require HTTPS on Container Apps | Deny | Block HTTP-only ingress |
+| Deny SKUs above threshold | Deny | Prevent accidental deployment of expensive tiers (e.g., Premium PostgreSQL) |
+| Audit unencrypted storage | Audit | Flag any storage without encryption at rest |
+
+### Estimated Effort by Wave
+
+| Wave | What | Effort Estimate | Bottleneck |
+|------|------|----------------|------------|
+| **Wave 0** (Foundation) | Bicep modules, CI/CD workflows, PostgreSQL, ACR, Service Bus, Key Vault | 2-3 weeks | Getting OIDC federation and Bicep modules right |
+| **Wave 1** (Identity + Catalog) | Scaffold 3 services, Flyway migrations, deploy to dev | 2-3 weeks per service | First service is the hardest — template validation |
+| **Wave 2** (Booking + Payments) | 3 services, Service Bus integration, PCI isolation | 2-3 weeks | Payment service PCI requirements |
+| **Wave 3** (Check-In + Operations) | 4 services, complex orchestration (ADR-006), Valkey integration | 3-4 weeks | Cross-service orchestration is the most complex flow |
+| **Wave 4** (Guides + Transport) | 3 services, PostGIS for location services | 2 weeks | PostGIS configuration |
+| **Wave 5** (Analytics + Loyalty) | 3 services, Blob Storage integration | 2 weeks | Read replica setup for analytics |
+| **Wave 6** (External + Safety) | 5 services, partner integration, emergency protocols | 2-3 weeks | External system simulation |
+| **Wave 7** (New Capabilities) | 4 new services from tickets NTK-10006/10007/10008 | Per-ticket | Requires solution designs to be completed first |
+
+### Checklist: Ready to Start Wave 0?
+
+- [ ] Azure subscription created and billing linked
+- [ ] Resource providers registered (`Microsoft.App`, `Microsoft.DBforPostgreSQL`, `Microsoft.ServiceBus`, `Microsoft.KeyVault`, `Microsoft.ContainerRegistry`)
+- [ ] GitHub repository structure decided (monorepo vs polyrepo)
+- [ ] GitHub OIDC federation configured (Managed Identity + Federated Credential)
+- [ ] GitHub Environments created (dev, prod) with secrets
+- [ ] Cloudflare DNS entries planned for `api.novatrek.cc`
+- [ ] Spring Boot project template created and validated locally
+- [ ] Dockerfile template created and builds locally
+- [ ] Local development Docker Compose file created (PostgreSQL + Redis)
+- [ ] Spending limit / budget alert configured in Azure
+- [ ] Branch protection rules enabled on main
+- [ ] API versioning strategy decided
+- [ ] Monorepo vs polyrepo decision documented as ADR
 
 ---
 
