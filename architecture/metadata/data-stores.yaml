@@ -2509,3 +2509,130 @@ svc-reviews:
     max: 20
     idle_timeout: 5min
   backup: Daily pg_dump, 30-day retention
+  table_details:
+    reviews:
+      description: Guest reviews with ratings, moderation status, and optimistic locking
+      columns:
+      - name: review_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: reservation_id
+        type: UUID
+        constraints: NOT NULL, FK -> svc-reservations
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: trip_id
+        type: UUID
+        constraints: NOT NULL
+      - name: guide_id
+        type: UUID
+        constraints: 'NULL'
+      - name: overall_rating
+        type: SMALLINT
+        constraints: NOT NULL, CHECK (1-5)
+      - name: safety_rating
+        type: SMALLINT
+        constraints: NULL, CHECK (1-5)
+      - name: guide_quality_rating
+        type: SMALLINT
+        constraints: NULL, CHECK (1-5)
+      - name: value_for_money_rating
+        type: SMALLINT
+        constraints: NULL, CHECK (1-5)
+      - name: title
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: body
+        type: TEXT
+        constraints: NOT NULL
+      - name: body_tsvector
+        type: TSVECTOR
+        constraints: Generated column for full-text search
+      - name: visit_date
+        type: DATE
+        constraints: NOT NULL
+      - name: moderation_status
+        type: VARCHAR(20)
+        constraints: NOT NULL, DEFAULT 'pending'
+      - name: helpful_count
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 0
+      - name: _rev
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 1 (optimistic lock)
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_review_trip
+        columns: trip_id
+      - name: idx_review_guest
+        columns: guest_id
+      - name: idx_review_guide
+        columns: guide_id
+      - name: idx_review_body_fts
+        columns: body_tsvector
+        type: GIN
+      - name: uq_review_reservation_guest
+        columns: reservation_id, guest_id
+        type: UNIQUE
+    review_helpful_votes:
+      description: Tracks which guests found a review helpful (one vote per guest per review)
+      columns:
+      - name: vote_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: review_id
+        type: UUID
+        constraints: NOT NULL, FK -> reviews
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: uq_vote_review_guest
+        columns: review_id, guest_id
+        type: UNIQUE
+    rating_aggregates:
+      description: Pre-computed rating summaries per trip and per guide
+      columns:
+      - name: aggregate_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: entity_type
+        type: VARCHAR(10)
+        constraints: NOT NULL (trip or guide)
+      - name: entity_id
+        type: UUID
+        constraints: NOT NULL
+      - name: review_count
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 0
+      - name: avg_overall
+        type: NUMERIC(3,2)
+        constraints: NOT NULL, DEFAULT 0
+      - name: avg_safety
+        type: NUMERIC(3,2)
+        constraints: NULL
+      - name: avg_guide_quality
+        type: NUMERIC(3,2)
+        constraints: NULL
+      - name: avg_value_for_money
+        type: NUMERIC(3,2)
+        constraints: NULL
+      - name: last_review_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: uq_aggregate_entity
+        columns: entity_type, entity_id
+        type: UNIQUE
