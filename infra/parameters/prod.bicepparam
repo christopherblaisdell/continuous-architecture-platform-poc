@@ -27,3 +27,4 @@ param deployVikunja = true
 param containerAppsEnvName = 'cae-cap-ticketing-prod'
 param vikunjaAppName = 'ca-vikunja-prod'
 param vikunjaJwtSecret = 'novatrek-poc-jwt-secret-2025'
+param logAnalyticsWorkspaceName = 'cae-cap-ticketing-prod-logs'

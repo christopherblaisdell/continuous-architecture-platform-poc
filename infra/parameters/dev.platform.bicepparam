@@ -9,6 +9,7 @@ using '../platform.bicep'
 
 param environment = 'dev'
 param location = 'eastus2'
+param postgresLocation = 'centralus'  // eastus/eastus2 restricted for PostgreSQL on this subscription
 
 // Wave 0 — infrastructure only, no services deployed yet
 param servicesToDeploy = []
