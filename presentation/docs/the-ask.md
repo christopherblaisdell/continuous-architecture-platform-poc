@@ -1,53 +1,27 @@
 # The Ask
 
-<div class="hero-card" markdown>
-<div class="metric">$39</div>
-<div class="label">per month</div>
-</div>
+## Access to one of the five existing Copilot Pro+ test accounts
 
-## One corporate test account for GitHub Copilot Pro+
-
-That's it. One seat, one month, to validate AI-assisted architecture workflows against real corporate scenarios.
+The organization already has five GitHub Copilot Pro+ test seats. Access to one of them is all that's needed to run this POC against real corporate architecture artifacts.
 
 ---
 
-## What $39 Gets You
+## What This Enables
 
-- **Claude Opus 4.6** access with unlimited autonomous tool calls per prompt
-- Native VS Code integration — no infrastructure to provision, no API keys to manage
-- Fixed subscription — no variable costs, no runaway billing
-- Cancel anytime
+The POC so far has been validated against a **synthetic workspace** (NovaTrek Adventures). Every result in this presentation — 39 files produced, 208x cost advantage, zero fabrication — comes from that synthetic environment.
 
----
+The next step is proving it works against **real artifacts**:
 
-## Why a Corporate Account
+- Point the AI at actual corporate OpenAPI specs, ADRs, and architecture metadata
+- Run architecture scenarios against real JIRA tickets and real service codebases
+- Measure output quality when the workspace contains actual production context
+- Produce a definitive go/no-go recommendation based on corporate evidence
 
-A personal account can't access corporate repositories, internal specs, or proprietary codebases. The value of this platform is measured by how the AI performs against **real architecture problems** — not synthetic ones.
-
-A corporate test account lets us:
-
-- Point the AI at actual service specs, ADRs, and architecture artifacts
-- Measure output quality against real ticket workflows
-- Validate data isolation and security controls in a corporate environment
-- Produce a definitive go/no-go recommendation based on evidence
+No new infrastructure, no new licenses, no procurement. Just access to a seat that already exists.
 
 ---
 
-## What's Already Proven
-
-Everything else in this platform runs on free infrastructure. No additional approvals needed.
-
-| Component | Cost | Status |
-|-----------|:---:|--------|
-| GitHub Copilot Pro+ | $39/mo | **The ask** |
-| Azure Static Web Apps | $0 | Free tier — already deployed |
-| MkDocs Material | $0 | Open source — already running |
-| GitHub Actions CI/CD | $0 | Included with repository |
-| Confluence publishing | $0 | Uses existing wiki API |
-
----
-
-## Summary of Evidence
+## Summary of Evidence (Synthetic POC)
 
 | Claim | Source |
 |-------|--------|
@@ -55,17 +29,16 @@ Everything else in this platform runs on free infrastructure. No additional appr
 | 39 architecture files produced | 5 evaluated scenarios following MADR/arc42/C4 standards |
 | 301 artifacts published automatically | Live portal at architecture.novatrek.cc |
 | 95%+ knowledge gap rate | Phase 1 post-execution analysis |
-| $0 publishing infrastructure cost | Azure Static Web Apps free tier + open source MkDocs |
 | Zero fabrication (Copilot) | Head-to-head comparison vs Roo Code |
 
-**Every number in this presentation comes from measured results, not projections.**
+**Every number above comes from measured results against the synthetic workspace. The next step is validating against real corporate data.**
 
 ---
 
 <div class="cta-box" markdown>
 
-### Approve one GitHub Copilot Pro+ corporate test account.
+### Grant access to one of the five existing Copilot Pro+ test accounts.
 
-$39/month. Cancel anytime. Everything else is already in place.
+No new licenses. No new infrastructure. Everything else is already in place.
 
 </div>
