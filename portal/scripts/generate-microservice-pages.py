@@ -485,6 +485,113 @@ def make_puml_filename(svc_name, method, path):
 
 
 # ============================================================
+# ERD (Entity Relationship Diagram) Generation
+# ============================================================
+
+def _parse_fk(constraints_str):
+    """Extract FK target table from a constraints string like 'NOT NULL, FK -> check_ins'."""
+    if "FK ->" in constraints_str:
+        parts = constraints_str.split("FK ->")
+        target = parts[-1].strip()
+        return target
+    return None
+
+
+def build_erd_puml(svc_name, ds):
+    """Generate a PlantUML ERD from data-stores metadata."""
+    table_details = ds.get("table_details", {})
+    if not table_details:
+        return None
+
+    engine = ds.get("engine", "PostgreSQL")
+    schema = ds.get("schema", svc_name)
+    is_document = "couchbase" in engine.lower()
+
+    L = []
+    L.append("@startuml")
+    L.append("!theme plain")
+    L.append("skinparam linetype ortho")
+    L.append("skinparam roundcorner 8")
+    L.append("skinparam defaultFontName Inter, Helvetica, Arial, sans-serif")
+    L.append("skinparam defaultFontSize 12")
+    L.append("skinparam titleFontSize 16")
+    L.append("skinparam titleFontStyle bold")
+    L.append("")
+    L.append("skinparam class {")
+    L.append("  BackgroundColor #FAFBFC")
+    L.append("  BorderColor #D1D5DB")
+    L.append("  HeaderBackgroundColor #E5E7EB")
+    L.append("  FontColor #1F2937")
+    L.append("  AttributeFontSize 11")
+    L.append("}")
+    L.append("")
+
+    label = "collections" if is_document else "tables"
+    L.append(f'title {svc_name} ERD\\n<size:12>{engine} -- schema: {schema} ({len(table_details)} {label})</size>')
+    L.append("")
+
+    # Track FK relationships: (from_table, to_table, from_col)
+    fk_relations = []
+
+    for tbl_name, tbl_info in table_details.items():
+        columns = tbl_info.get("columns", [])
+        alias = re.sub(r'[^a-zA-Z0-9]', '_', tbl_name)
+
+        L.append(f'entity "{tbl_name}" as {alias} {{')
+
+        # Separate PK columns from others
+        for col in columns:
+            col_name = col[0] if isinstance(col, (list, tuple)) else col.get("name", "")
+            col_type = col[1] if isinstance(col, (list, tuple)) else col.get("type", "")
+            col_constraints = ""
+            if isinstance(col, (list, tuple)):
+                col_constraints = (col[2] if len(col) > 2 else "") or ""
+            else:
+                col_constraints = col.get("constraints", "") or ""
+
+            is_pk = "PK" in col_constraints
+            fk_target = _parse_fk(col_constraints)
+
+            if fk_target:
+                fk_relations.append((tbl_name, fk_target, col_name))
+
+            # Build constraint annotation
+            annot_parts = []
+            if is_pk:
+                annot_parts.append("PK")
+            if fk_target:
+                annot_parts.append("FK")
+            if "NOT NULL" in col_constraints and not is_pk:
+                annot_parts.append("NN")
+            if "UNIQUE" in col_constraints and not is_pk:
+                annot_parts.append("UQ")
+
+            annot = " ".join(annot_parts)
+            marker = "* " if is_pk else "  "
+            annot_str = f" <<{annot}>>" if annot else ""
+
+            if is_pk:
+                L.append(f"  {marker}{col_name} : {col_type}{annot_str}")
+            else:
+                L.append(f"  {marker}{col_name} : {col_type}{annot_str}")
+
+        L.append("}")
+        L.append("")
+
+    # Render FK relationships
+    for from_tbl, to_tbl, col_name in fk_relations:
+        from_alias = re.sub(r'[^a-zA-Z0-9]', '_', from_tbl)
+        to_alias = re.sub(r'[^a-zA-Z0-9]', '_', to_tbl)
+        # Only draw if target table exists in this service's schema
+        if to_tbl in table_details:
+            L.append(f'{from_alias} }}|--|| {to_alias} : {col_name}')
+
+    L.append("")
+    L.append("@enduml")
+    return "\n".join(L)
+
+
+# ============================================================
 # PlantUML Diagram Generation
 # ============================================================
 
@@ -900,6 +1007,20 @@ def generate_service_page(svc_name, spec, svg_files):
         lines.append("")
     lines.append("## :material-database: Data Store { #data-store }")
     lines.append("")
+
+    # ERD diagram
+    erd_svg = f"{svc_name}--erd.svg"
+    if erd_svg in svg_files:
+        lines.append("### Entity Relationship Diagram")
+        lines.append("")
+        lines.append(
+            f'<div class="diagram-wrap">'
+            f'<a href="../svg/{erd_svg}" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
+            f'<object data="../svg/{erd_svg}" type="image/svg+xml" '
+            f'style="max-width: 100%;">{svc_name} entity relationship diagram</object></div>'
+        )
+        lines.append("")
+
     if ds:
         lines.append("### Overview")
         lines.append("")
@@ -1660,6 +1781,18 @@ def main():
 
         all_services.append((svc_name, title, len(endpoints), version, domain))
 
+    # Generate ERD diagrams for each service
+    erd_count = 0
+    for svc_name, _, _, _, _ in all_services:
+        ds = DATA_STORES.get(svc_name, {})
+        erd_puml = build_erd_puml(svc_name, ds)
+        if erd_puml:
+            erd_path = os.path.join(PUML_DIR, f"{svc_name}--erd.puml")
+            with open(erd_path, "w") as f:
+                f.write(erd_puml)
+            all_pumls.append(erd_path)
+            erd_count += 1
+
     # Generate C4 context diagrams for each service
     for svc_name, _, _, _, _ in all_services:
         c4_puml = build_c4_context_puml(svc_name)
@@ -1684,7 +1817,7 @@ def main():
 
     total_ep = sum(s[2] for s in all_services)
     override_msg = f" ({override_count} architect overrides)" if override_count else ""
-    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {len(all_services)} C4 context + 1 enterprise + 1 event flow){override_msg}")
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {erd_count} ERD + {len(all_services)} C4 context + 1 enterprise + 1 event flow){override_msg}")
 
     # Copy theme.puml so architect overrides can resolve !include ../theme.puml
     theme_src = os.path.join(WORKSPACE_ROOT, "architecture", "diagrams", "theme.puml")

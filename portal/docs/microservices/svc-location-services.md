@@ -44,6 +44,10 @@ tags:
 
 ## :material-database: Data Store { #data-store }
 
+### Entity Relationship Diagram
+
+<div class="diagram-wrap"><a href="../svg/svc-location-services--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-location-services--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-location-services entity relationship diagram</object></div>
+
 ### Overview
 
 | Property | Detail |
