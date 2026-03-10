@@ -13,6 +13,30 @@ tags:
 
 [:material-api: Swagger UI](../services/api/svc-trip-catalog.html){ .md-button .md-button--primary }
 [:material-file-download: Download OpenAPI Spec](../specs/svc-trip-catalog.yaml){ .md-button }
+[:material-rocket-launch: Live Service (Dev)](https://ca-svc-trip-catalog.blackwater-fd4bc06d.eastus2.azurecontainerapps.io/actuator/health){ .md-button }
+[:material-microsoft-azure: Azure Portal](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.App/containerApps/ca-svc-trip-catalog){ .md-button }
+[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/actions/workflows/service-svc-trip-catalog.yml){ .md-button }
+[:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/tree/main/services/svc-trip-catalog){ .md-button }
+
+## :material-truck-delivery: Delivery Status
+
+**Delivery Wave:** 1 -- Guest Identity and Product Catalog
+
+| Stage | Status |
+|-------|--------|
+| Infrastructure (Bicep) | :white_check_mark: complete |
+| Database Schema (Flyway) | :white_check_mark: complete |
+| CI Pipeline | :material-circle-outline: not-started |
+| CD Pipeline | :material-circle-outline: not-started |
+| Deployed to Dev | :white_check_mark: complete |
+| Smoke Tested | :white_check_mark: complete |
+| Deployed to Prod | :material-circle-outline: not-started |
+
+**Azure Resources (Dev):**
+
+- [:material-microsoft-azure: Container App](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.App/containerApps/ca-svc-trip-catalog)
+- [:material-database: PostgreSQL Server](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.DBforPostgreSQL/flexibleServers/psql-novatrek-dev)
+- [:material-text-search: Log Analytics](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.OperationalInsights/workspaces/log-novatrek-dev/logs)
 
 ---
 

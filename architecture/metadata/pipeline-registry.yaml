@@ -59,7 +59,7 @@ pipelines:
 # Azure Resources
 # ---------------------------------------------------------------------------
 azure:
-  subscription_id: "SET_AFTER_PROVISIONING"
+  subscription_id: "19e4c997-f9c1-46a9-b66b-1ad5a8260b8b"
   resource_groups:
     prod: rg-novatrek-prod
     dev: rg-novatrek-dev

@@ -40,6 +40,9 @@ from load_metadata import (  # noqa: E402
     EVENT_CATALOG, EVENTS_BY_PRODUCER, EVENTS_BY_CONSUMER,
     APP_CONSUMERS, APP_TITLES, ACTORS, ACTOR_SERVICE_USAGE,
     SOLUTIONS_BY_SERVICE,
+    DELIVERY_STATUS, DELIVERY_WAVES,
+    PIPELINE_REPO_URL, PIPELINE_AZURE, PIPELINE_PORTAL_LINKS,
+    PIPELINE_PER_SERVICE, PIPELINE_GLOBAL,
     get_service_light_color,
 )
 
@@ -778,7 +781,107 @@ def generate_service_page(svc_name, spec, svg_files):
         f"[:material-file-download: Download OpenAPI Spec](../specs/{svc_name}.yaml)"
         "{ .md-button }"
     )
+
+    # -- Deployment & Operations buttons --
+    delivery = DELIVERY_STATUS.get(svc_name, {})
+    delivery_url = delivery.get("url")
+    if delivery_url:
+        lines.append(
+            f"[:material-rocket-launch: Live Service (Dev)]({delivery_url}/actuator/health)"
+            "{ .md-button }"
+        )
+
+    sub_id = PIPELINE_AZURE.get("subscription_id", "")
+    rg = PIPELINE_AZURE.get("resource_groups", {}).get("dev", "")
+    ca_pattern = PIPELINE_AZURE.get("container_app_pattern", "ca-{service-name}")
+    ca_name = ca_pattern.replace("{service-name}", svc_name)
+    if sub_id and rg and delivery_url:
+        ca_link = PIPELINE_PORTAL_LINKS.get("container_app", "").format(
+            subscription_id=sub_id, rg=rg, name=ca_name,
+        )
+        lines.append(
+            f"[:material-microsoft-azure: Azure Portal]({ca_link})"
+            "{ .md-button }"
+        )
+
+    if PIPELINE_REPO_URL:
+        ci_pattern = PIPELINE_PER_SERVICE.get("ci-workflow-pattern", "")
+        ci_workflow = ci_pattern.replace("{service-name}", svc_name)
+        actions_url = f"{PIPELINE_REPO_URL}/actions/workflows/{ci_workflow}"
+        lines.append(
+            f"[:material-pipe: CI/CD Pipeline]({actions_url})"
+            "{ .md-button }"
+        )
+
+        source_pattern = PIPELINE_PER_SERVICE.get("source-path-pattern", "")
+        source_path = source_pattern.replace("{service-name}", svc_name)
+        source_url = f"{PIPELINE_REPO_URL}/tree/main/{source_path}"
+        lines.append(
+            f"[:material-source-branch: Source Code]({source_url})"
+            "{ .md-button }"
+        )
+
     lines.append("")
+
+    # -- Delivery Status section --
+    if delivery:
+        stages = delivery.get("stages", {})
+        wave_num = delivery.get("wave")
+        wave_info = DELIVERY_WAVES.get(wave_num, {})
+        wave_name = wave_info.get("name", f"Wave {wave_num}")
+
+        lines.append("## :material-truck-delivery: Delivery Status")
+        lines.append("")
+        lines.append(f"**Delivery Wave:** {wave_num} -- {wave_name}")
+        lines.append("")
+
+        # Stage progress table
+        lines.append("| Stage | Status |")
+        lines.append("|-------|--------|")
+
+        stage_labels = {
+            "bicep-module": "Infrastructure (Bicep)",
+            "db-schema": "Database Schema (Flyway)",
+            "ci-pipeline": "CI Pipeline",
+            "cd-pipeline": "CD Pipeline",
+            "deployed-dev": "Deployed to Dev",
+            "smoke-tested": "Smoke Tested",
+            "deployed-prod": "Deployed to Prod",
+        }
+        for stage_key, stage_label in stage_labels.items():
+            status = stages.get(stage_key, "not-started")
+            if status == "complete":
+                icon = ":white_check_mark:"
+            elif status == "in-progress":
+                icon = ":construction:"
+            else:
+                icon = ":material-circle-outline:"
+            lines.append(f"| {stage_label} | {icon} {status} |")
+        lines.append("")
+
+        # Azure resource links
+        if sub_id and rg:
+            lines.append("**Azure Resources (Dev):**")
+            lines.append("")
+            if delivery_url:
+                lines.append(
+                    f"- [:material-microsoft-azure: Container App]"
+                    f"({PIPELINE_PORTAL_LINKS.get('container_app', '').format(subscription_id=sub_id, rg=rg, name=ca_name)})"
+                )
+            pg_name = PIPELINE_AZURE.get("postgresql", {}).get("dev", "")
+            if pg_name:
+                lines.append(
+                    f"- [:material-database: PostgreSQL Server]"
+                    f"({PIPELINE_PORTAL_LINKS.get('postgresql', '').format(subscription_id=sub_id, rg=rg, name=pg_name)})"
+                )
+            log_name = PIPELINE_AZURE.get("log_analytics", {}).get("dev", "")
+            if log_name:
+                lines.append(
+                    f"- [:material-text-search: Log Analytics]"
+                    f"({PIPELINE_PORTAL_LINKS.get('log_analytics', '').format(subscription_id=sub_id, rg=rg, name=log_name)})"
+                )
+            lines.append("")
+
     lines.append("---")
     lines.append("")
 
@@ -1071,14 +1174,24 @@ def generate_index_page(all_services):
 
         lines.append(f"## {domain_name}")
         lines.append("")
-        lines.append("| Service | Version | Endpoints | Page |")
-        lines.append("|---------|---------|-----------|------|")
+        lines.append("| Service | Version | Endpoints | Status | Page |")
+        lines.append("|---------|---------|-----------|--------|------|")
 
         for svc_name, title, ep_count, version in sorted(svcs):
+            delivery = DELIVERY_STATUS.get(svc_name, {})
+            dev_deployed = delivery.get("stages", {}).get("deployed-dev", "not-started")
+            if dev_deployed == "complete":
+                status_badge = ":white_check_mark: Deployed"
+            elif dev_deployed == "in-progress":
+                status_badge = ":construction: In Progress"
+            else:
+                wave_num = delivery.get("wave", "?")
+                status_badge = f":material-circle-outline: Wave {wave_num}"
             lines.append(
                 f"| **{title}**<br><small>`{svc_name}`</small> "
                 f"| `{version}` "
                 f"| {ep_count} endpoints "
+                f"| {status_badge} "
                 f"| [:material-arrow-right: Open]({svc_name}.md)" + "{ .md-button } |"
             )
 
