@@ -13,6 +13,27 @@ tags:
 
 [:material-api: Swagger UI](../services/api/svc-guide-management.html){ .md-button .md-button--primary }
 [:material-file-download: Download OpenAPI Spec](../specs/svc-guide-management.yaml){ .md-button }
+[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/actions/workflows/service-svc-guide-management.yml){ .md-button }
+[:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/tree/main/services/svc-guide-management){ .md-button }
+
+## :material-truck-delivery: Delivery Status
+
+**Delivery Wave:** 4 -- Guide and Transport Operations
+
+| Stage | Status |
+|-------|--------|
+| Infrastructure (Bicep) | :material-circle-outline: not-started |
+| Database Schema (Flyway) | :material-circle-outline: not-started |
+| CI Pipeline | :material-circle-outline: not-started |
+| CD Pipeline | :material-circle-outline: not-started |
+| Deployed to Dev | :material-circle-outline: not-started |
+| Smoke Tested | :material-circle-outline: not-started |
+| Deployed to Prod | :material-circle-outline: not-started |
+
+**Azure Resources (Dev):**
+
+- [:material-database: PostgreSQL Server](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.DBforPostgreSQL/flexibleServers/psql-novatrek-dev)
+- [:material-text-search: Log Analytics](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.OperationalInsights/workspaces/log-novatrek-dev/logs)
 
 ---
 

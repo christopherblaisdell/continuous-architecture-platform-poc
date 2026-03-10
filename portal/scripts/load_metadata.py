@@ -241,3 +241,21 @@ for _t in (_tickets_data or {}).get("tickets", []):
 # Sort each service's solutions by date (newest first)
 for _svc in SOLUTIONS_BY_SERVICE:
     SOLUTIONS_BY_SERVICE[_svc].sort(key=lambda s: s["date"], reverse=True)
+
+
+# ── Delivery Status ──
+_raw_delivery = _load("delivery-status.yaml")
+
+DELIVERY_STATUS = _raw_delivery.get("services", {})
+DELIVERY_WAVES = _raw_delivery.get("waves", {})
+
+
+# ── Pipeline Registry ──
+_raw_pipelines = _load("pipeline-registry.yaml")
+
+PIPELINE_REGISTRY = _raw_pipelines
+PIPELINE_REPO_URL = _raw_pipelines.get("repository", {}).get("base_url", "")
+PIPELINE_AZURE = _raw_pipelines.get("azure", {})
+PIPELINE_PORTAL_LINKS = _raw_pipelines.get("portal_links", {})
+PIPELINE_PER_SERVICE = _raw_pipelines.get("pipelines", {}).get("per-service", {})
+PIPELINE_GLOBAL = _raw_pipelines.get("pipelines", {}).get("global", {})
