@@ -24,7 +24,12 @@ waves:
   1:
     name: Guest Identity and Product Catalog
     description: Core data services with no upstream dependencies
-    status: not-started
+    status: deployed
+    deployed_date: '2026-03-10'
+    services:
+      - ca-svc-guest-profiles (Container App, eastus2)
+      - ca-svc-trip-catalog (Container App, eastus2)
+      - ca-svc-trail-management (Container App, eastus2)
   2:
     name: Booking and Payments
     description: Transaction core — reservations and payment processing
@@ -59,37 +64,40 @@ services:
     wave: 1
     domain: Guest Identity
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-guest-profiles.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-trip-catalog:
     wave: 1
     domain: Product Catalog
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-trip-catalog.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-trail-management:
     wave: 1
     domain: Product Catalog
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-trail-management.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   # --- Wave 2 ---
   svc-reservations:
