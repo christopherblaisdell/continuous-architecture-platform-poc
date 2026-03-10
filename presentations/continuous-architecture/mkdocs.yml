@@ -1,12 +1,12 @@
-site_name: "AI-Assisted Architecture — The Case for Copilot"
-site_description: "How AI transforms architecture practice: Copilot Pro+ cost evidence, output analysis, and the case for adoption"
+site_name: "Continuous Architecture — Closing the Loop"
+site_description: "How we achieve truly continuous architecture: automated publishing, the PROMOTE step, and CALM integration"
 site_author: "Christopher Blaisdell"
 
 theme:
   name: material
   palette:
     - scheme: default
-      primary: teal
+      primary: deep purple
       accent: amber
   features:
     - navigation.tabs
@@ -17,23 +17,20 @@ theme:
     - content.tabs.link
     - toc.integrate
   icon:
-    logo: material/robot-outline
+    logo: material/sync-circle
   font:
     text: Inter
     code: Fira Code
 
 nav:
   - Home: index.md
-  - The Problem: problem.md
-  - The Solution: solution.md
-  - Evidence:
-    - "Cost: 208x Cheaper": cost-evidence.md
-    - "Output Analysis": quality-evidence.md
-    - "Roo Code + Kong Failures": roo-kong-failures.md
-  - How It Works:
-    - Enhanced Workspace: shared-workspace.md
-  - Live Demo: live-demo.md
-  - The Ask: the-ask.md
+  - The Problem: the-problem.md
+  - The Platform:
+    - Markdown-First: markdown-first.md
+    - Automated Publishing: publishing-pipeline.md
+  - Closing the Loop: closing-the-loop.md
+  - CALM Integration: calm-integration.md
+  - Roadmap: roadmap.md
 
 plugins:
   - search
