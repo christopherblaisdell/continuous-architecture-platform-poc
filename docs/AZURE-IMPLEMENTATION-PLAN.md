@@ -9,25 +9,189 @@
 
 ## Table of Contents
 
-1. [Guiding Principles](#guiding-principles)
-2. [Cost Strategy — Zero When Idle](#cost-strategy--zero-when-idle)
-3. [Azure Service Selection](#azure-service-selection)
-4. [Environment Strategy](#environment-strategy)
-5. [Infrastructure as Code — Bicep Architecture](#infrastructure-as-code--bicep-architecture)
-6. [Configuration Management](#configuration-management)
-7. [CI/CD Pipeline Architecture](#cicd-pipeline-architecture)
-8. [Infrastructure Pipelines](#infrastructure-pipelines)
-9. [Incremental Delivery Plan](#incremental-delivery-plan)
-10. [Pipeline Deep Linking in the Architecture Portal](#pipeline-deep-linking-in-the-architecture-portal)
-11. [Observability and Diagnostics](#observability-and-diagnostics)
-12. [Security Baseline](#security-baseline)
-13. [Disaster Recovery and Backup](#disaster-recovery-and-backup)
-14. [Cost Projections](#cost-projections)
-15. [Appendix: Quick Reference Commands](#appendix-quick-reference-commands)
+1. [Logical Deployment Diagram](#logical-deployment-diagram)
+2. [Guiding Principles](#guiding-principles)
+3. [Cost Strategy — Zero When Idle](#cost-strategy--zero-when-idle)
+4. [Azure Service Selection](#azure-service-selection)
+5. [Environment Strategy](#environment-strategy)
+6. [Infrastructure as Code — Bicep Architecture](#infrastructure-as-code--bicep-architecture)
+7. [Configuration Management](#configuration-management)
+8. [CI/CD Pipeline Architecture](#cicd-pipeline-architecture)
+9. [Infrastructure Pipelines](#infrastructure-pipelines)
+10. [Incremental Delivery Plan](#incremental-delivery-plan)
+11. [Pipeline Deep Linking in the Architecture Portal](#pipeline-deep-linking-in-the-architecture-portal)
+12. [Observability and Diagnostics](#observability-and-diagnostics)
+13. [Security Baseline](#security-baseline)
+14. [Disaster Recovery and Backup](#disaster-recovery-and-backup)
+15. [Best Practices Checklist](#best-practices-checklist)
+16. [Cost Projections](#cost-projections)
+17. [Appendix: Quick Reference Commands](#appendix-quick-reference-commands)
 
 ---
 
-## 1. Guiding Principles
+## 1. Logical Deployment Diagram
+
+This diagram shows the single, unified Azure deployment topology that applies to **every microservice** in the NovaTrek platform. All 22 services follow this exact same pattern — no special snowflakes.
+
+```plantuml
+@startuml novatrek-azure-deployment
+!include <C4/C4_Deployment>
+
+title NovaTrek Adventures — Azure Deployment Architecture
+caption Unified deployment topology for all 22 microservices
+
+Deployment_Node(cf, "Cloudflare", "DNS + CDN") {
+  Deployment_Node(cf_dns, "DNS Zone", "novatrek.cc") {
+    Container(dns_portal, "architecture.novatrek.cc", "CNAME → Azure SWA")
+    Container(dns_api, "api.novatrek.cc", "CNAME → ACA Environment")
+  }
+}
+
+Deployment_Node(az, "Azure Subscription", "Pay-as-you-go") {
+
+  Deployment_Node(rg, "Resource Group", "rg-novatrek-{env}") {
+
+    Deployment_Node(acr_node, "Azure Container Registry", "Basic SKU — $5/mo") {
+      Container(acr, "crnovatrek{env}", "Docker Images", "22 service images\nTrivy-scanned\nTagged by git SHA")
+    }
+
+    Deployment_Node(aca_env, "Container Apps Environment", "Consumption plan — $0 base") {
+      Deployment_Node(envoy, "Built-in Envoy Proxy", "Ingress — free") {
+        Container(ingress, "HTTPS Ingress", "TLS 1.2+, managed certs\nPath-based routing\nmTLS between services")
+      }
+
+      Deployment_Node(svc_group_ops, "Operations Domain", "") {
+        Container(svc_checkin, "ca-svc-check-in", "Spring Boot 3 / Java 21", "Scale: 0-5 replicas\nPort 8080\nDapr sidecar")
+        Container(svc_sched, "ca-svc-scheduling-orchestrator", "Spring Boot 3 / Java 21", "Scale: 0-5 replicas\nPort 8080\nDapr sidecar")
+      }
+
+      Deployment_Node(svc_group_booking, "Booking Domain", "") {
+        Container(svc_res, "ca-svc-reservations", "Spring Boot 3 / Java 21", "Scale: 0-5 replicas\nPort 8080\nDapr sidecar")
+        Container(svc_pay, "ca-svc-payments", "Spring Boot 3 / Java 21", "Scale: 0-3 replicas\nPort 8080\nPCI isolated — no Dapr")
+      }
+
+      Deployment_Node(svc_group_other, "All Other Domains", "18 more services") {
+        Container(svc_n, "ca-svc-{name}", "Spring Boot 3 / Java 21", "Scale: 0-N replicas\nPort 8080\nDapr sidecar")
+      }
+    }
+
+    Deployment_Node(data, "Data Layer", "") {
+      Deployment_Node(psql_node, "PostgreSQL Flexible Server", "Burstable B1ms/B2s") {
+        ContainerDb(psql_main, "psql-novatrek-{env}", "PostgreSQL 15", "Schemas per service:\ncheckin, reservations,\nguests, catalog, trails,\nscheduling, safety, payments ...\nPostGIS extensions\nAzure AD auth (managed identity)")
+      }
+
+      Deployment_Node(redis_node, "Azure Cache for Redis", "Basic C0 — $13/mo") {
+        ContainerDb(redis, "redis-novatrek-{env}", "Redis 6", "Schedule locks (Valkey)\nSession cache\nRate limiting")
+      }
+
+      Deployment_Node(blob_node, "Azure Blob Storage", "Hot LRS — ~$0.02/GB") {
+        ContainerDb(blob, "stnovatrek{env}", "Blob Containers", "Media assets\nDB backups\nLifecycle: Hot→Cool→Archive")
+      }
+    }
+
+    Deployment_Node(messaging, "Messaging Layer", "") {
+      Deployment_Node(sb_node, "Azure Service Bus", "Basic/Standard") {
+        Container(sb, "sb-novatrek-{env}", "Topics + Subscriptions", "8 event topics:\ncheckin.completed\nreservation.created\nreservation.status-changed\npayment.processed\nguest.updated\nwaiver.signed\nemergency.activated\nwildlife.sighted")
+      }
+    }
+
+    Deployment_Node(security, "Security Layer", "") {
+      Deployment_Node(kv_node, "Azure Key Vault", "Standard — ~$0.03/10K ops") {
+        Container(kv, "kv-novatrek-{env}", "Secrets", "DB connection strings\nJWT signing keys\nAPI keys\nService Bus connection")
+      }
+
+      Deployment_Node(mi_node, "Managed Identities", "Free") {
+        Container(mi, "User-Assigned MI", "Per-service identity", "RBAC: AcrPull\nRBAC: KV Secrets User\nRBAC: SB Data Sender/Receiver\nAzure AD auth for PostgreSQL")
+      }
+    }
+
+    Deployment_Node(observability, "Observability", "") {
+      Deployment_Node(log_node, "Log Analytics Workspace", "PerGB2018") {
+        Container(logs, "log-novatrek-{env}", "Container Logs", "Retention: 30d dev / 90d prod\nKQL queries\nACA system + app logs")
+      }
+
+      Deployment_Node(appi_node, "Application Insights", "Free tier") {
+        Container(appi, "appi-novatrek-{env}", "APM", "Distributed tracing\nLive metrics\nFailure analysis\nApplication map")
+      }
+    }
+
+    Deployment_Node(docs, "Documentation", "") {
+      Deployment_Node(swa_node, "Azure Static Web Apps", "Free SKU") {
+        Container(swa, "swa-cap-docs-prod", "MkDocs Material", "Architecture portal\n139 sequence diagrams\nSwagger UI\nPipeline deep links")
+      }
+    }
+  }
+}
+
+Deployment_Node(gh, "GitHub", "Source + CI/CD") {
+  Deployment_Node(gh_repo, "novatrek/platform", "") {
+    Container(src, "Source Code", "22 service repos\nBicep modules\nOpenAPI specs")
+    Container(actions, "GitHub Actions", "CI/CD Pipelines", "Reusable workflows\nOIDC auth to Azure\nEphemeral environments")
+  }
+}
+
+Deployment_Node(ext_auth, "Azure AD B2C", "Guest Authentication") {
+  Container(b2c, "B2C Tenant", "OAuth 2.0 + OIDC", "Social login\nSelf-service registration\n50K MAU free tier")
+}
+
+Rel(dns_api, ingress, "Routes traffic", "HTTPS")
+Rel(dns_portal, swa, "Routes traffic", "HTTPS")
+Rel(ingress, svc_checkin, "Forwards requests", "HTTP/2")
+Rel(ingress, svc_res, "Forwards requests", "HTTP/2")
+Rel(ingress, svc_n, "Forwards requests", "HTTP/2")
+Rel(svc_checkin, psql_main, "Reads/writes", "PostgreSQL wire protocol")
+Rel(svc_checkin, sb, "Publishes events", "AMQP")
+Rel(svc_checkin, kv, "Reads secrets", "HTTPS / managed identity")
+Rel(svc_res, psql_main, "Reads/writes", "PostgreSQL wire protocol")
+Rel(svc_pay, psql_main, "Reads/writes", "PostgreSQL wire protocol")
+Rel(svc_sched, redis, "Lock/cache", "Redis protocol")
+Rel(svc_n, psql_main, "Reads/writes", "PostgreSQL wire protocol")
+Rel(svc_n, sb, "Pub/sub events", "AMQP")
+Rel(sb, svc_n, "Delivers events", "AMQP push")
+Rel(acr, svc_checkin, "Pulls images", "Docker pull")
+Rel(actions, acr, "Pushes images", "Docker push")
+Rel(actions, az, "Deploys infra + apps", "OIDC + az CLI")
+Rel(b2c, ingress, "Issues tokens", "OAuth 2.0")
+Rel(logs, svc_checkin, "Collects logs", "stdout/stderr")
+Rel(appi, svc_checkin, "Collects telemetry", "OpenTelemetry")
+Rel(mi, kv, "Authenticates", "Azure AD")
+Rel(mi, psql_main, "Authenticates", "Azure AD")
+Rel(mi, acr, "Authenticates", "Azure AD")
+
+SKINPARAM backgroundColor #FEFEFE
+@enduml
+```
+
+### What This Diagram Shows
+
+| Layer | Azure Service | Purpose | Cost When Idle |
+|-------|--------------|---------|----------------|
+| **DNS + CDN** | Cloudflare | Domain routing, DDoS protection | $0 |
+| **Compute** | Azure Container Apps (Consumption) | All 22 microservices, scale-to-zero | $0 |
+| **Ingress** | Built-in Envoy (ACA) | HTTPS termination, path routing, mTLS | $0 |
+| **Database** | PostgreSQL Flexible Server | All service schemas colocated (dev) or split (prod) | $12.41/mo (B1ms) |
+| **Cache** | Azure Cache for Redis | Schedule locks, session cache | $13.14/mo (C0) |
+| **Messaging** | Azure Service Bus | 8 event topics (AsyncAPI-defined) | $0.05/100K ops |
+| **Secrets** | Azure Key Vault | Connection strings, JWT keys, API keys | ~$0 |
+| **Identity** | Managed Identities + Azure AD B2C | Zero-password auth everywhere | $0 |
+| **Storage** | Azure Blob Storage | Media, backups | ~$0.02/GB |
+| **Observability** | Log Analytics + Application Insights | Logs, traces, metrics, dashboards | ~$2/GB ingested |
+| **Docs** | Azure Static Web Apps | Architecture portal with pipeline links | $0 (Free SKU) |
+| **CI/CD** | GitHub Actions | Build, test, scan, deploy | Free tier (2000 min/mo) |
+| **Registry** | Azure Container Registry | Docker image storage + scanning | $5/mo (Basic) |
+
+### Key Design Decisions Visible in the Diagram
+
+1. **Single ACA Environment** — all services share one Container Apps Environment (one Envoy, one Log Analytics sink). No per-service infrastructure overhead.
+2. **Schema-per-service, not server-per-service** — in dev, all schemas live in one PostgreSQL instance. In prod, critical services (check-in, reservations, payments) get dedicated instances.
+3. **Managed Identity everywhere** — the arrows from MI to Key Vault, PostgreSQL, ACR, and Service Bus are all Azure AD-authenticated. Zero passwords.
+4. **PCI isolation** — svc-payments runs without a Dapr sidecar and uses a dedicated schema with immutable audit trail.
+5. **Event-driven via Service Bus** — the 8 AsyncAPI-defined events flow through Service Bus topics. Producers publish, consumers subscribe. Dead-letter queues handle failures.
+6. **GitHub OIDC** — GitHub Actions authenticates to Azure via Workload Identity Federation. No service principal secrets stored in GitHub.
+
+---
+
+## 2. Guiding Principles
 
 | Principle | Rationale |
 |-----------|-----------|
@@ -41,7 +205,7 @@
 
 ---
 
-## 2. Cost Strategy — Zero When Idle
+## 3. Cost Strategy — Zero When Idle
 
 ### Why Azure Container Apps (ACA) Over AKS
 
@@ -115,7 +279,7 @@ az postgres flexible-server start --resource-group rg-novatrek-dev --name psql-n
 
 ---
 
-## 3. Azure Service Selection
+## 4. Azure Service Selection
 
 ### Compute and Networking
 
@@ -166,7 +330,7 @@ az postgres flexible-server start --resource-group rg-novatrek-dev --name psql-n
 
 ---
 
-## 4. Environment Strategy
+## 5. Environment Strategy
 
 ### Environment Types
 
@@ -226,7 +390,7 @@ infra/
 
 ---
 
-## 5. Infrastructure as Code — Bicep Architecture
+## 6. Infrastructure as Code — Bicep Architecture
 
 ### Bicep Best Practices
 
@@ -377,7 +541,7 @@ This shows exactly what will be created, modified, or deleted — no surprises.
 
 ---
 
-## 6. Configuration Management
+## 7. Configuration Management
 
 ### Configuration Hierarchy
 
@@ -493,7 +657,7 @@ adventure_categories:
 
 ---
 
-## 7. CI/CD Pipeline Architecture
+## 8. CI/CD Pipeline Architecture
 
 ### Pipeline Types
 
@@ -781,7 +945,7 @@ jobs:
 
 ---
 
-## 8. Infrastructure Pipelines
+## 9. Infrastructure Pipelines
 
 ### Infrastructure Deployment Pipeline
 
@@ -970,7 +1134,7 @@ jobs:
 
 ---
 
-## 9. Incremental Delivery Plan
+## 10. Incremental Delivery Plan
 
 ### Delivery Waves
 
@@ -1099,7 +1263,7 @@ services:
 
 ---
 
-## 10. Pipeline Deep Linking in the Architecture Portal
+## 11. Pipeline Deep Linking in the Architecture Portal
 
 ### Link Strategy
 
@@ -1240,7 +1404,7 @@ The generator reads this registry and injects pipeline/infrastructure links into
 
 ---
 
-## 11. Observability and Diagnostics
+## 12. Observability and Diagnostics
 
 ### Centralized Logging
 
@@ -1312,7 +1476,7 @@ The portal home page links to:
 
 ---
 
-## 12. Security Baseline
+## 13. Security Baseline
 
 ### Identity — No Passwords Anywhere
 
@@ -1366,7 +1530,7 @@ resource federatedCredential 'Microsoft.ManagedIdentity/userAssignedIdentities/f
 
 ---
 
-## 13. Disaster Recovery and Backup
+## 14. Disaster Recovery and Backup
 
 ### PostgreSQL Backup Strategy
 
@@ -1398,7 +1562,124 @@ Not needed for PoC — single region (eastus2) is sufficient.
 
 ---
 
-## 14. Cost Projections
+## 15. Best Practices Checklist
+
+Additional best practices beyond what's covered in the sections above.
+
+### API Contract Governance
+
+| Practice | Implementation |
+|----------|----------------|
+| **OpenAPI as single source of truth** | All 22 service specs live in `architecture/specs/`. Code generators and tests consume them — spec leads, code follows |
+| **Breaking change detection** | CI runs `openapi-diff` on every PR that touches a spec file. Breaking changes block merge until reviewed |
+| **Contract-first development** | New endpoints are spec'd in OpenAPI YAML before any Java code is written. PR must include both spec change and implementation |
+| **Spec versioning** | Every spec carries `info.version` (semver). Major bumps require ADR. Portal generators display the version on each service page |
+| **Consumer-driven contract tests** | Downstream services define Pact contracts. Provider CI validates those contracts before deploy |
+
+### Database Migration Discipline
+
+| Practice | Implementation |
+|----------|----------------|
+| **Forward-only migrations** | Flyway with `flyway.cleanDisabled=true` in all environments. Never drop + recreate |
+| **Backward-compatible schema changes** | New columns must be nullable or have defaults. Drop old columns only after all consumers are updated (two-phase migration) |
+| **Migration naming convention** | `V{version}__{description}.sql` — e.g., `V3__add_wristband_rfid_column.sql` |
+| **No DDL in application code** | `hibernate.ddl-auto=validate` everywhere — Hibernate validates the schema but never modifies it |
+| **Migration dry-run in CI** | Every PR runs `flyway validate` against a disposable PostgreSQL container to catch errors before merge |
+| **Data migrations as separate scripts** | Schema changes (DDL) and data backfills (DML) are separate versioned migration files — never mixed |
+
+### Container Image Hygiene
+
+| Practice | Implementation |
+|----------|----------------|
+| **Immutable tags** | Images tagged by git SHA, never `:latest` in production. Same SHA = same binary |
+| **Multi-stage builds** | Build stage uses JDK; runtime stage uses JRE distroless image — smaller attack surface, faster cold starts |
+| **Vulnerability scanning gate** | Trivy runs in CI. CRITICAL or HIGH CVEs block the pipeline. Weekly scheduled scans catch newly disclosed vulnerabilities |
+| **Image pruning** | ACR purge task retains last 10 tags per service. Older images auto-deleted to avoid storage cost creep |
+| **Base image pinning** | Dockerfile pins exact base image digest, not just tag. Renovate bot PRs base image updates weekly |
+
+### Dependency Management
+
+| Practice | Implementation |
+|----------|----------------|
+| **Automated dependency updates** | Renovate or Dependabot configured per service. PRs auto-created weekly for patch/minor updates |
+| **OWASP Dependency Check** | Gradle plugin runs in CI on every build. Known CVEs in transitive dependencies fail the build |
+| **Lock files committed** | `gradle.lockfile` committed to Git for reproducible builds |
+| **Spring Boot BOM alignment** | All services pin to the same Spring Boot BOM version. Cross-service version drift causes subtle incompatibilities |
+
+### Resilience Patterns
+
+| Practice | Implementation |
+|----------|----------------|
+| **Circuit breakers** | Resilience4j on all cross-service HTTP calls. Open after 5 failures in 60 seconds. Half-open retry after 30 seconds |
+| **Timeouts everywhere** | HTTP client timeout: 5s connect, 30s read. No indefinite waits. Database query timeout: 30s |
+| **Retry with jitter** | Exponential backoff (1s, 2s, 4s) with random jitter (+/- 500ms) on transient failures. Max 3 retries |
+| **Bulkhead isolation** | Separate thread pools for calls to different downstream services. One slow service does not starve others |
+| **Dead-letter queues** | Every Service Bus subscription has a dead-letter queue. Failed messages go there after 3 delivery attempts. Alerts fire on DLQ depth > 0 |
+| **Graceful degradation** | If svc-weather is down, svc-check-in proceeds without weather data (logged as warning, not error). Non-critical dependencies must not block critical flows |
+| **Health check cascading** | `/actuator/health` reports DOWN only for critical dependencies. Non-critical dependencies report DEGRADED |
+
+### Testing Strategy
+
+| Level | Scope | Tool | When |
+|-------|-------|------|------|
+| **Unit tests** | Single class/method | JUnit 5 + Mockito | Every build |
+| **Integration tests** | Service + database | Testcontainers (PostgreSQL) | Every build |
+| **Contract tests** | API producer/consumer | Pact | Every PR |
+| **Smoke tests** | Deployed service health | curl + assertions | Post-deploy |
+| **End-to-end tests** | Multi-service flows | Playwright or REST Assured | Nightly on dev |
+| **Load tests** | Performance baselines | k6 or Locust | On-demand (pre-release) |
+| **Chaos tests** | Failure injection | Azure Chaos Studio | Quarterly on dev |
+
+### Secrets Rotation
+
+| Practice | Implementation |
+|----------|----------------|
+| **Automated rotation** | Key Vault auto-rotates PostgreSQL passwords every 90 days. Container Apps pick up new secrets on next revision deploy |
+| **Zero-downtime rotation** | Support two active passwords during rotation window. Old password valid for 24 hours after rotation |
+| **No hardcoded secrets** | Pre-commit hook scans for patterns like passwords, tokens. `detect-secrets` baseline committed to repo |
+| **Audit trail** | Key Vault diagnostic logs capture every secret read/write. Alerts on unexpected access patterns |
+
+### Tagging and Resource Organization
+
+| Tag | Purpose | Example |
+|-----|---------|---------|
+| `environment` | Cost allocation per env | `prod`, `dev`, `pr-42` |
+| `service` | Cost allocation per microservice | `svc-check-in` |
+| `domain` | Group by business domain | `operations`, `booking` |
+| `wave` | Delivery wave tracking | `wave-1`, `wave-3` |
+| `managedBy` | Detect manual portal changes | `bicep` |
+| `ephemeral` | Auto-cleanup targets | `true` / absent |
+| `costCenter` | Finance reporting | `engineering` |
+
+All tags are set in Bicep `defaultTags` and inherited by every resource. Azure Policy denies resource creation without required tags.
+
+### Git Workflow and Branch Protection
+
+| Practice | Implementation |
+|----------|----------------|
+| **Trunk-based development** | Short-lived feature branches, merge to `main` via PR. No long-lived `develop` branch |
+| **Branch protection on main** | Require: CI passing, 1 approval, no force push, linear history (squash merge) |
+| **Conventional commits** | Commit messages follow `type: description` format (`feat:`, `fix:`, `infra:`, `docs:`) for changelog generation |
+| **Solution branch convention** | Architecture work uses `solution/NTK-XXXXX-slug` branches per copilot-instructions |
+| **PR template** | Checklist includes: tests passing, spec updated, migration backward-compatible, no secrets in diff |
+
+### Operational Runbooks
+
+For each microservice, maintain a runbook in the architecture portal covering:
+
+- **How to deploy**: Link to CI/CD pipeline + manual override commands
+- **How to rollback**: `az containerapp revision activate --revision {previous-revision}`
+- **How to check health**: Actuator endpoint URLs per environment
+- **How to read logs**: Log Analytics KQL query templates for common issues
+- **How to scale manually**: `az containerapp update --min-replicas N --max-replicas M`
+- **Common failure modes**: Known error patterns and their resolution steps
+- **On-call escalation**: Which team owns the service, contact channels
+
+Runbooks are generated from `architecture/metadata/delivery-status.yaml` and published to the portal alongside each microservice page.
+
+---
+
+## 16. Cost Projections
 
 ### Monthly Cost Estimates by Phase
 
@@ -1456,7 +1737,7 @@ resource budget 'Microsoft.Consumption/budgets@2023-11-01' = {
 
 ---
 
-## 15. Appendix: Quick Reference Commands
+## 17. Appendix: Quick Reference Commands
 
 ### Environment Lifecycle
 
