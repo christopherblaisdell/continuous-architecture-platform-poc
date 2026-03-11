@@ -146,7 +146,6 @@ nav:
     - Quality Model:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
-  - Service Catalog: services/index.md
   - Solutions:
     - solutions/index.md
     - _NTK-10001: solutions/_NTK-10001-add-elevation-to-trail-response.md
@@ -182,8 +181,9 @@ nav:
       - applications/app-guest-mobile.md
       - Wireframes:
         - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
-  - Microservice Pages:
+  - Microservices:
     - microservices/index.md
+    - Service Catalog: services/index.md
     - svc-analytics: microservices/svc-analytics.md
     - svc-check-in: microservices/svc-check-in.md
     - svc-emergency-response: microservices/svc-emergency-response.md
@@ -208,4 +208,5 @@ nav:
     - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
   - Event Catalog: events/index.md
   - Actor Catalog: actors/index.md
+  - Platform Operations: platform-operations.md
   - Tags: tags.md
