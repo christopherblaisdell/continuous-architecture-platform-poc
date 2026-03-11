@@ -634,11 +634,34 @@ def process_all_files(dry_run=False):
                 s = parent.lower().replace("-", " ").replace("_", " ").strip()
                 is_landing = (t == s)
 
+            orig_title = title
+            orig_parent = parent
             if is_landing and parent and parent != "NovaTrek Architecture Portal":
                 title = parent
                 parent = grandparent if grandparent else "NovaTrek Architecture Portal"
 
-            page_meta.append((rel_path, filepath, title, parent, grandparent))
+            page_meta.append((rel_path, filepath, title, parent, grandparent,
+                              orig_title, orig_parent, is_landing))
+
+    # ── Pass 1a: Resolve title collisions from promotion ──
+    # If two index.md files both promote to the same parent title,
+    # keep the one whose directory name matches and revert the other.
+    from collections import Counter
+    title_counts = Counter(m[2] for m in page_meta)
+    collisions = {t for t, c in title_counts.items() if c > 1}
+    resolved_meta = []
+    for (rel_path, filepath, title, parent, grandparent,
+         orig_title, orig_parent, is_landing) in page_meta:
+        if title in collisions and is_landing:
+            dir_name = os.path.basename(os.path.dirname(filepath))
+            dir_norm = dir_name.lower().replace("-", " ").replace("_", " ").strip()
+            title_norm = title.lower().replace("-", " ").replace("_", " ").strip()
+            if dir_norm != title_norm:
+                # Revert: this is not the true section landing page
+                title = orig_title
+                parent = orig_parent
+        resolved_meta.append((rel_path, filepath, title, parent, grandparent))
+    page_meta = resolved_meta
 
     # ── Pass 1b: Fix orphaned parents ──
     # Build set of all page titles that will exist

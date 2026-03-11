@@ -116,10 +116,11 @@ def parse_staging_file(filepath):
     return info
 
 
-def load_all_staging_files():
+def load_all_staging_files(staging_dir=None):
     """Recursively load all staging Markdown files."""
+    base_dir = staging_dir or CONFLUENCE_DIR
     staging = {}
-    for root, _dirs, files in os.walk(CONFLUENCE_DIR):
+    for root, _dirs, files in os.walk(base_dir):
         for fname in files:
             if not fname.endswith(".md"):
                 continue
@@ -382,20 +383,23 @@ def verify_attachments(staging, confluence_pages, matched_titles, base_url, head
 
 def main():
     parser = argparse.ArgumentParser(description="Verify Confluence content matches staging directory")
-    parser.add_argument("--base-url", required=True, help="Confluence base URL")
-    parser.add_argument("--username", required=True, help="Service account email")
-    parser.add_argument("--api-token", required=True, help="Confluence API token")
-    parser.add_argument("--space", required=True, help="Confluence space key")
+    parser.add_argument("--base-url", default=os.environ.get("CONFLUENCE_BASE_URL", ""), help="Confluence base URL")
+    parser.add_argument("--username", default=os.environ.get("CONFLUENCE_USERNAME", ""), help="Service account email")
+    parser.add_argument("--api-token", default=os.environ.get("CONFLUENCE_API_TOKEN", ""), help="Confluence API token")
+    parser.add_argument("--space", default=os.environ.get("CONFLUENCE_SPACE", "ARCH"), help="Confluence space key")
     parser.add_argument("--staging-dir", default=CONFLUENCE_DIR, help="Path to staging directory")
     args = parser.parse_args()
 
-    global CONFLUENCE_DIR
-    CONFLUENCE_DIR = args.staging_dir
+    if not args.base_url or not args.username or not args.api_token:
+        print("ERROR: --base-url, --username, --api-token required (or set CONFLUENCE_BASE_URL, CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN env vars)")
+        sys.exit(1)
+
+    staging_dir = args.staging_dir
 
     headers = make_auth_header(args.username, args.api_token)
 
     print("Loading staging files...")
-    staging = load_all_staging_files()
+    staging = load_all_staging_files(staging_dir)
     print(f"  Found {len(staging)} staging pages")
 
     print("Fetching Confluence pages...")

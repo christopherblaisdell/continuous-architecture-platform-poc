@@ -17,14 +17,19 @@ def main():
 
     creds = base64.b64encode(f"{user}:{token}".encode()).decode()
 
+    base_url = os.environ.get("CONFLUENCE_BASE_URL", "https://christopherblaisdell.atlassian.net/wiki")
+    # Derive site root (without /wiki) for Jira endpoints
+    site_root = base_url.replace("/wiki", "")
+    print(f"Using base URL: {base_url}")
+
     headers = {"Authorization": f"Basic {creds}", "Accept": "application/json"}
 
     tests = [
-        ("Confluence v2 spaces", "https://novatrek.atlassian.net/wiki/api/v2/spaces"),
-        ("Confluence v1 space", "https://novatrek.atlassian.net/wiki/rest/api/space"),
-        ("Confluence content", "https://novatrek.atlassian.net/wiki/rest/api/content"),
-        ("Jira myself", "https://novatrek.atlassian.net/rest/api/3/myself"),
-        ("Jira serverInfo", "https://novatrek.atlassian.net/rest/api/3/serverInfo"),
+        ("Confluence v2 spaces", f"{base_url}/api/v2/spaces"),
+        ("Confluence v1 space", f"{base_url}/rest/api/space"),
+        ("Confluence content", f"{base_url}/rest/api/content"),
+        ("Jira myself", f"{site_root}/rest/api/3/myself"),
+        ("Jira serverInfo", f"{site_root}/rest/api/3/serverInfo"),
     ]
 
     any_ok = False
