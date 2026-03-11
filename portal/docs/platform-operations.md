@@ -144,7 +144,8 @@ Weekend            → Dev environment fully stopped
 | `ACR_LOGIN_SERVER` | Service CI | Container Registry login server |
 | `POSTGRES_ADMIN_USER` | DB Migrate, Infra Deploy | PostgreSQL admin username |
 | `POSTGRES_ADMIN_PASSWORD` | DB Migrate, Infra Deploy | PostgreSQL admin password |
-| `AZURE_STATIC_WEB_APPS_API_TOKEN` | Docs Deploy | SWA deployment token |
+| `AZURE_STATIC_WEB_APPS_API_TOKEN` | Docs Deploy | SWA deployment token (architecture portal) |
+| `AZURE_STATIC_WEB_APPS_PRESENTATION_API_TOKEN` | Docs Deploy | SWA deployment token (presentation site) |
 | `CONFLUENCE_USERNAME` | Docs Deploy, Confluence workflows | Confluence service account |
 | `CONFLUENCE_API_TOKEN` | Docs Deploy, Confluence workflows | Confluence API token |
 | `VIKUNJA_TOKEN` | Validate Solution, Sync Vikunja | Vikunja ticketing API token |

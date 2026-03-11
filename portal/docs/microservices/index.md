@@ -17,6 +17,8 @@ tags:
 
 Each microservice page provides **PlantUML sequence diagrams** for every API endpoint with clickable links to other services and Swagger UI, data store documentation, and direct links to the interactive API reference.
 
+All services are built on the same [technology stack](../technologies.md) — Java 21, Spring Boot 3.3.5, PostgreSQL 15, deployed to Azure Container Apps.
+
 ---
 
 ## Enterprise Architecture
