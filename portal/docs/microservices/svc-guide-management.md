@@ -13,7 +13,7 @@ tags:
 
 [:material-api: Swagger UI](../services/api/svc-guide-management.html){ .md-button .md-button--primary }
 [:material-file-download: Download OpenAPI Spec](../specs/svc-guide-management.yaml){ .md-button }
-[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-svc-guide-management.yml){ .md-button }
+[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-ci.yml){ .md-button }
 [:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/services/svc-guide-management){ .md-button }
 [:material-language-java: Technology Stack](../technologies.md){ .md-button }
 

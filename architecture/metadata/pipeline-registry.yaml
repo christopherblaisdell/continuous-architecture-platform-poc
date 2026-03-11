@@ -47,7 +47,7 @@ pipelines:
   # Per-Service Pipeline Patterns
   # ---------------------------------------------------------------------------
   per-service:
-    ci-workflow-pattern: "service-{service-name}.yml"
+    ci-workflow-pattern: "service-ci.yml"
     cd-workflow: "service-cd.yml"
     source-path-pattern: "services/{service-name}"
     dockerfile-pattern: "services/{service-name}/Dockerfile"

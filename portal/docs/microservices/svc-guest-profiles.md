@@ -15,7 +15,7 @@ tags:
 [:material-file-download: Download OpenAPI Spec](../specs/svc-guest-profiles.yaml){ .md-button }
 [:material-rocket-launch: Live Service (Dev)](https://ca-svc-guest-profiles.blackwater-fd4bc06d.eastus2.azurecontainerapps.io/actuator/health){ .md-button }
 [:material-microsoft-azure: Azure Portal](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.App/containerApps/ca-svc-guest-profiles){ .md-button }
-[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-svc-guest-profiles.yml){ .md-button }
+[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-ci.yml){ .md-button }
 [:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/services/svc-guest-profiles){ .md-button }
 [:material-language-java: Technology Stack](../technologies.md){ .md-button }
 
