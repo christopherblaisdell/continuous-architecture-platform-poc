@@ -72,7 +72,7 @@ azure:
     dev: kv-novatrek-dev
   postgresql:
     prod: psql-novatrek-prod
-    dev: psql-novatrek-dev
+    dev: pg-novatrek-dev-smwd6ded4e3so
   service_bus:
     prod: sb-novatrek-prod
     dev: sb-novatrek-dev

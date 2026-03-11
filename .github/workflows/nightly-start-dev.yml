@@ -32,7 +32,7 @@ jobs:
         run: |
           az postgres flexible-server start \
             --resource-group rg-novatrek-dev \
-            --name psql-novatrek-dev \
+            --name pg-novatrek-dev-smwd6ded4e3so \
           || echo "PostgreSQL may already be running"
 
       - name: Restore service scaling
