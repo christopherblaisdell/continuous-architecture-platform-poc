@@ -18,6 +18,22 @@ Open in a new tab to explore alongside this presentation.
 
 ---
 
+## Live API Explorer
+
+Three Wave 1 microservices are deployed to Azure Container Apps. Click below to make live API calls directly from your browser — no Postman or curl required.
+
+<div class="cta-box" markdown>
+
+### [Open API Explorer](api-demo.html){target="_blank"}
+
+Make live REST calls to svc-guest-profiles, svc-trip-catalog, and svc-trail-management.
+
+</div>
+
+NOTE: Container Apps scale to zero when idle. The first request after inactivity may take 10-15 seconds (cold start).
+
+---
+
 ## Guided Tour
 
 ### 1. Enterprise System Context
