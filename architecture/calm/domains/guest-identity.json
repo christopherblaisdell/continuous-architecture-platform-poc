@@ -1,0 +1,1230 @@
+{
+  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
+  "metadata": {
+    "name": "NovaTrek Adventures — Guest Identity Domain Topology",
+    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+    "version": "1.0.0",
+    "generated-from": [
+      "architecture/metadata/domains.yaml",
+      "architecture/metadata/data-stores.yaml",
+      "architecture/metadata/cross-service-calls.yaml",
+      "architecture/metadata/events.yaml",
+      "architecture/metadata/actors.yaml",
+      "architecture/specs/*.yaml"
+    ]
+  },
+  "nodes": [
+    {
+      "unique-id": "svc-guest-profiles",
+      "node-type": "service",
+      "name": "Guest Profiles Service",
+      "description": "Manages guest registration, profile management, preferences, medical",
+      "interfaces": [
+        {
+          "unique-id": "svc-guest-profiles-api-get-guests",
+          "type": "path",
+          "path": "/guests",
+          "metadata": {
+            "method": "GET",
+            "summary": "Search guests"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-post-guests",
+          "type": "path",
+          "path": "/guests",
+          "metadata": {
+            "method": "POST",
+            "summary": "Register a new guest"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}",
+          "type": "path",
+          "path": "/guests/{guest_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get guest profile"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-patch-guests-{guest_id}",
+          "type": "path",
+          "path": "/guests/{guest_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update guest profile"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-certifications",
+          "type": "path",
+          "path": "/guests/{guest_id}/certifications",
+          "metadata": {
+            "method": "GET",
+            "summary": "List guest certifications"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-post-guests-{guest_id}-certifications",
+          "type": "path",
+          "path": "/guests/{guest_id}/certifications",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add a certification"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-medical-info",
+          "type": "path",
+          "path": "/guests/{guest_id}/medical-info",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get guest medical information"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-put-guests-{guest_id}-medical-info",
+          "type": "path",
+          "path": "/guests/{guest_id}/medical-info",
+          "metadata": {
+            "method": "PUT",
+            "summary": "Update guest medical information"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-adventure-history",
+          "type": "path",
+          "path": "/guests/{guest_id}/adventure-history",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get guest adventure history"
+          }
+        },
+        {
+          "unique-id": "svc-guest-profiles-event-guest-registered",
+          "type": "path",
+          "path": "novatrek.guest-identity.guest.registered",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Guest Identity",
+        "team": "Guest Experience Team"
+      }
+    },
+    {
+      "unique-id": "svc-guest-profiles-db",
+      "node-type": "database",
+      "name": "Guest Profiles Database",
+      "description": "PostgreSQL 15 database for svc-guest-profiles (guests schema)",
+      "interfaces": [
+        {
+          "unique-id": "svc-guest-profiles-db-jdbc",
+          "type": "host-port",
+          "metadata": {
+            "engine": "PostgreSQL 15",
+            "schema": "guests"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Guest Identity",
+        "engine": "PostgreSQL 15",
+        "tables": [
+          "guest_profiles",
+          "certifications",
+          "medical_info",
+          "emergency_contacts",
+          "adventure_history"
+        ]
+      }
+    },
+    {
+      "unique-id": "svc-check-in",
+      "node-type": "service",
+      "name": "Check In Service",
+      "description": "Handles day-of-adventure check-in workflow including wristband assignment,",
+      "interfaces": [
+        {
+          "unique-id": "svc-check-in-api-post-check-ins",
+          "type": "path",
+          "path": "/check-ins",
+          "metadata": {
+            "method": "POST",
+            "summary": "Initiate check-in for a participant"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-get-check-ins",
+          "type": "path",
+          "path": "/check-ins",
+          "metadata": {
+            "method": "GET",
+            "summary": "List check-ins by reservation"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-get-check-ins-{check_in_id}",
+          "type": "path",
+          "path": "/check-ins/{check_in_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get check-in details"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-post-check-ins-{check_in_id}-gear-verification",
+          "type": "path",
+          "path": "/check-ins/{check_in_id}/gear-verification",
+          "metadata": {
+            "method": "POST",
+            "summary": "Verify gear has been picked up and fitted"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-post-check-ins-{check_in_id}-wristband-assignment",
+          "type": "path",
+          "path": "/check-ins/{check_in_id}/wristband-assignment",
+          "metadata": {
+            "method": "POST",
+            "summary": "Assign RFID wristband to checked-in participant"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-event-checkin-completed",
+          "type": "path",
+          "path": "novatrek.operations.checkin.completed",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Operations",
+        "team": "NovaTrek Operations Team"
+      }
+    },
+    {
+      "unique-id": "svc-reservations",
+      "node-type": "service",
+      "name": "Reservations Service",
+      "description": "Manages adventure trip reservations for NovaTrek Adventures.",
+      "interfaces": [
+        {
+          "unique-id": "svc-reservations-api-get-reservations",
+          "type": "path",
+          "path": "/reservations",
+          "metadata": {
+            "method": "GET",
+            "summary": "Search reservations"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-post-reservations",
+          "type": "path",
+          "path": "/reservations",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a new reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-get-reservations-{reservation_id}",
+          "type": "path",
+          "path": "/reservations/{reservation_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get reservation details"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-patch-reservations-{reservation_id}",
+          "type": "path",
+          "path": "/reservations/{reservation_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update a reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-delete-reservations-{reservation_id}",
+          "type": "path",
+          "path": "/reservations/{reservation_id}",
+          "metadata": {
+            "method": "DELETE",
+            "summary": "Cancel a reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-get-reservations-{reservation_id}-participants",
+          "type": "path",
+          "path": "/reservations/{reservation_id}/participants",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get reservation participants"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-post-reservations-{reservation_id}-participants",
+          "type": "path",
+          "path": "/reservations/{reservation_id}/participants",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add a participant to a reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-put-reservations-{reservation_id}-status",
+          "type": "path",
+          "path": "/reservations/{reservation_id}/status",
+          "metadata": {
+            "method": "PUT",
+            "summary": "Transition reservation status"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-event-reservation-created",
+          "type": "path",
+          "path": "novatrek.booking.reservation.created",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-event-reservation-status_changed",
+          "type": "path",
+          "path": "novatrek.booking.reservation.status-changed",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Booking",
+        "team": "Booking Platform Team"
+      }
+    },
+    {
+      "unique-id": "svc-safety-compliance",
+      "node-type": "service",
+      "name": "Safety Compliance Service",
+      "description": "Manages guest safety waivers, incident reporting, safety inspections, and",
+      "interfaces": [
+        {
+          "unique-id": "svc-safety-compliance-api-post-waivers",
+          "type": "path",
+          "path": "/waivers",
+          "metadata": {
+            "method": "POST",
+            "summary": "Guest signs a safety waiver"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-waivers",
+          "type": "path",
+          "path": "/waivers",
+          "metadata": {
+            "method": "GET",
+            "summary": "List waivers by guest"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-waivers-{waiver_id}",
+          "type": "path",
+          "path": "/waivers/{waiver_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get a specific waiver"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-post-incidents",
+          "type": "path",
+          "path": "/incidents",
+          "metadata": {
+            "method": "POST",
+            "summary": "File an incident report"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-incidents-{incident_id}",
+          "type": "path",
+          "path": "/incidents/{incident_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get an incident report"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-patch-incidents-{incident_id}",
+          "type": "path",
+          "path": "/incidents/{incident_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update an incident report (add follow-up, change status)"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-safety-inspections",
+          "type": "path",
+          "path": "/safety-inspections",
+          "metadata": {
+            "method": "GET",
+            "summary": "List safety inspections for a location"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-post-safety-inspections",
+          "type": "path",
+          "path": "/safety-inspections",
+          "metadata": {
+            "method": "POST",
+            "summary": "Record a safety inspection"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-event-incident-reported",
+          "type": "path",
+          "path": "novatrek.safety.incident.reported",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Safety",
+        "team": "Safety and Compliance Team"
+      }
+    },
+    {
+      "unique-id": "svc-emergency-response",
+      "node-type": "service",
+      "name": "Emergency Response Service",
+      "description": "Manages emergency alerts, SOS signals from guests on active adventures,",
+      "interfaces": [
+        {
+          "unique-id": "svc-emergency-response-api-get-emergencies",
+          "type": "path",
+          "path": "/emergencies",
+          "metadata": {
+            "method": "GET",
+            "summary": "List emergency incidents with optional filters"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-post-emergencies",
+          "type": "path",
+          "path": "/emergencies",
+          "metadata": {
+            "method": "POST",
+            "summary": "Trigger a new emergency alert (SOS)"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-get-emergencies-{emergency_id}",
+          "type": "path",
+          "path": "/emergencies/{emergency_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get emergency incident details"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-patch-emergencies-{emergency_id}",
+          "type": "path",
+          "path": "/emergencies/{emergency_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update emergency status or add resolution notes"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-get-emergencies-{emergency_id}-timeline",
+          "type": "path",
+          "path": "/emergencies/{emergency_id}/timeline",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get the full event timeline for an emergency"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-post-emergencies-{emergency_id}-timeline",
+          "type": "path",
+          "path": "/emergencies/{emergency_id}/timeline",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add a timeline entry to an active emergency"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-post-emergencies-{emergency_id}-dispatch",
+          "type": "path",
+          "path": "/emergencies/{emergency_id}/dispatch",
+          "metadata": {
+            "method": "POST",
+            "summary": "Dispatch a rescue team to the emergency location"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-get-rescue-teams",
+          "type": "path",
+          "path": "/rescue-teams",
+          "metadata": {
+            "method": "GET",
+            "summary": "List available rescue teams and their current status"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-get-emergency-contacts-{guest_id}",
+          "type": "path",
+          "path": "/emergency-contacts/{guest_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get emergency contacts for a guest"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-api-put-emergency-contacts-{guest_id}",
+          "type": "path",
+          "path": "/emergency-contacts/{guest_id}",
+          "metadata": {
+            "method": "PUT",
+            "summary": "Update emergency contacts for a guest"
+          }
+        },
+        {
+          "unique-id": "svc-emergency-response-event-emergency-triggered",
+          "type": "path",
+          "path": "novatrek.safety.emergency.triggered",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Safety",
+        "team": "Safety and Compliance Team"
+      }
+    },
+    {
+      "unique-id": "svc-gear-inventory",
+      "node-type": "service",
+      "name": "Gear Inventory Service",
+      "description": "Manages rental equipment inventory, gear packages, guest assignments,",
+      "interfaces": [
+        {
+          "unique-id": "svc-gear-inventory-api-get-gear-items",
+          "type": "path",
+          "path": "/gear-items",
+          "metadata": {
+            "method": "GET",
+            "summary": "Search gear inventory"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-post-gear-items",
+          "type": "path",
+          "path": "/gear-items",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add new inventory item"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-get-gear-items-{item_id}",
+          "type": "path",
+          "path": "/gear-items/{item_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get gear item details"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-patch-gear-items-{item_id}",
+          "type": "path",
+          "path": "/gear-items/{item_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update gear item"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-get-gear-packages",
+          "type": "path",
+          "path": "/gear-packages",
+          "metadata": {
+            "method": "GET",
+            "summary": "List gear packages"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-get-gear-packages-{package_id}",
+          "type": "path",
+          "path": "/gear-packages/{package_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get gear package details"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-post-gear-assignments",
+          "type": "path",
+          "path": "/gear-assignments",
+          "metadata": {
+            "method": "POST",
+            "summary": "Assign gear to a participant"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-get-gear-assignments-{assignment_id}",
+          "type": "path",
+          "path": "/gear-assignments/{assignment_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get gear assignment details"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-delete-gear-assignments-{assignment_id}",
+          "type": "path",
+          "path": "/gear-assignments/{assignment_id}",
+          "metadata": {
+            "method": "DELETE",
+            "summary": "Return gear (close assignment)"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-put-gear-items-{item_id}-maintenance",
+          "type": "path",
+          "path": "/gear-items/{item_id}/maintenance",
+          "metadata": {
+            "method": "PUT",
+            "summary": "Log a maintenance event"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-get-gear-items-{item_id}-maintenance-history",
+          "type": "path",
+          "path": "/gear-items/{item_id}/maintenance-history",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get maintenance history"
+          }
+        },
+        {
+          "unique-id": "svc-gear-inventory-api-get-inventory-levels",
+          "type": "path",
+          "path": "/inventory-levels",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get stock levels by location and category"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Logistics",
+        "team": "Logistics Team"
+      }
+    },
+    {
+      "unique-id": "svc-partner-integrations",
+      "node-type": "service",
+      "name": "Partner Integrations Service",
+      "description": "Manages third-party partner relationships and bookings from travel agents,",
+      "interfaces": [
+        {
+          "unique-id": "svc-partner-integrations-api-post-partner-bookings",
+          "type": "path",
+          "path": "/partner-bookings",
+          "metadata": {
+            "method": "POST",
+            "summary": "External partner creates a booking"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-get-partner-bookings-{booking_id}",
+          "type": "path",
+          "path": "/partner-bookings/{booking_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get partner booking details"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-patch-partner-bookings-{booking_id}",
+          "type": "path",
+          "path": "/partner-bookings/{booking_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update a partner booking"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-post-partner-bookings-{booking_id}-confirm",
+          "type": "path",
+          "path": "/partner-bookings/{booking_id}/confirm",
+          "metadata": {
+            "method": "POST",
+            "summary": "Confirm a pending partner booking"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-get-partners",
+          "type": "path",
+          "path": "/partners",
+          "metadata": {
+            "method": "GET",
+            "summary": "List registered partners"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-post-partners",
+          "type": "path",
+          "path": "/partners",
+          "metadata": {
+            "method": "POST",
+            "summary": "Register a new partner"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-get-partners-{partner_id}-commission-report",
+          "type": "path",
+          "path": "/partners/{partner_id}/commission-report",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get commission report for a partner"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "External",
+        "team": "Integration Team"
+      }
+    },
+    {
+      "unique-id": "svc-loyalty-rewards",
+      "node-type": "service",
+      "name": "Loyalty Rewards Service",
+      "description": "Manages the NovaTrek Adventures loyalty program including points accrual,",
+      "interfaces": [
+        {
+          "unique-id": "svc-loyalty-rewards-api-get-members-{guest_id}-balance",
+          "type": "path",
+          "path": "/members/{guest_id}/balance",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get loyalty member balance and tier info"
+          }
+        },
+        {
+          "unique-id": "svc-loyalty-rewards-api-post-members-{guest_id}-earn",
+          "type": "path",
+          "path": "/members/{guest_id}/earn",
+          "metadata": {
+            "method": "POST",
+            "summary": "Award points to a member"
+          }
+        },
+        {
+          "unique-id": "svc-loyalty-rewards-api-post-members-{guest_id}-redeem",
+          "type": "path",
+          "path": "/members/{guest_id}/redeem",
+          "metadata": {
+            "method": "POST",
+            "summary": "Redeem points for a reward"
+          }
+        },
+        {
+          "unique-id": "svc-loyalty-rewards-api-get-members-{guest_id}-transactions",
+          "type": "path",
+          "path": "/members/{guest_id}/transactions",
+          "metadata": {
+            "method": "GET",
+            "summary": "List point transactions for a member"
+          }
+        },
+        {
+          "unique-id": "svc-loyalty-rewards-api-get-tiers",
+          "type": "path",
+          "path": "/tiers",
+          "metadata": {
+            "method": "GET",
+            "summary": "List all loyalty tiers and their thresholds"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Support",
+        "team": "Support Services Team"
+      }
+    },
+    {
+      "unique-id": "svc-analytics",
+      "node-type": "service",
+      "name": "Analytics Service",
+      "description": "Provides operational analytics, reporting dashboards, and key performance",
+      "interfaces": [
+        {
+          "unique-id": "svc-analytics-api-get-analytics-bookings",
+          "type": "path",
+          "path": "/analytics/bookings",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get booking analytics for a period"
+          }
+        },
+        {
+          "unique-id": "svc-analytics-api-get-analytics-revenue",
+          "type": "path",
+          "path": "/analytics/revenue",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get revenue analytics for a period"
+          }
+        },
+        {
+          "unique-id": "svc-analytics-api-get-analytics-utilization",
+          "type": "path",
+          "path": "/analytics/utilization",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get resource utilization analytics"
+          }
+        },
+        {
+          "unique-id": "svc-analytics-api-get-analytics-guest-satisfaction",
+          "type": "path",
+          "path": "/analytics/guest-satisfaction",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get guest satisfaction metrics"
+          }
+        },
+        {
+          "unique-id": "svc-analytics-api-get-analytics-safety-metrics",
+          "type": "path",
+          "path": "/analytics/safety-metrics",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get safety and incident metrics"
+          }
+        },
+        {
+          "unique-id": "svc-analytics-api-get-analytics-guide-performance-{guide_id}",
+          "type": "path",
+          "path": "/analytics/guide-performance/{guide_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get performance metrics for a specific guide"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Support",
+        "team": "Support Services Team"
+      }
+    },
+    {
+      "unique-id": "svc-reviews",
+      "node-type": "service",
+      "name": "Reviews Service",
+      "description": "Manages guest reviews, ratings, and social proof for NovaTrek Adventures.",
+      "interfaces": [
+        {
+          "unique-id": "svc-reviews-api-post-reviews",
+          "type": "path",
+          "path": "/reviews",
+          "metadata": {
+            "method": "POST",
+            "summary": "Submit a guest review"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-get-reviews",
+          "type": "path",
+          "path": "/reviews",
+          "metadata": {
+            "method": "GET",
+            "summary": "List reviews with optional filters"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-get-reviews-{review_id}",
+          "type": "path",
+          "path": "/reviews/{review_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Retrieve a specific review"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-patch-reviews-{review_id}",
+          "type": "path",
+          "path": "/reviews/{review_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update a review (guest edit or moderation action)"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-delete-reviews-{review_id}",
+          "type": "path",
+          "path": "/reviews/{review_id}",
+          "metadata": {
+            "method": "DELETE",
+            "summary": "Delete a review"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-post-reviews-{review_id}-helpful",
+          "type": "path",
+          "path": "/reviews/{review_id}/helpful",
+          "metadata": {
+            "method": "POST",
+            "summary": "Mark a review as helpful"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-get-trips-{trip_id}-rating-summary",
+          "type": "path",
+          "path": "/trips/{trip_id}/rating-summary",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get aggregated rating summary for a trip"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-get-guides-{guide_id}-rating-summary",
+          "type": "path",
+          "path": "/guides/{guide_id}/rating-summary",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get aggregated rating summary for a guide"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-get-moderation-queue",
+          "type": "path",
+          "path": "/moderation/queue",
+          "metadata": {
+            "method": "GET",
+            "summary": "List reviews pending moderation"
+          }
+        },
+        {
+          "unique-id": "svc-reviews-api-post-moderation-{review_id}-decide",
+          "type": "path",
+          "path": "/moderation/{review_id}/decide",
+          "metadata": {
+            "method": "POST",
+            "summary": "Approve or reject a review"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Support",
+        "team": "Support Services Team"
+      }
+    },
+    {
+      "unique-id": "ext-idverify",
+      "node-type": "system",
+      "name": "IDVerify API",
+      "description": "Third-party identity verification service",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-kafka-broker",
+      "node-type": "system",
+      "name": "Kafka Event Bus",
+      "description": "Apache Kafka message broker for asynchronous event-driven integration",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "rel-svc-guest-profiles-to-db",
+      "relationship-type": "connects",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "svc-guest-profiles-db"
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "description": "svc-guest-profiles connects to its database"
+      }
+    },
+    {
+      "unique-id": "rel-svc-check-in-post--check-ins-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-check-in",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /check-ins",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate guest identity",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-post--reservations-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /reservations",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate guest identity",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-post--reservations-{reservation_id}-participants-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /reservations/{reservation_id}/participants",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate participant",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-partner-integrations-post--partner-bookings-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-partner-integrations",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /partner-bookings",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate guest identity",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-guest-profiles-post--guests-to-ext-idverify",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "ext-idverify"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /guests",
+        "target-endpoint": "GET ",
+        "action": "Verify identity document",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-guest-profiles-post--guests-to-ext-kafka-broker",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "ext-kafka-broker"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /guests",
+        "target-endpoint": "GET ",
+        "action": "guest.registered",
+        "async": true
+      }
+    },
+    {
+      "unique-id": "rel-svc-guest-profiles-get--guests-{guest_id}-adventure-history-to-svc-reservations",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "svc-reservations"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "GET /guests/{guest_id}/adventure-history",
+        "target-endpoint": "GET /reservations",
+        "action": "Query past bookings",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-guest-profiles-get--guests-{guest_id}-adventure-history-to-svc-analytics",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "svc-analytics"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "GET /guests/{guest_id}/adventure-history",
+        "target-endpoint": "GET /events",
+        "action": "Get satisfaction scores",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-safety-compliance-post--waivers-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-safety-compliance",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /waivers",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate guest identity",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-safety-compliance-post--incidents-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-safety-compliance",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /incidents",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Get guest contact info",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-gear-inventory-post--gear-assignments-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-gear-inventory",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /gear-assignments",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate guest",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-loyalty-rewards-post--members-{guest_id}-earn-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-loyalty-rewards",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /members/{guest_id}/earn",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Get member profile",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-loyalty-rewards-post--members-{guest_id}-redeem-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-loyalty-rewards",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /members/{guest_id}/redeem",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Get member profile",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-emergency-response-post--emergencies-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-emergency-response",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /emergencies",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Retrieve guest medical info and emergency contacts",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reviews-post--reviews-to-svc-guest-profiles",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reviews",
+        "target": "svc-guest-profiles"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /reviews",
+        "target-endpoint": "GET /guests/{guest_id}",
+        "action": "Validate guest identity",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-event-guest-registered-svc-guest-profiles-to-svc-loyalty-rewards",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "svc-loyalty-rewards"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "event": "guest.registered",
+        "channel": "novatrek.guest-identity.guest.registered",
+        "summary": "Published when a new guest profile is created",
+        "async": true
+      }
+    },
+    {
+      "unique-id": "rel-event-guest-registered-svc-guest-profiles-to-svc-analytics",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-guest-profiles",
+        "target": "svc-analytics"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "event": "guest.registered",
+        "channel": "novatrek.guest-identity.guest.registered",
+        "summary": "Published when a new guest profile is created",
+        "async": true
+      }
+    }
+  ]
+}

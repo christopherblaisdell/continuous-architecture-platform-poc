@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/control.json",
+  "metadata": {
+    "name": "Data Ownership Control",
+    "description": "Enforces single-service ownership of each database. A database node with more than one incoming 'connects' relationship indicates a shared database violation.",
+    "version": "1.0.0",
+    "references": [
+      "ADR-010 — PATCH Semantics for Schedule Updates",
+      "ADR-011 — Optimistic Locking for Daily Schedule",
+      "copilot-instructions.md — Data Ownership Boundaries"
+    ]
+  },
+  "control": {
+    "id": "data-ownership",
+    "scope": "database",
+    "assertion": "Each database node must have exactly one 'connects' relationship from its owning service.",
+    "severity": "error",
+    "remediation": "If two services need the same data, the owning service must expose an API endpoint. The consuming service calls the API instead of connecting to the database directly."
+  }
+}

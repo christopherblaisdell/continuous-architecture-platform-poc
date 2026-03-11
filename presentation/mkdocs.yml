@@ -32,6 +32,7 @@ nav:
     - "Alternative Toolchain": roo-kong-failures.md
   - How It Works:
     - Enhanced Workspace: shared-workspace.md
+    - "CALM Topology": calm-topology.md
   - Live Demo: live-demo.md
   - The Ask: the-ask.md
 

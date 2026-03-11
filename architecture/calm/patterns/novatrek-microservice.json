@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/pattern.json",
+  "metadata": {
+    "name": "NovaTrek Microservice Pattern",
+    "description": "Every NovaTrek microservice must own exactly one database, communicate via HTTPS or Kafka, and declare domain ownership.",
+    "version": "1.0.0"
+  },
+  "rules": [
+    {
+      "id": "single-database-ownership",
+      "description": "Each service connects to exactly one database, and each database is owned by exactly one service.",
+      "severity": "error",
+      "rationale": "Shared databases create tight coupling between services and violate bounded context boundaries. See ADR-010, ADR-011."
+    },
+    {
+      "id": "api-mediated-access",
+      "description": "Services must communicate via HTTPS (REST) or Kafka (events). No direct JDBC connections between services.",
+      "severity": "error",
+      "rationale": "Direct database access between services bypasses API contracts, making independent deployment impossible."
+    },
+    {
+      "id": "domain-metadata-required",
+      "description": "Every service node must declare its domain and owning team in metadata.",
+      "severity": "error",
+      "rationale": "Domain classification drives the portal structure, team routing, and bounded context enforcement."
+    },
+    {
+      "id": "no-orphan-services",
+      "description": "Every service should participate in at least one relationship (caller or callee).",
+      "severity": "warning",
+      "rationale": "An orphan service with no integrations may indicate incomplete modeling or a dead service."
+    }
+  ]
+}
