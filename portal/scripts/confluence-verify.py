@@ -289,9 +289,9 @@ def verify_labels(staging, confluence_pages, matched_titles, report):
             continue
 
         labels_data = page.get("metadata", {}).get("labels", {}).get("results", [])
-        actual = {lbl["name"] for lbl in labels_data}
+        actual = {lbl["name"].lower() for lbl in labels_data}
 
-        diff = expected - actual
+        diff = {l for l in expected if l.lower() not in actual}
         if diff:
             report.fail(f"Missing labels on '{title}': {', '.join(sorted(diff))}")
             missing_labels += 1
@@ -367,7 +367,9 @@ def verify_attachments(staging, confluence_pages, matched_titles, base_url, head
             # Skip external URLs
             if img_path.startswith("http://") or img_path.startswith("https://"):
                 continue
-            if img_name not in actual_set:
+            # mark flattens paths: "svg/file.svg" → "svg_file.svg"
+            flattened = img_path.replace("/", "_").lower()
+            if img_name not in actual_set and flattened not in actual_set:
                 report.warn(f"Missing attachment on '{title}': {img_name}")
                 attachment_issues += 1
 
