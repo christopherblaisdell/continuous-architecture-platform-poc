@@ -23,8 +23,6 @@ An AI assistant in VS Code that reads the architecture Git repo — the same spe
 - Updates Swagger/OpenAPI specs from approved designs
 - Produces PlantUML and C4 model diagrams
 
-**What it costs:** $39/month per seat (GitHub Copilot Pro+, fixed subscription)
-
 ---
 
 ### 2. Enhanced Architecture Workspace
@@ -36,7 +34,7 @@ The architecture repository is enhanced with **AI-readable context** — archite
 - The AI reads the actual OpenAPI specs already version-controlled (no hallucination)
 - A `copilot-instructions.md` file encodes 500+ lines of domain knowledge, loaded into every AI session
 - Previous architectural decisions inform new ones — automatically
-- The workspace gets richer with every project — and Copilot's fixed pricing means richer context costs nothing extra
+- The workspace gets richer with every project — each design becomes context for the next
 
 ---
 
@@ -86,7 +84,7 @@ flowchart LR
 ```
 
 <div class="key-insight" markdown>
-**The flywheel effect:** Every artifact the AI produces becomes context for the next session. The workspace grows richer. The AI gets more accurate. The documentation stays current — not because someone remembers to update the wiki, but because publishing is automated. And the cost stays flat at $39/month.
+**Compounding returns:** Every artifact the AI produces becomes context for the next session. The workspace grows richer. The AI gets more accurate. The documentation stays current — not because someone remembers to update the wiki, but because publishing is automated.
 </div>
 
 ---
@@ -107,6 +105,6 @@ This POC demonstrates a complete architecture platform using NovaTrek Adventures
 
 ### See the cost evidence
 
-[Cost Evidence: The 208x Difference](cost-evidence.md)
+[Cost Evidence: Toolchain Comparison](cost-evidence.md)
 
 </div>

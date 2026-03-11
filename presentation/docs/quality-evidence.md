@@ -100,7 +100,7 @@ The evaluation covered five dimensions. Copilot won or tied in every one:
 ## What This Demonstrates
 
 <div class="key-insight" markdown>
-**The AI produced 39 complete architecture artifacts following corporate standards** (arc42, MADR, C4, ISO 25010) across 5 scenarios. These aren't rough drafts — they're structured documents that follow templates, cite specific source code lines, and cross-reference actual workspace files. And the better-performing tool is also the **208x cheaper** one.
+Across 5 scenarios, the AI produced 39 complete architecture artifacts following corporate standards (arc42, MADR, C4, ISO 25010). These are structured documents that follow templates, cite specific source code lines, and cross-reference actual workspace files. The toolchain that produced higher-quality output also had the lower cost profile.
 </div>
 
 <div class="cta-box" markdown>

@@ -1,23 +1,21 @@
-# The Ask
+# Next Steps
 
-## Access to one of the five existing Copilot Pro+ test accounts
+## Validate Against Corporate Architecture Artifacts
 
-The organization already has five GitHub Copilot Pro+ test seats. Access to one of them is all that's needed to run this POC against real corporate architecture artifacts.
+The POC results are based on a synthetic workspace (NovaTrek Adventures). The next step is validating against real architecture artifacts to determine whether the approach translates to our actual environment.
 
 ---
 
-## What This Enables
+## What Validation Requires
 
-The POC so far has been validated against a **synthetic workspace** (NovaTrek Adventures). Every result in this presentation — 39 files produced, 208x cost advantage, zero fabrication — comes from that synthetic environment.
+The organization already has five GitHub Copilot Pro+ test seats. Access to one seat would enable validation against real artifacts:
 
-The next step is proving it works against **real artifacts**:
+- Run architecture scenarios against actual corporate OpenAPI specs, ADRs, and architecture metadata
+- Evaluate output quality when the workspace contains production context
+- Test AI-assisted workflows against real JIRA tickets and service codebases
+- Produce a go/no-go recommendation based on corporate evidence
 
-- Point the AI at actual corporate OpenAPI specs, ADRs, and architecture metadata
-- Run architecture scenarios against real JIRA tickets and real service codebases
-- Measure output quality when the workspace contains actual production context
-- Produce a definitive go/no-go recommendation based on corporate evidence
-
-No new infrastructure, no new licenses, no procurement. Just access to a seat that already exists.
+No new infrastructure, licenses, or procurement is required.
 
 ---
 
@@ -25,20 +23,16 @@ No new infrastructure, no new licenses, no procurement. Just access to a seat th
 
 | Claim | Source |
 |-------|--------|
-| 208x cheaper per run | Actual billing data from Phase 1 execution |
+| Significant per-run cost advantage | Actual billing data from Phase 1 execution |
 | 39 architecture files produced | 5 evaluated scenarios following MADR/arc42/C4 standards |
 | 301 artifacts published automatically | Live portal at architecture.novatrek.cc |
 | 95%+ knowledge gap rate | Phase 1 post-execution analysis |
 | Zero fabrication (Copilot) | Head-to-head comparison vs Roo Code |
 
-**Every number above comes from measured results against the synthetic workspace. The next step is validating against real corporate data.**
+All figures above are from measured results against the synthetic workspace.
 
 ---
 
-<div class="cta-box" markdown>
-
-### Grant access to one of the five existing Copilot Pro+ test accounts.
-
-No new licenses. No new infrastructure. Everything else is already in place.
-
+<div class="key-insight" markdown>
+**Recommended next step:** Access to one existing Copilot Pro+ test seat to validate against corporate architecture artifacts.
 </div>

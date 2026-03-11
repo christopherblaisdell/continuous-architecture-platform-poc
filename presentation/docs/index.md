@@ -1,33 +1,33 @@
-# AI-Assisted Architecture
+# Continuous Architecture Platform
 
-## How AI Transforms Architecture Practice — for $39/month
+## Proof of Concept Results
 
 <div class="hero-grid" markdown>
 
 <div class="hero-card" markdown>
-<div class="metric">208x</div>
-<div class="label">Cheaper per run vs per-token models</div>
-</div>
-
-<div class="hero-card accent" markdown>
 <div class="metric">39</div>
 <div class="label">Architecture files produced across 5 scenarios</div>
 </div>
 
+<div class="hero-card accent" markdown>
+<div class="metric">301</div>
+<div class="label">Portal artifacts published automatically</div>
+</div>
+
 <div class="hero-card dark" markdown>
-<div class="metric">$39</div>
-<div class="label">Per month per architect (fixed cost)</div>
+<div class="metric">5</div>
+<div class="label">Representative architecture scenarios evaluated</div>
 </div>
 
 </div>
 
 ---
 
-## The Pitch in 60 Seconds
+## Executive Summary
 
-Many architecture practices already source-control OpenAPI specs and PlantUML diagrams in Git, with production gating. **GitHub Copilot Pro+** adds an AI assistant that reads those artifacts, produces architecture designs following established standards, and **generates compliant output automatically** — for **$39/month per seat**.
+Many architecture practices already source-control OpenAPI specs and PlantUML diagrams in Git, with production gating. This proof of concept evaluated whether an AI assistant (GitHub Copilot Pro+) can read those existing artifacts and produce compliant architecture designs — solution documents, ADRs, impact assessments — following established standards.
 
-Same underlying AI model (Claude Opus 4.6) as per-token alternatives. 208x cheaper per run. Zero fabrication vs 4 fabricated API fields from the competing toolchain. Demonstrated with 5 complex architecture scenarios using NovaTrek Adventures as a synthetic case study.
+The POC compared two AI toolchains using the same underlying model (Claude Opus 4.6) across 5 architecture scenarios. The results cover cost, output quality, and accuracy. All evidence comes from measured execution against a synthetic workspace (NovaTrek Adventures).
 
 <div class="key-insight" markdown>
 **This is not a proposal.** This is a demonstration. The evidence on the following pages comes from actual billing data, actual execution results, and an actual live architecture portal — all built during this proof of concept.
@@ -41,7 +41,7 @@ Same underlying AI model (Claude Opus 4.6) as per-token alternatives. 208x cheap
 |---------|-------------------|
 | [The Problem](problem.md) | Why does architecture documentation always decay? |
 | [The Solution](solution.md) | What replaces point-in-time documentation? |
-| [Cost Evidence](cost-evidence.md) | How do we know it's 208x cheaper? |
+| [Cost Evidence](cost-evidence.md) | What does each toolchain cost? |
 | [Output Analysis](quality-evidence.md) | What did the AI actually produce? |
 | [Enhanced Workspace](shared-workspace.md) | How does the AI leverage our existing Git repo? |
 | [Live Demo](live-demo.md) | What does the end result look like? |

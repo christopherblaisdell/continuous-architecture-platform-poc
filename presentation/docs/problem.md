@@ -89,12 +89,8 @@ Production gating gives teams authoritative API contracts at design time. But th
 | Knowledge silos | The architect who did the last project is the only one who knows what changed |
 | Design-reality gap | Specs describe intended design, not necessarily what was built and deployed |
 
-The platform demonstrated here solves every one of these problems — building on the version-controlled foundation that already exists.
+The platform demonstrated in this POC addresses each of these gaps — building on the version-controlled foundation that already exists.
 
-<div class="cta-box" markdown>
+---
 
-### Ready to see the solution?
-
-[The Solution: Continuous Architecture Platform](solution.md)
-
-</div>
+[Continue: The Solution](solution.md)

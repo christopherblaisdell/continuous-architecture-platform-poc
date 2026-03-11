@@ -87,7 +87,7 @@ flowchart TD
 - After **Project 5**: 20+ ADRs, more service pages, updated specs, richer decision history
 - After **Project 20**: A comprehensive architecture knowledge base that informs every new design
 
-And with Copilot's **fixed pricing**, richer context costs nothing extra. The AI reads more files, analyzes more specs, cross-references more decisions — all for $39/month.
+With a fixed-price subscription, richer context does not increase per-session cost. The AI reads more files, analyzes more specs, and cross-references more decisions without incremental expense.
 
 !!! warning "This Is Why the Manual Confluence Step Fails"
     Confluence pages are what architects and stakeholders actually browse — but they fall behind because updating them is manual and voluntary. The workspace-first approach automates publishing: the artifacts in Git generate a browsable portal automatically. No manual step to skip.
