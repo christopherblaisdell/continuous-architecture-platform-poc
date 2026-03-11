@@ -12,7 +12,7 @@ tags:
 
 </div>
 
-The NovaTrek Architecture Practice maintains a curated set of design standards that ensure consistency, quality, and traceability across all architectural work. These standards are organized into five categories.
+The NovaTrek Architecture Practice maintains a curated set of design standards that ensure consistency, quality, and traceability across all architectural work. These standards are organized into seven categories.
 
 ---
 
@@ -50,6 +50,22 @@ Markdown Any Decision Records — the standard format for documenting architectu
 Three alternative ADR formats for different contexts: Nygard (minimal), Alexandrian (pattern-based), and Tyree-Akerman (business-oriented).
 </a>
 
+<a href="openapi-contracts/" class="portal-card" markdown>
+<span class="card-icon">:material-api:</span>
+
+### OpenAPI Contracts
+
+Machine-readable API specifications in YAML for all 22 NovaTrek microservices. The single source of truth for endpoints, schemas, and cross-service contracts — powering Swagger UI, sequence diagrams, and portal generation.
+</a>
+
+<a href="metadata-registry/" class="portal-card" markdown>
+<span class="card-icon">:material-database-cog:</span>
+
+### Metadata Registry
+
+15 YAML files that model the entire architecture — domains, capabilities, integrations, data stores, actors, events, and tickets. Portal pages are generated from this data, not maintained by hand.
+</a>
+
 <a href="quality-model/" class="portal-card" markdown>
 <span class="card-icon">:material-shield-check:</span>
 
@@ -66,7 +82,7 @@ The international standard for software product quality. Eight quality character
 
 | Activity | Primary Standard | Supporting Standards |
 |----------|-----------------|---------------------|
-| **New service documentation** | arc42 template (Sections 01-12) | C4 Model for diagrams, ISO 25010 for quality requirements |
+| **New service documentation** | arc42 template (Sections 01-12) | C4 Model for diagrams, OpenAPI Contracts, ISO 25010 for quality requirements |
 | **Architecture decision** | MADR full template | ISO 25010 for quality attribute assessment |
 | **Quick design spike** | MADR short template | C4 Model (Level 2 Container diagram) |
 | **Business-facing decision** | Tyree-Akerman ADR template | ISO 25010 for stakeholder quality concerns |

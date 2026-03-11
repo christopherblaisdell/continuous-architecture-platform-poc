@@ -110,72 +110,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Architecture:
-    - Solutions:
-      - solutions/index.md
-      - _NTK-10001: solutions/_NTK-10001-add-elevation-to-trail-response.md
-      - _NTK-10002: solutions/_NTK-10002-adventure-category-classification.md
-      - _NTK-10003: solutions/_NTK-10003-unregistered-guest-self-checkin.md
-      - _NTK-10004: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
-      - _NTK-10005: solutions/_NTK-10005-wristband-rfid-field.md
-      - _NTK-10008: solutions/_NTK-10008-guest-reviews-and-ratings.md
-      - _NTK-10009: solutions/_NTK-10009-refund-dispute-management.md
-    - Business Capabilities: capabilities/index.md
-    - Tickets:
-      - tickets/index.md
-      - NTK-10001: tickets/NTK-10001.md
-      - NTK-10002: tickets/NTK-10002.md
-      - NTK-10003: tickets/NTK-10003.md
-      - NTK-10004: tickets/NTK-10004.md
-      - NTK-10005: tickets/NTK-10005.md
-      - NTK-10006: tickets/NTK-10006.md
-      - NTK-10007: tickets/NTK-10007.md
-      - NTK-10008: tickets/NTK-10008.md
-      - NTK-10009: tickets/NTK-10009.md
-  - Services:
-    - Microservices:
-      - microservices/index.md
-      - Service Catalog: services/index.md
-      - svc-analytics: microservices/svc-analytics.md
-      - svc-check-in: microservices/svc-check-in.md
-      - svc-emergency-response: microservices/svc-emergency-response.md
-      - svc-gear-inventory: microservices/svc-gear-inventory.md
-      - svc-guest-profiles: microservices/svc-guest-profiles.md
-      - svc-guide-management: microservices/svc-guide-management.md
-      - svc-inventory-procurement: microservices/svc-inventory-procurement.md
-      - svc-location-services: microservices/svc-location-services.md
-      - svc-loyalty-rewards: microservices/svc-loyalty-rewards.md
-      - svc-media-gallery: microservices/svc-media-gallery.md
-      - svc-notifications: microservices/svc-notifications.md
-      - svc-partner-integrations: microservices/svc-partner-integrations.md
-      - svc-payments: microservices/svc-payments.md
-      - svc-reservations: microservices/svc-reservations.md
-      - svc-safety-compliance: microservices/svc-safety-compliance.md
-      - svc-scheduling-orchestrator: microservices/svc-scheduling-orchestrator.md
-      - svc-trail-management: microservices/svc-trail-management.md
-      - svc-transport-logistics: microservices/svc-transport-logistics.md
-      - svc-trip-catalog: microservices/svc-trip-catalog.md
-      - svc-weather: microservices/svc-weather.md
-      - svc-reviews: microservices/svc-reviews.md
-      - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
-    - Applications:
-      - applications/index.md
-      - web-guest-portal:
-        - applications/web-guest-portal.md
-        - Wireframes:
-          - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
-      - web-ops-dashboard:
-        - applications/web-ops-dashboard.md
-        - Wireframes:
-          - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
-      - app-guest-mobile:
-        - applications/app-guest-mobile.md
-        - Wireframes:
-          - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
-    - CALM Topology: calm.md
-    - Event Catalog: events/index.md
-    - Actor Catalog: actors/index.md
-  - Standards:
+  - Design Standards:
     - standards/index.md
     - arc42 Template:
       - standards/arc42/index.md
@@ -209,10 +144,73 @@ nav:
       - Alexandrian Template: standards/adr-templates/alexandrian-template.md
       - Tyree-Akerman Template: standards/adr-templates/tyree-akerman-template.md
     - OpenAPI Contracts: standards/openapi-contracts/index.md
+    - Metadata Registry: standards/metadata-registry/index.md
     - Quality Model:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
-  - Platform:
-    - Technology Stack: technologies.md
-    - Platform Operations: platform-operations.md
-    - Tags: tags.md
+  - Solutions:
+    - solutions/index.md
+    - _NTK-10001: solutions/_NTK-10001-add-elevation-to-trail-response.md
+    - _NTK-10002: solutions/_NTK-10002-adventure-category-classification.md
+    - _NTK-10003: solutions/_NTK-10003-unregistered-guest-self-checkin.md
+    - _NTK-10004: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
+    - _NTK-10005: solutions/_NTK-10005-wristband-rfid-field.md
+    - _NTK-10008: solutions/_NTK-10008-guest-reviews-and-ratings.md
+    - _NTK-10009: solutions/_NTK-10009-refund-dispute-management.md
+  - Business Capabilities: capabilities/index.md
+  - Tickets:
+    - tickets/index.md
+    - NTK-10001: tickets/NTK-10001.md
+    - NTK-10002: tickets/NTK-10002.md
+    - NTK-10003: tickets/NTK-10003.md
+    - NTK-10004: tickets/NTK-10004.md
+    - NTK-10005: tickets/NTK-10005.md
+    - NTK-10006: tickets/NTK-10006.md
+    - NTK-10007: tickets/NTK-10007.md
+    - NTK-10008: tickets/NTK-10008.md
+    - NTK-10009: tickets/NTK-10009.md
+  - Applications:
+    - applications/index.md
+    - web-guest-portal:
+      - applications/web-guest-portal.md
+      - Wireframes:
+        - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
+    - web-ops-dashboard:
+      - applications/web-ops-dashboard.md
+      - Wireframes:
+        - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
+    - app-guest-mobile:
+      - applications/app-guest-mobile.md
+      - Wireframes:
+        - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
+  - Microservices:
+    - microservices/index.md
+    - Service Catalog: services/index.md
+    - svc-analytics: microservices/svc-analytics.md
+    - svc-check-in: microservices/svc-check-in.md
+    - svc-emergency-response: microservices/svc-emergency-response.md
+    - svc-gear-inventory: microservices/svc-gear-inventory.md
+    - svc-guest-profiles: microservices/svc-guest-profiles.md
+    - svc-guide-management: microservices/svc-guide-management.md
+    - svc-inventory-procurement: microservices/svc-inventory-procurement.md
+    - svc-location-services: microservices/svc-location-services.md
+    - svc-loyalty-rewards: microservices/svc-loyalty-rewards.md
+    - svc-media-gallery: microservices/svc-media-gallery.md
+    - svc-notifications: microservices/svc-notifications.md
+    - svc-partner-integrations: microservices/svc-partner-integrations.md
+    - svc-payments: microservices/svc-payments.md
+    - svc-reservations: microservices/svc-reservations.md
+    - svc-safety-compliance: microservices/svc-safety-compliance.md
+    - svc-scheduling-orchestrator: microservices/svc-scheduling-orchestrator.md
+    - svc-trail-management: microservices/svc-trail-management.md
+    - svc-transport-logistics: microservices/svc-transport-logistics.md
+    - svc-trip-catalog: microservices/svc-trip-catalog.md
+    - svc-weather: microservices/svc-weather.md
+    - svc-reviews: microservices/svc-reviews.md
+    - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
+  - CALM Topology: calm.md
+  - Event Catalog: events/index.md
+  - Actor Catalog: actors/index.md
+  - Technology Stack: technologies.md
+  - Platform Operations: platform-operations.md
+  - Tags: tags.md

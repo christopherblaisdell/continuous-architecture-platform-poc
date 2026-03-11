@@ -1,3 +1,6 @@
+!!! warning "Synthetic Demonstration Environment"
+    **Everything in this presentation is entirely fictional.** NovaTrek Adventures is a completely fictitious company created solely for this proof of concept. All services, tickets, architecture decisions, logs, source code, and operational data are synthetic. No real corporate systems, data, or organizations are represented. The companion **[Architecture Portal](https://architecture.novatrek.cc)** is also entirely synthetic.
+
 # Continuous Architecture Platform
 
 ## Proof of Concept Results
