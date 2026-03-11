@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaTrek API Explorer</title>
+  <style>
+    :root {
+      --teal: #009688;
+      --teal-dark: #00796b;
+      --teal-light: #e0f2f1;
+      --amber: #ffc107;
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #263238;
+      --text-light: #546e7a;
+      --border: #e0e0e0;
+      --success: #4caf50;
+      --error: #ef5765;
+      --code-bg: #1e293b;
+      --code-text: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+    header p { opacity: 0.9; font-size: 0.95rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+    .status-bar {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .status-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      flex: 1;
+      min-width: 200px;
+    }
+    .status-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .status-dot.up { background: var(--success); }
+    .status-dot.down { background: var(--error); }
+    .status-dot.checking { background: var(--amber); animation: pulse 1s infinite; }
+    @keyframes pulse { 50% { opacity: 0.4; } }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 800px) {
+      .demo-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .panel-header {
+      background: var(--teal-light);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--teal-dark);
+    }
+    .panel-body { padding: 1rem; }
+
+    .endpoint-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .endpoint-btn:hover { border-color: var(--teal); background: var(--teal-light); }
+    .endpoint-btn.active { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 0 0 2px rgba(0,150,136,0.2); }
+    .endpoint-btn .method {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+      font-family: 'Fira Code', monospace;
+    }
+    .method.get { background: #e8f5e9; color: #2e7d32; }
+    .method.post { background: #fff3e0; color: #e65100; }
+    .method.delete { background: #ffebee; color: #c62828; }
+    .endpoint-btn .path { font-family: 'Fira Code', monospace; font-size: 0.8rem; }
+    .endpoint-btn .desc { display: block; color: var(--text-light); font-size: 0.78rem; margin-top: 0.25rem; }
+
+    .svc-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 1rem 0 0.5rem 0;
+    }
+    .svc-label:first-child { margin-top: 0; }
+
+    .response-area {
+      position: relative;
+    }
+    .response-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+    }
+    .http-status {
+      font-weight: 700;
+      font-family: 'Fira Code', monospace;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .http-status.s2xx { background: #e8f5e9; color: #2e7d32; }
+    .http-status.s4xx { background: #fff3e0; color: #e65100; }
+    .http-status.s5xx { background: #ffebee; color: #c62828; }
+    .http-status.err { background: #ffebee; color: #c62828; }
+    .response-time { color: var(--text-light); }
+
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 500px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+    .code-block .key { color: #7dd3fc; }
+    .code-block .str { color: #86efac; }
+    .code-block .num { color: #fbbf24; }
+    .code-block .bool { color: #c084fc; }
+    .code-block .null { color: #94a3b8; }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+    }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      gap: 0.75rem;
+      color: var(--text-light);
+    }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 3px solid var(--border);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .input-row label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-light);
+      min-width: 70px;
+      align-self: center;
+    }
+    .input-row input, .input-row select {
+      flex: 1;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+    }
+    .input-row input:focus, .input-row select:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 2px rgba(0,150,136,0.15);
+    }
+
+    .send-btn {
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .send-btn:hover { background: var(--teal-dark); }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .url-bar {
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .url-bar .method-tag { color: #86efac; font-weight: 700; }
+    .url-bar .url-text { color: #7dd3fc; }
+
+    .note {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>NovaTrek API Explorer</h1>
+  <p>Live calls to deployed Azure Container Apps microservices</p>
+</header>
+
+<div class="container">
+  <div class="status-bar" id="statusBar"></div>
+
+  <div class="demo-grid">
+    <!-- Left: Endpoint List -->
+    <div class="panel">
+      <div class="panel-header">Endpoints</div>
+      <div class="panel-body" id="endpointList"></div>
+    </div>
+
+    <!-- Right: Request/Response -->
+    <div class="panel">
+      <div class="panel-header" id="rightHeader">Response</div>
+      <div class="panel-body">
+        <div id="requestConfig" style="display:none;"></div>
+        <div id="responseArea">
+          <div class="empty-state">
+            <div class="icon">&#x2190;</div>
+            <p>Select an endpoint to make a live API call</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE_URLS = {
+  'svc-guest-profiles': 'https://ca-svc-guest-profiles.blackwater-fd4bc06d.eastus2.azurecontainerapps.io',
+  'svc-trip-catalog':   'https://ca-svc-trip-catalog.blackwater-fd4bc06d.eastus2.azurecontainerapps.io',
+  'svc-trail-management': 'https://ca-svc-trail-management.blackwater-fd4bc06d.eastus2.azurecontainerapps.io',
+};
+
+const ENDPOINTS = [
+  {
+    svc: 'svc-guest-profiles',
+    label: 'Guest Profiles',
+    items: [
+      { method: 'GET', path: '/actuator/health', desc: 'Health check', params: [] },
+      { method: 'GET', path: '/guests', desc: 'List all guests', params: [] },
+      { method: 'GET', path: '/guests/{guest_id}', desc: 'Get guest by ID', params: [
+        { name: 'guest_id', type: 'path', placeholder: 'e.g. from list above' }
+      ]},
+      { method: 'POST', path: '/guests', desc: 'Register a new guest', params: [],
+        body: {
+          firstName: 'Edmund',
+          lastName: 'Hillary',
+          email: 'edmund.hillary@novatrek.example.com',
+          phoneNumber: '+1-555-0199'
+        }
+      },
+    ]
+  },
+  {
+    svc: 'svc-trip-catalog',
+    label: 'Trip Catalog',
+    items: [
+      { method: 'GET', path: '/actuator/health', desc: 'Health check', params: [] },
+      { method: 'GET', path: '/trips', desc: 'List all trips', params: [] },
+    ]
+  },
+  {
+    svc: 'svc-trail-management',
+    label: 'Trail Management',
+    items: [
+      { method: 'GET', path: '/actuator/health', desc: 'Health check', params: [] },
+      { method: 'GET', path: '/trails', desc: 'List all trails', params: [] },
+    ]
+  },
+];
+
+// ---- Health Checks ----
+async function checkHealth(svc) {
+  const dot = document.getElementById(`dot-${svc}`);
+  const label = document.getElementById(`label-${svc}`);
+  dot.className = 'status-dot checking';
+  label.textContent = 'Checking...';
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const r = await fetch(`${BASE_URLS[svc]}/actuator/health`, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (r.ok) {
+      dot.className = 'status-dot up';
+      label.textContent = 'UP';
+    } else {
+      dot.className = 'status-dot down';
+      label.textContent = `HTTP ${r.status}`;
+    }
+  } catch {
+    dot.className = 'status-dot down';
+    label.textContent = 'Unreachable';
+  }
+}
+
+function renderStatusBar() {
+  const bar = document.getElementById('statusBar');
+  bar.innerHTML = Object.entries(BASE_URLS).map(([svc]) => `
+    <div class="status-chip">
+      <span class="status-dot checking" id="dot-${svc}"></span>
+      <strong>${svc}</strong>
+      <span id="label-${svc}" style="margin-left:auto;">Checking...</span>
+    </div>
+  `).join('');
+  Object.keys(BASE_URLS).forEach(svc => checkHealth(svc));
+}
+
+// ---- Endpoint List ----
+function renderEndpoints() {
+  const el = document.getElementById('endpointList');
+  let html = '';
+  ENDPOINTS.forEach(group => {
+    html += `<div class="svc-label">${group.label}</div>`;
+    group.items.forEach((ep, i) => {
+      const id = `${group.svc}__${i}`;
+      html += `<button class="endpoint-btn" data-svc="${group.svc}" data-idx="${i}" id="btn-${id}"
+        onclick="selectEndpoint('${group.svc}', ${i})">
+        <span class="method ${ep.method.toLowerCase()}">${ep.method}</span>
+        <span class="path">${ep.path}</span>
+        <span class="desc">${ep.desc}</span>
+      </button>`;
+    });
+  });
+  el.innerHTML = html;
+}
+
+// ---- Select & Call ----
+let activeBtn = null;
+
+function selectEndpoint(svc, idx) {
+  // Highlight button
+  if (activeBtn) activeBtn.classList.remove('active');
+  activeBtn = document.getElementById(`btn-${svc}__${idx}`);
+  activeBtn.classList.add('active');
+
+  const group = ENDPOINTS.find(g => g.svc === svc);
+  const ep = group.items[idx];
+  const configEl = document.getElementById('requestConfig');
+  const respEl = document.getElementById('responseArea');
+  document.getElementById('rightHeader').textContent = `${ep.method} ${ep.path}`;
+
+  // Build config UI
+  if (ep.params.length > 0 || ep.body) {
+    let html = '';
+    ep.params.forEach(p => {
+      html += `<div class="input-row">
+        <label>${p.name}</label>
+        <input id="param-${p.name}" placeholder="${p.placeholder || ''}" />
+      </div>`;
+    });
+    if (ep.body) {
+      html += `<div class="note">Request body (editable JSON):</div>`;
+      html += `<div class="code-block" contenteditable="true" id="reqBody"
+        style="margin-bottom:0.75rem;min-height:80px;">${escapeHtml(JSON.stringify(ep.body, null, 2))}</div>`;
+    }
+    html += `<button class="send-btn" onclick="executeCall('${svc}', ${idx})">Send Request</button>`;
+    configEl.innerHTML = html;
+    configEl.style.display = 'block';
+    respEl.innerHTML = '<div class="empty-state"><p>Configure parameters above, then click Send</p></div>';
+  } else {
+    configEl.style.display = 'none';
+    executeCall(svc, idx);
+  }
+}
+
+async function executeCall(svc, idx) {
+  const group = ENDPOINTS.find(g => g.svc === svc);
+  const ep = group.items[idx];
+  const respEl = document.getElementById('responseArea');
+  respEl.innerHTML = '<div class="loading"><div class="spinner"></div>Calling live service...</div>';
+
+  let path = ep.path;
+  // Substitute path params
+  ep.params.filter(p => p.type === 'path').forEach(p => {
+    const val = document.getElementById(`param-${p.name}`)?.value || '';
+    path = path.replace(`{${p.name}}`, encodeURIComponent(val));
+  });
+
+  const url = `${BASE_URLS[svc]}${path}`;
+  const opts = { method: ep.method, headers: {} };
+  if (ep.body) {
+    opts.headers['Content-Type'] = 'application/json';
+    const bodyEl = document.getElementById('reqBody');
+    opts.body = bodyEl ? bodyEl.textContent : JSON.stringify(ep.body);
+  }
+
+  const urlBar = `<div class="url-bar"><span class="method-tag">${ep.method}</span> <span class="url-text">${escapeHtml(url)}</span></div>`;
+
+  const t0 = performance.now();
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 20000);
+    const r = await fetch(url, { ...opts, signal: ctrl.signal });
+    clearTimeout(timer);
+    const elapsed = Math.round(performance.now() - t0);
+    const ct = r.headers.get('content-type') || '';
+    let body;
+    if (ct.includes('json')) {
+      body = await r.json();
+    } else {
+      body = await r.text();
+    }
+
+    const statusClass = r.status < 300 ? 's2xx' : r.status < 500 ? 's4xx' : 's5xx';
+    respEl.innerHTML = urlBar + `
+      <div class="response-meta">
+        <span class="http-status ${statusClass}">${r.status} ${r.statusText}</span>
+        <span class="response-time">${elapsed} ms</span>
+      </div>
+      <div class="code-block">${typeof body === 'object' ? syntaxHighlight(body) : escapeHtml(body)}</div>
+    `;
+
+    // If this was the guest list, store IDs for easy copy
+    if (ep.path === '/guests' && Array.isArray(body) && body.length > 0) {
+      window._lastGuestId = body[0].guestId;
+    }
+  } catch (err) {
+    const elapsed = Math.round(performance.now() - t0);
+    respEl.innerHTML = urlBar + `
+      <div class="response-meta">
+        <span class="http-status err">ERROR</span>
+        <span class="response-time">${elapsed} ms</span>
+      </div>
+      <div class="code-block">${escapeHtml(err.message)}\n\nThis may be a cold-start timeout. Container Apps scale to zero\nwhen idle. Try again in a few seconds.</div>
+    `;
+  }
+}
+
+function syntaxHighlight(obj) {
+  const json = JSON.stringify(obj, null, 2);
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    function (match) {
+      let cls = 'num';
+      if (/^"/.test(match)) {
+        cls = /:$/.test(match) ? 'key' : 'str';
+      } else if (/true|false/.test(match)) {
+        cls = 'bool';
+      } else if (/null/.test(match)) {
+        cls = 'null';
+      }
+      return `<span class="${cls}">${match}</span>`;
+    });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ---- Init ----
+renderStatusBar();
+renderEndpoints();
+</script>
+</body>
+</html>
