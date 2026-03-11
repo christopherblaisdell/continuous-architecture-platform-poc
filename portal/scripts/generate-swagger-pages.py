@@ -252,6 +252,7 @@ SWAGGER_HTML_TEMPLATE = """\
     </div>
     <div class="nt-header-links">
       <span class="nt-badge">v{version}</span>
+      <a href="../../microservices/{svc_name}/">&#x1F4D6; Microservice Page</a>
       <a href="../">Service Catalog</a>
       <a href="../../">Portal Home</a>
       <a href="../../specs/{svc_name}.yaml" download>Download YAML</a>
@@ -259,7 +260,7 @@ SWAGGER_HTML_TEMPLATE = """\
   </div>
 
   <div class="nt-meta">
-    <div class="nt-meta-item"><strong>Service:</strong> {svc_name}</div>
+    <div class="nt-meta-item"><strong>Service:</strong> <a href="../../microservices/{svc_name}/" style="color: var(--nt-copper); text-decoration: none;">{svc_name}</a></div>
     <div class="nt-meta-item"><strong>Owner:</strong> {owner}</div>
     <div class="nt-meta-item"><strong>Version:</strong> {version}</div>
     <div class="nt-meta-item"><strong>Domain:</strong> {domain}</div>
@@ -271,6 +272,8 @@ SWAGGER_HTML_TEMPLATE = """\
 
   <div class="nt-footer">
     &copy; 2026 NovaTrek Adventures &mdash; Architecture Practice
+    &nbsp;|&nbsp;
+    <a href="../../microservices/{svc_name}/">Microservice Page</a>
     &nbsp;|&nbsp;
     <a href="../../">Portal Home</a>
     &nbsp;|&nbsp;

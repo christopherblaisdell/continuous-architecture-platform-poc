@@ -68,6 +68,14 @@ Consolidated inventory with domain ownership, API contracts, dependencies, and O
 arc42 templates, C4 model notation, MADR decision records, ISO 25010 quality attributes, and ADR templates.
 </a>
 
+<a href="roadmap/" class="portal-card" markdown>
+<span class="card-icon">:material-road-variant:</span>
+
+### Platform Roadmap
+
+Future initiatives including CALM automated governance, test methodology, Azure implementation, and cross-linking strategy.
+</a>
+
 </div>
 
 </div>
