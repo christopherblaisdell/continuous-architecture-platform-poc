@@ -32,7 +32,7 @@ jobs:
         run: |
           az postgres flexible-server stop \
             --resource-group rg-novatrek-dev \
-            --name psql-novatrek-dev \
+            --name pg-novatrek-dev-smwd6ded4e3so \
           || echo "PostgreSQL may already be stopped"
 
       - name: Scale all services to zero
