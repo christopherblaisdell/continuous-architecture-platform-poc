@@ -213,4 +213,5 @@ nav:
   - Actor Catalog: actors/index.md
   - Technology Stack: technologies.md
   - Platform Operations: platform-operations.md
+  - Database Change Workflow: database-change-workflow.md
   - Tags: tags.md
