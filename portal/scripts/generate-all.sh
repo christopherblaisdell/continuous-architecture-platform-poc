@@ -87,16 +87,28 @@ python3 "$SCRIPT_DIR/generate-ticket-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 9: Generate standalone PlantUML diagrams
+# Step 9: Generate CALM topology from architecture metadata
 # ------------------------------------------------------------------
-echo "[9/10] Generating standalone PlantUML diagrams..."
+echo "[9/11] Generating CALM topology..."
+python3 "$REPO_ROOT/scripts/generate-calm.py"
+for domain in "Operations" "Guest Identity" "Booking" "Product Catalog" "Safety" "Logistics" "Guide Management" "External" "Support"; do
+  python3 "$REPO_ROOT/scripts/generate-calm.py" --domain "$domain"
+done
+echo "  Validating CALM topology..."
+python3 "$REPO_ROOT/scripts/validate-calm.py" || echo "  WARNING: CALM validation found issues (see above)"
+echo ""
+
+# ------------------------------------------------------------------
+# Step 10: Generate standalone PlantUML diagrams
+# ------------------------------------------------------------------
+echo "[10/11] Generating standalone PlantUML diagrams..."
 bash "$SCRIPT_DIR/generate-svgs.sh"
 echo ""
 
 # ------------------------------------------------------------------
-# Step 10: Build MkDocs site
+# Step 11: Build MkDocs site
 # ------------------------------------------------------------------
-echo "[10/10] Building MkDocs site..."
+echo "[11/11] Building MkDocs site..."
 cd "$PORTAL_DIR"
 python3 -m mkdocs build
 
