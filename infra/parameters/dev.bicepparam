@@ -10,7 +10,7 @@ param location = 'eastus2'
 
 param skuName = 'Free'
 
-param repositoryUrl = 'https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2'
+param repositoryUrl = 'https://github.com/christopherblaisdell/continuous-architecture-platform-poc'
 
 param repositoryBranch = 'develop'
 

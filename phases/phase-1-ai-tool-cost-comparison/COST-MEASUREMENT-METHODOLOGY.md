@@ -363,7 +363,7 @@ Set `OPENROUTER_API_KEY` environment variable before use. Generation IDs are ret
 
 ```bash
 # Git-diff-based content measurement (captures output, not process cost):
-cd /path/to/continuous-architecture-platform-poc-2
+cd /path/to/continuous-architecture-platform-poc
 python3 scripts/cost-measurement.py analyze e83f83e 34150d9
 
 # Note: The script measures content delta only. The true variable cost

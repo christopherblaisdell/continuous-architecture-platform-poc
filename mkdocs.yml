@@ -12,8 +12,8 @@ site_description: >-
   Living architecture documentation for NovaTrek Adventures —
   ADRs, solution designs, service pages, and architecture standards.
 site_author: Christopher Blaisdell
-repo_url: https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2
-repo_name: continuous-architecture-platform-poc-2
+repo_url: https://github.com/christopherblaisdell/continuous-architecture-platform-poc
+repo_name: continuous-architecture-platform-poc
 edit_uri: edit/main/
 
 # ---------------------------------------------------------------------------
@@ -70,7 +70,7 @@ plugins:
       enable_creation_date: true
       fallback_to_build_date: true
   - git-committers:
-      repository: christopherblaisdell/continuous-architecture-platform-poc-2
+      repository: christopherblaisdell/continuous-architecture-platform-poc
       branch: main
   - minify:
       minify_html: true

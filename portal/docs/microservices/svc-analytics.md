@@ -13,8 +13,8 @@ tags:
 
 [:material-api: Swagger UI](../services/api/svc-analytics.html){ .md-button .md-button--primary }
 [:material-file-download: Download OpenAPI Spec](../specs/svc-analytics.yaml){ .md-button }
-[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/actions/workflows/service-svc-analytics.yml){ .md-button }
-[:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/tree/main/services/svc-analytics){ .md-button }
+[:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-svc-analytics.yml){ .md-button }
+[:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/services/svc-analytics){ .md-button }
 [:material-language-java: Technology Stack](../technologies.md){ .md-button }
 
 ## :material-truck-delivery: Delivery Status
