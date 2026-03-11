@@ -1,5 +1,5 @@
-site_name: "AI-Assisted Architecture — The Case for Copilot"
-site_description: "How AI transforms architecture practice: Copilot Pro+ cost evidence, output analysis, and the case for adoption"
+site_name: "Continuous Architecture Platform — Proof of Concept Results"
+site_description: "Proof of concept results: AI-assisted architecture workflows, cost analysis, and output quality evaluation"
 site_author: "Christopher Blaisdell"
 
 theme:
@@ -27,9 +27,9 @@ nav:
   - The Problem: problem.md
   - The Solution: solution.md
   - Evidence:
-    - "Cost: 208x Cheaper": cost-evidence.md
-    - "Output Analysis": quality-evidence.md
-    - "Roo Code + Kong Failures": roo-kong-failures.md
+    - "Cost Analysis": cost-evidence.md
+    - "Output Quality": quality-evidence.md
+    - "Alternative Toolchain": roo-kong-failures.md
   - How It Works:
     - Enhanced Workspace: shared-workspace.md
   - Live Demo: live-demo.md

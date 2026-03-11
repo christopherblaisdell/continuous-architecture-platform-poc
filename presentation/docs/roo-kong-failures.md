@@ -1,6 +1,6 @@
-# Why Not Roo Code + Kong?
+# Alternative Toolchain: Roo Code + Kong Gateway
 
-## Three Architectural Failures That Make This Stack Unviable for Enterprise
+## Three Architectural Limitations Identified During Evaluation
 
 Both toolchains used the same AI model (Claude Opus 4.6) and the same workspace. The cost and quality differences came down to **architecture** — specifically, three cascading failures in the Roo Code + Kong Gateway stack that are documented, reproducible, and unresolved.
 

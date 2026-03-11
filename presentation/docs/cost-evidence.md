@@ -1,6 +1,6 @@
-# Cost Evidence: The 208x Difference
+# Cost Evidence: Toolchain Comparison
 
-## Same Model. Same Workspace. Same Scenarios. Radically Different Cost.
+## Same Model. Same Workspace. Same Scenarios. Materially Different Cost.
 
 We ran the **exact same 5 architecture scenarios** against the **exact same workspace** using **two competing AI toolchains** — both backed by Claude Opus 4.6. The cost difference is not theoretical. It comes from actual billing data.
 
@@ -18,9 +18,7 @@ We ran the **exact same 5 architecture scenarios** against the **exact same work
 | **Cost at 100 runs** | **$39** | ~$1,334 |
 | **Infrastructure** | None (SaaS) | Kong Gateway + vector DB |
 
-<div class="big-number">208x</div>
-
-**cheaper per run** — $0.48 vs ~$100, using the same underlying AI model.
+The per-run cost difference is significant: $0.48 vs ~$100, using the same underlying AI model.
 
 ---
 
@@ -140,7 +138,7 @@ Copilot's cost line is **flat** regardless of volume. OpenRouter's grows linearl
 | Infrastructure costs | $0 | Kong Gateway + Qdrant + monitoring (unquantified) |
 
 <div class="key-insight" markdown>
-**The cost advantage is not close.** At any realistic usage volume, Copilot Pro+ is between 3x and 34x cheaper than per-token alternatives — and that's before accounting for infrastructure overhead, monitoring, and the risk of runaway costs on complex sessions.
+At projected usage volumes, the fixed-subscription model is consistently less expensive than per-token alternatives. The gap widens with usage, and does not account for infrastructure overhead (Kong Gateway, Qdrant, monitoring) required by the per-token stack.
 </div>
 
 <div class="cta-box" markdown>

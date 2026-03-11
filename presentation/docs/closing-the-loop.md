@@ -102,7 +102,7 @@ Adding the PROMOTE step increases the architecture practice's workload from 26 t
 | OpenRouter cost | ~$347 | ~$507 |
 
 <div class="key-insight" markdown>
-**PROMOTE is free on Copilot.** The fixed subscription absorbs any additional runs. On per-token models, PROMOTE adds ~$160/month in variable costs — widening Copilot's cost advantage from 9x to 13x.
+Under a fixed subscription, PROMOTE adds no incremental cost. Under per-token pricing, PROMOTE adds ~$160/month in variable costs.
 </div>
 
 ---
@@ -125,7 +125,7 @@ Project 2:  Actual State 1  →  Design B  →  Built  →  PROMOTED
 Project 3:  Accurate baseline  →  Confident design  →  Accurate result
 ```
 
-After 10 projects, the architecture workspace contains a comprehensive picture of how the system **actually exists in production** — not just how it was designed. Every AI session benefits from this accumulated knowledge — at zero additional cost.
+After 10 projects, the architecture workspace contains a comprehensive picture of how the system **actually exists in production** — not just how it was designed. Every AI session benefits from this accumulated knowledge.
 
 <div class="cta-box" markdown>
 
