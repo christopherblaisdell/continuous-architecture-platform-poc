@@ -1,0 +1,49 @@
+# Comprehensive Test Methodology and Practice
+
+**Date**: 2026-03-11
+**Priority**: High
+**Status**: Backlog
+
+## Summary
+
+Establish a comprehensive testing methodology across the NovaTrek platform delivery practice. The current architecture practice produces solution designs, capability rollups, and portal publishing — but has no defined testing standards, coverage requirements, or quality gates for the services themselves.
+
+## Why This Matters
+
+- No testing standards documented across the 19 microservices
+- arc42 templates reference "80% unit test coverage" as a constraint, but no enforcement mechanism exists
+- arc42 risk register identifies "gaps in test coverage" as a known risk — currently unmitigated
+- Solution designs produce API contract changes and implementation guidance without corresponding test expectations
+- Without regression coverage, capability rollup (the core value of the platform) risks introducing breaking changes silently
+
+## Action Items
+
+- [ ] Define a test methodology document covering unit, integration, contract, and end-to-end testing layers
+- [ ] Evaluate TDD (Test-Driven Development) as the standard practice for service implementation
+- [ ] Evaluate BDD (Behavior-Driven Development) with Gherkin/Cucumber for acceptance criteria validation
+- [ ] Establish minimum coverage thresholds per service (unit, branch, mutation)
+- [ ] Add automated regression test suites to CI pipelines (run on every PR)
+- [ ] Define contract testing strategy for cross-service API boundaries (e.g., Pact, Spring Cloud Contract)
+- [ ] Add test requirements to the solution design template (test plan section in guidance)
+- [ ] Add test coverage validation to `validate-solution.yml` CI workflow
+- [ ] Create an ADR for the chosen testing approach (TDD vs BDD vs hybrid)
+- [ ] Document test data management strategy (synthetic test data generation, fixture conventions)
+
+## Delivery Practice Integration Points
+
+| Artifact | Test Impact |
+|----------|-------------|
+| Solution Design Template | Add test plan section to `3.solution/g.guidance/` |
+| PR Review Checklist | Add "test coverage meets threshold" criterion |
+| CI Pipeline | Add coverage reporting and threshold enforcement |
+| Impact Assessments | Include "test impact" — which test suites need updating |
+| User Stories | Acceptance criteria become BDD scenario candidates |
+| OpenAPI Specs | Contract tests auto-generated from spec definitions |
+
+## Related
+
+- arc42 constraints template: references 80% coverage target
+- arc42 risk register: test coverage gaps listed as known risk
+- Architecture review checklist: `roadmap/ROADMAP.md` Section 8
+- CI validation workflow: `.github/workflows/validate-solution.yml`
+- Solution design template: `portal/docs/standards/solution-design/`
