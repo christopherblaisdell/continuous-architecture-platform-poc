@@ -17,6 +17,7 @@ tags:
 [:material-microsoft-azure: Azure Portal](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.App/containerApps/ca-svc-trail-management){ .md-button }
 [:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/actions/workflows/service-svc-trail-management.yml){ .md-button }
 [:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/tree/main/services/svc-trail-management){ .md-button }
+[:material-language-java: Technology Stack](../technologies.md){ .md-button }
 
 ## :material-truck-delivery: Delivery Status
 

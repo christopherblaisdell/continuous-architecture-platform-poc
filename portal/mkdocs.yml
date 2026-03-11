@@ -208,5 +208,6 @@ nav:
     - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
   - Event Catalog: events/index.md
   - Actor Catalog: actors/index.md
+  - Technology Stack: technologies.md
   - Platform Operations: platform-operations.md
   - Tags: tags.md
