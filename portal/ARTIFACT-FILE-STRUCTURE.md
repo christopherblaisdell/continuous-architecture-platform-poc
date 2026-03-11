@@ -5,7 +5,7 @@ An inventory and analysis of every architecture artifact in this workspace — w
 ## Current File Structure
 
 ```
-continuous-architecture-platform-poc-2/
+continuous-architecture-platform-poc/
 │
 ├── decisions/                              # ADR source of truth
 │   ├── ADR-001-ai-toolchain-selection.md       # 11 Architecture Decision Records

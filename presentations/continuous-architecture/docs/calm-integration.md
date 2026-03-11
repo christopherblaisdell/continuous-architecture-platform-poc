@@ -139,7 +139,7 @@ flowchart LR
 
 ### Full technical plan
 
-The detailed CALM integration plan — with file structures, CLI commands, and migration strategy — is available in the [architecture repository](https://github.com/christopherblaisdell/continuous-architecture-platform-poc-2/blob/main/docs/CALM-INTEGRATION-PLAN.md).
+The detailed CALM integration plan — with file structures, CLI commands, and migration strategy — is available in the [architecture repository](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/docs/CALM-INTEGRATION-PLAN.md).
 
 </div>
 

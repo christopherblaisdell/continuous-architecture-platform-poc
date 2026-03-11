@@ -9,7 +9,7 @@
 #   run-number   Optional 3-digit run number (e.g., 001). Auto-increments if omitted.
 #
 # Prerequisites:
-#   - Run from the repository root (continuous-architecture-platform-poc-2/)
+#   - Run from the repository root (continuous-architecture-platform-poc/)
 #   - Workspace changes are still present (do NOT reset before capturing)
 #
 # What it does:
