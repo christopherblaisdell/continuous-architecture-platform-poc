@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/control.json",
+  "metadata": {
+    "name": "API-Mediated Access Control",
+    "description": "Prevents direct database connections between services. Cross-service data access must go through published API endpoints.",
+    "version": "1.0.0",
+    "references": [
+      "copilot-instructions.md — Bounded Context Rules",
+      "copilot-instructions.md — Common Anti-Patterns (Shared Database)"
+    ]
+  },
+  "control": {
+    "id": "api-mediated-access",
+    "scope": "relationship",
+    "assertion": "No 'connects' relationship with protocol JDBC may exist between two 'service' nodes. JDBC connections are only permitted from a service to its own database.",
+    "severity": "error",
+    "remediation": "Replace direct database access with a REST API call to the owning service. Add the integration to cross-service-calls.yaml and the target service's OpenAPI spec."
+  }
+}

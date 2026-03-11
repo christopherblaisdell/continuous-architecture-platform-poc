@@ -1,0 +1,1214 @@
+{
+  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
+  "metadata": {
+    "name": "NovaTrek Adventures — Product Catalog Domain Topology",
+    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+    "version": "1.0.0",
+    "generated-from": [
+      "architecture/metadata/domains.yaml",
+      "architecture/metadata/data-stores.yaml",
+      "architecture/metadata/cross-service-calls.yaml",
+      "architecture/metadata/events.yaml",
+      "architecture/metadata/actors.yaml",
+      "architecture/specs/*.yaml"
+    ]
+  },
+  "nodes": [
+    {
+      "unique-id": "svc-trip-catalog",
+      "node-type": "service",
+      "name": "Trip Catalog Service",
+      "description": "Manages adventure trip definitions, scheduling, pricing, and availability",
+      "interfaces": [
+        {
+          "unique-id": "svc-trip-catalog-api-get-trips",
+          "type": "path",
+          "path": "/trips",
+          "metadata": {
+            "method": "GET",
+            "summary": "Search trips with filters"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-post-trips",
+          "type": "path",
+          "path": "/trips",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a new trip definition"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}",
+          "type": "path",
+          "path": "/trips/{trip_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get trip details"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-patch-trips-{trip_id}",
+          "type": "path",
+          "path": "/trips/{trip_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update trip details"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}-schedule",
+          "type": "path",
+          "path": "/trips/{trip_id}/schedule",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get scheduled departures"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-post-trips-{trip_id}-schedule",
+          "type": "path",
+          "path": "/trips/{trip_id}/schedule",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add a scheduled departure"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}-pricing",
+          "type": "path",
+          "path": "/trips/{trip_id}/pricing",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get pricing tiers"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-put-trips-{trip_id}-pricing",
+          "type": "path",
+          "path": "/trips/{trip_id}/pricing",
+          "metadata": {
+            "method": "PUT",
+            "summary": "Replace pricing tiers"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}-requirements",
+          "type": "path",
+          "path": "/trips/{trip_id}/requirements",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get trip requirements"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-get-regions",
+          "type": "path",
+          "path": "/regions",
+          "metadata": {
+            "method": "GET",
+            "summary": "List operating regions"
+          }
+        },
+        {
+          "unique-id": "svc-trip-catalog-api-get-activity-types",
+          "type": "path",
+          "path": "/activity-types",
+          "metadata": {
+            "method": "GET",
+            "summary": "List available activity types"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Product Catalog",
+        "team": "Product Team"
+      }
+    },
+    {
+      "unique-id": "svc-trip-catalog-db",
+      "node-type": "database",
+      "name": "Trip Catalog Database",
+      "description": "PostgreSQL 15 database for svc-trip-catalog (catalog schema)",
+      "interfaces": [
+        {
+          "unique-id": "svc-trip-catalog-db-jdbc",
+          "type": "host-port",
+          "metadata": {
+            "engine": "PostgreSQL 15",
+            "schema": "catalog"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Product Catalog",
+        "engine": "PostgreSQL 15",
+        "tables": [
+          "trips",
+          "trip_schedules",
+          "pricing_tiers",
+          "requirements",
+          "regions",
+          "activity_types"
+        ]
+      }
+    },
+    {
+      "unique-id": "svc-trail-management",
+      "node-type": "service",
+      "name": "Trail Management Service",
+      "description": "Manages trail definitions, waypoints, difficulty ratings, closures, and real-time",
+      "interfaces": [
+        {
+          "unique-id": "svc-trail-management-api-get-trails",
+          "type": "path",
+          "path": "/trails",
+          "metadata": {
+            "method": "GET",
+            "summary": "Search trails"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-post-trails",
+          "type": "path",
+          "path": "/trails",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a new trail"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-get-trails-{trail_id}",
+          "type": "path",
+          "path": "/trails/{trail_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get trail details"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-patch-trails-{trail_id}",
+          "type": "path",
+          "path": "/trails/{trail_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update trail details"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-get-trails-{trail_id}-waypoints",
+          "type": "path",
+          "path": "/trails/{trail_id}/waypoints",
+          "metadata": {
+            "method": "GET",
+            "summary": "List waypoints for a trail"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-post-trails-{trail_id}-waypoints",
+          "type": "path",
+          "path": "/trails/{trail_id}/waypoints",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add a waypoint to a trail"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-get-trails-{trail_id}-closures",
+          "type": "path",
+          "path": "/trails/{trail_id}/closures",
+          "metadata": {
+            "method": "GET",
+            "summary": "List closures for a trail"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-post-trails-{trail_id}-closures",
+          "type": "path",
+          "path": "/trails/{trail_id}/closures",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a trail closure"
+          }
+        },
+        {
+          "unique-id": "svc-trail-management-api-get-trails-{trail_id}-conditions",
+          "type": "path",
+          "path": "/trails/{trail_id}/conditions",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get current trail conditions"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Product Catalog",
+        "team": "Product Team"
+      }
+    },
+    {
+      "unique-id": "svc-trail-management-db",
+      "node-type": "database",
+      "name": "Trail Management Database",
+      "description": "PostGIS (PostgreSQL 15) database for svc-trail-management (trails schema)",
+      "interfaces": [
+        {
+          "unique-id": "svc-trail-management-db-jdbc",
+          "type": "host-port",
+          "metadata": {
+            "engine": "PostGIS (PostgreSQL 15)",
+            "schema": "trails"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Product Catalog",
+        "engine": "PostGIS (PostgreSQL 15)",
+        "tables": [
+          "trails",
+          "waypoints",
+          "closures",
+          "condition_reports"
+        ]
+      }
+    },
+    {
+      "unique-id": "svc-check-in",
+      "node-type": "service",
+      "name": "Check In Service",
+      "description": "Handles day-of-adventure check-in workflow including wristband assignment,",
+      "interfaces": [
+        {
+          "unique-id": "svc-check-in-api-post-check-ins",
+          "type": "path",
+          "path": "/check-ins",
+          "metadata": {
+            "method": "POST",
+            "summary": "Initiate check-in for a participant"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-get-check-ins",
+          "type": "path",
+          "path": "/check-ins",
+          "metadata": {
+            "method": "GET",
+            "summary": "List check-ins by reservation"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-get-check-ins-{check_in_id}",
+          "type": "path",
+          "path": "/check-ins/{check_in_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get check-in details"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-post-check-ins-{check_in_id}-gear-verification",
+          "type": "path",
+          "path": "/check-ins/{check_in_id}/gear-verification",
+          "metadata": {
+            "method": "POST",
+            "summary": "Verify gear has been picked up and fitted"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-api-post-check-ins-{check_in_id}-wristband-assignment",
+          "type": "path",
+          "path": "/check-ins/{check_in_id}/wristband-assignment",
+          "metadata": {
+            "method": "POST",
+            "summary": "Assign RFID wristband to checked-in participant"
+          }
+        },
+        {
+          "unique-id": "svc-check-in-event-checkin-completed",
+          "type": "path",
+          "path": "novatrek.operations.checkin.completed",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Operations",
+        "team": "NovaTrek Operations Team"
+      }
+    },
+    {
+      "unique-id": "svc-scheduling-orchestrator",
+      "node-type": "service",
+      "name": "Scheduling Orchestrator Service",
+      "description": "Central orchestration service for NovaTrek trip scheduling. Coordinates guide",
+      "interfaces": [
+        {
+          "unique-id": "svc-scheduling-orchestrator-api-post-schedule-requests",
+          "type": "path",
+          "path": "/schedule-requests",
+          "metadata": {
+            "method": "POST",
+            "summary": "Request optimal schedule for a trip"
+          }
+        },
+        {
+          "unique-id": "svc-scheduling-orchestrator-api-get-schedule-requests-{request_id}",
+          "type": "path",
+          "path": "/schedule-requests/{request_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get schedule request status and result"
+          }
+        },
+        {
+          "unique-id": "svc-scheduling-orchestrator-api-get-schedule-optimization",
+          "type": "path",
+          "path": "/schedule-optimization",
+          "metadata": {
+            "method": "GET",
+            "summary": "Run synchronous schedule optimization"
+          }
+        },
+        {
+          "unique-id": "svc-scheduling-orchestrator-api-get-schedule-conflicts",
+          "type": "path",
+          "path": "/schedule-conflicts",
+          "metadata": {
+            "method": "GET",
+            "summary": "List scheduling conflicts"
+          }
+        },
+        {
+          "unique-id": "svc-scheduling-orchestrator-api-post-schedule-conflicts-resolve",
+          "type": "path",
+          "path": "/schedule-conflicts/resolve",
+          "metadata": {
+            "method": "POST",
+            "summary": "Resolve a scheduling conflict"
+          }
+        },
+        {
+          "unique-id": "svc-scheduling-orchestrator-event-schedule-published",
+          "type": "path",
+          "path": "novatrek.operations.schedule.published",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Operations",
+        "team": "NovaTrek Operations Team"
+      }
+    },
+    {
+      "unique-id": "svc-reservations",
+      "node-type": "service",
+      "name": "Reservations Service",
+      "description": "Manages adventure trip reservations for NovaTrek Adventures.",
+      "interfaces": [
+        {
+          "unique-id": "svc-reservations-api-get-reservations",
+          "type": "path",
+          "path": "/reservations",
+          "metadata": {
+            "method": "GET",
+            "summary": "Search reservations"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-post-reservations",
+          "type": "path",
+          "path": "/reservations",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a new reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-get-reservations-{reservation_id}",
+          "type": "path",
+          "path": "/reservations/{reservation_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get reservation details"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-patch-reservations-{reservation_id}",
+          "type": "path",
+          "path": "/reservations/{reservation_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update a reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-delete-reservations-{reservation_id}",
+          "type": "path",
+          "path": "/reservations/{reservation_id}",
+          "metadata": {
+            "method": "DELETE",
+            "summary": "Cancel a reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-get-reservations-{reservation_id}-participants",
+          "type": "path",
+          "path": "/reservations/{reservation_id}/participants",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get reservation participants"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-post-reservations-{reservation_id}-participants",
+          "type": "path",
+          "path": "/reservations/{reservation_id}/participants",
+          "metadata": {
+            "method": "POST",
+            "summary": "Add a participant to a reservation"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-api-put-reservations-{reservation_id}-status",
+          "type": "path",
+          "path": "/reservations/{reservation_id}/status",
+          "metadata": {
+            "method": "PUT",
+            "summary": "Transition reservation status"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-event-reservation-created",
+          "type": "path",
+          "path": "novatrek.booking.reservation.created",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        },
+        {
+          "unique-id": "svc-reservations-event-reservation-status_changed",
+          "type": "path",
+          "path": "novatrek.booking.reservation.status-changed",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Booking",
+        "team": "Booking Platform Team"
+      }
+    },
+    {
+      "unique-id": "svc-safety-compliance",
+      "node-type": "service",
+      "name": "Safety Compliance Service",
+      "description": "Manages guest safety waivers, incident reporting, safety inspections, and",
+      "interfaces": [
+        {
+          "unique-id": "svc-safety-compliance-api-post-waivers",
+          "type": "path",
+          "path": "/waivers",
+          "metadata": {
+            "method": "POST",
+            "summary": "Guest signs a safety waiver"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-waivers",
+          "type": "path",
+          "path": "/waivers",
+          "metadata": {
+            "method": "GET",
+            "summary": "List waivers by guest"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-waivers-{waiver_id}",
+          "type": "path",
+          "path": "/waivers/{waiver_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get a specific waiver"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-post-incidents",
+          "type": "path",
+          "path": "/incidents",
+          "metadata": {
+            "method": "POST",
+            "summary": "File an incident report"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-incidents-{incident_id}",
+          "type": "path",
+          "path": "/incidents/{incident_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get an incident report"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-patch-incidents-{incident_id}",
+          "type": "path",
+          "path": "/incidents/{incident_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update an incident report (add follow-up, change status)"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-get-safety-inspections",
+          "type": "path",
+          "path": "/safety-inspections",
+          "metadata": {
+            "method": "GET",
+            "summary": "List safety inspections for a location"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-api-post-safety-inspections",
+          "type": "path",
+          "path": "/safety-inspections",
+          "metadata": {
+            "method": "POST",
+            "summary": "Record a safety inspection"
+          }
+        },
+        {
+          "unique-id": "svc-safety-compliance-event-incident-reported",
+          "type": "path",
+          "path": "novatrek.safety.incident.reported",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Safety",
+        "team": "Safety and Compliance Team"
+      }
+    },
+    {
+      "unique-id": "svc-wildlife-tracking",
+      "node-type": "service",
+      "name": "Wildlife Tracking Service",
+      "description": "Monitors wildlife activity near NovaTrek adventure trails, processes",
+      "interfaces": [
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-sightings",
+          "type": "path",
+          "path": "/sightings",
+          "metadata": {
+            "method": "GET",
+            "summary": "List wildlife sighting reports with filters"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-post-sightings",
+          "type": "path",
+          "path": "/sightings",
+          "metadata": {
+            "method": "POST",
+            "summary": "Report a new wildlife sighting"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-sightings-{sighting_id}",
+          "type": "path",
+          "path": "/sightings/{sighting_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get details of a specific wildlife sighting"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-alerts",
+          "type": "path",
+          "path": "/alerts",
+          "metadata": {
+            "method": "GET",
+            "summary": "List active wildlife alerts"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-post-alerts",
+          "type": "path",
+          "path": "/alerts",
+          "metadata": {
+            "method": "POST",
+            "summary": "Issue a wildlife alert for a trail or region"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-alerts-{alert_id}",
+          "type": "path",
+          "path": "/alerts/{alert_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get wildlife alert details"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-patch-alerts-{alert_id}",
+          "type": "path",
+          "path": "/alerts/{alert_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update alert status or details"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-species",
+          "type": "path",
+          "path": "/species",
+          "metadata": {
+            "method": "GET",
+            "summary": "List known species in the wildlife database"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-species-{species_id}",
+          "type": "path",
+          "path": "/species/{species_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get species details and behavioral data"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-api-get-habitat-zones",
+          "type": "path",
+          "path": "/habitat-zones",
+          "metadata": {
+            "method": "GET",
+            "summary": "List habitat zones with activity levels"
+          }
+        },
+        {
+          "unique-id": "svc-wildlife-tracking-event-wildlife_alert-issued",
+          "type": "path",
+          "path": "novatrek.safety.wildlife-alert.issued",
+          "metadata": {
+            "protocol": "Kafka",
+            "role": "producer"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Safety",
+        "team": "Safety and Compliance Team"
+      }
+    },
+    {
+      "unique-id": "svc-partner-integrations",
+      "node-type": "service",
+      "name": "Partner Integrations Service",
+      "description": "Manages third-party partner relationships and bookings from travel agents,",
+      "interfaces": [
+        {
+          "unique-id": "svc-partner-integrations-api-post-partner-bookings",
+          "type": "path",
+          "path": "/partner-bookings",
+          "metadata": {
+            "method": "POST",
+            "summary": "External partner creates a booking"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-get-partner-bookings-{booking_id}",
+          "type": "path",
+          "path": "/partner-bookings/{booking_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get partner booking details"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-patch-partner-bookings-{booking_id}",
+          "type": "path",
+          "path": "/partner-bookings/{booking_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update a partner booking"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-post-partner-bookings-{booking_id}-confirm",
+          "type": "path",
+          "path": "/partner-bookings/{booking_id}/confirm",
+          "metadata": {
+            "method": "POST",
+            "summary": "Confirm a pending partner booking"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-get-partners",
+          "type": "path",
+          "path": "/partners",
+          "metadata": {
+            "method": "GET",
+            "summary": "List registered partners"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-post-partners",
+          "type": "path",
+          "path": "/partners",
+          "metadata": {
+            "method": "POST",
+            "summary": "Register a new partner"
+          }
+        },
+        {
+          "unique-id": "svc-partner-integrations-api-get-partners-{partner_id}-commission-report",
+          "type": "path",
+          "path": "/partners/{partner_id}/commission-report",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get commission report for a partner"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "External",
+        "team": "Integration Team"
+      }
+    },
+    {
+      "unique-id": "svc-notifications",
+      "node-type": "service",
+      "name": "Notifications Service",
+      "description": "Sends notifications to guests and guides via email, SMS, push, and in-app channels.",
+      "interfaces": [
+        {
+          "unique-id": "svc-notifications-api-post-notifications",
+          "type": "path",
+          "path": "/notifications",
+          "metadata": {
+            "method": "POST",
+            "summary": "Send a notification"
+          }
+        },
+        {
+          "unique-id": "svc-notifications-api-get-notifications",
+          "type": "path",
+          "path": "/notifications",
+          "metadata": {
+            "method": "GET",
+            "summary": "List notifications"
+          }
+        },
+        {
+          "unique-id": "svc-notifications-api-get-notifications-{notification_id}",
+          "type": "path",
+          "path": "/notifications/{notification_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Retrieve notification details"
+          }
+        },
+        {
+          "unique-id": "svc-notifications-api-post-notifications-bulk",
+          "type": "path",
+          "path": "/notifications/bulk",
+          "metadata": {
+            "method": "POST",
+            "summary": "Send bulk notifications"
+          }
+        },
+        {
+          "unique-id": "svc-notifications-api-get-templates",
+          "type": "path",
+          "path": "/templates",
+          "metadata": {
+            "method": "GET",
+            "summary": "List notification templates"
+          }
+        },
+        {
+          "unique-id": "svc-notifications-api-post-templates",
+          "type": "path",
+          "path": "/templates",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a notification template"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Support",
+        "team": "Support Services Team"
+      }
+    },
+    {
+      "unique-id": "svc-weather",
+      "node-type": "service",
+      "name": "Weather Service",
+      "description": "Integrates with on-site weather stations and third-party providers to deliver",
+      "interfaces": [
+        {
+          "unique-id": "svc-weather-api-get-weather-current",
+          "type": "path",
+          "path": "/weather/current",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get current weather conditions"
+          }
+        },
+        {
+          "unique-id": "svc-weather-api-get-weather-forecast",
+          "type": "path",
+          "path": "/weather/forecast",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get weather forecast"
+          }
+        },
+        {
+          "unique-id": "svc-weather-api-get-weather-alerts",
+          "type": "path",
+          "path": "/weather/alerts",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get active weather alerts for a region"
+          }
+        },
+        {
+          "unique-id": "svc-weather-api-post-weather-alerts",
+          "type": "path",
+          "path": "/weather/alerts",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a weather alert (internal)"
+          }
+        },
+        {
+          "unique-id": "svc-weather-api-get-trail-conditions",
+          "type": "path",
+          "path": "/trail-conditions",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get current trail conditions"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Support",
+        "team": "Support Services Team"
+      }
+    },
+    {
+      "unique-id": "svc-location-services",
+      "node-type": "service",
+      "name": "Location Services Service",
+      "description": "Manages physical locations across the NovaTrek network including base camps,",
+      "interfaces": [
+        {
+          "unique-id": "svc-location-services-api-get-locations",
+          "type": "path",
+          "path": "/locations",
+          "metadata": {
+            "method": "GET",
+            "summary": "List all locations"
+          }
+        },
+        {
+          "unique-id": "svc-location-services-api-post-locations",
+          "type": "path",
+          "path": "/locations",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a new location"
+          }
+        },
+        {
+          "unique-id": "svc-location-services-api-get-locations-{location_id}",
+          "type": "path",
+          "path": "/locations/{location_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get location details"
+          }
+        },
+        {
+          "unique-id": "svc-location-services-api-patch-locations-{location_id}",
+          "type": "path",
+          "path": "/locations/{location_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update location details"
+          }
+        },
+        {
+          "unique-id": "svc-location-services-api-get-locations-{location_id}-capacity",
+          "type": "path",
+          "path": "/locations/{location_id}/capacity",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get current capacity utilization"
+          }
+        },
+        {
+          "unique-id": "svc-location-services-api-get-locations-{location_id}-operating-hours",
+          "type": "path",
+          "path": "/locations/{location_id}/operating-hours",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get operating hours for a location"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Support",
+        "team": "Support Services Team"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "rel-svc-trip-catalog-to-db",
+      "relationship-type": "connects",
+      "parties": {
+        "source": "svc-trip-catalog",
+        "target": "svc-trip-catalog-db"
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "description": "svc-trip-catalog connects to its database"
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-to-db",
+      "relationship-type": "connects",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-trail-management-db"
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "description": "svc-trail-management connects to its database"
+      }
+    },
+    {
+      "unique-id": "rel-svc-check-in-post--check-ins-to-svc-trip-catalog",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-check-in",
+        "target": "svc-trip-catalog"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /check-ins",
+        "target-endpoint": "GET /trips/{trip_id}",
+        "action": "Get adventure category",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-post--reservations-to-svc-trip-catalog",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-trip-catalog"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /reservations",
+        "target-endpoint": "GET /trips/{trip_id}",
+        "action": "Check trip availability",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-put--reservations-{reservation_id}-to-svc-trip-catalog",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-trip-catalog"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "PUT /reservations/{reservation_id}",
+        "target-endpoint": "GET /trips/{trip_id}",
+        "action": "Verify availability",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-requests-to-svc-trail-management",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-scheduling-orchestrator",
+        "target": "svc-trail-management"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /schedule-requests",
+        "target-endpoint": "GET /trails/{trail_id}/conditions",
+        "action": "Verify trail conditions",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-requests-to-svc-trip-catalog",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-scheduling-orchestrator",
+        "target": "svc-trip-catalog"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /schedule-requests",
+        "target-endpoint": "GET /trips/{trip_id}",
+        "action": "Get trip details",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-optimization-to-svc-trip-catalog",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-scheduling-orchestrator",
+        "target": "svc-trip-catalog"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /schedule-optimization",
+        "target-endpoint": "GET /trips/{trip_id}",
+        "action": "Get trip requirements",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-partner-integrations-post--partner-bookings-to-svc-trip-catalog",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-partner-integrations",
+        "target": "svc-trip-catalog"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /partner-bookings",
+        "target-endpoint": "GET /trips/{trip_id}",
+        "action": "Check trip availability",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-conditions-to-svc-weather",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-weather"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/conditions",
+        "target-endpoint": "GET /weather/current",
+        "action": "Correlate weather data",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-conditions-to-svc-location-services",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-location-services"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/conditions",
+        "target-endpoint": "GET /locations/{location_id}",
+        "action": "Get trail coordinates",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-conditions-to-svc-safety-compliance",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-safety-compliance"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/conditions",
+        "target-endpoint": "POST /incidents",
+        "action": "Update trail safety assessment",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-conditions-to-svc-notifications",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-notifications"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/conditions",
+        "target-endpoint": "POST /notifications",
+        "action": "Alert park rangers",
+        "async": true
+      }
+    },
+    {
+      "unique-id": "rel-svc-wildlife-tracking-post--sightings-to-svc-trail-management",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-wildlife-tracking",
+        "target": "svc-trail-management"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /sightings",
+        "target-endpoint": "GET /trails",
+        "action": "Identify nearest trails to sighting location",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-wildlife-tracking-post--alerts-to-svc-trail-management",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-wildlife-tracking",
+        "target": "svc-trail-management"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /alerts",
+        "target-endpoint": "GET /trails",
+        "action": "Recommend trail closure for affected corridors",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-event-wildlife_alert-issued-svc-wildlife-tracking-to-svc-trail-management",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-wildlife-tracking",
+        "target": "svc-trail-management"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "event": "wildlife_alert.issued",
+        "channel": "novatrek.safety.wildlife-alert.issued",
+        "summary": "Published when a dangerous wildlife alert is issued for trails in a region",
+        "async": true
+      }
+    }
+  ]
+}
