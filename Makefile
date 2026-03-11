@@ -5,7 +5,10 @@
 # ===========================================================================
 
 .PHONY: help dev-up dev-down dev-reset build test deploy-dev deploy-prod \
-        what-if-dev what-if-prod portal-build portal-serve lint
+        what-if-dev what-if-prod portal-build portal-serve lint \
+        confluence-prepare confluence-publish-dry-run confluence-publish \
+        confluence-verify confluence-lock confluence-drift-check confluence-wipe \
+        confluence-full
 
 # Default target
 help: ## Show this help
@@ -95,3 +98,55 @@ svc-health: ## Check service health in dev: make svc-health SVC=svc-check-in
 
 svc-logs: ## Tail service logs in dev: make svc-logs SVC=svc-check-in
 	az containerapp logs show -n ca-$(SVC) -g rg-novatrek-dev --follow
+
+# ===========================================================================
+# Confluence Publishing
+# ===========================================================================
+
+confluence-prepare: ## Generate Confluence staging from portal docs
+	python3 portal/scripts/confluence-prepare.py
+
+confluence-publish-dry-run: ## Dry-run publish to Confluence (validate only)
+	python3 portal/scripts/confluence-prepare.py
+	mark --ci --base-url "$$CONFLUENCE_BASE_URL" \
+		-u "$$CONFLUENCE_USERNAME" -p "$$CONFLUENCE_API_TOKEN" \
+		-f "portal/confluence/**/*.md" --dry-run
+
+confluence-publish: ## Publish portal docs to Confluence
+	python3 portal/scripts/confluence-prepare.py
+	mark --ci --base-url "$$CONFLUENCE_BASE_URL" \
+		-u "$$CONFLUENCE_USERNAME" -p "$$CONFLUENCE_API_TOKEN" \
+		-f "portal/confluence/**/*.md"
+
+confluence-verify: ## Verify published Confluence content matches staging
+	python3 portal/scripts/confluence-verify.py \
+		--base-url "$$CONFLUENCE_BASE_URL" \
+		--username "$$CONFLUENCE_USERNAME" \
+		--api-token "$$CONFLUENCE_API_TOKEN" \
+		--space "$$CONFLUENCE_SPACE"
+
+confluence-lock: ## Lock auto-generated Confluence pages
+	python3 portal/scripts/confluence-lock-pages.py \
+		--base-url "$$CONFLUENCE_BASE_URL" \
+		--username "$$CONFLUENCE_USERNAME" \
+		--api-token "$$CONFLUENCE_API_TOKEN" \
+		--space "$$CONFLUENCE_SPACE" \
+		--label "auto-generated"
+
+confluence-drift-check: ## Check for unauthorized edits in Confluence
+	python3 portal/scripts/confluence-drift-check.py \
+		--staging-dir portal/confluence
+
+confluence-wipe: ## Delete all pages from Confluence space (DANGEROUS)
+	@echo "WARNING: This will delete ALL pages from the ARCH space!"
+	@read -p "Type WIPE to confirm: " confirm && [ "$$confirm" = "WIPE" ] || exit 1
+	python3 portal/scripts/confluence-delete-space-content.py \
+		--base-url "$$CONFLUENCE_BASE_URL" \
+		--username "$$CONFLUENCE_USERNAME" \
+		--api-token "$$CONFLUENCE_API_TOKEN" \
+		--space "$$CONFLUENCE_SPACE"
+
+confluence-full: ## Full cycle: prepare -> publish -> verify -> lock
+	$(MAKE) confluence-publish
+	$(MAKE) confluence-verify
+	$(MAKE) confluence-lock
