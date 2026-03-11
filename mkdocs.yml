@@ -112,7 +112,9 @@ nav:
   - Home: index.md
   - Project:
       - Overview: README.md
-      - Roadmap: roadmap/ROADMAP.md
+      - Roadmap:
+          - Delivery Roadmap: roadmap/ROADMAP.md
+          - Test Methodology: roadmap/TEST-METHODOLOGY-ROADMAP.md
       - Closing the Loop: CLOSING-THE-LOOP.md
   - Architecture Practice:
       - Capability Map Analysis: CAPABILITY-MAP-ANALYSIS.md

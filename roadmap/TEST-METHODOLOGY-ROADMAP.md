@@ -230,8 +230,9 @@ Six months after adoption:
 
 | Document | Relevance |
 |----------|-----------|
-| [ROADMAP.md](../../roadmap/ROADMAP.md) | Parent roadmap — this document extends the delivery practice |
-| [architecture/reminders/TEST-METHODOLOGY.md](../../architecture/reminders/TEST-METHODOLOGY.md) | Reminder tracking this initiative |
+| [ROADMAP.md](ROADMAP.md) | Parent roadmap — this document extends the delivery practice (see Future Initiatives section) |
+| [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) | Reminder tracking this initiative |
 | arc42 constraints template | References 80% coverage target |
 | arc42 risk register | Lists test coverage gaps as known risk |
 | `architecture/metadata/cross-service-calls.yaml` | Defines every contract boundary requiring tests |
+| [ROADMAP.md Future Initiatives](ROADMAP.md#future-initiatives-summary) | Consolidated view of all planned and proposed work |

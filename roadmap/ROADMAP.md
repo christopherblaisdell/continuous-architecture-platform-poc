@@ -405,6 +405,84 @@ Portal  Confluence
 
 **Outcome:** Enterprise stakeholders consume architecture documentation in their standard wiki. Content is always identical to the portal. Zero manual synchronization.
 
+### Future Initiatives Summary
+
+All Phases 0-6 are COMPLETE. The following initiatives represent the next wave of work, consolidated from plan documents, reminders, and proposed enhancements across the repository. Each initiative has a detailed companion document linked below.
+
+#### CALM — Automated Architecture Governance (Top Priority)
+
+**Status:** Planned | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
+
+CALM (Common Architecture Language Model) is the next major evolution of the platform. It adds a formal, machine-validatable topology layer on top of the existing architecture practice.
+
+**Architects do not write CALM.** CALM documents are **automatically generated** from the artifacts architects already maintain — OpenAPI specs, AsyncAPI specs, and metadata YAML files (`domains.yaml`, `cross-service-calls.yaml`, `data-stores.yaml`, `events.yaml`, `actors.yaml`). Bridge scripts transform these into the CALM format, and `calm validate` runs in CI to enforce architecture rules automatically.
+
+**Why auto-generate instead of hand-author?**
+
+1. **No new format to learn** — architects stay in YAML and OpenAPI specs, which are already the source of truth
+2. **Validation is the value, not authoring** — CALM patterns and controls catch violations (shared databases, missing team ownership, undeclared cross-service calls) regardless of whether CALM was hand-written or generated
+3. **No drift by construction** — a single source of truth (specs + metadata YAML) feeds both the portal generators and the CALM topology; two representations cannot diverge
+4. **Incremental adoption** — existing workflows are unchanged; CALM is a CI-layer addition, not a workflow replacement
+
+**What CALM delivers:**
+
+| Capability | Today (Manual) | With CALM (Automated) |
+|-----------|---------------|----------------------|
+| No shared databases | PR reviewer reads YAML | CI rejects PRs that connect a database to multiple services |
+| API-only cross-service access | Rule text in copilot-instructions.md | CI validates no JDBC relationships exist between services |
+| PCI scope tracking | Manual list in `pci.yaml` | CALM decorator flags PCI-scoped nodes and relationships |
+| Impact analysis | Architect reads cross-service-calls.yaml | Graph traversal shows all upstream/downstream dependencies |
+| Architecture drift | Undetected | CALM topology compared against running system metadata |
+| Topology visualization | Static PlantUML diagrams | Interactive system map generated from CALM graph |
+
+**5-phase rollout:** Pilot (1 domain) -> Full topology (all 22 services) -> Generator integration (portal consumes CALM) -> Governance automation (6+ CI-enforced rules) -> Advanced capabilities (blast radius, drift detection, timeline visualization)
+
+See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phased implementation with JSON examples, CI integration, and migration strategy.
+
+---
+
+#### Priority: HIGH
+
+| Initiative | Status | Companion Document | Summary |
+|-----------|--------|-------------------|---------|
+| Test Methodology and Practice | Proposed | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) | Comprehensive TDD/BDD practice, coverage standards (80% line, 70% branch, 60% mutation), contract testing for cross-service boundaries, automated regression gates in CI |
+| Fix Deploy Failures | Backlog | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | Audit and fix recurring CI/CD pipeline failures — flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts. Prerequisite for reliable incremental delivery |
+| Azure Microservices Implementation | Draft | [docs/AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Build out the full NovaTrek microservices platform in Azure — cheapest possible, IaC with Bicep, ephemeral environments, deep linking from architecture artifacts to live implementations |
+
+#### Priority: MEDIUM
+
+| Initiative | Status | Companion Document | Summary |
+|-----------|--------|-------------------|---------|
+| Separation of Concerns | Proposed | [portal/SEPARATION-OF-CONCERNS-PLAN.md](../portal/SEPARATION-OF-CONCERNS-PLAN.md) | Extract metadata from Python generators into YAML files; stop committing generated artifacts; CI handles all generation; architects edit YAML only |
+| Figma Wireframes | Proposed | [portal/FIGMA-WIREFRAMES-PLAN.md](../portal/FIGMA-WIREFRAMES-PLAN.md) | Embed Figma wireframes directly into portal application pages — connect architecture artifacts to visual design layer |
+| Event Catalog Expansion | Proposed | [portal/EVENT-CATALOG-PLAN.md](../portal/EVENT-CATALOG-PLAN.md) | Formalize domain events with AsyncAPI specs — producers, consumers, schemas, portal pages with the same rigor as REST API documentation |
+| Presentation Site | Draft | [portal/PRESENTATION-SITE-PLAN.md](../portal/PRESENTATION-SITE-PLAN.md) | Executive pitch deck as a third MkDocs Material site — live demo selling Continuous Architecture Platform adoption to leadership and budget holders |
+
+#### Priority: LOW
+
+| Initiative | Status | Companion Document | Summary |
+|-----------|--------|-------------------|---------|
+| Root Folder Reorganization | Proposed | [portal/ROOT-FOLDER-REORGANIZATION-PLAN.md](../portal/ROOT-FOLDER-REORGANIZATION-PLAN.md) | Reduce 20+ root-level items to intuitive subfolder hierarchy |
+| Frontend Applications | Draft | [portal/drafts/PLAN-frontend-applications.md](../portal/drafts/PLAN-frontend-applications.md) | Add 3 frontend application pages (web-guest-portal, web-ops-dashboard, app-guest-mobile) to portal |
+
+#### Completed Initiatives (Reference)
+
+| Initiative | Completed | Companion Document |
+|-----------|-----------|-------------------|
+| Confluence Publishing | Phase 6 | [research/CONFLUENCE-PUBLISHING-PLAN.md](../research/CONFLUENCE-PUBLISHING-PLAN.md) |
+| Documentation Publishing Platform | Phase 6 | [phases/phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md](../phases/phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) |
+| AI Tool Cost Comparison | Phase 1 | [phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](../phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) |
+
+#### Reminders (Architecture Parking Lot)
+
+These are deferred evaluations and operational items tracked in `architecture/reminders/`:
+
+| Reminder | Date | Status | File |
+|----------|------|--------|------|
+| CALM Evaluation | 2026-03-06 | Deferred | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
+| Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
+| Test Methodology | 2026-03-11 | Backlog (HIGH) | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |
+
 ---
 
 ## 8. Architecture Review Checklist
