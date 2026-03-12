@@ -13,6 +13,7 @@ on:
     paths:
       - 'architecture/solutions/**'
       - 'architecture/metadata/**'
+      - 'architecture/calm/**'
       - 'decisions/**'
 
 permissions:
@@ -81,6 +82,9 @@ jobs:
 
       - name: Verify data isolation
         run: bash scripts/audit-data-isolation.sh
+
+      - name: Validate CALM topology
+        run: python3 scripts/validate-calm.py
 
       - name: Install PlantUML
         run: sudo apt-get update && sudo apt-get install -y plantuml

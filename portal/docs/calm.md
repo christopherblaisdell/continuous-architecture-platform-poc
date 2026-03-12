@@ -236,8 +236,8 @@ Generated with `python3 scripts/generate-calm.py --domain Operations`:
 | Phase | Description | Status |
 |-------|-------------|--------|
 | **Phase 0: Pilot** | Auto-generate CALM from metadata; validate all 9 domains; patterns + controls | Complete |
-| Phase 1: CI Integration | Add `validate-calm.py` to CI pipeline; block PRs on validation failures | Planned |
-| Phase 2: Generator Integration | Portal generators consume CALM for topology views, dependency matrix | Planned |
+| **Phase 1: CI Integration** | Add `validate-calm.py` to CI pipeline; block PRs on validation failures | Complete |
+| **Phase 2: Generator Integration** | Portal generators consume CALM for topology views, dependency matrix | Complete |
 | Phase 3: Governance Automation | Full CALM CLI (`calm validate`) with pattern enforcement | Planned |
 | Phase 4: Solution Integration | Track topology changes per solution design | Planned |
 | Phase 5: Advanced | Blast radius analysis, drift detection, timeline visualization | Planned |
