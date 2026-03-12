@@ -1,0 +1,262 @@
+# Pipeline Security Gates
+
+Every piece of content published to the NovaTrek Architecture Portal passes through a series of automated security gates in the CI/CD pipeline. No content can reach production without passing all gates. This is fundamentally different from wiki-based platforms where content is published the moment an author clicks "Save."
+
+!!! note "Fictional Domain"
+    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All pipeline references describe the NovaTrek proof-of-concept implementation.
+
+---
+
+## Gate Architecture
+
+```
+Author writes content
+    │
+    ▼
+Feature branch (git push)
+    │
+    ├─── GitHub Push Protection ─── blocks commits containing secrets
+    │
+    ▼
+Pull Request opened
+    │
+    ├─── Gate 1: YAML Metadata Validation
+    ├─── Gate 2: Solution Folder Structure Validation
+    ├─── Gate 3: Data Isolation Audit
+    ├─── Gate 4: Portal Build (link validation)
+    ├─── Gate 5: Confluence Dry-Run (mirror validation)
+    ├─── Gate 6: PR Review Approval (human gate)
+    │
+    ▼
+Merge to main (only if ALL gates pass)
+    │
+    ├─── Gate 7: Production Build
+    ├─── Gate 8: Static Asset Integrity
+    │
+    ▼
+Deploy to Azure Static Web Apps
+    │
+    ├─── Gate 9: Azure Platform Security (WAF, DDoS protection)
+    │
+    ▼
+Content live on portal
+```
+
+---
+
+## Pre-Merge Gates (PR Phase)
+
+These gates run automatically on every pull request. All must pass before the PR can be merged.
+
+### Gate 1 — YAML Metadata Validation
+
+**What it checks**: All YAML files in `architecture/metadata/` are syntactically valid and parseable.
+
+**Why it matters**: Malformed YAML could cause generators to produce incorrect output or fail silently, leading to missing or corrupted content on the portal.
+
+**Implementation**: The `validate-solution.yml` workflow parses every YAML file with Python's `yaml.safe_load()` — note the use of `safe_load`, not `load`, which prevents YAML deserialization attacks.
+
+**Blocks merge on failure**: Yes.
+
+### Gate 2 — Solution Folder Structure Validation
+
+**What it checks**: Every solution folder under `architecture/solutions/` contains the required artifacts:
+
+- A master document (`*-solution-design.md`)
+- A capabilities mapping (`3.solution/c.capabilities/capabilities.md`)
+
+**Why it matters**: Incomplete solutions could reference non-existent files, causing broken links on the portal or missing capability rollup data.
+
+**Blocks merge on failure**: Yes.
+
+### Gate 3 — Data Isolation Audit
+
+**What it checks**: Scans all tracked files for patterns that indicate corporate data leakage:
+
+- Real company names or internal system identifiers
+- Real domain names (only `*.novatrek.example.com` is permitted)
+- Corporate email patterns
+- Internal project codes or system names
+- API keys, tokens, or credentials in content files
+
+**Why it matters**: The NovaTrek workspace is synthetic by design. Any real corporate data appearing in the repository represents a data leakage incident. This gate catches it before it reaches the published site.
+
+**Implementation**: `scripts/audit-data-isolation.sh` — a custom shell script that runs regex pattern matching against all tracked files.
+
+**Blocks merge on failure**: Yes.
+
+### Gate 4 — Portal Build
+
+**What it checks**: The full MkDocs site builds successfully, including:
+
+- All generators run (microservice pages, solution pages, capability pages, ticket pages)
+- All internal links resolve to existing pages
+- All referenced assets (SVGs, images) exist
+- MkDocs configuration is valid
+
+**Why it matters**: A successful build proves that the content is internally consistent. Broken links, missing files, or configuration errors are caught before they reach production.
+
+**Blocks merge on failure**: Yes.
+
+### Gate 5 — Confluence Dry-Run
+
+**What it checks**: The Confluence mirror preparation script (`confluence-prepare.py`) runs successfully and the resulting Markdown passes `mark --dry-run` validation.
+
+**Why it matters**: Even though Confluence is a read-only mirror, publishing failures there indicate content formatting issues that may also affect the primary portal.
+
+**Blocks merge on failure**: Yes.
+
+### Gate 6 — PR Review Approval
+
+**What it checks**: At least one designated reviewer has approved the pull request.
+
+**Why it matters**: Automated gates catch structural and formatting issues but cannot evaluate content accuracy, architectural correctness, or appropriateness. The human review gate ensures that a second pair of eyes validates the substance of every change.
+
+**Configuration**: GitHub branch protection rules on `main` require:
+
+- At least 1 approving review
+- Dismissal of stale approvals when new commits are pushed
+- No self-approval (the PR author cannot approve their own PR)
+
+**Blocks merge on failure**: Yes.
+
+---
+
+## Post-Merge Gates (Deploy Phase)
+
+These gates run after the PR is merged to `main`, before content reaches production.
+
+### Gate 7 — Production Build
+
+**What it checks**: The full site builds again from the merged `main` branch. This is not redundant — it catches merge conflicts or timing issues where two PRs were individually valid but conflict when combined.
+
+**Why it matters**: Defense in depth. Even if a PR gate was somehow bypassed, the production build catches issues before deployment.
+
+**Blocks deployment on failure**: Yes.
+
+### Gate 8 — Static Asset Integrity
+
+**What it checks**: Non-Markdown assets (SVGs, OpenAPI specs, Swagger UI pages, `staticwebapp.config.json`) are correctly copied into the build output.
+
+**Why it matters**: MkDocs only processes Markdown files. Static assets must be explicitly copied into the `site/` output directory. Missing assets could break diagrams, API documentation, or security headers.
+
+**Implementation**: The `generate-all.sh` script and post-build `cp` commands handle this.
+
+**Blocks deployment on failure**: Yes (missing `staticwebapp.config.json` would remove all security headers).
+
+### Gate 9 — Azure Platform Security
+
+**What it checks**: Azure Static Web Apps provides platform-level protections:
+
+- **DDoS protection** (Azure-managed, included with the platform)
+- **TLS termination** (HTTPS only, managed certificates, TLS 1.2 minimum)
+- **Global CDN** (Azure Front Door edge nodes, reducing origin exposure)
+- **Custom domain validation** (prevents domain spoofing)
+- **Staging environments** (PR deployments go to isolated preview URLs, not production)
+
+**Why it matters**: Even with perfect content security, the hosting platform must also be secure. Azure Static Web Apps is a managed platform with enterprise-grade security controls — the NovaTrek team does not manage web servers, load balancers, or TLS certificates.
+
+---
+
+## Gate Comparison with Confluence
+
+| Gate | Docs-as-Code | Confluence Equivalent |
+|------|-------------|----------------------|
+| Secret scanning | Automated, blocks push | Not available |
+| YAML validation | Automated, blocks merge | Not applicable |
+| Data isolation audit | Automated, blocks merge | Not available |
+| Link validation | Automated, blocks merge | Not available |
+| Pre-publish review | Required PR approval | Optional (page restrictions) |
+| Build integrity | Automated, blocks deploy | Not applicable |
+| Security headers | Version-controlled, gated | Atlassian-managed |
+| Platform security | Azure (SOC 2, ISO 27001) | Atlassian (SOC 2, ISO 27001) |
+
+**Key difference**: Confluence has **zero automated gates** between editing and publishing. Every control is either manual (page restrictions) or managed by Atlassian (platform security). The docs-as-code model provides **6 automated gates** plus a required human review, all of which must pass before content reaches production.
+
+---
+
+## Snyk Integration
+
+Snyk provides three distinct scanning capabilities, each deployed as a CI gate in the documentation pipeline:
+
+### Snyk Dependency Scan (`snyk test`)
+
+**What it checks**: All Python packages in `requirements-docs.txt` against the Snyk vulnerability database.
+
+**Why it matters**: MkDocs, pymdownx, and other build-time dependencies may contain vulnerabilities. Even though these packages only run at build time (not in production), a compromised build dependency could inject malicious content into the generated HTML.
+
+**Implementation**:
+
+```yaml
+- name: Snyk dependency scan
+  uses: snyk/actions/python-3.12@master
+  env:
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  with:
+    args: --severity-threshold=high --file=requirements-docs.txt
+```
+
+**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
+
+### Snyk Code Analysis (`snyk code test`)
+
+**What it checks**: Static analysis of Python generator scripts in `portal/scripts/` for security issues including:
+
+- Path traversal vulnerabilities (generators process file paths from YAML input)
+- Unsafe deserialization (generators parse YAML metadata)
+- Injection risks (generators produce HTML output)
+- Hardcoded secrets or credentials
+
+**Why it matters**: The generator scripts are the boundary between untrusted input (YAML metadata, OpenAPI specs) and trusted output (published HTML). Security flaws in generators could allow a crafted YAML file to produce malicious portal content.
+
+**Blocks merge on failure**: Yes.
+
+### Snyk Infrastructure-as-Code Scan (`snyk iac test`)
+
+**What it checks**: Infrastructure and configuration files for security misconfigurations:
+
+- `staticwebapp.config.json` — overly permissive CSP, missing security headers
+- `infra/*.bicep` — Azure resource misconfigurations
+- `.github/workflows/*.yml` — overly broad workflow permissions, missing pinned action versions
+
+**Why it matters**: A misconfigured `staticwebapp.config.json` could silently remove all security headers from the production site. Snyk IaC catches these misconfigurations before they are deployed.
+
+**Implementation**:
+
+```yaml
+- name: Snyk IaC scan
+  uses: snyk/actions/iac@master
+  env:
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  with:
+    args: --severity-threshold=high
+    file: portal/staticwebapp.config.json
+```
+
+**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
+
+### Continuous Monitoring
+
+Beyond CI gates, Snyk's GitHub integration provides continuous monitoring:
+
+- **New vulnerability alerts**: If a CVE is published for a dependency that was clean at merge time, Snyk opens an automated PR with the fix
+- **License compliance**: Snyk can enforce that all dependencies use approved licenses (MIT, Apache-2.0, etc.)
+- **Reporting dashboard**: Security team gets a single-pane view of all vulnerability findings across the repository
+
+This is a capability that Confluence cannot match — there is no way for an organization to scan Confluence's own dependencies or receive alerts when Confluence's build toolchain has a new vulnerability.
+
+---
+
+## Adding More Gates
+
+The pipeline is extensible. Additional gates that can be added with minimal effort:
+
+| Gate | Tool | Purpose |
+|------|------|---------|
+| Markdown lint | markdownlint-cli | Enforce consistent formatting and catch common Markdown errors |
+| Spell check | cspell | Catch typos and enforce terminology consistency |
+| Accessibility check | pa11y-ci | Validate generated HTML meets WCAG guidelines |
+| Link rot detection | lychee | Check external links still resolve (scheduled, not blocking) |
+| Content policy check | Custom script | Enforce organization-specific content policies (e.g., no PII, no internal codenames) |
+
+Each gate is a step in the GitHub Actions workflow — a YAML file that is itself version-controlled, reviewed, and auditable.
