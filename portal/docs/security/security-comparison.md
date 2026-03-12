@@ -2,6 +2,8 @@
 
 A side-by-side evaluation of security controls across 12 dimensions. For each dimension, we assess whether Confluence or the docs-as-code model (Git + MkDocs + CI/CD + Azure Static Web Apps) provides stronger guarantees.
 
+For the complete evidence base with 78 authoritative citations, see [Research Results](research-prompt-response.md).
+
 !!! note "Fictional Domain"
     Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All examples reference synthetic NovaTrek systems only.
 
@@ -49,7 +51,9 @@ This means no single person can both write and publish content without at least 
 
 **Confluence**: Page history shows who edited what, but:
 
-- Page history can be pruned or deleted by space admins
+- Page history can be [pruned, deleted, or purged](https://support.atlassian.com/confluence-cloud/docs/delete-restore-or-purge-a-page/) by space admins — including permanent deletion of specific versions
+- Automated cleanup jobs purge drafts and empty pages, appearing in the audit log as actions by an ["anonymous" actor](https://support.atlassian.com/confluence/kb/the-organizations-audit-log-displays-anonymous-users-deleting-pages/) (known issue [ACCESS-2505](https://jira.atlassian.com/browse/ACCESS-2505))
+- Default audit log retention is [one year, reducible to as little as 31 days](https://support.atlassian.com/confluence-cloud/docs/view-the-audit-log/)
 - Bulk changes (e.g., search-and-replace across pages) leave minimal trace
 - API-based edits may not show meaningful diffs
 - There is no record of who read a page (without Atlassian Analytics premium)
@@ -100,6 +104,19 @@ If any gate fails, the PR cannot be merged.
 - Macro rendering engine
 
 Each component is a potential attack vector. Atlassian has experienced security incidents (e.g., CVE-2023-22515, CVE-2023-22518) that allowed remote code execution on Confluence instances.
+
+!!! danger "Confluence CVE History"
+    Confluence has been the subject of at least **nine separate [CISA Known Exploited Vulnerabilities](https://www.greenbone.net/en/blog/cisa-multiple-vulnerabilities-in-atlassian-confluence-are-being-actively-exploited/) (KEV) alerts** for active exploitation. The severity of these vulnerabilities frequently reaches the maximum CVSS score of 10.0. The [February 2026 Atlassian Security Bulletin](https://confluence.atlassian.com/security/security-bulletin-february-17-2026-1722256046.html) alone disclosed multiple critical and high-severity vulnerabilities.
+
+    | CVE | CVSS | Type | Exploited By |
+    |-----|------|------|-------------|
+    | [CVE-2023-22515](https://phoenix.security/vuln-atlassian-cve-2023-22515/) | 10.0 | Broken Access Control | Storm-0062/DarkShadow (nation-state zero-day) |
+    | CVE-2023-22527 | 10.0 | Remote Code Execution | Multiple threat actors |
+    | [CVE-2022-26134](https://www.greenbone.net/en/blog/threat-report-may-2025-hack-rinse-repeat/) | 9.8 | OGNL Injection (RCE) | DragonForce ransomware group |
+    | [CVE-2023-22518](https://www.sentinelone.com/blog/c3rb3r-ransomware-ongoing-exploitation-of-cve-2023-22518-targets-unpatched-confluence-servers/) | 9.1 | Improper Auth / DB Wipe | C3RB3R (Cerber) ransomware syndicate |
+    | CVE-2021-26084 | 9.8 | OGNL Injection (RCE) | Multiple threat actors |
+    | CVE-2025-59343 | 8.7 | File Inclusion (tar-fs) | Pending |
+    | CVE-2025-41249 | 7.5 | Improper Auth (spring-core) | Pending |
 
 **Docs-as-Code**: The published portal is a collection of static HTML, CSS, and JavaScript files. There is:
 
@@ -203,6 +220,35 @@ For public architecture portals (like NovaTrek's), authentication is not require
 | **Admin** | Configure branch protection rules | Bypass rules without audit trail |
 
 Branch protection rules enforce these boundaries at the platform level. GitHub audit logs record any changes to branch protection settings, providing oversight on the oversight.
+
+---
+
+## Economic and Maintenance Burden
+
+According to the [2024-2025 Envestis CMS Security Comparison](https://envestis.ch/en/blog/confronto-cms-sicurezza-2025), which evaluates SSGs as presenting the "smallest possible attack surface," the five-year security maintenance costs differ dramatically:
+
+| Cost Factor | Dynamic CMS (Confluence) | Static Site Generator (MkDocs) |
+|-------------|--------------------------|-------------------------------|
+| 5-year security maintenance | 10,000 -- 25,000 CHF | 1,500 -- 7,500 CHF |
+| Minimum update cadence | Weekly (emergency patches often within 24 hours) | Monthly (build-tool updates only) |
+| Incident response costs | High (CVE-driven emergency patching, ransomware remediation) | Near zero (static output is inert) |
+| Core CVE count | 9+ CISA KEV entries (2021--2026) | Historically near zero |
+
+A failure to apply a Confluence patch within 24 hours of release has historically resulted in [ransomware deployment](https://www.sentinelone.com/blog/c3rb3r-ransomware-ongoing-exploitation-of-cve-2023-22518-targets-unpatched-confluence-servers/). Conversely, a failure to update MkDocs poses no immediate runtime risk — the generated HTML remains inert.
+
+---
+
+## Architectural Component Comparison
+
+This table maps each architectural layer to its security implications. Source: [Research Results](research-prompt-response.md), Section 2.3.
+
+| Component | Confluence (Dynamic Wiki) | Docs-as-Code (MkDocs + Azure SWA) | Security Implication |
+|-----------|--------------------------|-----------------------------------|---------------------|
+| Data Storage | Relational Database (SQL) | Git Repository (Flat Markdown) | Eliminates SQL injection and database exfiltration risk |
+| Content Rendering | Server-side at Runtime (Java) | Build-time in CI/CD (Python) | Eliminates Server-Side Template Injection in production |
+| Plugin Execution | Runtime in Application Context | Build-time in Ephemeral Runner | Prevents malicious plugins from achieving persistent RCE |
+| Session Management | Stateful Server Sessions | Stateless IdP Tokens | Reduces hijacking, fixation, and memory exhaustion risks |
+| Infrastructure | App Servers + DB Clusters | Global CDN + Blob Storage | Mitigates infrastructure exhaustion and layer-7 DDoS |
 
 ---
 

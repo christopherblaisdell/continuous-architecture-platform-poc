@@ -2,6 +2,8 @@
 
 Every piece of content published to the NovaTrek Architecture Portal passes through a series of automated security gates in the CI/CD pipeline. No content can reach production without passing all gates. This is fundamentally different from wiki-based platforms where content is published the moment an author clicks "Save."
 
+For the complete evidence base including NIST, SLSA, and OWASP citations, see [Research Results](research-prompt-response.md).
+
 !!! note "Fictional Domain"
     Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All pipeline references describe the NovaTrek proof-of-concept implementation.
 
@@ -175,6 +177,35 @@ These gates run after the PR is merged to `main`, before content reaches product
 
 ---
 
+## SLSA Framework Alignment
+
+The [Supply-chain Levels for Software Artifacts (SLSA)](https://slsa.dev/) framework, developed by Google, provides an authoritative blueprint for securing CI/CD pipelines against supply chain attacks. The NovaTrek documentation pipeline aligns with SLSA Build Levels 1--3:
+
+| SLSA Level | Requirement | NovaTrek Implementation |
+|------------|-------------|------------------------|
+| **Build L1** | Fully scripted builds with provenance metadata | Entire build defined declaratively in GitHub Actions YAML |
+| **Build L2** | Hosted platform with cryptographically signed provenance | Deployments run exclusively on GitHub-hosted runners; artifacts tied to source commits |
+| **Build L3** | Hardened, ephemeral build environments | Each build spins up a clean, isolated runner — executes MkDocs build, deploys, and destroys the environment |
+
+Source: [SLSA Framework specification](https://slsa.dev/) and [JFrog SLSA analysis](https://jfrog.com/learn/grc/slsa-framework/).
+
+---
+
+## OWASP CI/CD Risk Mitigation
+
+The [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/) identifies key pipeline threat categories. The docs-as-code model addresses the most critical risks:
+
+| OWASP Risk | Risk Description | Docs-as-Code Mitigation |
+|-----------|-----------------|------------------------|
+| **CICD-SEC-1** | Insufficient Flow Control | Branch protection rules, required PR approvals, automated status checks |
+| **CICD-SEC-3** | Dependency Chain Abuse | Snyk SCA blocks malicious packages; Dependabot automates updates |
+| **CICD-SEC-4** | Poisoned Pipeline Execution (PPE) | Ephemeral runners, SLSA Level 2 provenance, immutable build environments |
+| **CICD-SEC-6** | Insufficient Credential Hygiene | Workload Identity Federation (OIDC) eliminates long-lived deployment credentials |
+
+Source: [OWASP CI/CD Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html).
+
+---
+
 ## Snyk Integration
 
 Snyk provides three distinct scanning capabilities, each deployed as a CI gate in the documentation pipeline:
@@ -244,6 +275,21 @@ Beyond CI gates, Snyk's GitHub integration provides continuous monitoring:
 - **Reporting dashboard**: Security team gets a single-pane view of all vulnerability findings across the repository
 
 This is a capability that Confluence cannot match — there is no way for an organization to scan Confluence's own dependencies or receive alerts when Confluence's build toolchain has a new vulnerability.
+
+---
+
+## Secret Sprawl: The Scale of the Problem
+
+The [2025 State of Secrets Sprawl report by GitGuardian](https://www.scribd.com/document/855773866/The-State-of-Secrets-Sprawl-2025) quantifies the scale of credential exposure in modern software environments:
+
+- **23.77 million** new hardcoded secrets found in public repositories in 2024
+- **25% year-over-year increase** in secret exposure
+- **58% of all detected leaks** are generic secrets (API keys, passwords, connection strings)
+
+While Confluence relies on authors to avoid pasting secrets (with no automated detection), the docs-as-code pipeline provides two layers of defence:
+
+1. **[GitHub Push Protection](https://docs.github.com/en/code-security/concepts/secret-security/about-push-protection)** — operates as a pre-receive hook that **rejects commits** containing detected secrets before they enter the repository history
+2. **[GitHub Secret Scanning](https://docs.github.com/code-security/secret-scanning/about-secret-scanning)** — continuously monitors for secrets that bypass push protection, scanning for 200+ partner patterns plus custom organization-defined patterns
 
 ---
 

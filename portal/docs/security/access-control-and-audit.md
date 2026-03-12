@@ -2,6 +2,8 @@
 
 This page compares how access control and audit trails work in Confluence vs. the docs-as-code model. The core argument: Git's cryptographic commit chain and GitHub's branch protection rules provide stronger, more granular, and more tamper-resistant controls than Confluence's page-level permissions and page history.
 
+For the complete evidence base with NIST SP 800-53 control mappings and forensic analysis, see [Research Results](research-prompt-response.md), Sections 4 and 6.
+
 !!! note "Fictional Domain"
     Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All examples reference the NovaTrek proof-of-concept implementation.
 
@@ -79,7 +81,9 @@ Confluence maintains a page history showing:
 
 **Limitations**:
 
-- **History can be pruned**: Space admins can delete old page versions, removing audit trail entries. This is sometimes done for storage management but creates gaps in the audit record.
+- **History can be permanently purged**: Space admins can [delete, restore, or purge](https://support.atlassian.com/confluence-cloud/docs/delete-restore-or-purge-a-page/) specific page versions, effectively erasing audit trail entries. This makes it mathematically impossible to guarantee that a specific document version existed at a specific point in time.
+- **Anonymous actor bug**: Automated cleanup jobs purge unpublished drafts and empty pages, appearing in the audit log as actions by an ["anonymous" actor](https://support.atlassian.com/confluence/kb/the-organizations-audit-log-displays-anonymous-users-deleting-pages/), frequently without page titles or location context. This is a known limitation documented in Atlassian Access issue [ACCESS-2505](https://jira.atlassian.com/browse/ACCESS-2505).
+- **Audit log retention is limited**: Confluence's default audit log retains events for [one year, reducible to as little as 31 days](https://support.atlassian.com/confluence-cloud/docs/view-the-audit-log/). After expiry, audit records are permanently lost.
 - **Bulk operations leave minimal trace**: Confluence REST API edits, bulk imports, or automated updates may show as system-level edits without meaningful context.
 - **No commit messages**: Confluence does not require editors to explain why a change was made. Changes appear as diffs without context.
 - **No review record**: Page history shows who edited, but not who reviewed or approved the edit (because there is no review step).
@@ -89,12 +93,15 @@ Confluence maintains a page history showing:
 
 Git provides a cryptographically-linked, append-only audit log:
 
-- **Every change has a commit hash**: A SHA-256 hash that depends on the content, parent commit, author, and timestamp. Altering any prior commit changes all subsequent hashes, making tampering detectable.
+- **Every change has a commit hash**: A SHA-256 hash derived from the content, parent commit, author, and timestamp. Git constructs a [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) of cryptographic hashes — altering any historical commit changes all subsequent hashes, immediately triggering an integrity failure. This tamper-evident property directly satisfies [NIST SP 800-53](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final) controls **CM-3** (Configuration Change Control) and **AU-12** (Audit Generation).
 - **Every change has a commit message**: Required context explaining why the change was made.
 - **Every change has a diff**: Exact line-by-line comparison with the previous state.
 - **Every change has authorship**: Verified author identity (with signed commits, cryptographically verified).
 - **PR records are permanent**: The PR conversation, review comments, approval records, and CI gate results are stored in GitHub and cannot be deleted by contributors.
 - **Cross-repository audit is unified**: `git log` provides a single chronological view of all changes across all files. Filter by date, author, path, or content.
+
+!!! info "Compliance Recognition"
+    Frameworks such as SOC 2, HIPAA, and SOX explicitly recognize version control hygiene — when paired with strict branch protection rules, mandatory cryptographic commit signing, and centralized logging — as a [superior mechanism for establishing irrefutable data integrity](https://hoop.dev/blog/hipaa-compliance-in-git-preventing-phi-leaks-and-securing-your-repository/). When a compliance auditor requires proof of who authorized a specific architectural change, Git provides a pristine chain of custody completely immune to the application-level data purging capabilities present in wiki software.
 
 **Tamper resistance**:
 
@@ -112,15 +119,16 @@ Git provides a cryptographically-linked, append-only audit log:
 
 ## Compliance Implications
 
-### NIST SP 800-53 Alignment
+### [NIST SP 800-53](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final) Alignment
 
 | Control | Confluence | Docs-as-Code |
 |---------|-----------|--------------|
-| **AC-5 (Separation of Duties)** | Not enforced — editors = publishers | Enforced — authors, reviewers, deployers are distinct roles |
-| **AC-6 (Least Privilege)** | Coarse space-level permissions | CODEOWNERS + branch protection for path-level control |
+| **[AC-5](https://csf.tools/reference/nist-sp-800-53/r5/ac/ac-5/) (Separation of Duties)** | Not enforced — editors = publishers. The author-equals-publisher model natively violates this control. | Enforced via PR workflow — authors, reviewers, and deployers are distinct roles. Branch protection physically decouples creation from publication. |
+| **[AC-6](https://csf.tools/reference/nist-sp-800-53/r5/ac/ac-6/) (Least Privilege)** | Coarse space-level permissions | CODEOWNERS + branch protection for path-level control. Developers only possess write access to feature branches; the CI/CD service principal retains exclusive deployment privilege. |
 | **AU-3 (Content of Audit Records)** | Limited — no commit messages, no reviewer records | Complete — author, reviewer, timestamp, diff, context, CI results |
-| **AU-9 (Protection of Audit Information)** | Deletable by space admins | Cryptographic chain prevents undetected tampering |
+| **AU-9 (Protection of Audit Information)** | Deletable by space admins; audit log retention as low as 31 days | Cryptographic chain prevents undetected tampering; append-only history |
 | **AU-10 (Non-repudiation)** | No signature verification | Signed commits provide non-repudiation |
+| **AU-12 (Audit Generation)** | Limited — automated deletions logged as "anonymous" | Every commit generates a complete, attributed, cryptographically linked audit record |
 | **CM-3 (Configuration Change Control)** | No automated validation | CI gates validate every change before deployment |
 
 ### SOX and Regulatory Audit
@@ -132,6 +140,10 @@ For organizations subject to SOX or similar regulatory requirements, the Git aud
 - **Integrity**: Cryptographic verification that history has not been altered
 - **Timeliness**: Timestamps are part of the cryptographic chain
 - **Accountability**: Author and reviewer identities are recorded for every change
+
+### Impact on Incident Response Velocity
+
+In the event of an intellectual property theft investigation or a configuration drift incident, the Git ledger serves as an absolute source of truth — completely immune to the application-level data purging capabilities present in wiki software. Security operations teams can deterministically trace every document version, authorship, and approval decision without relying on an audit log that may have been reduced to 31 days of retention or corrupted by anonymous actor entries.
 
 ---
 
