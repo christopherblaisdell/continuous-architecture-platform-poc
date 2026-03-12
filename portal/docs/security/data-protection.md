@@ -2,6 +2,8 @@
 
 This page documents the data protection controls in the NovaTrek docs-as-code pipeline — how sensitive data is prevented from reaching the published site, how secrets are detected and blocked, and how data sovereignty is maintained.
 
+For the complete evidence base including GitGuardian statistics and data residency analysis, see [Research Results](research-prompt-response.md), Sections 5 and 10.
+
 !!! note "Fictional Domain"
     Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All examples reference the NovaTrek proof-of-concept implementation. The data isolation controls described here are real pipeline gates — but the data they protect is synthetic.
 
@@ -27,6 +29,9 @@ Content reaches production (only if all layers pass)
 ### Layer 1 — GitHub Push Protection
 
 **What it does**: Blocks `git push` operations that contain detected secrets before they enter the repository.
+
+!!! warning "The Scale of Secret Sprawl"
+    The [2025 State of Secrets Sprawl report by GitGuardian](https://www.scribd.com/document/855773866/The-State-of-Secrets-Sprawl-2025) found **23.77 million new hardcoded secrets** in public repositories in 2024 — a **25% year-over-year increase**. Generic secrets (API keys, passwords, connection strings) account for 58% of all detected leaks. [GitHub Push Protection](https://docs.github.com/en/code-security/concepts/secret-security/about-push-protection) operates as a pre-receive hook that **rejects commits** containing detected secrets before they enter repository history.
 
 **What it catches**:
 
@@ -105,6 +110,8 @@ The docs-as-code pipeline provides four independent automated layers, each of wh
 
 ## Data Sovereignty
 
+As global privacy regulations (GDPR, UK GDPR, CCPA) become increasingly stringent, organizations must exert granular control over data residency.
+
 ### Where Data Lives
 
 | Component | Location | Control |
@@ -124,7 +131,10 @@ The docs-as-code pipeline provides four independent automated layers, each of wh
 | Analytics data | Atlassian Cloud (may differ from content realm) | Limited visibility into analytics data location |
 | Backup / DR | Atlassian-managed | Organization has no visibility into backup location or retention |
 
-**Key difference**: With docs-as-code, the organization controls exactly where every component lives and can verify it through Azure and GitHub dashboards. With Confluence Cloud, the organization selects a realm but has limited visibility into where all data components actually reside, especially for supporting services like search and analytics.
+!!! warning "Atlassian Data Residency Exclusions"
+    Atlassian Cloud offers [data residency](https://www.atlassian.com/trust/compliance/data-residency) capabilities, but certain data types are **explicitly excluded** from residency controls. Operational telemetry, user account metadata, and application analytics may continue to be routed globally regardless of the selected realm. Organizations subject to GDPR, UK GDPR, or CCPA requirements should evaluate whether these exclusions create compliance gaps.
+
+**Key difference**: With docs-as-code, the organization controls exactly where every component lives and can verify it through Azure and GitHub dashboards. Because there is no backend telemetry database, the organization sidesteps the opaque residency exclusions inherent to managed SaaS wikis. With Confluence Cloud, the organization selects a realm but has limited visibility into where all data components actually reside, especially for supporting services like search and analytics.
 
 ---
 
