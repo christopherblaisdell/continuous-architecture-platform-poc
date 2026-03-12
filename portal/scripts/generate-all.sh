@@ -99,6 +99,13 @@ python3 "$REPO_ROOT/scripts/validate-calm.py" || echo "  WARNING: CALM validatio
 echo ""
 
 # ------------------------------------------------------------------
+# Step 9b: Generate topology pages from CALM data
+# ------------------------------------------------------------------
+echo "[9b/11] Generating topology pages from CALM..."
+python3 "$SCRIPT_DIR/generate-topology-pages.py"
+echo ""
+
+# ------------------------------------------------------------------
 # Step 10: Generate standalone PlantUML diagrams
 # ------------------------------------------------------------------
 echo "[10/11] Generating standalone PlantUML diagrams..."
