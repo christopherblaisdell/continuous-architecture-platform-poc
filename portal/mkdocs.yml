@@ -217,5 +217,6 @@ nav:
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
   - Operations:
     - Platform Operations: platform-operations.md
+    - Platform Roadmap: roadmap.md
     - Database Change Workflow: database-change-workflow.md
     - Tags: tags.md
