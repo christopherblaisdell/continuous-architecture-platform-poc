@@ -271,7 +271,7 @@ Build the metadata backbone and establish the solution design workflow.
 | 1.6 | COMPLETE -- Created `architecture/metadata/capabilities.yaml` with 34 L2 capabilities | -- | Small |
 | 1.7 | COMPLETE -- Created `architecture/metadata/capability-changelog.yaml` with retrospective entries for NTK-10001 through NTK-10005 | 1.6 | Medium |
 | 1.8 | COMPLETE -- Created `architecture/metadata/tickets.yaml` -- migrated 7 tickets from mock JSON with capability mappings | 1.6 | Small |
-| 1.9 | COMPLETE -- Wrote `scripts/ticket-client.py` -- YAML-reading CLI with capability/service filtering | 1.8 | Small |
+| 1.9 | COMPLETE -- Wrote `architecture/scripts/ticket-client.py` -- YAML-reading CLI with capability/service filtering | 1.8 | Small |
 | 1.10 | COMPLETE -- Created branch ruleset (ID 13600522) on `main` requiring PRs and `validate-solution` status check, with admin bypass. Repo made public to enable rulesets on free plan | -- | Small |
 | 1.11 | COMPLETE -- Documented branch naming convention (`solution/NTK-XXXXX-slug`) in copilot-instructions.md | -- | Small |
 | 1.12 | COMPLETE -- Added PR template (`.github/pull_request_template.md`) with architecture review checklist | -- | Small |
@@ -319,8 +319,8 @@ Deploy Vikunja as the ticketing UI.
 | 4.1 | COMPLETE -- Created `infra/modules/container-apps-env.bicep` (Log Analytics + managed environment) and `infra/modules/vikunja.bicep` (Container App with Azure Files persistent storage, init container for permissions) | -- | Medium |
 | 4.2 | COMPLETE -- Added Vikunja parameters to `infra/parameters/prod.bicepparam` and wired modules into `main.bicep` with `deployVikunja` flag, Azure Storage Account and File Share for SQLite persistence | 4.1 | Small |
 | 4.3 | COMPLETE -- Deployed Vikunja v2.1.0 to Azure Container Apps (`ca-vikunja-prod`) with Azure Files persistent storage, registered admin user, seeded 38 labels + 7 tickets | 4.1, 4.2 | Medium |
-| 4.4 | COMPLETE -- `scripts/vikunja-seed.py` creates NovaTrek project and seeds 34 capability labels + 4 status labels | 4.3 | Small |
-| 4.5 | COMPLETE -- `scripts/vikunja-seed.py` imports all 7 tickets with descriptions, priorities, and label associations | 4.3 | Small |
+| 4.4 | COMPLETE -- `architecture/scripts/vikunja-seed.py` creates NovaTrek project and seeds 34 capability labels + 4 status labels | 4.3 | Small |
+| 4.5 | COMPLETE -- `architecture/scripts/vikunja-seed.py` imports all 7 tickets with descriptions, priorities, and label associations | 4.3 | Small |
 | 4.6 | COMPLETE -- `portal/scripts/sync-tickets.py` bidirectional sync (push new YAML tickets, pull status/priority changes from Vikunja) | 4.3 | Medium |
 | 4.7 | COMPLETE -- Configured Vikunja webhook for task events + GitHub Actions `sync-vikunja.yml` workflow (cron every 30 min + manual dispatch + repository_dispatch) to pull Vikunja changes into tickets.yaml and auto-commit | 4.6 | Medium |
 
@@ -333,8 +333,8 @@ Deploy Vikunja as the ticketing UI.
 | 5.1 | COMPLETE -- Added Capability Health Dashboard to `generate-capability-pages.py` with staleness detection (active/aging/stale/untouched), churn analysis, L3 emergence counts, and per-capability health table | 2.2 | Medium |
 | 5.2 | COMPLETE -- MkDocs Material built-in search covers full-text search across all portal content including solution designs | 2.1 | Medium |
 | 5.3 | COMPLETE -- Added Related Solutions auto-detection to `generate-solution-pages.py` by service and capability overlap, renders cross-link table on each solution page | 2.1, 2.2 | Medium |
-| 5.4 | COMPLETE -- `scripts/mcp-vikunja-server.py` MCP server with 6 tools (list_tickets, get_ticket, search_tickets, get_capability_tickets, list_capabilities, get_capability) over stdio, Vikunja + YAML dual-source, configured in `.vscode/mcp.json` | 4.3 | Medium |
-| 5.5 | COMPLETE -- `scripts/sync-branch-status.py` detects solution branches and updates ticket status (New -> In Progress -> Ready for Dev), integrated into `validate-solution.yml` workflow | 4.7 | Medium |
+| 5.4 | COMPLETE -- `architecture/scripts/mcp-vikunja-server.py` MCP server with 6 tools (list_tickets, get_ticket, search_tickets, get_capability_tickets, list_capabilities, get_capability) over stdio, Vikunja + YAML dual-source, configured in `.vscode/mcp.json` | 4.3 | Medium |
+| 5.5 | COMPLETE -- `architecture/scripts/sync-branch-status.py` detects solution branches and updates ticket status (New -> In Progress -> Ready for Dev), integrated into `validate-solution.yml` workflow | 4.7 | Medium |
 | 5.6 | COMPLETE -- Bicep infrastructure already supports custom domains (`customDomain` parameter in main.bicep, conditional resource). Prod parameter file has placeholder ready to uncomment. Remaining work is manual: register domain, configure DNS, uncomment parameter | -- | Small |
 | 5.7 | COMPLETE -- Created full solution designs for two priority gap capabilities: NTK-10008 (Guest Reviews and Ratings, CAP-1.7 NEW) with svc-reviews OpenAPI spec, 3 ADRs, 5 user stories, 5 risks, and NTK-10009 (Refund Dispute Management, CAP-5.5 enhanced) with svc-payments v1.1.0 dispute endpoints, 3 ADRs, 5 user stories, 5 risks. Updated capability-changelog.yaml with 11 L3 capabilities | 2.2 | Large |
 
@@ -462,7 +462,7 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 
 | Initiative | Status | Companion Document | Summary |
 |-----------|--------|-------------------|---------|
-| Root Folder Reorganization | Proposed | [portal/ROOT-FOLDER-REORGANIZATION-PLAN.md](../portal/ROOT-FOLDER-REORGANIZATION-PLAN.md) | Reduce 20+ root-level items to intuitive subfolder hierarchy |
+| Root Folder Reorganization | COMPLETE | [portal/ROOT-FOLDER-REORGANIZATION-PLAN.md](../portal/ROOT-FOLDER-REORGANIZATION-PLAN.md) | Reduced root-level items by moving `roadmap/`, `CLOSING-THE-LOOP.md`, and `scripts/` to logical subfolders |
 | Frontend Applications | Draft | [portal/drafts/PLAN-frontend-applications.md](../portal/drafts/PLAN-frontend-applications.md) | Add 3 frontend application pages (web-guest-portal, web-ops-dashboard, app-guest-mobile) to portal |
 
 #### Completed Initiatives (Reference)

@@ -237,7 +237,7 @@ nav:
   - Home: index.md
   - Project:
     - README.md
-    - Roadmap: roadmap/ROADMAP.md
+    - Roadmap: roadmap/ROADMAP.md  # resolves to docs/roadmap/ROADMAP.md
     - Decisions:
       - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
   - Phase 1 - AI Tool Comparison:

@@ -5,7 +5,7 @@
 | **Author** | Christopher Blaisdell |
 | **Created** | 2026-03-05 |
 | **Status** | Proposed |
-| **Related** | [Microservice Pages Generator](scripts/generate-microservice-pages.py) · [CLOSING-THE-LOOP.md](../CLOSING-THE-LOOP.md) · [copilot-instructions.md](../.github/copilot-instructions.md) |
+| **Related** | [Microservice Pages Generator](scripts/generate-microservice-pages.py) · [CLOSING-THE-LOOP.md](../docs/CLOSING-THE-LOOP.md) · [copilot-instructions.md](../.github/copilot-instructions.md) |
 
 ---
 

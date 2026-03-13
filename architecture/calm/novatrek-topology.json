@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
   "metadata": {
     "name": "NovaTrek Adventures — Full System Topology",
-    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 architecture/scripts/generate-calm.py",
     "version": "1.0.0",
     "generated-from": [
       "architecture/metadata/domains.yaml",

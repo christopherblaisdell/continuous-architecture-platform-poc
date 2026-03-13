@@ -16,10 +16,10 @@ Rather than writing CALM by hand (creating a second source of truth that drifts)
 
 ```bash
 # Generate full system topology
-python3 scripts/generate-calm.py
+python3 architecture/scripts/generate-calm.py
 
 # Generate a single domain for focused review
-python3 scripts/generate-calm.py --domain Operations
+python3 architecture/scripts/generate-calm.py --domain Operations
 ```
 
 **No new format to learn.** Architects stay in YAML and OpenAPI specs. CALM is produced as a derived artifact — like how the portal pages are generated from the same metadata.
@@ -63,9 +63,9 @@ All output is in `architecture/calm/` — version-controlled alongside the metad
 
 ``` mermaid
 flowchart LR
-    A["YAML Metadata<br/>(architects maintain)"] --> B["CALM Generator<br/>(scripts/generate-calm.py)"]
+    A["YAML Metadata<br/>(architects maintain)"] --> B["CALM Generator<br/>(architecture/scripts/generate-calm.py)"]
     B --> C["CALM Topology JSON<br/>(architecture/calm/)"]
-    C --> D["CI Validation<br/>(scripts/validate-calm.py)"]
+    C --> D["CI Validation<br/>(architecture/scripts/validate-calm.py)"]
     C --> E["Portal Pages<br/>(auto-generated)"]
     A --> E
 

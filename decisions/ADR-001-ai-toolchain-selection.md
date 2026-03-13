@@ -220,5 +220,5 @@ It is possible that the evaluation reveals complementary strengths (e.g., Copilo
 ## Links
 
 - [Project Vision](../README.md)
-- [Roadmap](../roadmap/ROADMAP.md)
-- [Phase 1 Plan](../phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md)
+- [Roadmap](../docs/roadmap/ROADMAP.md)
+- [Phase 1 Plan](../phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md)
