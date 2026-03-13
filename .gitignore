@@ -8,6 +8,9 @@ build/
 .idea/
 .vscode/
 *.swp
+__pycache__/
+*.pyc
+*.pyo
 
 # PowerPoint temp files
 ~$*.pptx
