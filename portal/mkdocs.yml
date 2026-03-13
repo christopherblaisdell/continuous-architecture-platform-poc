@@ -220,17 +220,17 @@ nav:
     - Quality Model:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
+  - Roadmap: roadmap.md
+  - Security:
+    - security/index.md
+    - Security Comparison: security/security-comparison.md
+    - Pipeline Security Gates: security/pipeline-security-gates.md
+    - Headers and Attack Surface: security/headers-and-attack-surface.md
+    - Access Control and Audit: security/access-control-and-audit.md
+    - Data Protection: security/data-protection.md
+    - Security Research Prompt: security/research-prompt.md
+    - Research Results: security/research-prompt-response.md
   - Operations:
     - Platform Operations: platform-operations.md
-    - Platform Roadmap: roadmap.md
-    - Security Model:
-      - security/index.md
-      - Security Comparison: security/security-comparison.md
-      - Pipeline Security Gates: security/pipeline-security-gates.md
-      - Headers and Attack Surface: security/headers-and-attack-surface.md
-      - Access Control and Audit: security/access-control-and-audit.md
-      - Data Protection: security/data-protection.md
-      - Security Research Prompt: security/research-prompt.md
-      - Research Results: security/research-prompt-response.md
     - Database Change Workflow: database-change-workflow.md
     - Tags: tags.md

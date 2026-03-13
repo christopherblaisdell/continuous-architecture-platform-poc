@@ -27,18 +27,20 @@ Pull Request opened
     ├─── Gate 3: Data Isolation Audit
     ├─── Gate 4: Portal Build (link validation)
     ├─── Gate 5: Confluence Dry-Run (mirror validation)
-    ├─── Gate 6: PR Review Approval (human gate)
+    ├─── Gate 6: Snyk Security Scan (dependency, code, IaC)
+    ├─── Gate 7: PR Review Approval (human gate)
     │
     ▼
 Merge to main (only if ALL gates pass)
     │
-    ├─── Gate 7: Production Build
-    ├─── Gate 8: Static Asset Integrity
+    ├─── Gate 8: Production Build
+    ├─── Gate 9: Snyk Security Scan (post-merge verification)
+    ├─── Gate 10: Static Asset Integrity
     │
     ▼
 Deploy to Azure Static Web Apps
     │
-    ├─── Gate 9: Azure Platform Security (WAF, DDoS protection)
+    ├─── Gate 11: Azure Platform Security (WAF, DDoS protection)
     │
     ▼
 Content live on portal
@@ -48,7 +50,7 @@ Content live on portal
 
 ## Pre-Merge Gates (PR Phase)
 
-These gates run automatically on every pull request. All must pass before the PR can be merged.
+These gates run automatically on every pull request. All must pass before the PR can be merged. For a gate to actually block a merge, its workflow check must be added to the GitHub branch protection rules for `main` under Settings > Branches > Require status checks to pass.
 
 ### Gate 1 — YAML Metadata Validation
 
@@ -108,7 +110,21 @@ These gates run automatically on every pull request. All must pass before the PR
 
 **Blocks merge on failure**: Yes.
 
-### Gate 6 — PR Review Approval
+### Gate 6 — Snyk Security Scan
+
+**What it checks**: Three complementary security scans run in parallel with the build:
+
+- **Dependency scan** (`snyk test`): All Python packages in `requirements-docs.txt` are checked against the Snyk vulnerability database. Even build-time dependencies can be exploited to inject malicious content into generated HTML if compromised.
+- **Code scan** (`snyk code test`): Static analysis of Python generator scripts in `portal/scripts/` detects path traversal, unsafe deserialization (generators parse YAML input), and injection risks (generators produce HTML output).
+- **IaC scan** (`snyk iac test`): `portal/staticwebapp.config.json` and `.github/workflows/docs-deploy.yml` are scanned for misconfigurations — overly permissive CSP, missing security headers, and excessively broad workflow permissions.
+
+**Why it matters**: The generator scripts are the boundary between untrusted input (YAML metadata, OpenAPI specs) and trusted output (published HTML). A misconfigured `staticwebapp.config.json` could silently strip all security headers from the production site. Snyk catches both classes of issue before they reach production.
+
+**Implementation**: The `security-scan` job in `docs-deploy.yml` runs Snyk CLI against each target. The `security-scan` job runs in parallel with the `build` job. The `deploy` job depends on both, so deployment is blocked if any scan finds a HIGH or CRITICAL severity issue. To block PR merges, add `Security Scan` to the required status checks in branch protection rules for `main`.
+
+**Blocks merge on failure**: Yes (HIGH or CRITICAL severity findings, when branch protection is configured).
+
+### Gate 7 — PR Review Approval
 
 **What it checks**: At least one designated reviewer has approved the pull request.
 
@@ -128,7 +144,7 @@ These gates run automatically on every pull request. All must pass before the PR
 
 These gates run after the PR is merged to `main`, before content reaches production.
 
-### Gate 7 — Production Build
+### Gate 8 — Production Build
 
 **What it checks**: The full site builds again from the merged `main` branch. This is not redundant — it catches merge conflicts or timing issues where two PRs were individually valid but conflict when combined.
 
@@ -136,7 +152,15 @@ These gates run after the PR is merged to `main`, before content reaches product
 
 **Blocks deployment on failure**: Yes.
 
-### Gate 8 — Static Asset Integrity
+### Gate 9 — Snyk Post-Merge Verification
+
+**What it checks**: The same three Snyk scans from Gate 6 run again on the merged `main` branch before deployment proceeds.
+
+**Why it matters**: New vulnerability advisories may have been published between the time the PR was opened and when it was merged. Running Snyk again on `main` ensures the production deployment reflects the current vulnerability landscape, not the state at PR creation time.
+
+**Blocks deployment on failure**: Yes (the `deploy` job depends on `security-scan`).
+
+### Gate 10 — Static Asset Integrity
 
 **What it checks**: Non-Markdown assets (SVGs, OpenAPI specs, Swagger UI pages, `staticwebapp.config.json`) are correctly copied into the build output.
 
@@ -146,7 +170,7 @@ These gates run after the PR is merged to `main`, before content reaches product
 
 **Blocks deployment on failure**: Yes (missing `staticwebapp.config.json` would remove all security headers).
 
-### Gate 9 — Azure Platform Security
+### Gate 11 — Azure Platform Security
 
 **What it checks**: Azure Static Web Apps provides platform-level protections:
 
@@ -167,13 +191,16 @@ These gates run after the PR is merged to `main`, before content reaches product
 | Secret scanning | Automated, blocks push | Not available |
 | YAML validation | Automated, blocks merge | Not applicable |
 | Data isolation audit | Automated, blocks merge | Not available |
+| Dependency vulnerability scan | Snyk — automated, blocks merge (requires branch protection rule) | Atlassian-managed (no visibility) |
+| Code security analysis | Snyk — automated, blocks merge (requires branch protection rule) | Not available |
+| IaC misconfiguration scan | Snyk — automated, blocks merge (requires branch protection rule) | Not applicable |
 | Link validation | Automated, blocks merge | Not available |
 | Pre-publish review | Required PR approval | Optional (page restrictions) |
 | Build integrity | Automated, blocks deploy | Not applicable |
 | Security headers | Version-controlled, gated | Atlassian-managed |
 | Platform security | Azure (SOC 2, ISO 27001) | Atlassian (SOC 2, ISO 27001) |
 
-**Key difference**: Confluence has **zero automated gates** between editing and publishing. Every control is either manual (page restrictions) or managed by Atlassian (platform security). The docs-as-code model provides **6 automated gates** plus a required human review, all of which must pass before content reaches production.
+**Key difference**: Confluence has **zero automated gates** between editing and publishing. Every control is either manual (page restrictions) or managed by Atlassian (platform security). The docs-as-code model provides **9 automated gates** plus a required human review, all of which must pass before content reaches production.
 
 ---
 
@@ -208,7 +235,7 @@ Source: [OWASP CI/CD Security Cheat Sheet](https://cheatsheetseries.owasp.org/ch
 
 ## Snyk Integration
 
-Snyk provides three distinct scanning capabilities, each deployed as a CI gate in the documentation pipeline:
+Snyk provides three distinct scanning capabilities, each deployed as an active CI gate in the documentation pipeline (`security-scan` job in `docs-deploy.yml`). All three scans run on every pull request and every push to `main`. The `deploy` job depends on `security-scan`, so deployment is blocked if any scan finds a HIGH or CRITICAL finding.
 
 ### Snyk Dependency Scan (`snyk test`)
 
@@ -216,15 +243,13 @@ Snyk provides three distinct scanning capabilities, each deployed as a CI gate i
 
 **Why it matters**: MkDocs, pymdownx, and other build-time dependencies may contain vulnerabilities. Even though these packages only run at build time (not in production), a compromised build dependency could inject malicious content into the generated HTML.
 
-**Implementation**:
+**Implementation** (runs from repository root):
 
 ```yaml
 - name: Snyk dependency scan
-  uses: snyk/actions/python-3.12@master
+  run: snyk test --severity-threshold=high --file=requirements-docs.txt --package-manager=pip
   env:
     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  with:
-    args: --severity-threshold=high --file=requirements-docs.txt
 ```
 
 **Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
@@ -240,15 +265,23 @@ Snyk provides three distinct scanning capabilities, each deployed as a CI gate i
 
 **Why it matters**: The generator scripts are the boundary between untrusted input (YAML metadata, OpenAPI specs) and trusted output (published HTML). Security flaws in generators could allow a crafted YAML file to produce malicious portal content.
 
+**Implementation**:
+
+```yaml
+- name: Snyk code scan
+  run: snyk code test --severity-threshold=high portal/scripts/
+  env:
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+```
+
 **Blocks merge on failure**: Yes.
 
 ### Snyk Infrastructure-as-Code Scan (`snyk iac test`)
 
 **What it checks**: Infrastructure and configuration files for security misconfigurations:
 
-- `staticwebapp.config.json` — overly permissive CSP, missing security headers
-- `infra/*.bicep` — Azure resource misconfigurations
-- `.github/workflows/*.yml` — overly broad workflow permissions, missing pinned action versions
+- `portal/staticwebapp.config.json` — overly permissive CSP, missing security headers
+- `.github/workflows/docs-deploy.yml` — overly broad workflow permissions, missing pinned action versions
 
 **Why it matters**: A misconfigured `staticwebapp.config.json` could silently remove all security headers from the production site. Snyk IaC catches these misconfigurations before they are deployed.
 
@@ -256,15 +289,22 @@ Snyk provides three distinct scanning capabilities, each deployed as a CI gate i
 
 ```yaml
 - name: Snyk IaC scan
-  uses: snyk/actions/iac@master
+  run: snyk iac test --severity-threshold=high portal/staticwebapp.config.json .github/workflows/docs-deploy.yml
   env:
     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  with:
-    args: --severity-threshold=high
-    file: portal/staticwebapp.config.json
 ```
 
 **Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
+
+### Required Secret
+
+The `security-scan` job requires `SNYK_TOKEN` to be configured as a GitHub Actions secret. To obtain a token:
+
+1. Create a free or team account at [snyk.io](https://snyk.io)
+2. Navigate to Account Settings and generate an API token
+3. Add it to the repository under Settings > Secrets and variables > Actions > New repository secret
+
+Without `SNYK_TOKEN`, the security-scan job will fail and block deployment. This is intentional — the gate must be explicitly configured, not silently skipped.
 
 ### Continuous Monitoring
 
