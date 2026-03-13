@@ -12,7 +12,7 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| [Deploy Documentation](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/docs-deploy.yml) | Push/PR to `main` (doc paths) | Build MkDocs, deploy to Azure SWA, publish Confluence mirror |
+| [Deploy Documentation](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/docs-deploy.yml) | Push/PR to `main` (doc paths) | Snyk security scan, build MkDocs, deploy to Azure SWA, publish Confluence mirror |
 | [Validate Solution Design](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/validate-solution.yml) | PR to `main` (architecture paths) | YAML lint, folder structure check, data isolation audit, portal build |
 
 ### Service CI/CD
@@ -148,6 +148,7 @@ Weekend            → Dev environment fully stopped
 | `AZURE_STATIC_WEB_APPS_PRESENTATION_API_TOKEN` | Docs Deploy | SWA deployment token (presentation site) |
 | `CONFLUENCE_USERNAME` | Docs Deploy, Confluence workflows | Confluence service account |
 | `CONFLUENCE_API_TOKEN` | Docs Deploy, Confluence workflows | Confluence API token |
+| `SNYK_TOKEN` | Docs Deploy | Snyk API token for dependency and IaC security scanning |
 | `VIKUNJA_TOKEN` | Validate Solution, Sync Vikunja | Vikunja ticketing API token |
 
 ### GitHub Actions Variables
