@@ -40,6 +40,7 @@ Safety:
   - svc-safety-compliance
   - svc-emergency-response
   - svc-wildlife-tracking
+  - svc-adventure-tracking
 Logistics:
   color: '#0891b2'
   light: '#CFFAFE'

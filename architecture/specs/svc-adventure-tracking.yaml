@@ -1,0 +1,736 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Adventure Tracking Service
+  description: |
+    Manages real-time GPS position tracking for guests on active adventures.
+    Receives telemetry from wristband devices and mobile devices, maintains
+    adventure sessions keyed to check-in records, detects geofence violations
+    and SOS signals, and triggers emergency alerts via svc-emergency-response.
+    Provides live position data to the operations dashboard for safety officer
+    situational awareness. All telemetry is retained for post-adventure
+    incident investigation and insurance reporting.
+  version: 1.0.0
+  contact:
+    name: NovaTrek Safety and Compliance Team
+    email: tracking@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/tracking/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /sessions:
+    get:
+      operationId: listAdventureSessions
+      summary: List active adventure tracking sessions
+      description: |
+        Returns tracking sessions for all guests currently on active adventures.
+        Safety officers use this to monitor the real-time status of all parties
+        in the field.
+      tags: [Sessions]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, completed, emergency, abandoned]
+          description: Filter sessions by status
+        - name: adventure_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter by adventure date (ISO 8601)
+        - name: trip_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by trip catalog identifier
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of adventure tracking sessions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdventureSessionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: startAdventureSession
+      summary: Start a tracking session for a completed check-in
+      description: |
+        Creates a new adventure tracking session linked to a completed check-in
+        record. Called by svc-check-in when the ADVENTURE_STARTED status is set.
+        Associates all wristband RFID identifiers from the check-in group with
+        this tracking session for position correlation.
+      tags: [Sessions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartSessionRequest'
+      responses:
+        '201':
+          description: Adventure tracking session started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdventureSession'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Tracking session already exists for this check-in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /sessions/{session_id}:
+    get:
+      operationId: getAdventureSession
+      summary: Get adventure tracking session details
+      description: Returns the current state of a tracking session including last known positions for all party members.
+      tags: [Sessions]
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Adventure session details with current positions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdventureSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      operationId: updateAdventureSession
+      summary: Update adventure session status
+      description: |
+        Updates session status (e.g., COMPLETED when adventure ends, ABANDONED if
+        party returns early). Uses optimistic locking to prevent concurrent updates.
+      tags: [Sessions]
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSessionRequest'
+      responses:
+        '200':
+          description: Session updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdventureSession'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Optimistic locking conflict — session modified by another process
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /sessions/{session_id}/positions:
+    get:
+      operationId: listSessionPositions
+      summary: Get position history for a tracking session
+      description: |
+        Returns the telemetry history for a session, ordered by timestamp descending.
+        Used for post-adventure incident investigation and insurance reporting.
+      tags: [Sessions]
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+        - name: since
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Return positions recorded after this timestamp
+        - name: rfid_tag_id
+          in: query
+          schema:
+            type: string
+          description: Filter positions for a specific wristband
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: Position telemetry history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /telemetry:
+    post:
+      operationId: ingestPositionUpdate
+      summary: Ingest a position telemetry update from a device
+      description: |
+        Accepts GPS position updates from wristband devices and mobile applications.
+        Updates the current position for the identified wristband within its session.
+        Evaluates geofence boundaries and SOS flag — if either is violated, creates
+        an emergency incident via svc-emergency-response automatically.
+        Device authentication uses an API key distinct from the BearerAuth used by
+        human-facing endpoints.
+      tags: [Telemetry]
+      security:
+        - DeviceApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelemetryUpdate'
+      responses:
+        '202':
+          description: Telemetry accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelemetryAck'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: No active session found for the device identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /geofences:
+    get:
+      operationId: listGeofences
+      summary: List geofence boundaries for adventure areas
+      tags: [Geofences]
+      parameters:
+        - name: trip_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter geofences for a specific trip
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of geofence definitions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeofenceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createGeofence
+      summary: Create a geofence boundary for an adventure area
+      description: |
+        Defines a polygon or circular geofence boundary. When a tracked device
+        crosses the boundary, the system evaluates whether the deviation is
+        expected (e.g., alternate trail) or an emergency requiring alert.
+      tags: [Geofences]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeofenceCreate'
+      responses:
+        '201':
+          description: Geofence created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Geofence'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /geofences/{geofence_id}:
+    get:
+      operationId: getGeofence
+      summary: Get geofence definition
+      tags: [Geofences]
+      parameters:
+        - $ref: '#/components/parameters/GeofenceId'
+      responses:
+        '200':
+          description: Geofence definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Geofence'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      operationId: deleteGeofence
+      summary: Delete a geofence boundary
+      tags: [Geofences]
+      parameters:
+        - $ref: '#/components/parameters/GeofenceId'
+      responses:
+        '204':
+          description: Geofence deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT for human-facing endpoints (operations dashboard, safety officers)
+    DeviceApiKey:
+      type: apiKey
+      in: header
+      name: X-Device-Api-Key
+      description: Per-device API key for wristband and mobile telemetry ingestion
+
+  parameters:
+    SessionId:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    GeofenceId:
+      name: geofence_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+    PageToken:
+      name: page_token
+      in: query
+      schema:
+        type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    AdventureSession:
+      type: object
+      required: [id, check_in_id, reservation_id, trip_id, status, started_at, party_size, _rev]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique session identifier
+        check_in_id:
+          type: string
+          format: uuid
+          description: Reference to the originating check-in record in svc-check-in
+        reservation_id:
+          type: string
+          format: uuid
+          description: Reference to the booking record in svc-reservations
+        trip_id:
+          type: string
+          format: uuid
+          description: Reference to the trip in svc-trip-catalog
+        guide_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Assigned guide from svc-guide-management (null for unguided adventures)
+        status:
+          type: string
+          enum: [active, completed, emergency, abandoned]
+          description: Current session status
+        started_at:
+          type: string
+          format: date-time
+          description: When the adventure tracking session was activated
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the adventure completed or was abandoned
+        party_size:
+          type: integer
+          minimum: 1
+          description: Number of guests in the adventure party
+        tracked_devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackedDevice'
+          description: Wristband and mobile devices associated with this session
+        geofence_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Active geofence boundary for this adventure
+        emergency_incident_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Reference to active emergency in svc-emergency-response (null unless status is emergency)
+        _rev:
+          type: string
+          description: Optimistic locking revision token
+
+    AdventureSessionList:
+      type: object
+      required: [sessions]
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdventureSession'
+        next_page_token:
+          type: string
+          nullable: true
+        total_count:
+          type: integer
+
+    StartSessionRequest:
+      type: object
+      required: [check_in_id, reservation_id, trip_id, party_size]
+      properties:
+        check_in_id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        trip_id:
+          type: string
+          format: uuid
+        guide_id:
+          type: string
+          format: uuid
+          nullable: true
+        party_size:
+          type: integer
+          minimum: 1
+        rfid_tag_ids:
+          type: array
+          items:
+            type: string
+          description: Wristband RFID tag IDs from check-in records to associate with this session
+        geofence_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Geofence boundary to enforce for this adventure
+
+    UpdateSessionRequest:
+      type: object
+      required: [_rev]
+      properties:
+        status:
+          type: string
+          enum: [completed, abandoned]
+          description: New session status (only terminal transitions allowed via PATCH)
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        _rev:
+          type: string
+          description: Current revision token for optimistic locking
+
+    TrackedDevice:
+      type: object
+      required: [device_type, device_id]
+      properties:
+        device_type:
+          type: string
+          enum: [wristband_rfid, mobile_app, satellite_beacon]
+          description: Type of tracking device
+        device_id:
+          type: string
+          description: Device identifier (RFID tag ID, mobile app UUID, or beacon serial)
+        guest_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Associated guest from svc-guest-profiles
+        last_position:
+          $ref: '#/components/schemas/Position'
+          description: Most recent GPS position received
+        last_updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp of the last telemetry update received
+
+    Position:
+      type: object
+      required: [latitude, longitude, recorded_at]
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        altitude_meters:
+          type: number
+          format: double
+          nullable: true
+          description: Elevation above sea level in metres
+        accuracy_meters:
+          type: number
+          format: double
+          nullable: true
+          description: GPS fix accuracy radius in metres
+        recorded_at:
+          type: string
+          format: date-time
+          description: Client-side timestamp when position was captured
+
+    PositionList:
+      type: object
+      required: [positions]
+      properties:
+        positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionRecord'
+        next_page_token:
+          type: string
+          nullable: true
+
+    PositionRecord:
+      type: object
+      required: [id, session_id, device_id, position, ingested_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        session_id:
+          type: string
+          format: uuid
+        device_id:
+          type: string
+        position:
+          $ref: '#/components/schemas/Position'
+        sos_flag:
+          type: boolean
+          default: false
+          description: Whether the device reported a distress signal with this update
+        ingested_at:
+          type: string
+          format: date-time
+          description: Server-side timestamp when telemetry was received
+
+    TelemetryUpdate:
+      type: object
+      required: [device_id, position]
+      properties:
+        device_id:
+          type: string
+          description: Wristband RFID tag ID, mobile app UUID, or satellite beacon serial
+        position:
+          $ref: '#/components/schemas/Position'
+        sos_flag:
+          type: boolean
+          default: false
+          description: Set to true when guest manually activates SOS distress signal
+        battery_level_pct:
+          type: integer
+          minimum: 0
+          maximum: 100
+          nullable: true
+          description: Device battery percentage (null if not reported)
+
+    TelemetryAck:
+      type: object
+      required: [ingested, session_id]
+      properties:
+        ingested:
+          type: boolean
+        session_id:
+          type: string
+          format: uuid
+        emergency_triggered:
+          type: boolean
+          default: false
+          description: True if this update triggered an emergency alert
+        emergency_incident_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Emergency incident ID if emergency_triggered is true
+
+    Geofence:
+      type: object
+      required: [id, name, trip_id, boundary_type, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Human-readable name for the boundary (e.g., "Glacier Trek Zone")
+        trip_id:
+          type: string
+          format: uuid
+          description: Trip this geofence applies to
+        boundary_type:
+          type: string
+          enum: [polygon, circle]
+        polygon_coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 2
+            maxItems: 2
+          nullable: true
+          description: Array of [longitude, latitude] coordinate pairs forming a closed polygon (required when boundary_type is polygon)
+        circle_center_latitude:
+          type: number
+          format: double
+          nullable: true
+          description: Circle center latitude (required when boundary_type is circle)
+        circle_center_longitude:
+          type: number
+          format: double
+          nullable: true
+          description: Circle center longitude (required when boundary_type is circle)
+        circle_radius_meters:
+          type: number
+          format: double
+          nullable: true
+          description: Circle radius in metres (required when boundary_type is circle)
+        violation_alert_level:
+          type: string
+          enum: [warning, emergency]
+          default: emergency
+          description: Alert level triggered when a device crosses this boundary
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    GeofenceCreate:
+      type: object
+      required: [name, trip_id, boundary_type]
+      properties:
+        name:
+          type: string
+        trip_id:
+          type: string
+          format: uuid
+        boundary_type:
+          type: string
+          enum: [polygon, circle]
+        polygon_coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 2
+            maxItems: 2
+          nullable: true
+        circle_center_latitude:
+          type: number
+          format: double
+          nullable: true
+        circle_center_longitude:
+          type: number
+          format: double
+          nullable: true
+        circle_radius_meters:
+          type: number
+          format: double
+          nullable: true
+        violation_alert_level:
+          type: string
+          enum: [warning, emergency]
+          default: emergency
+
+    GeofenceList:
+      type: object
+      required: [geofences]
+      properties:
+        geofences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Geofence'
+        next_page_token:
+          type: string
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+          nullable: true

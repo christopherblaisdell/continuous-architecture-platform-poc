@@ -134,6 +134,7 @@ tags:
 
 | Ticket | Solution | Capabilities | Date |
 |--------|----------|-------------|------|
+| NTK-10006 | [Real-Time Adventure Tracking and Emergency Alerting System](../solutions/_NTK-10006-real-time-adventure-tracking.md) | `CAP-3.3`, `CAP-3.2`, `CAP-2.1` | 2026-03-13 |
 | NTK-10009 | [Refund and Dispute Management Workflows](../solutions/_NTK-10009-refund-dispute-management.md) | `CAP-5.5`, `CAP-5.4` | 2026-03-06 |
 
 ---

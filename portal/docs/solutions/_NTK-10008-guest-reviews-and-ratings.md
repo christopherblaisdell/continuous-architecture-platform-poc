@@ -8,7 +8,7 @@ description: "Solution design for NTK-10008"
 | Field | Value |
 |-------|-------|
 | **Status** | Proposed |
-| **Version** | Date |
+| **Version** | v1.0 |
 | **Author** | Solution Architect (AI-Assisted) |
 | **Date** | 2026-03-06 |
 | **Ticket** | NTK-10008 |

@@ -114,19 +114,19 @@ def parse_solution_metadata(solution_dir, changelog_caps):
     # Parse header table fields
     for line in master_content.split("\n"):
         line_lower = line.lower()
-        if "| version" in line_lower or "| version" in line_lower:
+        if not meta["version"] and ("| version" in line_lower):
             parts = line.split("|")
             if len(parts) >= 3:
                 meta["version"] = parts[2].strip()
-        elif "| status" in line_lower:
+        elif not meta["status"] and "| status" in line_lower:
             parts = line.split("|")
             if len(parts) >= 3:
                 meta["status"] = parts[2].strip()
-        elif "| author" in line_lower:
+        elif not meta["author"] and "| author" in line_lower:
             parts = line.split("|")
             if len(parts) >= 3:
                 meta["author"] = parts[2].strip()
-        elif "| date" in line_lower or "| last updated" in line_lower:
+        elif not meta["date"] and ("| date" in line_lower or "| last updated" in line_lower):
             parts = line.split("|")
             if len(parts) >= 3:
                 meta["date"] = parts[2].strip()

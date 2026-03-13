@@ -40,6 +40,7 @@ Solutions that share services or capabilities with this design:
 |----------|-------------------|-----------------|
 | [NTK-10002 — NTK-10002: Adventure Category Classifica](_NTK-10002-adventure-category-classification.md) | CAP-2.1 | svc-check-in |
 | [NTK-10003 — Unregistered Guest Self-Service Check-in](_NTK-10003-unregistered-guest-self-checkin.md) | CAP-2.1 | svc-check-in |
+| [NTK-10006 — NTK-10006 Solution Design — Real-Time Ad](_NTK-10006-real-time-adventure-tracking.md) | CAP-2.1 | svc-check-in |
 
 ---
 
