@@ -43,7 +43,7 @@ Compare AI toolchains (GitHub Copilot vs Roo Code + OpenRouter) by executing 5 a
 | `phase-1-ai-tool-cost-comparison/outputs/` | Run-by-run results for Copilot and Roo Code executions |
 | `phase-1-ai-tool-cost-comparison/scripts/capture-run.sh` | Script to snapshot workspace into outputs after a run |
 | `scripts/audit-data-isolation.sh` | Pre-commit audit for corporate data leakage |
-| `roadmap/ROADMAP.md` | Phased delivery roadmap |
+| `docs/roadmap/ROADMAP.md` | Phased delivery roadmap |
 
 ---
 

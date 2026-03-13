@@ -3,9 +3,9 @@
 from NovaTrek's existing metadata YAML files.
 
 Usage:
-    python3 scripts/generate-calm.py                        # all domains
-    python3 scripts/generate-calm.py --domain Operations    # single domain
-    python3 scripts/generate-calm.py --output path/out.json # custom output
+    python3 architecture/scripts/generate-calm.py                        # all domains
+    python3 architecture/scripts/generate-calm.py --domain Operations    # single domain
+    python3 architecture/scripts/generate-calm.py --output path/out.json # custom output
 
 Reads:
     architecture/metadata/domains.yaml
@@ -452,7 +452,7 @@ def generate_calm(domain_filter=None):
         "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
         "metadata": {
             "name": f"NovaTrek Adventures — {'Full System' if not domain_filter else domain_filter + ' Domain'} Topology",
-            "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+            "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 architecture/scripts/generate-calm.py",
             "version": "1.0.0",
             "generated-from": [
                 "architecture/metadata/domains.yaml",

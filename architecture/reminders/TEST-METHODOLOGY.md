@@ -44,8 +44,8 @@ Establish a comprehensive testing methodology across the NovaTrek platform deliv
 
 - arc42 constraints template: references 80% coverage target
 - arc42 risk register: test coverage gaps listed as known risk
-- Detailed roadmap: `roadmap/TEST-METHODOLOGY-ROADMAP.md` (phased rollout plan)
-- Main roadmap: `roadmap/ROADMAP.md` Section 7 — Future Initiatives
-- Architecture review checklist: `roadmap/ROADMAP.md` Section 8
+- Detailed roadmap: `docs/roadmap/TEST-METHODOLOGY-ROADMAP.md` (phased rollout plan)
+- Main roadmap: `docs/roadmap/ROADMAP.md` Section 7 — Future Initiatives
+- Architecture review checklist: `docs/roadmap/ROADMAP.md` Section 8
 - CI validation workflow: `.github/workflows/validate-solution.yml`
 - Solution design template: `portal/docs/standards/solution-design/`

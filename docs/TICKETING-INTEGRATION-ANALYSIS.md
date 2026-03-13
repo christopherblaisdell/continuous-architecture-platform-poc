@@ -648,11 +648,11 @@ python3 scripts/mock-jira-client.py --list
 python3 scripts/mock-jira-client.py --ticket NTK-10003
 
 # Upgraded (reads tickets.yaml)
-python3 scripts/ticket-client.py --list
-python3 scripts/ticket-client.py --ticket NTK-10003
-python3 scripts/ticket-client.py --capability CAP-2.1          # NEW: filter by capability
-python3 scripts/ticket-client.py --service svc-check-in        # NEW: filter by service
-python3 scripts/ticket-client.py --impact extends              # NEW: filter by impact type
+python3 architecture/scripts/ticket-client.py --list
+python3 architecture/scripts/ticket-client.py --ticket NTK-10003
+python3 architecture/scripts/ticket-client.py --capability CAP-2.1          # NEW: filter by capability
+python3 architecture/scripts/ticket-client.py --service svc-check-in        # NEW: filter by service
+python3 architecture/scripts/ticket-client.py --impact extends              # NEW: filter by impact type
 ```
 
 **Advantages:**
@@ -671,10 +671,10 @@ Add these commands to `.github/copilot-instructions.md`:
 
 | Tool | Command | Purpose |
 |------|---------|---------|
-| Tickets — list all | `python3 scripts/ticket-client.py --list` | View all tickets |
-| Tickets — by capability | `python3 scripts/ticket-client.py --capability CAP-2.1` | Tickets for a capability |
-| Tickets — by service | `python3 scripts/ticket-client.py --service svc-check-in` | Tickets affecting a service |
-| Tickets — ticket detail | `python3 scripts/ticket-client.py --ticket NTK-10003` | Full ticket with use cases |
+| Tickets — list all | `python3 architecture/scripts/ticket-client.py --list` | View all tickets |
+| Tickets — by capability | `python3 architecture/scripts/ticket-client.py --capability CAP-2.1` | Tickets for a capability |
+| Tickets — by service | `python3 architecture/scripts/ticket-client.py --service svc-check-in` | Tickets affecting a service |
+| Tickets — ticket detail | `python3 architecture/scripts/ticket-client.py --ticket NTK-10003` | Full ticket with use cases |
 ```
 
 ### 8.4 AI Solutioning Workflow with Ticket Awareness
@@ -743,7 +743,7 @@ This automation is a Phase 3 enhancement (see Section 9.3). For Phase 1, manual 
 | Step | Task | Effort |
 |------|------|--------|
 | 1 | Create `architecture/metadata/tickets.yaml` with all 7 existing tickets migrated from `tickets.json` to the new schema (adding capability mappings, use cases) | Small |
-| 2 | Rewrite `mock-jira-client.py` as `scripts/ticket-client.py` reading from `tickets.yaml` with capability/service filtering | Small |
+| 2 | Rewrite `mock-jira-client.py` as `architecture/scripts/ticket-client.py` reading from `tickets.yaml` with capability/service filtering | Small |
 | 3 | Create ticket page generator (`portal/scripts/generate-ticket-pages.py`) | Medium |
 | 4 | Add User Stories section to `portal/mkdocs.yml` nav | Small |
 | 5 | Update copilot-instructions.md with new ticket commands | Small |
@@ -772,7 +772,7 @@ This automation is a Phase 3 enhancement (see Section 9.3). For Phase 1, manual 
 
 | Step | Task | Effort |
 |------|------|--------|
-| 1 | Build MCP server wrapping Vikunja REST API (`scripts/mcp-vikunja-server.py`) | Medium |
+| 1 | Build MCP server wrapping Vikunja REST API (`architecture/scripts/mcp-vikunja-server.py`) | Medium |
 | 2 | Register MCP server in VS Code settings | Small |
 | 3 | Add MCP tool descriptions to copilot-instructions.md | Small |
 | 4 | Test AI agent queries against live Vikunja data | Medium |
@@ -846,7 +846,7 @@ Before committing to Vikunja, consider whether the YAML-only approach (Phase 1) 
 
 ```
 architecture/metadata/tickets.yaml  ← Source of truth (hand-edited or AI-generated)
-scripts/ticket-client.py           ← CLI for querying
+architecture/scripts/ticket-client.py           ← CLI for querying
 portal/scripts/generate-ticket-pages.py  ← Portal page generator
 ```
 
@@ -887,7 +887,7 @@ portal/scripts/generate-ticket-pages.py  ← Portal page generator
 
 - [ ] Create `architecture/metadata/tickets.yaml` — Migrate 7 tickets from mock JSON, add capability mappings and use cases
 - [ ] Create `architecture/metadata/capabilities.yaml` — Formalize 34 L2 capabilities from CAPABILITY-MAP-ANALYSIS.md
-- [ ] Write `scripts/ticket-client.py` — YAML-reading CLI with capability/service filtering
+- [ ] Write `architecture/scripts/ticket-client.py` — YAML-reading CLI with capability/service filtering
 - [ ] Write `portal/scripts/generate-ticket-pages.py` — Index page + per-ticket pages
 - [ ] Add ticket cross-references to capability page generator
 - [ ] Add ticket cross-references to microservice page generator

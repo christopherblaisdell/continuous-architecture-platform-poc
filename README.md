@@ -215,6 +215,9 @@ continuous-architecture-platform-poc/
   docs/
     roadmap/
       ROADMAP.md                                      # Phased roadmap with milestones and timeline
+    CLOSING-THE-LOOP.md                               # Analysis of point-in-time vs continuous architecture
+    decisions/                                        # Symlink to decisions/ for MkDocs
+    research/                                         # Symlink to research/ for MkDocs
   decisions/
     README.md                                       # Global decision log (index of all ADRs)
     ADR-001-ai-toolchain-selection.md               # Kong AI vs GitHub Copilot decision
@@ -222,6 +225,15 @@ continuous-architecture-platform-poc/
     ADR-003 through ADR-011                         # 9 promoted Phase 1 service decisions
   research/
     CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md           # Roo Code vs Copilot context window efficiency
+  architecture/
+    scripts/
+      ticket-client.py                              # CLI for querying architecture metadata
+      mcp-vikunja-server.py                         # MCP server for AI tool integration
+      sync-branch-status.py                         # Sync ticket status from branches
+      generate-calm.py                              # Auto-generate CALM topology from metadata
+      validate-calm.py                              # Validate CALM topology in CI
+      vikunja-seed.py                               # Seed Vikunja with tickets and labels
+      init-schemas.sql                              # Database schema initialization
   portal/
     scripts/
       utilities/
@@ -242,7 +254,8 @@ continuous-architecture-platform-poc/
         scenario-playbooks/
         ...
     phase-2-ai-workflow/                            # (future) AI-integrated workflow design
-    phase-3-docflow-pipelines/                      # (future) DocFlow v5 pipeline extensions
+    phase-3-ci-pipelines/                           # (future) CI/CD pipeline extensions
     phase-4-artifact-graph/                         # (future) Navigable architecture artifact graph
     phase-5-continuous-improvement/                 # (future) Quality metrics and feedback loops
+    phase-6-documentation-publishing/               # Documentation publishing platform
 ```

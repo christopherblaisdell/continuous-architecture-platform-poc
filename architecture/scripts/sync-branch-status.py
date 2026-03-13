@@ -9,7 +9,7 @@ status in both tickets.yaml and Vikunja:
 Usage:
     export VIKUNJA_URL="..."
     export VIKUNJA_TOKEN="..."
-    python3 scripts/sync-branch-status.py [--dry-run]
+    python3 architecture/scripts/sync-branch-status.py [--dry-run]
 
 Designed to run in GitHub Actions on branch push and PR merge events.
 """

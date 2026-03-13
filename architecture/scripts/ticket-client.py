@@ -6,13 +6,13 @@ Reads architecture/metadata/tickets.yaml and supports filtering by
 capability, service, status, priority, and free-text search.
 
 Usage:
-    python3 scripts/ticket-client.py --list
-    python3 scripts/ticket-client.py --list --status "New"
-    python3 scripts/ticket-client.py --list --capability CAP-2.1
-    python3 scripts/ticket-client.py --list --service svc-check-in
-    python3 scripts/ticket-client.py --list --priority Critical
-    python3 scripts/ticket-client.py --list --query "wristband"
-    python3 scripts/ticket-client.py --ticket NTK-10003
+    python3 architecture/scripts/ticket-client.py --list
+    python3 architecture/scripts/ticket-client.py --list --status "New"
+    python3 architecture/scripts/ticket-client.py --list --capability CAP-2.1
+    python3 architecture/scripts/ticket-client.py --list --service svc-check-in
+    python3 architecture/scripts/ticket-client.py --list --priority Critical
+    python3 architecture/scripts/ticket-client.py --list --query "wristband"
+    python3 architecture/scripts/ticket-client.py --ticket NTK-10003
 """
 
 import argparse

@@ -210,11 +210,11 @@ Query tickets from `architecture/metadata/tickets.yaml`:
 
 | Command | Purpose |
 |---------|---------|
-| `python3 scripts/ticket-client.py --list` | List all tickets |
-| `python3 scripts/ticket-client.py --list --status "New"` | Filter by status |
-| `python3 scripts/ticket-client.py --list --capability CAP-2.1` | Filter by capability |
-| `python3 scripts/ticket-client.py --list --service svc-check-in` | Filter by service |
-| `python3 scripts/ticket-client.py --ticket NTK-10003` | Full ticket detail |
+| `python3 architecture/scripts/ticket-client.py --list` | List all tickets |
+| `python3 architecture/scripts/ticket-client.py --list --status "New"` | Filter by status |
+| `python3 architecture/scripts/ticket-client.py --list --capability CAP-2.1` | Filter by capability |
+| `python3 architecture/scripts/ticket-client.py --list --service svc-check-in` | Filter by service |
+| `python3 architecture/scripts/ticket-client.py --ticket NTK-10003` | Full ticket detail |
 
 ### Metadata Files
 
@@ -228,7 +228,7 @@ Query tickets from `architecture/metadata/tickets.yaml`:
 
 Before creating a new solution design, search for prior art:
 
-1. **Check capability history**: `python3 scripts/ticket-client.py --list --capability CAP-X.Y` to find tickets that touched the same capabilities
+1. **Check capability history**: `python3 architecture/scripts/ticket-client.py --list --capability CAP-X.Y` to find tickets that touched the same capabilities
 2. **Review existing solutions**: Read the capability mapping in `architecture/solutions/_NTK-*/3.solution/c.capabilities/capabilities.md` for related work
 3. **Check the changelog**: Review `architecture/metadata/capability-changelog.yaml` for L3 capabilities that may overlap
 4. **Reference prior decisions**: Search `decisions/` for ADRs that constrain the design space

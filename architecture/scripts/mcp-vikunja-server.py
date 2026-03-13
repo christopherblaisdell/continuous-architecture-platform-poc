@@ -20,17 +20,17 @@ Usage:
     # With Vikunja (live data):
     export VIKUNJA_URL="https://ca-vikunja-prod.greendune-28870689.eastus2.azurecontainerapps.io"
     export VIKUNJA_TOKEN="your-token"
-    python3 scripts/mcp-vikunja-server.py
+    python3 architecture/scripts/mcp-vikunja-server.py
 
     # Without Vikunja (YAML-only fallback):
-    python3 scripts/mcp-vikunja-server.py
+    python3 architecture/scripts/mcp-vikunja-server.py
 
 MCP Configuration (add to VS Code settings.json or .vscode/mcp.json):
     {
       "servers": {
         "novatrek-architecture": {
           "command": "python3",
-          "args": ["scripts/mcp-vikunja-server.py"],
+          "args": ["architecture/scripts/mcp-vikunja-server.py"],
           "env": {
             "VIKUNJA_URL": "https://ca-vikunja-prod...",
             "VIKUNJA_TOKEN": "..."
