@@ -96,3 +96,5 @@ The international standard for software product quality. Eight quality character
     **First time writing architecture documentation?** Start with the [arc42 template](arc42/index.md) for full system documentation or the [MADR short template](madr/adr-template-short.md) for a quick decision record.
 
     **Need to create a diagram?** The [C4-PlantUML guide](c4-model/c4-plantuml-guide.md) has ready-to-use code examples for System Context, Container, and Component diagrams.
+
+    **Looking for task-oriented workflow guides?** The [Architect Handbook](../handbook/index.md) covers step-by-step instructions for every common architect task — working tickets, solution designs, API changes, database changes, events, wireframes, and publishing.

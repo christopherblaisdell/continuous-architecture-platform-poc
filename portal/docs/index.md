@@ -71,6 +71,14 @@ Consolidated inventory with domain ownership, API contracts, dependencies, and O
 arc42 templates, C4 model notation, MADR decision records, ISO 25010 quality attributes, and ADR templates.
 </a>
 
+<a href="handbook/" class="portal-card" markdown>
+<span class="card-icon">:material-book-open-page-variant:</span>
+
+### Architect Handbook
+
+Step-by-step task guides for solution architects — working tickets, solution designs, API changes, database changes, events, wireframes, and publishing.
+</a>
+
 <a href="roadmap/" class="portal-card" markdown>
 <span class="card-icon">:material-road-variant:</span>
 

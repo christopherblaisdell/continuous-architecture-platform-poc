@@ -110,6 +110,16 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Architect Handbook:
+    - handbook/index.md
+    - Working a Ticket: handbook/working-a-ticket.md
+    - Solution Design: handbook/solution-design.md
+    - API Contract Changes: handbook/api-contracts.md
+    - Database Changes: handbook/database-changes.md
+    - Adding a Service: handbook/adding-a-service.md
+    - Events: handbook/events.md
+    - Wireframes: handbook/wireframes.md
+    - Publishing: handbook/publishing.md
   - Solutions:
     - solutions/index.md
     - Solution Designs:
