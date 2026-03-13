@@ -315,11 +315,17 @@ All UI/UX wireframes are stored as Excalidraw JSON files (`.excalidraw`) under `
 
 **Current Wireframes**:
 - **web-guest-portal**:
-  - `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw` — Guest check-in completion screen
+  - `architecture/wireframes/web-guest-portal/reservation-lookup.excalidraw` — Guest reservation search by booking reference or email (first step of check-in)
+  - `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw` — Full check-in confirmation screen with adventure details, guest info, safety status, wristband, loyalty points, and action buttons
+  - `architecture/wireframes/web-guest-portal/safety-waiver.excalidraw` — Digital liability waiver signing screen (step 3 of 4 in check-in flow) with acknowledgment checklist and signature capture
 - **web-ops-dashboard**:
-  - `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw` — Operations dashboard showing real-time adventure tracking map
+  - `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw` — Real-time GPS tracking of all active adventure groups with map markers, alert banner, per-group status, and stats bar
+  - `architecture/wireframes/web-ops-dashboard/todays-schedule.excalidraw` — Full daily adventure schedule table with departure times, guide assignments, guest counts, check-in patterns, and status per slot
+  - `architecture/wireframes/web-ops-dashboard/check-in-management.excalidraw` — Staff-facing check-in queue with guest detail panel, safety checklist, wristband assignment, and action controls
 - **app-guest-mobile**:
-  - `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw` — Mobile app adventure search and booking screen
+  - `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw` — Mobile adventure browsing with category filter chips, detailed adventure cards (rating, price, availability), and booking CTA
+  - `architecture/wireframes/app-guest-mobile/booking-detail.excalidraw` — Mobile booking detail with QR code for day-of check-in, guide info, meeting point, loyalty points, and cancellation
+  - `architecture/wireframes/app-guest-mobile/guest-profile.excalidraw` — Guest profile with loyalty tier card (progress to next tier), upcoming adventures, history, and account settings
 
 **When Proposing Wireframe Changes:**
 - If a ticket requires UI/UX work, propose or update wireframes as part of the solution design

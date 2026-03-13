@@ -1,19 +1,126 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 840 600" width="100%" height="auto">
-<rect x="-20" y="-20" width="840" height="600" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
-<rect x="0" y="0" width="800" height="60" fill="#4C63D2" stroke="#4C63D2" stroke-width="2" rx="4"/>
-<text x="20" y="39" font-size="24" fill="#FFFFFF" font-family="sans-serif">Check-In Confirmation</text>
-<rect x="40" y="100" width="720" height="300" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<text x="60" y="138" font-size="18" fill="#333333" font-family="sans-serif">Adventure: Sunrise Ridge Trail</text>
-<rect x="60" y="160" width="300" height="100" fill="#F5F5F5" stroke="#CCCCCC" stroke-width="2" rx="4"/>
-<text x="80" y="194" font-size="14" fill="#666666" font-family="sans-serif">Guest: Alex Chen</text>
-<text x="80" y="224" font-size="14" fill="#666666" font-family="sans-serif">Check-in: 08:30 AM</text>
-<text x="80" y="254" font-size="14" fill="#666666" font-family="sans-serif">Group Size: 4 guests</text>
-<rect x="400" y="160" width="300" height="100" fill="#FFF3E0" stroke="#FFB74D" stroke-width="2" rx="4"/>
-<text x="420" y="194" font-size="14" fill="#E65100" font-family="sans-serif">Safety Briefing: COMPLETED</text>
-<text x="420" y="224" font-size="14" fill="#E65100" font-family="sans-serif">Waivers: SIGNED</text>
-<text x="420" y="254" font-size="14" fill="#E65100" font-family="sans-serif">Wristband: #3F8A1D</text>
-<rect x="340" y="430" width="150" height="50" fill="#4CAF50" stroke="#2E7D32" stroke-width="2" rx="4"/>
-<text x="365" y="474" font-size="14" fill="#FFFFFF" font-family="sans-serif">START ADVENTURE</text>
-<rect x="520" y="430" width="100" height="50" fill="#E8E8E8" stroke="#999999" stroke-width="2" rx="4"/>
-<text x="535" y="474" font-size="14" fill="#333333" font-family="sans-serif">EDIT</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1240 864" width="100%" height="auto">
+<rect x="-20" y="-20" width="1240" height="864" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="1200" height="64" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="24" y="38" font-size="20" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures</text>
+<text x="24" y="54" font-size="10" fill="#94A3B8" font-family="sans-serif">OUTDOOR EXPERIENCES</text>
+<text x="300" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">Adventures</text>
+<text x="400" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">My Trips</text>
+<text x="480" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">Guides</text>
+<text x="548" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">About</text>
+<rect x="1040" y="16" width="120" height="32" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1060" y="42" font-size="14" fill="#FFFFFF" font-family="sans-serif">Sign In</text>
+<circle cx="996.0" cy="32.0" r="16.0" fill="#2D5A8E" stroke="#2D5A8E" stroke-width="2"/>
+<text x="985" y="40" font-size="12" fill="#FFFFFF" font-family="sans-serif">AC</text>
+<rect x="0" y="64" width="1200" height="80" fill="#F3F4F6" stroke="#F3F4F6" stroke-width="2" rx="4"/>
+<line x1="120" y1="94" x2="413" y2="94" stroke="#16A34A" stroke-width="2"/>
+<circle cx="100.0" cy="94.0" r="18.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="95" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">1</text>
+<text x="56" y="130" font-size="12" fill="#6B7280" font-family="sans-serif">Reservation</text>
+<line x1="453" y1="94" x2="746" y2="94" stroke="#16A34A" stroke-width="2"/>
+<circle cx="433.0" cy="94.0" r="18.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="428" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">2</text>
+<text x="401" y="130" font-size="12" fill="#6B7280" font-family="sans-serif">Identity</text>
+<line x1="786" y1="94" x2="1079" y2="94" stroke="#16A34A" stroke-width="2"/>
+<circle cx="766.0" cy="94.0" r="18.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="761" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">3</text>
+<text x="706" y="130" font-size="12" fill="#6B7280" font-family="sans-serif">Safety & Waiver</text>
+<circle cx="1099.0" cy="94.0" r="18.0" fill="#2563EB" stroke="#2563EB" stroke-width="2"/>
+<text x="1094" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">4</text>
+<text x="1071" y="130" font-size="12" fill="#111827" font-family="sans-serif">Confirm</text>
+<rect x="0" y="154" width="1200" height="72" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<circle cx="44.0" cy="188.0" r="20.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="34" y="202" font-size="20" fill="#FFFFFF" font-family="sans-serif">✓</text>
+<text x="80" y="186" font-size="22" fill="#16A34A" font-family="sans-serif">Check-In Complete!</text>
+<text x="80" y="206" font-size="14" fill="#16A34A" font-family="sans-serif">Your group is confirmed and ready for adventure. Your guide will meet you at the trailhead at 09:00 AM.</text>
+<rect x="40" y="250" width="355" height="310" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="56" y="277" font-size="13" fill="#6B7280" font-family="sans-serif">ADVENTURE DETAILS</text>
+<line x1="40" y1="288" x2="395" y2="288" stroke="#D1D5DB" stroke-width="2"/>
+<text x="56" y="314" font-size="12" fill="#6B7280" font-family="sans-serif">Adventure:</text>
+<text x="170" y="314" font-size="12" fill="#111827" font-family="sans-serif">Sunrise Ridge Trail Hike</text>
+<text x="56" y="340" font-size="12" fill="#6B7280" font-family="sans-serif">Date:</text>
+<text x="170" y="340" font-size="12" fill="#111827" font-family="sans-serif">Saturday, March 14, 2026</text>
+<text x="56" y="366" font-size="12" fill="#6B7280" font-family="sans-serif">Departure:</text>
+<text x="170" y="366" font-size="12" fill="#111827" font-family="sans-serif">09:00 AM</text>
+<text x="56" y="392" font-size="12" fill="#6B7280" font-family="sans-serif">Return:</text>
+<text x="170" y="392" font-size="12" fill="#111827" font-family="sans-serif">12:00 PM (est.)</text>
+<text x="56" y="418" font-size="12" fill="#6B7280" font-family="sans-serif">Meeting Point:</text>
+<text x="170" y="418" font-size="12" fill="#111827" font-family="sans-serif">Main Trailhead - Car Park A</text>
+<text x="56" y="444" font-size="12" fill="#6B7280" font-family="sans-serif">Guide:</text>
+<text x="170" y="444" font-size="12" fill="#111827" font-family="sans-serif">Sarah Mitchell (Lead)</text>
+<text x="56" y="470" font-size="12" fill="#6B7280" font-family="sans-serif">Difficulty:</text>
+<text x="170" y="470" font-size="12" fill="#111827" font-family="sans-serif">Moderate</text>
+<text x="56" y="496" font-size="12" fill="#6B7280" font-family="sans-serif">Duration:</text>
+<text x="170" y="496" font-size="12" fill="#111827" font-family="sans-serif">3 hours</text>
+<text x="56" y="522" font-size="12" fill="#6B7280" font-family="sans-serif">Check-In Pattern:</text>
+<text x="170" y="522" font-size="12" fill="#111827" font-family="sans-serif">Pattern 1 - Basic Self-Check-In</text>
+<rect x="56" y="528" width="80" height="22" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="62" y="545" font-size="11" fill="#FFFFFF" font-family="sans-serif">HIKING</text>
+<rect x="415" y="250" width="355" height="310" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="431" y="277" font-size="13" fill="#6B7280" font-family="sans-serif">GUEST INFORMATION</text>
+<line x1="415" y1="288" x2="770" y2="288" stroke="#D1D5DB" stroke-width="2"/>
+<text x="431" y="314" font-size="12" fill="#6B7280" font-family="sans-serif">Guest Name:</text>
+<text x="555" y="314" font-size="12" fill="#111827" font-family="sans-serif">Alex Chen</text>
+<text x="431" y="340" font-size="12" fill="#6B7280" font-family="sans-serif">Email:</text>
+<text x="555" y="340" font-size="12" fill="#111827" font-family="sans-serif">alex.chen@email.com</text>
+<text x="431" y="366" font-size="12" fill="#6B7280" font-family="sans-serif">Phone:</text>
+<text x="555" y="366" font-size="12" fill="#111827" font-family="sans-serif">+1 (555) 234-5678</text>
+<text x="431" y="392" font-size="12" fill="#6B7280" font-family="sans-serif">Party Size:</text>
+<text x="555" y="392" font-size="12" fill="#111827" font-family="sans-serif">4 guests</text>
+<text x="431" y="418" font-size="12" fill="#6B7280" font-family="sans-serif">Booking Ref:</text>
+<text x="555" y="418" font-size="12" fill="#111827" font-family="sans-serif">NTK-2026-08833</text>
+<text x="431" y="444" font-size="12" fill="#6B7280" font-family="sans-serif">Reservation ID:</text>
+<text x="555" y="444" font-size="12" fill="#111827" font-family="sans-serif">res_a1b2c3d4</text>
+<text x="431" y="470" font-size="12" fill="#6B7280" font-family="sans-serif">Loyalty Tier:</text>
+<text x="555" y="470" font-size="12" fill="#111827" font-family="sans-serif">Gold Member</text>
+<text x="431" y="496" font-size="12" fill="#6B7280" font-family="sans-serif">Emergency Contact:</text>
+<text x="555" y="496" font-size="12" fill="#111827" font-family="sans-serif">Jennifer Chen</text>
+<text x="431" y="522" font-size="12" fill="#6B7280" font-family="sans-serif">Emergency Phone:</text>
+<text x="555" y="522" font-size="12" fill="#111827" font-family="sans-serif">+1 (555) 234-5679</text>
+<rect x="790" y="250" width="355" height="310" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="806" y="277" font-size="13" fill="#6B7280" font-family="sans-serif">SAFETY & COMPLIANCE</text>
+<line x1="790" y1="288" x2="1145" y2="288" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="806" y="300" width="20" height="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="810" y="316" font-size="12" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="834" y="317" font-size="13" fill="#111827" font-family="sans-serif">Safety Briefing Completed</text>
+<rect x="806" y="330" width="20" height="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="810" y="346" font-size="12" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="834" y="347" font-size="13" fill="#111827" font-family="sans-serif">Liability Waiver Signed</text>
+<rect x="806" y="360" width="20" height="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="810" y="376" font-size="12" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="834" y="377" font-size="13" fill="#111827" font-family="sans-serif">Equipment Check Passed</text>
+<rect x="806" y="390" width="20" height="20" fill="#FED7AA" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="810" y="406" font-size="12" fill="#EA580C" font-family="sans-serif">!</text>
+<text x="834" y="407" font-size="13" fill="#111827" font-family="sans-serif">Gear Pickup Required</text>
+<rect x="806" y="420" width="20" height="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="810" y="436" font-size="12" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="834" y="437" font-size="13" fill="#111827" font-family="sans-serif">First Aid Kit Assigned</text>
+<rect x="806" y="450" width="20" height="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="810" y="466" font-size="12" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="834" y="467" font-size="13" fill="#111827" font-family="sans-serif">Emergency Radio: Group 4B</text>
+<line x1="806" y1="488" x2="1129" y2="488" stroke="#D1D5DB" stroke-width="2"/>
+<text x="806" y="513" font-size="13" fill="#111827" font-family="sans-serif">Wristband Assignment</text>
+<rect x="806" y="520" width="323" height="28" fill="#FEF3C7" stroke="#D97706" stroke-width="2" rx="4"/>
+<text x="814" y="541" font-size="12" fill="#D97706" font-family="sans-serif">Wristband #: NT-2026-0433    Color: BLUE (Group 4B)</text>
+<rect x="40" y="576" width="355" height="100" fill="#FEF3C7" stroke="#D97706" stroke-width="2" rx="4"/>
+<text x="56" y="602" font-size="12" fill="#D97706" font-family="sans-serif">LOYALTY REWARDS</text>
+<text x="56" y="630" font-size="18" fill="#111827" font-family="sans-serif">+150 TrailPoints Earned Today</text>
+<text x="56" y="650" font-size="12" fill="#6B7280" font-family="sans-serif">Current Balance: 4,850 pts  |  Gold Tier  |  150 pts to Platinum</text>
+<rect x="56" y="654" width="323" height="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="56" y="654" width="274" height="8" fill="#D97706" stroke="#D97706" stroke-width="2" rx="4"/>
+<rect x="415" y="576" width="730" height="100" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="431" y="603" font-size="13" fill="#111827" font-family="sans-serif">IMPORTANT REMINDERS FOR TODAY</text>
+<line x1="415" y1="612" x2="1145" y2="612" stroke="#D1D5DB" stroke-width="2"/>
+<text x="431" y="634" font-size="12" fill="#6B7280" font-family="sans-serif">Wear closed-toe shoes. Bring at least 2L of water per person. Camera and sun protection recommended.</text>
+<text x="431" y="654" font-size="12" fill="#6B7280" font-family="sans-serif">Check-in closes 10 minutes before departure. Late arrivals forfeit their reservation with no refund.</text>
+<text x="431" y="674" font-size="12" fill="#EA580C" font-family="sans-serif">Weather advisory: Light rain possible after 11 AM. Waterproof jacket recommended.</text>
+<rect x="40" y="696" width="200" height="48" fill="#16A34A" stroke="#14532D" stroke-width="2" rx="4"/>
+<text x="80" y="726" font-size="13" fill="#FFFFFF" font-family="sans-serif">Start Adventure</text>
+<rect x="415" y="696" width="180" height="48" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="453" y="726" font-size="13" fill="#111827" font-family="sans-serif">Print Receipt</text>
+<rect x="615" y="696" width="180" height="48" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="649" y="726" font-size="13" fill="#2563EB" font-family="sans-serif">View Trail Map</text>
+<rect x="790" y="696" width="200" height="48" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="838" y="726" font-size="13" fill="#2563EB" font-family="sans-serif">Send to Phone</text>
+<rect x="0" y="776" width="1200" height="48" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="24" y="804" font-size="12" fill="#6B7280" font-family="sans-serif">NovaTrek Adventures  |  adventure@novatrek.example.com  |  1-800-NOVATREK  |  novatrek.example.com</text>
 </svg>

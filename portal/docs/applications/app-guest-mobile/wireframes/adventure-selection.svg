@@ -1,25 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="30 30 800 720" width="100%" height="auto">
-<rect x="30" y="30" width="800" height="720" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
-<rect x="50" y="50" width="350" height="680" fill="#000000" stroke="#000000" stroke-width="2" rx="4"/>
-<rect x="60" y="70" width="330" height="640" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="2" rx="4"/>
-<rect x="60" y="70" width="330" height="30" fill="#000000" stroke="#000000" stroke-width="2" rx="4"/>
-<text x="75" y="90" font-size="12" fill="#FFFFFF" font-family="sans-serif">9:41</text>
-<rect x="60" y="100" width="330" height="60" fill="#4C63D2" stroke="#4C63D2" stroke-width="2" rx="4"/>
-<text x="75" y="143" font-size="18" fill="#FFFFFF" font-family="sans-serif">Available Adventures</text>
-<rect x="75" y="180" width="300" height="100" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<text x="90" y="209" font-size="14" fill="#333333" font-family="sans-serif">Sunrise Ridge Trail</text>
-<text x="90" y="232" font-size="12" fill="#666666" font-family="sans-serif">Difficulty: Moderate | 4.2 km</text>
-<text x="90" y="257" font-size="12" fill="#666666" font-family="sans-serif">Today: 9:00 AM, 11:00 AM</text>
-<rect x="75" y="300" width="300" height="100" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<text x="90" y="329" font-size="14" fill="#333333" font-family="sans-serif">Eagle Point Summit Climb</text>
-<text x="90" y="352" font-size="12" fill="#666666" font-family="sans-serif">Difficulty: Challenging | 6.7 km</text>
-<text x="90" y="377" font-size="12" fill="#666666" font-family="sans-serif">Today: 2:00 PM (Last slot)</text>
-<rect x="75" y="420" width="300" height="100" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<text x="90" y="449" font-size="14" fill="#333333" font-family="sans-serif">Forest Waterfall Trek</text>
-<text x="90" y="472" font-size="12" fill="#666666" font-family="sans-serif">Difficulty: Easy | 2.3 km</text>
-<text x="90" y="497" font-size="12" fill="#CC0000" font-family="sans-serif">Today: FULLY BOOKED</text>
-<rect x="60" y="620" width="330" height="90" fill="#F9F9F9" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<text x="90" y="652" font-size="12" fill="#4C63D2" font-family="sans-serif">Home</text>
-<text x="160" y="652" font-size="12" fill="#999999" font-family="sans-serif">My Bookings</text>
-<text x="260" y="652" font-size="12" fill="#999999" font-family="sans-serif">Profile</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 10 800 918" width="100%" height="auto">
+<rect x="10" y="10" width="800" height="918" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="30" y="30" width="390" height="844" fill="#1C1C1E" stroke="#1C1C1E" stroke-width="2" rx="4"/>
+<rect x="155" y="30" width="140" height="28" fill="#1C1C1E" stroke="#1C1C1E" stroke-width="2" rx="4"/>
+<circle cx="225.0" cy="860.0" r="10.0" fill="#2C2C2E" stroke="#3A3A3C" stroke-width="2"/>
+<rect x="30" y="58" width="390" height="820" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="2" rx="4"/>
+<rect x="30" y="58" width="390" height="36" fill="#000000" stroke="#000000" stroke-width="2" rx="4"/>
+<text x="50" y="81" font-size="13" fill="#FFFFFF" font-family="sans-serif">9:41</text>
+<text x="355" y="78" font-size="10" fill="#FFFFFF" font-family="sans-serif">●●●</text>
+<text x="385" y="78" font-size="10" fill="#FFFFFF" font-family="sans-serif">87%</text>
+<rect x="30" y="94" width="390" height="52" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<line x1="30" y1="146" x2="420" y2="146" stroke="#D1D5DB" stroke-width="2"/>
+<text x="149" y="127" font-size="17" fill="#111827" font-family="sans-serif">Discover Adventures</text>
+<text x="370" y="128" font-size="18" fill="#6B7280" font-family="sans-serif">🔍</text>
+<rect x="46" y="158" width="358" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="58" y="182" font-size="14" fill="#6B7280" font-family="sans-serif">🔍</text>
+<text x="84" y="183" font-size="13" fill="#9CA3AF" font-family="sans-serif">Search adventures, locations...</text>
+<rect x="46" y="206" width="44" height="28" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="56" y="226" font-size="12" fill="#FFFFFF" font-family="sans-serif">All</text>
+<rect x="98" y="206" width="68" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="108" y="226" font-size="12" fill="#6B7280" font-family="sans-serif">Hiking</text>
+<rect x="174" y="206" width="84" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="184" y="226" font-size="12" fill="#6B7280" font-family="sans-serif">Kayaking</text>
+<rect x="266" y="206" width="84" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="226" font-size="12" fill="#6B7280" font-family="sans-serif">Climbing</text>
+<rect x="358" y="206" width="84" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="368" y="226" font-size="12" fill="#6B7280" font-family="sans-serif">Wildlife</text>
+<rect x="450" y="206" width="76" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="460" y="226" font-size="12" fill="#6B7280" font-family="sans-serif">Cycling</text>
+<rect x="46" y="248" width="358" height="174" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="46" y="248" width="4" height="174" fill="#22C55E" stroke="#22C55E" stroke-width="2" rx="4"/>
+<rect x="58" y="258" width="70" height="20" fill="#22C55E33" stroke="#22C55E" stroke-width="2" rx="4"/>
+<text x="64" y="272" font-size="10" fill="#22C55E" font-family="sans-serif">HIKING</text>
+<text x="58" y="300" font-size="14" fill="#111827" font-family="sans-serif">Sunrise Ridge Trail Hike</text>
+<text x="58" y="317" font-size="11" fill="#6B7280" font-family="sans-serif">📍 Cascade Range, Zone A</text>
+<text x="58" y="337" font-size="11" fill="#D97706" font-family="sans-serif">★★★★☆ 4.8 (247 reviews)</text>
+<line x1="58" y1="348" x2="388" y2="348" stroke="#D1D5DB" stroke-width="2"/>
+<text x="58" y="371" font-size="11" fill="#6B7280" font-family="sans-serif">⏱ 3 hrs</text>
+<text x="168" y="371" font-size="11" fill="#6B7280" font-family="sans-serif">⛰ Moderate</text>
+<text x="58" y="395" font-size="15" fill="#111827" font-family="sans-serif">$89/person</text>
+<rect x="160" y="376" width="120" height="22" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="166" y="392" font-size="11" fill="#16A34A" font-family="sans-serif">6 slots left</text>
+<rect x="58" y="392" width="340" height="22" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="152" y="409" font-size="13" fill="#FFFFFF" font-family="sans-serif">View Details & Book</text>
+<rect x="46" y="434" width="358" height="174" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="46" y="434" width="4" height="174" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" rx="4"/>
+<rect x="58" y="444" width="70" height="20" fill="#F59E0B33" stroke="#F59E0B" stroke-width="2" rx="4"/>
+<text x="64" y="458" font-size="10" fill="#F59E0B" font-family="sans-serif">CLIMBING</text>
+<text x="58" y="486" font-size="14" fill="#111827" font-family="sans-serif">Eagle Point Summit Climb</text>
+<text x="58" y="503" font-size="11" fill="#6B7280" font-family="sans-serif">📍 Eagle Peak, Zone C</text>
+<text x="58" y="523" font-size="11" fill="#D97706" font-family="sans-serif">★★★★★ 4.9 (83 reviews)</text>
+<line x1="58" y1="534" x2="388" y2="534" stroke="#D1D5DB" stroke-width="2"/>
+<text x="58" y="557" font-size="11" fill="#6B7280" font-family="sans-serif">⏱ 6 hrs</text>
+<text x="168" y="557" font-size="11" fill="#6B7280" font-family="sans-serif">⛰ Challenging</text>
+<text x="58" y="581" font-size="15" fill="#111827" font-family="sans-serif">$149/person</text>
+<rect x="160" y="562" width="120" height="22" fill="#FED7AA" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="166" y="578" font-size="11" fill="#EA580C" font-family="sans-serif">2 slots left!</text>
+<rect x="58" y="578" width="340" height="22" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="152" y="595" font-size="13" fill="#FFFFFF" font-family="sans-serif">View Details & Book</text>
+<rect x="46" y="620" width="358" height="174" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="46" y="620" width="4" height="174" fill="#3B82F6" stroke="#3B82F6" stroke-width="2" rx="4"/>
+<rect x="58" y="630" width="70" height="20" fill="#3B82F633" stroke="#3B82F6" stroke-width="2" rx="4"/>
+<text x="64" y="644" font-size="10" fill="#3B82F6" font-family="sans-serif">KAYAKING</text>
+<text x="58" y="672" font-size="14" fill="#111827" font-family="sans-serif">River Canyon Kayaking</text>
+<text x="58" y="689" font-size="11" fill="#6B7280" font-family="sans-serif">📍 Crystal River, Zone B</text>
+<text x="58" y="709" font-size="11" fill="#D97706" font-family="sans-serif">★★★★☆ 4.6 (318 reviews)</text>
+<line x1="58" y1="720" x2="388" y2="720" stroke="#D1D5DB" stroke-width="2"/>
+<text x="58" y="743" font-size="11" fill="#6B7280" font-family="sans-serif">⏱ 4 hrs</text>
+<text x="168" y="743" font-size="11" fill="#6B7280" font-family="sans-serif">⛰ Easy / Moderate</text>
+<text x="58" y="767" font-size="15" fill="#111827" font-family="sans-serif">$109/person</text>
+<rect x="160" y="748" width="120" height="22" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="166" y="764" font-size="11" fill="#DC2626" font-family="sans-serif">FULLY BOOKED</text>
+<rect x="58" y="764" width="340" height="22" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="176" y="781" font-size="13" fill="#111827" font-family="sans-serif">Join Waitlist</text>
+<rect x="30" y="850" width="390" height="58" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<line x1="30" y1="850" x2="420" y2="850" stroke="#D1D5DB" stroke-width="2"/>
+<text x="60" y="878" font-size="18" fill="#6B7280" font-family="sans-serif">⌂</text>
+<text x="54" y="896" font-size="10" fill="#6B7280" font-family="sans-serif">Home</text>
+<text x="158" y="878" font-size="18" fill="#2563EB" font-family="sans-serif">◎</text>
+<text x="152" y="896" font-size="10" fill="#2563EB" font-family="sans-serif">Discover</text>
+<text x="256" y="878" font-size="18" fill="#6B7280" font-family="sans-serif">✈</text>
+<text x="250" y="896" font-size="10" fill="#6B7280" font-family="sans-serif">My Trips</text>
+<text x="354" y="878" font-size="18" fill="#6B7280" font-family="sans-serif">👤</text>
+<text x="348" y="896" font-size="10" fill="#6B7280" font-family="sans-serif">Profile</text>
 </svg>

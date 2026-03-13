@@ -1,22 +1,177 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 840 640" width="100%" height="auto">
-<rect x="-20" y="-20" width="840" height="640" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
-<rect x="0" y="0" width="240" height="600" fill="#2C3E50" stroke="#2C3E50" stroke-width="2" rx="4"/>
-<text x="15" y="31" font-size="16" fill="#FFFFFF" font-family="sans-serif">Operations Dashboard</text>
-<text x="15" y="94" font-size="14" fill="#4CAF50" font-family="sans-serif">Live Tracking</text>
-<text x="15" y="134" font-size="14" fill="#CCCCCC" font-family="sans-serif">Adventures Today</text>
-<text x="15" y="174" font-size="14" fill="#CCCCCC" font-family="sans-serif">Alerts & Incidents</text>
-<rect x="240" y="0" width="560" height="60" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<text x="260" y="33" font-size="18" fill="#333333" font-family="sans-serif">Live Adventure Tracking - 15 Active Adventures</text>
-<rect x="240" y="80" width="560" height="350" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="4"/>
-<text x="400" y="264" font-size="14" fill="#666666" font-family="sans-serif">[ Live Map with Guest Positions ]</text>
-<rect x="240" y="450" width="560" height="150" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
-<rect x="260" y="470" width="130" height="100" fill="#E3F2FD" stroke="#2196F3" stroke-width="2" rx="4"/>
-<text x="275" y="497" font-size="12" fill="#1565C0" font-family="sans-serif">Guests on Trail</text>
-<text x="310" y="540" font-size="20" fill="#1565C0" font-family="sans-serif">245</text>
-<rect x="420" y="470" width="130" height="100" fill="#FCE4EC" stroke="#E91E63" stroke-width="2" rx="4"/>
-<text x="440" y="497" font-size="12" fill="#AD1457" font-family="sans-serif">Critical Alerts</text>
-<text x="465" y="540" font-size="20" fill="#AD1457" font-family="sans-serif">2</text>
-<rect x="580" y="470" width="200" height="100" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" rx="4"/>
-<text x="600" y="497" font-size="12" fill="#E65100" font-family="sans-serif">Avg Response Time</text>
-<text x="650" y="540" font-size="20" fill="#E65100" font-family="sans-serif">4.2 min</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1440 940" width="100%" height="auto">
+<rect x="-20" y="-20" width="1440" height="940" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="1400" height="56" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="260" y="34" font-size="18" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures — Operations Command</text>
+<text x="1060" y="29" font-size="13" fill="#CBD5E1" font-family="sans-serif">Sat, March 14, 2026  |  09:04 AM</text>
+<rect x="1240" y="12" width="140" height="32" fill="#DC2626" stroke="#991B1B" stroke-width="2" rx="4"/>
+<text x="1254" y="34" font-size="12" fill="#FFFFFF" font-family="sans-serif">2 ACTIVE ALERTS</text>
+<rect x="0" y="56" width="240" height="844" fill="#1E293B" stroke="#1E293B" stroke-width="2" rx="4"/>
+<text x="16" y="88" font-size="16" fill="#FFFFFF" font-family="sans-serif">NovaTrek</text>
+<text x="16" y="104" font-size="12" fill="#94A3B8" font-family="sans-serif">Operations</text>
+<line x1="0" y1="114" x2="240" y2="114" stroke="#334155" stroke-width="2"/>
+<rect x="0" y="122" width="240" height="40" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="16" y="148" font-size="14" fill="#FFFFFF" font-family="sans-serif">Live Tracking</text>
+<rect x="0" y="122" width="4" height="40" fill="#60A5FA" stroke="#60A5FA" stroke-width="2" rx="4"/>
+<text x="16" y="196" font-size="14" fill="#94A3B8" font-family="sans-serif">Today's Schedule</text>
+<text x="16" y="244" font-size="14" fill="#94A3B8" font-family="sans-serif">Check-In Management</text>
+<text x="16" y="292" font-size="14" fill="#94A3B8" font-family="sans-serif">Guide Assignments</text>
+<text x="16" y="340" font-size="14" fill="#94A3B8" font-family="sans-serif">Alerts & Incidents</text>
+<text x="16" y="388" font-size="14" fill="#94A3B8" font-family="sans-serif">Reports</text>
+<text x="16" y="436" font-size="14" fill="#94A3B8" font-family="sans-serif">Settings</text>
+<line x1="0" y1="820" x2="240" y2="820" stroke="#334155" stroke-width="2"/>
+<text x="16" y="858" font-size="14" fill="#94A3B8" font-family="sans-serif">Sign Out</text>
+<text x="16" y="880" font-size="10" fill="#475569" font-family="sans-serif">Logged in: ops@novatrek.com</text>
+<rect x="1200" y="60" width="150" height="28" fill="#DC2626" stroke="#991B1B" stroke-width="2" rx="4"/>
+<text x="1235" y="80" font-size="13" fill="#FFFFFF" font-family="sans-serif">View Alert</text>
+<rect x="240" y="56" width="1160" height="44" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="260" y="88" font-size="18" fill="#DC2626" font-family="sans-serif">⚠</text>
+<text x="290" y="83" font-size="13" fill="#DC2626" font-family="sans-serif">ALERT: Group 4B (Eagle Point Summit Climb) has not reached waypoint 3. Last GPS: 10:47 AM. Guide: Marcus R.</text>
+<rect x="1060" y="102" width="120" height="32" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1092" y="124" font-size="13" fill="#111827" font-family="sans-serif">Refresh</text>
+<rect x="1192" y="102" width="120" height="32" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1200" y="124" font-size="13" fill="#2563EB" font-family="sans-serif">Export Report</text>
+<text x="256" y="122" font-size="22" fill="#111827" font-family="sans-serif">Live Adventure Tracking</text>
+<text x="256" y="143" font-size="13" fill="#6B7280" font-family="sans-serif">15 active adventures  |  248 guests on trail  |  Updated: 09:04:22 AM</text>
+<rect x="256" y="158" width="152" height="60" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="266" y="190" font-size="22" fill="#2563EB" font-family="sans-serif">15</text>
+<text x="266" y="205" font-size="11" fill="#2563EB" font-family="sans-serif">Active Adventures</text>
+<rect x="418" y="158" width="152" height="60" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="428" y="190" font-size="22" fill="#16A34A" font-family="sans-serif">248</text>
+<text x="428" y="205" font-size="11" fill="#16A34A" font-family="sans-serif">Guests on Trail</text>
+<rect x="580" y="158" width="152" height="60" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="590" y="190" font-size="22" fill="#DC2626" font-family="sans-serif">2</text>
+<text x="590" y="205" font-size="11" fill="#DC2626" font-family="sans-serif">Active Alerts</text>
+<rect x="742" y="158" width="152" height="60" fill="#FEF3C7" stroke="#D97706" stroke-width="2" rx="4"/>
+<text x="752" y="190" font-size="22" fill="#D97706" font-family="sans-serif">22</text>
+<text x="752" y="205" font-size="11" fill="#D97706" font-family="sans-serif">Guides on Duty</text>
+<rect x="904" y="158" width="152" height="60" fill="#FED7AA" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="914" y="190" font-size="22" fill="#EA580C" font-family="sans-serif">4.2 min</text>
+<text x="914" y="205" font-size="11" fill="#EA580C" font-family="sans-serif">Avg Response</text>
+<rect x="1066" y="158" width="152" height="60" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1076" y="190" font-size="22" fill="#16A34A" font-family="sans-serif">100%</text>
+<text x="1076" y="205" font-size="11" fill="#16A34A" font-family="sans-serif">Comms Online</text>
+<rect x="256" y="234" width="840" height="460" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="4"/>
+<text x="266" y="257" font-size="13" fill="#6B7280" font-family="sans-serif">Real-Time GPS Tracking Map  —  Cascade Range Operations Zone</text>
+<rect x="356" y="314" width="200" height="120" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2" rx="4"/>
+<text x="396" y="376" font-size="12" fill="#2E7D32" font-family="sans-serif">Sunrise Ridge</text>
+<rect x="656" y="294" width="180" height="160" fill="#B2DFDB" stroke="#26A69A" stroke-width="2" rx="4"/>
+<text x="686" y="376" font-size="12" fill="#00695C" font-family="sans-serif">Eagle Peak Zone</text>
+<rect x="536" y="484" width="300" height="40" fill="#BBDEFB" stroke="#1976D2" stroke-width="2" rx="4"/>
+<text x="626" y="508" font-size="11" fill="#1565C0" font-family="sans-serif">Crystal River</text>
+<rect x="856" y="414" width="200" height="200" fill="#F0F4C3" stroke="#AFB42B" stroke-width="2" rx="4"/>
+<text x="906" y="511" font-size="12" fill="#827717" font-family="sans-serif">Valley Trail</text>
+<rect x="436" y="564" width="16" height="16" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="456" y="576" font-size="10" fill="#1A3A5C" font-family="sans-serif">Main Trailhead</text>
+<circle cx="396.0" cy="344.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="388" y="348" font-size="9" fill="#FFFFFF" font-family="sans-serif">G1</text>
+<rect x="410" y="336" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="414" y="350" font-size="10" fill="#111827" font-family="sans-serif">4 guests</text>
+<circle cx="476.0" cy="314.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="468" y="318" font-size="9" fill="#FFFFFF" font-family="sans-serif">G2</text>
+<rect x="490" y="306" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="494" y="320" font-size="10" fill="#111827" font-family="sans-serif">6 guests</text>
+<circle cx="716.0" cy="324.0" r="12.0" fill="#EA580C" stroke="#EA580C" stroke-width="2"/>
+<text x="708" y="328" font-size="9" fill="#FFFFFF" font-family="sans-serif">G3</text>
+<rect x="730" y="316" width="120" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="734" y="330" font-size="10" fill="#111827" font-family="sans-serif">3 guests – Alert</text>
+<circle cx="746.0" cy="364.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="738" y="368" font-size="9" fill="#FFFFFF" font-family="sans-serif">G4</text>
+<rect x="760" y="356" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="764" y="370" font-size="10" fill="#111827" font-family="sans-serif">8 guests</text>
+<circle cx="576.0" cy="504.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="568" y="508" font-size="9" fill="#FFFFFF" font-family="sans-serif">G5</text>
+<rect x="590" y="496" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="594" y="510" font-size="10" fill="#111827" font-family="sans-serif">5 guests</text>
+<circle cx="606.0" cy="434.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="598" y="438" font-size="9" fill="#FFFFFF" font-family="sans-serif">G6</text>
+<rect x="620" y="426" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="624" y="440" font-size="10" fill="#111827" font-family="sans-serif">7 guests</text>
+<circle cx="876.0" cy="444.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="868" y="448" font-size="9" fill="#FFFFFF" font-family="sans-serif">G7</text>
+<rect x="890" y="436" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="894" y="450" font-size="10" fill="#111827" font-family="sans-serif">4 guests</text>
+<circle cx="916.0" cy="504.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="908" y="508" font-size="9" fill="#FFFFFF" font-family="sans-serif">G8</text>
+<rect x="930" y="496" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="934" y="510" font-size="10" fill="#111827" font-family="sans-serif">6 guests</text>
+<circle cx="396.0" cy="434.0" r="12.0" fill="#DC2626" stroke="#DC2626" stroke-width="2"/>
+<text x="388" y="438" font-size="9" fill="#FFFFFF" font-family="sans-serif">G9</text>
+<rect x="410" y="426" width="106" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="414" y="440" font-size="10" fill="#111827" font-family="sans-serif">2 guests – SOS</text>
+<circle cx="956.0" cy="584.0" r="12.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="948" y="588" font-size="9" fill="#FFFFFF" font-family="sans-serif">G10</text>
+<rect x="970" y="576" width="64" height="18" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="974" y="590" font-size="10" fill="#111827" font-family="sans-serif">5 guests</text>
+<rect x="916" y="594" width="170" height="90" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="926" y="613" font-size="11" fill="#111827" font-family="sans-serif">Legend</text>
+<circle cx="933.0" cy="627.0" r="7.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="946" y="634" font-size="10" fill="#111827" font-family="sans-serif">On Track</text>
+<circle cx="933.0" cy="649.0" r="7.0" fill="#EA580C" stroke="#EA580C" stroke-width="2"/>
+<text x="946" y="656" font-size="10" fill="#111827" font-family="sans-serif">Waypoint Delayed</text>
+<circle cx="933.0" cy="669.0" r="7.0" fill="#DC2626" stroke="#DC2626" stroke-width="2"/>
+<text x="946" y="676" font-size="10" fill="#111827" font-family="sans-serif">SOS / Emergency</text>
+<rect x="1112" y="234" width="272" height="460" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1124" y="258" font-size="14" fill="#111827" font-family="sans-serif">Active Adventures</text>
+<text x="1124" y="275" font-size="11" fill="#6B7280" font-family="sans-serif">15 in progress</text>
+<line x1="1112" y1="282" x2="1384" y2="282" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="1112" y="286" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="286" width="4" height="38" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1124" y="304" font-size="12" fill="#111827" font-family="sans-serif">Sunrise Ridge Trail</text>
+<text x="1124" y="318" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Sarah M.  |  Dep: 08:50  |  4 guests</text>
+<rect x="1294" y="294" width="84" height="20" fill="#16A34A22" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1300" y="308" font-size="9" fill="#16A34A" font-family="sans-serif">ON TRACK</text>
+<rect x="1112" y="328" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="328" width="4" height="38" fill="#EA580C" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="1124" y="346" font-size="12" fill="#111827" font-family="sans-serif">Eagle Point Summit</text>
+<text x="1124" y="360" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Marcus R.  |  Dep: 09:00  |  3 guests</text>
+<rect x="1294" y="336" width="84" height="20" fill="#EA580C22" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="1300" y="350" font-size="9" fill="#EA580C" font-family="sans-serif">DELAYED</text>
+<rect x="1112" y="370" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="370" width="4" height="38" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1124" y="388" font-size="12" fill="#111827" font-family="sans-serif">River Canyon Kayak</text>
+<text x="1124" y="402" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Priya K.  |  Dep: 08:30  |  8 guests</text>
+<rect x="1294" y="378" width="84" height="20" fill="#16A34A22" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1300" y="392" font-size="9" fill="#16A34A" font-family="sans-serif">ON TRACK</text>
+<rect x="1112" y="412" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="412" width="4" height="38" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1124" y="430" font-size="12" fill="#111827" font-family="sans-serif">Forest Waterfall Trek</text>
+<text x="1124" y="444" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: James O.  |  Dep: 09:15  |  6 guests</text>
+<rect x="1294" y="420" width="84" height="20" fill="#16A34A22" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1300" y="434" font-size="9" fill="#16A34A" font-family="sans-serif">ON TRACK</text>
+<rect x="1112" y="454" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="454" width="4" height="38" fill="#6B7280" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="1124" y="472" font-size="12" fill="#111827" font-family="sans-serif">Wildlife Safari Hike</text>
+<text x="1124" y="486" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Emma L.  |  Dep: 07:00  |  5 guests</text>
+<rect x="1294" y="462" width="84" height="20" fill="#6B728022" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="1300" y="476" font-size="9" fill="#6B7280" font-family="sans-serif">COMPLETE</text>
+<rect x="1112" y="496" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="496" width="4" height="38" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1124" y="514" font-size="12" fill="#111827" font-family="sans-serif">Mountain Bike Trail</text>
+<text x="1124" y="528" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Carlos V.  |  Dep: 08:00  |  4 guests</text>
+<rect x="1294" y="504" width="84" height="20" fill="#16A34A22" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1300" y="518" font-size="9" fill="#16A34A" font-family="sans-serif">ON TRACK</text>
+<rect x="1112" y="538" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="538" width="4" height="38" fill="#6B7280" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="1124" y="556" font-size="12" fill="#111827" font-family="sans-serif">Sunrise Yoga Hike</text>
+<text x="1124" y="570" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Aiko T.  |  Dep: 06:00  |  7 guests</text>
+<rect x="1294" y="546" width="84" height="20" fill="#6B728022" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="1300" y="560" font-size="9" fill="#6B7280" font-family="sans-serif">COMPLETE</text>
+<rect x="1112" y="580" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="580" width="4" height="38" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1124" y="598" font-size="12" fill="#111827" font-family="sans-serif">Rock Face Intro Climb</text>
+<text x="1124" y="612" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Noah B.  |  Dep: 10:00  |  3 guests</text>
+<rect x="1294" y="588" width="84" height="20" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1300" y="602" font-size="9" fill="#2563EB" font-family="sans-serif">STARTING</text>
+<rect x="1112" y="622" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="622" width="4" height="38" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1124" y="640" font-size="12" fill="#111827" font-family="sans-serif">Creek Fishing Tour</text>
+<text x="1124" y="654" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Helen P.  |  Dep: 07:30  |  6 guests</text>
+<rect x="1294" y="630" width="84" height="20" fill="#16A34A22" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="1300" y="644" font-size="9" fill="#16A34A" font-family="sans-serif">ON TRACK</text>
+<rect x="1112" y="664" width="272" height="38" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="1112" y="664" width="4" height="38" fill="#DC2626" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="1124" y="682" font-size="12" fill="#111827" font-family="sans-serif">Alpine Photography</text>
+<text x="1124" y="696" font-size="10" fill="#6B7280" font-family="sans-serif">Guide: Felix N.  |  Dep: 08:00  |  2 guests</text>
+<rect x="1294" y="672" width="84" height="20" fill="#DC262622" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="1300" y="686" font-size="9" fill="#DC2626" font-family="sans-serif">SOS ACTIVE</text>
 </svg>

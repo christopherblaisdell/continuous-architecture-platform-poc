@@ -1,4 +1,6 @@
-# Guest Check-In Confirmation Flow
+# Guest Portal - Check-In Confirmation
+
+Final confirmation screen (step 4 of 4) shown after the guest completes all check-in steps. Displays adventure details, guest information, safety and compliance status, wristband assignment, loyalty points earned, and action buttons to start the adventure, print a receipt, or view the trail map.
 
 ## Preview
 
@@ -12,32 +14,31 @@ Open in the interactive Excalidraw viewer to explore the wireframe with zoom and
 
 ## Design Notes
 
-- **Purpose**: Guest Check-In Confirmation Flow
 - **App**: Web Guest Portal
+- **Flow Position**: Step 4 of 4 — Confirmation
 - **Status**: Draft
+- **Source**: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
 
 ## Integration Points
 
-This wireframe represents the user interface for the web guest portal application.
+### Backing Services
 
-### Related Services
+- **[svc-check-in](../../../microservices/svc-check-in/)** — Records the completed check-in with wristband and gear status
+- **[svc-reservations](../../../microservices/svc-reservations/)** — Supplies booking reference and party details
+- **[svc-safety-compliance](../../../microservices/svc-safety-compliance/)** — Confirms waiver signed and safety briefing completed
+- **[svc-loyalty-rewards](../../../microservices/svc-loyalty-rewards/)** — Calculates and awards TrailPoints for the completed check-in
+- **[svc-notifications](../../../microservices/svc-notifications/)** — Sends confirmation to guest email and guide SMS
 
-- Relevant microservices that power this screen can be found in the [Microservice Pages](../../microservices/)
+### Related Tickets
 
-### Design Rationale
-
-This screen design addresses the following user needs:
-
-- User interaction flow visualization
-- Component layout and placement
-- State transitions and navigation
+[NTK-10003](../../../tickets/NTK-10003/), [NTK-10005](../../../tickets/NTK-10005/)
 
 ## Feedback
 
 To provide feedback or propose changes to this wireframe:
 
-1. Download the Excalidraw JSON source file
-2. Edit at [excalidraw.com](https://excalidraw.com)
+1. Download the Excalidraw source file from `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
+2. Edit at [excalidraw.com](https://excalidraw.com) or in VS Code with the Excalidraw extension
 3. Submit updates via pull request
 
 ---

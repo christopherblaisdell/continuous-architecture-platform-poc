@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1440 1000" width="100%" height="auto">
+<rect x="-20" y="-20" width="1440" height="1000" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="1400" height="56" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="260" y="34" font-size="18" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures — Operations Command</text>
+<text x="1060" y="29" font-size="13" fill="#CBD5E1" font-family="sans-serif">Sat, March 14, 2026  |  09:04 AM</text>
+<rect x="1240" y="12" width="140" height="32" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1252" y="34" font-size="12" fill="#FFFFFF" font-family="sans-serif">Live Tracking →</text>
+<rect x="0" y="56" width="240" height="904" fill="#1E293B" stroke="#1E293B" stroke-width="2" rx="4"/>
+<text x="16" y="88" font-size="16" fill="#FFFFFF" font-family="sans-serif">NovaTrek</text>
+<text x="16" y="104" font-size="12" fill="#94A3B8" font-family="sans-serif">Operations</text>
+<line x1="0" y1="114" x2="240" y2="114" stroke="#334155" stroke-width="2"/>
+<text x="16" y="148" font-size="14" fill="#94A3B8" font-family="sans-serif">Live Tracking</text>
+<rect x="0" y="170" width="240" height="40" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="16" y="196" font-size="14" fill="#FFFFFF" font-family="sans-serif">Today's Schedule</text>
+<rect x="0" y="170" width="4" height="40" fill="#60A5FA" stroke="#60A5FA" stroke-width="2" rx="4"/>
+<text x="16" y="244" font-size="14" fill="#94A3B8" font-family="sans-serif">Check-In Management</text>
+<text x="16" y="292" font-size="14" fill="#94A3B8" font-family="sans-serif">Guide Assignments</text>
+<text x="16" y="340" font-size="14" fill="#94A3B8" font-family="sans-serif">Alerts & Incidents</text>
+<text x="16" y="388" font-size="14" fill="#94A3B8" font-family="sans-serif">Reports</text>
+<text x="16" y="436" font-size="14" fill="#94A3B8" font-family="sans-serif">Settings</text>
+<line x1="0" y1="880" x2="240" y2="880" stroke="#334155" stroke-width="2"/>
+<text x="16" y="918" font-size="14" fill="#94A3B8" font-family="sans-serif">Sign Out</text>
+<text x="16" y="940" font-size="10" fill="#475569" font-family="sans-serif">Logged in: ops@novatrek.com</text>
+<rect x="268" y="82" width="36" height="32" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="282" y="104" font-size="13" fill="#111827" font-family="sans-serif"><</text>
+<rect x="566" y="82" width="36" height="32" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="580" y="104" font-size="13" fill="#111827" font-family="sans-serif">></text>
+<rect x="616" y="82" width="80" height="32" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="636" y="104" font-size="13" fill="#2563EB" font-family="sans-serif">Today</text>
+<rect x="1200" y="82" width="176" height="32" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1228" y="104" font-size="13" fill="#FFFFFF" font-family="sans-serif">+ Add Adventure</text>
+<rect x="256" y="72" width="1144" height="52" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="316" y="104" font-size="18" fill="#111827" font-family="sans-serif">Saturday, March 14, 2026</text>
+<text x="716" y="103" font-size="13" fill="#6B7280" font-family="sans-serif">Filter:</text>
+<rect x="762" y="84" width="60" height="28" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="774" y="104" font-size="12" fill="#FFFFFF" font-family="sans-serif">All</text>
+<rect x="830" y="84" width="80" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="840" y="104" font-size="12" fill="#6B7280" font-family="sans-serif">Active</text>
+<rect x="918" y="84" width="80" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="928" y="104" font-size="12" fill="#6B7280" font-family="sans-serif">By Guide</text>
+<rect x="268" y="140" width="180" height="60" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="278" y="172" font-size="24" fill="#2563EB" font-family="sans-serif">18</text>
+<text x="278" y="187" font-size="11" fill="#2563EB" font-family="sans-serif">Scheduled Today</text>
+<rect x="456" y="140" width="180" height="60" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="466" y="172" font-size="24" fill="#16A34A" font-family="sans-serif">15</text>
+<text x="466" y="187" font-size="11" fill="#16A34A" font-family="sans-serif">In Progress</text>
+<rect x="644" y="140" width="180" height="60" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="654" y="172" font-size="24" fill="#DC2626" font-family="sans-serif">2</text>
+<text x="654" y="187" font-size="11" fill="#DC2626" font-family="sans-serif">Cancelled</text>
+<rect x="832" y="140" width="180" height="60" fill="#F3F4F6" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="842" y="172" font-size="24" fill="#6B7280" font-family="sans-serif">1</text>
+<text x="842" y="187" font-size="11" fill="#6B7280" font-family="sans-serif">Completed</text>
+<rect x="1020" y="140" width="180" height="60" fill="#FEF3C7" stroke="#D97706" stroke-width="2" rx="4"/>
+<text x="1030" y="172" font-size="24" fill="#D97706" font-family="sans-serif">342</text>
+<text x="1030" y="187" font-size="11" fill="#D97706" font-family="sans-serif">Total Guests</text>
+<rect x="1208" y="140" width="180" height="60" fill="#FED7AA" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="1218" y="172" font-size="24" fill="#EA580C" font-family="sans-serif">26</text>
+<text x="1218" y="187" font-size="11" fill="#EA580C" font-family="sans-serif">Guides on Duty</text>
+<rect x="268" y="218" width="1120" height="36" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="242" font-size="12" fill="#111827" font-family="sans-serif">Time</text>
+<line x1="348" y1="218" x2="348" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="356" y="242" font-size="12" fill="#111827" font-family="sans-serif">Adventure</text>
+<line x1="588" y1="218" x2="588" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="596" y="242" font-size="12" fill="#111827" font-family="sans-serif">Guide</text>
+<line x1="748" y1="218" x2="748" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="756" y="242" font-size="12" fill="#111827" font-family="sans-serif">Guests</text>
+<line x1="828" y1="218" x2="828" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="836" y="242" font-size="12" fill="#111827" font-family="sans-serif">Pattern</text>
+<line x1="908" y1="218" x2="908" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="916" y="242" font-size="12" fill="#111827" font-family="sans-serif">Status</text>
+<line x1="1018" y1="218" x2="1018" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="1026" y="242" font-size="12" fill="#111827" font-family="sans-serif">Gate</text>
+<line x1="1118" y1="218" x2="1118" y2="254" stroke="#D1D5DB" stroke-width="2"/>
+<text x="1126" y="242" font-size="12" fill="#111827" font-family="sans-serif">Actions</text>
+<rect x="268" y="254" width="1120" height="28" fill="#EFF6FF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="284" y="274" font-size="12" fill="#2563EB" font-family="sans-serif">MORNING  06:00 - 12:00</text>
+<rect x="268" y="282" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="303" font-size="11" fill="#111827" font-family="sans-serif">06:00</text>
+<text x="356" y="303" font-size="11" fill="#111827" font-family="sans-serif">Sunrise Photography Trek</text>
+<text x="596" y="303" font-size="11" fill="#111827" font-family="sans-serif">Aiko Tanaka</text>
+<text x="756" y="303" font-size="11" fill="#111827" font-family="sans-serif">7</text>
+<text x="836" y="303" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="303" font-size="11" fill="#16A34A" font-family="sans-serif">COMPLETE</text>
+<text x="1026" y="303" font-size="11" fill="#111827" font-family="sans-serif">Gate C</text>
+<rect x="1122" y="287" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="305" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="287" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="305" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="316" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="337" font-size="11" fill="#111827" font-family="sans-serif">07:00</text>
+<text x="356" y="337" font-size="11" fill="#111827" font-family="sans-serif">Wildlife Safari Hike</text>
+<text x="596" y="337" font-size="11" fill="#111827" font-family="sans-serif">Emma Larsson</text>
+<text x="756" y="337" font-size="11" fill="#111827" font-family="sans-serif">5</text>
+<text x="836" y="337" font-size="11" fill="#111827" font-family="sans-serif">Pat. 2</text>
+<text x="916" y="337" font-size="11" fill="#16A34A" font-family="sans-serif">IN PROGRESS</text>
+<text x="1026" y="337" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="321" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="339" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="321" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="339" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="350" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="371" font-size="11" fill="#111827" font-family="sans-serif">07:30</text>
+<text x="356" y="371" font-size="11" fill="#111827" font-family="sans-serif">Creek Fly-Fishing Tour</text>
+<text x="596" y="371" font-size="11" fill="#111827" font-family="sans-serif">Helen Pierce</text>
+<text x="756" y="371" font-size="11" fill="#111827" font-family="sans-serif">6</text>
+<text x="836" y="371" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="371" font-size="11" fill="#16A34A" font-family="sans-serif">IN PROGRESS</text>
+<text x="1026" y="371" font-size="11" fill="#111827" font-family="sans-serif">Gate B</text>
+<rect x="1122" y="355" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="373" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="355" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="373" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="384" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="405" font-size="11" fill="#111827" font-family="sans-serif">08:00</text>
+<text x="356" y="405" font-size="11" fill="#111827" font-family="sans-serif">Mountain Bike Trail (A)</text>
+<text x="596" y="405" font-size="11" fill="#111827" font-family="sans-serif">Carlos Vega</text>
+<text x="756" y="405" font-size="11" fill="#111827" font-family="sans-serif">4</text>
+<text x="836" y="405" font-size="11" fill="#111827" font-family="sans-serif">Pat. 2</text>
+<text x="916" y="405" font-size="11" fill="#16A34A" font-family="sans-serif">IN PROGRESS</text>
+<text x="1026" y="405" font-size="11" fill="#111827" font-family="sans-serif">Gate D</text>
+<rect x="1122" y="389" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="407" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="389" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="407" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="418" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="439" font-size="11" fill="#111827" font-family="sans-serif">08:30</text>
+<text x="356" y="439" font-size="11" fill="#111827" font-family="sans-serif">River Canyon Kayaking</text>
+<text x="596" y="439" font-size="11" fill="#111827" font-family="sans-serif">Priya Kumar</text>
+<text x="756" y="439" font-size="11" fill="#111827" font-family="sans-serif">8</text>
+<text x="836" y="439" font-size="11" fill="#111827" font-family="sans-serif">Pat. 3</text>
+<text x="916" y="439" font-size="11" fill="#16A34A" font-family="sans-serif">IN PROGRESS</text>
+<text x="1026" y="439" font-size="11" fill="#111827" font-family="sans-serif">Gate B</text>
+<rect x="1122" y="423" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="441" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="423" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="441" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="452" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="473" font-size="11" fill="#111827" font-family="sans-serif">08:50</text>
+<text x="356" y="473" font-size="11" fill="#111827" font-family="sans-serif">Sunrise Ridge Trail Hike</text>
+<text x="596" y="473" font-size="11" fill="#111827" font-family="sans-serif">Sarah Mitchell</text>
+<text x="756" y="473" font-size="11" fill="#111827" font-family="sans-serif">4</text>
+<text x="836" y="473" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="473" font-size="11" fill="#16A34A" font-family="sans-serif">IN PROGRESS</text>
+<text x="1026" y="473" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="457" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="475" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="457" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="475" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="486" width="1120" height="34" fill="#FED7AA" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="507" font-size="11" fill="#111827" font-family="sans-serif">09:00</text>
+<text x="356" y="507" font-size="11" fill="#111827" font-family="sans-serif">Eagle Point Summit Climb</text>
+<text x="596" y="507" font-size="11" fill="#111827" font-family="sans-serif">Marcus Reyes</text>
+<text x="756" y="507" font-size="11" fill="#111827" font-family="sans-serif">3</text>
+<text x="836" y="507" font-size="11" fill="#111827" font-family="sans-serif">Pat. 3</text>
+<text x="916" y="507" font-size="11" fill="#EA580C" font-family="sans-serif">DELAYED</text>
+<text x="1026" y="507" font-size="11" fill="#111827" font-family="sans-serif">Gate C</text>
+<rect x="1122" y="491" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="509" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="491" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="509" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="520" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="541" font-size="11" fill="#111827" font-family="sans-serif">09:15</text>
+<text x="356" y="541" font-size="11" fill="#111827" font-family="sans-serif">Forest Waterfall Trek</text>
+<text x="596" y="541" font-size="11" fill="#111827" font-family="sans-serif">James Okonkwo</text>
+<text x="756" y="541" font-size="11" fill="#111827" font-family="sans-serif">6</text>
+<text x="836" y="541" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="541" font-size="11" fill="#16A34A" font-family="sans-serif">IN PROGRESS</text>
+<text x="1026" y="541" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="525" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="543" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="525" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="543" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="554" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="575" font-size="11" fill="#111827" font-family="sans-serif">10:00</text>
+<text x="356" y="575" font-size="11" fill="#111827" font-family="sans-serif">Rock Face Intro Climbing</text>
+<text x="596" y="575" font-size="11" fill="#111827" font-family="sans-serif">Noah Barnes</text>
+<text x="756" y="575" font-size="11" fill="#111827" font-family="sans-serif">3</text>
+<text x="836" y="575" font-size="11" fill="#111827" font-family="sans-serif">Pat. 3</text>
+<text x="916" y="575" font-size="11" fill="#2563EB" font-family="sans-serif">STARTING</text>
+<text x="1026" y="575" font-size="11" fill="#111827" font-family="sans-serif">Gate D</text>
+<rect x="1122" y="559" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="577" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="559" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="577" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="588" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="609" font-size="11" fill="#111827" font-family="sans-serif">11:00</text>
+<text x="356" y="609" font-size="11" fill="#111827" font-family="sans-serif">Valley Wildflower Walk</text>
+<text x="596" y="609" font-size="11" fill="#111827" font-family="sans-serif">Laura Chen</text>
+<text x="756" y="609" font-size="11" fill="#111827" font-family="sans-serif">10</text>
+<text x="836" y="609" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="609" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="609" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="593" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="611" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="593" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="611" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="622" width="1120" height="28" fill="#FFF7ED" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="284" y="642" font-size="12" fill="#EA580C" font-family="sans-serif">AFTERNOON  12:00 - 17:00</text>
+<rect x="268" y="650" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="671" font-size="11" fill="#111827" font-family="sans-serif">12:00</text>
+<text x="356" y="671" font-size="11" fill="#111827" font-family="sans-serif">Lunchtime Scenic Hike</text>
+<text x="596" y="671" font-size="11" fill="#111827" font-family="sans-serif">James Okonkwo</text>
+<text x="756" y="671" font-size="11" fill="#111827" font-family="sans-serif">8</text>
+<text x="836" y="671" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="671" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="671" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="655" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="673" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="655" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="673" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="684" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="705" font-size="11" fill="#111827" font-family="sans-serif">13:00</text>
+<text x="356" y="705" font-size="11" fill="#111827" font-family="sans-serif">Afternoon Kayak Challenge</text>
+<text x="596" y="705" font-size="11" fill="#111827" font-family="sans-serif">Priya Kumar</text>
+<text x="756" y="705" font-size="11" fill="#111827" font-family="sans-serif">6</text>
+<text x="836" y="705" font-size="11" fill="#111827" font-family="sans-serif">Pat. 2</text>
+<text x="916" y="705" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="705" font-size="11" fill="#111827" font-family="sans-serif">Gate B</text>
+<rect x="1122" y="689" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="707" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="689" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="707" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="718" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="739" font-size="11" fill="#111827" font-family="sans-serif">14:00</text>
+<text x="356" y="739" font-size="11" fill="#111827" font-family="sans-serif">Eagle Point Afternoon Slot</text>
+<text x="596" y="739" font-size="11" fill="#111827" font-family="sans-serif">Marcus Reyes</text>
+<text x="756" y="739" font-size="11" fill="#111827" font-family="sans-serif">4</text>
+<text x="836" y="739" font-size="11" fill="#111827" font-family="sans-serif">Pat. 3</text>
+<text x="916" y="739" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="739" font-size="11" fill="#111827" font-family="sans-serif">Gate C</text>
+<rect x="1122" y="723" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="741" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="723" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="741" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="752" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="773" font-size="11" fill="#111827" font-family="sans-serif">15:00</text>
+<text x="356" y="773" font-size="11" fill="#111827" font-family="sans-serif">Trail Running Experience</text>
+<text x="596" y="773" font-size="11" fill="#111827" font-family="sans-serif">Felix Nguyen</text>
+<text x="756" y="773" font-size="11" fill="#111827" font-family="sans-serif">5</text>
+<text x="836" y="773" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="773" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="773" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="757" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="775" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="757" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="775" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="786" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="807" font-size="11" fill="#111827" font-family="sans-serif">16:00</text>
+<text x="356" y="807" font-size="11" fill="#111827" font-family="sans-serif">Sunset Lookout Hike</text>
+<text x="596" y="807" font-size="11" fill="#111827" font-family="sans-serif">Sarah Mitchell</text>
+<text x="756" y="807" font-size="11" fill="#111827" font-family="sans-serif">6</text>
+<text x="836" y="807" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="807" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="807" font-size="11" fill="#111827" font-family="sans-serif">Gate A</text>
+<rect x="1122" y="791" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="809" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="791" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="809" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="820" width="1120" height="28" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2" rx="4"/>
+<text x="284" y="840" font-size="12" fill="#7C3AED" font-family="sans-serif">EVENING  17:00 - 21:00</text>
+<rect x="268" y="848" width="1120" height="34" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="869" font-size="11" fill="#111827" font-family="sans-serif">18:00</text>
+<text x="356" y="869" font-size="11" fill="#111827" font-family="sans-serif">Stargazing Summit Trek</text>
+<text x="596" y="869" font-size="11" fill="#111827" font-family="sans-serif">Aiko Tanaka</text>
+<text x="756" y="869" font-size="11" fill="#111827" font-family="sans-serif">8</text>
+<text x="836" y="869" font-size="11" fill="#111827" font-family="sans-serif">Pat. 2</text>
+<text x="916" y="869" font-size="11" fill="#6B7280" font-family="sans-serif">SCHEDULED</text>
+<text x="1026" y="869" font-size="11" fill="#111827" font-family="sans-serif">Gate C</text>
+<rect x="1122" y="853" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="871" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="853" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="871" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+<rect x="268" y="882" width="1120" height="34" fill="#FEE2E2" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="903" font-size="11" fill="#111827" font-family="sans-serif">19:30</text>
+<text x="356" y="903" font-size="11" fill="#111827" font-family="sans-serif">Campfire & Night Trail</text>
+<text x="596" y="903" font-size="11" fill="#111827" font-family="sans-serif">Emma Larsson</text>
+<text x="756" y="903" font-size="11" fill="#111827" font-family="sans-serif">10</text>
+<text x="836" y="903" font-size="11" fill="#111827" font-family="sans-serif">Pat. 1</text>
+<text x="916" y="903" font-size="11" fill="#DC2626" font-family="sans-serif">CANCELLED</text>
+<text x="1026" y="903" font-size="11" fill="#111827" font-family="sans-serif">—</text>
+<rect x="1122" y="887" width="44" height="24" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1128" y="905" font-size="13" fill="#2563EB" font-family="sans-serif">View</text>
+<rect x="1174" y="887" width="44" height="24" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1180" y="905" font-size="13" fill="#111827" font-family="sans-serif">Edit</text>
+</svg>
