@@ -22,7 +22,7 @@
 
 **Description**: During peak scheduling periods (e.g., nightly batch optimization across all regions), concurrent writes to the same guide's schedule may exceed the retry limit (3 attempts). If all retries are exhausted, the optimization result for that guide is lost and must be recovered manually or by re-running the optimization.
 
-**Mitigation**: 
+**Mitigation**:
 - Implement exponential backoff with jitter on retries
 - Add a dead-letter mechanism: if all retries fail, write the failed update to a retry queue for manual review
 - Monitor `schedule.optimistic.lock.retry.exhausted` metric and alert on occurrences

@@ -183,15 +183,18 @@ The `PUT /api/v1/schedules/{id}` endpoint is not in the service's OpenAPI contra
 ## 7. Recommendation Summary
 
 ### Immediate Fix (Sprint 19/20)
+
 1. **Switch orchestrator from PUT to PATCH**: Modify `SchedulingService.updateSchedule()` to update only scheduling-owned fields, preserving enrichment fields
 2. **Add a PATCH endpoint** to `ScheduleController.java` that accepts a partial update DTO containing only orchestrator-owned fields
 3. **Add `@Version` optimistic locking** to `DailySchedule` entity to prevent concurrent write corruption
 
 ### Architectural Improvement (Sprint 21+)
+
 4. **Define explicit data ownership contracts**: Document which service owns which fields in shared entities, enforced through API contracts
 5. **Consider document separation**: Split the `daily_schedules` table into `schedule_assignments` (orchestrator-owned) and `guide_schedule_metadata` (guide-management-owned), joined at read time
 6. **Add the endpoint to the OpenAPI contract**: Document `PATCH /api/v1/schedules/{id}` in `svc-scheduling-orchestrator.yaml` and remove or deprecate the undocumented PUT
 
 ### Monitoring
+
 7. **Alert on `guideNotes`/`guidePreferences` nullification**: Add a database trigger or application-level check that logs a WARNING when enrichment fields transition from non-null to null
 8. **Track concurrent write frequency**: Monitor for overlapping writes within configurable time windows
