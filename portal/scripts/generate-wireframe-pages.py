@@ -15,6 +15,170 @@ import json
 from pathlib import Path
 
 
+# ---------------------------------------------------------------------------
+# Wireframe metadata catalogue
+#
+# Keys are "{app}/{wireframe-name}" and provide page-level documentation that
+# cannot be inferred from the Excalidraw JSON alone. Add an entry here whenever
+# a new wireframe is added to architecture/wireframes/.
+# ---------------------------------------------------------------------------
+WIREFRAME_METADATA = {
+    # ── web-guest-portal ─────────────────────────────────────────────────────
+    "web-guest-portal/reservation-lookup": {
+        "description": (
+            "Landing screen for the guest self-check-in flow. Guests enter their "
+            "booking reference number and last name, or their registered email address "
+            "and last name, to look up an existing reservation before proceeding to "
+            "identity verification and waiver signing."
+        ),
+        "flow_position": "Step 1 of 4 — Reservation Lookup",
+        "services": [
+            ("svc-reservations", "Searches for matching reservation by reference or guest email"),
+            ("svc-guest-profiles", "Resolves guest identity from email address"),
+        ],
+        "related_tickets": ["NTK-10003"],
+    },
+    "web-guest-portal/check-in-confirmation": {
+        "description": (
+            "Final confirmation screen (step 4 of 4) shown after the guest completes "
+            "all check-in steps. Displays adventure details, guest information, safety "
+            "and compliance status, wristband assignment, loyalty points earned, and "
+            "action buttons to start the adventure, print a receipt, or view the trail map."
+        ),
+        "flow_position": "Step 4 of 4 — Confirmation",
+        "services": [
+            ("svc-check-in", "Records the completed check-in with wristband and gear status"),
+            ("svc-reservations", "Supplies booking reference and party details"),
+            ("svc-safety-compliance", "Confirms waiver signed and safety briefing completed"),
+            ("svc-loyalty-rewards", "Calculates and awards TrailPoints for the completed check-in"),
+            ("svc-notifications", "Sends confirmation to guest email and guide SMS"),
+        ],
+        "related_tickets": ["NTK-10003", "NTK-10005"],
+    },
+    "web-guest-portal/safety-waiver": {
+        "description": (
+            "Digital liability waiver and safety acknowledgment screen (step 3 of 4). "
+            "Presents the adventure-specific waiver text, a risk acknowledgment checklist, "
+            "emergency contact confirmation, and a digital signature field. Submission "
+            "records the signed waiver against the guest's reservation in svc-safety-compliance."
+        ),
+        "flow_position": "Step 3 of 4 — Safety and Waiver",
+        "services": [
+            ("svc-safety-compliance", "Stores the signed waiver and marks check-in step as complete"),
+            ("svc-guest-profiles", "Pre-fills emergency contact information from the guest profile"),
+            ("svc-reservations", "Provides adventure context (name, date, guide) for the waiver header"),
+        ],
+        "related_tickets": ["NTK-10003"],
+    },
+    # ── web-ops-dashboard ────────────────────────────────────────────────────
+    "web-ops-dashboard/live-tracking": {
+        "description": (
+            "Real-time GPS tracking of all active adventure groups. Displays a map with "
+            "colour-coded group markers, an alert banner for SOS or delayed groups, "
+            "a right-side panel listing all active adventures and their status, and "
+            "a stats bar showing guests on trail, active alerts, guides on duty, "
+            "and average emergency response time."
+        ),
+        "flow_position": "Primary view — Operations Command",
+        "services": [
+            ("svc-location-services", "Provides real-time GPS coordinates for each active group"),
+            ("svc-scheduling-orchestrator", "Supplies the list of scheduled departures and guide assignments"),
+            ("svc-safety-compliance", "Flags groups with overdue waypoints or triggered SOS alerts"),
+            ("svc-guide-management", "Resolves guide name and contact from assignment records"),
+        ],
+        "related_tickets": ["NTK-10006"],
+    },
+    "web-ops-dashboard/todays-schedule": {
+        "description": (
+            "Full daily adventure schedule table, organized into Morning, Afternoon, and Evening "
+            "sections. Each row shows departure time, adventure name, guide assignment, guest count, "
+            "check-in pattern (1-3), current status, and departure gate. Staff can filter by status, "
+            "navigate to adjacent dates, and add or edit departure slots."
+        ),
+        "flow_position": "Daily planning view — Operations Command",
+        "services": [
+            ("svc-scheduling-orchestrator", "Owns the schedule — all departure slots, timings, and guide assignments"),
+            ("svc-guide-management", "Supplies guide name, certification level, and availability"),
+            ("svc-reservations", "Provides guest count and booking status per departure slot"),
+            ("svc-trip-catalog", "Supplies adventure name, duration, difficulty, and check-in pattern"),
+        ],
+        "related_tickets": [],
+    },
+    "web-ops-dashboard/check-in-management": {
+        "description": (
+            "Staff-facing check-in queue management for a single departure gate. The left panel "
+            "shows the guest queue with status badges (Ready, Waiver Pending, Gear Check, ID Check, "
+            "No Waiver, Payment Issue). The right panel shows full details for the selected guest: "
+            "safety checklist, wristband colour and number assignment, and action controls "
+            "(Complete Check-In, Hold, Skip, Flag Issue)."
+        ),
+        "flow_position": "Gate operations view — Operations Command",
+        "services": [
+            ("svc-check-in", "Processes each step: verifies gear, records wristband, finalises check-in"),
+            ("svc-reservations", "Supplies booking details and party size for each guest in the queue"),
+            ("svc-safety-compliance", "Reports waiver status and flags guests with missing signatures"),
+            ("svc-gear-inventory", "Tracks equipment issue status for Pattern 2 and Pattern 3 adventures"),
+            ("svc-notifications", "Sends check-in complete confirmation to guest and guide"),
+            ("svc-analytics", "Logs check-in completion events for operational reporting"),
+        ],
+        "related_tickets": ["NTK-10003", "NTK-10005"],
+    },
+    # ── app-guest-mobile ─────────────────────────────────────────────────────
+    "app-guest-mobile/adventure-selection": {
+        "description": (
+            "Adventure discovery screen for the NovaTrek mobile guest app. Shows a horizontally "
+            "scrollable row of activity category filter chips (All, Hiking, Kayaking, Climbing, "
+            "Wildlife, Cycling) above a vertical list of adventure cards. Each card shows the "
+            "adventure name, location, star rating, duration, difficulty, price per person, "
+            "and slot availability. Fully booked adventures show a 'Join Waitlist' button."
+        ),
+        "flow_position": "Discover tab — Mobile Guest App",
+        "services": [
+            ("svc-trip-catalog", "Provides adventure listings, descriptions, pricing, and activity types"),
+            ("svc-scheduling-orchestrator", "Supplies real-time slot availability and remaining capacity"),
+            ("svc-trail-management", "Provides trail difficulty, distance, and location data"),
+            ("svc-weather", "Optionally surfaces weather advisories for each adventure location"),
+        ],
+        "related_tickets": [],
+    },
+    "app-guest-mobile/booking-detail": {
+        "description": (
+            "Mobile booking detail screen accessed from the My Trips tab. Displays a "
+            "confirmed booking status badge, adventure name and departure time, a large "
+            "QR code for day-of check-in at the gate kiosk, booking reference, guide name, "
+            "meeting point, duration, what-to-bring list, cancellation policy, and loyalty "
+            "points that will be earned. Also accessible from the push notification sent "
+            "24 hours before the adventure."
+        ),
+        "flow_position": "My Trips tab — Mobile Guest App",
+        "services": [
+            ("svc-reservations", "Provides booking status, reference, and party details"),
+            ("svc-trip-catalog", "Supplies adventure metadata including guide, meeting point, and what-to-bring"),
+            ("svc-loyalty-rewards", "Calculates estimated points to be earned on completion"),
+            ("svc-notifications", "Pre-departure reminder links to this screen"),
+        ],
+        "related_tickets": ["NTK-10003"],
+    },
+    "app-guest-mobile/guest-profile": {
+        "description": (
+            "Guest profile screen showing loyalty tier status, points balance, and progress "
+            "to the next tier (Bronze → Silver → Gold → Platinum). Below the loyalty card, "
+            "a stats row shows total adventures, trail kilometres, and countries visited. "
+            "The Upcoming Adventures section previews the next confirmed booking. The Account "
+            "Settings section links to personal details, payment methods, notification preferences, "
+            "and adventure preferences."
+        ),
+        "flow_position": "Profile tab — Mobile Guest App",
+        "services": [
+            ("svc-guest-profiles", "Provides name, contact details, and profile metadata"),
+            ("svc-loyalty-rewards", "Supplies tier, points balance, and transaction history"),
+            ("svc-reservations", "Provides upcoming and past booking records"),
+        ],
+        "related_tickets": [],
+    },
+}
+
+
 def generate_svg_from_excalidraw(excalidraw_json: dict) -> str:
     """
     Generate a basic SVG preview from Excalidraw JSON.
@@ -22,7 +186,8 @@ def generate_svg_from_excalidraw(excalidraw_json: dict) -> str:
     Excalidraw JSON contains elements with coordinates, dimensions, and text.
     This generates a simple SVG that approximates the wireframe.
     """
-    elements = excalidraw_json.get("elements", [])
+    # Filter out any None elements that may be present in the JSON
+    elements = [e for e in excalidraw_json.get("elements", []) if e is not None]
     
     # Calculate bounding box
     if not elements:
@@ -91,6 +256,14 @@ def generate_wireframe_page(wireframe_dir: Path, excalidraw_file: Path) -> None:
     app_state = data.get("appState", {})
     name = app_state.get("name", wireframe_name.replace("-", " ").title())
     
+    # Look up rich metadata from the catalogue
+    meta_key = f"{app_type}/{wireframe_name}"
+    meta = WIREFRAME_METADATA.get(meta_key, {})
+    description = meta.get("description", "")
+    flow_position = meta.get("flow_position", "")
+    services = meta.get("services", [])
+    related_tickets = meta.get("related_tickets", [])
+
     # Generate SVG
     svg_content = generate_svg_from_excalidraw(data)
     svg_filename = f"{wireframe_name}.svg"
@@ -149,10 +322,41 @@ def generate_wireframe_page(wireframe_dir: Path, excalidraw_file: Path) -> None:
     md_filename = f"{wireframe_name}.md"
     md_path = wireframe_dir / md_filename
     
+    # Build optional enriched sections from the metadata catalogue
+    description_section = ""
+    if description:
+        description_section = f"\n{description}\n"
+
+    flow_position_section = ""
+    if flow_position:
+        flow_position_section = f"\n- **Flow Position**: {flow_position}"
+
+    services_section = ""
+    if services:
+        service_rows = "\n".join(
+            f"- **[{svc}](../../../microservices/{svc}/)** — {role}"
+            for svc, role in services
+        )
+        services_section = f"\n### Backing Services\n\n{service_rows}\n"
+    else:
+        services_section = (
+            "\n### Related Services\n\n"
+            "- Relevant microservices that power this screen can be found in the "
+            "[Microservice Pages](../../microservices/)\n"
+        )
+
+    tickets_section = ""
+    if related_tickets:
+        ticket_links = ", ".join(
+            f"[{t}](../../../tickets/{t}/)"
+            for t in related_tickets
+        )
+        tickets_section = f"\n### Related Tickets\n\n{ticket_links}\n"
+
     # MkDocs builds {name}.md → {name}/index.html (directory URLs),
     # so assets in the parent wireframes/ folder need ../ prefix.
     md_content = f"""# {name}
-
+{description_section}
 ## Preview
 
 <object data="../{svg_filename}" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
@@ -165,32 +369,18 @@ Open in the interactive Excalidraw viewer to explore the wireframe with zoom and
 
 ## Design Notes
 
-- **Purpose**: {name}
-- **App**: {app_type.replace("-", " ").title()}
+- **App**: {app_type.replace("-", " ").title()}{flow_position_section}
 - **Status**: Draft
+- **Source**: `architecture/wireframes/{app_type}/{wireframe_name}.excalidraw`
 
 ## Integration Points
-
-This wireframe represents the user interface for the {app_type.replace("-", " ")} application.
-
-### Related Services
-
-- Relevant microservices that power this screen can be found in the [Microservice Pages](../../microservices/)
-
-### Design Rationale
-
-This screen design addresses the following user needs:
-
-- User interaction flow visualization
-- Component layout and placement
-- State transitions and navigation
-
+{services_section}{tickets_section}
 ## Feedback
 
 To provide feedback or propose changes to this wireframe:
 
-1. Download the Excalidraw JSON source file
-2. Edit at [excalidraw.com](https://excalidraw.com)
+1. Download the Excalidraw source file from `architecture/wireframes/{app_type}/{wireframe_name}.excalidraw`
+2. Edit at [excalidraw.com](https://excalidraw.com) or in VS Code with the Excalidraw extension
 3. Submit updates via pull request
 
 ---

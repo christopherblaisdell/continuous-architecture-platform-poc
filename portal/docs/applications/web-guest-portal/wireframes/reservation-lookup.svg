@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1240 834" width="100%" height="auto">
+<rect x="-20" y="-20" width="1240" height="834" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="1200" height="64" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="24" y="38" font-size="20" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures</text>
+<text x="24" y="54" font-size="10" fill="#94A3B8" font-family="sans-serif">OUTDOOR EXPERIENCES</text>
+<text x="300" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">Adventures</text>
+<text x="400" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">My Trips</text>
+<text x="480" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">Guides</text>
+<text x="548" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">About</text>
+<rect x="1040" y="16" width="120" height="32" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1060" y="42" font-size="14" fill="#FFFFFF" font-family="sans-serif">Sign In</text>
+<circle cx="996.0" cy="32.0" r="16.0" fill="#2D5A8E" stroke="#2D5A8E" stroke-width="2"/>
+<text x="985" y="40" font-size="12" fill="#FFFFFF" font-family="sans-serif">AC</text>
+<rect x="0" y="64" width="1200" height="120" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="2" rx="4"/>
+<text x="380" y="118" font-size="28" fill="#1A3A5C" font-family="sans-serif">Check In to Your Adventure</text>
+<text x="320" y="146" font-size="14" fill="#6B7280" font-family="sans-serif">Enter your booking details below to begin the check-in process at NovaTrek Adventures.</text>
+<rect x="260" y="210" width="680" height="430" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="284" y="248" font-size="18" fill="#111827" font-family="sans-serif">Find Your Reservation</text>
+<text x="284" y="271" font-size="13" fill="#6B7280" font-family="sans-serif">Use your booking confirmation email or the reference number from NovaTrek.</text>
+<line x1="260" y1="282" x2="940" y2="282" stroke="#D1D5DB" stroke-width="2"/>
+<text x="284" y="314" font-size="14" fill="#111827" font-family="sans-serif">Option 1: Booking Reference</text>
+<text x="284" y="338" font-size="12" fill="#6B7280" font-family="sans-serif">Booking Reference *</text>
+<rect x="284" y="344" width="290" height="36" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="294" y="369" font-size="13" fill="#9CA3AF" font-family="sans-serif">e.g. NTK-2026-08833</text>
+<text x="284" y="412" font-size="12" fill="#6B7280" font-family="sans-serif">Last Name *</text>
+<rect x="284" y="418" width="290" height="36" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="294" y="443" font-size="13" fill="#9CA3AF" font-family="sans-serif">e.g. Chen</text>
+<rect x="284" y="500" width="290" height="44" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="353" y="528" font-size="13" fill="#FFFFFF" font-family="sans-serif">Find My Reservation</text>
+<line x1="613" y1="300" x2="613" y2="410" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="598" y="410" width="30" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="604" y="430" font-size="12" fill="#6B7280" font-family="sans-serif">OR</text>
+<line x1="613" y1="440" x2="613" y2="550" stroke="#D1D5DB" stroke-width="2"/>
+<text x="634" y="314" font-size="14" fill="#111827" font-family="sans-serif">Option 2: Email Address</text>
+<text x="634" y="338" font-size="12" fill="#6B7280" font-family="sans-serif">Email Address *</text>
+<rect x="634" y="344" width="270" height="36" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="644" y="369" font-size="13" fill="#9CA3AF" font-family="sans-serif">alex.chen@email.com</text>
+<text x="634" y="412" font-size="12" fill="#6B7280" font-family="sans-serif">Last Name *</text>
+<rect x="634" y="418" width="270" height="36" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="644" y="443" font-size="13" fill="#9CA3AF" font-family="sans-serif">e.g. Chen</text>
+<rect x="634" y="500" width="270" height="44" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="709" y="528" font-size="13" fill="#2563EB" font-family="sans-serif">Search by Email</text>
+<rect x="284" y="730" width="200" height="32" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="304" y="752" font-size="13" fill="#2563EB" font-family="sans-serif">Get the NovaTrek App</text>
+<rect x="260" y="664" width="680" height="110" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="284" y="694" font-size="14" fill="#2563EB" font-family="sans-serif">Have a QR Code? Scan at the kiosk or use our mobile app.</text>
+<text x="284" y="719" font-size="13" fill="#6B7280" font-family="sans-serif">NovaTrek mobile app guests can use their digital booking QR code for instant check-in.</text>
+<rect x="840" y="680" width="72" height="72" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="852" y="726" font-size="20" fill="#2563EB" font-family="sans-serif">QR</text>
+<text x="440" y="807" font-size="13" fill="#6B7280" font-family="sans-serif">Need help with your booking?  Contact support: 1-800-NOVATREK</text>
+</svg>

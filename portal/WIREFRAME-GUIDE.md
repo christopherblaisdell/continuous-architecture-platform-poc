@@ -34,22 +34,46 @@ No manual regeneration or committing of generated files required.
 ## Current Wireframes
 
 ### Web Guest Portal
-- **Source**: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
-- Guest check-in completion flow with guest info, safety checklist, wristband ID
 
-**See on site**: [Check-in Confirmation](https://architecture.novatrek.cc/applications/web-guest-portal/wireframes/check-in-confirmation/)
+- **Source**: `architecture/wireframes/web-guest-portal/reservation-lookup.excalidraw`
+- Landing screen where guests enter a booking reference or email address to look up their reservation before beginning the check-in process.
+- **See on site**: [Reservation Lookup](https://architecture.novatrek.cc/applications/web-guest-portal/wireframes/reservation-lookup/)
+
+- **Source**: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
+- Full check-in confirmation screen (step 4 of 4) with adventure details, guest information, safety and compliance status, wristband assignment, loyalty points earned, and action buttons.
+- **See on site**: [Check-in Confirmation](https://architecture.novatrek.cc/applications/web-guest-portal/wireframes/check-in-confirmation/)
+
+- **Source**: `architecture/wireframes/web-guest-portal/safety-waiver.excalidraw`
+- Digital liability waiver and safety acknowledgment screen (step 3 of 4). Includes scrollable waiver text, risk acknowledgment checkboxes, emergency contact confirmation, and digital signature capture.
+- **See on site**: [Safety Waiver](https://architecture.novatrek.cc/applications/web-guest-portal/wireframes/safety-waiver/)
 
 ### Web Operations Dashboard
-- **Source**: `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw`
-- Real-time adventure map with guest positions, alerts, and stats
 
-**See on site**: [Live Tracking](https://architecture.novatrek.cc/applications/web-ops-dashboard/wireframes/live-tracking/)
+- **Source**: `architecture/wireframes/web-ops-dashboard/live-tracking.excalidraw`
+- Real-time GPS tracking of all active adventure groups. Shows map with group markers, alert banner for incidents, per-group status panel, and key operational metrics (guests on trail, active alerts, response time).
+- **See on site**: [Live Tracking](https://architecture.novatrek.cc/applications/web-ops-dashboard/wireframes/live-tracking/)
+
+- **Source**: `architecture/wireframes/web-ops-dashboard/todays-schedule.excalidraw`
+- Full daily adventure schedule table organized by time period (Morning, Afternoon, Evening). Displays departure time, adventure name, guide assignment, guest count, check-in pattern, status, and gate for each departure slot.
+- **See on site**: [Today's Schedule](https://architecture.novatrek.cc/applications/web-ops-dashboard/wireframes/todays-schedule/)
+
+- **Source**: `architecture/wireframes/web-ops-dashboard/check-in-management.excalidraw`
+- Staff-facing check-in queue management. Left panel shows the guest queue with status badges (Ready, Waiver Pending, Gear, etc.). Right panel shows the selected guest's full safety checklist, wristband assignment, and action controls.
+- **See on site**: [Check-In Management](https://architecture.novatrek.cc/applications/web-ops-dashboard/wireframes/check-in-management/)
 
 ### Mobile Guest App
-- **Source**: `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw`
-- Adventure listings with filters, availability, and booking
 
-**See on site**: [Adventure Selection](https://architecture.novatrek.cc/applications/app-guest-mobile/wireframes/adventure-selection/)
+- **Source**: `architecture/wireframes/app-guest-mobile/adventure-selection.excalidraw`
+- Adventure discovery screen with category filter chips (All, Hiking, Kayaking, Climbing, Wildlife, Cycling), detailed adventure cards (rating, difficulty, duration, price, slot availability), and booking CTAs.
+- **See on site**: [Adventure Selection](https://architecture.novatrek.cc/applications/app-guest-mobile/wireframes/adventure-selection/)
+
+- **Source**: `architecture/wireframes/app-guest-mobile/booking-detail.excalidraw`
+- Booking detail screen with large QR code for day-of check-in, adventure details (guide, meeting point, duration), cancellation option, and loyalty points earned.
+- **See on site**: [Booking Detail](https://architecture.novatrek.cc/applications/app-guest-mobile/wireframes/booking-detail/)
+
+- **Source**: `architecture/wireframes/app-guest-mobile/guest-profile.excalidraw`
+- Guest profile screen with loyalty tier card (points balance and progress to next tier), upcoming adventures, adventure history stats, and account settings links.
+- **See on site**: [Guest Profile](https://architecture.novatrek.cc/applications/app-guest-mobile/wireframes/guest-profile/)
 
 ## Adding New Wireframes
 
@@ -79,28 +103,52 @@ CI handles all generation and deployment.
 ```
 architecture/wireframes/              ← SOURCE (architect-edited)
 ├── web-guest-portal/
-│   └── check-in-confirmation.excalidraw
+│   ├── reservation-lookup.excalidraw
+│   ├── check-in-confirmation.excalidraw
+│   └── safety-waiver.excalidraw
 ├── web-ops-dashboard/
-│   └── live-tracking.excalidraw
+│   ├── live-tracking.excalidraw
+│   ├── todays-schedule.excalidraw
+│   └── check-in-management.excalidraw
 └── app-guest-mobile/
-    └── adventure-selection.excalidraw
+    ├── adventure-selection.excalidraw
+    ├── booking-detail.excalidraw
+    └── guest-profile.excalidraw
 
 portal/docs/applications/             ← GENERATED (by CI)
 ├── web-guest-portal/
 │   └── wireframes/
-│       ├── check-in-confirmation.md     ← Generated wrapper
-│       ├── check-in-confirmation.svg    ← Generated preview
-│       └── check-in-confirmation.html   ← Generated viewer
+│       ├── reservation-lookup.md        ← Generated wrapper
+│       ├── reservation-lookup.svg       ← Generated preview
+│       ├── reservation-lookup.html      ← Generated viewer
+│       ├── check-in-confirmation.md
+│       ├── check-in-confirmation.svg
+│       ├── check-in-confirmation.html
+│       ├── safety-waiver.md
+│       ├── safety-waiver.svg
+│       └── safety-waiver.html
 ├── web-ops-dashboard/
 │   └── wireframes/
 │       ├── live-tracking.md
 │       ├── live-tracking.svg
-│       └── live-tracking.html
+│       ├── live-tracking.html
+│       ├── todays-schedule.md
+│       ├── todays-schedule.svg
+│       ├── todays-schedule.html
+│       ├── check-in-management.md
+│       ├── check-in-management.svg
+│       └── check-in-management.html
 └── app-guest-mobile/
     └── wireframes/
         ├── adventure-selection.md
         ├── adventure-selection.svg
-        └── adventure-selection.html
+        ├── adventure-selection.html
+        ├── booking-detail.md
+        ├── booking-detail.svg
+        ├── booking-detail.html
+        ├── guest-profile.md
+        ├── guest-profile.svg
+        └── guest-profile.html
 ```
 
 ## Excalidraw Quick Tips
@@ -121,8 +169,11 @@ When proposing UI/UX changes in solution designs, reference wireframes by source
 
 See wireframe source: `architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw`
 
-The user flow is:
-1. Guest scans wristband (captured in `#wristbandRfid`)
+The guest check-in flow spans four screens:
+1. Reservation lookup (`reservation-lookup.excalidraw`)
+2. Identity verification (no dedicated wireframe — handled inline)
+3. Safety waiver signing (`safety-waiver.excalidraw`)
+4. Confirmation (`check-in-confirmation.excalidraw`)
 ...
 ```
 

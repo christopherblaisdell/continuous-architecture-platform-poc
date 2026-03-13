@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 10 800 918" width="100%" height="auto">
+<rect x="10" y="10" width="800" height="918" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="30" y="30" width="390" height="844" fill="#1C1C1E" stroke="#1C1C1E" stroke-width="2" rx="4"/>
+<rect x="155" y="30" width="140" height="28" fill="#1C1C1E" stroke="#1C1C1E" stroke-width="2" rx="4"/>
+<circle cx="225.0" cy="860.0" r="10.0" fill="#2C2C2E" stroke="#3A3A3C" stroke-width="2"/>
+<rect x="30" y="58" width="390" height="820" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="2" rx="4"/>
+<rect x="30" y="58" width="390" height="36" fill="#000000" stroke="#000000" stroke-width="2" rx="4"/>
+<text x="50" y="81" font-size="13" fill="#FFFFFF" font-family="sans-serif">9:41</text>
+<text x="355" y="78" font-size="10" fill="#FFFFFF" font-family="sans-serif">●●●</text>
+<text x="385" y="78" font-size="10" fill="#FFFFFF" font-family="sans-serif">87%</text>
+<rect x="30" y="94" width="390" height="52" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="180" y="129" font-size="17" fill="#FFFFFF" font-family="sans-serif">Profile</text>
+<text x="380" y="128" font-size="18" fill="#FFFFFF" font-family="sans-serif">⚙</text>
+<rect x="30" y="146" width="390" height="120" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<circle cx="225.0" cy="192.0" r="40.0" fill="#2D5A8E" stroke="#FFFFFF" stroke-width="2"/>
+<text x="212" y="206" font-size="24" fill="#FFFFFF" font-family="sans-serif">AC</text>
+<text x="175" y="260" font-size="16" fill="#FFFFFF" font-family="sans-serif">Alex Chen</text>
+<text x="165" y="277" font-size="11" fill="#94A3B8" font-family="sans-serif">Member since January 2023</text>
+<rect x="46" y="282" width="358" height="100" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="56" y="294" width="80" height="24" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" rx="4"/>
+<text x="68" y="312" font-size="12" fill="#FFFFFF" font-family="sans-serif">GOLD</text>
+<text x="156" y="307" font-size="11" fill="#6B7280" font-family="sans-serif">TrailPoints Balance</text>
+<text x="156" y="330" font-size="18" fill="#111827" font-family="sans-serif">4,850 pts</text>
+<text x="56" y="347" font-size="11" fill="#6B7280" font-family="sans-serif">Platinum at 5,000 pts  (150 pts away)</text>
+<rect x="56" y="352" width="336" height="10" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="56" y="352" width="292" height="10" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" rx="4"/>
+<rect x="46" y="398" width="112" height="60" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="82" y="428" font-size="20" fill="#111827" font-family="sans-serif">12</text>
+<text x="60" y="445" font-size="11" fill="#6B7280" font-family="sans-serif">Adventures</text>
+<rect x="166" y="398" width="112" height="60" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="202" y="428" font-size="20" fill="#111827" font-family="sans-serif">48</text>
+<text x="180" y="445" font-size="11" fill="#6B7280" font-family="sans-serif">Trail km</text>
+<rect x="286" y="398" width="112" height="60" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="322" y="428" font-size="20" fill="#111827" font-family="sans-serif">3</text>
+<text x="300" y="445" font-size="11" fill="#6B7280" font-family="sans-serif">Countries</text>
+<text x="46" y="488" font-size="14" fill="#111827" font-family="sans-serif">Upcoming Adventures</text>
+<rect x="46" y="496" width="358" height="72" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="46" y="496" width="4" height="72" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="60" y="521" font-size="13" fill="#111827" font-family="sans-serif">Sunrise Ridge Trail Hike</text>
+<text x="60" y="539" font-size="11" fill="#6B7280" font-family="sans-serif">Mar 14, 2026  |  09:00 AM  |  Guide: Sarah M.</text>
+<text x="60" y="556" font-size="10" fill="#6B7280" font-family="sans-serif">Booking: NTK-2026-08833  |  Gold Member discount applied</text>
+<rect x="356" y="504" width="36" height="36" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="366" y="527" font-size="11" fill="#2563EB" font-family="sans-serif">QR</text>
+<text x="46" y="600" font-size="14" fill="#111827" font-family="sans-serif">Account Settings</text>
+<rect x="46" y="608" width="358" height="48" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="62" y="631" font-size="13" fill="#111827" font-family="sans-serif">Personal Details</text>
+<text x="62" y="647" font-size="11" fill="#6B7280" font-family="sans-serif">Edit your profile information</text>
+<text x="382" y="640" font-size="14" fill="#6B7280" font-family="sans-serif">></text>
+<rect x="46" y="666" width="358" height="48" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="62" y="689" font-size="13" fill="#111827" font-family="sans-serif">Payment Methods</text>
+<text x="62" y="705" font-size="11" fill="#6B7280" font-family="sans-serif">Credit card, NovaTrek credits</text>
+<text x="382" y="698" font-size="14" fill="#6B7280" font-family="sans-serif">></text>
+<rect x="46" y="724" width="358" height="48" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="62" y="747" font-size="13" fill="#111827" font-family="sans-serif">Notification Preferences</text>
+<text x="62" y="763" font-size="11" fill="#6B7280" font-family="sans-serif">Email, SMS, push alerts</text>
+<text x="382" y="756" font-size="14" fill="#6B7280" font-family="sans-serif">></text>
+<rect x="46" y="782" width="358" height="48" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="62" y="805" font-size="13" fill="#111827" font-family="sans-serif">Adventure Preferences</text>
+<text x="62" y="821" font-size="11" fill="#6B7280" font-family="sans-serif">Difficulty, activity types</text>
+<text x="382" y="814" font-size="14" fill="#6B7280" font-family="sans-serif">></text>
+<rect x="46" y="844" width="358" height="40" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="193" y="870" font-size="13" fill="#111827" font-family="sans-serif">Sign Out</text>
+<rect x="30" y="850" width="390" height="58" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<line x1="30" y1="850" x2="420" y2="850" stroke="#D1D5DB" stroke-width="2"/>
+<text x="60" y="878" font-size="18" fill="#6B7280" font-family="sans-serif">⌂</text>
+<text x="54" y="896" font-size="10" fill="#6B7280" font-family="sans-serif">Home</text>
+<text x="158" y="878" font-size="18" fill="#6B7280" font-family="sans-serif">◎</text>
+<text x="152" y="896" font-size="10" fill="#6B7280" font-family="sans-serif">Discover</text>
+<text x="256" y="878" font-size="18" fill="#6B7280" font-family="sans-serif">✈</text>
+<text x="250" y="896" font-size="10" fill="#6B7280" font-family="sans-serif">My Trips</text>
+<text x="354" y="878" font-size="18" fill="#2563EB" font-family="sans-serif">👤</text>
+<text x="348" y="896" font-size="10" fill="#2563EB" font-family="sans-serif">Profile</text>
+</svg>

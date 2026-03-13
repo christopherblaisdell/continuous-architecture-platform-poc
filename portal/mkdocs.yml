@@ -162,15 +162,21 @@ nav:
       - web-guest-portal:
         - applications/web-guest-portal.md
         - Wireframes:
+          - Reservation Lookup: applications/web-guest-portal/wireframes/reservation-lookup.md
           - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
+          - Safety Waiver: applications/web-guest-portal/wireframes/safety-waiver.md
       - web-ops-dashboard:
         - applications/web-ops-dashboard.md
         - Wireframes:
           - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
+          - Today's Schedule: applications/web-ops-dashboard/wireframes/todays-schedule.md
+          - Check-In Management: applications/web-ops-dashboard/wireframes/check-in-management.md
       - app-guest-mobile:
         - applications/app-guest-mobile.md
         - Wireframes:
           - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
+          - Booking Detail: applications/app-guest-mobile/wireframes/booking-detail.md
+          - Guest Profile: applications/app-guest-mobile/wireframes/guest-profile.md
     - Event Catalog: events/index.md
   - Architecture:
     - Business Capabilities: capabilities/index.md

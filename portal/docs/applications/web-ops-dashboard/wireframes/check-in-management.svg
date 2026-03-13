@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1456 1030" width="100%" height="auto">
+<rect x="-20" y="-20" width="1456" height="1030" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="1400" height="56" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="260" y="34" font-size="18" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures — Operations Command</text>
+<text x="1060" y="29" font-size="13" fill="#CBD5E1" font-family="sans-serif">Sat, March 14, 2026  |  08:46 AM</text>
+<rect x="1180" y="12" width="200" height="32" fill="#D97706" stroke="#92400E" stroke-width="2" rx="4"/>
+<text x="1190" y="34" font-size="12" fill="#FFFFFF" font-family="sans-serif">Check-In Closes: 08:50 AM</text>
+<rect x="0" y="56" width="240" height="844" fill="#1E293B" stroke="#1E293B" stroke-width="2" rx="4"/>
+<text x="16" y="88" font-size="16" fill="#FFFFFF" font-family="sans-serif">NovaTrek</text>
+<text x="16" y="104" font-size="12" fill="#94A3B8" font-family="sans-serif">Operations</text>
+<line x1="0" y1="114" x2="240" y2="114" stroke="#334155" stroke-width="2"/>
+<text x="16" y="148" font-size="14" fill="#94A3B8" font-family="sans-serif">Live Tracking</text>
+<text x="16" y="196" font-size="14" fill="#94A3B8" font-family="sans-serif">Today's Schedule</text>
+<rect x="0" y="218" width="240" height="40" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="16" y="244" font-size="14" fill="#FFFFFF" font-family="sans-serif">Check-In Management</text>
+<rect x="0" y="218" width="4" height="40" fill="#60A5FA" stroke="#60A5FA" stroke-width="2" rx="4"/>
+<text x="16" y="292" font-size="14" fill="#94A3B8" font-family="sans-serif">Guide Assignments</text>
+<text x="16" y="340" font-size="14" fill="#94A3B8" font-family="sans-serif">Alerts & Incidents</text>
+<text x="16" y="388" font-size="14" fill="#94A3B8" font-family="sans-serif">Reports</text>
+<text x="16" y="436" font-size="14" fill="#94A3B8" font-family="sans-serif">Settings</text>
+<line x1="0" y1="820" x2="240" y2="820" stroke="#334155" stroke-width="2"/>
+<text x="16" y="858" font-size="14" fill="#94A3B8" font-family="sans-serif">Sign Out</text>
+<text x="16" y="880" font-size="10" fill="#475569" font-family="sans-serif">Logged in: ops@novatrek.com</text>
+<rect x="1200" y="84" width="176" height="32" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1232" y="106" font-size="13" fill="#111827" font-family="sans-serif">Change Station</text>
+<rect x="256" y="72" width="1144" height="56" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="272" y="102" font-size="20" fill="#111827" font-family="sans-serif">Check-In Management</text>
+<text x="272" y="118" font-size="12" fill="#6B7280" font-family="sans-serif">Gate A  |  Adventure: Sunrise Ridge Trail Hike  |  Departure: 09:00 AM  |  Guide: Sarah Mitchell</text>
+<rect x="268" y="144" width="216" height="60" fill="#FED7AA" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="278" y="178" font-size="26" fill="#EA580C" font-family="sans-serif">12</text>
+<text x="278" y="193" font-size="11" fill="#EA580C" font-family="sans-serif">Waiting in Queue</text>
+<rect x="492" y="144" width="216" height="60" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="502" y="178" font-size="26" fill="#2563EB" font-family="sans-serif">3</text>
+<text x="502" y="193" font-size="11" fill="#2563EB" font-family="sans-serif">In Progress</text>
+<rect x="716" y="144" width="216" height="60" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="726" y="178" font-size="26" fill="#16A34A" font-family="sans-serif">47</text>
+<text x="726" y="193" font-size="11" fill="#16A34A" font-family="sans-serif">Completed Today</text>
+<rect x="940" y="144" width="216" height="60" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="950" y="178" font-size="26" fill="#DC2626" font-family="sans-serif">4</text>
+<text x="950" y="193" font-size="11" fill="#DC2626" font-family="sans-serif">Guests Pending</text>
+<rect x="1164" y="144" width="216" height="60" fill="#F3F4F6" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="1174" y="178" font-size="26" fill="#6B7280" font-family="sans-serif">62</text>
+<text x="1174" y="193" font-size="11" fill="#6B7280" font-family="sans-serif">Total Expected</text>
+<rect x="268" y="220" width="400" height="664" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="280" y="246" font-size="14" fill="#111827" font-family="sans-serif">Guest Queue</text>
+<text x="280" y="263" font-size="11" fill="#6B7280" font-family="sans-serif">12 waiting</text>
+<rect x="280" y="272" width="376" height="32" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="292" y="294" font-size="12" fill="#6B7280" font-family="sans-serif">Search guests...</text>
+<line x1="268" y1="312" x2="668" y2="312" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="268" y="316" width="400" height="46" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<rect x="268" y="316" width="32" height="46" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="276" y="345" font-size="13" fill="#FFFFFF" font-family="sans-serif">1</text>
+<text x="308" y="337" font-size="13" fill="#111827" font-family="sans-serif">Alex Chen</text>
+<text x="308" y="353" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08833  |  4 guests</text>
+<rect x="578" y="328" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="343" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="366" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="366" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="395" font-size="13" fill="#6B7280" font-family="sans-serif">2</text>
+<text x="308" y="387" font-size="13" fill="#111827" font-family="sans-serif">Maya Santos</text>
+<text x="308" y="403" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08834  |  2 guests</text>
+<rect x="578" y="378" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="393" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="416" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="416" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="445" font-size="13" fill="#6B7280" font-family="sans-serif">3</text>
+<text x="308" y="437" font-size="13" fill="#111827" font-family="sans-serif">John Kim</text>
+<text x="308" y="453" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08835  |  1 guest</text>
+<rect x="578" y="428" width="84" height="22" fill="#EA580C22" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="584" y="443" font-size="10" fill="#EA580C" font-family="sans-serif">WAIVER</text>
+<rect x="268" y="466" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="466" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="495" font-size="13" fill="#6B7280" font-family="sans-serif">4</text>
+<text x="308" y="487" font-size="13" fill="#111827" font-family="sans-serif">Lisa Turner</text>
+<text x="308" y="503" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08836  |  3 guests</text>
+<rect x="578" y="478" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="493" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="516" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="516" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="545" font-size="13" fill="#6B7280" font-family="sans-serif">5</text>
+<text x="308" y="537" font-size="13" fill="#111827" font-family="sans-serif">Robert Banks</text>
+<text x="308" y="553" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08837  |  2 guests</text>
+<rect x="578" y="528" width="84" height="22" fill="#D9770622" stroke="#D97706" stroke-width="2" rx="4"/>
+<text x="584" y="543" font-size="10" fill="#D97706" font-family="sans-serif">GEAR</text>
+<rect x="268" y="566" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="566" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="595" font-size="13" fill="#6B7280" font-family="sans-serif">6</text>
+<text x="308" y="587" font-size="13" fill="#111827" font-family="sans-serif">Sophie Müller</text>
+<text x="308" y="603" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08838  |  1 guest</text>
+<rect x="578" y="578" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="593" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="616" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="616" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="645" font-size="13" fill="#6B7280" font-family="sans-serif">7</text>
+<text x="308" y="637" font-size="13" fill="#111827" font-family="sans-serif">Amir Hassan</text>
+<text x="308" y="653" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08840  |  4 guests</text>
+<rect x="578" y="628" width="84" height="22" fill="#EA580C22" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="584" y="643" font-size="10" fill="#EA580C" font-family="sans-serif">ID CHECK</text>
+<rect x="268" y="666" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="666" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="695" font-size="13" fill="#6B7280" font-family="sans-serif">8</text>
+<text x="308" y="687" font-size="13" fill="#111827" font-family="sans-serif">Chloe Williams</text>
+<text x="308" y="703" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08841  |  2 guests</text>
+<rect x="578" y="678" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="693" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="716" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="716" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="745" font-size="13" fill="#6B7280" font-family="sans-serif">9</text>
+<text x="308" y="737" font-size="13" fill="#111827" font-family="sans-serif">Diego Vargas</text>
+<text x="308" y="753" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08842  |  3 guests</text>
+<rect x="578" y="728" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="743" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="766" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="766" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="795" font-size="13" fill="#6B7280" font-family="sans-serif">10</text>
+<text x="308" y="787" font-size="13" fill="#111827" font-family="sans-serif">Yuki Tanaka</text>
+<text x="308" y="803" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08843  |  1 guest</text>
+<rect x="578" y="778" width="84" height="22" fill="#DC262622" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="584" y="793" font-size="10" fill="#DC2626" font-family="sans-serif">NO WAIVER</text>
+<rect x="268" y="816" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="816" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="845" font-size="13" fill="#6B7280" font-family="sans-serif">11</text>
+<text x="308" y="837" font-size="13" fill="#111827" font-family="sans-serif">Emma Wilson</text>
+<text x="308" y="853" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08844  |  2 guests</text>
+<rect x="578" y="828" width="84" height="22" fill="#2563EB22" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="584" y="843" font-size="10" fill="#2563EB" font-family="sans-serif">READY</text>
+<rect x="268" y="866" width="400" height="46" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="268" y="866" width="32" height="46" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="276" y="895" font-size="13" fill="#6B7280" font-family="sans-serif">12</text>
+<text x="308" y="887" font-size="13" fill="#111827" font-family="sans-serif">Carlos Ruiz</text>
+<text x="308" y="903" font-size="11" fill="#6B7280" font-family="sans-serif">NTK-2026-08845  |  4 guests</text>
+<rect x="578" y="878" width="84" height="22" fill="#DC262622" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="584" y="893" font-size="10" fill="#DC2626" font-family="sans-serif">PAYMENT</text>
+<rect x="684" y="220" width="708" height="664" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<rect x="684" y="220" width="708" height="48" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="700" y="247" font-size="13" fill="#2563EB" font-family="sans-serif">CURRENTLY CHECKING IN</text>
+<text x="1292" y="247" font-size="13" fill="#2563EB" font-family="sans-serif">Position: #1</text>
+<circle cx="736.0" cy="312.0" r="32.0" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+<text x="724" y="324" font-size="20" fill="#2563EB" font-family="sans-serif">AC</text>
+<text x="784" y="308" font-size="22" fill="#111827" font-family="sans-serif">Alex Chen</text>
+<text x="784" y="327" font-size="13" fill="#6B7280" font-family="sans-serif">Booking: NTK-2026-08833</text>
+<text x="784" y="347" font-size="13" fill="#6B7280" font-family="sans-serif">Sunrise Ridge Trail Hike  |  4 guests  |  Gold Member</text>
+<rect x="784" y="356" width="80" height="20" fill="#FEF3C7" stroke="#D97706" stroke-width="2" rx="4"/>
+<text x="790" y="372" font-size="10" fill="#D97706" font-family="sans-serif">GOLD MEMBER</text>
+<text x="700" y="407" font-size="15" fill="#111827" font-family="sans-serif">Check-In Checklist</text>
+<line x1="700" y1="414" x2="1376" y2="414" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="700" y="422" width="676" height="50" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<rect x="700" y="422" width="44" height="50" fill="#16A34A44" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="708" y="458" font-size="20" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="752" y="445" font-size="13" fill="#111827" font-family="sans-serif">Reservation Verified</text>
+<text x="752" y="463" font-size="11" fill="#6B7280" font-family="sans-serif">Booking NTK-2026-08833 confirmed in svc-reservations</text>
+<rect x="700" y="480" width="676" height="50" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<rect x="700" y="480" width="44" height="50" fill="#16A34A44" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="708" y="516" font-size="20" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="752" y="503" font-size="13" fill="#111827" font-family="sans-serif">Guest Identity Checked</text>
+<text x="752" y="521" font-size="11" fill="#6B7280" font-family="sans-serif">Photo ID verified by staff at 08:44 AM</text>
+<rect x="700" y="538" width="676" height="50" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" rx="4"/>
+<rect x="700" y="538" width="44" height="50" fill="#16A34A44" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="708" y="574" font-size="20" fill="#16A34A" font-family="sans-serif">✓</text>
+<text x="752" y="561" font-size="13" fill="#111827" font-family="sans-serif">Safety Waiver Signed</text>
+<text x="752" y="579" font-size="11" fill="#6B7280" font-family="sans-serif">Digital waiver signed via Guest Portal at 08:38 AM</text>
+<rect x="700" y="596" width="676" height="50" fill="#F3F4F6" stroke="#6B7280" stroke-width="2" rx="4"/>
+<rect x="700" y="596" width="44" height="50" fill="#6B728044" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="708" y="632" font-size="20" fill="#6B7280" font-family="sans-serif">○</text>
+<text x="752" y="619" font-size="13" fill="#111827" font-family="sans-serif">Equipment Issued (optional)</text>
+<text x="752" y="637" font-size="11" fill="#6B7280" font-family="sans-serif">Pattern 1 - no specialized gear required for this adventure</text>
+<rect x="700" y="654" width="676" height="50" fill="#F3F4F6" stroke="#6B7280" stroke-width="2" rx="4"/>
+<rect x="700" y="654" width="44" height="50" fill="#6B728044" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="708" y="690" font-size="20" fill="#6B7280" font-family="sans-serif">○</text>
+<text x="752" y="677" font-size="13" fill="#111827" font-family="sans-serif">Wristband Assigned</text>
+<text x="752" y="695" font-size="11" fill="#6B7280" font-family="sans-serif">Assign wristband color and group number below</text>
+<rect x="700" y="712" width="676" height="50" fill="#F3F4F6" stroke="#6B7280" stroke-width="2" rx="4"/>
+<rect x="700" y="712" width="44" height="50" fill="#6B728044" stroke="#6B7280" stroke-width="2" rx="4"/>
+<text x="708" y="748" font-size="20" fill="#6B7280" font-family="sans-serif">○</text>
+<text x="752" y="735" font-size="13" fill="#111827" font-family="sans-serif">Safety Briefing Confirmed</text>
+<text x="752" y="753" font-size="11" fill="#6B7280" font-family="sans-serif">Guide Sarah Mitchell to conduct at departure gate</text>
+<text x="700" y="802" font-size="14" fill="#111827" font-family="sans-serif">Wristband Assignment</text>
+<line x1="700" y1="808" x2="1376" y2="808" stroke="#D1D5DB" stroke-width="2"/>
+<text x="700" y="836" font-size="12" fill="#6B7280" font-family="sans-serif">Group Color:</text>
+<rect x="700" y="844" width="80" height="32" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="714" y="865" font-size="11" fill="#FFFFFF" font-family="sans-serif">BLUE</text>
+<rect x="790" y="844" width="80" height="32" fill="#16A34A" stroke="#16A34A" stroke-width="2" rx="4"/>
+<text x="804" y="865" font-size="11" fill="#FFFFFF" font-family="sans-serif">GREEN</text>
+<rect x="880" y="844" width="80" height="32" fill="#EA580C" stroke="#EA580C" stroke-width="2" rx="4"/>
+<text x="894" y="865" font-size="11" fill="#FFFFFF" font-family="sans-serif">ORANGE</text>
+<rect x="970" y="844" width="80" height="32" fill="#DC2626" stroke="#DC2626" stroke-width="2" rx="4"/>
+<text x="984" y="865" font-size="11" fill="#FFFFFF" font-family="sans-serif">RED</text>
+<text x="700" y="898" font-size="12" fill="#6B7280" font-family="sans-serif">Wristband Number:</text>
+<rect x="834" y="882" width="120" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="842" y="902" font-size="12" fill="#6B7280" font-family="sans-serif">NT-2026-____</text>
+<text x="974" y="898" font-size="12" fill="#6B7280" font-family="sans-serif">Group:</text>
+<rect x="1024" y="882" width="80" height="28" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1032" y="902" font-size="12" fill="#6B7280" font-family="sans-serif">4B</text>
+<rect x="700" y="928" width="280" height="52" fill="#16A34A" stroke="#14532D" stroke-width="2" rx="4"/>
+<text x="772" y="960" font-size="13" fill="#FFFFFF" font-family="sans-serif">Complete Check-In</text>
+<rect x="992" y="928" width="160" height="52" fill="#D97706" stroke="#92400E" stroke-width="2" rx="4"/>
+<text x="1028" y="960" font-size="13" fill="#FFFFFF" font-family="sans-serif">Put On Hold</text>
+<rect x="1164" y="928" width="120" height="52" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="1208" y="960" font-size="13" fill="#111827" font-family="sans-serif">Skip</text>
+<rect x="1296" y="928" width="120" height="52" fill="#DC2626" stroke="#991B1B" stroke-width="2" rx="4"/>
+<text x="1316" y="960" font-size="13" fill="#FFFFFF" font-family="sans-serif">Flag Issue</text>
+<text x="700" y="1002" font-size="12" fill="#6B7280" font-family="sans-serif">Completing check-in will assign wristband, notify guide via svc-notifications, and log in svc-analytics.</text>
+</svg>

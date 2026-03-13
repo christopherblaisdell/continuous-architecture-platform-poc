@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1240 900" width="100%" height="auto">
+<rect x="-20" y="-20" width="1240" height="900" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="1200" height="64" fill="#1A3A5C" stroke="#1A3A5C" stroke-width="2" rx="4"/>
+<text x="24" y="38" font-size="20" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures</text>
+<text x="24" y="54" font-size="10" fill="#94A3B8" font-family="sans-serif">OUTDOOR EXPERIENCES</text>
+<text x="300" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">Adventures</text>
+<text x="400" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">My Trips</text>
+<text x="480" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">Guides</text>
+<text x="548" y="36" font-size="14" fill="#CBD5E1" font-family="sans-serif">About</text>
+<rect x="1040" y="16" width="120" height="32" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1060" y="42" font-size="14" fill="#FFFFFF" font-family="sans-serif">Sign In</text>
+<circle cx="996.0" cy="32.0" r="16.0" fill="#2D5A8E" stroke="#2D5A8E" stroke-width="2"/>
+<text x="985" y="40" font-size="12" fill="#FFFFFF" font-family="sans-serif">AC</text>
+<rect x="0" y="64" width="1200" height="80" fill="#F3F4F6" stroke="#F3F4F6" stroke-width="2" rx="4"/>
+<line x1="120" y1="94" x2="413" y2="94" stroke="#16A34A" stroke-width="2"/>
+<circle cx="100.0" cy="94.0" r="18.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="95" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">1</text>
+<text x="56" y="130" font-size="12" fill="#6B7280" font-family="sans-serif">Reservation</text>
+<line x1="453" y1="94" x2="746" y2="94" stroke="#16A34A" stroke-width="2"/>
+<circle cx="433.0" cy="94.0" r="18.0" fill="#16A34A" stroke="#16A34A" stroke-width="2"/>
+<text x="428" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">2</text>
+<text x="401" y="130" font-size="12" fill="#6B7280" font-family="sans-serif">Identity</text>
+<line x1="786" y1="94" x2="1079" y2="94" stroke="#D1D5DB" stroke-width="2"/>
+<circle cx="766.0" cy="94.0" r="18.0" fill="#2563EB" stroke="#2563EB" stroke-width="2"/>
+<text x="761" y="102" font-size="14" fill="#FFFFFF" font-family="sans-serif">3</text>
+<text x="706" y="130" font-size="12" fill="#111827" font-family="sans-serif">Safety & Waiver</text>
+<circle cx="1099.0" cy="94.0" r="18.0" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2"/>
+<text x="1094" y="102" font-size="14" fill="#6B7280" font-family="sans-serif">4</text>
+<text x="1071" y="130" font-size="12" fill="#6B7280" font-family="sans-serif">Confirm</text>
+<rect x="0" y="154" width="1200" height="52" fill="#DBEAFE" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="24" y="174" font-size="12" fill="#2563EB" font-family="sans-serif">Adventure:</text>
+<text x="100" y="176" font-size="14" fill="#111827" font-family="sans-serif">Sunrise Ridge Trail Hike  |  Saturday, March 14, 2026  |  09:00 AM  |  Guide: Sarah Mitchell</text>
+<text x="920" y="174" font-size="12" fill="#2563EB" font-family="sans-serif">Check-In Pattern:</text>
+<rect x="1030" y="158" width="150" height="28" fill="#2563EB" stroke="#2563EB" stroke-width="2" rx="4"/>
+<text x="1038" y="178" font-size="12" fill="#FFFFFF" font-family="sans-serif">Pattern 1 - Basic</text>
+<rect x="40" y="230" width="700" height="540" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="56" y="257" font-size="13" fill="#6B7280" font-family="sans-serif">ADVENTURE LIABILITY WAIVER & SAFETY ACKNOWLEDGMENT</text>
+<line x1="40" y1="268" x2="740" y2="268" stroke="#D1D5DB" stroke-width="2"/>
+<text x="56" y="294" font-size="12" fill="#6B7280" font-family="sans-serif">This Liability Waiver and Safety Acknowledgment ('Agreement') is entered into between NovaTrek Adventures</text>
+<text x="56" y="312" font-size="12" fill="#6B7280" font-family="sans-serif">('Company') and the undersigned participant ('Guest') for the adventure experience described above.</text>
+<text x="56" y="330" font-size="12" fill="#6B7280" font-family="sans-serif"></text>
+<text x="56" y="349" font-size="13" fill="#111827" font-family="sans-serif">SECTION 1 - ASSUMPTION OF RISK</text>
+<text x="56" y="366" font-size="12" fill="#6B7280" font-family="sans-serif">Guest acknowledges that outdoor adventure activities involve inherent risks including but not limited</text>
+<text x="56" y="384" font-size="12" fill="#6B7280" font-family="sans-serif">to: uneven terrain, changing weather conditions, physical exertion, wildlife encounters, and equipment</text>
+<text x="56" y="402" font-size="12" fill="#6B7280" font-family="sans-serif">use. Guest voluntarily assumes all such risks.</text>
+<text x="56" y="420" font-size="12" fill="#6B7280" font-family="sans-serif"></text>
+<text x="56" y="439" font-size="13" fill="#111827" font-family="sans-serif">SECTION 2 - MEDICAL FITNESS</text>
+<text x="56" y="456" font-size="12" fill="#6B7280" font-family="sans-serif">Guest confirms they are in adequate physical condition to participate in this adventure and have no</text>
+<text x="56" y="474" font-size="12" fill="#6B7280" font-family="sans-serif">medical conditions that would be aggravated by this activity. Guests with cardiac conditions, recent</text>
+<text x="56" y="492" font-size="12" fill="#6B7280" font-family="sans-serif">surgery, or pregnancy must provide medical clearance.</text>
+<text x="56" y="510" font-size="12" fill="#6B7280" font-family="sans-serif"></text>
+<text x="56" y="529" font-size="13" fill="#111827" font-family="sans-serif">SECTION 3 - EQUIPMENT AND SAFETY PROTOCOLS</text>
+<text x="56" y="546" font-size="12" fill="#6B7280" font-family="sans-serif">Guest agrees to follow all safety instructions provided by NovaTrek guides, to use all assigned</text>
+<text x="56" y="564" font-size="12" fill="#6B7280" font-family="sans-serif">safety equipment correctly, and to remain within designated boundaries at all times during the activity.</text>
+<text x="56" y="582" font-size="12" fill="#6B7280" font-family="sans-serif"></text>
+<text x="56" y="601" font-size="13" fill="#111827" font-family="sans-serif">SECTION 4 - EMERGENCY PROCEDURES</text>
+<text x="56" y="618" font-size="12" fill="#6B7280" font-family="sans-serif">In the event of an emergency, Guest authorizes NovaTrek Adventures to arrange medical treatment at</text>
+<text x="56" y="636" font-size="12" fill="#6B7280" font-family="sans-serif">Guest's expense if Guest cannot be reached. Emergency contact information provided will be used.</text>
+<text x="56" y="654" font-size="12" fill="#6B7280" font-family="sans-serif"></text>
+<text x="56" y="673" font-size="13" fill="#111827" font-family="sans-serif">SECTION 5 - RELEASE OF LIABILITY</text>
+<text x="56" y="690" font-size="12" fill="#6B7280" font-family="sans-serif">Guest releases NovaTrek Adventures, its officers, employees, and guides from all liability arising from</text>
+<text x="56" y="708" font-size="12" fill="#6B7280" font-family="sans-serif">negligence or fault related to the activity, except in cases of gross negligence or willful misconduct.</text>
+<rect x="760" y="230" width="400" height="540" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="776" y="257" font-size="13" fill="#6B7280" font-family="sans-serif">ACKNOWLEDGMENT CHECKLIST</text>
+<line x1="760" y1="268" x2="1160" y2="268" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="776" y="282" width="22" height="22" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="806" y="299" font-size="13" fill="#111827" font-family="sans-serif">I have read and understood the full liability waiver</text>
+<line x1="760" y1="330" x2="1160" y2="330" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="776" y="342" width="22" height="22" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="806" y="359" font-size="13" fill="#111827" font-family="sans-serif">I confirm I am physically fit for this adventure</text>
+<line x1="760" y1="390" x2="1160" y2="390" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="776" y="402" width="22" height="22" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="806" y="419" font-size="13" fill="#111827" font-family="sans-serif">I consent to emergency medical treatment if required</text>
+<line x1="760" y1="450" x2="1160" y2="450" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="776" y="462" width="22" height="22" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="806" y="479" font-size="13" fill="#111827" font-family="sans-serif">I have provided accurate emergency contact details</text>
+<line x1="760" y1="510" x2="1160" y2="510" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="776" y="522" width="22" height="22" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="806" y="539" font-size="13" fill="#111827" font-family="sans-serif">I agree to follow all guide instructions and safety rules</text>
+<line x1="760" y1="570" x2="1160" y2="570" stroke="#D1D5DB" stroke-width="2"/>
+<rect x="776" y="590" width="368" height="80" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="784" y="612" font-size="12" fill="#6B7280" font-family="sans-serif">Emergency Contact on File</text>
+<text x="784" y="635" font-size="13" fill="#111827" font-family="sans-serif">Jennifer Chen  |  +1 (555) 234-5679</text>
+<text x="784" y="654" font-size="12" fill="#6B7280" font-family="sans-serif">Relationship: Spouse</text>
+<text x="1070" y="612" font-size="12" fill="#2563EB" font-family="sans-serif">Update</text>
+<text x="776" y="707" font-size="13" fill="#111827" font-family="sans-serif">Digital Signature</text>
+<rect x="776" y="716" width="368" height="40" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="784" y="740" font-size="12" fill="#6B7280" font-family="sans-serif">Type your full name to sign: Alex Chen</text>
+<rect x="40" y="790" width="340" height="52" fill="#16A34A" stroke="#14532D" stroke-width="2" rx="4"/>
+<text x="82" y="822" font-size="13" fill="#FFFFFF" font-family="sans-serif">I Agree to the Waiver - Continue</text>
+<rect x="400" y="790" width="180" height="52" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2" rx="4"/>
+<text x="442" y="822" font-size="13" fill="#111827" font-family="sans-serif">Download PDF</text>
+<rect x="760" y="790" width="400" height="52" fill="#DC2626" stroke="#991B1B" stroke-width="2" rx="4"/>
+<text x="900" y="822" font-size="13" fill="#FFFFFF" font-family="sans-serif">Cancel Check-In</text>
+<text x="40" y="872" font-size="12" fill="#6B7280" font-family="sans-serif">By clicking 'I Agree', you create a legally binding digital signature. This waiver is stored securely and linked to your reservation.</text>
+</svg>
