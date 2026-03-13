@@ -200,24 +200,28 @@ Feature flag: `KIOSK_UNREGISTERED_CHECKIN_ENABLED` (per base camp location, defa
 ## Testing Strategy
 
 ### Unit Tests
+
 - Orchestration logic with mocked downstream services
 - Input validation and normalization
 - Rate limiting counter behavior
 - JWT session token generation and validation
 
 ### Integration Tests
+
 - svc-check-in to svc-reservations: reservation lookup with valid and invalid inputs
 - svc-check-in to svc-guest-profiles: temporary profile creation and deduplication
 - svc-check-in to svc-safety-compliance: waiver status retrieval by reservation ID
 - Partner fallback flow with simulated partner responses
 
 ### End-to-End Tests
+
 - Full kiosk check-in flow (requires kiosk emulator environment)
 - Rate limiting verification across multiple kiosks
 - Session expiry and cleanup
 - Concurrent lookup requests (target: 100 concurrent, p95 under 5 seconds)
 
 ### Security Tests
+
 - PII masking verification in all log outputs
 - Rate limit bypass attempt validation
 - Session token scope enforcement

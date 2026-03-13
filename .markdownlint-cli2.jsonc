@@ -1,0 +1,65 @@
+// markdownlint-cli2 configuration for NovaTrek Architecture Platform
+// Rules tuned to MkDocs Material content conventions.
+//
+// Disabled rules and their rationale:
+//   MD012  no-multiple-blanks     - Generated and authored content uses extra blank lines for readability
+//   MD013  line-length            - Documentation tables and URLs routinely exceed 80 chars
+//   MD024  no-duplicate-heading   - Solution design docs re-use section names (e.g., "Acceptance Criteria")
+//   MD025  single-title           - YAML front-matter pages have additional H1s in body content
+//   MD029  ol-prefix              - Numbered lists in solution docs use non-sequential numbering
+//   MD031  blanks-around-fences   - Code blocks in tight lists do not require surrounding blank lines
+//   MD032  blanks-around-lists    - Tight lists following paragraphs are intentional
+//   MD033  no-inline-html         - MkDocs Material grids, cards, and SVG embeds use raw HTML
+//   MD036  no-emphasis-as-heading - Bold labels used as inline pseudo-headings in tables
+//   MD040  fenced-code-language   - Some quick-reference blocks omit language annotation
+//   MD041  first-line-heading     - YAML front-matter is valid first content
+//   MD046  code-block-style       - Mixed fenced/indented style inherited from arc42 templates
+//   MD047  single-trailing-newline - Generator output and editor differences
+//   MD049  emphasis-style         - Asterisk vs underscore inconsistency across authors
+//   MD051  link-fragments         - MkDocs anchors differ from standard Markdown anchors
+//   MD053  link-image-reference-definitions - Unused definitions in template stubs
+//   MD060  table-column-style     - Compact table style used throughout
+{
+  "config": {
+    "default": true,
+    "MD007": false,
+    "MD012": false,
+    "MD013": false,
+    "MD024": false,
+    "MD025": false,
+    "MD029": false,
+    "MD031": false,
+    "MD032": false,
+    "MD033": false,
+    "MD036": false,
+    "MD040": false,
+    "MD041": false,
+    "MD046": false,
+    "MD047": false,
+    "MD049": false,
+    "MD051": false,
+    "MD053": false,
+    "MD060": false
+  },
+  "ignores": [
+    // Generated portal pages — lint the source in architecture/solutions/ instead
+    "portal/docs/solutions/**",
+    "portal/docs/capabilities/**",
+    "portal/docs/tickets/**",
+    "portal/docs/topology/**",
+    "portal/docs/actors/**",
+    // MkDocs Material grid pages — heading hierarchy is intentionally
+    // non-linear inside card <div> elements
+    "portal/docs/standards/index.md",
+    "portal/docs/index.md",
+    "portal/docs/applications/**",
+    // Third-party arc42 template files (authored outside this project)
+    "portal/docs/standards/arc42/**",
+    // Third-party research and external-facing reports
+    "research/**",
+    "phases/**",
+    "docs/research/**",
+    // Phase-specific planning and work-item snapshots
+    "docs/phase-*/**"
+  ]
+}

@@ -150,7 +150,9 @@ Risks identify what could go wrong with the solution and how each risk is addres
 | Risk N | [Short descriptive name] | [Brief explanation] | [Risk level] | [Status with checkmark] |
 
 ## Functional and Non-Functional Requirements *(Optional - only if requirements exist)*
+
 Requirements capture explicit functional behaviors and non-functional quality attributes that the solution must satisfy beyond what is documented in JIRA tickets. Functional requirements define WHAT the system must do (e.g., enforce a validation rule, return specific error codes), while non-functional requirements define quality constraints such as performance, scalability, or compliance. Only include this section when requirements have been formally identified and documented.
+
 | Requirement ID | Type | Requirement Name | Description | Priority | Status |
 |----------------|------|------------------|-------------|----------|--------|
 | NFR-1 | Non-Functional | [Short descriptive name] | [Brief 1-2 sentence explanation] | [CRITICAL\|HIGH\|MEDIUM\|LOW] | [Defined\|In Progress\|Implemented\|Validated] |

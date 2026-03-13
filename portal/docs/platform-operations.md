@@ -14,6 +14,8 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 |----------|---------|---------|
 | [Deploy Documentation](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/docs-deploy.yml) | Push/PR to `main` (doc paths) | Build MkDocs, deploy to Azure SWA, publish Confluence mirror |
 | [Validate Solution Design](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/validate-solution.yml) | PR to `main` (architecture paths) | YAML lint, folder structure check, data isolation audit, portal build |
+| [Documentation Quality](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/docs-quality.yml) | PR/push to `main` (Markdown paths) | Markdown lint, spell check, content policy enforcement |
+| [Link Rot Detection](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/link-check.yml) | Weekly Monday 06:00 UTC; manual dispatch | Checks external links for broken URLs (informational, not blocking) |
 
 ### Service CI/CD
 

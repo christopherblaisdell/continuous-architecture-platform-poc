@@ -1,0 +1,73 @@
+# ===========================================================================
+# Link Rot Detection (Scheduled)
+# ===========================================================================
+# Runs weekly to check that external links in architecture documentation
+# still resolve. This is informational — it does NOT block PRs.
+#
+# Results are reported as a GitHub Actions summary. If broken links are
+# found, the workflow sets a warning annotation but exits 0 so the run
+# is not treated as a hard failure.
+#
+# Tool: lychee (https://github.com/lycheeverse/lychee)
+#   - Fast async link checker written in Rust
+#   - Respects .lycheeignore for URLs to skip
+#   - GitHub Action: lycheeverse/lychee-action
+# ===========================================================================
+
+name: Link Rot Detection
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    name: Check External Links
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run lychee link checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Scope: core architecture documentation only
+          args: >-
+            --verbose
+            --no-progress
+            --timeout 30
+            --max-retries 3
+            --exclude-path portal/site
+            --exclude-path portal/docs/microservices
+            --exclude-path portal/docs/services/api
+            --exclude-path portal/docs/specs
+            --exclude-path portal/docs/events-ui
+            --exclude-path portal/confluence
+            --exclude-path research
+            --exclude-path phases
+            --exclude-path docs/phase-1-ai-tool-cost-comparison
+            decisions/
+            architecture/solutions/
+            portal/docs/
+            docs/
+            README.md
+          # Do not fail the job on broken links — this is informational
+          fail: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summarize results
+        if: always()
+        run: |
+          if [ "${{ steps.lychee.outputs.exit_code }}" != "0" ]; then
+            echo "::warning::Broken links detected. Review the lychee output above and update affected documents."
+          else
+            echo "All links are healthy."
+          fi

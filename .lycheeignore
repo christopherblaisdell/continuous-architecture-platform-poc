@@ -1,0 +1,44 @@
+# Lychee link-check ignore patterns for NovaTrek Architecture Platform
+#
+# Format: one pattern per line.
+# Regex patterns are supported (see lychee docs).
+# Lines starting with # are comments.
+
+# ---- Azure Static Web Apps preview URLs ----
+# These are ephemeral staging URLs generated per PR and are not persistent.
+https://.*\.azurestaticapps\.net
+
+# ---- Localhost / development URLs ----
+# Referenced in implementation guides; not resolvable from CI.
+http://localhost
+http://127\.0\.0\.1
+
+# ---- Internal Vikunja ticketing instance ----
+# Self-hosted; not reachable from GitHub Actions runners.
+https://vikunja\.
+
+# ---- Azure portal and management endpoints ----
+# Login-gated; will always return 401/403 in automated checks.
+https://portal\.azure\.com
+https://management\.azure\.com
+
+# ---- GitHub Actions workflow run URLs ----
+# Workflow run URLs are ephemeral and only valid when logged in.
+https://github\.com/.*/actions/runs/
+
+# ---- GitHub Actions workflow definition links ----
+# These reference workflows that exist but require authentication to view.
+https://github\.com/.*/actions/workflows/
+
+# ---- Confluence instance ----
+# Login-gated Atlassian Cloud; returns 401 for anonymous requests.
+https://.*\.atlassian\.net
+
+# ---- PlantUML server ----
+# Referenced in documentation; may be rate-limited in CI.
+https://plantuml\.com
+
+# ---- NPM and package registries ----
+# Sometimes flaky under CI network constraints.
+https://www\.npmjs\.com
+https://registry\.npmjs\.org
