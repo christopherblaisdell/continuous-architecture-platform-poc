@@ -19,7 +19,7 @@ For the complete evidence base with 78 authoritative citations, see [Research Re
 | 4. Secret Scanning | Not available | Automated in CI pipeline | Docs-as-Code |
 | 5. Attack Surface | Full web application (Java, DB, plugins) | Static HTML files (no server-side code) | Docs-as-Code |
 | 6. Content Security Policy | Atlassian-managed (limited control) | Fully controlled via `staticwebapp.config.json` | Docs-as-Code |
-| 7. Dependency Scanning | Atlassian-managed (no visibility) | OWASP + Trivy scans in CI | Docs-as-Code |
+| 7. Dependency Scanning | Atlassian-managed (no visibility) | Snyk SCA + IaC scans in CI | Docs-as-Code |
 | 8. Rollback | Page-by-page version restore | `git revert` (atomic, full-site rollback) | Docs-as-Code |
 | 9. Data Sovereignty | Atlassian Cloud (US/EU regions) | Azure region of your choice | Docs-as-Code |
 | 10. Plugin/Extension Risk | Marketplace plugins run with full permissions | No plugins at runtime (build-time only) | Docs-as-Code |

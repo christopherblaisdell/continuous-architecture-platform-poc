@@ -186,3 +186,30 @@ tickets:
       As a guest services manager,
       I want structured dispute workflows with escalation tiers and automated notifications,
       So that refund requests are resolved consistently and chargebacks are minimized.
+
+  - key: NTK-10010
+    summary: Implement Portal Security Controls for Live Demo
+    status: New
+    priority: High
+    assignee: null
+    reporter: christopher.blaisdell
+    labels: [platform, security, docs-as-code]
+    created: 2026-03-13
+    updated: 2026-03-13
+    sprint: null
+    components: [portal, ci-cd]
+    solution: null
+    planned_capabilities: []
+    user_story: |
+      As a platform architect presenting the security model to the security team,
+      I want the security controls described in the Security Model documentation to be
+      demonstrably implemented and working,
+      So that I can show — not just assert — that the docs-as-code platform is more
+      secure than Confluence.
+    description: |
+      Four implementation sprints, each producing a demo-able outcome:
+        Sprint 1: HSTS header + form-action + base-uri CSP directives in staticwebapp.config.json
+        Sprint 2: .github/CODEOWNERS requiring security team approval on security-relevant files
+        Sprint 3: SNYK_TOKEN secret configured so Snyk CI gates run live
+        Sprint 4: Required signed commits enabled on main branch
+      Full plan: portal/docs/security/implementation-plan.md
