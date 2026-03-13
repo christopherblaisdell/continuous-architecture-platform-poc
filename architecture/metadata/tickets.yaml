@@ -96,24 +96,17 @@ tickets:
 
   - key: NTK-10006
     summary: Real-Time Adventure Tracking and Emergency Alerting System
-    status: New
+    status: In Progress
     priority: Critical
     assignee: null
     reporter: sam.patel
     labels: [new-capability, safety, real-time, multi-service]
     created: 2025-02-15
-    updated: 2025-02-15
+    updated: 2026-03-13
     sprint: null
     components: [svc-adventure-tracking, svc-emergency-response, svc-check-in, svc-notifications, svc-safety-compliance]
-    solution: null
-    planned_capabilities:
-      - id: CAP-3.3
-        impact: enhanced
-      - id: CAP-3.2
-        impact: enhanced
-      - id: CAP-2.1
-        impact: enhanced
-    new_services: [svc-adventure-tracking, svc-emergency-response]
+    solution: _NTK-10006-real-time-adventure-tracking
+    new_services: [svc-adventure-tracking]
     user_story: |
       As a park safety officer,
       I want real-time GPS tracking of all guests on active adventures with automated emergency alerting,

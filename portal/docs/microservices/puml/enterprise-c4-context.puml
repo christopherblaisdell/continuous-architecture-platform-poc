@@ -34,6 +34,7 @@ System_Boundary(Safety, "Safety") {
     Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance", $link="/microservices/svc-safety-compliance/#integration-context")
     Container(svc_emergency_response, "svc-emergency-response", "Java / Spring Boot", "Emergency Response", $link="/microservices/svc-emergency-response/#integration-context")
     Container(svc_wildlife_tracking, "svc-wildlife-tracking", "Java / Spring Boot", "Wildlife Tracking", $link="/microservices/svc-wildlife-tracking/#integration-context")
+    Container(svc_adventure_tracking, "svc-adventure-tracking", "Java / Spring Boot", "Adventure Tracking", $link="/microservices/svc-adventure-tracking/#integration-context")
 }
 
 System_Boundary(Logistics, "Logistics") {
@@ -57,6 +58,7 @@ System_Boundary(Support, "Support") {
     Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather", $link="/microservices/svc-weather/#integration-context")
     Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services", $link="/microservices/svc-location-services/#integration-context")
     Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement", $link="/microservices/svc-inventory-procurement/#integration-context")
+    Container(svc_reviews, "svc-reviews", "Java / Spring Boot", "Reviews", $link="/microservices/svc-reviews/#integration-context")
 }
 
 System_Boundary(PCI_Zone, "PCI DSS Compliance Zone") {

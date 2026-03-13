@@ -11,7 +11,7 @@ tags:
 
 <p class="subtitle">Deep-Dive Architecture Documentation for Every NovaTrek Service</p>
 
-<span class="version-badge">22 Services &middot; 176 Endpoints</span>
+<span class="version-badge">23 Services &middot; 186 Endpoints</span>
 
 </div>
 
@@ -57,6 +57,7 @@ All services are built on the same [technology stack](../technologies.md) — Ja
 
 | Service | Version | Endpoints | Status | Page |
 |---------|---------|-----------|--------|------|
+| **NovaTrek Adventure Tracking Service**<br><small>`svc-adventure-tracking`</small> | `1.0.0` | 10 endpoints | :material-circle-outline: Wave ? | [:material-arrow-right: Open](svc-adventure-tracking.md){ .md-button } |
 | **NovaTrek Emergency Response Service**<br><small>`svc-emergency-response`</small> | `1.0.0` | 10 endpoints | :material-circle-outline: Wave 6 | [:material-arrow-right: Open](svc-emergency-response.md){ .md-button } |
 | **NovaTrek Safety and Compliance Service**<br><small>`svc-safety-compliance`</small> | `1.0.0` | 8 endpoints | :material-circle-outline: Wave 3 | [:material-arrow-right: Open](svc-safety-compliance.md){ .md-button } |
 | **NovaTrek Wildlife Tracking Service**<br><small>`svc-wildlife-tracking`</small> | `1.0.0` | 10 endpoints | :material-circle-outline: Wave 6 | [:material-arrow-right: Open](svc-wildlife-tracking.md){ .md-button } |

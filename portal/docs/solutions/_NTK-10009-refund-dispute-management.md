@@ -8,7 +8,7 @@ description: "Solution design for NTK-10009"
 | Field | Value |
 |-------|-------|
 | **Status** | Proposed |
-| **Version** | Date |
+| **Version** | v1.0 |
 | **Author** | Solution Architect (AI-Assisted) |
 | **Date** | 2026-03-06 |
 | **Ticket** | NTK-10009 |
@@ -49,6 +49,7 @@ Solutions that share services or capabilities with this design:
 
 | Solution | Shared Capabilities | Shared Services |
 |----------|-------------------|-----------------|
+| [NTK-10006 — NTK-10006 Solution Design — Real-Time Ad](_NTK-10006-real-time-adventure-tracking.md) | — | svc-notifications |
 | [NTK-10008 — NTK-10008 Solution Design — Guest Review](_NTK-10008-guest-reviews-and-ratings.md) | — | svc-reservations |
 
 ---

@@ -133,6 +133,57 @@ entries:
       - ADR-NTK10008-002
       - ADR-NTK10008-003
 
+  - ticket: NTK-10006
+    date: 2026-03-13
+    solution: _NTK-10006-real-time-adventure-tracking
+    summary: Real-time GPS adventure tracking with automated emergency alerting
+    capabilities:
+      - id: CAP-3.3
+        impact: enhanced
+        description: >-
+          Emergency response now triggered automatically by GPS signals (SOS button activation
+          and geofence boundary violations) via svc-adventure-tracking; no longer dependent
+          solely on radio reports from guides
+        l3_capabilities:
+          - name: Automated SOS Emergency Trigger
+            description: >-
+              SOS signal from wristband device creates emergency incident in svc-emergency-response
+              within 60 seconds; rescue dispatch begins without human initiation
+          - name: Geofence Violation Alerting
+            description: >-
+              Adventure parties crossing defined GPS boundaries trigger a safety officer alert
+              with 5-minute acknowledgment window before automatic emergency escalation
+          - name: Real-Time Adventure Session Visibility
+            description: >-
+              Operations dashboard displays live GPS positions of all active adventure parties
+              via svc-adventure-tracking session and telemetry APIs
+      - id: CAP-3.2
+        impact: enhanced
+        description: >-
+          Incident reports in svc-safety-compliance now link to GPS telemetry sessions in
+          svc-adventure-tracking; compliance officers can retrieve the full position history
+          for insurance investigations and regulatory reporting
+        l3_capabilities:
+          - name: GPS Telemetry Trail for Incident Investigation
+            description: >-
+              90-day retained position history linked from incident records; provides GPS
+              evidence trail for insurance claims and regulatory compliance
+      - id: CAP-2.1
+        impact: enhanced
+        description: >-
+          svc-check-in extended with ADVENTURE_STARTED status transition that activates a
+          tracking session in svc-adventure-tracking; tracking is now part of the check-in
+          departure workflow
+        l3_capabilities:
+          - name: Adventure Tracking Session Activation
+            description: >-
+              Guide-initiated ADVENTURE_STARTED transition in svc-check-in automatically
+              activates a GPS tracking session with all party wristband devices registered
+    decisions:
+      - ADR-NTK10006-001
+      - ADR-NTK10006-002
+      - ADR-NTK10006-003
+
   - ticket: NTK-10009
     date: 2026-03-06
     solution: _NTK-10009-refund-dispute-management
