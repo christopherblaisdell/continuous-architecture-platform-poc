@@ -14,7 +14,7 @@ Prerequisites:
 Usage:
     export VIKUNJA_URL="https://ca-vikunja-prod.<env>.azurecontainerapps.io"
     export VIKUNJA_TOKEN="your-api-token"
-    python3 scripts/vikunja-seed.py [--dry-run]
+    python3 architecture/scripts/vikunja-seed.py [--dry-run]
 """
 
 import argparse

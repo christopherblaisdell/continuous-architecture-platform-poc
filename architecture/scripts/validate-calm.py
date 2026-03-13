@@ -6,9 +6,9 @@ would normally require manual PR review. This is a lightweight Python
 validator — a stepping stone to the full CALM CLI (`calm validate`).
 
 Usage:
-    python3 scripts/validate-calm.py                              # validate all
-    python3 scripts/validate-calm.py architecture/calm/domains/operations.json
-    python3 scripts/validate-calm.py --patterns architecture/calm/patterns/
+    python3 architecture/scripts/validate-calm.py                              # validate all
+    python3 architecture/scripts/validate-calm.py architecture/calm/domains/operations.json
+    python3 architecture/scripts/validate-calm.py --patterns architecture/calm/patterns/
 
 Rules enforced:
     1. No shared databases — each database node has exactly one incoming
