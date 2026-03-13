@@ -187,18 +187,6 @@ nav:
     - arc42 Template:
       - standards/arc42/index.md
       - Master Document: standards/arc42/00_arc42-template.md
-      - 01 Introduction and Goals: standards/arc42/01_introduction_and_goals.md
-      - 02 Architecture Constraints: standards/arc42/02_architecture_constraints.md
-      - 03 Context and Scope: standards/arc42/03_context_and_scope.md
-      - 04 Solution Strategy: standards/arc42/04_solution_strategy.md
-      - 05 Building Block View: standards/arc42/05_building_block_view.md
-      - 06 Runtime View: standards/arc42/06_runtime_view.md
-      - 07 Deployment View: standards/arc42/07_deployment_view.md
-      - 08 Cross-cutting Concepts: standards/arc42/08_concepts.md
-      - 09 Architecture Decisions: standards/arc42/09_architecture_decisions.md
-      - 10 Quality Requirements: standards/arc42/10_quality_requirements.md
-      - 11 Risks and Technical Debt: standards/arc42/11_risks_and_technical_debt.md
-      - 12 Glossary: standards/arc42/12_glossary.md
     - C4 Model:
       - standards/c4-model/index.md
       - Notation Guide: standards/c4-model/c4-notation-guide.md
@@ -233,4 +221,4 @@ nav:
       - Security Research Prompt: security/research-prompt.md
       - Research Results: security/research-prompt-response.md
     - Database Change Workflow: database-change-workflow.md
-    - Tags: tags.md
+  - Tags: tags.md
