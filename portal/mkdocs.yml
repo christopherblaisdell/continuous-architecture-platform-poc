@@ -218,6 +218,7 @@ nav:
       - Headers and Attack Surface: security/headers-and-attack-surface.md
       - Access Control and Audit: security/access-control-and-audit.md
       - Data Protection: security/data-protection.md
+      - Implementation Plan: security/implementation-plan.md
       - Security Research Prompt: security/research-prompt.md
       - Research Results: security/research-prompt-response.md
     - Database Change Workflow: database-change-workflow.md

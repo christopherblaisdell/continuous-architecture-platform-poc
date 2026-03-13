@@ -24,4 +24,5 @@ The answer is: the docs-as-code model is **demonstrably more secure** than wiki-
 | [Security Headers and Attack Surface](headers-and-attack-surface.md) | HTTP security headers, Content Security Policy, and why static sites have a fundamentally smaller attack surface |
 | [Access Control and Audit Trail](access-control-and-audit.md) | How Git + branch protection + PR reviews provide stronger access control and more complete audit trails than wiki page-level permissions |
 | [Data Protection](data-protection.md) | Secret scanning, data isolation auditing, and content validation gates that prevent sensitive data from reaching the published site |
+| [Implementation Plan](implementation-plan.md) | Step-by-step plan to implement the documented controls and demo them as working — four sprints, each producing a live demonstration |
 | [Security Research Prompt](research-prompt.md) | AI deep-research prompt used to gather authoritative sources for this security assessment |
