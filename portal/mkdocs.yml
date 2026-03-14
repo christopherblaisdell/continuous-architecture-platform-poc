@@ -225,6 +225,7 @@ nav:
     - Platform Roadmap: roadmap.md
     - Security Model:
       - security/index.md
+      - Implementation Status: security/implementation-status.md
       - Security Comparison: security/security-comparison.md
       - Pipeline Security Gates: security/pipeline-security-gates.md
       - Headers and Attack Surface: security/headers-and-attack-surface.md

@@ -1,0 +1,42 @@
+# ===========================================================================
+# Dependabot Automatic Dependency Updates
+# ===========================================================================
+# Keeps GitHub Actions and Python packages up to date automatically.
+# Dependabot opens PRs with version bumps; they pass through the normal
+# branch-protection gates (CI + review) before merge.
+#
+# Reference: OWASP CICD-SEC-3 — Dependency Chain Abuse mitigation
+# ===========================================================================
+
+version: 2
+
+updates:
+  # ---------------------------------------------------------------------------
+  # GitHub Actions — keep action versions current
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # ---------------------------------------------------------------------------
+  # Python — keep MkDocs build dependencies current
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      mkdocs:
+        patterns:
+          - "mkdocs*"
+    commit-message:
+      prefix: "chore(deps)"

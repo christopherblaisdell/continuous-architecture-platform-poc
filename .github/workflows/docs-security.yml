@@ -1,0 +1,129 @@
+# ===========================================================================
+# Documentation Security Scanning
+# ===========================================================================
+# Runs Snyk scanning against the docs pipeline on every PR and weekly.
+#
+# Gates:
+#   - Snyk dependency scan: Python packages in requirements-docs.txt
+#   - Snyk code scan:       Generator scripts in portal/scripts/
+#   - Snyk IaC scan:        staticwebapp.config.json + workflow YAML
+#
+# Requires secret:  SNYK_TOKEN
+#
+# OWASP alignment:
+#   CICD-SEC-3 (Dependency Chain Abuse)   — snyk-deps job
+#   CICD-SEC-3 (Generator script security) — snyk-code job
+#   CICD-SEC-3 (Config file hardening)     — snyk-iac job
+# ===========================================================================
+
+name: Documentation Security Scan
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'requirements-docs.txt'
+      - 'portal/scripts/**'
+      - 'portal/staticwebapp.config.json'
+      - '.github/workflows/**'
+      - 'infra/**'
+  schedule:
+    # Weekly on Monday at 06:00 UTC — catches new CVEs between PRs
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write  # Required to upload SARIF results
+
+jobs:
+  # -------------------------------------------------------------------------
+  # Gate: Python dependency scan
+  # Checks all packages in requirements-docs.txt for known CVEs.
+  # Even build-time dependencies can inject malicious content into generated HTML.
+  # -------------------------------------------------------------------------
+  snyk-deps:
+    runs-on: ubuntu-latest
+    name: Snyk Dependency Scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-docs.txt
+
+      - name: Snyk dependency scan
+        uses: snyk/actions/python-3.12@master
+        # Note: snyk/actions does not publish versioned tags — @master is the
+        # Snyk-recommended reference. Add SHA pinning once Snyk adopts releases:
+        # https://github.com/snyk/actions/issues/
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=requirements-docs.txt
+
+  # -------------------------------------------------------------------------
+  # Gate: Static code analysis of generator scripts
+  # The generator scripts are the boundary between untrusted YAML input and
+  # trusted HTML output. Snyk Code checks for path traversal, unsafe
+  # deserialization, and injection risks in portal/scripts/.
+  # -------------------------------------------------------------------------
+  snyk-code:
+    runs-on: ubuntu-latest
+    name: Snyk Code Analysis
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Snyk code analysis
+        uses: snyk/actions/python-3.12@master
+        # Note: snyk/actions does not publish versioned tags — @master is the
+        # Snyk-recommended reference. Add SHA pinning once Snyk adopts releases.
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+          args: portal/scripts/
+
+  # -------------------------------------------------------------------------
+  # Gate: Infrastructure-as-Code scan
+  # Checks staticwebapp.config.json for CSP weaknesses and missing security
+  # headers; checks workflow YAML for overly broad permissions.
+  # -------------------------------------------------------------------------
+  snyk-iac:
+    runs-on: ubuntu-latest
+    name: Snyk IaC Scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Snyk IaC scan — staticwebapp.config.json
+        uses: snyk/actions/iac@master
+        # Note: snyk/actions does not publish versioned tags — @master is the
+        # Snyk-recommended reference. Add SHA pinning once Snyk adopts releases.
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          file: portal/staticwebapp.config.json
+        # Note: Snyk IaC support for Azure SWA config is limited;
+        # failures here are informational until full rule support lands.
+        continue-on-error: true
+
+      - name: Snyk IaC scan — GitHub Actions workflows
+        uses: snyk/actions/iac@master
+        # Note: snyk/actions does not publish versioned tags — @master is the
+        # Snyk-recommended reference. Add SHA pinning once Snyk adopts releases.
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          file: .github/workflows/
+        continue-on-error: true

@@ -19,6 +19,7 @@ The answer is: the docs-as-code model is **demonstrably more secure** than wiki-
 
 | Page | Purpose |
 |------|---------|
+| [Implementation Status](implementation-status.md) | Current state of every security control — what is live and enforced today vs. planned |
 | [Security Comparison](security-comparison.md) | Side-by-side comparison of Confluence vs. docs-as-code security controls across 12 dimensions |
 | [Pipeline Security Gates](pipeline-security-gates.md) | Detailed walkthrough of every CI/CD gate that content passes through before reaching production |
 | [Security Headers and Attack Surface](headers-and-attack-surface.md) | HTTP security headers, Content Security Policy, and why static sites have a fundamentally smaller attack surface |
