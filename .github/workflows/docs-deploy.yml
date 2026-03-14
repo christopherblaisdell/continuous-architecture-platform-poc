@@ -151,7 +151,10 @@ jobs:
 
       - name: Install mark
         run: |
-          curl -sL https://github.com/kovetskiy/mark/releases/latest/download/mark_linux_amd64 \
+          # Pin to a specific version — avoid pulling an untested `latest` binary.
+          # Update MARK_VERSION when upgrading (check https://github.com/kovetskiy/mark/releases).
+          MARK_VERSION="10.1.0"
+          curl -sL "https://github.com/kovetskiy/mark/releases/download/${MARK_VERSION}/mark_linux_amd64" \
             -o /usr/local/bin/mark
           chmod +x /usr/local/bin/mark
 
@@ -191,7 +194,10 @@ jobs:
 
       - name: Install mark
         run: |
-          curl -sL https://github.com/kovetskiy/mark/releases/latest/download/mark_linux_amd64 \
+          # Pin to a specific version — avoid pulling an untested `latest` binary.
+          # Update MARK_VERSION when upgrading (check https://github.com/kovetskiy/mark/releases).
+          MARK_VERSION="10.1.0"
+          curl -sL "https://github.com/kovetskiy/mark/releases/download/${MARK_VERSION}/mark_linux_amd64" \
             -o /usr/local/bin/mark
           chmod +x /usr/local/bin/mark
 
