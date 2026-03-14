@@ -234,3 +234,9 @@ nav:
       - Research Results: security/research-prompt-response.md
     - Database Change Workflow: database-change-workflow.md
     - Tags: tags.md
+  - Research:
+    - research/index.md
+    - AI Toolchain Evaluation:
+      - Vector DB and RAG Feasibility: research/vector-db-rag-feasibility.md
+      - Workspace Vector DB Implementation Plan: research/vector-db-implementation-plan.md
+      - Phase 2 Next Steps: research/phase-2-next-steps.md
