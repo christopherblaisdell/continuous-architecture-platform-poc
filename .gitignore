@@ -66,3 +66,8 @@ services/**/gradlew
 services/**/gradlew.bat
 *.class
 *.jar
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
