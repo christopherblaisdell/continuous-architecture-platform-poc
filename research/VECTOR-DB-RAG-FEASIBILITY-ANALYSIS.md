@@ -190,6 +190,12 @@ If the architecture practice scales beyond a single architect, Continue.dev offe
 
 ---
 
+## Implementation Plan
+
+A detailed implementation plan for the recommended architecture (MCP server + ChromaDB + Kong AI Gateway) is available at [WORKSPACE-VECTOR-DB-KONG-AI-IMPLEMENTATION-PLAN.md](WORKSPACE-VECTOR-DB-KONG-AI-IMPLEMENTATION-PLAN.md).
+
+---
+
 ## References
 
 - [Context Window Utilization Analysis](CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md) -- Empirical comparison of context management between Roo Code and Copilot
