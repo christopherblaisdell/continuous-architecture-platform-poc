@@ -1004,15 +1004,23 @@ scripts/vector-db/
 ├── README.md                 # Setup and usage instructions
 ├── requirements.txt          # Python dependencies
 ├── chunker.py                # Format-aware document chunking
-├── store.py                  # ChromaDB vector storage
+├── store.py                  # ChromaDB vector storage (supports Qdrant backend)
 ├── embedder.py               # Embedding client (via Kong AI Gateway)
 ├── mcp_server.py             # MCP server for Roo Code integration
 ├── watcher.py                # File watcher for incremental re-indexing
+├── reindex-file.py           # Single-file re-indexer (called by VS Code extension)
 ├── index.py                  # Full workspace indexer
 └── test_chunker.py           # Unit tests for chunking logic
 
 config/kong/
 └── kong.yml                  # Kong AI Gateway declarative configuration
+
+.vscode/
+└── tasks.json                # Auto-start watcher on workspace open
+
+.githooks/
+├── post-merge                # Auto-reindex after git pull
+└── post-checkout             # Auto-reindex after branch switch
 
 .vector-db/                   # ChromaDB persistent storage (gitignored)
 ```
@@ -1191,6 +1199,306 @@ kong-routes: ## List Kong AI routes
 | Roo Code ignores MCP tool (doesn't call `workspace_search`) | Low | High | MCP tool description explicitly instructs "use this BEFORE reading files"; add to Roo Code system prompt |
 | OpenAI API rate limits during bulk re-index | Low | Low | Kong rate limiting prevents bursts; batch size of 50 stays well under limits |
 | Embedding model version change alters vector space | Low | High | Re-index entire workspace when embedding model changes (< 60 seconds) |
+
+---
+
+## Multi-Architect Deployment
+
+### Per-Architect Resource Model
+
+Every component in this plan runs locally. Each architect who opens the workspace gets their own independent instance:
+
+| Component | Per-architect? | Why |
+|-----------|---------------|-----|
+| ChromaDB (`.vector-db/`) | Yes -- local disk | ChromaDB runs as an embedded library, not a server. Each architect's checkout has its own `.vector-db/` directory (gitignored). No shared state |
+| File watcher | Yes -- local process | Each architect runs `make vector-watch` in their VS Code terminal. It watches their working copy for changes |
+| Kong AI Gateway | Yes or shared | If running locally via Docker Compose (`make kong-up`), each architect runs their own. Could be shared via a team-hosted instance |
+| MCP server | Yes -- local process | Roo Code spawns the MCP server as a child process (configured in `.roo/mcp.json`). It runs per VS Code window |
+| Embeddings | Shared API key | All architects hit the same OpenAI/Ollama endpoint (via Kong or directly). Cost is pooled |
+
+### Practical Workflow Per Architect
+
+```
+Architect opens VS Code
+  -> Roo Code auto-starts MCP server (from .roo/mcp.json config)
+  -> MCP server connects to local ChromaDB
+
+First time (or after git pull with many changes):
+  -> Run: make vector-index          # ~60 seconds, full re-index
+
+Ongoing:
+  -> Run: make vector-watch          # background, re-indexes on save
+  -> (Or: VS Code task that auto-starts watcher on workspace open)
+```
+
+### Scaling to Multiple Architects
+
+The core limitation is that every architect maintains their own local vector DB. Three approaches address this:
+
+#### Approach A: VS Code Task Auto-Start (Low Effort)
+
+Add a `.vscode/tasks.json` task that auto-runs the watcher on workspace open. Each architect still has a local DB, but the watcher starts automatically with no manual step.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Vector DB: Watch for Changes",
+      "type": "shell",
+      "command": "python3",
+      "args": ["scripts/vector-db/watcher.py"],
+      "isBackground": true,
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Vector DB: Full Re-index",
+      "type": "shell",
+      "command": "python3",
+      "args": ["scripts/vector-db/index.py", "."],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+  ]
+}
+```
+
+**Effort:** 30 minutes. **Trade-off:** Still per-architect, still needs initial index after clone.
+
+#### Approach B: Git Hook Indexing (Low Effort)
+
+Add `post-checkout` and `post-merge` git hooks that trigger a full re-index after every `git pull` or branch switch. Combined with the file watcher for live changes.
+
+```bash
+#!/bin/sh
+# .githooks/post-merge
+# Auto-reindex vector DB after git pull
+
+if [ -d "scripts/vector-db" ] && command -v python3 >/dev/null 2>&1; then
+    echo "Re-indexing workspace vector DB..."
+    python3 scripts/vector-db/index.py . &
+fi
+```
+
+```bash
+#!/bin/sh
+# .githooks/post-checkout
+# Auto-reindex vector DB after branch switch
+
+# Only run for branch checkouts (flag=1), not file checkouts (flag=0)
+if [ "$3" = "1" ] && [ -d "scripts/vector-db" ] && command -v python3 >/dev/null 2>&1; then
+    echo "Re-indexing workspace vector DB..."
+    python3 scripts/vector-db/index.py . &
+fi
+```
+
+Configure git to use the hooks directory:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+**Effort:** 1 hour. **Trade-off:** Adds ~60 seconds (background) to every pull. Still local per architect.
+
+#### Approach C: Shared Qdrant Server (Medium Effort)
+
+Replace embedded ChromaDB with a team-hosted Qdrant instance. All architects query the same index. A CI job re-indexes on every push to `main`.
+
+```yaml
+# Addition to docker-compose.yml (or team-hosted VM)
+  qdrant:
+    image: qdrant/qdrant:v1.12
+    container_name: novatrek-qdrant
+    ports:
+      - "6333:6333"   # REST API
+      - "6334:6334"   # gRPC
+    volumes:
+      - qdrant-data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+```
+
+CI job (GitHub Actions):
+
+```yaml
+# .github/workflows/vector-index.yml
+name: Reindex Vector DB
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'architecture/**'
+      - 'decisions/**'
+      - 'portal/docs/**'
+      - 'config/**'
+      - 'services/**'
+
+jobs:
+  reindex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r scripts/vector-db/requirements.txt
+      - run: python3 scripts/vector-db/index.py .
+        env:
+          QDRANT_URL: ${{ vars.QDRANT_URL }}
+          KONG_AI_URL: ${{ vars.KONG_AI_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+```
+
+The `store.py` module would need a backend switch:
+
+```python
+BACKEND = os.environ.get("VECTOR_BACKEND", "chromadb")  # chromadb | qdrant
+
+if BACKEND == "qdrant":
+    from qdrant_client import QdrantClient
+    client = QdrantClient(url=os.environ.get("QDRANT_URL", "http://localhost:6333"))
+else:
+    import chromadb
+    client = chromadb.PersistentClient(path=".vector-db")
+```
+
+**Effort:** 1-2 days. **Trade-off:** Requires network access and shared infrastructure. Single source of truth -- no per-architect index staleness.
+
+### Multi-Architect Recommendation
+
+| Scenario | Approach | Why |
+|----------|----------|-----|
+| Solo architect (current state) | A + B | VS Code task auto-starts watcher; git hooks rebuild after pulls. Zero manual steps after initial setup |
+| Team of 2-5 architects | A + B | Same as solo. Local DBs are acceptable when each architect's workspace diverges (feature branches) |
+| Team of 5+ or CI-driven workflows | C | Shared Qdrant eliminates "every architect maintains their own DB" problem. CI-driven indexing guarantees freshness on `main` |
+
+---
+
+## VS Code Extension Analysis
+
+### Could This Be a VS Code Extension?
+
+**Yes.** VS Code's extension API provides every primitive needed:
+
+| Requirement | VS Code Extension API |
+|-------------|----------------------|
+| Watch file changes | `vscode.workspace.onDidSaveTextDocument`, `vscode.workspace.onDidCreateFiles`, `vscode.workspace.onDidDeleteFiles` |
+| Read workspace files | `vscode.workspace.fs.readFile`, `vscode.workspace.findFiles` |
+| Background processing | Extension activation on workspace open (`onStartupFinished`) |
+| Status bar feedback | `vscode.window.createStatusBarItem` -- show "Indexed 3,412 chunks" |
+| Configuration | `package.json` contributes settings -- embedding provider, Kong URL, chunk size |
+| MCP server hosting | Extension can spawn the MCP server as a child process, or expose tools directly |
+| Shared state across windows | `globalState` for cross-window persistence |
+
+A VS Code extension would eliminate every manual step:
+
+- No `make vector-index` -- the extension auto-indexes on activation
+- No `make vector-watch` -- file events are native to the extension lifecycle
+- No `.roo/mcp.json` manual config -- the extension registers the MCP server automatically
+- No separate terminal process -- everything runs inside the extension host
+
+### Should It Be a VS Code Extension?
+
+**For a solo architect or small team: No. For a distributable product: Yes.**
+
+#### Arguments FOR a VS Code Extension
+
+| Advantage | Why it matters |
+|-----------|---------------|
+| **Zero-touch setup** | Install extension, open workspace, done. No pip install, no Docker, no Makefile targets, no background terminals |
+| **Native file watching** | VS Code's file system events are more reliable than `watchdog` -- they fire for git operations, refactors, and external tools that modify files |
+| **UX integration** | Status bar showing index health, progress notifications during re-index, command palette commands (`>Workspace Search: Reindex`, `>Workspace Search: Query`) |
+| **Per-workspace activation** | Extension activates only for workspaces that need it (via `activationEvents`). No wasted resources |
+| **Portable** | Any architect installs the extension from the marketplace (or a `.vsix` file). No Python environment, no requirements.txt compatibility issues |
+| **Lifecycle management** | Extension deactivates cleanly when VS Code closes -- no orphaned watcher processes |
+
+#### Arguments AGAINST a VS Code Extension
+
+| Disadvantage | Why it matters more |
+|-------------|-------------------|
+| **Development effort is 3-5x higher** | A VS Code extension requires TypeScript, webpack bundling, extension manifest, activation events, contribution points, state management. The Python scripts in this plan are ~400 lines total. An equivalent extension is ~1,500-2,500 lines of TypeScript + build config |
+| **Dependency bundling is painful** | ChromaDB is a Python library. A VS Code extension runs in Node.js. Options: (a) bundle a ChromaDB Python subprocess, (b) use a JavaScript vector DB like `vectra` or `hnswlib-node`, (c) HTTP calls to a ChromaDB server in Docker. None are as clean as `pip install chromadb` |
+| **Embedding model integration** | The extension would need to either bundle an embedding model (huge), call an external API (requires API key config in VS Code settings), or shell out to Python/Ollama. The Python script approach handles this natively |
+| **Testing and debugging** | Extension debugging requires launching a separate VS Code Extension Development Host. Python scripts can be tested with `pytest` in 2 seconds |
+| **Maintenance burden** | VS Code API changes between versions. Extension marketplace publishing has review requirements. Python scripts just work |
+| **Already solved by Continue.dev** | Continue.dev already IS this VS Code extension -- open source, local codebase indexing, multiple LLM backends. Building a custom extension duplicates their work |
+
+#### What a Custom Extension Gives You That Continue.dev Doesn't
+
+| Requirement | Continue.dev | Custom Extension |
+|------------|-------------|-----------------|
+| Workspace-wide semantic search | Yes (`@codebase`) | Yes |
+| Format-aware chunking (OpenAPI, YAML) | Partial -- generic chunking | Full control |
+| Kong AI Gateway routing | No | Yes |
+| Cost tracking per query | No | Yes (via Kong) |
+| MCP tool exposure for Roo Code | No -- Continue.dev is its own chat | Yes |
+| NovaTrek-specific metadata enrichment | No | Yes |
+
+The only unique value a custom extension provides over Continue.dev is **Kong AI integration** and **MCP tool exposure for Roo Code**.
+
+### Recommended Hybrid Path: Thin Extension Wrapper
+
+If extension-level UX is desired, build a **thin VS Code extension wrapper** around the existing Python scripts rather than rewriting everything in TypeScript:
+
+```
+VS Code Extension (TypeScript, ~200 lines)
+  |-- onStartupFinished -> spawn `python3 scripts/vector-db/index.py`
+  |-- onDidSaveTextDocument -> spawn `python3 scripts/vector-db/reindex-file.py <path>`
+  |-- Status bar item -> reads `.vector-db/stats.json`
+  |-- Command: "Reindex Workspace" -> spawns full `index.py`
+  +-- Extension settings -> Kong URL, embedding provider, top-k
+
+Python scripts (unchanged from this plan)
+  |-- chunker.py, store.py, embedder.py -> actual work
+  |-- mcp_server.py -> Roo Code integration
+  +-- index.py, watcher.py -> invoked by extension
+```
+
+This gives:
+
+- Extension UX (auto-start, status bar, command palette)
+- Python implementation (ChromaDB native, easy to test, ~400 lines)
+- No webpack/bundling complexity for the heavy logic
+- Extension is a thin shell -- trivial to maintain
+
+### Extension Decision Matrix
+
+| If you are... | Do this | Why |
+|---------------|---------|-----|
+| Solo architect wanting RAG now | **Use the Python scripts from this plan** | Working in days, not weeks. `make vector-index && make vector-watch` is 2 commands |
+| Solo architect who wants polish | **Install Continue.dev** | Zero development. `@codebase` works out of the box |
+| Building for a team of 3-5 | **Python scripts + thin extension wrapper** | Auto-start eliminates "forgot to run the watcher" failure mode. Kong routing gives cost visibility |
+| Building a product for distribution | **Full VS Code extension** | Only if packaging for dozens of users who cannot be expected to run Python scripts |
+
+### Updated Implementation Phase (Phase F)
+
+If the thin extension wrapper is pursued, add after Phase E:
+
+### Phase F: VS Code Extension Wrapper (Day 6-7, optional)
+
+| Step | Task | Validation |
+|------|------|------------|
+| F.1 | Scaffold VS Code extension with `yo code` generator | Extension loads in Extension Development Host |
+| F.2 | Add `onStartupFinished` activation that spawns `python3 scripts/vector-db/watcher.py` as a child process | Opening workspace starts watcher automatically |
+| F.3 | Add `onDidSaveTextDocument` handler that calls `python3 scripts/vector-db/reindex-file.py <path>` | Saving a file triggers re-index within 2 seconds |
+| F.4 | Add status bar item that shows chunk count from `.vector-db/stats.json` | Status bar displays "Vector DB: 3,412 chunks" |
+| F.5 | Add command palette: "Workspace Search: Full Reindex" | Command triggers `index.py` with progress notification |
+| F.6 | Add extension settings for Kong URL and embedding provider | Settings appear under "Workspace Search" in VS Code settings |
+| F.7 | Package as `.vsix` for team distribution | `vsce package` produces installable file |
+
+**Milestone:** Zero-touch vector DB lifecycle -- opens with workspace, updates on save, no manual commands needed.
 
 ---
 
