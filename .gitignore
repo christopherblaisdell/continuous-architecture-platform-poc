@@ -61,5 +61,13 @@ infra/modules/*.json
 # Java / Gradle build artifacts
 services/**/build/
 services/**/.gradle/
+services/**/gradle/
+services/**/gradlew
+services/**/gradlew.bat
 *.class
 *.jar
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo

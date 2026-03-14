@@ -1,21 +1,19 @@
 # ===========================================================================
-# svc-check-in — CI/CD Orchestrator
+# svc-reservations — CI/CD Orchestrator
 # ===========================================================================
-# Builds, tests, scans, and deploys the check-in microservice.
-# Triggers on changes to the service code or adventure classification config.
+# Builds, tests, scans, and deploys the reservations microservice.
 # ===========================================================================
 
-name: "svc-check-in"
+name: "svc-reservations"
 
 on:
   push:
     branches: [main]
     paths:
-      - 'services/svc-check-in/**'
-      - 'config/adventure-classification.yaml'
+      - 'services/svc-reservations/**'
   pull_request:
     paths:
-      - 'services/svc-check-in/**'
+      - 'services/svc-reservations/**'
 
 permissions:
   contents: read
@@ -25,7 +23,7 @@ jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-reservations
     secrets: inherit
 
   migrate-dev:
@@ -33,9 +31,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/db-migrate.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-reservations
       environment: dev
-      schema-name: checkin
+      schema-name: reservations
     secrets: inherit
 
   cd-dev:
@@ -43,7 +41,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/service-cd.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-reservations
       environment: dev
       image-tag: ${{ needs.ci.outputs.image-tag }}
     secrets: inherit
@@ -53,9 +51,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/db-migrate.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-reservations
       environment: prod
-      schema-name: checkin
+      schema-name: reservations
     secrets: inherit
 
   cd-prod:
@@ -63,7 +61,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/service-cd.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-reservations
       environment: prod
       image-tag: ${{ needs.ci.outputs.image-tag }}
     secrets: inherit

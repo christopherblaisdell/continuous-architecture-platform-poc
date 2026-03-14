@@ -1,21 +1,20 @@
 # ===========================================================================
-# svc-check-in — CI/CD Orchestrator
+# svc-notifications — CI/CD Orchestrator
 # ===========================================================================
-# Builds, tests, scans, and deploys the check-in microservice.
-# Triggers on changes to the service code or adventure classification config.
+# Builds, tests, scans, and deploys the notifications microservice.
+# Stateless outbox pattern — no shared mutable state.
 # ===========================================================================
 
-name: "svc-check-in"
+name: "svc-notifications"
 
 on:
   push:
     branches: [main]
     paths:
-      - 'services/svc-check-in/**'
-      - 'config/adventure-classification.yaml'
+      - 'services/svc-notifications/**'
   pull_request:
     paths:
-      - 'services/svc-check-in/**'
+      - 'services/svc-notifications/**'
 
 permissions:
   contents: read
@@ -25,7 +24,7 @@ jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-notifications
     secrets: inherit
 
   migrate-dev:
@@ -33,9 +32,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/db-migrate.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-notifications
       environment: dev
-      schema-name: checkin
+      schema-name: notifications
     secrets: inherit
 
   cd-dev:
@@ -43,7 +42,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/service-cd.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-notifications
       environment: dev
       image-tag: ${{ needs.ci.outputs.image-tag }}
     secrets: inherit
@@ -53,9 +52,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/db-migrate.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-notifications
       environment: prod
-      schema-name: checkin
+      schema-name: notifications
     secrets: inherit
 
   cd-prod:
@@ -63,7 +62,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/service-cd.yml
     with:
-      service-name: svc-check-in
+      service-name: svc-notifications
       environment: prod
       image-tag: ${{ needs.ci.outputs.image-tag }}
     secrets: inherit
