@@ -4,8 +4,8 @@
 |-----------|-------|
 | **Owner** | Architecture Practice |
 | **Created** | 2026-03-01 |
-| **Last Updated** | 2026-03-03 |
-| **Total Decisions** | 11 |
+| **Last Updated** | 2026-03-14 |
+| **Total Decisions** | 12 |
 
 ---
 
@@ -32,6 +32,7 @@ Decisions originate in ticket-level solution designs and are **promoted** to thi
 | [ADR-009](ADR-009-session-scoped-kiosk-access.md) | Session-Scoped Kiosk Access with 30-Minute Expiry | Accepted | 2026-02-05 | svc-check-in | NTK-10003 |
 | [ADR-010](ADR-010-patch-semantics-schedule-updates.md) | Switch from PUT to PATCH Semantics for Schedule Updates | Proposed | 2026-02-28 | svc-scheduling-orchestrator | NTK-10004 |
 | [ADR-011](ADR-011-optimistic-locking-daily-schedule.md) | Add Optimistic Locking to DailySchedule Entity | Proposed | 2026-02-28 | svc-scheduling-orchestrator | NTK-10004 |
+| [ADR-012](ADR-012-test-methodology.md) | Test Methodology for NovaTrek Services (TDD + BDD Hybrid) | Accepted | 2026-03-14 | All services | Test Methodology Initiative |
 
 ---
 
@@ -52,7 +53,7 @@ Decisions originate in ticket-level solution designs and are **promoted** to thi
 
 | Status | Count | ADRs |
 |--------|-------|------|
-| Accepted | 7 | ADR-003 through ADR-009 |
+| Accepted | 8 | ADR-003 through ADR-009, ADR-012 |
 | Proposed | 4 | ADR-001, ADR-002, ADR-010, ADR-011 |
 | Deprecated | 0 | — |
 | Superseded | 0 | — |

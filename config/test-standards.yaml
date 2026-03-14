@@ -1,0 +1,107 @@
+# ===========================================================================
+# NovaTrek Adventures — Test Standards Configuration (ADR-012)
+# ===========================================================================
+# Central definition of coverage thresholds and test quality gates.
+# All NovaTrek services read from this file via their build configuration.
+# Changes here affect every service CI build.
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Coverage Thresholds
+# ---------------------------------------------------------------------------
+# Applied by JaCoCo in each service build.gradle.kts.
+# Minimum thresholds block PR merge if not met.
+# Target thresholds are aspirational — reported but not blocking.
+# ---------------------------------------------------------------------------
+coverage:
+  line:
+    minimum: 0.80          # 80% — PR blocked below this threshold
+    target: 0.90           # 90% — aspirational target
+  branch:
+    minimum: 0.70          # 70% — PR blocked below this threshold
+    target: 0.80           # 80% — aspirational target
+  instruction:
+    minimum: 0.80          # 80% — aligned with line coverage
+    target: 0.90
+  complexity:
+    minimum: 0.70          # 70% — cyclomatic complexity coverage
+    target: 0.80
+
+# ---------------------------------------------------------------------------
+# Mutation Testing Thresholds (PITest)
+# ---------------------------------------------------------------------------
+# Phase A: advisory only (build does not fail below minimum).
+# Phase D: promote minimum to a blocking gate.
+# ---------------------------------------------------------------------------
+mutation:
+  minimum_score: 60        # 60% mutation score — advisory in Phase A
+  target_score: 75         # 75% — aspirational target
+  enforcement: advisory    # advisory | blocking — change to blocking in Phase D
+  excluded_packages:
+    - "**.config.**"       # Spring configuration classes — low mutation value
+    - "**.dto.**"          # Data transfer objects — simple data holders
+    - "**.entity.**"       # JPA entities — covered by integration tests
+
+# ---------------------------------------------------------------------------
+# Contract Testing
+# ---------------------------------------------------------------------------
+# Every cross-service call in architecture/metadata/cross-service-calls.yaml
+# requires a corresponding contract test.
+# ---------------------------------------------------------------------------
+contract_testing:
+  coverage: 1.00           # 100% of declared cross-service calls must have contract tests
+  enforcement: blocking    # Always blocking — contract gaps are integration risks
+  tool: spring-cloud-contract  # Pending ADR-013 (Pact vs Spring Cloud Contract evaluation in Phase B)
+
+# ---------------------------------------------------------------------------
+# Test Layer Requirements
+# ---------------------------------------------------------------------------
+# Documents the expected test composition per service.
+# Not machine-enforced here — used as review guidance and documentation.
+# ---------------------------------------------------------------------------
+layers:
+  unit:
+    methodology: TDD
+    framework: JUnit 5 + Mockito + AssertJ
+    scope: Single class or function in isolation
+    speed: milliseconds
+    volume: highest
+
+  integration:
+    methodology: TDD
+    framework: JUnit 5 + Spring Boot Test + Testcontainers
+    scope: Service layer + data store
+    speed: seconds
+    volume: medium
+
+  contract:
+    methodology: spec-driven
+    framework: Spring Cloud Contract
+    scope: API boundary between services
+    speed: seconds
+    volume: one per declared cross-service call
+
+  acceptance:
+    methodology: BDD
+    framework: Cucumber-JVM 7.x
+    scope: User story acceptance criteria (Gherkin scenarios)
+    speed: seconds to minutes
+    volume: one scenario per acceptance criterion
+
+  e2e:
+    methodology: scripted
+    framework: JUnit 5 + REST-assured
+    scope: Full user journey across services
+    speed: minutes
+    volume: lowest (critical paths only)
+
+# ---------------------------------------------------------------------------
+# Reporting
+# ---------------------------------------------------------------------------
+reports:
+  jacoco:
+    xml: true              # Required for CI ingestion (e.g., SonarCloud, Codecov)
+    html: true             # Local developer review
+  pitest:
+    format: HTML           # Human-readable mutation report
+    history: true          # Track mutation score trends over time

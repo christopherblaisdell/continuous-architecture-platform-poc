@@ -445,7 +445,7 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 
 | Initiative | Status | Companion Document | Summary |
 |-----------|--------|-------------------|---------|
-| Test Methodology and Practice | Proposed | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) | Comprehensive TDD/BDD practice, coverage standards (80% line, 70% branch, 60% mutation), contract testing for cross-service boundaries, automated regression gates in CI |
+| Test Methodology and Practice | In Progress | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) | Comprehensive TDD/BDD practice, coverage standards (80% line, 70% branch, 60% mutation), contract testing for cross-service boundaries, automated regression gates in CI |
 | Fix Deploy Failures | Backlog | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | Audit and fix recurring CI/CD pipeline failures — flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts. Prerequisite for reliable incremental delivery |
 | Azure Microservices Implementation | Draft | [docs/AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Build out the full NovaTrek microservices platform in Azure — cheapest possible, IaC with Bicep, ephemeral environments, deep linking from architecture artifacts to live implementations |
 
@@ -481,7 +481,7 @@ These are deferred evaluations and operational items tracked in `architecture/re
 |----------|------|--------|------|
 | CALM Evaluation | 2026-03-06 | Deferred | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
 | Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
-| Test Methodology | 2026-03-11 | Backlog (HIGH) | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |
+| Test Methodology | 2026-03-11 | In Progress | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |
 
 ---
 
@@ -515,6 +515,14 @@ This checklist is applied during PR review of every solution design:
 - [ ] YAML changes match the solution content
 - [ ] Cross-service calls updated if new integrations added
 - [ ] Backward compatibility addressed for all API changes
+
+### Test Coverage (ADR-012)
+
+- [ ] Test plan included in `3.solution/g.guidance/test-plan.md`
+- [ ] Affected test layers identified (unit, integration, contract, acceptance)
+- [ ] Contract tests declared for all new cross-service integrations
+- [ ] BDD scenarios provided for all user story acceptance criteria
+- [ ] No existing tests removed without documented rationale
 
 ---
 
