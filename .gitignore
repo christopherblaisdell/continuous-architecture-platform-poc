@@ -63,3 +63,8 @@ services/**/build/
 services/**/.gradle/
 *.class
 *.jar
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo

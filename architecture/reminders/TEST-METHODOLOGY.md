@@ -1,8 +1,9 @@
 # Comprehensive Test Methodology and Practice
 
 **Date**: 2026-03-11
+**Last Updated**: 2026-03-14
 **Priority**: High
-**Status**: Backlog
+**Status**: In Progress — Phase A complete
 
 ## Summary
 
@@ -18,15 +19,15 @@ Establish a comprehensive testing methodology across the NovaTrek platform deliv
 
 ## Action Items
 
-- [ ] Define a test methodology document covering unit, integration, contract, and end-to-end testing layers
-- [ ] Evaluate TDD (Test-Driven Development) as the standard practice for service implementation
-- [ ] Evaluate BDD (Behavior-Driven Development) with Gherkin/Cucumber for acceptance criteria validation
-- [ ] Establish minimum coverage thresholds per service (unit, branch, mutation)
+- [x] Define a test methodology document covering unit, integration, contract, and end-to-end testing layers — [TEST-METHODOLOGY-ROADMAP.md](../docs/roadmap/TEST-METHODOLOGY-ROADMAP.md)
+- [x] Evaluate TDD (Test-Driven Development) as the standard practice for service implementation — ADR-012: TDD at unit and integration layers
+- [x] Evaluate BDD (Behavior-Driven Development) with Gherkin/Cucumber for acceptance criteria validation — ADR-012: BDD at acceptance layer
+- [x] Establish minimum coverage thresholds per service (unit, branch, mutation) — [config/test-standards.yaml](../config/test-standards.yaml)
+- [x] Create an ADR for the chosen testing approach (TDD vs BDD vs hybrid) — [ADR-012](../decisions/ADR-012-test-methodology.md)
+- [x] Add test requirements to the solution design template (test plan section in guidance) — [solution-design-template.md](../portal/docs/standards/solution-design/solution-design-template.md)
 - [ ] Add automated regression test suites to CI pipelines (run on every PR)
 - [ ] Define contract testing strategy for cross-service API boundaries (e.g., Pact, Spring Cloud Contract)
-- [ ] Add test requirements to the solution design template (test plan section in guidance)
 - [ ] Add test coverage validation to `validate-solution.yml` CI workflow
-- [ ] Create an ADR for the chosen testing approach (TDD vs BDD vs hybrid)
 - [ ] Document test data management strategy (synthetic test data generation, fixture conventions)
 
 ## Delivery Practice Integration Points
