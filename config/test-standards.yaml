@@ -1,0 +1,131 @@
+# ===========================================================================
+# NovaTrek Adventures — Test Coverage Standards (ADR-012)
+# ===========================================================================
+# Defines minimum coverage thresholds, tooling, and enforcement policy for
+# all NovaTrek microservices. CI gates enforce minimum thresholds on every PR.
+# Reference: docs/roadmap/TEST-METHODOLOGY-ROADMAP.md
+# Decision:  decisions/ADR-012-test-methodology.md
+# ===========================================================================
+
+version: "1.0"
+date: "2026-03-14"
+
+# ---------------------------------------------------------------------------
+# Coverage Thresholds
+# ---------------------------------------------------------------------------
+# All thresholds apply per-service. PRs are blocked if minimums are not met.
+# Targets are aspirational — tracked in SonarCloud dashboard.
+coverage:
+  line:
+    minimum: 80
+    target: 90
+    enforcement: block-pr
+    tool: jacoco
+  branch:
+    minimum: 70
+    target: 80
+    enforcement: block-pr
+    tool: jacoco
+  mutation:
+    minimum: 60
+    target: 75
+    enforcement: advisory         # Advisory initially; promoted to block-pr in Phase D
+    tool: pitest
+  contract:
+    minimum: 100                  # All cross-service calls in cross-service-calls.yaml must have a contract test
+    target: 100
+    enforcement: block-pr
+    tool: pact
+
+# ---------------------------------------------------------------------------
+# Test Layers
+# ---------------------------------------------------------------------------
+# Defines the expected test layers per service category.
+# service_type determines which layers are mandatory (required: true).
+layers:
+  unit:
+    required: true
+    scope: "Single class/function — no external dependencies"
+    speed: milliseconds
+    tooling:
+      - junit5
+      - mockito
+      - assertj
+  integration:
+    required: true
+    scope: "Service + data store — real database, mocked external services"
+    speed: seconds
+    tooling:
+      - junit5
+      - testcontainers
+  contract:
+    required: true                # Required for any service with cross-service calls
+    scope: "API boundary between consumer and provider services"
+    speed: seconds
+    tooling:
+      - pact
+      - spring-cloud-contract     # Alternative — evaluated in ADR-012
+  acceptance:
+    required: false               # Required only when user stories have BDD scenarios
+    scope: "Full user journey — Given/When/Then scenarios from user stories"
+    speed: seconds
+    tooling:
+      - cucumber-jvm
+  e2e:
+    required: false               # Only for critical happy paths
+    scope: "End-to-end through deployed services"
+    speed: minutes
+    tooling:
+      - rest-assured
+      - postman-newman
+
+# ---------------------------------------------------------------------------
+# Methodology
+# ---------------------------------------------------------------------------
+# Hybrid TDD + BDD approach per ADR-012.
+methodology:
+  unit: tdd                       # Test-Driven Development — write test before implementation
+  integration: tdd
+  contract: spec-driven           # Auto-generated from OpenAPI specs
+  acceptance: bdd                 # Behavior-Driven Development — Gherkin from user stories
+  e2e: scripted
+
+# ---------------------------------------------------------------------------
+# Contract Testing Source of Truth
+# ---------------------------------------------------------------------------
+# Every entry in architecture/metadata/cross-service-calls.yaml requires
+# a consumer-driven contract test. This section defines the broker config.
+contract_testing:
+  source: architecture/metadata/cross-service-calls.yaml
+  broker_type: pact               # Options: pact, spring-cloud-contract
+  broker_url: ""                  # Set via CI environment variable PACT_BROKER_URL (e.g., https://pact-broker.novatrek.example.com)
+                                  # Configure in GitHub Actions secrets; see docs/AZURE-IMPLEMENTATION-PLAN.md for hosting options
+  publish_results: true
+  enable_pending: false
+
+# ---------------------------------------------------------------------------
+# CI Pipeline Gates
+# ---------------------------------------------------------------------------
+# Defines which workflow stages enforce which standards.
+ci_gates:
+  build:
+    - compile
+    - unit-tests
+  coverage:
+    - jacoco-line-gate            # Fail if line coverage < minimum
+    - jacoco-branch-gate          # Fail if branch coverage < minimum
+  contract:
+    - pact-verify                 # Verify all consumer pacts against provider
+  acceptance:
+    - cucumber-bdd                # Run BDD scenarios (when present)
+  mutation:
+    - pitest-report               # Advisory — report only until Phase D
+
+# ---------------------------------------------------------------------------
+# Solution Design Integration
+# ---------------------------------------------------------------------------
+# Defines test artifact requirements per solution design.
+solution_design:
+  test_plan_required: true        # test-plan.md required in 3.solution/g.guidance/ for service-touching solutions
+  test_plan_path: "3.solution/g.guidance/test-plan.md"
+  pr_checklist_file: docs/roadmap/ROADMAP.md

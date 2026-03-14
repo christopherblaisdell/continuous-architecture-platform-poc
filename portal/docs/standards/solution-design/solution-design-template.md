@@ -163,6 +163,16 @@ Requirements capture explicit functional behaviors and non-functional quality at
 
 Guidance provides optional, advisory-only HOW recommendations prepared by the solution architect to help development teams with implementation. This is the one section that intentionally crosses the WHAT/WHY boundary into implementation detail -- including code examples, configuration patterns, testing approaches, and data structure specifications. Guidance is supplementary and does not constrain development teams; they may adopt, adapt, or disregard these recommendations.
 
+For solutions that touch service logic, include a test plan at `3.solution/g.guidance/test-plan.md` covering:
+
+- Which test layers are affected (unit, integration, contract, acceptance)
+- New test scenarios required (unit and integration)
+- BDD scenarios derived from user story acceptance criteria (Gherkin format, where applicable)
+- Contract test additions for any new cross-service integrations documented in `cross-service-calls.yaml`
+- Existing tests that need updating due to changed behavior
+
+Coverage thresholds and tooling are defined in `config/test-standards.yaml` (ADR-012).
+
 **NOTE**: Only include this section if guidance documents exist. See [Optional Sections Standard](/.ai-instructions/customizations/solution-design-optional-sections-standard.md).
 
 ## Security Considerations *(Optional - only if security concerns exist)*
