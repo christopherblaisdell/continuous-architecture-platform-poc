@@ -75,18 +75,17 @@ public class ReservationController {
             existing.setNumParticipants(patch.getNumParticipants());
         }
         if (patch.getTotalAmount() != null) existing.setTotalAmount(patch.getTotalAmount());
-        if (patch.getDepositAmount() != null) {
-            java.math.BigDecimal effectiveTotal = patch.getTotalAmount() != null
-                    ? patch.getTotalAmount() : existing.getTotalAmount();
-            if (patch.getDepositAmount().compareTo(effectiveTotal) > 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "depositAmount must not exceed totalAmount");
-            }
-            existing.setDepositAmount(patch.getDepositAmount());
-        }
+        if (patch.getDepositAmount() != null) existing.setDepositAmount(patch.getDepositAmount());
         if (patch.getSpecialRequirements() != null) existing.setSpecialRequirements(patch.getSpecialRequirements());
         if (patch.getScheduledDate() != null) existing.setScheduledDate(patch.getScheduledDate());
         if (patch.getBookingSource() != null) existing.setBookingSource(patch.getBookingSource());
+
+        // Validate deposit constraint against final state of both fields
+        if (existing.getDepositAmount() != null && existing.getTotalAmount() != null
+                && existing.getDepositAmount().compareTo(existing.getTotalAmount()) > 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "depositAmount must not exceed totalAmount");
+        }
 
         return reservationRepository.save(existing);
     }

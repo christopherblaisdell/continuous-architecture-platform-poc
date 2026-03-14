@@ -17,6 +17,10 @@ on:
     paths:
       - 'services/svc-check-in/**'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml

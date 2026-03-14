@@ -16,6 +16,10 @@ on:
     paths:
       - 'services/svc-payments/**'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml

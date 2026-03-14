@@ -15,6 +15,10 @@ on:
     paths:
       - 'services/svc-reservations/**'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml
