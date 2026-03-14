@@ -362,4 +362,51 @@ Combined with Copilot's cost advantage ($19/mo fixed vs ~$67/mo variable at proj
 
 ---
 
+## 10. Context Architecture: RAG vs Long Context
+
+The results above are grounded in architectural evidence, but it is worth stepping back to name the underlying paradigm at work — because it explains *why* the differences exist, not just *what* they are.
+
+### The Two Approaches
+
+There are two fundamentally different ways to inject context into an LLM:
+
+**RAG (Retrieval-Augmented Generation)** pre-indexes documents into a vector database. When a query arrives, a semantic search retrieves the most relevant chunks and injects only those into the context window. The model sees a small, curated signal.
+
+**Long Context** skips the index entirely. With models that support very large context windows (100K–1M+ tokens), documents can be loaded directly into the prompt and the model's attention mechanism is relied upon to find relevant information within that single pass. The model sees everything in one shot, but must sift through the noise itself.
+
+### How the Two Toolchains Map to These Approaches
+
+| Approach | GitHub Copilot | Roo Code + OpenRouter |
+|----------|:--------------:|:---------------------:|
+| Architecture | RAG — server-side vector index, semantic retrieval | Long Context — full conversation history re-transmitted each turn |
+| Context per turn | ~5K tokens (only relevant chunks) | 50K–180K tokens (growing, re-transmitted) |
+| Workspace coverage | Entire workspace indexed automatically | 22 files read manually; LLM must self-invoke `codebase_search` |
+| Indexing cost | Amortized into $39/month subscription | Re-calculated and billed on every API call |
+
+### Applying the Video Framework to NovaTrek Evidence
+
+#### Arguments That Appear to Favor Long Context (and Why They Don't Hold for Roo Code)
+
+**1. Infrastructure simplicity** — The RAG stack is heavy: chunking strategy, embedding model, vector database, reranker, sync pipeline. Long context eliminates all of that — the "no stack" stack. The problem is that Roo Code does **not** actually eliminate that infrastructure. Users still need to provision a Qdrant vector database, configure an embedding provider (OpenAI, Gemini, or Ollama), and maintain real-time synchronization. Roo Code forces users to build the RAG stack themselves *and* still re-transmits the entire conversation history on every turn. It carries the infrastructure burden of RAG without the context-efficiency benefits.
+
+**2. No retrieval lottery** — Long context eliminates the risk of semantic search returning the wrong chunks ("silent failure" — the answer existed in the data but the model never saw it). Roo Code does not escape this failure mode either. Even with Qdrant configured, the LLM must explicitly recognize it needs context and invoke `codebase_search` itself. In Scenario 4, Roo Code did not retrieve the approved solution design it was supposed to apply — it proceeded without adequate context and fabricated four OpenAPI schema elements. This is the retrieval lottery playing out, not being avoided.
+
+**3. The whole-book problem** — RAG retrieves snippets but cannot reason about the *gap* between documents. If the answer lies in what is missing (e.g., which security requirements were omitted from the final release), RAG will retrieve relevant chunks but the model will never see the full picture. For architecture work, this argument has real force: solution designs, ADRs, and OpenAPI specs must be understood holistically. However, Copilot's RAG approach serves this need well because it retrieves semantically complete documents — not random chunks — and architecture sessions are bounded tasks with identifiable source files. More importantly, Roo Code's Long Context approach also fails the whole-book test: in an 80-turn session with 150K+ tokens of accumulated context, the model's attention mechanism is diluted (the "needle in a haystack" problem), and it still misses the structured relationships between documents.
+
+#### Arguments That Favor RAG (All Three Apply to Copilot)
+
+**1. Compute efficiency** — Long context requires the model to re-process the same documents on every turn. In a 20-turn architecture session, the full 150K-token context is re-transmitted 20 times, billing the same tokens repeatedly. Copilot's indexed approach pays the indexing cost once (server-side, amortized across all users) and then retrieves only relevant snippets. This is the direct source of the 208x session cost difference observed in this comparison: $0.48 per session (Copilot) vs ~$100 (OpenRouter).
+
+**2. Needle in a haystack** — As context windows grow past 500K tokens, the model's attention mechanism becomes diluted. Research shows models frequently fail to retrieve specific facts buried in very large contexts, or hallucinate details from surrounding text. Copilot's RAG approach keeps the signal-to-noise ratio high by presenting only the top-k relevant chunks. This is directly observable in the S4 result: Roo Code's long context window did not *help* it stay accurate — it *hurt* it by diluting the specific approved design it needed to follow.
+
+**3. Infinite datasets** — A context window of even 1 million tokens is "just a drop in the bucket" compared to an enterprise data lake. For the NovaTrek workspace alone — 19 microservices, 300+ portal pages, 11 ADRs, growing solution library — no context window can hold the full state at once. RAG's retrieval layer is the only architecture that scales to enterprise knowledge bases. Copilot's server-side index handles this automatically; Roo Code's manual file selection approach breaks down as the workspace grows.
+
+### The Paradox: Long Context's Penalties Without Its Benefits
+
+The most significant finding from applying this framework to the NovaTrek comparison is that Roo Code occupies the worst position on the tradeoff curve: it pays the **compute inefficiency penalty** of Long Context (re-transmitting 50K–180K tokens per turn) while also suffering the **retrieval lottery failures** associated with RAG (missing context, fabricating fields). It does not capture the simplicity argument for Long Context (because Qdrant infrastructure is still required) and it does not capture the bounded-context efficiency of a well-managed RAG system.
+
+Copilot's server-managed RAG architecture lands on the favorable side of every dimension the video identifies: it is computationally efficient (bounded context), free from the retrieval lottery (automatic semantic indexing covers the full workspace), needle-free (small curated contexts keep attention focused), and scales to the full enterprise dataset.
+
+---
+
 *Analysis generated by comparing `phase-1-ai-tool-cost-comparison/outputs/copilot/001` and `phase-1-ai-tool-cost-comparison/outputs/roo-code/001` — all data sourced from workspace files and mock script outputs. No corporate data referenced.*
