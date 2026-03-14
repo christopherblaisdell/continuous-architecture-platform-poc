@@ -25,20 +25,23 @@ Pull Request opened
     ├─── Gate 1: YAML Metadata Validation
     ├─── Gate 2: Solution Folder Structure Validation
     ├─── Gate 3: Data Isolation Audit
-    ├─── Gate 4: Portal Build (link validation)
-    ├─── Gate 5: Confluence Dry-Run (mirror validation)
-    ├─── Gate 6: PR Review Approval (human gate)
+    ├─── Gate 4: Snyk Dependency Scan (SCA)
+    ├─── Gate 5: Snyk Code Analysis (SAST)
+    ├─── Gate 6: Snyk IaC Scan (configuration security)
+    ├─── Gate 7: Portal Build (link validation)
+    ├─── Gate 8: Confluence Dry-Run (mirror validation)
+    ├─── Gate 9: PR Review Approval (human gate)
     │
     ▼
 Merge to main (only if ALL gates pass)
     │
-    ├─── Gate 7: Production Build
-    ├─── Gate 8: Static Asset Integrity
+    ├─── Gate 10: Production Build
+    ├─── Gate 11: Static Asset Integrity
     │
     ▼
 Deploy to Azure Static Web Apps
     │
-    ├─── Gate 9: Azure Platform Security (WAF, DDoS protection)
+    ├─── Gate 12: Azure Platform Security (WAF, DDoS protection)
     │
     ▼
 Content live on portal
@@ -87,7 +90,46 @@ These gates run automatically on every pull request. All must pass before the PR
 
 **Blocks merge on failure**: Yes.
 
-### Gate 4 — Portal Build
+### Gate 4 — Snyk Dependency Scan
+
+**What it checks**: All Python packages in `requirements-docs.txt` against the Snyk vulnerability database.
+
+**Why it matters**: MkDocs, pymdownx, and other build-time dependencies may contain vulnerabilities. Even though these packages only run at build time (not in production), a compromised build dependency could inject malicious content into the generated HTML.
+
+**Implementation**: `snyk-security.yml` — the `dependency-scan` job uses `snyk/actions/python-3.12@master` with `--severity-threshold=high`. SARIF results are uploaded to the GitHub Security tab.
+
+**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
+
+### Gate 5 — Snyk Code Analysis
+
+**What it checks**: Static analysis of Python generator scripts in `portal/scripts/` for security issues including:
+
+- Path traversal vulnerabilities (generators process file paths from YAML input)
+- Unsafe deserialization (generators parse YAML metadata)
+- Injection risks (generators produce HTML output)
+- Hardcoded secrets or credentials
+
+**Why it matters**: The generator scripts are the boundary between untrusted input (YAML metadata, OpenAPI specs) and trusted output (published HTML). Security flaws in generators could allow a crafted YAML file to produce malicious portal content.
+
+**Implementation**: `snyk-security.yml` — the `code-scan` job runs `snyk code test` against `portal/scripts/`. SARIF results are uploaded to the GitHub Security tab.
+
+**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
+
+### Gate 6 — Snyk IaC Scan
+
+**What it checks**: Infrastructure and configuration files for security misconfigurations:
+
+- `staticwebapp.config.json` — overly permissive CSP, missing security headers
+- `infra/*.bicep` — Azure resource misconfigurations
+- `.github/workflows/*.yml` — overly broad workflow permissions, missing pinned action versions
+
+**Why it matters**: A misconfigured `staticwebapp.config.json` could silently remove all security headers from the production site. Snyk IaC catches these misconfigurations before they are deployed.
+
+**Implementation**: `snyk-security.yml` — the `iac-scan` job uses `snyk/actions/iac@master` targeting `portal/staticwebapp.config.json`. SARIF results are uploaded to the GitHub Security tab.
+
+**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
+
+### Gate 7 — Portal Build
 
 **What it checks**: The full MkDocs site builds successfully, including:
 
@@ -100,7 +142,7 @@ These gates run automatically on every pull request. All must pass before the PR
 
 **Blocks merge on failure**: Yes.
 
-### Gate 5 — Confluence Dry-Run
+### Gate 8 — Confluence Dry-Run
 
 **What it checks**: The Confluence mirror preparation script (`confluence-prepare.py`) runs successfully and the resulting Markdown passes `mark --dry-run` validation.
 
@@ -108,7 +150,7 @@ These gates run automatically on every pull request. All must pass before the PR
 
 **Blocks merge on failure**: Yes.
 
-### Gate 6 — PR Review Approval
+### Gate 9 — PR Review Approval
 
 **What it checks**: At least one designated reviewer has approved the pull request.
 
@@ -128,7 +170,7 @@ These gates run automatically on every pull request. All must pass before the PR
 
 These gates run after the PR is merged to `main`, before content reaches production.
 
-### Gate 7 — Production Build
+### Gate 10 — Production Build
 
 **What it checks**: The full site builds again from the merged `main` branch. This is not redundant — it catches merge conflicts or timing issues where two PRs were individually valid but conflict when combined.
 
@@ -136,7 +178,7 @@ These gates run after the PR is merged to `main`, before content reaches product
 
 **Blocks deployment on failure**: Yes.
 
-### Gate 8 — Static Asset Integrity
+### Gate 11 — Static Asset Integrity
 
 **What it checks**: Non-Markdown assets (SVGs, OpenAPI specs, Swagger UI pages, `staticwebapp.config.json`) are correctly copied into the build output.
 
@@ -146,7 +188,7 @@ These gates run after the PR is merged to `main`, before content reaches product
 
 **Blocks deployment on failure**: Yes (missing `staticwebapp.config.json` would remove all security headers).
 
-### Gate 9 — Azure Platform Security
+### Gate 12 — Azure Platform Security
 
 **What it checks**: Azure Static Web Apps provides platform-level protections:
 
@@ -167,13 +209,16 @@ These gates run after the PR is merged to `main`, before content reaches product
 | Secret scanning | Automated, blocks push | Not available |
 | YAML validation | Automated, blocks merge | Not applicable |
 | Data isolation audit | Automated, blocks merge | Not available |
+| Snyk dependency scan (SCA) | Automated, blocks merge | Not available |
+| Snyk code analysis (SAST) | Automated, blocks merge | Not available |
+| Snyk IaC scan | Automated, blocks merge | Not available |
 | Link validation | Automated, blocks merge | Not available |
 | Pre-publish review | Required PR approval | Optional (page restrictions) |
 | Build integrity | Automated, blocks deploy | Not applicable |
 | Security headers | Version-controlled, gated | Atlassian-managed |
 | Platform security | Azure (SOC 2, ISO 27001) | Atlassian (SOC 2, ISO 27001) |
 
-**Key difference**: Confluence has **zero automated gates** between editing and publishing. Every control is either manual (page restrictions) or managed by Atlassian (platform security). The docs-as-code model provides **6 automated gates** plus a required human review, all of which must pass before content reaches production.
+**Key difference**: Confluence has **zero automated gates** between editing and publishing. Every control is either manual (page restrictions) or managed by Atlassian (platform security). The docs-as-code model provides **9 automated gates** plus a required human review, all of which must pass before content reaches production.
 
 ---
 
@@ -206,73 +251,13 @@ Source: [OWASP CI/CD Security Cheat Sheet](https://cheatsheetseries.owasp.org/ch
 
 ---
 
-## Snyk Integration
+## Snyk Continuous Monitoring
 
-Snyk provides three distinct scanning capabilities, each deployed as a CI gate in the documentation pipeline:
-
-### Snyk Dependency Scan (`snyk test`)
-
-**What it checks**: All Python packages in `requirements-docs.txt` against the Snyk vulnerability database.
-
-**Why it matters**: MkDocs, pymdownx, and other build-time dependencies may contain vulnerabilities. Even though these packages only run at build time (not in production), a compromised build dependency could inject malicious content into the generated HTML.
-
-**Implementation**:
-
-```yaml
-- name: Snyk dependency scan
-  uses: snyk/actions/python-3.12@master
-  env:
-    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  with:
-    args: --severity-threshold=high --file=requirements-docs.txt
-```
-
-**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
-
-### Snyk Code Analysis (`snyk code test`)
-
-**What it checks**: Static analysis of Python generator scripts in `portal/scripts/` for security issues including:
-
-- Path traversal vulnerabilities (generators process file paths from YAML input)
-- Unsafe deserialization (generators parse YAML metadata)
-- Injection risks (generators produce HTML output)
-- Hardcoded secrets or credentials
-
-**Why it matters**: The generator scripts are the boundary between untrusted input (YAML metadata, OpenAPI specs) and trusted output (published HTML). Security flaws in generators could allow a crafted YAML file to produce malicious portal content.
-
-**Blocks merge on failure**: Yes.
-
-### Snyk Infrastructure-as-Code Scan (`snyk iac test`)
-
-**What it checks**: Infrastructure and configuration files for security misconfigurations:
-
-- `staticwebapp.config.json` — overly permissive CSP, missing security headers
-- `infra/*.bicep` — Azure resource misconfigurations
-- `.github/workflows/*.yml` — overly broad workflow permissions, missing pinned action versions
-
-**Why it matters**: A misconfigured `staticwebapp.config.json` could silently remove all security headers from the production site. Snyk IaC catches these misconfigurations before they are deployed.
-
-**Implementation**:
-
-```yaml
-- name: Snyk IaC scan
-  uses: snyk/actions/iac@master
-  env:
-    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  with:
-    args: --severity-threshold=high
-    file: portal/staticwebapp.config.json
-```
-
-**Blocks merge on failure**: Yes (HIGH or CRITICAL severity).
-
-### Continuous Monitoring
-
-Beyond CI gates, Snyk's GitHub integration provides continuous monitoring:
+Beyond the CI gates, Snyk's GitHub integration provides continuous monitoring after content is merged:
 
 - **New vulnerability alerts**: If a CVE is published for a dependency that was clean at merge time, Snyk opens an automated PR with the fix
 - **License compliance**: Snyk can enforce that all dependencies use approved licenses (MIT, Apache-2.0, etc.)
-- **Reporting dashboard**: Security team gets a single-pane view of all vulnerability findings across the repository
+- **Reporting dashboard**: The security team gets a single-pane view of all vulnerability findings across the repository
 
 This is a capability that Confluence cannot match — there is no way for an organization to scan Confluence's own dependencies or receive alerts when Confluence's build toolchain has a new vulnerability.
 

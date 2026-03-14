@@ -186,3 +186,21 @@ tickets:
       As a guest services manager,
       I want structured dispute workflows with escalation tiers and automated notifications,
       So that refund requests are resolved consistently and chargebacks are minimized.
+
+  - key: NTK-10010
+    summary: Implement Portal Security Controls for Live Demo
+    status: New
+    priority: High
+    assignee: null
+    reporter: christopher.blaisdell
+    labels: [platform, security, ci-cd]
+    created: 2026-03-14
+    updated: 2026-03-14
+    sprint: null
+    components: [portal, ci-cd]
+    solution: null
+    planned_capabilities: []
+    user_story: |
+      As a security team reviewer,
+      I want to see the documented security controls operating as live, working demonstrations,
+      So that I can verify that the docs-as-code model meets our security requirements without relying solely on documentation.
