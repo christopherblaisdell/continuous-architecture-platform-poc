@@ -24,15 +24,21 @@ The per-run cost difference is significant: $0.48 vs ~$100, using the same under
 
 ## Why the Difference Is So Large
 
-### The Architectural Difference: Indexing vs Recalculation
+### The Architectural Difference: RAG vs Long Context
 
 **This is the biggest reason for the 208x cost difference.**
 
-GitHub Copilot and OpenRouter represent two fundamentally different architectural approaches to handling static context:
+There are two fundamental approaches to giving an LLM access to a large knowledge base:
+
+**RAG (Retrieval-Augmented Generation)** pre-indexes documents into a vector database. When a query arrives, it retrieves only the relevant snippets — the model sees a small, curated context window. Indexing cost is paid once and amortized across all future queries.
+
+**Long Context** skips the index. With models that support very large context windows (100K–1M+ tokens), documents can be loaded directly into the prompt so the model's attention mechanism finds what it needs in a single pass. The model re-processes the same material from scratch each time. There is no amortization — you pay for everything, every turn.
+
+GitHub Copilot and OpenRouter represent these two approaches directly:
 
 | | GitHub Copilot | OpenRouter |
 |---|:---:|:---:|
-| **Architecture** | Pre-indexes workspace (vector database + semantic retrieval) | Token-by-token calculation |
+| **Architecture** | RAG — pre-indexes workspace (vector database + semantic retrieval) | Long Context — token-by-token, full re-transmission each turn |
 | **Static Context Handling** | Indexed once, reused across all queries | Recalculated and billed on every request |
 | **Cost Model** | Fixed subscription (amortizes indexing cost) | Pay-per-token (includes all recalculation) |
 | **What You Pay For** | User query that searches the index | Every single token for every single request |
@@ -56,6 +62,16 @@ Every time you run an architecture session, OpenRouter:
 4. Charges you again for the full context on turn 2, turn 3, turn 4...
 
 There's no amortization. No indexing. Each request starts from zero and includes all context recalculation costs.
+
+---
+
+### Three Structural Advantages of RAG — Three Copilot Wins
+
+**Compute efficiency.** Long Context requires the model to re-process the same documents on every query turn. In a 20-turn architecture session at 150K tokens per turn, that is 3 million tokens billed for the same workspace context. RAG pays this cost once at indexing time. This single difference explains most of the session cost gap: $0.48 (Copilot) vs ~$100 (OpenRouter).
+
+**No retrieval lottery.** The risk of Long Context is that even though everything is in the window, the model's attention can miss specific facts buried in a large context — particularly for questions that require comparing two documents or identifying gaps between them. Copilot's semantic retrieval is targeted: it pulls the specific specs and solution designs relevant to each query. In the head-to-head comparison, Copilot retrieved the approved solution design and applied only the specified changes; Roo Code's session did not have the right context and fabricated four OpenAPI fields that were not in the approved design.
+
+**Scales to enterprise datasets.** A context window of 1 million tokens is roughly 700,000 words — impressive, but still a fraction of an enterprise knowledge base measured in terabytes. Copilot's indexed approach is the only architecture that scales to the full workspace as it grows. Roo Code's manual file selection approach requires the architect to anticipate which files the AI will need, every session.
 
 ---
 

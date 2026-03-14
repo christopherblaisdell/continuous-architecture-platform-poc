@@ -26,6 +26,22 @@ Without this infrastructure, the AI has no awareness of your workspace beyond wh
 
 Even with Qdrant configured, Roo Code does **not automatically synthesize backend context**. The LLM must recognize its own knowledge deficit and explicitly invoke a `codebase_search` tool call. If it doesn't realize it needs context, it proceeds without it — and fabricates.
 
+### Why This Is an Architectural Problem, Not a Configuration Problem
+
+There are two fundamental approaches to giving an LLM access to a large knowledge base: **RAG** (pre-index into a vector database, retrieve only relevant chunks) and **Long Context** (with models supporting 100K–1M+ token windows, load documents directly into the prompt and let the model's attention mechanism find what it needs in a single pass).
+
+Copilot uses RAG — properly. The workspace is indexed once on GitHub's backend. Each session retrieves only the most relevant snippets, keeping context bounded at roughly 5K tokens per turn regardless of how large the workspace grows.
+
+Roo Code's default mode is closer to Long Context — the LLM receives the full accumulated conversation history plus any file reads on every turn, relying on Claude's large context window to hold everything. But it doesn't gain the key advantage that makes Long Context compelling for bounded datasets (the ability to reason about gaps between documents, or perform whole-document comparison in a single pass). Instead, it pays the compute penalty of Long Context — re-transmitting 50K–180K tokens per turn — without getting reliable whole-workspace coverage.
+
+The three structural advantages of RAG are precisely the three things Roo Code lacks:
+
+**Compute efficiency.** RAG indexes documents once and reuses the index across every query. Long Context re-processes the same documents on every turn, billing the same tokens repeatedly. In a 20-turn session, a 150K-token context is re-transmitted 20 times. This is the direct source of the 208x session cost difference — $0.48 per session (Copilot) vs ~$100 (OpenRouter).
+
+**No retrieval lottery.** The "silent failure" mode of poor retrieval — where the answer exists in the data but the model never sees it because the retrieval step missed it — applies directly to Roo Code. In Scenario 4 of the head-to-head comparison, Roo Code did not retrieve the approved solution design it needed and proceeded to fabricate four OpenAPI schema elements. The LLM didn't know what it didn't know. Copilot's automatic semantic retrieval retrieved the right design documents and applied only the specified changes.
+
+**Scales to enterprise datasets.** An enterprise workspace is not a single document — it is terabytes of interconnected knowledge. A context window of even 1 million tokens is a drop in that bucket. RAG's retrieval layer is the only architecture that scales to the full enterprise knowledge base. Copilot handles this automatically; Roo Code's manual file selection approach breaks down as the workspace grows.
+
 ### The Impact
 
 | | Copilot | Roo Code |
@@ -34,6 +50,7 @@ Even with Qdrant configured, Roo Code does **not automatically synthesize backen
 | **Infrastructure required** | None | Embedding provider + Qdrant DB + sync |
 | **Context retrieval** | Automatic semantic retrieval | LLM must self-invoke `codebase_search` |
 | **Risk of missing context** | Low (index covers full workspace) | High (depends on manual selection or LLM initiative) |
+| **Cost model for context** | Indexed once, amortized | Re-transmitted and billed every turn |
 
 ---
 
