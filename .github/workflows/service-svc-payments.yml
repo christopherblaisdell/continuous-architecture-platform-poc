@@ -1,0 +1,64 @@
+# ===========================================================================
+# svc-payments — CI/CD Orchestrator
+# ===========================================================================
+# Builds, tests, scans, and deploys the payments microservice.
+# PCI scope — deploy after reservations to maintain dependency ordering.
+# ===========================================================================
+
+name: "svc-payments"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/svc-payments/**'
+  pull_request:
+    paths:
+      - 'services/svc-payments/**'
+
+jobs:
+  ci:
+    uses: ./.github/workflows/service-ci.yml
+    with:
+      service-name: svc-payments
+    secrets: inherit
+
+  migrate-dev:
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/db-migrate.yml
+    with:
+      service-name: svc-payments
+      environment: dev
+      schema-name: payments
+    secrets: inherit
+
+  cd-dev:
+    needs: [ci, migrate-dev]
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/service-cd.yml
+    with:
+      service-name: svc-payments
+      environment: dev
+      image-tag: ${{ needs.ci.outputs.image-tag }}
+    secrets: inherit
+
+  migrate-prod:
+    needs: cd-dev
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/db-migrate.yml
+    with:
+      service-name: svc-payments
+      environment: prod
+      schema-name: payments
+    secrets: inherit
+
+  cd-prod:
+    needs: [ci, cd-dev, migrate-prod]
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/service-cd.yml
+    with:
+      service-name: svc-payments
+      environment: prod
+      image-tag: ${{ needs.ci.outputs.image-tag }}
+    secrets: inherit

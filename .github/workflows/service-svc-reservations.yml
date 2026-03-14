@@ -1,0 +1,63 @@
+# ===========================================================================
+# svc-reservations — CI/CD Orchestrator
+# ===========================================================================
+# Builds, tests, scans, and deploys the reservations microservice.
+# ===========================================================================
+
+name: "svc-reservations"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/svc-reservations/**'
+  pull_request:
+    paths:
+      - 'services/svc-reservations/**'
+
+jobs:
+  ci:
+    uses: ./.github/workflows/service-ci.yml
+    with:
+      service-name: svc-reservations
+    secrets: inherit
+
+  migrate-dev:
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/db-migrate.yml
+    with:
+      service-name: svc-reservations
+      environment: dev
+      schema-name: reservations
+    secrets: inherit
+
+  cd-dev:
+    needs: [ci, migrate-dev]
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/service-cd.yml
+    with:
+      service-name: svc-reservations
+      environment: dev
+      image-tag: ${{ needs.ci.outputs.image-tag }}
+    secrets: inherit
+
+  migrate-prod:
+    needs: cd-dev
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/db-migrate.yml
+    with:
+      service-name: svc-reservations
+      environment: prod
+      schema-name: reservations
+    secrets: inherit
+
+  cd-prod:
+    needs: [ci, cd-dev, migrate-prod]
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/service-cd.yml
+    with:
+      service-name: svc-reservations
+      environment: prod
+      image-tag: ${{ needs.ci.outputs.image-tag }}
+    secrets: inherit
