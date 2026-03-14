@@ -106,6 +106,13 @@ python3 "$SCRIPT_DIR/generate-topology-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
+# Step 9c: Generate governance dashboard from CALM data
+# ------------------------------------------------------------------
+echo "[9c/11] Generating governance dashboard from CALM..."
+python3 "$SCRIPT_DIR/generate-governance-dashboard.py"
+echo ""
+
+# ------------------------------------------------------------------
 # Step 10: Generate standalone PlantUML diagrams
 # ------------------------------------------------------------------
 echo "[10/11] Generating standalone PlantUML diagrams..."

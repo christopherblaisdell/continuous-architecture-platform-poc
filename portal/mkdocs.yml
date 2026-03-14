@@ -179,6 +179,7 @@ nav:
       - System Map: topology/system-map.md
       - Dependency Matrix: topology/dependency-matrix.md
       - Domain Views: topology/domain-views.md
+      - Governance Dashboard: topology/governance.md
     - CALM Topology: calm.md
     - Actor Catalog: actors/index.md
     - Technology Stack: technologies.md

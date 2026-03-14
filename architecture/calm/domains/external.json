@@ -622,7 +622,8 @@
       ],
       "metadata": {
         "domain": "Support",
-        "team": "Support Services Team"
+        "team": "Support Services Team",
+        "pci-in-scope": true
       }
     }
   ],
