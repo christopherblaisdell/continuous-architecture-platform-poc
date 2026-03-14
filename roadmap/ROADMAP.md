@@ -411,11 +411,11 @@ All Phases 0-6 are COMPLETE. The following initiatives represent the next wave o
 
 #### CALM — Automated Architecture Governance (Top Priority)
 
-**Status:** Planned | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
+**Status:** In Progress (Phases 0-2 COMPLETE, Phase 3 Next) | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Results:** [architecture/reminders/CALM-PILOT-RESULTS.md](../architecture/reminders/CALM-PILOT-RESULTS.md)
 
-CALM (Common Architecture Language Model) is the next major evolution of the platform. It adds a formal, machine-validatable topology layer on top of the existing architecture practice.
+CALM (Common Architecture Language Model) adds a formal, machine-validatable topology layer on top of the existing architecture practice.
 
-**Architects do not write CALM.** CALM documents are **automatically generated** from the artifacts architects already maintain — OpenAPI specs, AsyncAPI specs, and metadata YAML files (`domains.yaml`, `cross-service-calls.yaml`, `data-stores.yaml`, `events.yaml`, `actors.yaml`). Bridge scripts transform these into the CALM format, and `calm validate` runs in CI to enforce architecture rules automatically.
+**Architects do not write CALM.** CALM documents are **automatically generated** from the artifacts architects already maintain — OpenAPI specs, AsyncAPI specs, and metadata YAML files (`domains.yaml`, `cross-service-calls.yaml`, `data-stores.yaml`, `events.yaml`, `actors.yaml`). Bridge scripts transform these into the CALM format, and `validate-calm.py` runs in CI to enforce architecture rules automatically.
 
 **Why auto-generate instead of hand-author?**
 
@@ -426,18 +426,29 @@ CALM (Common Architecture Language Model) is the next major evolution of the pla
 
 **What CALM delivers:**
 
-| Capability | Today (Manual) | With CALM (Automated) |
-|-----------|---------------|----------------------|
-| No shared databases | PR reviewer reads YAML | CI rejects PRs that connect a database to multiple services |
-| API-only cross-service access | Rule text in copilot-instructions.md | CI validates no JDBC relationships exist between services |
-| PCI scope tracking | Manual list in `pci.yaml` | CALM decorator flags PCI-scoped nodes and relationships |
-| Impact analysis | Architect reads cross-service-calls.yaml | Graph traversal shows all upstream/downstream dependencies |
-| Architecture drift | Undetected | CALM topology compared against running system metadata |
-| Topology visualization | Static PlantUML diagrams | Interactive system map generated from CALM graph |
+| Capability | Status | Implementation |
+|-----------|--------|----------------|
+| No shared databases | LIVE | CI detects shared database violations |
+| API-only cross-service access | LIVE | CI validates no JDBC relationships exist between services |
+| PCI scope tracking | LIVE | `pci-in-scope` metadata on service nodes, validated in CI |
+| Domain and team metadata | LIVE | All 22 services validated in CI |
+| Topology visualization | LIVE | System map, dependency matrix, domain views in portal |
+| Governance dashboard | LIVE | Per-service compliance report in portal |
+| Impact analysis | Planned (Phase 3) | Graph traversal from CALM topology |
+| Architecture drift detection | Planned (Phase 5) | CALM topology vs running system |
 
-**5-phase rollout:** Pilot (1 domain) -> Full topology (all 22 services) -> Generator integration (portal consumes CALM) -> Governance automation (6+ CI-enforced rules) -> Advanced capabilities (blast radius, drift detection, timeline visualization)
+**Rollout progress:**
 
-See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phased implementation with JSON examples, CI integration, and migration strategy.
+| Phase | Status | Deliverables |
+|-------|--------|-------------|
+| Phase 0: Pilot | COMPLETE | Operations domain, validator, pattern, controls, CI |
+| Phase 1: Full Topology | COMPLETE | All 9 domains, full system topology, PCI metadata |
+| Phase 2: Portal Integration | COMPLETE | System map, dependency matrix, domain views, governance dashboard |
+| Phase 3: Governance Automation | Next | FINOS `calm validate` CLI, event schema rule, blast radius |
+| Phase 4: Solution Integration | Planned | Topology change tracking per solution design |
+| Phase 5: Advanced Capabilities | Planned | Drift detection, timeline visualization, CALM Hub |
+
+See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phased implementation and [CALM Pilot Results](../architecture/reminders/CALM-PILOT-RESULTS.md) for Phase 0-2 findings.
 
 ---
 
@@ -479,7 +490,8 @@ These are deferred evaluations and operational items tracked in `architecture/re
 
 | Reminder | Date | Status | File |
 |----------|------|--------|------|
-| CALM Evaluation | 2026-03-06 | Deferred | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
+| CALM Evaluation | 2026-03-06 | Implemented (Phases 0-2 complete) | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
+| CALM Pilot Results | 2026-03-14 | Complete | [architecture/reminders/CALM-PILOT-RESULTS.md](../architecture/reminders/CALM-PILOT-RESULTS.md) |
 | Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
 | Test Methodology | 2026-03-11 | Backlog (HIGH) | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |
 

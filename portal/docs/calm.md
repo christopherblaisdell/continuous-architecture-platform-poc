@@ -129,7 +129,7 @@ All 9 domains are generated individually for focused review:
 
 ## Automated Validation
 
-The validator (`scripts/validate-calm.py`) checks the generated topology against 5 architecture rules:
+The validator (`scripts/validate-calm.py`) checks the generated topology against 6 architecture rules:
 
 | Rule | What it Catches | Severity |
 |------|----------------|----------|
@@ -138,12 +138,15 @@ The validator (`scripts/validate-calm.py`) checks the generated topology against
 | Service metadata required | Service missing domain or team in metadata | Error |
 | Relationship integrity | Relationship referencing a non-existent node | Error |
 | No orphan services | Service with zero relationships | Warning |
+| PCI scope | PCI-scoped service missing `pci-in-scope: true` metadata | Error |
 
-These rules are also documented as formal CALM pattern and control files:
+These rules are also documented as formal CALM pattern, control, and standard files:
 
 - `architecture/calm/patterns/novatrek-microservice.json` — microservice pattern rules
 - `architecture/calm/controls/data-ownership.json` — single-owner database control
 - `architecture/calm/controls/api-mediated-access.json` — no cross-service JDBC control
+- `architecture/calm/controls/pci-scope.json` — PCI DSS cardholder data environment scope
+- `architecture/calm/standards/novatrek-org-standard.json` — organizational metadata requirements and governance rules
 
 ### Validation in Action
 
@@ -160,7 +163,7 @@ Running `python3 scripts/validate-calm.py` immediately caught a real finding: `s
 
 ```
 architecture/calm/
-├── novatrek-topology.json                 # Full system (74 nodes, 146 relationships)
+├── novatrek-topology.json                 # Full system (76 nodes, 147 relationships)
 ├── domains/
 │   ├── operations.json                    # Operations domain
 │   ├── guest-identity.json                # Guest Identity domain
@@ -173,9 +176,12 @@ architecture/calm/
 │   └── support.json                       # Support domain
 ├── patterns/
 │   └── novatrek-microservice.json         # Microservice architecture pattern
-└── controls/
-    ├── data-ownership.json                # Single-owner database control
-    └── api-mediated-access.json           # No cross-service JDBC control
+├── controls/
+│   ├── data-ownership.json                # Single-owner database control
+│   ├── api-mediated-access.json           # No cross-service JDBC control
+│   └── pci-scope.json                     # PCI DSS cardholder data environment scope
+└── standards/
+    └── novatrek-org-standard.json         # Organizational metadata requirements (6 governance rules)
 ```
 
 ---
@@ -238,7 +244,7 @@ Generated with `python3 scripts/generate-calm.py --domain Operations`:
 | **Phase 0: Pilot** | Auto-generate CALM from metadata; validate all 9 domains; patterns + controls | Complete |
 | **Phase 1: CI Integration** | Add `validate-calm.py` to CI pipeline; block PRs on validation failures | Complete |
 | **Phase 2: Generator Integration** | Portal generators consume CALM for topology views, dependency matrix | Complete |
-| Phase 3: Governance Automation | Full CALM CLI (`calm validate`) with pattern enforcement | Planned |
+| **Phase 3: Governance Automation** | PCI scope control, org standard, governance dashboard, FINOS `calm validate` CLI | In Progress |
 | Phase 4: Solution Integration | Track topology changes per solution design | Planned |
 | Phase 5: Advanced | Blast radius analysis, drift detection, timeline visualization | Planned |
 

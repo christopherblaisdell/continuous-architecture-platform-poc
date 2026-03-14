@@ -1,0 +1,162 @@
+{
+  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/standard.json",
+  "metadata": {
+    "name": "NovaTrek Adventures Organizational Architecture Standard",
+    "description": "Organizational extensions to the CALM node schema, defining required metadata fields for all NovaTrek architecture components. This standard ensures every service, database, and actor node carries sufficient context for governance automation, team routing, and portal generation.",
+    "version": "1.0.0",
+    "owner": "NovaTrek Architecture Practice",
+    "effective-date": "2026-03-14",
+    "references": [
+      "architecture/metadata/domains.yaml — Domain classification",
+      "architecture/metadata/data-stores.yaml — Database catalogue",
+      "architecture/metadata/actors.yaml — Actor and frontend app registry",
+      "architecture/metadata/pci.yaml — PCI DSS scope registry",
+      "docs/CALM-INTEGRATION-PLAN.md — CALM adoption plan"
+    ]
+  },
+  "required-metadata": {
+    "service-node": {
+      "description": "Required metadata fields for every service node in the NovaTrek CALM topology",
+      "fields": [
+        {
+          "key": "domain",
+          "type": "string",
+          "required": true,
+          "description": "The bounded context domain this service belongs to. Must match a domain key in architecture/metadata/domains.yaml.",
+          "allowed-values": [
+            "Operations",
+            "Guest Identity",
+            "Booking",
+            "Product Catalog",
+            "Safety",
+            "Logistics",
+            "Guide Management",
+            "External",
+            "Support"
+          ]
+        },
+        {
+          "key": "team",
+          "type": "string",
+          "required": true,
+          "description": "The owning team responsible for this service. Used for PR routing and incident escalation.",
+          "examples": [
+            "NovaTrek Operations Team",
+            "Guest Experience Team",
+            "Booking Platform Team",
+            "Safety and Compliance Team",
+            "Logistics Team",
+            "Guide Operations Team",
+            "Integration Team",
+            "Support Services Team"
+          ]
+        },
+        {
+          "key": "data-classification",
+          "type": "string",
+          "required": false,
+          "description": "Sensitivity classification for data handled by this service.",
+          "allowed-values": ["public", "internal", "confidential", "restricted"],
+          "default": "internal"
+        },
+        {
+          "key": "pci-in-scope",
+          "type": "boolean",
+          "required": false,
+          "description": "True if this service is in the PCI DSS cardholder data environment. Triggers additional governance controls.",
+          "default": false
+        }
+      ]
+    },
+    "database-node": {
+      "description": "Required metadata fields for every database node in the NovaTrek CALM topology",
+      "fields": [
+        {
+          "key": "engine",
+          "type": "string",
+          "required": true,
+          "description": "Database engine and version. Must match the entry in architecture/metadata/data-stores.yaml.",
+          "examples": ["PostgreSQL 15", "MongoDB 7", "PostgreSQL 15 + Valkey 8"]
+        },
+        {
+          "key": "tables",
+          "type": "array",
+          "required": false,
+          "description": "List of primary table or collection names owned by this database.",
+          "examples": [["check_ins", "gear_verifications", "wristband_assignments"]]
+        },
+        {
+          "key": "domain",
+          "type": "string",
+          "required": true,
+          "description": "The bounded context domain this database belongs to. Must match the owning service domain."
+        }
+      ]
+    },
+    "actor-node": {
+      "description": "Required metadata fields for human actor nodes",
+      "fields": [
+        {
+          "key": "actor-type",
+          "type": "string",
+          "required": true,
+          "description": "Classification of the actor.",
+          "allowed-values": ["Human", "Frontend Application", "External System", "Infrastructure"]
+        },
+        {
+          "key": "domain",
+          "type": "string",
+          "required": true,
+          "description": "Primary domain association for this actor."
+        }
+      ]
+    }
+  },
+  "governance-rules": [
+    {
+      "id": "novatrek-001-single-database",
+      "name": "Single Database Ownership",
+      "description": "Each service owns exactly one database. No service may share a database with another service.",
+      "severity": "error",
+      "adr-reference": "ADR-010, ADR-011",
+      "validated-by": "controls/data-ownership.json"
+    },
+    {
+      "id": "novatrek-002-api-mediated",
+      "name": "API-Mediated Cross-Service Access",
+      "description": "Services must communicate through published API endpoints. No direct database access between services.",
+      "severity": "error",
+      "adr-reference": "copilot-instructions.md — Bounded Context Rules",
+      "validated-by": "controls/api-mediated-access.json"
+    },
+    {
+      "id": "novatrek-003-domain-metadata",
+      "name": "Domain Metadata Required",
+      "description": "Every service node must declare its domain and owning team.",
+      "severity": "error",
+      "validated-by": "patterns/novatrek-microservice.json"
+    },
+    {
+      "id": "novatrek-004-pci-scope",
+      "name": "PCI Scope Declaration",
+      "description": "Services in the cardholder data environment must declare pci-in-scope: true in metadata.",
+      "severity": "error",
+      "validated-by": "controls/pci-scope.json"
+    },
+    {
+      "id": "novatrek-005-safety-default",
+      "name": "Pattern 3 Safety Default",
+      "description": "Unknown or unmapped adventure categories must default to Pattern 3 (Full Service check-in). Never default to Pattern 1.",
+      "severity": "error",
+      "adr-reference": "ADR-005",
+      "validated-by": "manual-review"
+    },
+    {
+      "id": "novatrek-006-event-schema",
+      "name": "Event Schema Required",
+      "description": "Every Kafka event published by a service must have a corresponding AsyncAPI spec entry.",
+      "severity": "warning",
+      "validated-by": "manual-review"
+    }
+  ]
+}

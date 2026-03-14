@@ -19,6 +19,8 @@ Rules enforced:
     4. Every relationship must have both source and target referencing
        existing nodes
     5. No orphan services — every service must have at least one relationship
+    6. PCI scope — services in the PCI cardholder data environment must
+       declare pci-in-scope: true in metadata (cross-checked against pci.yaml)
 """
 
 import argparse
@@ -26,13 +28,29 @@ import json
 import sys
 from pathlib import Path
 
+try:
+    import yaml
+    YAML_AVAILABLE = True
+except ImportError:
+    YAML_AVAILABLE = False
+
 ROOT = Path(__file__).resolve().parent.parent
 CALM_DIR = ROOT / "architecture" / "calm"
+PCI_YAML = ROOT / "architecture" / "metadata" / "pci.yaml"
 
 
 def load_calm(path):
     with open(path) as f:
         return json.load(f)
+
+
+def load_pci_services():
+    """Load PCI-scoped services from pci.yaml. Returns empty set if unavailable."""
+    if not YAML_AVAILABLE or not PCI_YAML.exists():
+        return set()
+    with open(PCI_YAML) as f:
+        pci = yaml.safe_load(f)
+    return set(pci.get("services", []))
 
 
 class ValidationResult:
@@ -120,7 +138,31 @@ def validate_no_orphan_services(calm, result):
             result.warning("no-orphan-services", f"Service '{svc}' has no relationships (orphan)")
 
 
-def validate_calm(calm_doc):
+def validate_pci_scope(calm, result, pci_services):
+    """Rule 6: PCI-scoped services must declare pci-in-scope: true in metadata.
+
+    Cross-references the topology against pci.yaml to catch any service that is
+    in the PCI cardholder data environment but has not been annotated.
+    Only runs when pci.yaml is available and the topology contains services that
+    match known PCI-scoped service IDs.
+    """
+    if not pci_services:
+        return
+
+    for node in calm.get("nodes", []):
+        if node.get("node-type") != "service":
+            continue
+        svc_id = node["unique-id"]
+        if svc_id in pci_services:
+            meta = node.get("metadata", {})
+            if not meta.get("pci-in-scope"):
+                result.error(
+                    "pci-scope",
+                    f"Service '{svc_id}' is in pci.yaml but metadata is missing 'pci-in-scope: true'",
+                )
+
+
+def validate_calm(calm_doc, pci_services=None):
     """Run all validation rules against a CALM document."""
     result = ValidationResult()
     validate_no_shared_databases(calm_doc, result)
@@ -128,6 +170,7 @@ def validate_calm(calm_doc):
     validate_service_metadata(calm_doc, result)
     validate_relationship_integrity(calm_doc, result)
     validate_no_orphan_services(calm_doc, result)
+    validate_pci_scope(calm_doc, result, pci_services or set())
     return result
 
 
@@ -141,19 +184,26 @@ def main():
         paths = [Path(f) for f in args.files]
     else:
         paths = sorted(CALM_DIR.rglob("*.json"))
-        # Exclude pattern files
-        paths = [p for p in paths if "patterns" not in p.parts and "controls" not in p.parts]
+        # Exclude pattern, control, and standards files
+        paths = [
+            p for p in paths
+            if "patterns" not in p.parts
+            and "controls" not in p.parts
+            and "standards" not in p.parts
+        ]
 
     if not paths:
         print("No CALM files found to validate.")
         sys.exit(1)
+
+    pci_services = load_pci_services()
 
     total_errors = 0
     total_warnings = 0
 
     for path in paths:
         calm = load_calm(path)
-        result = validate_calm(calm)
+        result = validate_calm(calm, pci_services=pci_services)
         rel_path = path.relative_to(ROOT)
 
         status = "PASS" if result.passed else "FAIL"

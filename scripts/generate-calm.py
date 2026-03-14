@@ -57,6 +57,13 @@ def load_actors():
     return load_yaml(META / "actors.yaml")
 
 
+def load_pci():
+    pci_path = META / "pci.yaml"
+    if pci_path.exists():
+        return load_yaml(pci_path)
+    return {}
+
+
 def load_openapi_spec(svc_name):
     spec_path = SPECS / f"{svc_name}.yaml"
     if spec_path.exists():
@@ -90,9 +97,10 @@ def team_for_domain(domain_name):
     return team_map.get(domain_name, f"{domain_name} Team")
 
 
-def build_service_node(svc, domains, data_stores, events_data):
+def build_service_node(svc, domains, data_stores, events_data, pci_services=None):
     domain = domain_for_service(domains, svc)
     spec = load_openapi_spec(svc)
+    pci_services = pci_services or set()
 
     interfaces = []
 
@@ -126,16 +134,20 @@ def build_service_node(svc, domains, data_stores, events_data):
     if spec and "info" in spec:
         description = spec["info"].get("description", "").strip().split("\n")[0]
 
+    metadata = {
+        "domain": domain,
+        "team": team_for_domain(domain),
+    }
+    if svc in pci_services:
+        metadata["pci-in-scope"] = True
+
     return {
         "unique-id": svc,
         "node-type": "service",
         "name": svc.replace("svc-", "").replace("-", " ").title() + " Service",
         "description": description or f"NovaTrek {svc} microservice",
         "interfaces": interfaces,
-        "metadata": {
-            "domain": domain,
-            "team": team_for_domain(domain),
-        },
+        "metadata": metadata,
     }
 
 
@@ -381,6 +393,8 @@ def generate_calm(domain_filter=None):
     cross_calls = load_cross_service_calls()
     events_data = load_events()
     actors_data = load_actors()
+    pci_data = load_pci()
+    pci_services = set(pci_data.get("services", []))
 
     nodes = []
     relationships = []
@@ -390,7 +404,7 @@ def generate_calm(domain_filter=None):
     for domain_name, domain_data in domains.items():
         for svc in domain_data.get("services", []):
             all_services.add(svc)
-            nodes.append(build_service_node(svc, domains, data_stores, events_data))
+            nodes.append(build_service_node(svc, domains, data_stores, events_data, pci_services=pci_services))
 
             # Add database node if service has a data store
             if data_stores and svc in data_stores:
