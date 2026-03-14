@@ -74,6 +74,14 @@ Service-to-service dependency table showing which services call which, and over 
 
 ### Operations
 
+**[svc-adventure-tracking](../microservices/svc-adventure-tracking.md)** calls:
+
+| Target Service | Protocol |
+|----------------|----------|
+| [svc-emergency-response](../microservices/svc-emergency-response.md) | Kafka |
+| [svc-location-services](../microservices/svc-location-services.md) | HTTPS |
+| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+
 **[svc-check-in](../microservices/svc-check-in.md)** calls:
 
 | Target Service | Protocol |
@@ -117,6 +125,7 @@ Service-to-service dependency table showing which services call which, and over 
 
 | Target Service | Protocol |
 |----------------|----------|
+| [svc-adventure-tracking](../microservices/svc-adventure-tracking.md) | HTTPS |
 | [svc-analytics](../microservices/svc-analytics.md) | Kafka |
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
 | [svc-guide-management](../microservices/svc-guide-management.md) | HTTPS |
@@ -206,14 +215,14 @@ Services with the most inbound dependencies — changes to these services have t
 
 | Service | Inbound Dependencies | Domain |
 |---------|---------------------|--------|
-| [svc-notifications](../microservices/svc-notifications.md) | 14 | Support |
+| [svc-notifications](../microservices/svc-notifications.md) | 15 | Support |
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | 8 | Guest Identity |
 | [svc-reservations](../microservices/svc-reservations.md) | 8 | Booking |
 | [svc-analytics](../microservices/svc-analytics.md) | 7 | Support |
 | [svc-safety-compliance](../microservices/svc-safety-compliance.md) | 5 | Safety |
+| [svc-location-services](../microservices/svc-location-services.md) | 5 | Support |
 | [svc-trip-catalog](../microservices/svc-trip-catalog.md) | 4 | Product Catalog |
 | [svc-payments](../microservices/svc-payments.md) | 4 | Support |
-| [svc-location-services](../microservices/svc-location-services.md) | 4 | Support |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | 3 | Operations |
 | [svc-guide-management](../microservices/svc-guide-management.md) | 3 | Guide Management |
 
@@ -223,9 +232,9 @@ Services with the most outbound calls — these services are most affected by ch
 
 | Service | Outbound Dependencies | Domain |
 |---------|----------------------|--------|
+| [svc-emergency-response](../microservices/svc-emergency-response.md) | 8 | Safety |
 | [svc-check-in](../microservices/svc-check-in.md) | 7 | Operations |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | 7 | Operations |
-| [svc-emergency-response](../microservices/svc-emergency-response.md) | 7 | Safety |
 | [svc-reservations](../microservices/svc-reservations.md) | 6 | Booking |
 | [svc-wildlife-tracking](../microservices/svc-wildlife-tracking.md) | 6 | Safety |
 | [svc-partner-integrations](../microservices/svc-partner-integrations.md) | 5 | External |

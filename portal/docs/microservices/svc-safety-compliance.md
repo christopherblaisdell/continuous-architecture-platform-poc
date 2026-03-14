@@ -132,6 +132,14 @@ tags:
 
 ---
 
+## :material-lightbulb: Solutions Affecting This Service
+
+| Ticket | Solution | Capabilities | Date |
+|--------|----------|-------------|------|
+| NTK-10006 | [Real-Time Adventure Tracking and Emergency Alerting System](../solutions/_NTK-10006-real-time-adventure-tracking.md) | `CAP-2.1`, `CAP-3.2`, `CAP-3.3`, `CAP-7.2` | 2026-03-14 |
+
+---
+
 ## :material-api: Endpoints (8 total)
 
 ---

@@ -160,6 +160,7 @@ Per-domain topology breakdown showing services, databases, and integration patte
 
 | Service | Interfaces | Database | REST Out | REST In | Events Out | Events In |
 |---------|------------|----------|----------|---------|------------|----------|
+| [svc-adventure-tracking](../microservices/svc-adventure-tracking.md) | 10 | PostgreSQL 15 + PostGIS | 1 | 1 | 2 | 0 |
 | [svc-check-in](../microservices/svc-check-in.md) | 6 | PostgreSQL 15 | 5 | 0 | 2 | 0 |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | 6 | PostgreSQL 15 + Valkey 8 | 5 | 1 | 3 | 3 |
 
@@ -169,6 +170,7 @@ Per-domain topology breakdown showing services, databases, and integration patte
 
 | Source | Target | Action |
 |--------|--------|--------|
+| [svc-adventure-tracking](../microservices/svc-adventure-tracking.md) | [svc-location-services](../microservices/svc-location-services.md) | Load geofence boundaries for adventure trail |
 | [svc-check-in](../microservices/svc-check-in.md) | [svc-reservations](../microservices/svc-reservations.md) | Verify reservation exists |
 | [svc-check-in](../microservices/svc-check-in.md) | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | Validate guest identity |
 | [svc-check-in](../microservices/svc-check-in.md) | [svc-trip-catalog](../microservices/svc-trip-catalog.md) | Get adventure category |
@@ -184,6 +186,7 @@ Per-domain topology breakdown showing services, databases, and integration patte
 
 | Source | Target | Action |
 |--------|--------|--------|
+| [svc-emergency-response](../microservices/svc-emergency-response.md) | [svc-adventure-tracking](../microservices/svc-adventure-tracking.md) | Get active tracking sessions for affected guests |
 | [svc-wildlife-tracking](../microservices/svc-wildlife-tracking.md) | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | Check for affected scheduled trips |
 
 ---
@@ -230,7 +233,7 @@ Per-domain topology breakdown showing services, databases, and integration patte
 
 | Service | Interfaces | Database | REST Out | REST In | Events Out | Events In |
 |---------|------------|----------|----------|---------|------------|----------|
-| [svc-emergency-response](../microservices/svc-emergency-response.md) | 11 | PostgreSQL 15 | 3 | 0 | 4 | 0 |
+| [svc-emergency-response](../microservices/svc-emergency-response.md) | 11 | PostgreSQL 15 | 4 | 0 | 4 | 1 |
 | [svc-safety-compliance](../microservices/svc-safety-compliance.md) | 9 | PostgreSQL 15 | 2 | 3 | 2 | 2 |
 | [svc-wildlife-tracking](../microservices/svc-wildlife-tracking.md) | 11 | PostgreSQL 15 | 3 | 0 | 5 | 0 |
 
@@ -243,6 +246,7 @@ Per-domain topology breakdown showing services, databases, and integration patte
 | [svc-emergency-response](../microservices/svc-emergency-response.md) | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | Retrieve guest medical info and emergency contacts |
 | [svc-emergency-response](../microservices/svc-emergency-response.md) | [svc-location-services](../microservices/svc-location-services.md) | Get last known guest GPS position |
 | [svc-emergency-response](../microservices/svc-emergency-response.md) | [svc-guide-management](../microservices/svc-guide-management.md) | Identify nearest on-duty guide |
+| [svc-emergency-response](../microservices/svc-emergency-response.md) | [svc-adventure-tracking](../microservices/svc-adventure-tracking.md) | Get active tracking sessions for affected guests |
 | [svc-safety-compliance](../microservices/svc-safety-compliance.md) | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | Validate guest identity |
 | [svc-safety-compliance](../microservices/svc-safety-compliance.md) | [svc-guide-management](../microservices/svc-guide-management.md) | Get assigned guide |
 | [svc-wildlife-tracking](../microservices/svc-wildlife-tracking.md) | [svc-trail-management](../microservices/svc-trail-management.md) | Identify nearest trails to sighting location |
@@ -269,10 +273,10 @@ Per-domain topology breakdown showing services, databases, and integration patte
 |---------|------------|----------|----------|---------|------------|----------|
 | [svc-analytics](../microservices/svc-analytics.md) | 6 | Oracle Database 19c | 0 | 1 | 0 | 7 |
 | [svc-inventory-procurement](../microservices/svc-inventory-procurement.md) | 8 | PostgreSQL 15 | 2 | 0 | 1 | 0 |
-| [svc-location-services](../microservices/svc-location-services.md) | 6 | PostGIS (PostgreSQL 15) | 0 | 4 | 0 | 0 |
+| [svc-location-services](../microservices/svc-location-services.md) | 6 | PostGIS (PostgreSQL 15) | 0 | 5 | 0 | 0 |
 | [svc-loyalty-rewards](../microservices/svc-loyalty-rewards.md) | 5 | Couchbase 7 | 3 | 0 | 1 | 1 |
 | [svc-media-gallery](../microservices/svc-media-gallery.md) | 5 | PostgreSQL 15 + S3-Compatible Object Store | 0 | 0 | 1 | 0 |
-| [svc-notifications](../microservices/svc-notifications.md) | 6 | PostgreSQL 15 + Valkey 8 | 0 | 0 | 0 | 14 |
+| [svc-notifications](../microservices/svc-notifications.md) | 6 | PostgreSQL 15 + Valkey 8 | 0 | 0 | 0 | 15 |
 | [svc-payments](../microservices/svc-payments.md) | 13 | PostgreSQL 15 | 0 | 4 | 2 | 0 |
 | [svc-reviews](../microservices/svc-reviews.md) | 10 | PostgreSQL 15 | 2 | 0 | 0 | 0 |
 | [svc-weather](../microservices/svc-weather.md) | 5 | Valkey 8 + PostgreSQL 15 | 0 | 3 | 1 | 0 |
@@ -298,6 +302,7 @@ Per-domain topology breakdown showing services, databases, and integration patte
 | [svc-transport-logistics](../microservices/svc-transport-logistics.md) | [svc-location-services](../microservices/svc-location-services.md) | Validate pickup location |
 | [svc-trail-management](../microservices/svc-trail-management.md) | [svc-location-services](../microservices/svc-location-services.md) | Get trail coordinates |
 | [svc-emergency-response](../microservices/svc-emergency-response.md) | [svc-location-services](../microservices/svc-location-services.md) | Get last known guest GPS position |
+| [svc-adventure-tracking](../microservices/svc-adventure-tracking.md) | [svc-location-services](../microservices/svc-location-services.md) | Load geofence boundaries for adventure trail |
 | [svc-reservations](../microservices/svc-reservations.md) | [svc-payments](../microservices/svc-payments.md) | Process deposit payment |
 | [svc-partner-integrations](../microservices/svc-partner-integrations.md) | [svc-payments](../microservices/svc-payments.md) | Process commission |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | [svc-weather](../microservices/svc-weather.md) | Get forecast |

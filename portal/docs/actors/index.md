@@ -77,6 +77,7 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 | [svc-guide-management](../microservices/svc-guide-management/) | Guide Management | See [microservice page](../microservices/svc-guide-management/) for full details |
 | [svc-gear-inventory](../microservices/svc-gear-inventory/) | Logistics | See [microservice page](../microservices/svc-gear-inventory/) for full details |
 | [svc-transport-logistics](../microservices/svc-transport-logistics/) | Logistics | See [microservice page](../microservices/svc-transport-logistics/) for full details |
+| [svc-adventure-tracking](../microservices/svc-adventure-tracking/) | Operations | See [microservice page](../microservices/svc-adventure-tracking/) for full details |
 | [svc-check-in](../microservices/svc-check-in/) | Operations | See [microservice page](../microservices/svc-check-in/) for full details |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | Operations | See [microservice page](../microservices/svc-scheduling-orchestrator/) for full details |
 | [svc-trail-management](../microservices/svc-trail-management/) | Product Catalog | See [microservice page](../microservices/svc-trail-management/) for full details |
@@ -91,6 +92,7 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 | [svc-media-gallery](../microservices/svc-media-gallery/) | Support | See [microservice page](../microservices/svc-media-gallery/) for full details |
 | [svc-notifications](../microservices/svc-notifications/) | Support | See [microservice page](../microservices/svc-notifications/) for full details |
 | [svc-payments](../microservices/svc-payments/) | Support | See [microservice page](../microservices/svc-payments/) for full details |
+| [svc-reviews](../microservices/svc-reviews/) | Support | See [microservice page](../microservices/svc-reviews/) for full details |
 | [svc-weather](../microservices/svc-weather/) | Support | See [microservice page](../microservices/svc-weather/) for full details |
 
 ---
@@ -344,6 +346,12 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - [svc-weather](../microservices/svc-weather/)
 - [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/)
 
+### svc-adventure-tracking
+
+- **Type:** Internal Microservice
+- **Domain:** Operations
+- **Details:** [svc-adventure-tracking Microservice Page](../microservices/svc-adventure-tracking/)
+
 ### svc-analytics
 
 - **Type:** Internal Microservice
@@ -427,6 +435,12 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - **Type:** Internal Microservice
 - **Domain:** Booking
 - **Details:** [svc-reservations Microservice Page](../microservices/svc-reservations/)
+
+### svc-reviews
+
+- **Type:** Internal Microservice
+- **Domain:** Support
+- **Details:** [svc-reviews Microservice Page](../microservices/svc-reviews/)
 
 ### svc-safety-compliance
 

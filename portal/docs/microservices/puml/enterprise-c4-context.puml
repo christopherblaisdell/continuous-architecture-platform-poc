@@ -15,6 +15,7 @@ Person(app_guest_mobile, "Adventure App", "Mobile App", $link="/applications/app
 System_Boundary(Operations, "Operations") {
     Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Check In", $link="/microservices/svc-check-in/#integration-context")
     Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+    Container(svc_adventure_tracking, "svc-adventure-tracking", "Java / Spring Boot", "Adventure Tracking", $link="/microservices/svc-adventure-tracking/#integration-context")
 }
 
 System_Boundary(Guest_Identity, "Guest Identity") {
@@ -57,17 +58,20 @@ System_Boundary(Support, "Support") {
     Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather", $link="/microservices/svc-weather/#integration-context")
     Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services", $link="/microservices/svc-location-services/#integration-context")
     Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement", $link="/microservices/svc-inventory-procurement/#integration-context")
+    Container(svc_reviews, "svc-reviews", "Java / Spring Boot", "Reviews", $link="/microservices/svc-reviews/#integration-context")
 }
 
 System_Boundary(PCI_Zone, "PCI DSS Compliance Zone") {
     Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments (PCI scope)", $link="/microservices/svc-payments/#integration-context")
 }
 
+System_Ext(Adventure_Tracking, "Adventure Tracking", "Third-party service", $link="/actors/#adventure-tracking")
 System_Ext(DocuSign_API, "DocuSign API", "Third-party service", $link="/actors/#docusign-api")
 System_Ext(Firebase_Cloud_Messaging, "Firebase Cloud Messaging", "Third-party service", $link="/actors/#firebase-cloud-messaging")
 System_Ext(Fraud_Detection_API, "Fraud Detection API", "PCI-certified third-party", $link="/actors/#fraud-detection-api")
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service", $link="/actors/#google-maps-platform")
 System_Ext(IDVerify_API, "IDVerify API", "Third-party service", $link="/actors/#idverify-api")
+System_Ext(Location_Services, "Location Services", "Third-party service", $link="/actors/#location-services")
 System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service", $link="/actors/#openweather-api")
 System_Ext(Payment_Gateway, "Payment Gateway", "PCI-certified third-party", $link="/actors/#payment-gateway")
 System_Ext(SendGrid_API, "SendGrid API", "Third-party service", $link="/actors/#sendgrid-api")
@@ -114,15 +118,15 @@ Rel(svc_check_in, svc_guest_profiles, "1 calls", "HTTPS")
 Rel(svc_check_in, svc_guide_management, "3 calls", "HTTPS")
 Rel(svc_check_in, svc_transport_logistics, "1 calls", "HTTPS")
 Rel(svc_check_in, svc_trip_catalog, "4 calls", "HTTPS")
-Rel(svc_check_in, svc_safety_compliance, "2 calls", "HTTPS")
-Rel(svc_check_in, svc_notifications, "6 calls", "HTTPS")
+Rel(svc_check_in, svc_safety_compliance, "3 calls", "HTTPS")
+Rel(svc_check_in, svc_notifications, "7 calls", "HTTPS")
 Rel(svc_trip_catalog, svc_safety_compliance, "1 calls", "HTTPS")
 Rel(svc_trip_catalog, svc_notifications, "3 calls", "HTTPS")
 Rel(svc_safety_compliance, svc_guest_profiles, "3 calls", "HTTPS")
 Rel(svc_safety_compliance, svc_guide_management, "3 calls", "HTTPS")
 Rel(svc_safety_compliance, svc_check_in, "1 calls", "HTTPS")
 Rel(svc_safety_compliance, svc_trip_catalog, "2 calls", "HTTPS")
-Rel(svc_safety_compliance, svc_notifications, "7 calls", "HTTPS")
+Rel(svc_safety_compliance, svc_notifications, "8 calls", "HTTPS")
 Rel(svc_notifications, svc_reservations, "2 calls", "HTTPS")
 Rel(svc_notifications, svc_guest_profiles, "3 calls", "HTTPS")
 Rel(svc_notifications, svc_transport_logistics, "1 calls", "HTTPS")
@@ -133,7 +137,9 @@ Rel(svc_partner_integrations, svc_payments, "1 calls", "HTTPS", $tags="pci")
 Rel(svc_payments, svc_notifications, "2 calls", "HTTPS")
 Rel(svc_reservations, svc_payments, "1 calls", "HTTPS", $tags="pci")
 
+Rel(svc_adventure_tracking, Location_Services, "Integrates", "HTTPS")
 Rel(svc_analytics, Snowflake_Data_Cloud, "Integrates", "HTTPS")
+Rel(svc_emergency_response, Adventure_Tracking, "Integrates", "HTTPS")
 Rel(svc_guest_profiles, IDVerify_API, "Integrates", "HTTPS")
 Rel(svc_location_services, Google_Maps_Platform, "Integrates", "HTTPS")
 Rel(svc_media_gallery, Google_Maps_Platform, "Integrates", "HTTPS")

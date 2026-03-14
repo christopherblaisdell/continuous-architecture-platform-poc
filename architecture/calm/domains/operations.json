@@ -198,6 +198,133 @@
       }
     },
     {
+      "unique-id": "svc-adventure-tracking",
+      "node-type": "service",
+      "name": "Adventure Tracking Service",
+      "description": "Manages real-time GPS tracking of guests on active adventures. Receives position",
+      "interfaces": [
+        {
+          "unique-id": "svc-adventure-tracking-api-get-tracking-sessions",
+          "type": "path",
+          "path": "/tracking-sessions",
+          "metadata": {
+            "method": "GET",
+            "summary": "List active tracking sessions"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-post-tracking-sessions",
+          "type": "path",
+          "path": "/tracking-sessions",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a tracking session"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-get-tracking-sessions-{session_id}",
+          "type": "path",
+          "path": "/tracking-sessions/{session_id}",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get tracking session details"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-patch-tracking-sessions-{session_id}",
+          "type": "path",
+          "path": "/tracking-sessions/{session_id}",
+          "metadata": {
+            "method": "PATCH",
+            "summary": "Update tracking session status"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-get-tracking-sessions-{session_id}-positions",
+          "type": "path",
+          "path": "/tracking-sessions/{session_id}/positions",
+          "metadata": {
+            "method": "GET",
+            "summary": "Get position history for a tracking session"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-post-positions",
+          "type": "path",
+          "path": "/positions",
+          "metadata": {
+            "method": "POST",
+            "summary": "Report a GPS position update"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-post-positions-batch",
+          "type": "path",
+          "path": "/positions/batch",
+          "metadata": {
+            "method": "POST",
+            "summary": "Report a batch of GPS position updates"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-get-geofences",
+          "type": "path",
+          "path": "/geofences",
+          "metadata": {
+            "method": "GET",
+            "summary": "List geofences"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-post-geofences",
+          "type": "path",
+          "path": "/geofences",
+          "metadata": {
+            "method": "POST",
+            "summary": "Create a geofence"
+          }
+        },
+        {
+          "unique-id": "svc-adventure-tracking-api-get-live-stream",
+          "type": "path",
+          "path": "/live-stream",
+          "metadata": {
+            "method": "GET",
+            "summary": "Subscribe to live position updates (SSE)"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Operations",
+        "team": "NovaTrek Operations Team"
+      }
+    },
+    {
+      "unique-id": "svc-adventure-tracking-db",
+      "node-type": "database",
+      "name": "Adventure Tracking Database",
+      "description": "PostgreSQL 15 + PostGIS database for svc-adventure-tracking (tracking schema)",
+      "interfaces": [
+        {
+          "unique-id": "svc-adventure-tracking-db-jdbc",
+          "type": "host-port",
+          "metadata": {
+            "engine": "PostgreSQL 15 + PostGIS",
+            "schema": "tracking"
+          }
+        }
+      ],
+      "metadata": {
+        "domain": "Operations",
+        "engine": "PostgreSQL 15 + PostGIS",
+        "tables": [
+          "tracking_sessions",
+          "positions",
+          "geofences"
+        ]
+      }
+    },
+    {
       "unique-id": "svc-guest-profiles",
       "node-type": "service",
       "name": "Guest Profiles Service",
@@ -1442,6 +1569,18 @@
       }
     },
     {
+      "unique-id": "rel-svc-adventure-tracking-to-db",
+      "relationship-type": "connects",
+      "parties": {
+        "source": "svc-adventure-tracking",
+        "target": "svc-adventure-tracking-db"
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "description": "svc-adventure-tracking connects to its database"
+      }
+    },
+    {
       "unique-id": "rel-svc-check-in-post--check-ins-to-svc-reservations",
       "relationship-type": "interacts",
       "parties": {
@@ -1712,6 +1851,21 @@
       }
     },
     {
+      "unique-id": "rel-svc-emergency-response-post--emergencies-to-svc-adventure-tracking",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-emergency-response",
+        "target": "svc-adventure-tracking"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /emergencies",
+        "target-endpoint": "GET /tracking-sessions",
+        "action": "Get active tracking sessions for affected guests",
+        "async": false
+      }
+    },
+    {
       "unique-id": "rel-svc-wildlife-tracking-post--alerts-to-svc-scheduling-orchestrator",
       "relationship-type": "interacts",
       "parties": {
@@ -1724,6 +1878,51 @@
         "target-endpoint": "GET /daily-schedules",
         "action": "Check for affected scheduled trips",
         "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-adventure-tracking-post--tracking-sessions-to-svc-location-services",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-adventure-tracking",
+        "target": "svc-location-services"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /tracking-sessions",
+        "target-endpoint": "GET /locations",
+        "action": "Load geofence boundaries for adventure trail",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-adventure-tracking-post--positions-to-svc-emergency-response",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-adventure-tracking",
+        "target": "svc-emergency-response"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /positions",
+        "target-endpoint": "POST /emergencies",
+        "action": "Create emergency on SOS trigger",
+        "async": true
+      }
+    },
+    {
+      "unique-id": "rel-svc-adventure-tracking-post--positions-to-svc-notifications",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-adventure-tracking",
+        "target": "svc-notifications"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /positions",
+        "target-endpoint": "POST /notifications",
+        "action": "Send geofence breach alert to guide and ops staff",
+        "async": true
       }
     },
     {

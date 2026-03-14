@@ -136,6 +136,7 @@ tags:
 
 | Ticket | Solution | Capabilities | Date |
 |--------|----------|-------------|------|
+| NTK-10006 | [Real-Time Adventure Tracking and Emergency Alerting System](../solutions/_NTK-10006-real-time-adventure-tracking.md) | `CAP-2.1`, `CAP-3.2`, `CAP-3.3`, `CAP-7.2` | 2026-03-14 |
 | NTK-10003 | [Support Unregistered Guest Self-Service Check-In](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) | `CAP-2.1`, `CAP-1.1`, `CAP-1.3` | 2025-02-12 |
 | NTK-10002 | [Adventure Category Classification for Check-In UI Patterns](../solutions/_NTK-10002-adventure-category-classification.md) | `CAP-2.1`, `CAP-1.2` | 2025-02-10 |
 | NTK-10005 | [Add Wristband RFID Field to Check-In Record](../solutions/_NTK-10005-wristband-rfid-field.md) | `CAP-2.1` | 2025-02-08 |

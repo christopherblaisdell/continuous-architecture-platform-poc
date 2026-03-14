@@ -28,13 +28,13 @@ a capability is modified by solutions.
 
 | Metric | Value |
 |--------|-------|
-| Active (last 90 days) | 4 |
+| Active (last 90 days) | 8 |
 | Aging (90-180 days) | 0 |
-| Stale (>180 days) | 5 |
-| Untouched (no solutions) | 25 |
-| High churn (4+ solutions) | 0 |
-| Emergent L3 capabilities | 21 |
-| Architecture decisions | 30 |
+| Stale (>180 days) | 4 |
+| Untouched (no solutions) | 22 |
+| High churn (4+ solutions) | 1 |
+| Emergent L3 capabilities | 30 |
+| Architecture decisions | 42 |
 
 ### Per-Capability Health
 
@@ -48,14 +48,14 @@ a capability is modified by solutions.
 | CAP-1.6 Trip Media and Memories | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.7 Reviews and Feedback | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 5 | 3 |
 | CAP-1.8 Personalized Recommendations | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 3 | 2025-02-12 | STALE | MODERATE | 5 | 6 |
+| CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 4 | 2026-03-14 | ACTIVE | HIGH | 6 | 9 |
 | CAP-2.2 Schedule Planning and Optimization | IMPLEMENTED | 1 | 2025-02-05 | STALE | LOW | 2 | 2 |
 | CAP-2.3 Guide Assignment and Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-2.4 Trail Operations | IMPLEMENTED | 1 | 2025-02-01 | STALE | LOW | 1 | 0 |
 | CAP-2.5 Transport Coordination | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-3.1 Waiver and Compliance Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-3.2 Incident Reporting and Response | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-3.3 Emergency Response Coordination | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-3.2 Incident Reporting and Response | IMPLEMENTED | 1 | 2026-03-14 | ACTIVE | LOW | 2 | 3 |
+| CAP-3.3 Emergency Response Coordination | IMPLEMENTED | 1 | 2026-03-14 | ACTIVE | LOW | 5 | 3 |
 | CAP-3.4 Wildlife and Environmental Monitoring | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-3.5 Weather Monitoring and Alerting | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-4.1 Gear Inventory and Tracking | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
@@ -72,7 +72,7 @@ a capability is modified by solutions.
 | CAP-6.2 Affiliate and Commission Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-6.3 Channel Rate Parity Management | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-7.1 Notification Delivery (Multi-Channel) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-7.2 Geospatial and Location Services | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| CAP-7.2 Geospatial and Location Services | IMPLEMENTED | 1 | 2026-03-14 | ACTIVE | LOW | 1 | 3 |
 | CAP-7.3 Search and Discovery Engine | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 
 ## Domain Overview
@@ -217,6 +217,7 @@ Guest arrival processing, identity verification, wristband assignment, safety br
 | 2025-02-08 | [NTK-10005](../solutions/_NTK-10005-wristband-rfid-field.md) | enhanced | Add RFID wristband field to check-in record for adventure tracking |
 | 2025-02-10 | [NTK-10002](../solutions/_NTK-10002-adventure-category-classification.md) | enhanced | Configuration-driven adventure category classification for check-in UI patterns |
 | 2025-02-12 | [NTK-10003](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) | enhanced | Enable unregistered walk-up guests to self-check-in via kiosks |
+| 2026-03-14 | [NTK-10006](../solutions/_NTK-10006-real-time-adventure-tracking.md) | enhanced | Real-time GPS tracking of guests on active adventures with automated emergency alerting and rescue dispatch |
 
 #### Emergent L3 Capabilities
 
@@ -225,6 +226,7 @@ Guest arrival processing, identity verification, wristband assignment, safety br
 - **Reservation Lookup Orchestration** — Four-field identity verification (name, confirmation code, date, party size) for kiosk access
 - **Session-Scoped Kiosk Access** — JWT-based 30-minute session tokens for kiosk interactions
 - **Wristband RFID Capture** — Optional RFID tag ID (hex, 8-16 chars) validated and stored at check-in with uniqueness constraint
+- **Tracking Session Activation** — Check-in completion automatically initiates GPS tracking based on adventure classification pattern
 
 ### CAP-2.2 Schedule Planning and Optimization
 
@@ -299,6 +301,17 @@ Incident logging, investigation workflow, and regulatory reporting
 
 **Services:** [svc-safety-compliance](../microservices/svc-safety-compliance.md)
 
+#### Solution Timeline
+
+| Date | Ticket | Impact | Summary |
+|------|--------|--------|---------|
+| 2026-03-14 | [NTK-10006](../solutions/_NTK-10006-real-time-adventure-tracking.md) | enhanced | Real-time GPS tracking of guests on active adventures with automated emergency alerting and rescue dispatch |
+
+#### Emergent L3 Capabilities
+
+- **Automated Incident Generation from Tracking Events** — SOS signals and geofence breaches create incident records with GPS coordinates without manual intervention
+- **Location-Enriched Incident Records** — Every tracking-generated incident includes precise latitude, longitude, altitude, and nearest landmark
+
 ### CAP-3.3 Emergency Response Coordination
 
 **Status:** IMPLEMENTED
@@ -306,6 +319,20 @@ Incident logging, investigation workflow, and regulatory reporting
 Emergency protocol activation, rescue dispatch, and communication coordination
 
 **Services:** [svc-safety-compliance](../microservices/svc-safety-compliance.md)
+
+#### Solution Timeline
+
+| Date | Ticket | Impact | Summary |
+|------|--------|--------|---------|
+| 2026-03-14 | [NTK-10006](../solutions/_NTK-10006-real-time-adventure-tracking.md) | enhanced | Real-time GPS tracking of guests on active adventures with automated emergency alerting and rescue dispatch |
+
+#### Emergent L3 Capabilities
+
+- **SOS-Triggered Emergency Response** — Wristband SOS button or mobile app SOS initiates full emergency workflow with automatic dispatch
+- **Proximity-Based Rescue Dispatch** — Nearest available rescue team identified using geospatial distance calculation and certification matching
+- **Weather-Triggered Evacuation Coordination** — Severe weather alerts automatically identify affected guests and initiate evacuation notifications
+- **Emergency Response Timeline** — Append-only timeline (triggered, dispatched, acknowledged, en_route, on_scene, resolved) for audit and insurance
+- **Multi-Channel Emergency Notification** — URGENT notifications sent simultaneously via SMS, push, and in-app to guides, staff, and emergency contacts
 
 ### CAP-3.4 Wildlife and Environmental Monitoring
 
@@ -483,6 +510,16 @@ Email, SMS, push notification delivery with template management
 Geocoding, geofencing, distance calculation, and map tile serving
 
 **Services:** [svc-location-services](../microservices/svc-location-services.md)
+
+#### Solution Timeline
+
+| Date | Ticket | Impact | Summary |
+|------|--------|--------|---------|
+| 2026-03-14 | [NTK-10006](../solutions/_NTK-10006-real-time-adventure-tracking.md) | enhanced | Real-time GPS tracking of guests on active adventures with automated emergency alerting and rescue dispatch |
+
+#### Emergent L3 Capabilities
+
+- **Real-Time Geofence Evaluation** — Active guest positions checked against trail boundaries, restricted zones, and emergency assembly points
 
 ### CAP-7.3 Search and Discovery Engine
 

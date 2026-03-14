@@ -49,6 +49,7 @@ Solutions that share services or capabilities with this design:
 
 | Solution | Shared Capabilities | Shared Services |
 |----------|-------------------|-----------------|
+| [NTK-10006 — NTK-10006 Solution Design — Real-Time Ad](_NTK-10006-real-time-adventure-tracking.md) | — | svc-notifications |
 | [NTK-10008 — NTK-10008 Solution Design — Guest Review](_NTK-10008-guest-reviews-and-ratings.md) | — | svc-reservations |
 
 ---

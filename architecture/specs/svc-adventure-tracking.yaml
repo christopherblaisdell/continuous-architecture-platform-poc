@@ -1,0 +1,752 @@
+openapi: 3.0.3
+info:
+  title: NovaTrek Adventure Tracking Service
+  description: |
+    Manages real-time GPS tracking of guests on active adventures. Receives position
+    updates from wristband devices, evaluates positions against geofences, and
+    provides live tracking data to the operations dashboard. Tracking sessions are
+    activated automatically when check-in completes (via checkin.completed event)
+    and deactivated when the adventure ends (via reservation.status-changed event).
+  version: 1.0.0
+  contact:
+    name: NovaTrek Operations Team
+    email: operations@novatrek.example.com
+
+servers:
+  - url: https://api.novatrek.example.com/tracking/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /tracking-sessions:
+    get:
+      operationId: listTrackingSessions
+      summary: List active tracking sessions
+      description: |
+        Returns all currently active tracking sessions. Supports filtering by
+        adventure category, guide, and geographic bounding box. Used by the
+        operations dashboard to populate the live tracking map.
+      tags: [Tracking Sessions]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [ACTIVE, COMPLETED, TERMINATED]
+          description: Filter by session status
+        - name: adventure_category
+          in: query
+          schema:
+            type: string
+          description: Filter by adventure category (e.g., rock_climbing)
+        - name: guide_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by assigned guide
+        - name: bbox
+          in: query
+          schema:
+            type: string
+          description: Bounding box filter (min_lng,min_lat,max_lng,max_lat)
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of tracking sessions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingSessionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createTrackingSession
+      summary: Create a tracking session
+      description: |
+        Creates a new tracking session for a guest. Typically triggered by consuming
+        the checkin.completed event, but can be called directly for manual activation.
+        The tracking frequency is determined by the adventure's check-in pattern
+        (Pattern 1: 60s, Pattern 2: 30s, Pattern 3: 10s). Idempotent on
+        (guest_id, reservation_id) — duplicate requests return the existing session.
+      tags: [Tracking Sessions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackingSessionCreate'
+      responses:
+        '201':
+          description: Tracking session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingSession'
+        '200':
+          description: Tracking session already exists (idempotent)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingSession'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /tracking-sessions/{session_id}:
+    get:
+      operationId: getTrackingSession
+      summary: Get tracking session details
+      description: |
+        Returns a tracking session including the most recent position, session
+        metadata, and geofence status.
+      tags: [Tracking Sessions]
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Tracking session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      operationId: updateTrackingSession
+      summary: Update tracking session status
+      description: |
+        Updates a tracking session. Used to terminate sessions (adventure complete
+        or manual override) or adjust tracking parameters. Supports optimistic
+        locking via _rev field.
+      tags: [Tracking Sessions]
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackingSessionUpdate'
+      responses:
+        '200':
+          description: Tracking session updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingSession'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Optimistic lock conflict — session was modified by another request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tracking-sessions/{session_id}/positions:
+    get:
+      operationId: getPositionHistory
+      summary: Get position history for a tracking session
+      description: |
+        Returns the position history for a tracking session. Supports time range
+        filtering. Used for route replay and insurance compliance records.
+      tags: [Positions]
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Start of time range (inclusive)
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: End of time range (inclusive)
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: Position history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /positions:
+    post:
+      operationId: reportPosition
+      summary: Report a GPS position update
+      description: |
+        Receives a GPS position update from a wristband device. The position is
+        stored, evaluated against geofences, and broadcast to the live tracking
+        stream. If the position is outside the adventure's geofence, a
+        geofence.breach event is emitted. If the position includes an SOS flag,
+        the SOS workflow is triggered immediately.
+      tags: [Positions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionReport'
+      responses:
+        '201':
+          description: Position recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionAck'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: No active tracking session for this RFID tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /positions/batch:
+    post:
+      operationId: reportPositionBatch
+      summary: Report a batch of GPS position updates
+      description: |
+        Receives a batch of GPS position updates. Used when wristbands buffer
+        positions during signal loss and transmit them when connectivity resumes.
+        Each position in the batch is processed independently.
+      tags: [Positions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionBatchReport'
+      responses:
+        '201':
+          description: Batch processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionBatchAck'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /geofences:
+    get:
+      operationId: listGeofences
+      summary: List geofences
+      description: |
+        Returns geofences configured for adventures. Each geofence defines a
+        geographic boundary (polygon) associated with an adventure trail or
+        restricted zone.
+      tags: [Geofences]
+      parameters:
+        - name: trail_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by trail
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [TRAIL_BOUNDARY, RESTRICTED_ZONE, ASSEMBLY_POINT, HAZARD_ZONE]
+          description: Filter by geofence type
+      responses:
+        '200':
+          description: List of geofences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeofenceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createGeofence
+      summary: Create a geofence
+      description: |
+        Defines a new geofence boundary. Geofences are evaluated against
+        incoming GPS positions. Breaches trigger alerts.
+      tags: [Geofences]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeofenceCreate'
+      responses:
+        '201':
+          description: Geofence created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Geofence'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /live-stream:
+    get:
+      operationId: getLiveStream
+      summary: Subscribe to live position updates (SSE)
+      description: |
+        Server-Sent Events stream of real-time position updates for all active
+        tracking sessions. Supports filtering by adventure category and bounding
+        box. Used by the operations dashboard for the live tracking map.
+      tags: [Live Stream]
+      parameters:
+        - name: adventure_category
+          in: query
+          schema:
+            type: string
+          description: Filter updates by adventure category
+        - name: bbox
+          in: query
+          schema:
+            type: string
+          description: Bounding box filter (min_lng,min_lat,max_lng,max_lat)
+      responses:
+        '200':
+          description: SSE stream of position updates
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Newline-delimited SSE events containing PositionUpdate JSON
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    SessionId:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Tracking session identifier
+    PageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Number of items per page
+    PageToken:
+      name: page_token
+      in: query
+      schema:
+        type: string
+      description: Cursor for pagination
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    TrackingSessionCreate:
+      type: object
+      required: [guest_id, reservation_id, rfid_tag, adventure_category, check_in_pattern]
+      properties:
+        guest_id:
+          type: string
+          format: uuid
+          description: Guest identifier from svc-guest-profiles
+        reservation_id:
+          type: string
+          format: uuid
+          description: Reservation identifier from svc-reservations
+        trip_id:
+          type: string
+          format: uuid
+          description: Trip identifier from svc-trip-catalog
+        rfid_tag:
+          type: string
+          pattern: '^[A-Fa-f0-9]{8,16}$'
+          description: RFID tag hex identifier from wristband assignment
+        adventure_category:
+          type: string
+          description: Adventure category (e.g., rock_climbing, hiking_easy)
+        check_in_pattern:
+          type: integer
+          enum: [1, 2, 3]
+          description: Check-in pattern (1=Basic, 2=Guided, 3=Full Service)
+        guide_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Assigned guide identifier (null for Pattern 1 self-guided)
+        trail_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Associated trail for geofence evaluation
+
+    TrackingSession:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        guest_id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        trip_id:
+          type: string
+          format: uuid
+          nullable: true
+        rfid_tag:
+          type: string
+        adventure_category:
+          type: string
+        check_in_pattern:
+          type: integer
+          enum: [1, 2, 3]
+        tracking_frequency_seconds:
+          type: integer
+          description: GPS update frequency in seconds (derived from check_in_pattern)
+        guide_id:
+          type: string
+          format: uuid
+          nullable: true
+        trail_id:
+          type: string
+          format: uuid
+          nullable: true
+        status:
+          type: string
+          enum: [ACTIVE, COMPLETED, TERMINATED]
+        last_position:
+          $ref: '#/components/schemas/Position'
+        geofence_status:
+          type: string
+          enum: [WITHIN_BOUNDS, BREACH_DETECTED, NO_GEOFENCE]
+          description: Current geofence evaluation status
+        activated_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        position_count:
+          type: integer
+          description: Total GPS positions received for this session
+        _rev:
+          type: integer
+          description: Optimistic locking revision
+
+    TrackingSessionUpdate:
+      type: object
+      required: [_rev]
+      properties:
+        status:
+          type: string
+          enum: [COMPLETED, TERMINATED]
+        _rev:
+          type: integer
+          description: Current revision for optimistic locking
+
+    TrackingSessionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackingSession'
+        total:
+          type: integer
+        next_page_token:
+          type: string
+          nullable: true
+
+    PositionReport:
+      type: object
+      required: [rfid_tag, latitude, longitude, timestamp]
+      properties:
+        rfid_tag:
+          type: string
+          pattern: '^[A-Fa-f0-9]{8,16}$'
+          description: RFID tag of the reporting wristband
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        altitude_meters:
+          type: number
+          format: double
+          nullable: true
+          description: Altitude in meters above sea level (GPS-derived)
+        accuracy_meters:
+          type: number
+          format: double
+          nullable: true
+          description: Horizontal accuracy estimate in meters
+        speed_mps:
+          type: number
+          format: double
+          nullable: true
+          description: Speed in meters per second
+        heading_degrees:
+          type: number
+          format: double
+          nullable: true
+          minimum: 0
+          maximum: 360
+          description: Compass heading in degrees
+        battery_percent:
+          type: integer
+          minimum: 0
+          maximum: 100
+          nullable: true
+          description: Wristband battery level
+        sos:
+          type: boolean
+          default: false
+          description: True if this position report is an SOS trigger
+        timestamp:
+          type: string
+          format: date-time
+          description: Time the GPS reading was taken (device clock)
+
+    PositionBatchReport:
+      type: object
+      required: [positions]
+      properties:
+        positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionReport'
+          minItems: 1
+          maxItems: 500
+          description: Batch of buffered position reports
+
+    Position:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        altitude_meters:
+          type: number
+          format: double
+          nullable: true
+        accuracy_meters:
+          type: number
+          format: double
+          nullable: true
+        speed_mps:
+          type: number
+          format: double
+          nullable: true
+        heading_degrees:
+          type: number
+          format: double
+          nullable: true
+        battery_percent:
+          type: integer
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+
+    PositionAck:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        position_id:
+          type: string
+          format: uuid
+        geofence_status:
+          type: string
+          enum: [WITHIN_BOUNDS, BREACH_DETECTED, NO_GEOFENCE]
+        sos_acknowledged:
+          type: boolean
+        received_at:
+          type: string
+          format: date-time
+
+    PositionBatchAck:
+      type: object
+      properties:
+        processed:
+          type: integer
+          description: Number of positions successfully processed
+        failed:
+          type: integer
+          description: Number of positions that failed processing
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              error:
+                type: string
+
+    PositionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Position'
+        total:
+          type: integer
+        next_page_token:
+          type: string
+          nullable: true
+
+    GeofenceCreate:
+      type: object
+      required: [name, type, boundary]
+      properties:
+        name:
+          type: string
+          description: Human-readable geofence name
+        type:
+          type: string
+          enum: [TRAIL_BOUNDARY, RESTRICTED_ZONE, ASSEMBLY_POINT, HAZARD_ZONE]
+        trail_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Associated trail (null for zone-level geofences)
+        boundary:
+          $ref: '#/components/schemas/GeoPolygon'
+        buffer_meters:
+          type: number
+          format: double
+          default: 50
+          description: Buffer distance around boundary before breach is triggered
+
+    Geofence:
+      type: object
+      properties:
+        geofence_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        type:
+          type: string
+          enum: [TRAIL_BOUNDARY, RESTRICTED_ZONE, ASSEMBLY_POINT, HAZARD_ZONE]
+        trail_id:
+          type: string
+          format: uuid
+          nullable: true
+        boundary:
+          $ref: '#/components/schemas/GeoPolygon'
+        buffer_meters:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+
+    GeofenceList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Geofence'
+        total:
+          type: integer
+
+    GeoPolygon:
+      type: object
+      required: [type, coordinates]
+      properties:
+        type:
+          type: string
+          enum: [Polygon]
+        coordinates:
+          type: array
+          description: GeoJSON polygon coordinates (array of linear rings)
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+              minItems: 2
+              maxItems: 3
+
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          nullable: true

@@ -11,7 +11,7 @@ tags:
 
 <p class="subtitle">Deep-Dive Architecture Documentation for Every NovaTrek Service</p>
 
-<span class="version-badge">22 Services &middot; 176 Endpoints</span>
+<span class="version-badge">23 Services &middot; 186 Endpoints</span>
 
 </div>
 
@@ -31,6 +31,7 @@ All services are built on the same [technology stack](../technologies.md) — Ja
 
 | Service | Version | Endpoints | Status | Page |
 |---------|---------|-----------|--------|------|
+| **NovaTrek Adventure Tracking Service**<br><small>`svc-adventure-tracking`</small> | `1.0.0` | 10 endpoints | :material-circle-outline: Wave ? | [:material-arrow-right: Open](svc-adventure-tracking.md){ .md-button } |
 | **NovaTrek Check-In Service**<br><small>`svc-check-in`</small> | `1.0.0` | 5 endpoints | :material-circle-outline: Wave 3 | [:material-arrow-right: Open](svc-check-in.md){ .md-button } |
 | **NovaTrek Scheduling Orchestrator API**<br><small>`svc-scheduling-orchestrator`</small> | `3.0.1` | 5 endpoints | :material-circle-outline: Wave 3 | [:material-arrow-right: Open](svc-scheduling-orchestrator.md){ .md-button } |
 

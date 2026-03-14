@@ -2636,3 +2636,155 @@ svc-reviews:
       - name: uq_aggregate_entity
         columns: entity_type, entity_id
         type: UNIQUE
+
+svc-adventure-tracking:
+  engine: PostgreSQL 15 + PostGIS
+  schema: tracking
+  tables:
+  - tracking_sessions
+  - positions
+  - geofences
+  features:
+  - PostGIS spatial indexing for geofence containment queries
+  - Hypertable-style time partitioning on positions (monthly)
+  - Automatic session lifecycle management (ACTIVE -> COMPLETED on checkout)
+  - Pattern-based GPS frequency (Pattern 1=60s, Pattern 2=30s, Pattern 3=10s)
+  - 90-day retention policy for position data
+  - SSE live-stream for real-time dashboard updates
+  volume: ~50,000 positions/day (peak season), ~500 sessions/day
+  connection_pool:
+    min: 10
+    max: 50
+    idle_timeout: 5min
+  backup: Daily pg_dump, 90-day retention for positions, indefinite for sessions
+  table_details:
+    tracking_sessions:
+      description: Active and historical adventure tracking sessions linked to check-ins
+      columns:
+      - name: session_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: checkin_id
+        type: UUID
+        constraints: NOT NULL, FK -> svc-check-in
+      - name: guest_id
+        type: UUID
+        constraints: NOT NULL
+      - name: adventure_id
+        type: UUID
+        constraints: NOT NULL
+      - name: guide_id
+        type: UUID
+        constraints: 'NULL'
+      - name: device_id
+        type: VARCHAR(100)
+        constraints: NOT NULL
+      - name: status
+        type: VARCHAR(20)
+        constraints: NOT NULL, CHECK (ACTIVE, PAUSED, COMPLETED, EMERGENCY)
+      - name: gps_frequency_seconds
+        type: INTEGER
+        constraints: NOT NULL, DEFAULT 10
+      - name: started_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: completed_at
+        type: TIMESTAMPTZ
+        constraints: 'NULL'
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      - name: updated_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_session_status
+        columns: status
+        type: BTREE
+      - name: idx_session_guest
+        columns: guest_id
+        type: BTREE
+      - name: idx_session_checkin
+        columns: checkin_id
+        type: UNIQUE
+    positions:
+      description: GPS position reports from guest devices with SOS and battery metadata
+      columns:
+      - name: position_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: session_id
+        type: UUID
+        constraints: NOT NULL, FK -> tracking_sessions
+      - name: location
+        type: GEOMETRY(Point, 4326)
+        constraints: NOT NULL
+      - name: altitude_meters
+        type: NUMERIC(7,2)
+        constraints: 'NULL'
+      - name: accuracy_meters
+        type: NUMERIC(6,2)
+        constraints: NOT NULL
+      - name: speed_kmh
+        type: NUMERIC(5,2)
+        constraints: 'NULL'
+      - name: heading_degrees
+        type: NUMERIC(5,2)
+        constraints: 'NULL'
+      - name: battery_percent
+        type: SMALLINT
+        constraints: 'NULL'
+      - name: sos_flag
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT FALSE
+      - name: recorded_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL
+      - name: received_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_position_session_time
+        columns: session_id, recorded_at DESC
+        type: BTREE
+      - name: idx_position_location
+        columns: location
+        type: GIST
+      - name: idx_position_sos
+        columns: sos_flag
+        type: BTREE
+        condition: sos_flag = TRUE
+    geofences:
+      description: Geographic boundaries for adventure trails and restricted zones
+      columns:
+      - name: geofence_id
+        type: UUID
+        constraints: PK, DEFAULT gen_random_uuid()
+      - name: adventure_id
+        type: UUID
+        constraints: NOT NULL
+      - name: name
+        type: VARCHAR(200)
+        constraints: NOT NULL
+      - name: geofence_type
+        type: VARCHAR(30)
+        constraints: NOT NULL, CHECK (TRAIL_BOUNDARY, RESTRICTED_ZONE, CHECKPOINT, HAZARD_ZONE)
+      - name: boundary
+        type: GEOMETRY(Polygon, 4326)
+        constraints: NOT NULL
+      - name: alert_on_exit
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      - name: active
+        type: BOOLEAN
+        constraints: NOT NULL, DEFAULT TRUE
+      - name: created_at
+        type: TIMESTAMPTZ
+        constraints: NOT NULL, DEFAULT NOW()
+      indexes:
+      - name: idx_geofence_adventure
+        columns: adventure_id
+        type: BTREE
+      - name: idx_geofence_boundary
+        columns: boundary
+        type: GIST

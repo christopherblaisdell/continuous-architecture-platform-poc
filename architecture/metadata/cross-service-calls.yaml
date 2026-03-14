@@ -603,6 +603,20 @@ svc-emergency-response:
     target:
       method: POST
       path: /incidents
+  - alias: AT
+    label: Adventure Tracking
+    action: Get active tracking sessions for affected guests
+    async: false
+    target:
+      method: GET
+      path: /tracking-sessions
+  - alias: NotifBulk
+    label: Notifications
+    action: Send bulk evacuation alerts for weather emergencies
+    async: true
+    target:
+      method: POST
+      path: /notifications/bulk
   POST /emergencies/{emergency_id}/dispatch:
   - alias: Guide
     label: Guide Mgmt
@@ -680,3 +694,29 @@ svc-reviews:
     target:
       method: GET
       path: /guests/{guest_id}
+
+svc-adventure-tracking:
+  POST /tracking-sessions:
+  - alias: Loc
+    label: Location Services
+    action: Load geofence boundaries for adventure trail
+    async: false
+    target:
+      method: GET
+      path: /locations
+  POST /positions:
+  - alias: ER
+    label: Emergency Response
+    action: Create emergency on SOS trigger
+    async: true
+    target:
+      method: POST
+      path: /emergencies
+  - alias: Notif
+    label: Notifications
+    action: Send geofence breach alert to guide and ops staff
+    async: true
+    target:
+      method: POST
+      path: /notifications
+

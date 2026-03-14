@@ -1,6 +1,6 @@
 # System Map
 
-Interactive service topology for NovaTrek Adventures — 22 services across 9 domains.
+Interactive service topology for NovaTrek Adventures — 23 services across 9 domains.
 
 !!! info "Everything on this portal is entirely fictional"
     NovaTrek Adventures is a completely fictitious company used as a synthetic workspace for the Continuous Architecture Platform proof of concept.
@@ -38,6 +38,7 @@ flowchart LR
     end
 
     subgraph Operations["Operations"]
+        svc-adventure-tracking["Adventure Tracking"]
         svc-check-in["Check In"]
         svc-scheduling-orchestrator["Scheduling Orchestrator"]
     end
@@ -66,11 +67,13 @@ flowchart LR
     end
 
     %% REST calls (HTTPS)
+    svc-adventure-tracking --> svc-location-services
     svc-check-in --> svc-gear-inventory
     svc-check-in --> svc-guest-profiles
     svc-check-in --> svc-reservations
     svc-check-in --> svc-safety-compliance
     svc-check-in --> svc-trip-catalog
+    svc-emergency-response --> svc-adventure-tracking
     svc-emergency-response --> svc-guest-profiles
     svc-emergency-response --> svc-guide-management
     svc-emergency-response --> svc-location-services
@@ -110,6 +113,8 @@ flowchart LR
     svc-wildlife-tracking --> svc-weather
 
     %% Event flows (Kafka)
+    svc-adventure-tracking -.-> svc-emergency-response
+    svc-adventure-tracking -.-> svc-notifications
     svc-check-in -.-> svc-analytics
     svc-check-in -.-> svc-notifications
     svc-emergency-response -.-> svc-analytics

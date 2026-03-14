@@ -54,6 +54,7 @@ Solutions that share services or capabilities with this design:
 | [NTK-10002 — NTK-10002: Adventure Category Classifica](_NTK-10002-adventure-category-classification.md) | CAP-2.1 | svc-check-in |
 | [NTK-10004 — NTK-10004: Solution Design — Guide Sched](_NTK-10004-guide-schedule-overwrite-bug.md) | — | svc-scheduling-orchestrator |
 | [NTK-10005 — Add Wristband RFID Field to Check-In Rec](_NTK-10005-wristband-rfid-field.md) | CAP-2.1 | svc-check-in |
+| [NTK-10006 — NTK-10006 Solution Design — Real-Time Ad](_NTK-10006-real-time-adventure-tracking.md) | CAP-2.1 | svc-check-in |
 
 ---
 

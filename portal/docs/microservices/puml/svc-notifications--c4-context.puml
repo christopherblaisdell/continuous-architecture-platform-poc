@@ -15,6 +15,7 @@ Person(web_ops_dashboard, "Operations Dashboard", "Web App", $link="/application
 System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications Service", $link="/microservices/svc-notifications/")
     ContainerDb(svc_notifications_db, "PostgreSQL 15 + Valkey 8", "notifications schema", "Primary data store", $link="/microservices/svc-notifications/#data-store")
+    Container(svc_adventure_tracking, "svc-adventure-tracking", "Java / Spring Boot", "Operations", $link="/microservices/svc-adventure-tracking/#integration-context")
     Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Operations", $link="/microservices/svc-check-in/#integration-context")
     Container(svc_emergency_response, "svc-emergency-response", "Java / Spring Boot", "Safety", $link="/microservices/svc-emergency-response/#integration-context")
     Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Support", $link="/microservices/svc-inventory-procurement/#integration-context")
@@ -38,8 +39,9 @@ System_Ext(Twilio_API, "Twilio API", "Third-party service", $link="/actors/#twil
 Rel(app_guest_mobile, svc_notifications, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_notifications, "Uses API", "HTTPS")
 Rel(web_ops_dashboard, svc_notifications, "Uses API", "HTTPS")
+Rel(svc_adventure_tracking, svc_notifications, "Send geofence breach alert to guide and ops staff", "HTTPS")
 Rel(svc_check_in, svc_notifications, "Send check-in confirmation", "HTTPS")
-Rel(svc_emergency_response, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_emergency_response, svc_notifications, "3 calls", "HTTPS")
 Rel(svc_inventory_procurement, svc_notifications, "Notify procurement team", "HTTPS")
 Rel(svc_loyalty_rewards, svc_notifications, "2 calls", "HTTPS")
 Rel(svc_media_gallery, svc_notifications, "Send share link", "HTTPS")

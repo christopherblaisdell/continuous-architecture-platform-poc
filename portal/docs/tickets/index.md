@@ -10,14 +10,14 @@ Each ticket tracks affected services, capabilities, and links to its solution de
 Capability mappings for solved tickets are derived from the
 [Capability Changelog](../capabilities/index.md) (single source of truth).
 
-**9** tickets | **7** with solution designs
+**9** tickets | **8** with solution designs
 
 ## Critical Priority
 
 | Ticket | Summary | Status | Capabilities | Solution |
 |--------|---------|--------|-------------|----------|
 | [NTK-10003](NTK-10003.md) | Support Unregistered Guest Self-Service Check-In | In Progress | CAP-2.1, CAP-1.1, CAP-1.3 | [View](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) |
-| [NTK-10006](NTK-10006.md) | Real-Time Adventure Tracking and Emergency Alerting Sys | New | CAP-3.3, CAP-3.2, CAP-2.1 | — |
+| [NTK-10006](NTK-10006.md) | Real-Time Adventure Tracking and Emergency Alerting Sys | In Progress | CAP-2.1, CAP-3.2, CAP-3.3, CAP-7.2 | [View](../solutions/_NTK-10006-real-time-adventure-tracking.md) |
 
 ## High Priority
 

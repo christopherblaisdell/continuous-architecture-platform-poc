@@ -13,6 +13,7 @@ Operations:
   services:
   - svc-check-in
   - svc-scheduling-orchestrator
+  - svc-adventure-tracking
 Guest Identity:
   color: '#7c3aed'
   light: '#EDE9FE'

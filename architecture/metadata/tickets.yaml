@@ -96,16 +96,16 @@ tickets:
 
   - key: NTK-10006
     summary: Real-Time Adventure Tracking and Emergency Alerting System
-    status: New
+    status: In Progress
     priority: Critical
     assignee: null
     reporter: sam.patel
     labels: [new-capability, safety, real-time, multi-service]
     created: 2025-02-15
-    updated: 2025-02-15
+    updated: 2026-03-14
     sprint: null
     components: [svc-adventure-tracking, svc-emergency-response, svc-check-in, svc-notifications, svc-safety-compliance]
-    solution: null
+    solution: _NTK-10006-real-time-adventure-tracking
     planned_capabilities:
       - id: CAP-3.3
         impact: enhanced

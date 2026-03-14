@@ -12,7 +12,7 @@ tags:
 
 <p class="subtitle">NovaTrek Adventures — Microservice API Reference</p>
 
-<span class="version-badge">22 Services</span>
+<span class="version-badge">23 Services</span>
 
 </div>
 
@@ -24,6 +24,7 @@ Browse the complete inventory of NovaTrek microservices. Each service links to i
 
 | Service | Version | Owner | API Reference |
 |---------|---------|-------|---------------|
+| **NovaTrek Adventure Tracking Service**<br><small>`svc-adventure-tracking`</small><br><small>Manages real-time GPS tracking of guests on active adventures. Receives position</small> | `1.0.0` | NovaTrek Operations Team | [:material-api: **Swagger UI** (10 endpoints)](api/svc-adventure-tracking.html){ .md-button } |
 | **NovaTrek Check-In Service**<br><small>`svc-check-in`</small><br><small>Handles day-of-adventure check-in workflow including wristband assignment,</small> | `1.0.0` | NovaTrek Operations Team | [:material-api: **Swagger UI** (5 endpoints)](api/svc-check-in.html){ .md-button } |
 | **NovaTrek Scheduling Orchestrator API**<br><small>`svc-scheduling-orchestrator`</small><br><small>Central orchestration service for NovaTrek trip scheduling. Coordinates guide</small> | `3.0.1` | NovaTrek Platform Engineering | [:material-api: **Swagger UI** (5 endpoints)](api/svc-scheduling-orchestrator.html){ .md-button } |
 
@@ -84,6 +85,7 @@ Browse the complete inventory of NovaTrek microservices. Each service links to i
 | **NovaTrek Media Gallery Service**<br><small>`svc-media-gallery`</small><br><small>Manages trip photos, videos, and media content captured during NovaTrek adventur...</small> | `1.0.2` | NovaTrek Digital Experience Team | [:material-api: **Swagger UI** (5 endpoints)](api/svc-media-gallery.html){ .md-button } |
 | **NovaTrek Notifications Service**<br><small>`svc-notifications`</small><br><small>Sends notifications to guests and guides via email, SMS, push, and in-app channe...</small> | `1.0.0` | NovaTrek Platform Team | [:material-api: **Swagger UI** (6 endpoints)](api/svc-notifications.html){ .md-button } |
 | **NovaTrek Payments Service**<br><small>`svc-payments`</small><br><small>Manages payments, refunds, and billing for adventure bookings at NovaTrek Advent...</small> | `1.1.0` | NovaTrek Platform Team | [:material-api: **Swagger UI** (12 endpoints)](api/svc-payments.html){ .md-button } |
+| **NovaTrek Reviews Service**<br><small>`svc-reviews`</small><br><small>Manages guest reviews, ratings, and social proof for NovaTrek Adventures.</small> | `1.0.0` | Guest Experience Team | [:material-api: **Swagger UI** (10 endpoints)](api/svc-reviews.html){ .md-button } |
 | **NovaTrek Weather Service**<br><small>`svc-weather`</small><br><small>Integrates with on-site weather stations and third-party providers to deliver</small> | `1.0.0` | NovaTrek Platform Team | [:material-api: **Swagger UI** (5 endpoints)](api/svc-weather.html){ .md-button } |
 
 ---

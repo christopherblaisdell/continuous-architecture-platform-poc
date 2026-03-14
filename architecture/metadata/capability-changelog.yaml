@@ -160,3 +160,47 @@ entries:
       - ADR-NTK10009-001
       - ADR-NTK10009-002
       - ADR-NTK10009-003
+
+  - ticket: NTK-10006
+    date: 2026-03-14
+    solution: _NTK-10006-real-time-adventure-tracking
+    summary: Real-time GPS tracking of guests on active adventures with automated emergency alerting and rescue dispatch
+    capabilities:
+      - id: CAP-2.1
+        impact: enhanced
+        description: Check-in completion triggers tracking session activation via checkin.completed event
+        l3_capabilities:
+          - name: Tracking Session Activation
+            description: Check-in completion automatically initiates GPS tracking based on adventure classification pattern
+      - id: CAP-3.2
+        impact: enhanced
+        description: Incidents auto-generated from SOS triggers and geofence breaches with precise GPS coordinates
+        l3_capabilities:
+          - name: Automated Incident Generation from Tracking Events
+            description: SOS signals and geofence breaches create incident records with GPS coordinates without manual intervention
+          - name: Location-Enriched Incident Records
+            description: Every tracking-generated incident includes precise latitude, longitude, altitude, and nearest landmark
+      - id: CAP-3.3
+        impact: enhanced
+        description: Full emergency lifecycle with SOS detection, proximity-based rescue dispatch, and multi-channel alerting
+        l3_capabilities:
+          - name: SOS-Triggered Emergency Response
+            description: Wristband SOS button or mobile app SOS initiates full emergency workflow with automatic dispatch
+          - name: Proximity-Based Rescue Dispatch
+            description: Nearest available rescue team identified using geospatial distance calculation and certification matching
+          - name: Weather-Triggered Evacuation Coordination
+            description: Severe weather alerts automatically identify affected guests and initiate evacuation notifications
+          - name: Emergency Response Timeline
+            description: Append-only timeline (triggered, dispatched, acknowledged, en_route, on_scene, resolved) for audit and insurance
+          - name: Multi-Channel Emergency Notification
+            description: URGENT notifications sent simultaneously via SMS, push, and in-app to guides, staff, and emergency contacts
+      - id: CAP-7.2
+        impact: enhanced
+        description: svc-location-services provides geofence boundaries for real-time position evaluation
+        l3_capabilities:
+          - name: Real-Time Geofence Evaluation
+            description: Active guest positions checked against trail boundaries, restricted zones, and emergency assembly points
+    decisions:
+      - ADR-012
+      - ADR-013
+      - ADR-014
