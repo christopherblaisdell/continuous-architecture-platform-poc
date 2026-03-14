@@ -165,6 +165,53 @@ Guidance provides optional, advisory-only HOW recommendations prepared by the so
 
 **NOTE**: Only include this section if guidance documents exist. See [Optional Sections Standard](/.ai-instructions/customizations/solution-design-optional-sections-standard.md).
 
+## Test Plan *(Required — include in 3.solution/g.guidance/test-plan.md)*
+
+The test plan identifies which test layers are affected by this solution and what new test coverage is required. It is authored by the solution architect and placed in `3.solution/g.guidance/test-plan.md`. Development teams use it to scope testing work.
+
+Include the following in the test plan:
+
+- **Affected test layers** — unit, integration, contract, acceptance, or E2E
+- **New test scenarios required** — what new behavior must be covered
+- **Existing tests to update** — which existing test cases need revision due to this change
+- **Contract test additions** — for each new cross-service integration, declare the consumer-provider contract boundary
+- **BDD scenarios** — Gherkin Given/When/Then scenarios derived from user story acceptance criteria
+
+**Coverage standards** (from ADR-012 and `config/test-standards.yaml`):
+
+| Layer | Minimum Threshold | Enforcement |
+|-------|-------------------|-------------|
+| Line coverage | 80% | CI gate — PR blocked below minimum |
+| Branch coverage | 70% | CI gate — PR blocked below minimum |
+| Mutation score | 60% | Advisory (Phase A) — gate in Phase D |
+| Contract test coverage | 100% of cross-service calls | CI gate |
+
+**Example test plan entry:**
+
+```markdown
+## Affected Test Layers
+
+- Unit: [service-name] — [class or method added/changed]
+- Integration: [service-name] — [data flow changed]
+- Contract: [consumer-service] → [provider-service] — [new endpoint or changed contract]
+
+## New BDD Scenarios
+
+### Scenario: [Acceptance criterion from user story]
+
+Given [precondition]
+When [action]
+Then [expected outcome]
+
+## Contract Test Additions
+
+| Consumer | Provider | Endpoint | Change Type |
+|----------|----------|----------|-------------|
+| [svc-consumer] | [svc-provider] | `[METHOD /path]` | New |
+```
+
+**NOTE**: The test plan is required for all solutions that modify API contracts, add cross-service integrations, or introduce new service behavior. See [ADR-012](../../../decisions/ADR-012-test-methodology.md) for the full testing methodology.
+
 ## Security Considerations *(Optional - only if security concerns exist)*
 
 Security considerations address solution-specific concerns around authentication, authorization, data protection, PCI compliance, secrets management, or other security controls. Only include this section when the solution explicitly introduces or modifies security-relevant behavior -- such as new authentication mechanisms, payment processing, credential handling, or changes to data access patterns. Do not include as boilerplate for solutions with no security implications.

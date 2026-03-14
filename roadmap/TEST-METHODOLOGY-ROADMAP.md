@@ -4,7 +4,7 @@
 |-----------|-------|
 | **Author** | Christopher Blaisdell |
 | **Date** | 2026-03-11 |
-| **Status** | Proposed |
+| **Status** | In Progress — Phase A complete |
 | **Purpose** | Define a comprehensive testing methodology for NovaTrek Adventures — establishing TDD/BDD practices, coverage standards, automated regression, and contract testing as integral parts of the delivery practice |
 
 ---
@@ -173,13 +173,15 @@ Test plan contents:
 
 ### Phase A: Standards and Tooling (Foundation)
 
-| Step | Task | Effort |
-|------|------|--------|
-| A.1 | Create ADR for test methodology (TDD + BDD hybrid) | Small |
-| A.2 | Define coverage thresholds in a shared config (e.g., `config/test-standards.yaml`) | Small |
-| A.3 | Add JaCoCo + PITest to service build templates | Small |
-| A.4 | Add test plan section to solution design template | Small |
-| A.5 | Update PR review checklist with test criteria | Small |
+**Status: COMPLETE**
+
+| Step | Task | Effort | Status |
+|------|------|--------|--------|
+| A.1 | Create ADR for test methodology (TDD + BDD hybrid) | Small | COMPLETE — [ADR-012](../../decisions/ADR-012-test-methodology.md) |
+| A.2 | Define coverage thresholds in a shared config (e.g., `config/test-standards.yaml`) | Small | COMPLETE — [config/test-standards.yaml](../../config/test-standards.yaml) |
+| A.3 | Add JaCoCo + PITest to service build templates | Small | COMPLETE — updated template and all existing services |
+| A.4 | Add test plan section to solution design template | Small | COMPLETE — added to solution-design-template.md |
+| A.5 | Update PR review checklist with test criteria | Small | COMPLETE — see [ROADMAP.md Section 8](ROADMAP.md#8-architecture-review-checklist) |
 
 ### Phase B: Contract Testing (Cross-Service Safety)
 
