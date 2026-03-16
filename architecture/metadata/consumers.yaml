@@ -79,10 +79,14 @@ svc-payments:
   screen: Booking Flow
 - app: web-guest-portal
   screen: Reservation Management
+- app: web-guest-portal
+  screen: Refund Request
 - app: web-ops-dashboard
   screen: Analytics Dashboard
 - app: web-ops-dashboard
   screen: Partner Bookings
+- app: web-ops-dashboard
+  screen: Dispute Queue
 - app: app-guest-mobile
   screen: My Reservations
 svc-loyalty-rewards:

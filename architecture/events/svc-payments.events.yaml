@@ -1,7 +1,7 @@
 asyncapi: 3.0.0
 info:
   title: svc-payments Events
-  version: 1.0.0
+  version: 1.1.0
   description: Domain events published by the NovaTrek Payments Service (PCI scope)
   contact:
     name: NovaTrek Engineering
@@ -15,12 +15,60 @@ channels:
       paymentProcessed:
         $ref: '#/components/messages/PaymentProcessed'
 
+  disputeCreated:
+    address: novatrek.support.dispute.created
+    messages:
+      disputeCreated:
+        $ref: '#/components/messages/DisputeCreated'
+
+  disputeStatusChanged:
+    address: novatrek.support.dispute.status-changed
+    messages:
+      disputeStatusChanged:
+        $ref: '#/components/messages/DisputeStatusChanged'
+
+  disputeResolved:
+    address: novatrek.support.dispute.resolved
+    messages:
+      disputeResolved:
+        $ref: '#/components/messages/DisputeResolved'
+
+  disputeEscalated:
+    address: novatrek.support.dispute.escalated
+    messages:
+      disputeEscalated:
+        $ref: '#/components/messages/DisputeEscalated'
+
 operations:
   publishPaymentProcessed:
     action: send
     channel:
       $ref: '#/channels/paymentProcessed'
     summary: Published when a payment transaction is successfully processed
+
+  publishDisputeCreated:
+    action: send
+    channel:
+      $ref: '#/channels/disputeCreated'
+    summary: Published when a new refund dispute is opened
+
+  publishDisputeStatusChanged:
+    action: send
+    channel:
+      $ref: '#/channels/disputeStatusChanged'
+    summary: Published when a dispute transitions to a new status
+
+  publishDisputeResolved:
+    action: send
+    channel:
+      $ref: '#/channels/disputeResolved'
+    summary: Published when a dispute is resolved with a refund decision
+
+  publishDisputeEscalated:
+    action: send
+    channel:
+      $ref: '#/channels/disputeEscalated'
+    summary: Published when a dispute is escalated to a higher tier
 
 components:
   messages:
@@ -31,6 +79,38 @@ components:
       contentType: application/json
       payload:
         $ref: '#/components/schemas/PaymentProcessedPayload'
+
+    DisputeCreated:
+      name: DisputeCreated
+      title: Dispute Created
+      summary: A new refund dispute has been opened for a payment
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DisputeCreatedPayload'
+
+    DisputeStatusChanged:
+      name: DisputeStatusChanged
+      title: Dispute Status Changed
+      summary: A dispute has transitioned to a new lifecycle status
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DisputeStatusChangedPayload'
+
+    DisputeResolved:
+      name: DisputeResolved
+      title: Dispute Resolved
+      summary: A dispute has been resolved with a refund decision
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DisputeResolvedPayload'
+
+    DisputeEscalated:
+      name: DisputeEscalated
+      title: Dispute Escalated
+      summary: A dispute has been escalated to a higher authority tier
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DisputeEscalatedPayload'
 
   schemas:
     PaymentProcessedPayload:
@@ -83,3 +163,197 @@ components:
           type: string
           enum: [CREDIT_CARD, DEBIT_CARD, LOYALTY_POINTS, PARTNER_CREDIT]
           description: Payment method category (no card details)
+
+    DisputeCreatedPayload:
+      type: object
+      description: Published when a new dispute is opened. Excludes PCI-sensitive data.
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - dispute_id
+        - payment_id
+        - reservation_id
+        - guest_id
+        - type
+        - tier
+        - amount_requested
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: dispute.created
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        dispute_id:
+          type: string
+          format: uuid
+          description: ID of the dispute record
+        payment_id:
+          type: string
+          format: uuid
+          description: ID of the original payment
+        reservation_id:
+          type: string
+          format: uuid
+          description: ID of the associated reservation
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the guest who filed the dispute
+        type:
+          type: string
+          enum: [CANCELLATION, SERVICE_COMPLAINT, WEATHER, CHARGEBACK, OTHER]
+          description: Dispute category
+        tier:
+          type: string
+          enum: [AUTO, AGENT, MANAGER]
+          description: Escalation tier assigned by the policy engine
+        amount_requested:
+          type: number
+          format: decimal
+          description: Refund amount requested by the guest
+
+    DisputeStatusChangedPayload:
+      type: object
+      description: Published when a dispute transitions to a new status.
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - dispute_id
+        - guest_id
+        - previous_status
+        - new_status
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: dispute.status_changed
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        dispute_id:
+          type: string
+          format: uuid
+          description: ID of the dispute record
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the guest who filed the dispute
+        previous_status:
+          type: string
+          enum: [OPENED, UNDER_REVIEW, ESCALATED, RESOLVED, CLOSED]
+          description: Status before the transition
+        new_status:
+          type: string
+          enum: [OPENED, UNDER_REVIEW, ESCALATED, RESOLVED, CLOSED]
+          description: Status after the transition
+
+    DisputeResolvedPayload:
+      type: object
+      description: Published when a dispute is resolved with a final decision.
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - dispute_id
+        - payment_id
+        - guest_id
+        - resolution
+        - amount_requested
+        - resolver_role
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: dispute.resolved
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        dispute_id:
+          type: string
+          format: uuid
+          description: ID of the dispute record
+        payment_id:
+          type: string
+          format: uuid
+          description: ID of the original payment
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the guest who filed the dispute
+        resolution:
+          type: string
+          enum: [FULL_REFUND, PARTIAL_REFUND, DENIED]
+          description: Resolution outcome
+        amount_requested:
+          type: number
+          format: decimal
+          description: Refund amount originally requested
+        amount_approved:
+          oneOf:
+            - type: number
+              format: decimal
+            - type: 'null'
+          description: Refund amount approved (null if denied)
+        resolver_role:
+          type: string
+          enum: [SYSTEM, AGENT, MANAGER]
+          description: Role of the resolver (SYSTEM for auto-approved)
+
+    DisputeEscalatedPayload:
+      type: object
+      description: Published when a dispute is escalated to a higher authority tier.
+      required:
+        - event_id
+        - event_type
+        - timestamp
+        - dispute_id
+        - guest_id
+        - from_tier
+        - to_tier
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this event instance
+        event_type:
+          type: string
+          const: dispute.escalated
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+        dispute_id:
+          type: string
+          format: uuid
+          description: ID of the dispute record
+        guest_id:
+          type: string
+          format: uuid
+          description: ID of the guest who filed the dispute
+        from_tier:
+          type: string
+          enum: [AUTO, AGENT]
+          description: Tier the dispute was escalated from
+        to_tier:
+          type: string
+          enum: [AGENT, MANAGER]
+          description: Tier the dispute was escalated to
+        reason:
+          type: string
+          description: Reason for escalation

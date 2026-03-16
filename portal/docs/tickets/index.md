@@ -27,7 +27,7 @@ Capability mappings for solved tickets are derived from the
 | [NTK-10004](NTK-10004.md) | Guide Schedule Overwrite Bug in Scheduling Orchestrator | New | CAP-2.2 | [View](../solutions/_NTK-10004-guide-schedule-overwrite-bug.md) |
 | [NTK-10007](NTK-10007.md) | Guest Loyalty Referral Program with Campaign Management | New | CAP-1.4, CAP-5.3 | — |
 | [NTK-10008](NTK-10008.md) | Guest Reviews and Ratings Platform | New | CAP-1.7, CAP-1.2 | [View](../solutions/_NTK-10008-guest-reviews-and-ratings.md) |
-| [NTK-10009](NTK-10009.md) | Refund and Dispute Management Workflows | New | CAP-5.5, CAP-5.4 | [View](../solutions/_NTK-10009-refund-dispute-management.md) |
+| [NTK-10009](NTK-10009.md) | Refund and Dispute Management Workflows | Solved | CAP-5.5, CAP-5.4 | [View](../solutions/_NTK-10009-refund-dispute-management.md) |
 
 ## Medium Priority
 

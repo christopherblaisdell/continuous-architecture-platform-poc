@@ -264,8 +264,8 @@ tags:
 
 | Application | Screens Using This Service |
 |-------------|---------------------------|
-| [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Reservation Management |
-| [Operations Dashboard](../../applications/web-ops-dashboard/) | Analytics Dashboard, Partner Bookings |
+| [Guest Portal](../../applications/web-guest-portal/) | Booking Flow, Reservation Management, Refund Request |
+| [Operations Dashboard](../../applications/web-ops-dashboard/) | Analytics Dashboard, Partner Bookings, Dispute Queue |
 | [Adventure App](../../applications/app-guest-mobile/) | My Reservations |
 
 ---

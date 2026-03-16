@@ -167,7 +167,7 @@ tickets:
 
   - key: NTK-10009
     summary: Refund and Dispute Management Workflows
-    status: New
+    status: Solved
     priority: High
     assignee: null
     reporter: sam.patel

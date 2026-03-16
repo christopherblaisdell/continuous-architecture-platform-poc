@@ -1,0 +1,62 @@
+# Refund Policy Configuration — svc-payments
+# Reference: NTK-10009 (Refund and Dispute Management Workflows)
+# Decision: ADR-NTK10009-002 (YAML-Driven Refund Policy Engine)
+#
+# Changes to this file require PR review with architect approval.
+# Deployed with svc-payments — not runtime-editable.
+
+policies:
+  cancellation:
+    description: Standard guest-initiated cancellation refund tiers
+    tiers:
+      - window_hours: 48
+        refund_percentage: 100
+        tier: AUTO
+        description: Full refund for cancellations 48+ hours before adventure
+      - window_hours: 24
+        refund_percentage: 50
+        tier: AUTO
+        description: 50% refund for cancellations 24-48 hours before adventure
+      - window_hours: 0
+        refund_percentage: 0
+        tier: AGENT
+        description: No automatic refund for cancellations under 24 hours — agent review required
+
+  weather:
+    description: Weather-related cancellation by NovaTrek
+    refund_percentage: 100
+    tier: AUTO
+    requires_verification: true
+
+  guide_unavailable:
+    description: Trip cancelled due to guide unavailability
+    refund_percentage: 100
+    tier: AUTO
+
+  minimum_not_met:
+    description: Trip cancelled because minimum participant count not reached
+    refund_percentage: 100
+    tier: AUTO
+
+  service_complaint:
+    description: Guest complaint about trip quality or service
+    tier: AGENT
+
+  chargeback:
+    description: Payment processor initiated chargeback
+    tier: MANAGER
+
+  other:
+    description: Uncategorized refund requests
+    tier: AGENT
+
+escalation:
+  auto_approve_max_amount: 500.00
+  agent_max_amount: 2000.00
+  manager_threshold: 2000.01
+
+sla:
+  auto_approve_target_minutes: 5
+  agent_review_target_hours: 24
+  manager_review_target_hours: 48
+  chargeback_response_deadline_days: 14
