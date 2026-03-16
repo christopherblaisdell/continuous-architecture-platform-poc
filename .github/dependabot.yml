@@ -1,0 +1,47 @@
+# ==========================================================================
+# Dependabot — Automated Dependency Updates
+# ==========================================================================
+# Keeps dependencies current and patches known vulnerabilities.
+# Opens PRs automatically when updates are available.
+# ==========================================================================
+
+version: 2
+updates:
+  # -----------------------------------------------------------------------
+  # Python dependencies (MkDocs portal build)
+  # -----------------------------------------------------------------------
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "python"
+    open-pull-requests-limit: 10
+
+  # -----------------------------------------------------------------------
+  # GitHub Actions (workflow action versions)
+  # -----------------------------------------------------------------------
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "ci"
+    open-pull-requests-limit: 10
+
+  # -----------------------------------------------------------------------
+  # Gradle (Java service dependencies)
+  # -----------------------------------------------------------------------
+  - package-ecosystem: "gradle"
+    directory: "/services/svc-check-in"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "java"
+    open-pull-requests-limit: 10
