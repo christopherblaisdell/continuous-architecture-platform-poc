@@ -1,0 +1,47 @@
+# ==========================================================================
+# CODEOWNERS — Automatic PR Review Assignment
+# ==========================================================================
+# GitHub requires approval from designated code owners before a PR can be
+# merged when branch protection rules enforce CODEOWNERS review.
+#
+# Team names below are aspirational placeholders for when the organization
+# grows. Until teams exist, @christopherblaisdell owns all paths.
+#
+# Syntax: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# ==========================================================================
+
+# ---------------------------------------------------------------------------
+# Default owner (catch-all for anything not matched below)
+# ---------------------------------------------------------------------------
+*                                         @christopherblaisdell
+
+# ---------------------------------------------------------------------------
+# Security-sensitive files — require security team review
+# ---------------------------------------------------------------------------
+portal/staticwebapp.config.json           @christopherblaisdell  # @novatrek/security-team
+portal/docs/security/                     @christopherblaisdell  # @novatrek/security-team
+.github/workflows/                        @christopherblaisdell  # @novatrek/security-team
+.github/CODEOWNERS                        @christopherblaisdell  # @novatrek/security-team
+.env.example                              @christopherblaisdell  # @novatrek/security-team
+
+# ---------------------------------------------------------------------------
+# Infrastructure — require platform team review
+# ---------------------------------------------------------------------------
+infra/                                    @christopherblaisdell  # @novatrek/platform-team
+staticwebapp.config.json                  @christopherblaisdell  # @novatrek/platform-team
+
+# ---------------------------------------------------------------------------
+# Architecture decisions — require architect approval
+# ---------------------------------------------------------------------------
+decisions/                                @christopherblaisdell  # @novatrek/architecture-team
+architecture/                             @christopherblaisdell  # @novatrek/architecture-team
+
+# ---------------------------------------------------------------------------
+# API contracts — require API governance approval
+# ---------------------------------------------------------------------------
+architecture/specs/                       @christopherblaisdell  # @novatrek/api-governance-team
+
+# ---------------------------------------------------------------------------
+# Service source code — require service team lead review
+# ---------------------------------------------------------------------------
+services/                                 @christopherblaisdell  # @novatrek/engineering-leads
