@@ -11,7 +11,7 @@ It can. And the alternatives — building a custom platform or assembling an ope
 ## The Recommendation
 
 <div class="key-insight" markdown>
-**Create a shared Git workspace for the architecture practice and add Copilot subscriptions.** The workspace contains specs, ADRs, standards, and source code. Copilot automatically indexes everything into a vector database — no MCP servers, no custom infrastructure, no engineering project. Every architect gets the same AI-powered context. $39/seat/month, cancel anytime.
+**Create a shared Git workspace for the architecture practice and add Copilot subscriptions.** The workspace contains specs, ADRs, standards, source code, and institutional knowledge — everything an architect needs. Copilot automatically indexes the entire workspace into a vector database. No MCP servers. No custom Copilot Extensions. No Azure AI Search pipelines. This is the standard pattern used by over 22 million engineers today. $39/seat/month, cancel anytime.
 </div>
 
 ---
@@ -114,7 +114,7 @@ The portal, governance, and reconciliation capabilities are all built on the sam
 | Concern | Answer |
 |---------|--------|
 | New licenses | Copilot Pro+ at $39/seat/month — cancel anytime |
-| Custom infrastructure | No — Copilot indexes the workspace automatically, no MCP servers to build |
+| Custom infrastructure | No — institutional knowledge lives in the workspace, Copilot indexes it automatically (standard pattern, 22M+ users) |
 | New tools for architects to learn | No — same IDE, same Git workflow |
 | Migration of existing specs | No — reads the OpenAPI specs and ADRs already in version control |
 | Ongoing platform engineering | No — no custom code to maintain (unlike Foundry) |

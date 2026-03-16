@@ -2,7 +2,7 @@
 
 ## The Secret to Accurate Output: Full Context
 
-The AI doesn't hallucinate when it can **read the actual source material**. The key architectural decision is simple: put everything in a shared workspace and let Copilot index it automatically — no MCP servers, no custom integrations.
+The AI doesn't hallucinate when it can **read the actual source material**. The key architectural decision is simple: include all institutional knowledge in a shared workspace — standards, domain models, API specs, decision history — and let Copilot index it automatically. This is the standard pattern used by over 22 million engineers on GitHub Copilot today. No MCP servers. No custom integrations.
 
 ---
 

@@ -168,17 +168,17 @@ An IDE agent sees only the active workspace. A Foundry agent backed by Azure AI 
 
 ---
 
-## But There Are Better Ways to Get Both
+## The Simpler Answer: Include Institutional Knowledge in the Workspace
 
-Before committing to a $113k custom build, two lighter alternatives achieve the same goals:
+The Foundry hypothesis assumes institutional knowledge must be imported via a custom RAG pipeline. It doesn't.
 
-### Option A: GitHub Copilot Extension + Azure AI Search
+**Include the knowledge directly in the shared workspace.** Architecture standards, domain models, anti-patterns, decision history — these are plain text files in a Git repo. Copilot automatically indexes the entire workspace into a vector database. Every architect who opens the workspace gets full AI-powered context immediately.
 
-Build a custom Copilot Extension that connects the IDE agent to a centralized Azure AI Search endpoint. This gives architects **both** — centralized cross-repo knowledge AND local workspace execution. No separate web UI needed.
+This is not a novel approach. It is the **standard pattern used by over 22 million engineers and architects** on GitHub Copilot today. Instruction files, style guides, architecture standards, and domain knowledge files live in the workspace and are indexed automatically. No MCP servers. No custom Copilot Extensions. No Azure AI Search pipelines. No engineering project.
 
-### Option B: Enterprise Search SaaS (Atlassian Rovo / Glean)
+Building a custom agent to import institutional knowledge makes sense for a **core-competency application** — a product your organization sells. For an operational enablement tool like architecture governance, the standard pattern is sufficient.
 
-If the primary goal is letting non-developers query architecture documents, off-the-shelf enterprise search platforms already do this with pre-built connectors to Confluence, JIRA, and Git — deployable in weeks, not months.
+For non-technical stakeholders who need to query architecture documents, the automated portal (published via `git push`) and optional Confluence sync provide browsable access without any custom agent.
 
 ---
 
@@ -194,7 +194,7 @@ Strategic analyst frameworks (Turing, Aisera, Gartner) are clear on when to buil
 | Time-to-market is critical (weeks vs months) | **Buy** |
 | Organization wants to offload MLOps debt | **Buy** |
 
-Generating MADR records, C4 diagrams, and API contracts is an **operational enablement task** — it is not the company's core product. The framework overwhelmingly favors buying a commercial solution.
+Generating MADR records, C4 diagrams, and API contracts is an **operational enablement task** — it is not the company's core product. The framework overwhelmingly favors using a commercial solution. Building custom AI infrastructure is justified when the application is your organization's competitive differentiator — not when the goal is helping architects write compliant documents.
 
 !!! note "Industry Signal"
     Gartner predicts that over **40% of enterprise agentic AI projects** will be completely canceled by end of 2027 — driven not by model intelligence failures but by escalating MLOps costs, inadequate risk controls, and failure to deliver measurable P&L impact.

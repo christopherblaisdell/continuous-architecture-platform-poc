@@ -76,7 +76,7 @@ The domain knowledge file (`copilot-instructions.md`) is loaded automatically in
 - Document standards (MADR format, no emojis, no placeholders)
 
 !!! info "This is not a database. It's a Git repo."
-    Every artifact listed above is a plain text file in version control. No MCP servers to build. No embedding pipelines to maintain. Copilot automatically indexes the entire workspace into a vector database on the backend — every architect who opens the workspace gets full AI-powered context immediately.
+    Every artifact listed above is a plain text file in version control. No MCP servers to build. No embedding pipelines to maintain. Copilot automatically indexes the entire workspace into a vector database on the backend — every architect who opens the workspace gets full AI-powered context immediately. This is the standard pattern used by over 22 million engineers on GitHub Copilot today.
 
 ---
 

@@ -4,7 +4,7 @@
 
 Many architecture practices already source-control OpenAPI specs and diagrams. They already gate production deployments through an architecture repository. **That foundation is the hardest part — and many teams have already achieved it.**
 
-The shared solution adds four capabilities on top of that foundation, closing the two gaps that erode its value over time. No MCP servers to build. No custom infrastructure. Copilot indexes the workspace automatically.
+The shared solution adds four capabilities on top of that foundation, closing the two gaps that erode its value over time. Institutional knowledge — standards, domain models, anti-patterns, decision history — lives in the workspace as plain text files. Copilot indexes the workspace automatically. This is the standard pattern used by over 22 million engineers on GitHub Copilot today. No MCP servers. No custom infrastructure.
 
 ---
 

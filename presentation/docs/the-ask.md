@@ -31,7 +31,7 @@ A validation report within 2 weeks, containing:
 
 ## Why Not Build Our Own Instead?
 
-This POC evaluated that option. Short answer: no. Copilot already indexes the entire workspace into a vector database automatically — no MCP servers, no custom RAG pipelines, no engineering project.
+This POC evaluated that option. Short answer: no. Institutional knowledge — standards, domain models, decision history — lives directly in the shared workspace as plain text files. Copilot indexes the workspace automatically. This is the standard pattern used by 22 million+ engineers today. Building a custom agent with MCP servers and RAG pipelines is justified for a core-competency product, not for architecture governance.
 
 | | Shared Solution ($39/seat/mo) | Build Custom (Foundry) |
 |-|:-:|:-:|
