@@ -1,5 +1,5 @@
-site_name: "Adopt Your Existing AI for Architecture"
-site_description: "POC results: why your existing IDE AI assistant beats building a custom platform for architecture workflows"
+site_name: "AI-Assisted Architecture — POC Results"
+site_description: "POC results: add a $39/month AI subscription to VS Code for architecture workflows instead of building a custom platform"
 site_author: "Christopher Blaisdell"
 
 theme:

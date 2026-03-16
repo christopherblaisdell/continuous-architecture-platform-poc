@@ -1,15 +1,15 @@
 !!! warning "Synthetic Demonstration Environment"
     **Everything in this presentation is entirely fictional.** NovaTrek Adventures is a completely fictitious company created solely for this proof of concept. All services, tickets, architecture decisions, logs, source code, and operational data are synthetic. No real corporate systems, data, or organizations are represented. The companion **[Architecture Portal](https://architecture.novatrek.cc)** is also entirely synthetic.
 
-# Adopt Your Existing AI for Architecture
+# Add AI to the IDE You Already Use
 
-## Don't Build a Platform. Use the One You Already Have.
+## Don't Build a Platform. Subscribe to One for $39/month.
 
 <div class="hero-grid" markdown>
 
 <div class="hero-card accent" markdown>
 <div class="metric">$39/mo</div>
-<div class="label">Off-the-shelf tool</div>
+<div class="label">Subscribe ($39/mo)</div>
 </div>
 
 <div class="hero-card" markdown>
@@ -26,7 +26,7 @@
 
 ---
 
-Your organization's developers already use AI assistants in their IDEs. This proof of concept tested whether that same class of tool — an off-the-shelf IDE AI assistant, one license at $39/month — can produce compliant architecture designs.
+Everyone in the organization already uses VS Code. This proof of concept tested whether adding a $39/month AI subscription to that same IDE can produce compliant architecture designs — solution documents, ADRs, impact assessments — following MADR, arc42, and C4 standards.
 
 It can. It produced 39 architecture files across 5 scenarios with zero fabricated schema fields. And the alternatives cost 13x to 243x more.
 
@@ -41,7 +41,7 @@ It can. It produced 39 architecture files across 5 scenarios with zero fabricate
 | Page | What It Covers |
 |------|---------------|
 | [The Problem](problem.md) | Architecture documentation decays because updating it is manual and voluntary |
-| [The Proposal](proposal.md) | Extend the existing IDE AI assistant to architecture — and why the alternatives fail |
+| [The Proposal](proposal.md) | Add a $39/mo AI subscription to VS Code — and why building custom fails |
 | [The Proof](proof.md) | 301 artifacts, live portal, 5 scenarios — see the results |
 | [The Ask](the-ask.md) | One $39/month test license to validate against real artifacts |
 

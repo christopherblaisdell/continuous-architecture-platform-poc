@@ -33,7 +33,7 @@ A validation report within 2 weeks, containing:
 
 This POC evaluated that option. Short answer: no.
 
-| | Adopt Existing | Build Custom (Foundry) |
+| | Subscribe ($39/mo) | Build Custom (Foundry) |
 |-|:-:|:-:|
 | Year 1 cost | $468 | $113,450 |
 | Time to first output | Immediate | 10-14 weeks |
