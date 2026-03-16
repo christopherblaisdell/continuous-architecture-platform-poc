@@ -83,12 +83,55 @@ jobs:
           retention-days: 1
 
   # -------------------------------------------------------------------------
+  # Security scanning (Snyk dependency, code, and IaC analysis)
+  # -------------------------------------------------------------------------
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security Scan (Snyk)
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-docs.txt
+
+      - name: Snyk dependency scan
+        uses: snyk/actions/python-3.12@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=requirements-docs.txt
+
+      - name: Snyk code analysis
+        uses: snyk/actions/python-3.12@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+          args: --severity-threshold=high portal/scripts/
+
+      - name: Snyk IaC scan
+        uses: snyk/actions/iac@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          file: portal/staticwebapp.config.json
+
+  # -------------------------------------------------------------------------
   # Deploy to Azure Static Web Apps
   # -------------------------------------------------------------------------
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Azure
-    needs: build
+    needs: [build, security-scan]
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     environment:
       name: ${{ github.event_name == 'push' && 'production' || 'staging' }}
