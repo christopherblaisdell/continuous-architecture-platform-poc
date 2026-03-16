@@ -9,6 +9,167 @@
 
 tickets:
 
+  - key: NTK-10025
+    summary: Migrate Dev PostgreSQL to Neon Serverless for Scale-to-Zero Cost Savings
+    status: New
+    priority: High
+    assignee: null
+    reporter: christopher.blaisdell
+    labels: [infrastructure, cost-optimization, database, dev-environment]
+    created: 2025-03-16
+    updated: 2025-03-16
+    sprint: null
+    components: [platform-infrastructure]
+    solution: null
+    user_story: |
+      As the platform team,
+      We want to replace Azure Database for PostgreSQL Flexible Server (Burstable B1ms, $12.41/month)
+      with Neon Serverless Postgres (free tier, $0/month) for the dev environment,
+      So that our dev data store scales to zero when idle and eliminates fixed compute costs.
+
+    description: |
+      ## Background
+
+      The dev environment currently provisions an Azure PostgreSQL Flexible Server on the Burstable B1ms SKU
+      ($12.41/month fixed, ~$4/month with aggressive nightly stop/start). This is the single largest cost
+      in the dev environment and does NOT scale to zero — it runs 24/7 unless explicitly stopped by the
+      nightly-stop-dev.yml GitHub Actions workflow.
+
+      Neon (neon.tech) offers serverless Postgres that is wire-compatible with Azure PostgreSQL, supports
+      PostGIS and UUID-OSSP extensions, and scales to zero automatically. The free tier provides 0.5 GB
+      storage and 190 compute-hours/month — more than sufficient for PoC development workloads.
+
+      ## Objective
+
+      Replace Azure PostgreSQL Flexible Server with Neon Serverless Postgres for the dev environment ONLY.
+      Production remains on Azure PostgreSQL Flexible Server (unchanged).
+
+      ## Scope
+
+      - Dev environment only (rg-novatrek-dev)
+      - 19 microservice schemas: checkin, scheduling, guests, reservations, payments, catalog, trails,
+        safety, gear, guides, transport, notifications, loyalty, media, analytics, weather, location,
+        partners, procurement
+      - Extensions required: PostGIS, UUID-OSSP (both supported by Neon free tier)
+
+      ## Implementation Plan
+
+      ### Phase 1: Neon Project Setup
+
+      1. Create a Neon account at neon.tech (GitHub SSO supported)
+      2. Create a Neon project named "novatrek-dev" in the nearest region (US East)
+      3. Note: Neon free tier allows 1 project with up to 10 branches
+      4. Create a single database with 19 schemas (Neon free tier = 1 database per project)
+         - Alternative: use Neon's branching to create isolated schema sets if needed
+      5. Enable PostGIS extension: CREATE EXTENSION IF NOT EXISTS postgis;
+      6. Enable UUID-OSSP extension: CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+      7. Store the Neon connection string in GitHub Secrets as NEON_DATABASE_URL
+      8. Store connection string in Azure Key Vault (kv-novatrek-dev) for Container Apps access
+
+      ### Phase 2: Bicep and Parameter Changes
+
+      1. Add a conditional flag to platform.bicep:
+         - New parameter: param useExternalDatabase bool = false
+         - New parameter: param externalDatabaseUrl string = '' (secure)
+         - Wrap the postgresql module in: if (!useExternalDatabase)
+         - Pass externalDatabaseUrl to Container Apps when useExternalDatabase is true
+
+      2. Update dev.platform.bicepparam:
+         - param useExternalDatabase = true
+         - Remove postgresAdminPassword (no longer needed for dev)
+         - Keep postgresLocation and all other params unchanged (prod still uses them)
+
+      3. Update ephemeral.platform.bicepparam:
+         - param useExternalDatabase = true (ephemeral envs use Neon branches)
+         - Neon branching creates instant copy-on-write clones (faster than Azure PG provisioning)
+
+      4. prod.platform.bicepparam: NO CHANGES — stays on Azure PostgreSQL
+
+      ### Phase 3: Connection String Migration
+
+      1. Update container-app.bicep module:
+         - Accept an optional externalDatabaseUrl parameter
+         - When set, inject DATABASE_URL env var pointing to Neon
+         - When not set, construct DATABASE_URL from Azure PostgreSQL outputs (existing behavior)
+
+      2. Connection string format for Neon:
+         postgresql://<user>:<password>@<endpoint>.neon.tech/<dbname>?sslmode=require
+
+      3. SSL requirement: Neon requires sslmode=require (Azure PG already uses SSL, so no app code changes)
+
+      ### Phase 4: Workflow Updates
+
+      1. Remove nightly-stop-dev.yml PostgreSQL stop logic (no longer needed — Neon auto-suspends)
+      2. Remove nightly-start-dev.yml PostgreSQL start logic
+      3. Keep Container Apps scale-to-zero logic in those workflows (still relevant)
+      4. Update db-migrate.yml:
+         - Add conditional: if dev, connect to Neon; if prod, connect to Azure PG
+         - Neon connection uses NEON_DATABASE_URL secret
+
+      ### Phase 5: Validation
+
+      1. Deploy updated Bicep to dev (az deployment group what-if first)
+      2. Run database migrations against Neon
+      3. Verify PostGIS queries from svc-trail-management work correctly
+      4. Verify UUID generation from all services works correctly
+      5. Confirm Container Apps can connect to Neon endpoint (network egress allowed by default)
+      6. Run integration tests if available
+      7. Monitor for 1 week — check cold start latency (Neon wakes in ~500ms vs Azure PG stop/start ~60s)
+
+      ### Phase 6: Cleanup
+
+      1. Delete Azure PostgreSQL Flexible Server from rg-novatrek-dev
+      2. Remove postgresLocation param override from dev.platform.bicepparam
+      3. Update infra/README.md to document the dual data store strategy
+      4. Update budget alert from $50 to $35 (reduced expected spend)
+
+      ## Cost Impact
+
+      | Component | Before | After | Monthly Savings |
+      |-----------|--------|-------|-----------------|
+      | Azure PostgreSQL B1ms (dev) | $12.41 | $0.00 | $12.41 |
+      | Neon free tier | $0.00 | $0.00 | — |
+      | Nightly stop/start workflow | saves ~$8.86 | not needed | — |
+      | **Net monthly savings** | | | **$12.41** |
+      | **Annual savings** | | | **$148.92** |
+
+      ## Free Tier Limits and Thresholds
+
+      | Neon Free Tier Limit | NovaTrek Dev Usage (Estimated) | Headroom |
+      |----------------------|-------------------------------|----------|
+      | 0.5 GB storage | ~50 MB (synthetic data) | 10x |
+      | 190 compute-hours/month | ~20 hours (sporadic dev usage) | 9.5x |
+      | 1 project | 1 project (novatrek-dev) | Exact fit |
+      | 10 branches | 1 main + up to 9 PR branches | Sufficient |
+
+      ## Risks and Mitigations
+
+      | Risk | Likelihood | Impact | Mitigation |
+      |------|-----------|--------|------------|
+      | Neon free tier discontinued | Low | Medium | Revert to Azure PG (Bicep still has the module, just toggled off) |
+      | Neon cold start latency | Low | Low | ~500ms wake time is acceptable for dev; much faster than Azure PG stop/start (~60s) |
+      | PostGIS compatibility gap | Very Low | High | Neon uses standard PostgreSQL with PostGIS; test svc-trail-management queries in Phase 5 |
+      | Network latency (external DB) | Low | Low | Neon US East region; Container Apps in eastus2; <10ms expected |
+      | Free tier storage exceeded | Very Low | Low | 0.5GB is 10x current needs; upgrade to Neon Launch ($19/mo) still cheaper than Azure PG |
+
+      ## Rollback Plan
+
+      1. Set useExternalDatabase = false in dev.platform.bicepparam
+      2. Redeploy Bicep (Azure PostgreSQL module re-provisions automatically)
+      3. Run migrations against new Azure PG instance
+      4. Total rollback time: ~15 minutes
+
+      ## Acceptance Criteria
+
+      - [ ] Dev Container Apps connect to Neon Postgres successfully
+      - [ ] PostGIS spatial queries from svc-trail-management return correct results
+      - [ ] UUID-OSSP extension functional across all 19 schemas
+      - [ ] Azure PostgreSQL Flexible Server removed from rg-novatrek-dev
+      - [ ] nightly-stop-dev.yml no longer attempts to stop/start PostgreSQL
+      - [ ] Dev environment monthly Azure cost drops below $15
+      - [ ] Prod environment completely unaffected (still on Azure PostgreSQL)
+      - [ ] Bicep what-if shows no changes to prod resources
+
   - key: NTK-10001
     summary: Add Elevation Profile Data to Trail Response
     status: Ready for Dev
