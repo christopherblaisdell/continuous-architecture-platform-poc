@@ -28,6 +28,7 @@ No new infrastructure, licenses, or procurement is required.
 | 301 artifacts published automatically | Live portal at architecture.novatrek.cc |
 | 95%+ knowledge gap rate | Phase 1 post-execution analysis |
 | Zero fabrication (Copilot) | Head-to-head comparison vs Roo Code |
+| Custom build not justified | Microsoft Foundry TCO analysis ($113k Year 1 vs $4,680) |
 
 All figures above are from measured results against the synthetic workspace.
 

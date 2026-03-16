@@ -111,6 +111,22 @@ OpenRouter re-transmits the **full conversation history** on every turn, meaning
 
 ---
 
+## Three-Way Cost Comparison: Including Custom Build
+
+A third option was evaluated: building a custom architecture agent on **Microsoft Foundry** (formerly Azure AI Foundry). This shifts the comparison from two commercial tools to three fundamentally different architectures.
+
+| Cost Category | GitHub Copilot Pro+ | Roo Code + OpenRouter | Custom Foundry Agent |
+| :---- | :---- | :---- | :---- |
+| **Initial Build CapEx** | $0 | $0 | $72,000 |
+| **Monthly (10 architects)** | $390 | ~$5,070 | $3,454 |
+| **Year 1 Total** | **$4,680** | **$60,840** | **$113,450** |
+
+The Foundry agent's raw API costs are the **lowest** of the three ($54/month in tokens). But engineering labor ($72k initial + $3k/month maintenance) dominates the TCO by 97%. The token pricing is a rounding error against the human capital required to build, secure, and maintain the custom infrastructure.
+
+For full analysis including capability trade-offs: [Microsoft Foundry Analysis](foundry-analysis.md)
+
+---
+
 ## Monthly Cost Projection
 
 At the architecture practice's projected workload (38 runs/month — 26 base scenarios + 12 PROMOTE steps):
@@ -139,6 +155,14 @@ Copilot's cost line is **flat** regardless of volume. OpenRouter's grows linearl
 
 <div class="key-insight" markdown>
 At projected usage volumes, the fixed-subscription model is consistently less expensive than per-token alternatives. The gap widens with usage, and does not account for infrastructure overhead (Kong Gateway, Qdrant, monitoring) required by the per-token stack.
+</div>
+
+<div class="cta-box" markdown>
+
+### What about building our own custom agent?
+
+[Microsoft Foundry Analysis: The "Build Your Own" Option](foundry-analysis.md)
+
 </div>
 
 <div class="cta-box" markdown>

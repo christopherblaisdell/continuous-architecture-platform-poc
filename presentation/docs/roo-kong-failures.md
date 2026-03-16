@@ -164,6 +164,14 @@ This is weeks of DevOps engineering to work around architectural deficiencies in
 
 <div class="cta-box" markdown>
 
+### What about building our own custom agent instead?
+
+[Microsoft Foundry: The "Build Your Own" Option](foundry-analysis.md)
+
+</div>
+
+<div class="cta-box" markdown>
+
 ### What's the actual ask?
 
 [The Ask: One Corporate Test Account](the-ask.md)

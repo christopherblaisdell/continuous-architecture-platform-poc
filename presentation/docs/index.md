@@ -30,7 +30,7 @@
 
 Many architecture practices already source-control OpenAPI specs and PlantUML diagrams in Git, with production gating. This proof of concept evaluated whether an AI assistant (GitHub Copilot Pro+) can read those existing artifacts and produce compliant architecture designs — solution documents, ADRs, impact assessments — following established standards.
 
-The POC compared two AI toolchains using the same underlying model (Claude Opus 4.6) across 5 architecture scenarios. The results cover cost, output quality, and accuracy. All evidence comes from measured execution against a synthetic workspace (NovaTrek Adventures).
+The POC compared two AI toolchains using the same underlying model (Claude Opus 4.6) across 5 architecture scenarios, and additionally evaluated the feasibility of building a **custom centralized agent** on Microsoft Foundry as a third option. The results cover cost, output quality, accuracy, and the build-versus-buy trade-off. All evidence comes from measured execution against a synthetic workspace (NovaTrek Adventures).
 
 <div class="key-insight" markdown>
 **This is not a proposal.** This is a demonstration. The evidence on the following pages comes from actual billing data, actual execution results, and an actual live architecture portal — all built during this proof of concept.
@@ -46,6 +46,7 @@ The POC compared two AI toolchains using the same underlying model (Claude Opus 
 | [The Solution](solution.md) | What replaces point-in-time documentation? |
 | [Cost Evidence](cost-evidence.md) | What does each toolchain cost? |
 | [Output Analysis](quality-evidence.md) | What did the AI actually produce? |
+| [Microsoft Foundry](foundry-analysis.md) | What about building our own custom agent? |
 | [Enhanced Workspace](shared-workspace.md) | How does the AI leverage our existing Git repo? |
 | [Live Demo](live-demo.md) | What does the end result look like? |
 | [The Ask](the-ask.md) | What do we need to move forward? |

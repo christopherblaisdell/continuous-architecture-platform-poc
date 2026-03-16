@@ -30,6 +30,7 @@ nav:
     - "Cost Analysis": cost-evidence.md
     - "Output Quality": quality-evidence.md
     - "Alternative Toolchain": roo-kong-failures.md
+    - "Microsoft Foundry": foundry-analysis.md
   - How It Works:
     - Enhanced Workspace: shared-workspace.md
     - "CALM Topology": calm-topology.md
