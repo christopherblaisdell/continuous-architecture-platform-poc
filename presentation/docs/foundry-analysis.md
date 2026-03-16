@@ -7,6 +7,9 @@ A third option was evaluated alongside GitHub Copilot Pro+ and Roo Code + OpenRo
 !!! warning "Synthetic Demonstration Environment"
     This analysis evaluates Microsoft Foundry as a platform. All architectural references use the fictional NovaTrek Adventures domain. No corporate systems, data, or infrastructure are represented.
 
+!!! info "Deep Research Source"
+    This analysis is based on a comprehensive deep research report: [Should We Build a Custom Foundry Agent?](https://docs.google.com/document/d/1uj7ryZVJ4PjCqEA5rBFvGaS7GeRX9Nx4VEXph0Vmq6Y/edit?usp=sharing)
+
 ---
 
 ## The Hypothesis
