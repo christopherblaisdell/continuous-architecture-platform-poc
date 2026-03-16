@@ -1,9 +1,9 @@
 !!! warning "Synthetic Demonstration Environment"
     **Everything in this presentation is entirely fictional.** NovaTrek Adventures is a completely fictitious company created solely for this proof of concept. All services, tickets, architecture decisions, logs, source code, and operational data are synthetic. No real corporate systems, data, or organizations are represented. The companion **[Architecture Portal](https://architecture.novatrek.cc)** is also entirely synthetic.
 
-# A Shared Solution for the Architecture Practice
+# Subscribe, Don't Build
 
-## Don't Build a Platform. Create a Shared Workspace and Add Copilot.
+## $39/seat/month turns VS Code into an architecture workbench — no custom platform required.
 
 <div class="hero-grid" markdown>
 
