@@ -186,3 +186,347 @@ tickets:
       As a guest services manager,
       I want structured dispute workflows with escalation tiers and automated notifications,
       So that refund requests are resolved consistently and chargebacks are minimized.
+
+  # --- New tickets below (not yet analyzed) ---
+
+  - key: NTK-10010
+    summary: Multi-Language Support for Guest-Facing Communications
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: jordan.blake
+    labels: [internationalization, guest-experience, multi-service]
+    created: 2025-03-01
+    updated: 2025-03-01
+    sprint: null
+    components: [svc-notifications, svc-guest-profiles, svc-trip-catalog]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.5
+        impact: enhanced
+      - id: CAP-1.1
+        impact: enhanced
+    user_story: |
+      As an international guest who does not speak English,
+      I want to receive booking confirmations, safety briefings, and trip notifications in my preferred language,
+      So that I can fully understand important information about my adventure.
+
+  - key: NTK-10011
+    summary: Proactive Weather-Based Trip Advisories for Booked Guests
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: sam.patel
+    labels: [safety, guest-experience, weather]
+    created: 2025-03-03
+    updated: 2025-03-03
+    sprint: null
+    components: [svc-weather, svc-notifications, svc-reservations]
+    solution: null
+    planned_capabilities:
+      - id: CAP-3.5
+        impact: enhanced
+      - id: CAP-1.5
+        impact: enhanced
+    user_story: |
+      As a guest with an upcoming booked adventure,
+      I want to receive timely advisories when weather conditions may affect my trip,
+      So that I can prepare appropriately or reschedule before arriving at the trailhead.
+
+  - key: NTK-10012
+    summary: Guide Certification Expiry and Compliance Tracking
+    status: New
+    priority: High
+    assignee: null
+    reporter: sam.patel
+    labels: [safety, compliance, svc-guide-management]
+    created: 2025-03-04
+    updated: 2025-03-04
+    sprint: null
+    components: [svc-guide-management, svc-safety-compliance, svc-notifications, svc-scheduling-orchestrator]
+    solution: null
+    planned_capabilities:
+      - id: CAP-2.3
+        impact: enhanced
+      - id: CAP-3.1
+        impact: enhanced
+    user_story: |
+      As the head of guide operations,
+      I want visibility into which guides have certifications approaching expiration and which are currently non-compliant,
+      So that I can ensure every guide leading an adventure meets current safety and regulatory requirements.
+
+  - key: NTK-10013
+    summary: Waitlist and Cancellation Backfill for Sold-Out Adventures
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: jordan.blake
+    labels: [revenue, guest-experience, svc-reservations]
+    created: 2025-03-06
+    updated: 2025-03-06
+    sprint: null
+    components: [svc-reservations, svc-notifications, svc-guest-profiles]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.3
+        impact: enhanced
+      - id: CAP-5.2
+        impact: enhanced
+    user_story: |
+      As a guest interested in a fully-booked adventure,
+      I want to join a waitlist and be notified automatically if a spot becomes available,
+      So that I do not have to keep checking back manually and risk missing an opening.
+
+  - key: NTK-10014
+    summary: Group Booking and Party Coordination
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [guest-experience, revenue, multi-service]
+    created: 2025-03-08
+    updated: 2025-03-08
+    sprint: null
+    components: [svc-reservations, svc-check-in, svc-guest-profiles, svc-payments, svc-notifications]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.3
+        impact: enhanced
+      - id: CAP-2.1
+        impact: enhanced
+      - id: CAP-5.1
+        impact: enhanced
+    user_story: |
+      As a family trip organizer booking for a group of eight,
+      I want to manage a single group reservation where individual members can be added or removed,
+      So that I do not have to create and track separate bookings for each person in my party.
+
+  - key: NTK-10015
+    summary: Automated Gear Sizing and Pre-Allocation for Booked Adventures
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: maya.rodriguez
+    labels: [operations, gear, efficiency]
+    created: 2025-03-10
+    updated: 2025-03-10
+    sprint: null
+    components: [svc-gear-inventory, svc-check-in, svc-reservations, svc-guest-profiles]
+    solution: null
+    planned_capabilities:
+      - id: CAP-4.1
+        impact: enhanced
+      - id: CAP-2.1
+        impact: enhanced
+    user_story: |
+      As an equipment manager preparing for the next day's adventures,
+      I want guests' gear requirements and sizing preferences to be available before they arrive,
+      So that the correct equipment is pre-staged and check-in wait times are reduced.
+
+  - key: NTK-10016
+    summary: Partner Commission Reconciliation and Payout Reporting
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: sam.patel
+    labels: [finance, partner-ecosystem, reconciliation]
+    created: 2025-03-11
+    updated: 2025-03-11
+    sprint: null
+    components: [svc-partner-integrations, svc-payments, svc-analytics]
+    solution: null
+    planned_capabilities:
+      - id: CAP-6.2
+        impact: enhanced
+      - id: CAP-5.4
+        impact: enhanced
+    user_story: |
+      As the partner relations manager,
+      I want a clear accounting of commissions owed to each booking partner at the end of every month,
+      So that payouts are accurate and disputes with channel partners are eliminated.
+
+  - key: NTK-10017
+    summary: Seasonal Demand-Based Pricing for Adventure Catalog
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [revenue, pricing, multi-service, strategic]
+    created: 2025-03-12
+    updated: 2025-03-12
+    sprint: null
+    components: [svc-trip-catalog, svc-reservations, svc-analytics, svc-partner-integrations]
+    solution: null
+    planned_capabilities:
+      - id: CAP-5.2
+        impact: enhanced
+      - id: CAP-5.3
+        impact: enhanced
+      - id: CAP-6.3
+        impact: new
+    user_story: |
+      As the revenue management director,
+      I want adventure pricing to reflect seasonal demand patterns so that peak periods yield higher revenue and shoulder seasons attract more bookings,
+      So that NovaTrek maximizes annual revenue without manually adjusting prices across hundreds of trip listings.
+
+  - key: NTK-10018
+    summary: Guest Accessibility Requirements and Special Accommodations
+    status: New
+    priority: High
+    assignee: null
+    reporter: maya.rodriguez
+    labels: [accessibility, guest-experience, compliance, multi-service]
+    created: 2025-03-13
+    updated: 2025-03-13
+    sprint: null
+    components: [svc-guest-profiles, svc-reservations, svc-check-in, svc-trip-catalog, svc-guide-management, svc-gear-inventory]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.1
+        impact: enhanced
+      - id: CAP-1.3
+        impact: enhanced
+      - id: CAP-2.1
+        impact: enhanced
+      - id: CAP-1.2
+        impact: enhanced
+    user_story: |
+      As a guest with a mobility limitation,
+      I want to specify my accessibility needs during booking and trust that the right accommodations will be in place when I arrive,
+      So that I can participate in adventures confidently without having to repeatedly explain my requirements to staff.
+
+  - key: NTK-10019
+    summary: Multi-Day Adventure Itinerary and Logistics Coordination
+    status: New
+    priority: Critical
+    assignee: null
+    reporter: jordan.blake
+    labels: [new-capability, operations, multi-service, strategic]
+    created: 2025-03-14
+    updated: 2025-03-14
+    sprint: null
+    components: [svc-reservations, svc-scheduling-orchestrator, svc-transport-logistics, svc-gear-inventory, svc-trip-catalog, svc-guide-management]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.3
+        impact: enhanced
+      - id: CAP-2.2
+        impact: enhanced
+      - id: CAP-2.5
+        impact: enhanced
+      - id: CAP-4.1
+        impact: enhanced
+    user_story: |
+      As a guest booking a three-day backcountry expedition,
+      I want a unified itinerary that coordinates my daily activities, transport between base camps, gear provisioning, and guide assignments across all days,
+      So that I experience a seamless multi-day adventure rather than a disconnected series of separate day trips.
+
+  - key: NTK-10020
+    summary: Post-Adventure Photo and Video Delivery to Guests
+    status: New
+    priority: Low
+    assignee: null
+    reporter: maya.rodriguez
+    labels: [guest-experience, media, svc-media-gallery]
+    created: 2025-03-14
+    updated: 2025-03-14
+    sprint: null
+    components: [svc-media-gallery, svc-notifications, svc-reservations, svc-guest-profiles]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.6
+        impact: enhanced
+    user_story: |
+      As a guest who just completed a guided river rafting trip,
+      I want to receive the photos and videos captured by my guide during the adventure,
+      So that I can relive and share the experience with friends and family.
+
+  - key: NTK-10021
+    summary: Vendor and Supplier Performance Monitoring
+    status: New
+    priority: Low
+    assignee: null
+    reporter: sam.patel
+    labels: [operations, procurement, analytics]
+    created: 2025-03-15
+    updated: 2025-03-15
+    sprint: null
+    components: [svc-inventory-procurement, svc-analytics]
+    solution: null
+    planned_capabilities:
+      - id: CAP-4.2
+        impact: enhanced
+      - id: CAP-5.3
+        impact: enhanced
+    user_story: |
+      As the procurement manager,
+      I want to track delivery reliability, defect rates, and cost trends across all gear and food suppliers,
+      So that vendor contract renewals are based on objective performance data rather than anecdotal impressions.
+
+  - key: NTK-10022
+    summary: Personalized Adventure Recommendations for Returning Guests
+    status: New
+    priority: Medium
+    assignee: null
+    reporter: jordan.blake
+    labels: [new-capability, guest-experience, revenue]
+    created: 2025-03-15
+    updated: 2025-03-15
+    sprint: null
+    components: [svc-trip-catalog, svc-guest-profiles, svc-analytics, svc-reservations]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.8
+        impact: new
+      - id: CAP-1.2
+        impact: enhanced
+    user_story: |
+      As a returning guest browsing the adventure catalog,
+      I want to see trip suggestions tailored to my past adventures, stated interests, and fitness level,
+      So that I discover new experiences I am likely to enjoy without having to search through the entire catalog.
+
+  - key: NTK-10023
+    summary: Incident Reporting Workflow for Field Guides
+    status: New
+    priority: High
+    assignee: null
+    reporter: sam.patel
+    labels: [safety, compliance, critical-path]
+    created: 2025-03-16
+    updated: 2025-03-16
+    sprint: null
+    components: [svc-safety-compliance, svc-guide-management, svc-notifications, svc-analytics]
+    solution: null
+    planned_capabilities:
+      - id: CAP-3.2
+        impact: enhanced
+      - id: CAP-2.3
+        impact: enhanced
+    user_story: |
+      As a field guide who has just witnessed a guest injury on a trail,
+      I want to file a structured incident report from the field that immediately notifies the safety team and logs all relevant details,
+      So that the response is coordinated quickly and the incident record is complete for regulatory review.
+
+  - key: NTK-10024
+    summary: Third-Party Channel Inventory Synchronization
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [partner-ecosystem, revenue, data-integrity]
+    created: 2025-03-16
+    updated: 2025-03-16
+    sprint: null
+    components: [svc-partner-integrations, svc-reservations, svc-trip-catalog]
+    solution: null
+    planned_capabilities:
+      - id: CAP-6.1
+        impact: enhanced
+      - id: CAP-1.3
+        impact: enhanced
+      - id: CAP-6.3
+        impact: enhanced
+    user_story: |
+      As the channel distribution manager,
+      I want real-time availability and booking data to stay synchronized between NovaTrek and all third-party booking platforms,
+      So that overbookings are prevented and guests on any channel see accurate availability.
