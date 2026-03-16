@@ -1,5 +1,5 @@
-site_name: "Continuous Architecture Platform — Proof of Concept Results"
-site_description: "Proof of concept results: AI-assisted architecture workflows, cost analysis, and output quality evaluation"
+site_name: "Adopt Your Existing AI for Architecture"
+site_description: "POC results: why your existing IDE AI assistant beats building a custom platform for architecture workflows"
 site_author: "Christopher Blaisdell"
 
 theme:
@@ -24,13 +24,12 @@ theme:
 
 nav:
   - Home: index.md
-  - "Act 1 — The Story":
+  - "The Pitch":
     - The Problem: problem.md
-    - The Insight: insight.md
-    - What This Enables: what-this-enables.md
-    - Live Portal: live-demo.md
+    - The Proposal: proposal.md
+    - The Proof: proof.md
     - The Ask: the-ask.md
-  - "Act 2 — The Evidence":
+  - "The Evidence":
     - Cost Analysis: cost-evidence.md
     - Output Quality: quality-evidence.md
     - "Roo Code + Kong": roo-kong-failures.md

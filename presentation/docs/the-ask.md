@@ -1,47 +1,69 @@
-# Next Steps
+# The Ask
 
-## Validate Against Corporate Architecture Artifacts
+## One Existing Test Seat. No New Procurement.
 
-The POC results are based on a synthetic workspace (NovaTrek Adventures). The next step is validating against real architecture artifacts to determine whether the approach translates to our actual environment.
-
----
-
-## What Validation Requires
-
-The organization already has five GitHub Copilot Pro+ test seats. Access to one seat would enable validation against real artifacts:
-
-- Run architecture scenarios against actual corporate OpenAPI specs, ADRs, and architecture metadata
-- Evaluate output quality when the workspace contains production context
-- Test AI-assisted workflows against real JIRA tickets and service codebases
-- Produce a go/no-go recommendation based on corporate evidence
-
-No new infrastructure, licenses, or procurement is required.
+The organization already has five IDE AI assistant test seats. This POC was conducted on a synthetic workspace. The next step is validating against **real architecture artifacts** to produce a go/no-go recommendation.
 
 ---
 
-## Summary of Evidence (Synthetic POC)
+## What We Need
 
-| Claim | Source |
-|-------|--------|
-| Significant per-run cost advantage | Actual billing data from Phase 1 execution |
-| 39 architecture files produced | 5 evaluated scenarios following MADR/arc42/C4 standards |
-| 301 artifacts published automatically | Live portal at architecture.novatrek.cc |
-| 95%+ knowledge gap rate | Phase 1 post-execution analysis |
-| Zero fabrication (Copilot) | Head-to-head comparison vs Roo Code |
-| Custom build not justified | Microsoft Foundry TCO analysis ($113k Year 1 vs $4,680) |
+Access to **one existing test seat** to run architecture scenarios against actual corporate artifacts:
 
-All figures above are from measured results against the synthetic workspace.
+- Corporate OpenAPI specs, ADRs, and architecture metadata
+- Real JIRA tickets and service codebases
+- Production Elasticsearch logs and GitLab merge requests
+
+**No new licenses.** No new infrastructure. No procurement. No engineering effort from other teams.
 
 ---
+
+## What We Will Produce
+
+A validation report within 2 weeks, containing:
+
+1. **Quality assessment** — Does the AI produce standards-compliant designs with real corporate context?
+2. **Accuracy check** — Does it cite real API fields correctly, or fabricate?
+3. **Workflow fit** — Does it integrate with existing architect workflows?
+4. **Go/no-go recommendation** — With corporate data, not synthetic data
+
+---
+
+## Why Not Build Our Own Instead?
+
+This POC evaluated that option. Short answer: no.
+
+| | Adopt Existing | Build Custom (Foundry) |
+|-|:-:|:-:|
+| Year 1 cost | $468 | $113,450 |
+| Time to first output | Immediate | 10-14 weeks |
+| Engineering headcount | 0 | 2-3 engineers ongoing |
+| Reads full workspace context | Yes | No (chunked RAG) |
+| Risk of project failure | None (already proven) | High (RAG quality, 5-call limit) |
+
+See [Microsoft Foundry Analysis](foundry-analysis.md) for the full build-vs-buy breakdown.
+
+---
+
+## Summary of POC Evidence
+
+| Claim | Evidence |
+|-------|---------|
+| Works for architecture, not just code | 39 architecture files across 5 scenarios |
+| Standards compliant | MADR, arc42, C4 notation throughout |
+| Zero fabrication | Head-to-head comparison: 0 vs 4 fabricated fields |
+| Enables automated publishing | 301 portal artifacts, live at [architecture.novatrek.cc](https://architecture.novatrek.cc) |
+| 13x cheaper than assembling alternatives | $39/mo vs $507/mo (actual billing data) |
+| 243x cheaper than building custom | $39/mo vs $9,454/mo (Foundry TCO analysis) |
 
 <div class="key-insight" markdown>
-**Recommended next step:** Access to one existing Copilot Pro+ test seat to validate against corporate architecture artifacts.
+**The ask is one test seat that already exists.** The risk is near zero. The validation takes 2 weeks. The evidence so far says this works.
 </div>
 
 <div class="cta-box" markdown>
 
-### Want the evidence?
+### Want the full evidence?
 
-[Act 2: Cost Analysis, Output Quality, and Alternative Toolchains](cost-evidence.md)
+[Cost Analysis](cost-evidence.md) | [Output Quality](quality-evidence.md) | [Foundry Analysis](foundry-analysis.md) | [Roadmap](roadmap.md)
 
 </div>

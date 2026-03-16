@@ -93,4 +93,4 @@ The platform demonstrated in this POC addresses each of these gaps — building 
 
 ---
 
-[Continue: The Insight](insight.md)
+[Continue: The Proposal](proposal.md)

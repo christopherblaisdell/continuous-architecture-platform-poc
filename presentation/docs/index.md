@@ -1,63 +1,58 @@
 !!! warning "Synthetic Demonstration Environment"
     **Everything in this presentation is entirely fictional.** NovaTrek Adventures is a completely fictitious company created solely for this proof of concept. All services, tickets, architecture decisions, logs, source code, and operational data are synthetic. No real corporate systems, data, or organizations are represented. The companion **[Architecture Portal](https://architecture.novatrek.cc)** is also entirely synthetic.
 
-# Continuous Architecture Platform
+# Adopt Your Existing AI for Architecture
 
-## Proof of Concept Results
+## Don't Build a Platform. Use the One You Already Have.
 
 <div class="hero-grid" markdown>
 
-<div class="hero-card" markdown>
-<div class="metric">39</div>
-<div class="label">Architecture files produced across 5 scenarios</div>
+<div class="hero-card accent" markdown>
+<div class="metric">$39/mo</div>
+<div class="label">Adopt existing tool</div>
 </div>
 
-<div class="hero-card accent" markdown>
-<div class="metric">301</div>
-<div class="label">Portal artifacts published automatically</div>
+<div class="hero-card" markdown>
+<div class="metric">$507/mo</div>
+<div class="label">Assemble open-source stack</div>
 </div>
 
 <div class="hero-card dark" markdown>
-<div class="metric">$39/mo</div>
-<div class="label">Fixed cost — AI + publishing + governance</div>
+<div class="metric">$9,454/mo</div>
+<div class="label">Build custom agent</div>
 </div>
 
 </div>
 
 ---
 
-## The Story in One Sentence
+Your organization already licenses an AI assistant in the IDE. This proof of concept tested whether that same tool can produce compliant architecture designs — solution documents, ADRs, impact assessments — following MADR, arc42, and C4 standards.
 
-We picked an AI tool that lives in the IDE. To make it effective, we moved all our architecture artifacts into the workspace. **That accidentally gave us architecture-as-code — and everything that follows from it.**
+It can. It produced 39 architecture files across 5 scenarios with zero fabricated schema fields. And the alternatives cost 13x to 243x more.
 
 <div class="key-insight" markdown>
-**This is not a proposal.** This is a demonstration. The evidence on the following pages comes from actual billing data, actual execution results, and an actual live architecture portal — all built during this proof of concept.
+**This is not a proposal.** This is a demonstration backed by actual billing data, actual execution results, and an actual [live architecture portal](https://architecture.novatrek.cc) — all built during this POC.
 </div>
 
 ---
 
-## Act 1 — The Story
+## The Pitch (4 pages, 10 minutes)
 
-A 10-minute walkthrough from the problem to the ask. Start here.
-
-| Page | Question It Answers |
-|------|-------------------|
-| [The Problem](problem.md) | Why does architecture documentation always decay? |
-| [The Insight](insight.md) | What happens when you move everything into the IDE? |
-| [What This Enables](what-this-enables.md) | What becomes possible once architecture is code? |
-| [Live Portal](live-demo.md) | What does the end result look like? |
-| [The Ask](the-ask.md) | What do we need to move forward? |
+| Page | What It Covers |
+|------|---------------|
+| [The Problem](problem.md) | Architecture documentation decays because updating it is manual and voluntary |
+| [The Proposal](proposal.md) | Extend the existing IDE AI assistant to architecture — and why the alternatives fail |
+| [The Proof](proof.md) | 301 artifacts, live portal, 5 scenarios — see the results |
+| [The Ask](the-ask.md) | Access to one existing test seat to validate against real artifacts |
 
 ---
 
-## Act 2 — The Evidence
+## The Evidence (5 pages, for those who want depth)
 
-Deep-dive pages with measured data for those who want proof.
-
-| Page | Question It Answers |
-|------|-------------------|
-| [Cost Analysis](cost-evidence.md) | What does each toolchain cost at scale? |
-| [Output Quality](quality-evidence.md) | What did the AI actually produce across 5 scenarios? |
-| [Roo Code + Kong](roo-kong-failures.md) | What went wrong with the alternative toolchain? |
-| [Microsoft Foundry](foundry-analysis.md) | What about building a custom centralized agent? |
-| [Roadmap](roadmap.md) | What is the phased delivery plan? |
+| Page | What It Covers |
+|------|---------------|
+| [Cost Analysis](cost-evidence.md) | Three-way TCO comparison with actual billing data |
+| [Output Quality](quality-evidence.md) | Head-to-head file comparison across 5 scenarios |
+| [Roo Code + Kong](roo-kong-failures.md) | Three cascading failures in the open-source stack |
+| [Microsoft Foundry](foundry-analysis.md) | Build-vs-buy analysis — $113k Year 1 custom agent |
+| [Roadmap](roadmap.md) | Six phases from POC to production (March–August 2026) |
