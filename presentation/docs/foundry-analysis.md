@@ -15,7 +15,7 @@ A third option was evaluated alongside GitHub Copilot Pro+ and Roo Code + OpenRo
 
 This is an appealing idea. Product owners could query architectural standards. Security auditors could search decision records. Executives could ask about service dependencies. No IDE required.
 
-**The question is whether the engineering cost of building this is justified — or whether it reinvents capabilities that commercial IDE tools already provide natively.**
+**The question is whether the engineering cost of building this is justified — or whether a shared workspace with Copilot already provides these capabilities natively, with no MCP servers, no custom infrastructure, and no engineering project.**
 
 ---
 
@@ -61,7 +61,7 @@ Every red box is custom engineering. The model deployment (blue) is the only man
 | **API** | Containerized backend on Azure Container Apps | Backend, DevOps |
 | **Agent Logic** | State management, conversation threads, tool execution | Python/C# SDK, MLOps |
 | **Knowledge Base** | Azure AI Search with automated ingestion pipelines | Data engineering |
-| **Tool Integrations** | MCP servers or REST wrappers for every external system | API development |
+| **Tool Integrations** | MCP servers or REST wrappers for every external system (Copilot needs none — it indexes the workspace automatically) | API development |
 | **Data Pipeline** | Git sync, document chunking, embedding generation | Data engineering |
 
 ---

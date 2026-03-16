@@ -1,8 +1,8 @@
-# Roadmap: Six Phases to Full Platform
+# Roadmap: Six Phases to a Shared Architecture Practice
 
 ## Standalone Value at Every Phase
 
-The Continuous Architecture Platform is delivered in six phases. Each phase delivers independent value — you can stop at any phase and still have a working, useful system. The full vision completes by August 2026.
+The shared solution for the architecture practice is delivered in six phases. Each phase delivers independent value — you can stop at any phase and still have a working, useful shared workspace. The full vision completes by August 2026.
 
 ---
 
@@ -16,7 +16,7 @@ The Continuous Architecture Platform is delivered in six phases. Each phase deli
 
 **March 2026**
 
-Compared GitHub Copilot Pro+ against Roo Code + OpenRouter across 5 architecture scenarios. Established cost advantage (208x per-run) and output completeness. Produced ADR-001 recommending Copilot Pro+.
+Compared GitHub Copilot Pro+ against Roo Code + OpenRouter across 5 architecture scenarios. Established cost advantage (208x per-run) and output completeness. Produced ADR-001 recommending Copilot Pro+. Validated that Copilot’s automatic workspace indexing eliminates the need for MCP servers or custom infrastructure.
 
 **Delivered:** Cost comparison data, output analysis, billing model research, toolchain recommendation.
 

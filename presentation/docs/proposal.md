@@ -1,8 +1,8 @@
 # The Proposal
 
-## Add an AI Subscription to the IDE Everyone Already Uses
+## Create a Shared Workspace for the Architecture Practice
 
-Everyone in the organization uses VS Code. **This POC tested whether adding a $39/month AI subscription to VS Code can produce compliant architecture designs.**
+Everyone in the organization uses VS Code. **This POC tested whether a shared Git workspace combined with Copilot subscriptions can serve as a shared solution for the entire solution architecture practice.**
 
 It can. And the alternatives — building a custom platform or assembling an open-source stack — cost 13x to 243x more.
 
@@ -11,7 +11,7 @@ It can. And the alternatives — building a custom platform or assembling an ope
 ## The Recommendation
 
 <div class="key-insight" markdown>
-**Add an AI subscription to VS Code.** Use it for architecture workflows — solution designs, ADRs, impact assessments, and automated portal publishing. No custom platform to build. No infrastructure to maintain. $39/month, cancel anytime.
+**Create a shared Git workspace for the architecture practice and add Copilot subscriptions.** The workspace contains specs, ADRs, standards, and source code. Copilot automatically indexes everything into a vector database — no MCP servers, no custom infrastructure, no engineering project. Every architect gets the same AI-powered context. $39/seat/month, cancel anytime.
 </div>
 
 ---
@@ -56,7 +56,7 @@ The cost difference is not the main argument. The main argument is that a VS Cod
 | Capability | VS Code + AI Subscription | Custom-Built Agent | Open-Source Stack |
 |-----------|:-:|:-:|:-:|
 | Reads all workspace files directly | Yes | No (chunked RAG) | Partial |
-| Runs mock tools autonomously | Yes | No (5-call limit) | Yes |
+| Runs architecture tools autonomously | Yes | No (5-call limit) | Yes |
 | Produces zero fabricated schema fields | Yes | Unknown | No (4 fabrications) |
 | Requires custom infrastructure | No | Yes ($113k Year 1) | Yes (gateway + vector DB) |
 | Works in VS Code (already installed) | Yes | No (browser-based) | Yes |
@@ -89,7 +89,7 @@ Across 5 architecture scenarios using a synthetic workspace (NovaTrek Adventures
 
 </div>
 
-Each scenario produced a complete solution design following MADR, arc42, and C4 standards — including impact assessments, user stories, risk registers, and ADRs. The AI cited specific OpenAPI fields, Java source lines, Elasticsearch log entries, and GitLab merge requests because it could read them directly from the workspace.
+Each scenario produced a complete solution design following MADR, arc42, and C4 standards — including impact assessments, user stories, risk registers, and ADRs. The AI cited specific OpenAPI fields, Java source lines, and log entries because it could read them directly from the shared workspace.
 
 See [Output Quality](quality-evidence.md) for the full head-to-head comparison.
 
@@ -97,7 +97,7 @@ See [Output Quality](quality-evidence.md) for the full head-to-head comparison.
 
 ## What Comes Free With Adoption
 
-Because the AI subscription operates on plain-text files in a Git repository, using it for architecture workflows unlocks three automation capabilities at no additional cost:
+Because the shared workspace operates on plain-text files in a Git repository, using Copilot for architecture workflows unlocks three automation capabilities at no additional cost:
 
 | Capability | How It Works | What It Replaces |
 |-----------|-------------|-----------------|
@@ -105,7 +105,7 @@ Because the AI subscription operates on plain-text files in a Git repository, us
 | **Automated governance** | CALM topology generated from existing YAML metadata; CI validates architecture rules | Manual PR review for cross-service compliance |
 | **Design-to-reality reconciliation** | AI compares what was designed against what was built after deployment | Nothing — this step does not exist today |
 
-The portal, governance, and reconciliation capabilities are all built on the same foundation: architecture artifacts stored as code in version control. The AI subscription makes this practical because it reads all files in the VS Code workspace automatically.
+The portal, governance, and reconciliation capabilities are all built on the same foundation: architecture artifacts stored as code in version control. The shared workspace makes this practical because Copilot indexes all files in the workspace automatically — no MCP servers or custom integrations required.
 
 ---
 
@@ -113,8 +113,8 @@ The portal, governance, and reconciliation capabilities are all built on the sam
 
 | Concern | Answer |
 |---------|--------|
-| New licenses | One license at $39/month — cancel anytime |
-| Custom infrastructure | No — runs in VS Code, which everyone already has |
+| New licenses | Copilot Pro+ at $39/seat/month — cancel anytime |
+| Custom infrastructure | No — Copilot indexes the workspace automatically, no MCP servers to build |
 | New tools for architects to learn | No — same IDE, same Git workflow |
 | Migration of existing specs | No — reads the OpenAPI specs and ADRs already in version control |
 | Ongoing platform engineering | No — no custom code to maintain (unlike Foundry) |

@@ -17,7 +17,7 @@ What happened next was not planned. Each step forced the next:
 ```mermaid
 flowchart TD
     A["Step 1: Pick an AI tool that lives in the IDE"]
-    B["Step 2: Move everything into the workspace\n(specs, ADRs, metadata, standards, mock tools)"]
+    B["Step 2: Move everything into the workspace\n(specs, ADRs, metadata, standards)"]
     C["Step 3: Everything is now architecture-as-code\n(version-controlled, PR-reviewable, diffable)"]
     D["Step 4: Automate what was manual\n(publishing, governance, validation)"]
     E["Step 5: Architecture never decays again"]
@@ -63,7 +63,7 @@ To give the AI context, we assembled a shared workspace containing everything an
 | OpenAPI specs | 19 | So the AI reads actual API contracts, not guesses |
 | Architecture Decision Records | 11 | So past decisions constrain future ones |
 | Java source code | 8 files | So the AI can trace bugs to specific lines |
-| Mock tool scripts | 3 | So the AI can query JIRA, Elastic, GitLab locally |
+| Mock tool scripts | 3 | POC simulation of external tools (in production, artifacts live in the workspace) |
 | Architecture standards | 4 | MADR, arc42, C4, ISO 25010 — loaded every session |
 | Domain knowledge file | 500+ lines | Service domains, data ownership, anti-patterns, formatting rules |
 
@@ -76,13 +76,13 @@ The domain knowledge file (`copilot-instructions.md`) is loaded automatically in
 - Document standards (MADR format, no emojis, no placeholders)
 
 !!! info "This is not a database. It's a Git repo."
-    Every artifact listed above is a plain text file in version control. No special infrastructure. No vector database. No embedding pipeline. Just files in a folder that the AI reads directly.
+    Every artifact listed above is a plain text file in version control. No MCP servers to build. No embedding pipelines to maintain. Copilot automatically indexes the entire workspace into a vector database on the backend — every architect who opens the workspace gets full AI-powered context immediately.
 
 ---
 
 ## Step 3: That's Architecture-as-Code
 
-Once everything lives in the workspace, something shifts. The architecture practice is now operating on version-controlled, plain-text artifacts:
+Once everything lives in the workspace, something shifts. The architecture practice is now operating on version-controlled, plain-text artifacts — a shared solution that every solution architect on the team uses:
 
 | Capability | Before | After |
 |-----------|--------|-------|

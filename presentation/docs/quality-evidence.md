@@ -59,7 +59,7 @@ Both tools used the same underlying model (Claude Opus 4.6) and the same workspa
 |-----------|:------:|:-------:|
 | **Files produced** | 39 | 37 (missing 2) |
 | **Accuracy** | Zero fabrication | Fabricated 4 OpenAPI fields |
-| **Tool utilization** | 5 mock script calls | 3-4 mock script calls |
+| **Tool utilization** | 5 architecture tool calls | 3-4 tool calls |
 | **Workspace file reads** | 40+ | 22 |
 | **Standards compliance** | 96.1% | Not independently scored |
 

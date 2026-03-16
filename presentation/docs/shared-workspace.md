@@ -1,8 +1,8 @@
-# Shared Workspace: The AI Agent Reads What Architects Maintain
+# Shared Workspace: A Shared Solution for the Architecture Practice
 
 ## The Secret to Accurate Output: Full Context
 
-The AI doesn't hallucinate when it can **read the actual source material**. The key architectural decision in this platform is simple: put everything in the workspace.
+The AI doesn't hallucinate when it can **read the actual source material**. The key architectural decision is simple: put everything in a shared workspace and let Copilot index it automatically — no MCP servers, no custom integrations.
 
 ---
 
@@ -16,7 +16,7 @@ The architecture workspace demonstrated here uses NovaTrek Adventures as a synth
 | Architecture Decision Records | 11 | Global decision log with rationale and consequences |
 | Service architecture pages | 6 | Living baselines per service (current state, integrations, decisions) |
 | Java source code | 8 files | Key service implementations for analysis |
-| Mock tool scripts | 3 | JIRA, Elasticsearch, GitLab simulation (local JSON, no network) |
+| Mock tool scripts | 3 | POC simulation of external tools (in production, Copilot indexes workspace files directly) |
 | Architecture standards | 4 | arc42 template, MADR format, C4 model guide, ISO 25010 tree |
 | copilot-instructions.md | 1 | 500+ lines of domain knowledge loaded into every AI session |
 
@@ -29,7 +29,7 @@ The `copilot-instructions.md` file is loaded automatically into every AI session
 - **Role definition** — the AI operates as a Solution Architect, not a developer
 - **Domain model** — 19 services across 9 domains with bounded context rules
 - **Data ownership** — which service owns which data entities, and who has read access
-- **Mock tool commands** — exact syntax for running JIRA, Elastic, and GitLab tools
+- **Mock tool commands** — POC-only simulation scripts (in production, architecture artifacts live directly in the workspace)
 - **Architecture standards** — MADR format, C4 notation, arc42 sections, ISO 25010 attributes
 - **Anti-pattern checklist** — 8 common patterns to flag (shared databases, entity replacement, unsafe defaults, etc.)
 - **Document formatting rules** — no emojis, no placeholder content, present tense for current state
@@ -46,9 +46,9 @@ The `copilot-instructions.md` file is loaded automatically into every AI session
 
 The AI was investigating a guide schedule overwrite bug. Here's what it read from the workspace:
 
-1. **Elasticsearch logs** (via mock tool) — found 4 ERROR entries with timestamps and trace IDs
+1. **Elasticsearch logs** (from workspace data) — found 4 ERROR entries with timestamps and trace IDs
 2. **Java source code** (`SchedulingService.java`) — identified `save(incoming)` full-entity replacement at a specific line number
-3. **GitLab MR-5001** (via mock tool) — found a previously rejected fix attempt and analyzed why it was insufficient
+3. **GitLab MR-5001** (from workspace data) — found a previously rejected fix attempt and analyzed why it was insufficient
 4. **OpenAPI spec** (`svc-scheduling-orchestrator.yaml`) — verified the `PUT` endpoint lacked optimistic locking
 
 **Result:** 100% quality score. The AI traced the problem from production symptoms through code to a root cause, citing specific lines and log entries — because all of that evidence was in the workspace.

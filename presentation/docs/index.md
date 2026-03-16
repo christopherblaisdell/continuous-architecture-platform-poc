@@ -1,9 +1,9 @@
 !!! warning "Synthetic Demonstration Environment"
     **Everything in this presentation is entirely fictional.** NovaTrek Adventures is a completely fictitious company created solely for this proof of concept. All services, tickets, architecture decisions, logs, source code, and operational data are synthetic. No real corporate systems, data, or organizations are represented. The companion **[Architecture Portal](https://architecture.novatrek.cc)** is also entirely synthetic.
 
-# Add AI to the IDE You Already Use
+# A Shared Solution for the Architecture Practice
 
-## Don't Build a Platform. Subscribe to One for $39/month.
+## Don't Build a Platform. Create a Shared Workspace and Add Copilot.
 
 <div class="hero-grid" markdown>
 
@@ -26,9 +26,9 @@
 
 ---
 
-Everyone in the organization already uses VS Code. This proof of concept tested whether adding a $39/month AI subscription to that same IDE can produce compliant architecture designs — solution documents, ADRs, impact assessments — following MADR, arc42, and C4 standards.
+Everyone in the organization already uses VS Code. This proof of concept tested whether a **shared Git workspace** — containing specs, ADRs, standards, and source code — combined with a $39/seat/month Copilot subscription can produce compliant architecture designs for the entire solution architecture practice.
 
-It can. It produced 39 architecture files across 5 scenarios with zero fabricated schema fields. And the alternatives cost 13x to 243x more.
+It can. It produced 39 architecture files across 5 scenarios with zero fabricated schema fields. No MCP servers to build. No custom infrastructure. Copilot automatically indexes the entire workspace into a vector database — every architect on the team gets full context from day one.
 
 <div class="key-insight" markdown>
 **This is not a proposal.** This is a demonstration backed by actual billing data, actual execution results, and an actual [live architecture portal](https://architecture.novatrek.cc) — all built during this POC.

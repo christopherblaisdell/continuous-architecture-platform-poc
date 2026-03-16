@@ -1,5 +1,5 @@
 site_name: "AI-Assisted Architecture — POC Results"
-site_description: "POC results: add a $39/month AI subscription to VS Code for architecture workflows instead of building a custom platform"
+site_description: "A shared solution for the architecture practice: shared Git workspace + Copilot subscriptions. No MCP servers. No custom platform. $39/seat/month."
 site_author: "Christopher Blaisdell"
 
 theme:

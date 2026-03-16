@@ -82,7 +82,7 @@ The AI assistant was given 5 representative architecture scenarios — the kinds
 | 4 | Assess impact of a new data field across services | 7 |
 | 5 | Design a cross-service event-driven workflow | 9 |
 
-Every scenario followed MADR, arc42, and C4 standards. The AI cited specific file paths, line numbers, and OpenAPI fields — not generic advice. See [Output Quality](quality-evidence.md) for the head-to-head comparison with the alternative toolchain.
+Every scenario followed MADR, arc42, and C4 standards. The AI cited specific file paths, line numbers, and OpenAPI fields from the shared workspace — not generic advice. No MCP servers were built. Copilot indexed the workspace automatically.
 
 ---
 

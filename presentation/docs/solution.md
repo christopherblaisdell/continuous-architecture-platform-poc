@@ -1,10 +1,10 @@
-# The Solution: Continuous Architecture Platform
+# The Solution: A Shared Workspace for the Architecture Practice
 
 ## Build on What Already Exists
 
 Many architecture practices already source-control OpenAPI specs and diagrams. They already gate production deployments through an architecture repository. **That foundation is the hardest part — and many teams have already achieved it.**
 
-The Continuous Architecture Platform adds four capabilities on top of that foundation, closing the two gaps that erode its value over time.
+The shared solution adds four capabilities on top of that foundation, closing the two gaps that erode its value over time. No MCP servers to build. No custom infrastructure. Copilot indexes the workspace automatically.
 
 ---
 
@@ -40,7 +40,7 @@ The architecture repository is enhanced with **AI-readable context** — archite
 
 ### 3. Solution Designs in Markdown (Extending Git-First)
 
-The platform extends the Git-first practice to **solution designs, ADRs, impact assessments, and service documentation** — all authored in Markdown, all version-controlled in the architecture repository.
+The platform extends the Git-first practice to **solution designs, ADRs, impact assessments, and service documentation** — all authored in Markdown, all version-controlled in the shared architecture repository.
 
 **What this enables:**
 

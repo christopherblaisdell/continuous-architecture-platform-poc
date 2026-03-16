@@ -39,13 +39,13 @@ GitHub Copilot and OpenRouter represent two fundamentally different architectura
 
 **Copilot's approach:**
 
-GitHub maintains a vector database index of your entire workspace — your specs, source code, decision history, standards. When you ask a question, Copilot:
+GitHub maintains a vector database index of your entire shared workspace — your specs, source code, decision history, standards. No MCP servers to build. No embedding pipelines to maintain. When an architect asks a question, Copilot:
 1. Searches the indexed content (semantic retrieval)
 2. Pulls back only the most relevant snippets
 3. Sends a small, curated context window to Claude Opus (typically under 5K tokens)
 4. Charges you **once** for your user query
 
-The indexing infrastructure cost is amortized across the entire user base through the $39/month subscription.
+The indexing infrastructure cost is amortized across the entire user base through the $39/seat/month subscription. Every architect on the practice gets the same indexed context automatically.
 
 **OpenRouter's approach:**
 
@@ -151,7 +151,7 @@ Copilot's cost line is **flat** regardless of volume. OpenRouter's grows linearl
 | Runaway costs | Impossible | Possible (long sessions, complex scenarios) |
 | Budget approval | Single line item | Requires usage monitoring and alerts |
 | Cost per new architect | +$39/month | +$133-667/month (depends on workload) |
-| Infrastructure costs | $0 | Kong Gateway + Qdrant + monitoring (unquantified) |
+| Infrastructure costs | $0 (Copilot indexes workspace automatically) | Kong Gateway + Qdrant + monitoring (unquantified) |
 
 <div class="key-insight" markdown>
 At projected usage volumes, the fixed-subscription model is consistently less expensive than per-token alternatives. The gap widens with usage, and does not account for infrastructure overhead (Kong Gateway, Qdrant, monitoring) required by the per-token stack.
