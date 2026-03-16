@@ -105,8 +105,8 @@ Across 5 scenarios, the AI produced 39 complete architecture artifacts following
 
 <div class="cta-box" markdown>
 
-### How does the AI produce such accurate results?
+### What went wrong with the alternative toolchain?
 
-[The Shared Workspace: AI Sees What the Architect Sees](shared-workspace.md)
+[Roo Code + Kong: Three Cascading Failures](roo-kong-failures.md)
 
 </div>

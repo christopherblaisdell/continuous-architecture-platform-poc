@@ -242,8 +242,8 @@ graph TD
 
 <div class="cta-box" markdown>
 
-### What's the actual ask?
+### What is the phased delivery plan?
 
-[The Ask: One Corporate Test Account](the-ask.md)
+[Roadmap: Six Phases to August 2026](roadmap.md)
 
 </div>

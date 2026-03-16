@@ -37,3 +37,11 @@ All figures above are from measured results against the synthetic workspace.
 <div class="key-insight" markdown>
 **Recommended next step:** Access to one existing Copilot Pro+ test seat to validate against corporate architecture artifacts.
 </div>
+
+<div class="cta-box" markdown>
+
+### Want the evidence?
+
+[Act 2: Cost Analysis, Output Quality, and Alternative Toolchains](cost-evidence.md)
+
+</div>

@@ -130,8 +130,8 @@ This portal was generated from:
 
 <div class="cta-box" markdown>
 
-### The innovation that makes this continuous
+### Ready for the ask?
 
-[Closing the Loop: The PROMOTE Step](closing-the-loop.md)
+[The Ask: One Test Seat](the-ask.md)
 
 </div>

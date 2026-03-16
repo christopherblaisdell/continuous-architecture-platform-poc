@@ -18,19 +18,17 @@
 </div>
 
 <div class="hero-card dark" markdown>
-<div class="metric">5</div>
-<div class="label">Representative architecture scenarios evaluated</div>
+<div class="metric">$39/mo</div>
+<div class="label">Fixed cost — AI + publishing + governance</div>
 </div>
 
 </div>
 
 ---
 
-## Executive Summary
+## The Story in One Sentence
 
-Many architecture practices already source-control OpenAPI specs and PlantUML diagrams in Git, with production gating. This proof of concept evaluated whether an AI assistant (GitHub Copilot Pro+) can read those existing artifacts and produce compliant architecture designs — solution documents, ADRs, impact assessments — following established standards.
-
-The POC compared two AI toolchains using the same underlying model (Claude Opus 4.6) across 5 architecture scenarios, and additionally evaluated the feasibility of building a **custom centralized agent** on Microsoft Foundry as a third option. The results cover cost, output quality, accuracy, and the build-versus-buy trade-off. All evidence comes from measured execution against a synthetic workspace (NovaTrek Adventures).
+We picked an AI tool that lives in the IDE. To make it effective, we moved all our architecture artifacts into the workspace. **That accidentally gave us architecture-as-code — and everything that follows from it.**
 
 <div class="key-insight" markdown>
 **This is not a proposal.** This is a demonstration. The evidence on the following pages comes from actual billing data, actual execution results, and an actual live architecture portal — all built during this proof of concept.
@@ -38,21 +36,28 @@ The POC compared two AI toolchains using the same underlying model (Claude Opus 
 
 ---
 
-## What This Presentation Covers
+## Act 1 — The Story
 
-| Section | Question It Answers |
-|---------|-------------------|
+A 10-minute walkthrough from the problem to the ask. Start here.
+
+| Page | Question It Answers |
+|------|-------------------|
 | [The Problem](problem.md) | Why does architecture documentation always decay? |
-| [The Solution](solution.md) | What replaces point-in-time documentation? |
-| [Cost Evidence](cost-evidence.md) | What does each toolchain cost? |
-| [Output Analysis](quality-evidence.md) | What did the AI actually produce? |
-| [Microsoft Foundry](foundry-analysis.md) | What about building our own custom agent? |
-| [Enhanced Workspace](shared-workspace.md) | How does the AI leverage our existing Git repo? |
-| [Live Demo](live-demo.md) | What does the end result look like? |
+| [The Insight](insight.md) | What happens when you move everything into the IDE? |
+| [What This Enables](what-this-enables.md) | What becomes possible once architecture is code? |
+| [Live Portal](live-demo.md) | What does the end result look like? |
 | [The Ask](the-ask.md) | What do we need to move forward? |
 
 ---
 
-<div class="key-insight" markdown>
-**See also:** [Continuous Architecture — Closing the Loop](https://continuous.novatrek.cc) — the companion presentation on how we achieve truly continuous architecture practice.
-</div>
+## Act 2 — The Evidence
+
+Deep-dive pages with measured data for those who want proof.
+
+| Page | Question It Answers |
+|------|-------------------|
+| [Cost Analysis](cost-evidence.md) | What does each toolchain cost at scale? |
+| [Output Quality](quality-evidence.md) | What did the AI actually produce across 5 scenarios? |
+| [Roo Code + Kong](roo-kong-failures.md) | What went wrong with the alternative toolchain? |
+| [Microsoft Foundry](foundry-analysis.md) | What about building a custom centralized agent? |
+| [Roadmap](roadmap.md) | What is the phased delivery plan? |

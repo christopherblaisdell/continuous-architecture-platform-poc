@@ -24,18 +24,18 @@ theme:
 
 nav:
   - Home: index.md
-  - The Problem: problem.md
-  - The Solution: solution.md
-  - Evidence:
-    - "Cost Analysis": cost-evidence.md
-    - "Output Quality": quality-evidence.md
-    - "Alternative Toolchain": roo-kong-failures.md
-    - "Microsoft Foundry": foundry-analysis.md
-  - How It Works:
-    - Enhanced Workspace: shared-workspace.md
-    - "CALM Topology": calm-topology.md
-  - Live Demo: live-demo.md
-  - The Ask: the-ask.md
+  - "Act 1 — The Story":
+    - The Problem: problem.md
+    - The Insight: insight.md
+    - What This Enables: what-this-enables.md
+    - Live Portal: live-demo.md
+    - The Ask: the-ask.md
+  - "Act 2 — The Evidence":
+    - Cost Analysis: cost-evidence.md
+    - Output Quality: quality-evidence.md
+    - "Roo Code + Kong": roo-kong-failures.md
+    - Microsoft Foundry: foundry-analysis.md
+    - Roadmap: roadmap.md
 
 plugins:
   - search
