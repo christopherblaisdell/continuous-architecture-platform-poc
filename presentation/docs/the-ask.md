@@ -1,20 +1,20 @@
 # The Ask
 
-## One Existing Test Seat. No New Procurement.
+## One Test License. $39/month.
 
-The organization already has five IDE AI assistant test seats. This POC was conducted on a synthetic workspace. The next step is validating against **real architecture artifacts** to produce a go/no-go recommendation.
+This POC was conducted on a synthetic workspace. The next step is validating against **real architecture artifacts** to produce a go/no-go recommendation.
 
 ---
 
 ## What We Need
 
-Access to **one existing test seat** to run architecture scenarios against actual corporate artifacts:
+**One test license ($39/month)** to run architecture scenarios against actual corporate artifacts:
 
 - Corporate OpenAPI specs, ADRs, and architecture metadata
 - Real JIRA tickets and service codebases
 - Production Elasticsearch logs and GitLab merge requests
 
-**No new licenses.** No new infrastructure. No procurement. No engineering effort from other teams.
+No custom infrastructure. No engineering effort from other teams. Cancel anytime.
 
 ---
 
@@ -57,7 +57,7 @@ See [Microsoft Foundry Analysis](foundry-analysis.md) for the full build-vs-buy 
 | 243x cheaper than building custom | $39/mo vs $9,454/mo (Foundry TCO analysis) |
 
 <div class="key-insight" markdown>
-**The ask is one test seat that already exists.** The risk is near zero. The validation takes 2 weeks. The evidence so far says this works.
+**The ask is one $39/month test license.** The risk is near zero. The validation takes 2 weeks. Cancel if it doesn't work. The evidence so far says it will.
 </div>
 
 <div class="cta-box" markdown>

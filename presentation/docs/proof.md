@@ -101,6 +101,6 @@ Every scenario followed MADR, arc42, and C4 standards. The AI cited specific fil
 
 ### Ready for the ask?
 
-[The Ask: One Existing Test Seat](the-ask.md)
+[The Ask: One Test License](the-ask.md)
 
 </div>

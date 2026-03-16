@@ -9,7 +9,7 @@
 
 <div class="hero-card accent" markdown>
 <div class="metric">$39/mo</div>
-<div class="label">Adopt existing tool</div>
+<div class="label">Off-the-shelf tool</div>
 </div>
 
 <div class="hero-card" markdown>
@@ -26,7 +26,7 @@
 
 ---
 
-Your organization already licenses an AI assistant in the IDE. This proof of concept tested whether that same tool can produce compliant architecture designs — solution documents, ADRs, impact assessments — following MADR, arc42, and C4 standards.
+Your organization's developers already use AI assistants in their IDEs. This proof of concept tested whether that same class of tool — an off-the-shelf IDE AI assistant, one license at $39/month — can produce compliant architecture designs.
 
 It can. It produced 39 architecture files across 5 scenarios with zero fabricated schema fields. And the alternatives cost 13x to 243x more.
 
@@ -43,7 +43,7 @@ It can. It produced 39 architecture files across 5 scenarios with zero fabricate
 | [The Problem](problem.md) | Architecture documentation decays because updating it is manual and voluntary |
 | [The Proposal](proposal.md) | Extend the existing IDE AI assistant to architecture — and why the alternatives fail |
 | [The Proof](proof.md) | 301 artifacts, live portal, 5 scenarios — see the results |
-| [The Ask](the-ask.md) | Access to one existing test seat to validate against real artifacts |
+| [The Ask](the-ask.md) | One $39/month test license to validate against real artifacts |
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## Extend Your Existing IDE AI Assistant to Architecture Workflows
 
-Your developers already use an AI assistant in their IDE for code completion and generation. **This POC tested whether that same tool — with no additional infrastructure — can produce compliant architecture designs.**
+Your developers already use AI assistants in their IDEs for code completion and generation. **This POC tested whether that same class of tool — an off-the-shelf IDE AI assistant — can produce compliant architecture designs.**
 
 The answer is yes. And the alternatives are significantly more expensive.
 
@@ -11,7 +11,7 @@ The answer is yes. And the alternatives are significantly more expensive.
 ## The Recommendation
 
 <div class="key-insight" markdown>
-**Adopt the AI assistant your organization already licenses.** Extend its use from code generation to architecture workflows — solution designs, ADRs, impact assessments, and automated portal publishing. No new platforms. No custom builds. No additional procurement.
+**Adopt an off-the-shelf IDE AI assistant.** Extend its use from code generation to architecture workflows — solution designs, ADRs, impact assessments, and automated portal publishing. No custom platforms. No custom builds. One license at $39/month.
 </div>
 
 ---
@@ -22,7 +22,7 @@ This POC compared three approaches to AI-assisted architecture, all using the sa
 
 | Approach | Description | Year 1 Cost |
 |----------|-------------|:-----------:|
-| **Adopt existing tool** | Use the IDE AI assistant already licensed in the organization | **$468** |
+| **Adopt off-the-shelf tool** | Use an IDE AI assistant — one license, no infrastructure | **$468** |
 | **Assemble open-source stack** | Roo Code + Kong AI Gateway + Qdrant vector DB | $6,084 + infrastructure |
 | **Build custom agent** | Microsoft Azure AI Foundry with RAG pipeline | $113,450 |
 
@@ -30,7 +30,7 @@ This POC compared three approaches to AI-assisted architecture, all using the sa
 
 <div class="hero-card" markdown>
 <div class="metric">$39/mo</div>
-<div class="label">Adopt existing tool</div>
+<div class="label">Off-the-shelf tool</div>
 </div>
 
 <div class="hero-card" markdown>
@@ -59,7 +59,7 @@ The cost difference is not the main argument. The main argument is that the exis
 | Runs mock tools autonomously | Yes | No (5-call limit) | Yes |
 | Produces zero fabricated schema fields | Yes | Unknown | No (4 fabrications) |
 | Requires custom infrastructure | No | Yes ($113k Year 1) | Yes (gateway + vector DB) |
-| Already licensed in organization | Yes | No | No |
+| Off-the-shelf (no custom build) | Yes | No | No |
 | Iterates in architect's own IDE | Yes | No (browser-based) | Yes |
 
 The critical finding: **both the existing tool and the open-source stack used the same AI model.** The existing tool produced zero fabrications. The open-source stack fabricated 4 OpenAPI schema elements. The difference was workspace context — the existing tool reads all files automatically; the open-source stack required manual file selection and missed critical context.
@@ -113,7 +113,7 @@ The portal, governance, and reconciliation capabilities are all built on the sam
 
 | Concern | Answer |
 |---------|--------|
-| New licenses or procurement | No — the organization already has 5 test seats |
+| New licenses | One license at $39/month — cancel anytime |
 | Custom infrastructure | No — runs in the architect's existing IDE |
 | New tools for architects to learn | No — same IDE, same Git workflow |
 | Migration of existing specs | No — reads the OpenAPI specs and ADRs already in version control |
