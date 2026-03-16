@@ -54,7 +54,6 @@ jobs:
       - name: OWASP dependency check
         working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         run: ./gradlew dependencyCheckAnalyze
-        continue-on-error: true
 
       - name: Azure Login
         uses: azure/login@v2

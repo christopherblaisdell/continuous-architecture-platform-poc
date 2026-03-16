@@ -81,7 +81,7 @@ jobs:
           "
 
       - name: Verify data isolation
-        run: bash scripts/audit-data-isolation.sh
+        run: bash portal/scripts/utilities/audit-data-isolation.sh
 
       - name: Validate CALM topology
         run: python3 scripts/validate-calm.py
