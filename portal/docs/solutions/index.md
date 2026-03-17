@@ -8,7 +8,7 @@ description: Architecture solution designs for NovaTrek Adventures
 Architecture solution designs produced through the continuous architecture workflow.
 Each solution maps business requirements to service changes with full capability traceability.
 
-**7** solution designs | **2** approved
+**6** solution designs | **1** approved
 
 | Ticket | Solution | Status | Capabilities | Services |
 |--------|----------|--------|-------------|----------|
@@ -27,6 +27,7 @@ Capabilities shaped by solution designs:
 |-----------|----------|
 | CAP-1.2 | NTK-10002, NTK-10008 |
 | CAP-1.7 | NTK-10008 |
+| CAP-2.1 | NTK-10002, NTK-10005 |
 | CAP-2.2 | NTK-10004 |
 | CAP-2.4 | NTK-10001 |
 | CAP-5.4 | NTK-10009 |

@@ -30,25 +30,25 @@ a capability is modified by solutions.
 |--------|-------|
 | Active (last 90 days) | 4 |
 | Aging (90-180 days) | 0 |
-| Stale (>180 days) | 5 |
-| Untouched (no solutions) | 25 |
+| Stale (>180 days) | 3 |
+| Untouched (no solutions) | 27 |
 | High churn (4+ solutions) | 0 |
-| Emergent L3 capabilities | 21 |
-| Architecture decisions | 30 |
+| Emergent L3 capabilities | 18 |
+| Architecture decisions | 18 |
 
 ### Per-Capability Health
 
 | Capability | Status | Solutions | Last Touched | Staleness | Churn | L3s | ADRs |
 |-----------|--------|-----------|-------------|-----------|-------|-----|------|
-| CAP-1.1 Guest Identity and Profile Management | IMPLEMENTED | 1 | 2025-02-12 | STALE | LOW | 1 | 4 |
+| CAP-1.1 Guest Identity and Profile Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.2 Adventure Discovery and Browsing | IMPLEMENTED | 2 | 2026-03-06 | ACTIVE | MODERATE | 2 | 5 |
-| CAP-1.3 Reservation Management | IMPLEMENTED | 1 | 2025-02-12 | STALE | LOW | 0 | 4 |
+| CAP-1.3 Reservation Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.4 Loyalty and Rewards | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.5 Guest Communications | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.6 Trip Media and Memories | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-1.7 Reviews and Feedback | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 5 | 3 |
 | CAP-1.8 Personalized Recommendations | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 3 | 2025-02-12 | STALE | MODERATE | 5 | 6 |
+| CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 2 | 2025-02-10 | STALE | MODERATE | 3 | 2 |
 | CAP-2.2 Schedule Planning and Optimization | IMPLEMENTED | 1 | 2025-02-05 | STALE | LOW | 2 | 2 |
 | CAP-2.3 Guide Assignment and Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 | CAP-2.4 Trail Operations | IMPLEMENTED | 1 | 2025-02-01 | STALE | LOW | 1 | 0 |
@@ -99,15 +99,6 @@ Create, verify, merge, and manage guest identity records
 
 **Services:** [svc-guest-profiles](../microservices/svc-guest-profiles.md)
 
-#### Solution Timeline
-
-| Date | Ticket | Impact | Summary |
-|------|--------|--------|---------|
-
-#### Emergent L3 Capabilities
-
-- **Temporary Guest Profiles** — Minimal-PII temporary profiles that merge when guest registers
-
 ### CAP-1.2 Adventure Discovery and Browsing
 
 **Status:** IMPLEMENTED
@@ -135,11 +126,6 @@ Search, filter, and browse available adventures and trails
 Create, modify, cancel, and look up adventure reservations
 
 **Services:** [svc-reservations](../microservices/svc-reservations.md)
-
-#### Solution Timeline
-
-| Date | Ticket | Impact | Summary |
-|------|--------|--------|---------|
 
 ### CAP-1.4 Loyalty and Rewards
 
@@ -219,8 +205,6 @@ Guest arrival processing, identity verification, wristband assignment, safety br
 
 - **Pattern-Based Check-In Flows** — Three distinct check-in UI patterns (Basic, Guided, Full Service) driven by adventure category
 - **Safe Default Classification** — Unknown or unmapped categories default to Pattern 3 (Full Service) for safety
-- **Reservation Lookup Orchestration** — Four-field identity verification (name, confirmation code, date, party size) for kiosk access
-- **Session-Scoped Kiosk Access** — JWT-based 30-minute session tokens for kiosk interactions
 - **Wristband RFID Capture** — Optional RFID tag ID (hex, 8-16 chars) validated and stored at check-in with uniqueness constraint
 
 ### CAP-2.2 Schedule Planning and Optimization

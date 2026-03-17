@@ -10,7 +10,7 @@ Each ticket tracks affected services, capabilities, and links to its solution de
 Capability mappings for solved tickets are derived from the
 [Capability Changelog](../capabilities/index.md) (single source of truth).
 
-**9** tickets | **7** with solution designs
+**8** tickets | **6** with solution designs
 
 ## Critical Priority
 

@@ -57,6 +57,7 @@ System_Boundary(Support, "Support") {
     Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather", $link="/microservices/svc-weather/#integration-context")
     Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services", $link="/microservices/svc-location-services/#integration-context")
     Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement", $link="/microservices/svc-inventory-procurement/#integration-context")
+    Container(svc_reviews, "svc-reviews", "Java / Spring Boot", "Reviews", $link="/microservices/svc-reviews/#integration-context")
 }
 
 System_Boundary(PCI_Zone, "PCI DSS Compliance Zone") {

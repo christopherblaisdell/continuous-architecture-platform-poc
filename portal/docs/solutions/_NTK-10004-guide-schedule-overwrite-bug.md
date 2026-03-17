@@ -35,13 +35,6 @@ description: "Solution design for NTK-10004"
 - Risk Assessment
 - Capability Mapping
 
-## Related Solutions
-
-Solutions that share services or capabilities with this design:
-
-| Solution | Shared Capabilities | Shared Services |
-|----------|-------------------|-----------------|
-
 ---
 
 
