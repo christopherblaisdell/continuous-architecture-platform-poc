@@ -590,9 +590,14 @@ GitHub Copilot bills per **user prompt**, NOT per model invocation. In Agent Mod
 
 | Model | Multiplier | Cost per User Prompt |
 |-------|-----------|------------------------|
-| GPT-4.1, GPT-4o | x0 | $0 (included, unlimited) |
-| Claude Opus 4.6 | x3 | $0.12 |
+| GPT-4.1, GPT-4o, GPT-5 mini, Raptor mini | x0 | $0 (included, unlimited) |
+| Grok Code Fast 1 | x0.25 | $0.01 |
+| Claude Haiku 4.5, Gemini 3 Flash, o4-mini, GPT-5.1-Codex-Mini | x0.33 | $0.0132 |
+| GPT-5, o3, Claude Sonnet 4/4.5/3.7/4.6, Gemini Pro 2.5/3/3.1 | x1 | $0.04 |
+| Claude Opus 4.5, Claude Opus 4.6 | x3 | $0.12 |
 | Claude Opus 4.6 fast (preview) | x30 | $1.20 |
+
+**Auto-Selection Discount**: Allowing the IDE to auto-route prompts applies a 10% discount (e.g., 1x becomes 0.9x).
 
 Per-Session Cost = user_prompts x model_multiplier x $0.04
 
@@ -600,7 +605,8 @@ Total Monthly Cost = $39 + max(0, premium_requests_used - 1500) x $0.04
 
 Example: A 4-prompt Agent Mode session on Claude Opus 4.6 (3x) = 4 x 3 x $0.04 = $0.48, regardless of how many autonomous tool calls the agent executes.
 
-See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md) for full analysis.
+See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md](research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING.md) for intent-based billing analysis.
+See [DEEP-RESEARCH-RESULTS-COPILOT-BILLING-ARCHITECTURE-2026.md](research/DEEP-RESEARCH-RESULTS-COPILOT-BILLING-ARCHITECTURE-2026.md) for full 2026 billing architecture (tiers, SKU taxonomy, enterprise governance, MCP/extension billing).
 
 ### OpenRouter (Roo Code Backend)
 

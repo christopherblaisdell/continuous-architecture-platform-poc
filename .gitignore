@@ -58,6 +58,9 @@ portal/confluence/
 infra/*.json
 infra/modules/*.json
 
+# Cloned third-party skill libraries
+claude-skills/
+
 # Java / Gradle build artifacts
 services/**/build/
 services/**/.gradle/
