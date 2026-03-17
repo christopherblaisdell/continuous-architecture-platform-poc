@@ -471,6 +471,51 @@ When reviewing existing architecture or proposing solutions, always flag these a
 - If a scenario requires information not available in the workspace, document it as an assumption — do not invent data
 - Prioritize accuracy over comprehensiveness — it is better to produce fewer, well-grounded findings than many speculative ones
 - When updating existing documents, preserve all existing content and add to it — never silently remove sections
+
+---
+
+## AI Workflow Patterns
+
+### Search-First Principle
+
+Before creating new designs, abstractions, or documentation, search for existing solutions:
+
+1. **Check the workspace first** — search `architecture/solutions/`, `decisions/`, and `architecture/metadata/` for prior art
+2. **Check capability history** — run `python3 scripts/ticket-client.py --list --capability CAP-X.Y` to find tickets that touched the same capabilities
+3. **Review the capability changelog** — `architecture/metadata/capability-changelog.yaml` records all L3 capability changes per solution
+4. **Reference existing ADRs** — decisions in `decisions/` constrain the design space; do not re-decide settled questions
+
+Only create new artifacts when no existing solution covers the need. When extending existing work, reference the prior solution explicitly.
+
+### Research Mode
+
+When investigating tickets or analyzing architecture, switch to exploration mode:
+
+- **Read widely before concluding** — examine specs, source code, logs, and metadata before forming recommendations
+- **Form hypotheses, then verify** — state what you expect to find, then confirm with evidence from workspace files or mock tool output
+- **Document as you go** — capture findings with file path citations; do not defer evidence gathering to later
+- **Run the tools in order** — JIRA first (requirements), Elastic second (production evidence), GitLab third (recent changes), then specs and source code
+- **Acknowledge gaps** — if evidence is unavailable, state it as an assumption rather than fabricating data
+
+### Security-First
+
+For any solution design that touches authentication, authorization, PII, or cross-service data flows:
+
+- Check OWASP Top 10 relevance (injection, broken access control, cryptographic failures)
+- Verify svc-guest-profiles is the sole identity source — no shadow guest records
+- Validate input at service boundaries — never trust upstream callers
+- Ensure PII fields (guest profiles, waivers, payment data) are identified and access-controlled
+- Confirm safety defaults — unknown adventure categories MUST default to Pattern 3 (ADR-005)
+
+### Context Management
+
+For long architecture sessions spanning multiple phases:
+
+- **Save progress at logical breakpoints** — after completing research, before starting solution design
+- **Use session memory** for task-specific context that does not need to persist beyond the conversation
+- **Use `architecture/reminders/`** for persistent cross-session architectural notes
+- **Compact reasoning at phase transitions** — research context is bulky; the plan or findings document is the distilled output
+
 ---
 
 ## Documentation Portal (MkDocs Material)
