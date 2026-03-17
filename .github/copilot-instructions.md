@@ -443,9 +443,6 @@ Before finalizing any solution design, verify:
 - [ ] Backward compatibility addressed for all API contract changes
 - [ ] Error handling and fallback paths defined for new integration points
 - [ ] Security implications assessed for any data flow involving PII or authentication
-- [ ] Test plan included at `3.solution/g.guidance/test-plan.md` (ADR-012)
-- [ ] Contract tests identified for new cross-service integrations
-- [ ] BDD scenarios derived from user story acceptance criteria
 
 ---
 
