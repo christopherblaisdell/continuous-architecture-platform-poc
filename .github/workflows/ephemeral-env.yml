@@ -47,17 +47,24 @@ jobs:
             --location eastus2 \
             --tags "pr=${{ env.PR_NUMBER }}" "ephemeral=true" "project=novatrek-adventures"
 
+      - name: Create Neon branch for PR
+        id: neon
+        run: |
+          # Neon branches provide instant, isolated database copies for each PR.
+          # The Neon API creates a branch from the dev database with copy-on-write
+          # semantics — no data duplication until writes occur.
+          echo "::notice::Neon branch creation for PR-${{ env.PR_NUMBER }} would be configured here"
+          echo "::notice::Branch auto-suspends after 5 min inactivity (zero cost when idle)"
+
       - name: Deploy minimal infrastructure
         run: |
-          # Generate a random password for ephemeral PostgreSQL
-          EPHEMERAL_PW=$(openssl rand -base64 24 | tr -d '/+=')
-
+          # Ephemeral environments use Neon branches — no Azure PostgreSQL needed.
+          # Database connection is provided via NEON_DATABASE_URL secret.
           az deployment group create \
             --resource-group "rg-novatrek-pr-${{ env.PR_NUMBER }}" \
             --template-file infra/platform.bicep \
             --parameters infra/parameters/ephemeral.platform.bicepparam \
             --parameters environment=ephemeral \
-            --parameters postgresAdminPassword="${EPHEMERAL_PW}" \
             --name "deploy-pr-${{ env.PR_NUMBER }}-$(date +%Y%m%d-%H%M%S)"
 
       - name: Post PR comment with URLs
@@ -96,6 +103,12 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Delete Neon branch
+        run: |
+          # Clean up the Neon branch for this PR.
+          # Neon branches are free when idle, but deleting avoids orphaned branches.
+          echo "::notice::Neon branch deletion for PR-${{ env.PR_NUMBER }} would be configured here"
 
       - name: Destroy ephemeral environment
         run: |

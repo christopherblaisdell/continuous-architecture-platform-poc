@@ -170,7 +170,7 @@ SKINPARAM backgroundColor #FEFEFE
 | **DNS + CDN** | Cloudflare | Domain routing, DDoS protection | $0 |
 | **Compute** | Azure Container Apps (Consumption) | All 22 microservices, scale-to-zero | $0 |
 | **Ingress** | Built-in Envoy (ACA) | HTTPS termination, path routing, mTLS | $0 |
-| **Database** | PostgreSQL Flexible Server | All service schemas colocated (dev) or split (prod) | $12.41/mo (B1ms) |
+| **Database** | PostgreSQL | Neon Serverless Postgres (dev) or Azure Flexible Server (prod) | $0 (dev) / $12.41/mo (prod B1ms) |
 | **Cache** | Azure Cache for Redis | Schedule locks, session cache | $13.14/mo (C0) |
 | **Messaging** | Azure Service Bus | 8 event topics (AsyncAPI-defined) | $0.05/100K ops |
 | **Secrets** | Azure Key Vault | Connection strings, JWT keys, API keys | ~$0 |
@@ -184,7 +184,7 @@ SKINPARAM backgroundColor #FEFEFE
 ### Key Design Decisions Visible in the Diagram
 
 1. **Single ACA Environment** — all services share one Container Apps Environment (one Envoy, one Log Analytics sink). No per-service infrastructure overhead.
-2. **Schema-per-service, not server-per-service** — in dev, all schemas live in one PostgreSQL instance. In prod, critical services (check-in, reservations, payments) get dedicated instances.
+2. **Schema-per-service, not server-per-service** — in dev, all schemas live in one Neon Serverless Postgres instance (migrated from Azure PostgreSQL per NTK-10025). In prod, critical services (check-in, reservations, payments) get dedicated Azure PostgreSQL instances.
 3. **Managed Identity everywhere** — the arrows from MI to Key Vault, PostgreSQL, ACR, and Service Bus are all Azure AD-authenticated. Zero passwords.
 4. **PCI isolation** — svc-payments runs without a Dapr sidecar and uses a dedicated schema with immutable audit trail.
 5. **Event-driven via Service Bus** — the 8 AsyncAPI-defined events flow through Service Bus topics. Producers publish, consumers subscribe. Dead-letter queues handle failures.
@@ -260,9 +260,9 @@ properties: {
 
 | Strategy | Implementation |
 |----------|---------------|
-| **Azure Database for PostgreSQL — Flexible Server** | Burstable B1ms ($12.41/mo) — cheapest tier that supports extensions |
-| **Auto-pause** (dev/ephemeral only) | Not natively supported — use scheduled `az postgres flexible-server stop/start` in GitHub Actions |
-| **Single server for dev** | All 22 microservice schemas colocated in one Flexible Server instance (separate schemas, not separate servers) |
+| **Dev/Ephemeral: Neon Serverless Postgres** | Free tier (0.5 GiB storage, 190 compute-hours/month) — auto-suspends after 5 min idle, $0 when stopped (NTK-10025) |
+| **Prod: Azure PostgreSQL Flexible Server** | Burstable B1ms ($12.41/mo) — cheapest tier that supports extensions |
+| **Single server for dev** | All 22 microservice schemas colocated in one Neon project (separate schemas, not separate databases) |
 | **Separate servers for prod** | Critical services get dedicated instances; low-traffic services share |
 
 ### Full Teardown for Non-Production
@@ -271,11 +271,8 @@ properties: {
 # Destroy an entire ephemeral environment in one command
 az group delete --name rg-novatrek-pr-${PR_NUMBER} --yes --no-wait
 
-# Stop dev databases on Friday evening
-az postgres flexible-server stop --resource-group rg-novatrek-dev --name psql-novatrek-dev
-
-# Start dev databases on Monday morning
-az postgres flexible-server start --resource-group rg-novatrek-dev --name psql-novatrek-dev
+# Neon auto-suspends dev database after 5 min idle — no manual stop needed
+# Neon auto-wakes on first query (~500ms cold start)
 ```
 
 ---
@@ -298,9 +295,9 @@ az postgres flexible-server start --resource-group rg-novatrek-dev --name psql-n
 
 | Component | Azure Service | SKU/Tier | Monthly Cost | Why |
 |-----------|--------------|----------|-------------|----|
-| **Primary Database** (shared dev) | Azure Database for PostgreSQL — Flexible Server | Burstable B1ms (1 vCore, 2 GiB) | **$12.41/mo** | PostGIS extension, all schemas colocated |
-| **Primary Database** (prod, critical) | PostgreSQL Flexible Server | Burstable B2s (2 vCore, 4 GiB) | **$49.64/mo** | svc-check-in, svc-reservations, svc-payments |
-| **Primary Database** (prod, standard) | PostgreSQL Flexible Server (shared) | Burstable B1ms | **$12.41/mo** | All other services share |
+| **Primary Database** (shared dev) | Neon Serverless Postgres | Free tier (0.5 GiB, auto-suspend) | **$0/mo** | PostGIS extension, all schemas colocated, scale-to-zero (NTK-10025) |
+| **Primary Database** (prod, critical) | Azure PostgreSQL Flexible Server | Burstable B2s (2 vCore, 4 GiB) | **$49.64/mo** | svc-check-in, svc-reservations, svc-payments |
+| **Primary Database** (prod, standard) | Azure PostgreSQL Flexible Server (shared) | Burstable B1ms | **$12.41/mo** | All other services share |
 | **Cache** (svc-scheduling-orchestrator) | Azure Cache for Redis | Basic C0 (250 MB) | **$13.14/mo** | Schedule lock cache (Valkey-compatible) |
 | **Cache** (prod, if needed) | Azure Cache for Redis | Basic C1 (1 GB) | **$40.15/mo** | Larger cache for production loads |
 | **Storage** (media, backups) | Azure Blob Storage | Hot LRS | **~$0.02/GB/mo** | svc-media-gallery assets, DB backups |

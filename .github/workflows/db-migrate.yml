@@ -3,6 +3,11 @@
 # ===========================================================================
 # Runs Flyway migrations for a specific microservice schema.
 # Called by per-service CD workflows after deployment.
+#
+# Database routing:
+#   - prod:      Azure PostgreSQL Flexible Server (via az CLI lookup)
+#   - dev:       Neon Serverless Postgres (via NEON_DATABASE_URL secret)
+#   - ephemeral: Neon Serverless Postgres branch (via NEON_DATABASE_URL secret)
 # ===========================================================================
 
 name: "Database Migrations (Flyway)"
@@ -36,6 +41,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Azure Login
+        if: inputs.environment == 'prod'
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -51,7 +57,8 @@ jobs:
           fi
           echo "name=${SCHEMA}" >> "$GITHUB_OUTPUT"
 
-      - name: Run Flyway migrations
+      - name: Run Flyway migrations (prod — Azure PostgreSQL)
+        if: inputs.environment == 'prod'
         run: |
           DB_HOST=$(az postgres flexible-server show \
             --resource-group "rg-novatrek-${{ inputs.environment }}" \
@@ -65,6 +72,18 @@ jobs:
             -schemas="${{ steps.schema.outputs.name }}" \
             -user="${{ secrets.POSTGRES_ADMIN_USER }}" \
             -password="${{ secrets.POSTGRES_ADMIN_PASSWORD }}" \
+            -connectRetries=5 \
+            -cleanDisabled=true \
+            migrate
+
+      - name: Run Flyway migrations (dev/ephemeral — Neon Serverless Postgres)
+        if: inputs.environment != 'prod'
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}/services/${{ inputs.service-name }}/src/main/resources/db/migration:/flyway/sql" \
+            flyway/flyway:latest \
+            -url="${{ secrets.NEON_DATABASE_URL }}" \
+            -schemas="${{ steps.schema.outputs.name }}" \
             -connectRetries=5 \
             -cleanDisabled=true \
             migrate

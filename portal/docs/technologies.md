@@ -63,7 +63,12 @@ services/svc-{name}/
 
 Each service owns its own PostgreSQL database schema — no shared databases between services. Schema migrations are managed by Flyway with versioned SQL scripts.
 
-**Hosting:** Azure Database for PostgreSQL Flexible Server with continuous WAL archiving and 7-day point-in-time recovery.
+**Hosting:**
+
+| Environment | Provider | Details |
+|-------------|----------|---------|
+| **dev / ephemeral** | Neon Serverless Postgres | Free tier, auto-suspend after 5 min idle, scale-to-zero compute (NTK-10025) |
+| **prod** | Azure Database for PostgreSQL Flexible Server | Burstable B2s, continuous WAL archiving, 7-day point-in-time recovery |
 
 ---
 

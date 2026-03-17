@@ -1,8 +1,8 @@
 # ===========================================================================
 # Nightly Start Dev — Cost Control
 # ===========================================================================
-# Starts dev databases and restores service scaling at 8 AM EST (1 PM UTC)
-# on weekdays for the development team.
+# Restores dev Container Apps scaling at 8 AM EST (1 PM UTC) on weekdays.
+# Database: Neon Serverless Postgres auto-wakes on first query (~500ms).
 # ===========================================================================
 
 name: "Nightly Start Dev"
@@ -28,12 +28,9 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Start PostgreSQL
-        run: |
-          az postgres flexible-server start \
-            --resource-group rg-novatrek-dev \
-            --name pg-novatrek-dev-smwd6ded4e3so \
-          || echo "PostgreSQL may already be running"
+      # Neon Serverless Postgres auto-wakes on first connection (~500ms).
+      # No manual start needed — replaced Azure PostgreSQL Flexible Server
+      # per NTK-10025.
 
       - name: Restore service scaling
         run: |

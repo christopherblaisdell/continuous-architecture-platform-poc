@@ -20,7 +20,7 @@ waves:
       - cae-novatrek-dev (Container Apps Environment, eastus2)
       - kv-novatrek-dev (Key Vault, eastus2)
       - id-novatrek-dev (Managed Identity, eastus2)
-      - pg-novatrek-dev-* (PostgreSQL Flexible Server, centralus, 19 databases)
+      - pg-novatrek-dev-* (Neon Serverless Postgres, us-east-2 AWS, 19 databases — migrated from Azure PostgreSQL per NTK-10025)
   1:
     name: Guest Identity and Product Catalog
     description: Core data services with no upstream dependencies

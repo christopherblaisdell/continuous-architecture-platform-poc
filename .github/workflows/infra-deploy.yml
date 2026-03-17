@@ -1,8 +1,12 @@
 # ===========================================================================
 # Infrastructure Deploy — NovaTrek Adventures Platform
 # ===========================================================================
-# Deploys platform infrastructure (ACA, PostgreSQL, Service Bus, etc.)
-# using Bicep modules. Runs what-if on PRs, deploys on merge to main.
+# Deploys platform infrastructure (ACA, Service Bus, etc.) using Bicep
+# modules. Runs what-if on PRs, deploys on merge to main.
+#
+# Database routing:
+#   - prod: Azure PostgreSQL Flexible Server (requires POSTGRES_ADMIN_PASSWORD)
+#   - dev:  Neon Serverless Postgres (no password — connection via NEON_DATABASE_URL)
 # ===========================================================================
 
 name: "Infrastructure Deploy"
@@ -55,11 +59,15 @@ jobs:
       - name: What-If Preview
         run: |
           ENV="${{ inputs.environment || 'dev' }}"
+          EXTRA_PARAMS=""
+          if [ "${ENV}" = "prod" ]; then
+            EXTRA_PARAMS="--parameters postgresAdminPassword=${{ secrets.POSTGRES_ADMIN_PASSWORD }}"
+          fi
           az deployment group what-if \
             --resource-group "rg-novatrek-${ENV}" \
             --template-file "${{ env.TEMPLATE_FILE }}" \
             --parameters "infra/parameters/${ENV}.platform.bicepparam" \
-            --parameters postgresAdminPassword="${{ secrets.POSTGRES_ADMIN_PASSWORD }}"
+            ${EXTRA_PARAMS}
 
   # ---------------------------------------------------------------------------
   # Deploy — only on merge to main or manual dispatch
@@ -91,11 +99,15 @@ jobs:
       - name: Deploy Infrastructure
         run: |
           ENV="${{ inputs.environment || 'dev' }}"
+          EXTRA_PARAMS=""
+          if [ "${ENV}" = "prod" ]; then
+            EXTRA_PARAMS="--parameters postgresAdminPassword=${{ secrets.POSTGRES_ADMIN_PASSWORD }}"
+          fi
           az deployment group create \
             --resource-group "rg-novatrek-${ENV}" \
             --template-file "${{ env.TEMPLATE_FILE }}" \
             --parameters "infra/parameters/${ENV}.platform.bicepparam" \
-            --parameters postgresAdminPassword="${{ secrets.POSTGRES_ADMIN_PASSWORD }}" \
+            ${EXTRA_PARAMS} \
             --name "deploy-$(date +%Y%m%d-%H%M%S)"
 
       - name: Show Deployment Outputs

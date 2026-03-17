@@ -46,18 +46,17 @@ On pull request, CI runs `flyway validate` against a disposable PostgreSQL insta
 
 After merge, the per-service CD pipeline calls the reusable workflow `.github/workflows/db-migrate.yml`, which:
 
-1. Authenticates to Azure via OIDC
-2. Runs `flyway migrate` via Docker container against Azure PostgreSQL Flexible Server
-3. The index is now live in production
+1. **Dev/Ephemeral**: Runs `flyway migrate` via Docker container against Neon Serverless Postgres (connection URL from `NEON_DATABASE_URL` secret)
+2. **Prod**: Authenticates to Azure via OIDC and runs `flyway migrate` against Azure PostgreSQL Flexible Server
 
 ## Visual summary
 
 ```
-data-stores.yaml ──► generate-microservice-pages.py ──► Portal (documentation)
+data-stores.yaml ─► generate-microservice-pages.py ─► Portal (documentation)
        │
        │  (architect intent, reviewed by developers)
        ▼
-V{N}__*.sql ──► PR (flyway validate) ──► merge ──► CD (flyway migrate) ──► Azure PostgreSQL
+V{N}__*.sql ─► PR (flyway validate) ─► merge ─► CD (flyway migrate) ─► Neon (dev) / Azure PostgreSQL (prod)
 ```
 
 ## Known gaps

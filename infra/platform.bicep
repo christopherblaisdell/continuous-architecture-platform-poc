@@ -2,8 +2,13 @@
 // NovaTrek Adventures — Platform Infrastructure Orchestrator
 // ===========================================================================
 // Composes all Bicep modules to deploy the full NovaTrek microservices
-// platform: ACA environment, PostgreSQL, Service Bus, Key Vault, Redis,
+// platform: ACA environment, database, Service Bus, Key Vault, Redis,
 // ACR, monitoring, managed identity, and all microservices.
+//
+// Database strategy:
+//   - prod:      Azure PostgreSQL Flexible Server (always-on, Burstable B2s)
+//   - dev:       Neon Serverless Postgres (scale-to-zero, free tier)
+//   - ephemeral: Neon Serverless Postgres (branch-per-PR)
 //
 // Usage:
 //   az deployment group create \
@@ -28,9 +33,18 @@ param location string = resourceGroup().location
 @description('Services to deploy (incremental delivery — empty = infra only)')
 param servicesToDeploy array = []
 
-@description('PostgreSQL administrator password')
+@description('PostgreSQL administrator password (required when useExternalDatabase is false)')
 @secure()
-param postgresAdminPassword string
+param postgresAdminPassword string = ''
+
+@description('Use an external database (e.g., Neon Serverless Postgres) instead of Azure PostgreSQL')
+param useExternalDatabase bool = false
+
+@description('External database host (e.g., ep-xyz.us-east-2.aws.neon.tech) — required when useExternalDatabase is true')
+param externalDatabaseHost string = ''
+
+@description('External database name — required when useExternalDatabase is true')
+param externalDatabaseName string = ''
 
 @description('Budget start date (ISO 8601, first of month)')
 param budgetStartDate string = '2026-04-01'
@@ -163,12 +177,12 @@ module keyVault 'modules/key-vault.bicep' = {
 }
 
 // ---------------------------------------------------------------------------
-// PostgreSQL Flexible Server
+// PostgreSQL Flexible Server (prod only — dev/ephemeral use Neon)
 // ---------------------------------------------------------------------------
 
 var postgresName = 'pg-${envSuffix}-${uniqueString(resourceGroup().id)}'
 
-module postgresql 'modules/postgresql.bicep' = {
+module postgresql 'modules/postgresql.bicep' = if (!useExternalDatabase) {
   name: 'deploy-psql'
   params: {
     name: postgresName
@@ -258,10 +272,10 @@ module budget 'modules/budget.bicep' = if (deployBudget) {
 }
 
 // ---------------------------------------------------------------------------
-// Microservices (conditionally deployed based on servicesToDeploy)
+// Microservices — Azure PostgreSQL (prod: database host from module output)
 // ---------------------------------------------------------------------------
 
-module services 'modules/container-app.bicep' = [for svc in servicesToDeploy: {
+module services 'modules/container-app.bicep' = [for svc in servicesToDeploy: if (!useExternalDatabase) {
   name: 'deploy-${svc}'
   params: {
     name: svc
@@ -276,8 +290,34 @@ module services 'modules/container-app.bicep' = [for svc in servicesToDeploy: {
     env: [
       { name: 'SPRING_PROFILES_ACTIVE', value: environment }
       { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: monitoring.outputs.appInsightsConnectionString }
+      #disable-next-line BCP318
       { name: 'DATABASE_HOST', value: postgresql.outputs.fqdn }
       { name: 'DATABASE_NAME', value: replace(replace(svc, 'svc-', ''), '-', '_') }
+    ]
+  }
+}]
+
+// ---------------------------------------------------------------------------
+// Microservices — External database (dev/ephemeral: Neon Serverless Postgres)
+// ---------------------------------------------------------------------------
+
+module servicesExternal 'modules/container-app.bicep' = [for svc in servicesToDeploy: if (useExternalDatabase) {
+  name: 'deploy-ext-${svc}'
+  params: {
+    name: svc
+    location: location
+    tags: defaultTags
+    environmentId: acaEnv.outputs.id
+    registryServer: acr.outputs.loginServer
+    image: '${acr.outputs.loginServer}/${svc}:latest'
+    managedIdentityId: identity.outputs.id
+    minReplicas: 0
+    maxReplicas: environment == 'prod' ? 5 : 2
+    env: [
+      { name: 'SPRING_PROFILES_ACTIVE', value: environment }
+      { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: monitoring.outputs.appInsightsConnectionString }
+      { name: 'DATABASE_HOST', value: externalDatabaseHost }
+      { name: 'DATABASE_NAME', value: externalDatabaseName }
     ]
   }
 }]
@@ -292,8 +332,11 @@ output acaDefaultDomain string = acaEnv.outputs.defaultDomain
 @description('Container Registry login server')
 output acrLoginServer string = acr.outputs.loginServer
 
-@description('PostgreSQL server FQDN')
-output postgresqlFqdn string = postgresql.outputs.fqdn
+@description('Database host (Azure PostgreSQL FQDN or Neon endpoint)')
+output databaseHost string = useExternalDatabase ? externalDatabaseHost : 'see-postgresql-output'
+
+@description('Whether using external database (Neon)')
+output usingExternalDatabase bool = useExternalDatabase
 
 @description('Key Vault URI')
 output keyVaultUri string = keyVault.outputs.vaultUri
@@ -316,5 +359,6 @@ output blobEndpoint string = storage.outputs.blobEndpoint
 @description('Deployed service FQDNs')
 output serviceFqdns array = [for (svc, i) in servicesToDeploy: {
   service: svc
+  #disable-next-line BCP318
   fqdn: services[i].outputs.fqdn
 }]

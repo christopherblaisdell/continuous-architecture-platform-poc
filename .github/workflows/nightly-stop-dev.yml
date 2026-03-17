@@ -1,8 +1,8 @@
 # ===========================================================================
 # Nightly Stop Dev — Cost Control
 # ===========================================================================
-# Stops dev databases and scales services to zero at 8 PM EST (1 AM UTC)
-# on weekdays to save money overnight.
+# Scales dev Container Apps to zero at 8 PM EST (1 AM UTC) on weekdays.
+# Database: Neon Serverless Postgres auto-suspends (no action needed).
 # ===========================================================================
 
 name: "Nightly Stop Dev"
@@ -28,12 +28,9 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Stop PostgreSQL
-        run: |
-          az postgres flexible-server stop \
-            --resource-group rg-novatrek-dev \
-            --name pg-novatrek-dev-smwd6ded4e3so \
-          || echo "PostgreSQL may already be stopped"
+      # Neon Serverless Postgres auto-suspends after 5 minutes of inactivity.
+      # No manual stop/start needed — replaced Azure PostgreSQL Flexible Server
+      # per NTK-10025.
 
       - name: Scale all services to zero
         run: |

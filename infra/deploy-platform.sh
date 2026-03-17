@@ -2,8 +2,12 @@
 # ===========================================================================
 # Deploy NovaTrek Adventures Platform Infrastructure
 # ===========================================================================
-# Deploys the full microservices platform (ACA, PostgreSQL, Service Bus,
-# Key Vault, Redis, ACR, monitoring) using Bicep.
+# Deploys the full microservices platform (ACA, Service Bus, Key Vault,
+# Redis, ACR, monitoring) using Bicep.
+#
+# Database routing:
+#   - prod: Azure PostgreSQL Flexible Server (prompts for password)
+#   - dev:  Neon Serverless Postgres (no password needed)
 #
 # Prerequisites:
 #   - Azure CLI installed and authenticated (az login)
@@ -66,13 +70,26 @@ if [[ ! -f "${PARAM_FILE}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Prompt for PostgreSQL password if not set
+# Determine database strategy from parameter file
 # ---------------------------------------------------------------------------
 
-if [[ -z "${POSTGRES_ADMIN_PASSWORD:-}" ]]; then
+USE_EXTERNAL_DB=$(grep -c 'useExternalDatabase.*=.*true' "${PARAM_FILE}" || true)
+
+# ---------------------------------------------------------------------------
+# Prompt for PostgreSQL password (prod only — dev/ephemeral use Neon)
+# ---------------------------------------------------------------------------
+
+EXTRA_PARAMS=""
+if [[ "${USE_EXTERNAL_DB}" -eq 0 ]]; then
+  if [[ -z "${POSTGRES_ADMIN_PASSWORD:-}" ]]; then
+    echo ""
+    read -rsp "Enter PostgreSQL admin password: " POSTGRES_ADMIN_PASSWORD
+    echo ""
+  fi
+  EXTRA_PARAMS="--parameters postgresAdminPassword=${POSTGRES_ADMIN_PASSWORD}"
+else
   echo ""
-  read -rsp "Enter PostgreSQL admin password: " POSTGRES_ADMIN_PASSWORD
-  echo ""
+  echo "Using Neon Serverless Postgres (no Azure PostgreSQL password required)"
 fi
 
 # ---------------------------------------------------------------------------
@@ -98,7 +115,7 @@ if [[ "${WHAT_IF}" == "--what-if" ]]; then
     --resource-group "${RESOURCE_GROUP}" \
     --template-file "${TEMPLATE_FILE}" \
     --parameters "${PARAM_FILE}" \
-    --parameters postgresAdminPassword="${POSTGRES_ADMIN_PASSWORD}"
+    ${EXTRA_PARAMS}
   exit 0
 fi
 
@@ -114,7 +131,7 @@ az deployment group create \
   --resource-group "${RESOURCE_GROUP}" \
   --template-file "${TEMPLATE_FILE}" \
   --parameters "${PARAM_FILE}" \
-  --parameters postgresAdminPassword="${POSTGRES_ADMIN_PASSWORD}" \
+  ${EXTRA_PARAMS} \
   --name "${DEPLOYMENT_NAME}" \
   --output table
 

@@ -22,7 +22,7 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 | [svc-check-in](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-svc-check-in.yml) | Push/PR to `main` (`services/svc-check-in/`, `config/adventure-classification.yaml`) | Full CI/CD chain: build, test, OWASP scan, Docker push, Flyway migrate, deploy to dev and prod |
 | [Service CI (Reusable)](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-ci.yml) | Called by per-service workflows | Gradle build, test, OWASP dependency check, Docker build to ACR, Trivy container scan |
 | [Service CD (Reusable)](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-cd.yml) | Called by per-service workflows | Container Apps update + health check (30 attempts, 10s intervals) |
-| [Database Migrations](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/db-migrate.yml) | Called by per-service CD chains | Flyway migration against PostgreSQL; auto-detects schema from service name |
+| [Database Migrations](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/db-migrate.yml) | Called by per-service CD chains | Flyway migration — routes to Neon (dev) or Azure PostgreSQL (prod) |
 
 ### Infrastructure
 
@@ -43,8 +43,8 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| [Nightly Start Dev](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/nightly-start-dev.yml) | 1 PM UTC (8 AM EST) Mon-Fri; manual dispatch | Start PostgreSQL server, restore Container Apps scaling (0-2 replicas) |
-| [Nightly Stop Dev](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/nightly-stop-dev.yml) | 1 AM UTC (8 PM EST) Tue-Sat; manual dispatch | Stop PostgreSQL server, scale all Container Apps to 0 replicas |
+| [Nightly Start Dev](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/nightly-start-dev.yml) | 1 PM UTC (8 AM EST) Mon-Fri; manual dispatch | Restore Container Apps scaling (0-2 replicas); Neon auto-wakes on first query |
+| [Nightly Stop Dev](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/nightly-stop-dev.yml) | 1 AM UTC (8 PM EST) Tue-Sat; manual dispatch | Scale all Container Apps to 0 replicas; Neon auto-suspends after 5 min idle |
 
 ### Ticketing Integration
 
@@ -77,7 +77,7 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 The platform Bicep template deploys:
 
 - **Azure Container Apps Environment** — hosts all 19 microservices
-- **PostgreSQL Flexible Server** — per-service schemas via Flyway
+- **PostgreSQL** — Neon Serverless Postgres (dev/ephemeral), Azure Flexible Server (prod)
 - **Azure Container Registry** — Docker images from CI
 - **Azure Service Bus** — event-driven integration between services
 - **Redis Cache** — required by `svc-scheduling-orchestrator`
@@ -94,9 +94,9 @@ The platform Bicep template deploys:
 ```
 Code push (services/svc-check-in/**)
   → Service CI: build, test, OWASP scan, Docker push, Trivy scan
-  → DB Migrate (dev): Flyway against dev PostgreSQL
+  → DB Migrate (dev): Flyway against Neon Serverless Postgres
   → Service CD (dev): Container Apps update + health check
-  → DB Migrate (prod): Flyway against prod PostgreSQL
+  → DB Migrate (prod): Flyway against Azure PostgreSQL
   → Service CD (prod): Container Apps update + health check
 ```
 
@@ -124,9 +124,9 @@ PR closed
 ### Cost Control Cycle
 
 ```
-8 AM EST Mon-Fri  → Start PostgreSQL, scale services 0-2 replicas
-8 PM EST Mon-Fri  → Stop PostgreSQL, scale all services to 0 replicas
-Weekend            → Dev environment fully stopped
+8 AM EST Mon-Fri  → Scale services 0-2 replicas; Neon auto-wakes on first query
+8 PM EST Mon-Fri  → Scale all services to 0 replicas; Neon auto-suspends after idle
+Weekend            → Dev environment fully stopped; Neon suspended (zero cost)
 ```
 
 ---
@@ -142,8 +142,9 @@ Weekend            → Dev environment fully stopped
 | `AZURE_SUBSCRIPTION_ID` | All deployment workflows | Target subscription |
 | `ACR_NAME` | Service CI | Container Registry name |
 | `ACR_LOGIN_SERVER` | Service CI | Container Registry login server |
-| `POSTGRES_ADMIN_USER` | DB Migrate, Infra Deploy | PostgreSQL admin username |
-| `POSTGRES_ADMIN_PASSWORD` | DB Migrate, Infra Deploy | PostgreSQL admin password |
+| `POSTGRES_ADMIN_USER` | DB Migrate (prod) | PostgreSQL admin username (prod only) |
+| `POSTGRES_ADMIN_PASSWORD` | DB Migrate (prod), Infra Deploy (prod) | PostgreSQL admin password (prod only) |
+| `NEON_DATABASE_URL` | DB Migrate (dev/ephemeral) | Neon Serverless Postgres JDBC connection URL |
 | `AZURE_STATIC_WEB_APPS_API_TOKEN` | Docs Deploy | SWA deployment token (architecture portal) |
 | `AZURE_STATIC_WEB_APPS_PRESENTATION_API_TOKEN` | Docs Deploy | SWA deployment token (presentation site) |
 | `CONFLUENCE_USERNAME` | Docs Deploy, Confluence workflows | Confluence service account |

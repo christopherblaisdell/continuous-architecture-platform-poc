@@ -1,7 +1,12 @@
 # ===========================================================================
 # NovaTrek Adventures — Local Development Environment
 # ===========================================================================
-# Runs PostgreSQL + Redis locally so developers can work without Azure.
+# Runs PostgreSQL + Redis locally so developers can work without Azure or Neon.
+#
+# Cloud environments use Neon Serverless Postgres (dev/ephemeral) or Azure
+# PostgreSQL Flexible Server (prod). This local stack is for offline development
+# and integration testing only.
+#
 # Usage:
 #   docker compose up -d          # Start all services
 #   docker compose down           # Stop all services
@@ -10,7 +15,7 @@
 
 services:
   # ---------------------------------------------------------------------------
-  # PostgreSQL 15 with PostGIS (mirrors Azure Flexible Server)
+  # PostgreSQL 15 with PostGIS (local equivalent of Neon dev / Azure prod)
   # ---------------------------------------------------------------------------
   postgres:
     image: postgis/postgis:15-3.4
