@@ -128,7 +128,6 @@ Each synthetic ticket is structurally based on a real internal ticket. The domai
 |-------------|------|-------|-----------------|-----------------------------------|
 | SYN-10001 | Simple | Complete | REDACTED-001 (single-field change) | Single-service field change, simple impact, 1 decision, minimal stakeholder discussion |
 | SYN-10002 | Medium | Complete | **REDACTED-002 (classification with conditional logic)** | Classification table with conditional logic, 3 behavioral patterns, booking source overrides mapped to a synthetic domain equivalent, 18-comment stakeholder thread with iterative clarification, multiple PlantUML activity/sequence diagrams, v1.0 to v1.6 solution evolution |
-| SYN-10003 | Complex | Complete | REDACTED-003 (unregistered guest check-in) | New end-to-end feature across 4+ services, orchestrator pattern with fallback, security review gate, UI wireframes, developer-verified current-state diagrams, 10+ PlantUML files, corporate Swagger MR |
 | SYN-10004 | Medium | Investigation | REDACTED-004 (data overwrite bug) | Data ownership conflict investigation, field-level merge vs full-replacement analysis, race condition discovery, Elasticsearch validation queries, partial assumptions |
 | SYN-10005 | Simple | Intake | REDACTED-005 (schema field addition) | Schema change request, just classified and workspace created, ticket report only |
 

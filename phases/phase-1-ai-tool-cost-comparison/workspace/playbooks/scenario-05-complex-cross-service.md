@@ -13,7 +13,6 @@
 
 ## Pre-conditions
 
-- NTK-10003 ticket report exists at `work-items/tickets/_NTK-10003-unregistered-guest-check-in/1.requirements/NTK-10003.ticket.report.md`
 - All 19 Swagger specs available in `services/` directory
 - All source code available in `source-code/` directory
 - Architecture standards (arc42, C4, MADR templates) available in workspace instructions
@@ -21,12 +20,10 @@
 
 ## Exact Prompt to Use
 
-> "I need a comprehensive solution design for NTK-10003 (Unregistered Guest Self-Service Check-In). This is a complex cross-service feature. Create: 1) a full solution design with new API endpoint, 2) C4 component diagram updates, 3) sequence diagram for the new lookup-reservation orchestration flow, 4) ADR decisions for identity verification approach and temporary guest profiles, 5) impact assessments for ALL affected services (check-in, guest-profiles, safety-compliance, reservations), 6) risk assessment, and 7) user stories."
 
 ## Expected AI Actions
 
 ### Phase 1: Research and Analysis
-1. Read NTK-10003 ticket report for requirements
 2. Read Swagger specs for affected services:
    - `svc-check-in.yaml` -- current check-in flow
    - `svc-guest-profiles.yaml` -- guest data model
@@ -38,8 +35,6 @@
 4. Review architecture standards for templates and conventions
 
 ### Phase 2: Solution Design
-5. Create `NTK-10003-solution-design.md` with:
-   - Problem statement: unregistered guests cannot self-service check-in
    - Proposed new endpoint: POST /check-in/self-service/unregistered
    - Request schema (reservation lookup fields, identity verification)
    - Response schema (temporary guest profile, check-in confirmation)
@@ -74,13 +69,10 @@
 11. Create impact assessments for each affected service:
     - svc-check-in: new endpoint, new controller logic
     - svc-guest-profiles: temporary profile creation API
-    - svc-safety-compliance: unregistered guest compliance flow
     - svc-reservations: reservation lookup by confirmation code
 12. Create risk assessment document:
-    - Security risk: identity verification for unregistered guests
     - Data risk: temporary profiles and data retention
     - Operational risk: increased load on check-in flow
-    - Compliance risk: safety requirements for unregistered guests
 
 ### Phase 6: User Stories
 13. Create user stories covering:

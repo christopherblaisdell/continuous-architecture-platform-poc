@@ -20,7 +20,6 @@ Manages guest identity records including full registered accounts and temporary 
 
 | ADR | Title | Status | Impact |
 |-----|-------|--------|--------|
-| [ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md) | Orchestrator Pattern | Accepted | Called by svc-check-in for profile lookup during unregistered guest flow |
 | [ADR-008](../decisions/ADR-008-temporary-guest-profile.md) | Temporary Guest Profile | Accepted | New `TEMPORARY` profile type with minimal required fields, 90-day auto-anonymization |
 
 ---
@@ -37,7 +36,6 @@ Manages guest identity records including full registered accounts and temporary 
 
 ## Sequence Diagrams
 
-### Unregistered Guest Lookup Orchestration
 
 Shows the guest profile lookup and temporary profile creation flow during self-service check-in.
 
@@ -56,7 +54,6 @@ Shows the guest profile lookup and temporary profile creation flow during self-s
 
 | Ticket | Change | Date |
 |--------|--------|------|
-| NTK-10003 | Added `TEMPORARY` profile type, 90-day anonymization job, profile merge logic | Phase 1 |
 
 ---
 

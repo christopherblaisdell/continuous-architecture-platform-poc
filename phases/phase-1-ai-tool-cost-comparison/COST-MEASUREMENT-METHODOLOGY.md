@@ -204,7 +204,6 @@ Using the agentic re-transmission model from the deep research, we estimate the 
 | SC-02 | NTK-10002 | 18 | 12 | ~45K | ~810K | ~15K | **$2.66** |
 | SC-03 | NTK-10004 | 25 | 8 | ~65K | ~1,625K | ~30K | **$5.33** |
 | SC-04 | NTK-10001 | 10 | 3 | ~22K | ~220K | ~8K | **$0.78** |
-| SC-05 | NTK-10003 | 20 | 14 | ~55K | ~1,100K | ~20K | **$3.60** |
 | **TOTAL** | | **85** | **40** | | **4,055K** | **83K** | **$13.42** |
 
 > **CORRECTION (2026-03-04):** The estimates above used Claude Sonnet pricing ($3.00/1M input, $15.00/1M output). Actual run 002 used Claude Opus 4.6 via OpenRouter, which is substantially more expensive. Actual OpenRouter billing for the run 002 execution window (March 4, 10:11-10:37 AM) showed **$100 in auto-top-up charges** (4 x $25). This means the actual per-run cost is approximately **$100** — roughly **7.5x higher** than the Sonnet-based estimate. The re-transmission tax model was directionally correct but the pricing input was wrong.

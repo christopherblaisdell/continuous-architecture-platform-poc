@@ -16,7 +16,6 @@ Capability mappings for solved tickets are derived from the
 
 | Ticket | Summary | Status | Capabilities | Solution |
 |--------|---------|--------|-------------|----------|
-| [NTK-10003](NTK-10003.md) | Support Unregistered Guest Self-Service Check-In | In Progress | CAP-2.1, CAP-1.1, CAP-1.3 | [View](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) |
 | [NTK-10006](NTK-10006.md) | Real-Time Adventure Tracking and Emergency Alerting Sys | New | CAP-3.3, CAP-3.2, CAP-2.1 | — |
 
 ## High Priority

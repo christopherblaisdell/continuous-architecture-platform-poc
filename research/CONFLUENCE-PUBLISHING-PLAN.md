@@ -479,7 +479,6 @@ ARCH Space
 │   ├── Solutions Index
 │   ├── NTK-10001 — Add Elevation to Trail Response
 │   ├── NTK-10002 — Adventure Category Classification
-│   ├── NTK-10003 — Unregistered Guest Self Check-in
 │   ├── NTK-10004 — Guide Schedule Overwrite Bug
 │   └── NTK-10005 — Wristband RFID Field
 │

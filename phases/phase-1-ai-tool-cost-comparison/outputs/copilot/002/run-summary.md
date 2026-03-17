@@ -85,7 +85,6 @@
 
 **Changes**: Added `elevation_gain_meters` and `elevation_loss_meters` to Trail schema as nullable number fields. Scoped to exactly what the approved solution design specifies (2 fields), not the 5 fields suggested in the execution prompt step 2, avoiding scope creep beyond the approved design.
 
-### Scenario 5: Complex Cross-Service Design (NTK-10003)
 
 **Status**: COMPLETE
 
@@ -93,7 +92,6 @@
 
 | File | Description |
 |------|-------------|
-| `NTK-10003-solution-design.md` | Enhanced solution design (v1.9) with endpoint spec, orchestration flow, and source code gap analysis |
 | `corporate-services/diagrams/Components/ntk10003-unregistered-checkin-components.puml` | New C4 component diagram |
 | `corporate-services/diagrams/Sequence/ntk10003-unregistered-checkin-sequence.puml` | New sequence diagram with full orchestration flow |
 | `3.solution/d.decisions/decisions.md` | 4 MADR-formatted ADRs (orchestrator pattern, four-field verification, temporary profiles, session-scoped JWT) |

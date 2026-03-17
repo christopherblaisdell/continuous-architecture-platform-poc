@@ -259,7 +259,6 @@ nav:
     - Tickets:
       - NTK-10001 Elevation Data: phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10001-add-elevation-to-trail-response/NTK-10001-solution-design.md
       - NTK-10002 Category Classification: phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10002-adventure-category-classification/NTK-10002-solution-design.md
-      - NTK-10003 Unregistered Check-in: phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/NTK-10003-solution-design.md
       - NTK-10004 Schedule Overwrite Bug: phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10004-guide-schedule-overwrite-bug/NTK-10004-solution-design.md
       - NTK-10005 Wristband RFID: phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10005-wristband-rfid-field/NTK-10005-solution-design.md
   - Research:

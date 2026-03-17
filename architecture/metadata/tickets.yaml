@@ -43,23 +43,6 @@ tickets:
       I want check-in kiosks to render different UI flows based on adventure category,
       So that guests receive the appropriate safety checks and equipment for their adventure type.
 
-  - key: NTK-10003
-    summary: Support Unregistered Guest Self-Service Check-In
-    status: In Progress
-    priority: Critical
-    assignee: alex.chen
-    reporter: sam.patel
-    labels: [api-enhancement, svc-check-in, svc-guest-identity, critical-path]
-    created: 2025-01-22
-    updated: 2025-02-12
-    sprint: Sprint 24-4
-    components: [svc-check-in, svc-guest-identity, svc-scheduling-orchestrator]
-    solution: _NTK-10003-unregistered-guest-self-checkin
-    user_story: |
-      As an unregistered walk-up guest,
-      I want to check in at a self-service kiosk using my reservation confirmation code,
-      So that I can begin my adventure without waiting in line at a staffed counter.
-
   - key: NTK-10004
     summary: Guide Schedule Overwrite Bug in Scheduling Orchestrator
     status: New

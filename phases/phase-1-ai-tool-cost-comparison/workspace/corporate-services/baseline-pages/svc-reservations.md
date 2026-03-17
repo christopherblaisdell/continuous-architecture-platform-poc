@@ -20,7 +20,6 @@ Manages the full lifecycle of adventure reservations — creation, modification,
 
 | ADR | Title | Status | Impact |
 |-----|-------|--------|--------|
-| [ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md) | Orchestrator Pattern | Accepted | Queried by svc-check-in for reservation lookup during unregistered guest flow |
 | [ADR-007](../decisions/ADR-007-four-field-identity-verification.md) | Four-Field Identity Verification | Accepted | Must maintain accurate last name, confirmation code, adventure date, and participant count for kiosk verification |
 
 ---
@@ -60,7 +59,6 @@ Manages the full lifecycle of adventure reservations — creation, modification,
 | Ticket | Change | Date |
 |--------|--------|------|
 | NTK-10002 | Adventure category field used by check-in classification system | Phase 1 |
-| NTK-10003 | Reservation lookup endpoint consumed by unregistered guest flow | Phase 1 |
 
 ---
 

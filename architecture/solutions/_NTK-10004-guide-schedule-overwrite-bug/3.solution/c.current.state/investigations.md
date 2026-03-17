@@ -119,7 +119,6 @@ Query: `mock-gitlab-client.py --list`
 |----|--------|--------|-------|-------|
 | !5001 | MERGED | alex.chen | 3 | feat: Add elevation data to trail response |
 | !5002 | OPEN | maya.rodriguez | 8 | feat: Adventure category classification system |
-| !5003 | OPEN | alex.chen | 12 | feat: Unregistered guest self-service check-in |
 
 **Finding**: No MR exists for svc-scheduling-orchestrator that addresses the overwrite bug. The PUT-based `updateSchedule()` method is the original implementation — the bug was introduced at initial service creation, not by a subsequent change. The PATCH alternative was never implemented.
 

@@ -147,7 +147,6 @@ tags:
 
 | Ticket | Solution | Capabilities | Date |
 |--------|----------|-------------|------|
-| NTK-10003 | [Support Unregistered Guest Self-Service Check-In](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) | `CAP-2.1`, `CAP-1.1`, `CAP-1.3` | 2025-02-12 |
 | NTK-10004 | [Guide Schedule Overwrite Bug in Scheduling Orchestrator](../solutions/_NTK-10004-guide-schedule-overwrite-bug.md) | `CAP-2.2` | 2025-02-05 |
 
 ---

@@ -67,7 +67,6 @@
     "timestamp": "2025-02-12T11:02:33.678Z",
     "level": "ERROR",
     "service": "svc-check-in",
-    "message": "Unregistered guest check-in attempted without reservation lookup. No walk-up flow available. Redirecting to staffed counter. kioskId=K-14",
     "traceId": "abc-2004-def-6001",
     "requestPath": "POST /check-ins"
   },
@@ -123,7 +122,6 @@
     "timestamp": "2025-02-12T14:00:45.890Z",
     "level": "ERROR",
     "service": "svc-check-in",
-    "message": "Unregistered guest check-in attempted without reservation lookup. No walk-up flow available. Redirecting to staffed counter. kioskId=K-07",
     "traceId": "abc-2006-def-6002",
     "requestPath": "POST /check-ins"
   },

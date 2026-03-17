@@ -30,8 +30,6 @@
     "components": ["svc-check-in", "svc-adventure-catalog"]
   },
   {
-    "key": "NTK-10003",
-    "summary": "Support Unregistered Guest Self-Service Check-In",
     "status": "In Progress",
     "priority": "Critical",
     "assignee": "alex.chen",
@@ -39,7 +37,6 @@
     "labels": ["api-enhancement", "svc-check-in", "svc-guest-identity", "critical-path"],
     "created": "2025-01-22T08:15:00Z",
     "updated": "2025-02-12T09:30:00Z",
-    "description": "Enable unregistered guests (walk-ups without prior reservation) to self-service check-in for adventures.\n\nCurrently, the check-in flow requires a valid reservationId. Walk-up guests without reservations cannot use the self-service kiosks and must go to a staffed counter, creating long wait times during peak hours.\n\nProposed Flow:\n1. Guest approaches kiosk without reservation\n2. System creates a temporary guest identity (via svc-guest-identity)\n3. Guest selects available adventure and time slot (via svc-scheduling-orchestrator)\n4. System creates a just-in-time reservation\n5. Normal check-in flow proceeds with the new reservation\n\nAcceptance Criteria:\n- Self-service kiosk supports 'walk-up' mode without reservationId\n- Temporary guest identity is created with minimal PII (name, photo for safety)\n- Available adventures are shown based on real-time capacity\n- Just-in-time reservation is created and linked to check-in\n- If guest later links to a registered profile, temporary identity merges\n- All walk-up check-ins are flagged for capacity analytics",
     "comments_count": 18,
     "sprint": "Sprint 24-4",
     "components": ["svc-check-in", "svc-guest-identity", "svc-scheduling-orchestrator"]

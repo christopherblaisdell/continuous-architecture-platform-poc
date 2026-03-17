@@ -40,7 +40,6 @@ Each run folder mirrors the workspace structure for output artifacts:
 | `work-items/tickets/_NTK-10002-.../` | Scenario 2 output |
 | `work-items/tickets/_NTK-10004-.../` | Scenario 3 output |
 | `work-items/tickets/_NTK-10001-.../` | Scenario 4 output |
-| `work-items/tickets/_NTK-10003-.../` | Scenario 5 output |
 | `corporate-services/services/svc-trail-management.yaml` | Scenario 4 modified spec |
 | `corporate-services/diagrams/Components/...` | Scenario 4 and 5 diagrams |
 | `run-summary.md` | AI-generated execution summary |

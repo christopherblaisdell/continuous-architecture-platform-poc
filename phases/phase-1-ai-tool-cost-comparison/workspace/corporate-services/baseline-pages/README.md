@@ -36,9 +36,6 @@ These services were referenced as dependencies in Phase 1 work but do not yet ha
 
 | Service | Referenced In | Role |
 |---------|--------------|------|
-| svc-gear-inventory | NTK-10003 | Equipment assignment during check-in |
 | svc-guide-management | NTK-10004 | Guide schedule and preference data owner |
-| svc-partner-integrations | NTK-10003 | External booking source fallback |
-| svc-safety-compliance | NTK-10003 | Waiver validation during check-in |
 
 These pages will be created when tickets directly modify these services.

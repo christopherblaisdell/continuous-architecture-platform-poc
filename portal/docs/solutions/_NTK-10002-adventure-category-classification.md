@@ -44,7 +44,6 @@ Solutions that share services or capabilities with this design:
 
 | Solution | Shared Capabilities | Shared Services |
 |----------|-------------------|-----------------|
-| [NTK-10003 — Unregistered Guest Self-Service Check-in](_NTK-10003-unregistered-guest-self-checkin.md) | CAP-2.1 | svc-check-in |
 | [NTK-10005 — Add Wristband RFID Field to Check-In Rec](_NTK-10005-wristband-rfid-field.md) | CAP-2.1 | svc-check-in |
 | [NTK-10008 — NTK-10008 Solution Design — Guest Review](_NTK-10008-guest-reviews-and-ratings.md) | CAP-1.2 | — |
 

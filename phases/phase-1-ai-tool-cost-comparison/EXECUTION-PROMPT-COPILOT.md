@@ -147,7 +147,6 @@ outputs/copilot/<RUN_NUMBER>/
 |   +-- _NTK-10002-adventure-category.../     (Scenario 2)
 |   +-- _NTK-10004-guide-schedule.../         (Scenario 3)
 |   +-- _NTK-10001-add-elevation.../          (Scenario 4)
-|   +-- _NTK-10003-unregistered-guest.../     (Scenario 5)
 +-- corporate-services/                        (Scenario 4 modified artifacts)
 |   +-- services/svc-trail-management.yaml
 |   +-- diagrams/Components/novatrek-component-overview.puml
@@ -270,16 +269,12 @@ outputs/copilot/<RUN_NUMBER>/
 
 ---
 
-## SCENARIO 5 of 5: Complex Cross-Service Design (NTK-10003)
 
-**Working directory**: `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/`
 
 **Starting state**: Most files exist with initial content. Key files to enhance: `3.solution/d.decisions/decisions.md` (needs full MADR ADRs). A new C4 component diagram must be created.
 
-**Task**: Create a comprehensive cross-service solution design for the Unregistered Guest Self-Service Check-In feature.
 
 **Steps**:
-1. Read `1.requirements/NTK-10003.ticket.report.md` for requirements.
 2. Read ALL relevant Swagger specs:
    - `corporate-services/services/svc-check-in.yaml`
    - `corporate-services/services/svc-guest-profiles.yaml`
@@ -288,8 +283,6 @@ outputs/copilot/<RUN_NUMBER>/
 3. Read relevant source code:
    - `source-code/svc-check-in/src/main/java/com/novatrek/checkin/controller/CheckInController.java`
    - Scan `source-code/svc-guest-profiles/` for relevant service files
-4. Update `NTK-10003-solution-design.md` with:
-   - Problem statement: unregistered guests cannot self-service check-in
    - Proposed new endpoint: POST /check-in/self-service/unregistered
    - Request schema with reservation lookup fields and identity verification
    - Response schema with temporary guest profile and check-in confirmation
@@ -313,9 +306,7 @@ outputs/copilot/<RUN_NUMBER>/
 8. Update impact assessments using separate subdirectories under `3.solution/i.impacts/`:
    - `impact.1/impact.1.md` — svc-check-in: new endpoint, new controller logic
    - `impact.2/impact.2.md` — svc-guest-profiles: temporary profile creation API
-   - `impact.3/impact.3.md` — svc-safety-compliance: unregistered guest compliance flow
    - `impact.4/impact.4.md` — svc-reservations: reservation lookup by confirmation code
-9. Update `3.solution/r.risks/risks.md` covering security risk (identity verification), data risk (temporary profiles), operational risk (check-in load), compliance risk (safety for unregistered guests).
 10. Update `3.solution/g.guidance/guidance.md` with implementation guidance.
 11. Update `3.solution/s.user.stories/user-stories.md` or `3.solution/u.user.stories/user-stories.md` covering guest, staff, and system perspectives.
 
@@ -379,7 +370,6 @@ After creating `run-summary.md`, generate a comparison report against the latest
 | SC-02 NTK-10002 | pending | ... | 35 |
 | SC-03 NTK-10004 | pending | ... | 30 |
 | SC-04 NTK-10001 | pending | ... | 25 |
-| SC-05 NTK-10003 | pending | ... | 40 |
 | TOTAL | pending | ... | 155 |
 
 ## Cost Efficiency

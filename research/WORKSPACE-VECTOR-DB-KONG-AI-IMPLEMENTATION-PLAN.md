@@ -693,7 +693,6 @@ def embed_query(query: str, provider: str = "openai") -> list[float]:
     "properties": {
       "query": {
         "type": "string",
-        "description": "Natural language search query. Examples: 'which services call svc-guest-profiles', 'how does check-in handle unregistered guests', 'what ADRs constrain schedule updates'"
       },
       "top_k": {
         "type": "integer",

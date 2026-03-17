@@ -23,9 +23,7 @@ Handles day-of-adventure check-in workflow including wristband assignment, gear 
 |-----|-------|--------|--------|
 | [ADR-004](../decisions/ADR-004-configuration-driven-classification.md) | Configuration-Driven Classification | Accepted | Category-to-pattern mapping via Spring Cloud Config YAML |
 | [ADR-005](../decisions/ADR-005-pattern3-default-fallback.md) | Pattern 3 Default Fallback | Accepted | Unknown categories default to Full Service (safety-first) |
-| [ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md) | Orchestrator Pattern | Accepted | Multi-service orchestration for unregistered guest lookup lives here |
 | [ADR-007](../decisions/ADR-007-four-field-identity-verification.md) | Four-Field Identity Verification | Accepted | Kiosk verification via last name + confirmation + date + count |
-| [ADR-008](../decisions/ADR-008-temporary-guest-profile.md) | Temporary Guest Profile | Accepted | Creates minimal temporary profiles for unregistered guests |
 | [ADR-009](../decisions/ADR-009-session-scoped-kiosk-access.md) | 30-Minute Kiosk Session | Accepted | JWT-based session with 30-minute expiry for kiosk access |
 
 ---
@@ -49,7 +47,6 @@ Handles day-of-adventure check-in workflow including wristband assignment, gear 
 
 <object data="diagrams/check-in-process-flow.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Check-In Process Flow diagram</object>
 
-### Unregistered Guest Lookup Orchestration
 
 <object data="diagrams/lookup-orchestration.svg" type="image/svg+xml" style="width: 100%; max-width: 100%; overflow-x: auto;">Lookup Orchestration diagram</object>
 
@@ -58,7 +55,6 @@ Handles day-of-adventure check-in workflow including wristband assignment, gear 
 ## Key Patterns
 
 - **Adventure Category Classification**: Maps 25 adventure categories to 3 check-in UI patterns (Basic, Guided, Full Service) via configuration-driven YAML. See [ADR-004](../decisions/ADR-004-configuration-driven-classification.md).
-- **Unregistered Guest Orchestration**: Multi-service fan-out pattern with conditional partner fallback and parallel safety/gear checks. See [ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md).
 - **Kiosk Session Management**: JWT-based 30-minute sessions with one-active-per-device enforcement.
 
 ---
@@ -68,7 +64,6 @@ Handles day-of-adventure check-in workflow including wristband assignment, gear 
 | Ticket | Change | Date |
 |--------|--------|------|
 | NTK-10002 | Added adventure category classification system (3 UI patterns) | Phase 1 |
-| NTK-10003 | Added unregistered guest self-service check-in flow | Phase 1 |
 | NTK-10005 | Added RFID wristband field to check-in schema | Phase 1 |
 
 ---

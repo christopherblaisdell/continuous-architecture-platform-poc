@@ -196,7 +196,6 @@ Test plan contents:
 | Step | Task | Effort |
 |------|------|--------|
 | C.1 | Set up Cucumber-JVM in service build templates | Small |
-| C.2 | Convert existing user story acceptance criteria to Gherkin scenarios (start with NTK-10003) | Medium |
 | C.3 | Write step definitions for common patterns (API calls, database assertions) | Medium |
 | C.4 | Add BDD scenario execution to CI pipeline | Small |
 | C.5 | Document BDD authoring guide for architects and developers | Small |

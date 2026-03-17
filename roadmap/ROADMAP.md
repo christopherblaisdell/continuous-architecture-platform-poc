@@ -290,7 +290,6 @@ Build generators and publish solution designs, capabilities, and tickets to the 
 | 2.4 | COMPLETE -- Updated `generate-microservice-pages.py` to include "Solutions Affecting This Service" section with cross-links to solution pages, capability IDs, and dates | 2.1 | Small |
 | 2.5 | COMPLETE -- Added Solution Designs, Business Capabilities, Tickets, and nav sections to `portal/mkdocs.yml` | 2.1-2.3 | Small |
 | 2.6 | COMPLETE -- Wired all generators into `portal/scripts/generate-all.sh` | 2.1-2.3 | Small |
-| 2.7 | COMPLETE -- Promoted ADR-006 through ADR-008 from NTK-10003 to global `decisions/` | -- | Small |
 | 2.8 | COMPLETE -- Created CI workflow (`.github/workflows/validate-solution.yml`) for PR validation | 1.10 | Medium |
 | 2.9 | COMPLETE -- Tested full pipeline: branch, solution, PR, CI, merge, deploy | 2.6, 2.8 | Small |
 

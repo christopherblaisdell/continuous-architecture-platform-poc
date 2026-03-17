@@ -55,7 +55,6 @@ The AI was investigating a guide schedule overwrite bug. Here's what it read fro
 
 ### Scenario 5: Cross-Service Design
 
-The AI designed an unregistered guest self check-in flow spanning 6 services. It identified:
 
 - A stub controller in `CheckInController.java` (specific line)
 - A missing email field requirement in `GuestService.java` (specific line)

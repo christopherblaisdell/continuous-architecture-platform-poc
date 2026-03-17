@@ -53,7 +53,6 @@ Roo Code's fewer file reads suggest either a faster but shallower pass, or more 
 | S2: NTK-10002 | 8 | 8 | 0 | Identical file set |
 | S3: NTK-10004 | 7 | 7 | 0 | Identical file set |
 | S4: NTK-10001 | 3 | 3 | 0 | Identical file set |
-| S5: NTK-10003 | **13** | **11** | **+2** | Roo Code missing `simple.explanation.md` and `assumptions.md` |
 | **Total** | **39** | **37** | **+2** | |
 
 ### Scenario 5 Missing Files (Roo Code)
@@ -162,7 +161,6 @@ Based on the agentic re-transmission model from `COST-MEASUREMENT-METHODOLOGY.md
 | S2: NTK-10002 | $2.66 |
 | S3: NTK-10004 | $5.33 |
 | S4: NTK-10001 | $0.78 |
-| S5: NTK-10003 | $3.60 |
 | **Total (single run)** | **$13.42** |
 
 ### Monthly Projection
@@ -234,7 +232,6 @@ Both produced 3 files. Copilot's changes were conservative and accurate. Roo Cod
 
 **Quality: Copilot wins** — accuracy trumps comprehensiveness when the task is "apply an approved design."
 
-#### Scenario 5 (NTK-10003 — Unregistered Guest Self Check-in)
 
 Both produced strong cross-service solution designs:
 - Same architectural approach: orchestrator pattern through svc-check-in with 4-field identity verification

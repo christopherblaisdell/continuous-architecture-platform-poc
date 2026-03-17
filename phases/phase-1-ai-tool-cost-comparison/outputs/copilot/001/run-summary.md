@@ -79,17 +79,14 @@ Updated the svc-trail-management OpenAPI spec and PlantUML component diagram bas
 | novatrek-component-overview.puml | Enhanced PlantUML with elevation data flow annotations |
 | commit-message.md | Conventional commit message |
 
-### Scenario 5: Complex Cross-Service Design (NTK-10003 - Unregistered Guest Self Check-in)
 
 **Classification**: Architecture-significant (multi-service orchestration)
 
-Designed a cross-service solution enabling unregistered guests to check in via kiosk using a 4-field identity verification (last name, confirmation code, adventure date, participant count). Analysis grounded in actual source code: `CheckInController.java` has an unimplemented stub, `GuestService.java` requires email for profile creation (incompatible with temporary profiles), svc-reservations has no confirmation_code field, svc-safety-compliance GET /waivers already has guest_id parameter needed for the flow.
 
 **Files created**: 13
 
 | File | Description |
 |------|-------------|
-| NTK-10003-solution-design.md | Enhanced solution design with Current State Analysis section |
 | ntk10003-unregistered-checkin-components.puml | C4 component diagram |
 | ntk10003-lookup-reservation-sequence.puml | Sequence diagram with parallel calls and partner fallback |
 | decisions.md | 4 MADR ADRs (orchestrator pattern, 4-field verification, temporary profiles, session TTL) |

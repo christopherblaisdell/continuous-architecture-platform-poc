@@ -119,11 +119,9 @@
 
 ---
 
-### SC-05: Complex Cross-Service Design (NTK-10003)
 
 | Metric | Value |
 |--------|-------|
-| **Ticket** | NTK-10003 — Unregistered Guest Self-Service Check-In |
 | **Complexity** | Very High |
 | **Duration** | ~25 minutes |
 | **Files Read** | 14+ (ticket report, solution design, 4 impact docs, risks, user stories, decisions, sequence diagram, guidance, assumptions, swagger specs) |
@@ -264,7 +262,6 @@ If these 5 scenarios were executed via Kong AI + Bedrock with Claude Sonnet pric
 2. **Multi-tool orchestration**: Used mock JIRA, Elastic, and GitLab tools appropriately across scenarios
 3. **Root cause elevation**: Identified NTK-10004 as an architectural boundary violation, not just a code bug (the key insight the playbook tests for)
 4. **Standards compliance**: All ADRs formatted to MADR template; PlantUML syntax is valid; solution designs follow arc42 structure
-5. **Security awareness**: NTK-10003 analysis correctly identified PII masking, rate limiting, JWT scoping, and audit logging requirements
 6. **Scope discipline**: NTK-10001 changes were limited to what the solution design specified (no scope creep)
 
 ### Limitations Observed

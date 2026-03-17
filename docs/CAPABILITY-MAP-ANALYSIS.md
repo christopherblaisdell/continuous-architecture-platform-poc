@@ -373,7 +373,6 @@ Legend: [G] = Implemented   [A] = Partial   [R] = Not Implemented
 
 ### 7.1 The Problem: Architecture Amnesia
 
-Today, when an architect solutions a ticket (e.g., NTK-10003 "Unregistered Guest Self-Check-In"), the work produces valuable artifacts:
 
 - Impact assessments per service (`i.impacts/impact.1/impact.1.md` for svc-check-in, etc.)
 - Architecture decisions in MADR format (`d.decisions/decisions.md`)
@@ -421,7 +420,6 @@ Add a new metadata section to every solution design master document. This declar
 |-------|-------|
 | Version | 1.0 |
 | Status | DRAFT |
-| Ticket | NTK-10003 |
 | Capabilities | CAP-1.1 (extends), CAP-2.1 (extends), CAP-1.3 (depends) |
 ```
 
@@ -434,7 +432,6 @@ Add a new metadata section to every solution design master document. This declar
 
 | Capability ID | Capability Name | Impact Type | Description |
 |--------------|----------------|-------------|-------------|
-| CAP-2.1 | Day-of-Adventure Check-In | EXTENDS | Adds reservation-based lookup flow for unregistered guests — new orchestration path in check-in lifecycle |
 | CAP-1.1 | Guest Identity and Profile Management | EXTENDS | Introduces temporary guest profile creation with 90-day TTL and merge-on-return semantics |
 
 ## Capabilities Depended Upon (Read-Only)
@@ -449,7 +446,6 @@ Add a new metadata section to every solution design master document. This declar
 | Parent | L3 ID | L3 Name | Description |
 |--------|-------|---------|-------------|
 | CAP-2.1 | CAP-2.1.4 | Reservation-Based Guest Lookup | Kiosk lookup flow using confirmation code, last name, adventure date, and party size |
-| CAP-1.1 | CAP-1.1.3 | Temporary Guest Profile Lifecycle | Create, merge, and expire temporary profiles for walk-in or unregistered guests |
 ```
 
 **Impact types:**
@@ -465,13 +461,11 @@ Create `architecture/metadata/capability-changelog.yaml` — an append-only log 
 
 ```yaml
 changelog:
-  - ticket: NTK-10003
     date: 2026-02-20
     status: APPROVED
     capabilities:
       - id: CAP-2.1
         impact: extends
-        summary: "Reservation-based kiosk lookup for unregistered guests"
         l3_added:
           - id: CAP-2.1.4
             name: "Reservation-Based Guest Lookup"
@@ -524,7 +518,6 @@ The capability page generator (Section 4.3) should consume the changelog to prod
 
    | Date | Ticket | Change | L3 Added |
    |------|--------|--------|----------|
-   | 2026-02-20 | NTK-10003 | Reservation-based kiosk lookup | CAP-2.1.4 |
    | 2026-03-03 | NTK-10005 | RFID wristband tag field | — |
    ```
 
@@ -600,7 +593,6 @@ CAP-2.1 Day-of-Adventure Check-In (L2 — planned)
   ├── CAP-2.1.1 Standard Guest Check-In (L3 — baseline)
   ├── CAP-2.1.2 Group Check-In (L3 — NTK-10001)
   ├── CAP-2.1.3 Guide-Assisted Check-In (L3 — NTK-10002)
-  ├── CAP-2.1.4 Reservation-Based Guest Lookup (L3 — NTK-10003)
   └── CAP-2.1.5 RFID Wristband Assignment (L3 — NTK-10005)
 ```
 

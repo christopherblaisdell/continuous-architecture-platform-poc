@@ -39,8 +39,6 @@ This served Phase 1 evaluation well, but the platform vision demands:
 
 ```json
 {
-  "key": "NTK-10003",
-  "summary": "Support Unregistered Guest Self-Service Check-In",
   "description": "Multi-line description with acceptance criteria",
   "status": "In Progress",
   "priority": "Critical",
@@ -362,9 +360,7 @@ Create Vikunja labels matching the capability hierarchy:
 | `impact:creates` | New L2 or L3 capability |
 | `impact:depends` | Read-only dependency |
 
-### 6.3 Example: NTK-10003 as a Vikunja Ticket
 
-**Title:** Support Unregistered Guest Self-Service Check-In
 
 **Labels:** `CAP-2.1:Check-In`, `CAP-1.1:Guest-Identity`, `L1:Adventure-Operations`, `L1:Guest-Experience`, `impact:extends`
 
@@ -457,7 +453,6 @@ Vikunja API (runtime)             Architecture Repo (build time)
 │  Projects    │                  │                             │
 └──────────────┘                  │ portal/docs/tickets/        │
                                   │   index.md                  │
-                                  │   NTK-10003.md              │
                                   │   NTK-10005.md              │
                                   │   ...                       │
                                   └─────────────────────────────┘
@@ -486,8 +481,6 @@ Output format:
 
 ```yaml
 tickets:
-  - key: NTK-10003
-    summary: "Support Unregistered Guest Self-Service Check-In"
     status: "In Progress"
     priority: "Critical"
     assignee: "alex.chen"
@@ -507,7 +500,6 @@ tickets:
     use_cases:
       - UC-1: "Reservation-Based Kiosk Lookup"
       - UC-2: "Walk-In Guest Registration"
-    solution_folder: "work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/"
     created: "2026-01-15"
     updated: "2026-02-20"
 
@@ -539,7 +531,6 @@ Generates MkDocs pages from `tickets.yaml`:
 - Cross-reference counts: "12 tickets touching Guest Experience, 8 touching Adventure Operations"
 - Link to Vikunja instance for full ticket management
 
-**Per-ticket pages (`portal/docs/tickets/NTK-10003.md`):**
 
 - Full user story with use cases
 - Capability mapping table with deep links to capability pages
@@ -571,20 +562,16 @@ The ticket pages create a web of cross-references across the portal:
 Capability Page (CAP-2.1: Check-In)
   └── "Tickets that shaped this capability"
        ├── NTK-10002: Adventure Category Classification
-       ├── NTK-10003: Unregistered Guest Self-Check-In
        └── NTK-10005: Wristband RFID Field
 
 Microservice Page (svc-check-in)
   └── "Tickets affecting this service"
        ├── NTK-10002 (new classification endpoint)
-       ├── NTK-10003 (new lookup-reservation endpoint)
        └── NTK-10005 (schema change: rfid_tag field)
 
-Ticket Page (NTK-10003)
   ├── "Capabilities" → CAP-2.1, CAP-1.1
   ├── "Services" → svc-check-in, svc-guest-profiles
   ├── "Decisions" → ADR-006, ADR-007, ADR-008
-  └── "Solution" → work-items/tickets/_NTK-10003-*/
 ```
 
 ---
@@ -597,7 +584,6 @@ The AI agent (Copilot or Roo Code) needs to know about ALL tickets to:
 
 1. **Auto-suggest capability mappings** when solutioning a new ticket
 2. **Detect conflicts** between in-flight tickets modifying the same capability
-3. **Reference prior art** — "NTK-10003 already solved a similar problem for svc-check-in"
 4. **Maintain architectural consistency** — Ensure new solutions do not contradict existing decisions
 
 Currently, the agent discovers tickets by running `python3 scripts/mock-jira-client.py --list`. With Vikunja, the agent needs equivalent access.
@@ -645,11 +631,9 @@ Keep the `mock-jira-client.py` pattern but point it at `tickets.yaml` instead of
 ```bash
 # Current (mock JIRA)
 python3 scripts/mock-jira-client.py --list
-python3 scripts/mock-jira-client.py --ticket NTK-10003
 
 # Upgraded (reads tickets.yaml)
 python3 scripts/ticket-client.py --list
-python3 scripts/ticket-client.py --ticket NTK-10003
 python3 scripts/ticket-client.py --capability CAP-2.1          # NEW: filter by capability
 python3 scripts/ticket-client.py --service svc-check-in        # NEW: filter by service
 python3 scripts/ticket-client.py --impact extends              # NEW: filter by impact type
@@ -674,7 +658,6 @@ Add these commands to `.github/copilot-instructions.md`:
 | Tickets — list all | `python3 scripts/ticket-client.py --list` | View all tickets |
 | Tickets — by capability | `python3 scripts/ticket-client.py --capability CAP-2.1` | Tickets for a capability |
 | Tickets — by service | `python3 scripts/ticket-client.py --service svc-check-in` | Tickets affecting a service |
-| Tickets — ticket detail | `python3 scripts/ticket-client.py --ticket NTK-10003` | Full ticket with use cases |
 ```
 
 ### 8.4 AI Solutioning Workflow with Ticket Awareness
@@ -795,10 +778,8 @@ User Story (ticket)
                            └── Service Impact (API/schema changes)
 ```
 
-### 10.2 Example Rollup: NTK-10003
 
 ```
-NTK-10003: "Support Unregistered Guest Self-Service Check-In"
 │
 ├── UC-1: Reservation-Based Kiosk Lookup
 │   └── CAP-2.1.4: Reservation-Based Guest Lookup (L3 — NEW)
@@ -812,7 +793,6 @@ NTK-10003: "Support Unregistered Guest Self-Service Check-In"
 │
 ├── Services: svc-check-in (new endpoint), svc-guest-profiles (new endpoint)
 ├── Decisions: ADR-006, ADR-007, ADR-008
-└── Solution: work-items/tickets/_NTK-10003-*/
 ```
 
 ### 10.3 Portal Views Enabled

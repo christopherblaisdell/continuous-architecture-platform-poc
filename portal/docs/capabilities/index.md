@@ -103,7 +103,6 @@ Create, verify, merge, and manage guest identity records
 
 | Date | Ticket | Impact | Summary |
 |------|--------|--------|---------|
-| 2025-02-12 | [NTK-10003](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) | enhanced | Enable unregistered walk-up guests to self-check-in via kiosks |
 
 #### Emergent L3 Capabilities
 
@@ -141,7 +140,6 @@ Create, modify, cancel, and look up adventure reservations
 
 | Date | Ticket | Impact | Summary |
 |------|--------|--------|---------|
-| 2025-02-12 | [NTK-10003](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) | enhanced | Enable unregistered walk-up guests to self-check-in via kiosks |
 
 ### CAP-1.4 Loyalty and Rewards
 
@@ -216,7 +214,6 @@ Guest arrival processing, identity verification, wristband assignment, safety br
 |------|--------|--------|---------|
 | 2025-02-08 | [NTK-10005](../solutions/_NTK-10005-wristband-rfid-field.md) | enhanced | Add RFID wristband field to check-in record for adventure tracking |
 | 2025-02-10 | [NTK-10002](../solutions/_NTK-10002-adventure-category-classification.md) | enhanced | Configuration-driven adventure category classification for check-in UI patterns |
-| 2025-02-12 | [NTK-10003](../solutions/_NTK-10003-unregistered-guest-self-checkin.md) | enhanced | Enable unregistered walk-up guests to self-check-in via kiosks |
 
 #### Emergent L3 Capabilities
 

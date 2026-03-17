@@ -112,7 +112,6 @@ Guest submits review
 
 ## Prior Art
 
-- **NTK-10003** (Unregistered Guest Check-In) — established the pattern for cross-service validation flows (reservation lookup + guest identity verification)
 - **NTK-10005** (Wristband RFID) — established the pattern for adding nullable fields to existing schemas without breaking consumers
 - **ADR-010/ADR-011** — PATCH semantics and optimistic locking patterns reused for review updates
 

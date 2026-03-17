@@ -24,7 +24,6 @@ Produced: Investigation report citing specific log entries and source code lines
 Produced: Updated OpenAPI spec, impact assessment, implementation guidance  
 **Outcome**: Enhanced existing fields with better descriptions and constraints
 
-**SC-05 — Complex Cross-Service Design** (Unregistered guest self check-in)  
 Produced: Solution design spanning 6 services, 3 ADRs, 14 user stories, PlantUML diagrams  
 **Outcome**: Designed session-scoped temporary guest profile with bounded context enforcement
 

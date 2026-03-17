@@ -12,10 +12,7 @@
 
 ## 1. The Problem: Solution Designs Have No Home After Tickets Close
 
-The NovaTrek architecture practice produces valuable solution design artifacts for every ticket. A single ticket like NTK-10003 generates:
 
-- A master solution design document (`NTK-10003-solution-design.md`)
-- A ticket requirements report (`1.requirements/NTK-10003.ticket.report.md`)
 - A plain-language explanation (`2.analysis/simple.explanation.md`)
 - Per-service impact assessments (`3.solution/i.impacts/impact.1/impact.1.md` through `impact.4/`)
 - Architecture decisions in MADR format (`3.solution/d.decisions/decisions.md`)
@@ -27,11 +24,8 @@ The NovaTrek architecture practice produces valuable solution design artifacts f
 
 This is a rich, well-structured body of architectural knowledge. But today it has three fatal problems:
 
-1. **It is invisible.** Solution designs live in deep ticket folder paths (`phases/phase-1-ai-tool-cost-comparison/workspace/work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/`) that no one navigates to after the ticket closes. They are not published to the portal, not indexed, not searchable.
 
-2. **It is disconnected.** The solution design for NTK-10003 describes changes to svc-check-in, svc-guest-profiles, svc-reservations, and svc-safety-compliance — but the microservice pages in the portal have no knowledge of these solutions. The ADRs created inside the ticket folder exist separately from the global ADR log in `decisions/`. The capability map has no record of what NTK-10003 contributed.
 
-3. **It does not accumulate.** When the next architect picks up a check-in ticket, they start from the OpenAPI spec and microservice page. They have no way to discover that NTK-10003 already solved a similar problem, created ADR-006 through ADR-008, and established patterns for temporary guest profiles. The architecture resets instead of growing.
 
 The result is **architecture amnesia** — valuable design decisions, impact analyses, and architectural patterns are produced, reviewed, approved, and then functionally forgotten.
 
@@ -154,7 +148,6 @@ architecture/
     │   ├── 2.analysis/
     │   └── 3.solution/
     ├── _NTK-10002-adventure-category-classification/
-    ├── _NTK-10003-unregistered-guest-self-checkin/
     ├── _NTK-10004-guide-schedule-overwrite-bug/
     └── _NTK-10005-wristband-rfid-field/
 ```
@@ -202,7 +195,6 @@ solution/NTK-XXXXX-kebab-slug
 ```
 
 Examples:
-- `solution/NTK-10003-unregistered-guest-self-checkin`
 - `solution/NTK-10005-wristband-rfid-field`
 - `solution/NTK-10008-group-booking-capacity`
 
@@ -507,7 +499,6 @@ The generator produces `portal/docs/solutions/index.md` containing:
 |--------|--------------|--------|----------|-------------|-----------|------|
 | NTK-10001 | Add Elevation Data to Trail Response | APPROVED | svc-trail-management | CAP-4.2 | Morgan Rivera | 2026-01-10 |
 | NTK-10002 | Adventure Category Classification | APPROVED | svc-check-in, svc-trip-catalog | CAP-2.1, CAP-1.2 | Alex Chen | 2026-01-20 |
-| NTK-10003 | Unregistered Guest Self-Check-In | APPROVED | svc-check-in, svc-guest-profiles, svc-reservations, svc-safety-compliance | CAP-2.1, CAP-1.1, CAP-1.3, CAP-3.1 | Alex Chen | 2026-02-20 |
 
 **Filter Views:**
 - By service: "Show all solutions affecting svc-check-in"
@@ -520,7 +511,6 @@ The generator produces `portal/docs/solutions/index.md` containing:
 Each solution gets a dedicated portal page at `portal/docs/solutions/NTK-XXXXX.md`. The generator composes this page by reading the solution folder structure and assembling the content:
 
 ```markdown
-# NTK-10003 — Unregistered Guest Self-Service Check-In
 
 ## Solution Overview
 [Content from the master document's Overview section]
@@ -605,7 +595,6 @@ When solution pages are published, they create bidirectional links across the po
 
 | Ticket | Solution Name | Change Type | Status |
 |--------|--------------|-------------|--------|
-| [NTK-10003](../solutions/NTK-10003/) | Unregistered Guest Self-Check-In | New endpoint | APPROVED |
 | [NTK-10005](../solutions/NTK-10005/) | Wristband RFID Field | Schema change | DRAFT |
 ```
 
@@ -615,14 +604,12 @@ When solution pages are published, they create bidirectional links across the po
 
 | Date | Ticket | Impact | L3 Capabilities Added |
 |------|--------|--------|----------------------|
-| 2026-02-20 | [NTK-10003](../solutions/NTK-10003/) | EXTENDS | CAP-2.1.4 Reservation-Based Guest Lookup |
 | 2026-03-03 | [NTK-10005](../solutions/NTK-10005/) | MODIFIES | — |
 ```
 
 **From Global Decision Pages:**
 ```markdown
 ## Origin
-This decision was created as part of [NTK-10003 — Unregistered Guest Self-Check-In](../solutions/NTK-10003/).
 ```
 
 This cross-linking web is what makes the portal a **knowledge graph** rather than a collection of static pages.
@@ -741,7 +728,6 @@ Add to the solution review process:
 
 ### 9.1 The Problem
 
-ADRs created inside ticket solutions (`3.solution/d.decisions/decisions.md`) are invisible to the global decision log (`decisions/ADR-001-....md` through `decisions/ADR-011-....md`). An architect looking at the global log would never know that ADR-006 through ADR-008 exist in NTK-10003's solution folder.
 
 ### 9.2 The Promotion Model
 
@@ -761,8 +747,6 @@ Accepted
 2026-02-20
 
 ## Provenance
-- **Originating Ticket**: NTK-10003
-- **Solution Design**: [NTK-10003 — Unregistered Guest Self-Check-In](../architecture/solutions/_NTK-10003-unregistered-guest-self-checkin/NTK-10003-solution-design.md)
 ```
 
 4. The original decision in the solution folder is updated with a note: "Promoted to global ADR-012"
@@ -805,7 +789,6 @@ With the enhanced template, `architecture/solutions/` as the canonical location,
    │
 2. Agent reads prior solutions from architecture/solutions/
    │  └── Finds related solutions by service or capability overlap
-   │     (e.g., "NTK-10003 also modified svc-check-in")
    │
 3. Agent reads architecture/metadata/capabilities.yaml
    │  └── Identifies which L1/L2 capabilities this ticket maps to
@@ -973,11 +956,7 @@ This diagram shows how solution designs connect to every other component of the 
             ┌──────────────────────┐
             │   NOVATREK PORTAL    │
             │                      │
-            │ ├── Solution Designs │◄── "NTK-10003 changed svc-check-in"
-            │ ├── Capabilities     │◄── "CAP-2.1 was extended by NTK-10003"
             │ ├── Microservices    │◄── "svc-check-in affected by 3 solutions"
-            │ ├── Decisions        │◄── "ADR-006 originated from NTK-10003"
-            │ ├── User Stories     │◄── "NTK-10003 maps to CAP-2.1"
             │ └── Event Catalog    │
             └──────────────────────┘
 ```
@@ -1014,7 +993,6 @@ Every arrow is a data flow that can be traced. Every component feeds into the po
 | 2.3 | Update `generate-microservice-pages.py` to include "Solutions Affecting This Service" section | 2.1 | Small |
 | 2.4 | Add Solution Designs and Business Capabilities nav sections to `portal/mkdocs.yml` | 2.1, 2.2 | Small |
 | 2.5 | Wire all generators into `portal/scripts/generate-all.sh` | 2.1, 2.2 | Small |
-| 2.6 | Promote ADR-006 through ADR-008 from NTK-10003 to global `decisions/` | — | Small |
 | 2.7 | Create CI workflow (`.github/workflows/validate-solution.yml`) that runs YAML validation and portal build on PRs touching `architecture/` | 1.8 | Medium |
 | 2.8 | Test full pipeline: branch → solution → PR → CI validates → merge → deploy | 2.5, 2.7 | Small |
 

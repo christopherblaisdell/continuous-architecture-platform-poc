@@ -67,7 +67,6 @@ NOTE: OpenRouter exact per-generation costs should be retrieved using `python3 s
 | SC-02 NTK-10002 | pending human scoring | pending | 35 |
 | SC-03 NTK-10004 | pending human scoring | pending | 30 |
 | SC-04 NTK-10001 | pending human scoring | pending | 25 |
-| SC-05 NTK-10003 | pending human scoring | pending | 40 |
 | TOTAL | pending | pending | 155 |
 
 ## Cost Efficiency
@@ -88,7 +87,6 @@ Both runs produced 37 files across 5 scenarios with identical scenario coverage.
 - SC-02 (NTK-10002): Both produced 8 files; Copilot used `u.user.stories/` folder, Roo Code also used `u.user.stories/`
 - SC-03 (NTK-10004): Both produced 7 files
 - SC-04 (NTK-10001): Both produced 3 files (YAML, PlantUML, commit message)
-- SC-05 (NTK-10003): Both produced 11 files with matching impact subdirectory structure
 
 ### Approach Differences
 
@@ -96,7 +94,6 @@ Both runs produced 37 files across 5 scenarios with identical scenario coverage.
 
 2. **Mock Script Usage**: Copilot made 5 mock script invocations (including 1 failed GitLab call that was retried). Roo Code made 4 (including the same GitLab retry pattern). Both encountered the same `--mrs` flag issue.
 
-3. **Solution Design Versioning**: Copilot advanced NTK-10002 to v1.8 and NTK-10003 to v1.9. Roo Code used v1.7 and v1.9 respectively.
 
 4. **Source Code Gap Analysis**: Both runs identified the same 4 source code gaps in SC-05 (Map<String,String> stub, email dedup requirement, guest_id waiver lookup, missing confirmation_code). This suggests the findings are grounded in the workspace evidence and not model-dependent.
 

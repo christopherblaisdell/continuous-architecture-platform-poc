@@ -27,7 +27,6 @@
 | SC-02: NTK-10002 Solution Design | 14 | 8 |
 | SC-03: NTK-10004 Investigation | 13 | 7 |
 | SC-04: NTK-10001 Architecture Update | 6 | 3 |
-| SC-05: NTK-10003 Cross-Service Design | 14 | 10 |
 | Post-execution | 3 | 2 |
 | **Total** | **65** | **38** |
 
@@ -93,19 +92,9 @@ Note: One additional mock-gitlab-client.py invocation was attempted with incorre
 25. `corporate-services/diagrams/Components/novatrek-component-overview.puml`
 26. `work-items/tickets/_NTK-10001-add-elevation-to-trail-response/commit-message.md`
 
-### SC-05: NTK-10003 Unregistered Guest Check-in (Cross-Service Design)
 
 27. `corporate-services/diagrams/Components/ntk10003-unregistered-checkin-components.puml`
 28. `corporate-services/diagrams/Sequence/ntk10003-unregistered-checkin-flow.puml`
-29. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/NTK-10003-solution-design.md`
-30. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/d.decisions/decisions.md`
-31. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/i.impacts/impact.1/impact.1.md`
-32. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/i.impacts/impact.2/impact.2.md`
-33. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/i.impacts/impact.3/impact.3.md`
-34. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/i.impacts/impact.4/impact.4.md`
-35. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/r.risks/risks.md`
-36. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/g.guidance/guidance.md`
-37. `work-items/tickets/_NTK-10003-unregistered-guest-self-checkin/3.solution/u.user.stories/user-stories.md`
 
 ### Post-Execution
 

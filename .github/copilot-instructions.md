@@ -162,7 +162,6 @@ solution/NTK-XXXXX-slug
 ```
 
 Examples:
-- `solution/NTK-10003-unregistered-guest-checkin`
 - `solution/NTK-10006-adventure-tracking`
 
 ### Solution Folder Structure
@@ -191,7 +190,6 @@ Every solution MUST record capability changes in the **single source of truth**:
 1. **Add an entry to `architecture/metadata/capability-changelog.yaml`** with:
    - `ticket`: NTK-XXXXX
    - `date`: ISO 8601
-   - `solution`: folder name (e.g., `_NTK-10003-unregistered-guest-self-checkin`)
    - `summary`: one-line summary of the architectural change
    - `capabilities`: array of affected capabilities, each with:
      - `id`: CAP-X.Y
@@ -214,7 +212,6 @@ Query tickets from `architecture/metadata/tickets.yaml`:
 | `python3 scripts/ticket-client.py --list --status "New"` | Filter by status |
 | `python3 scripts/ticket-client.py --list --capability CAP-2.1` | Filter by capability |
 | `python3 scripts/ticket-client.py --list --service svc-check-in` | Filter by service |
-| `python3 scripts/ticket-client.py --ticket NTK-10003` | Full ticket detail |
 
 ### Metadata Files
 

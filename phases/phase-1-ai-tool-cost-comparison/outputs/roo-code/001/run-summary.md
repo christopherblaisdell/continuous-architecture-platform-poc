@@ -83,7 +83,6 @@
 
 **Changes**: Added `max_elevation_m`, `min_elevation_m`, and `elevation_profile` (array of `ElevationDataPoint`) to Trail, CreateTrailRequest, and UpdateTrailRequest schemas. Existing `elevation_gain_m` and `elevation_loss_m` were already present.
 
-### Scenario 5: Complex Cross-Service Design (NTK-10003)
 
 **Status**: COMPLETE
 
@@ -91,9 +90,7 @@
 
 | File | Description |
 |------|-------------|
-| `NTK-10003-solution-design.md` | Enhanced solution design (v1.9) with endpoint spec, orchestration flow, source code analysis |
 | `corporate-services/diagrams/Components/ntk10003-unregistered-checkin-components.puml` | New C4 component diagram |
-| `corporate-services/diagrams/Sequence/unregistered-guest-checkin-flow.puml` | New sequence diagram with full orchestration flow |
 | `3.solution/d.decisions/decisions.md` | 4 MADR-formatted ADRs (orchestrator pattern, four-field verification, temporary profiles, session expiry) |
 | `3.solution/i.impacts/impact.1/impact.1.md` | svc-check-in impact (PRIMARY) |
 | `3.solution/i.impacts/impact.2/impact.2.md` | svc-guest-profiles impact (MODERATE) |

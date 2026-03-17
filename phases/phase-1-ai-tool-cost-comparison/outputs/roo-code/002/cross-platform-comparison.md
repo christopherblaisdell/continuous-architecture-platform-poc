@@ -43,7 +43,6 @@ CRITICAL: These costs are not directly comparable because:
 | SC-02 NTK-10002 | pending human scoring | pending | 35 |
 | SC-03 NTK-10004 | pending human scoring | pending | 30 |
 | SC-04 NTK-10001 | pending human scoring | pending | 25 |
-| SC-05 NTK-10003 | pending human scoring | pending | 40 |
 | TOTAL | pending | pending | 155 |
 
 NOTE: No `results.md` file exists in the Copilot run 002 folder. Quality scores for both runs are pending human evaluation using the scenario rubrics in the playbooks directory.
@@ -95,7 +94,6 @@ NOTE: No `results.md` file exists in the Copilot run 002 folder. Quality scores 
 | New fields added | elevation_profile, max_elevation_m, min_elevation_m (+ existing gain/loss) | elevation_gain_meters, elevation_loss_meters (2 fields, per solution design) |
 | Scope adherence | Added profile, max, min per prompt instructions | Strictly limited to solution design (2 fields only) |
 
-### SC-05: Cross-Service Design (NTK-10003)
 
 | Aspect | Roo Code | Copilot |
 |--------|----------|--------|
