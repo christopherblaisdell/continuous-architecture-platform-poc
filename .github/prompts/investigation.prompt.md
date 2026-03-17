@@ -9,7 +9,7 @@ You are performing a structured investigation of a NovaTrek Adventures architect
 
 ## Investigation Target
 
-Identify the ticket to investigate. If not specified, ask for the ticket ID (e.g., NTK-10003).
+Identify the ticket to investigate. If not specified, ask for the ticket ID (e.g., NTK-10005).
 
 ## Phase 1: Ticket Context (JIRA First)
 

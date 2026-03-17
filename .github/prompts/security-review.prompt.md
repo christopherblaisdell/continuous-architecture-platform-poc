@@ -9,7 +9,7 @@ You are performing a structured security review of a NovaTrek Adventures archite
 
 ## Review Scope
 
-Identify the solution design to review. If not specified, ask for the ticket ID (e.g., NTK-10003).
+Identify the solution design to review. If not specified, ask for the ticket ID (e.g., NTK-10005).
 
 Read ALL files in the solution directory: `architecture/solutions/_NTK-XXXXX-*/`
 

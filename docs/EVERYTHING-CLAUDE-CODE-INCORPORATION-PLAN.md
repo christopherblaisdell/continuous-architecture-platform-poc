@@ -14,7 +14,7 @@
 | 2 | Delivery format | **Both `.instructions.md` + `.prompt.md`** (Option C) | Always-on rules for quality; invokable prompts for demos |
 | 3 | Demo strategy | **Live demo with saved baseline** (Option C) | Pre-save baseline output; live-demo with skill; compare side-by-side |
 | 4 | Demo prompts | **Security Review, Investigation, Verification** (Option C) | Maximum before/after contrast for leadership audience |
-| 5 | Demo target | **NTK-10003** (Unregistered Guest Self-Check-In) | Richest PII/auth/cross-service scenario for all three prompts |
+| 5 | Demo target | **TBD** | To be selected — must use a ticket with no corporate resemblance |
 
 ### Demo Rollback Methodology
 
@@ -502,7 +502,7 @@ When creating or modifying OpenAPI specs in this directory:
 1. Create `.github/prompts/security-review.prompt.md`
 2. Use a solution design that involves PII or authentication
 
-**Scenario**: "Run a security review on the NTK-10003 solution design"
+**Scenario**: "Run a security review on a selected solution design"
 
 **Expected Behavior** (with ECC skill):
 - Applies OWASP Top 10 checklist

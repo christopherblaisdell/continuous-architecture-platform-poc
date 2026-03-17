@@ -9,7 +9,7 @@ You are performing a quality gate verification on a NovaTrek Adventures solution
 
 ## Verification Target
 
-Identify the solution to verify. If not specified, ask for the ticket ID (e.g., NTK-10003).
+Identify the solution to verify. If not specified, ask for the ticket ID (e.g., NTK-10005).
 
 Read ALL files in: `architecture/solutions/_NTK-XXXXX-*/`
 
