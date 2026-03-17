@@ -12,6 +12,10 @@ build/
 # PowerPoint temp files
 ~$*.pptx
 
+# Reference repos (cloned for skill adaptation, not our code)
+everything-claude-code/
+claude-skills/
+
 # ===========================================================================
 # Generated portal artifacts — DO NOT EDIT
 # These are rebuilt by portal/scripts/generate-all.sh from:

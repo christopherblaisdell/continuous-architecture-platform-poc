@@ -409,6 +409,29 @@ Portal  Confluence
 
 All Phases 0-6 are COMPLETE. The following initiatives represent the next wave of work, consolidated from plan documents, reminders, and proposed enhancements across the repository. Each initiative has a detailed companion document linked below.
 
+#### ECC Skills Incorporation — AI Workflow Enhancement (Top Priority)
+
+**Status:** Proposed | **Companion:** [docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md)
+
+Incorporate skills, agents, rules, and workflow patterns from the [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) (ECC) repository into the NovaTrek GitHub Copilot AI workflow. ECC provides 108 skills, 25 agents, and 57 commands for AI agent harness performance — adapted from Claude Code to Copilot via `.instructions.md` and `.prompt.md` files.
+
+**What it delivers:**
+
+| Capability | Today | With ECC Skills |
+|-----------|-------|-----------------|
+| API design guidance | Copilot-instructions only | Folder-scoped `.instructions.md` with REST patterns, status codes, pagination, backward compatibility |
+| Security review | Implicit in instructions | Structured OWASP Top 10 checklist with Spring Boot-specific patterns and severity rating |
+| Investigation workflow | Ad hoc | Research-first prompt with mock tool sequencing and evidence-based findings |
+| Java/Spring Boot analysis | Generic instructions | Domain-specific coding standards with anti-pattern detection (N+1, entity replacement, missing @Version) |
+| Continuous learning | None | Pattern extraction from sessions stored as architectural instincts |
+| Context management | None | Strategic compaction at logical breakpoints for long sessions |
+
+**4-phase rollout:** Phase 1 (Foundation — instruction files, prompt files, copilot-instructions augmentation) -> Phase 2 (Architecture Skills — Java/Spring/DB/Docker domain skills) -> Phase 3 (Advanced Workflows — verification loops, continuous learning, multi-agent patterns) -> Phase 4 (Continuous Learning — instinct library, eval-driven quality, cost-aware model routing)
+
+See [ECC Incorporation Plan](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md) for the full phased implementation, skill translation guide, and demonstration plan.
+
+---
+
 #### CALM — Automated Architecture Governance (Top Priority)
 
 **Status:** Planned | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
