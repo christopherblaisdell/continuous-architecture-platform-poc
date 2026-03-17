@@ -2,7 +2,7 @@
 
 **Date**: 2026-03-17
 **Status**: Decided — Do Not Adopt
-**Context**: Evaluate whether OpenSpec improves NovaTrek's AI-assisted architecture solution design workflow
+**Context**: Evaluate whether OpenSpec improves an AI-assisted architecture solution design workflow
 
 ---
 
@@ -10,9 +10,9 @@
 
 OpenSpec is a **spec-driven development workflow framework** for AI coding agents. It structures how developers and AI assistants plan, specify, and implement changes using organized artifacts (proposals, behavioral specs, design documents, task checklists) with a delta-based change tracking model.
 
-NovaTrek already has a **purpose-built architecture solution design workflow** with a richer artifact structure (requirements, analysis, assumptions, capabilities, MADR decisions, guidance, per-service impacts, risks, user stories). The question is whether OpenSpec's workflow tooling — slash commands, schema-driven dependency graphs, delta spec merging, and multi-tool agent support — provides enough value to justify adopting it alongside or in place of the existing workflow.
+A **purpose-built architecture solution design workflow** typically has a richer artifact structure than OpenSpec's defaults: requirements, analysis, assumptions, capabilities, MADR decisions, guidance, per-service impacts, risks, and user stories. The question is whether OpenSpec's workflow tooling — slash commands, schema-driven dependency graphs, delta spec merging, and multi-tool agent support — provides enough value to justify adopting it alongside or in place of an existing architecture governance workflow.
 
-**Decision**: Do not adopt. OpenSpec solves problems we don't have (multi-tool portability) and lacks the architecture-specific artifacts our governance workflow requires (MADR decisions, per-service impacts, capability model, dedicated risks and assumptions). The existing workflow is purpose-built and actively improving through native Copilot customization. See Section 6 for the full rationale.
+**Decision**: Do not adopt. OpenSpec solves problems most architecture teams don't have (multi-tool portability) and lacks the architecture-specific artifacts governance workflows require (MADR decisions, per-service impacts, capability models, dedicated risks and assumptions). A purpose-built workflow is more effective and actively improvable through native AI tool customization. See Section 6 for the full rationale.
 
 ---
 
@@ -60,63 +60,63 @@ openspec/changes/archive/2026-03-17-add-dark-mode/  # Change preserved
 
 ---
 
-## 3. Comparison: OpenSpec vs NovaTrek's Existing Solution Design Workflow
+## 3. Comparison: OpenSpec vs a Purpose-Built Architecture Governance Workflow
 
 ### 3.1 Artifact Mapping
 
-| NovaTrek Current Artifact | Location | OpenSpec Equivalent | Assessment |
-|--------------------------|----------|---------------------|------------|
-| Ticket report | `1.requirements/` | `proposal.md` (Intent section) | OpenSpec lighter — merges requirements into proposal |
-| Simple explanation | `2.analysis/` | `proposal.md` (Scope + Approach) | OpenSpec lighter — no separate analysis artifact |
-| Assumptions | `3.solution/a.assumptions/` | Part of `proposal.md` or `design.md` | **Gap** — no dedicated assumptions artifact |
-| Capabilities | `3.solution/c.capabilities/` | No equivalent | **Gap** — OpenSpec has no capability model |
-| Decisions (MADR) | `3.solution/d.decisions/` | `design.md` (Architecture Decisions section) | **Gap** — OpenSpec's format is less rigorous than MADR |
-| Guidance | `3.solution/g.guidance/` | `design.md` (Technical Approach) | Merged — not separated from decisions |
-| Per-service impacts | `3.solution/i.impacts/` | No direct equivalent | **Gap** — no per-service impact assessment |
-| Risks | `3.solution/r.risks/` | Part of `proposal.md` | **Gap** — no dedicated risk artifact |
-| User stories | `3.solution/u.user.stories/` | `specs/` (Given/When/Then scenarios) | Different framing — behavioral specs vs. user stories |
-| Master document | `NTK-XXXXX-solution-design.md` | `proposal.md` + cross-refs | OpenSpec lighter |
-| Capability changelog | `capability-changelog.yaml` | `openspec/specs/` (delta merge) | Different mechanism entirely |
+| Architecture Governance Artifact | Purpose | OpenSpec Equivalent | Assessment |
+|----------------------------------|---------|---------------------|------------|
+| Requirements report | Ticket analysis and scope definition | `proposal.md` (Intent section) | OpenSpec lighter — merges requirements into proposal |
+| Analysis summary | Plain-language explanation for stakeholders | `proposal.md` (Scope + Approach) | OpenSpec lighter — no separate analysis artifact |
+| Assumptions register | Explicit assumptions that constrain the design | Part of `proposal.md` or `design.md` | **Gap** — no dedicated assumptions artifact |
+| Capability mapping | L1/L2/L3 capability tracking per solution | No equivalent | **Gap** — OpenSpec has no capability model |
+| Architecture decisions (MADR) | Structured decision records with options analysis | `design.md` (Architecture Decisions section) | **Gap** — OpenSpec's format is less rigorous than MADR |
+| Implementation guidance | How-to patterns and migration steps | `design.md` (Technical Approach) | Merged — not separated from decisions |
+| Per-service impact assessments | API contract and data model changes per service | No direct equivalent | **Gap** — no per-service impact assessment |
+| Risk register | Dedicated risk identification and mitigation | Part of `proposal.md` | **Gap** — no dedicated risk artifact |
+| User stories | User-perspective acceptance criteria | `specs/` (Given/When/Then scenarios) | Different framing — behavioral specs vs. user stories |
+| Solution master document | Consolidated design overview | `proposal.md` + cross-refs | OpenSpec lighter |
+| Capability changelog | Metadata tracking capability evolution per solution | `openspec/specs/` (delta merge) | Different mechanism entirely |
 
-**Summary**: OpenSpec's default artifact model (proposal + specs + design + tasks) is a **simpler, flatter structure** designed for feature development. NovaTrek's solution design workflow is richer and purpose-built for architecture governance. OpenSpec's default schema lacks dedicated artifacts for assumptions, capabilities, impacts, risks, and MADR-format decisions.
+**Summary**: OpenSpec's default artifact model (proposal + specs + design + tasks) is a **simpler, flatter structure** designed for feature development. A purpose-built architecture governance workflow is richer, with dedicated artifacts for assumptions, capabilities, impacts, risks, and MADR-format decisions. OpenSpec's default schema lacks all of these.
 
 ### 3.2 Workflow Comparison
 
-| Dimension | NovaTrek Current | OpenSpec |
-|-----------|-----------------|----------|
-| **Workflow enforcement** | Convention-based — documented in copilot-instructions.md, agent tries to follow | Schema-driven — dependency graph enforces artifact creation order |
-| **AI agent guidance** | Long instruction document (~800 lines) AI reads and interprets | Slash commands + skill files AI tools natively understand |
-| **Tool portability** | Copilot-specific (copilot-instructions.md) | 20+ tools supported natively |
+| Dimension | Architecture Governance Workflow | OpenSpec |
+|-----------|----------------------------------|----------|
+| **Workflow enforcement** | Convention-based — documented in AI instruction files, agent tries to follow | Schema-driven — dependency graph enforces artifact creation order |
+| **AI agent guidance** | Long instruction document AI reads and interprets | Slash commands + skill files AI tools natively understand |
+| **Tool portability** | Typically tied to one AI tool's instruction format | 20+ tools supported natively |
 | **Change tracking** | Capability changelog records what changed per solution | Delta specs (ADDED/MODIFIED/REMOVED) merge into behavioral source of truth |
 | **Iteration model** | Linear: create artifacts in folder structure | Fluid: update any artifact anytime, no phase gates |
 | **Artifact dependencies** | Implicit (documented conventions) | Explicit (YAML schema with `requires:` declarations) |
-| **Archive/completion** | Solution folder stays in `architecture/solutions/` | Change moves to `archive/`, deltas merge into main specs |
+| **Archive/completion** | Solution folder stays in solutions directory | Change moves to `archive/`, deltas merge into main specs |
 | **Behavioral specs** | Requirements captured narratively from tickets | Formalized Given/When/Then scenarios with RFC 2119 keywords |
 | **Review experience** | Reviewer reads full solution folder | Reviewer reads delta showing exactly what changed |
 
 ### 3.3 Where OpenSpec Is Stronger
 
-1. **Workflow enforcement via schema**: OpenSpec's dependency graph (proposal -> specs -> design -> tasks) ensures artifacts are created in order. NovaTrek relies on AI reading instructions and hoping it follows the structure.
+1. **Workflow enforcement via schema**: OpenSpec's dependency graph (proposal -> specs -> design -> tasks) ensures artifacts are created in order. A convention-based workflow relies on AI reading instructions and following the structure.
 
-2. **AI agent portability**: OpenSpec works with 20+ tools natively. NovaTrek's workflow is encoded in Copilot-specific instructions. If we switch tools or add new ones, we must rewrite instructions.
+2. **AI agent portability**: OpenSpec works with 20+ tools natively. A typical architecture workflow is encoded in tool-specific instruction files. If you switch tools or add new ones, you must rewrite instructions.
 
-3. **Delta-based change tracking**: OpenSpec's ADDED/MODIFIED/REMOVED model provides a clear behavioral diff. NovaTrek's capability changelog tracks capability changes but not behavioral contract evolution.
+3. **Delta-based change tracking**: OpenSpec's ADDED/MODIFIED/REMOVED model provides a clear behavioral diff. A capability changelog tracks capability changes but not behavioral contract evolution.
 
-4. **Formalized behavioral specifications**: Given/When/Then scenarios with RFC 2119 keywords are testable and precise. NovaTrek captures requirements narratively.
+4. **Formalized behavioral specifications**: Given/When/Then scenarios with RFC 2119 keywords are testable and precise. Architecture workflows typically capture requirements narratively.
 
-5. **Fluid iteration**: OpenSpec explicitly supports updating artifacts mid-implementation without "going back." NovaTrek's workflow is implicitly linear.
+5. **Fluid iteration**: OpenSpec explicitly supports updating artifacts mid-implementation without "going back." Architecture workflows are often implicitly linear.
 
-### 3.4 Where NovaTrek's Existing Workflow Is Stronger
+### 3.4 Where a Purpose-Built Architecture Workflow Is Stronger
 
 1. **Architecture-specific artifacts**: Dedicated assumptions, capabilities, impacts (per-service), risks, and guidance artifacts. OpenSpec lacks these.
 
 2. **MADR decision rigor**: MADR format with required sections (Status, Date, Context, Decision Drivers, 2+ Options with pros/cons, Outcome, Consequences). OpenSpec's `design.md` has a simpler, less structured decisions section.
 
-3. **Capability model integration**: NovaTrek's `capability-changelog.yaml` tracks L3 capability emergence per solution, feeding portal generators. OpenSpec has no capability concept.
+3. **Capability model integration**: A capability changelog tracking L3 capability emergence per solution, feeding portal generators and dashboards. OpenSpec has no capability concept.
 
-4. **Per-service impact assessment**: NovaTrek creates separate impact files for each affected service, documenting API contract changes, data model modifications, and integration point changes. OpenSpec has no equivalent.
+4. **Per-service impact assessment**: Separate impact files for each affected service, documenting API contract changes, data model modifications, and integration point changes. OpenSpec has no equivalent.
 
-5. **Purpose-built for architecture**: The workflow was designed for architecture governance. OpenSpec was designed for feature development.
+5. **Purpose-built for architecture**: The workflow is designed for architecture governance. OpenSpec was designed for feature development.
 
 ---
 
@@ -125,8 +125,8 @@ openspec/changes/archive/2026-03-17-add-dark-mode/  # Change preserved
 OpenSpec supports custom schemas that define artifact types and dependencies:
 
 ```yaml
-# Hypothetical novatrek-architecture schema
-name: novatrek-architecture
+# Hypothetical architecture-governance schema
+name: architecture-governance
 artifacts:
   - id: requirements
     generates: requirements.md
@@ -154,7 +154,7 @@ artifacts:
 **Unknown**: Whether custom schemas can:
 - Enforce specific formats within artifacts (e.g., MADR structure in decisions.md)
 - Support template injection for artifact-specific conventions (e.g., ISO 25010 quality attributes in risks)
-- Handle the capability changelog rollup pattern (metadata YAML update triggered by change completion)
+- Handle the capability changelog rollup pattern (metadata update triggered by change completion)
 - Accommodate per-service impact subdirectories with variable count
 
 This is a **critical unknown** that deep research should resolve before committing to adoption.
@@ -165,7 +165,7 @@ This is a **critical unknown** that deep research should resolve before committi
 
 ### Option A: Keep Existing Workflow (No OpenSpec)
 
-Continue the current solution design workflow as-is.
+Continue the current architecture solution design workflow as-is.
 
 **Advantages**:
 - No new tooling to learn or maintain
@@ -175,7 +175,7 @@ Continue the current solution design workflow as-is.
 
 **Disadvantages**:
 - Workflow enforcement is convention-based, not tool-enforced
-- AI agent guidance is Copilot-specific, not portable
+- AI agent guidance is tool-specific, not portable
 - No formalized behavioral specification layer
 - No delta-based change tracking for behavioral contracts
 
@@ -183,7 +183,7 @@ Continue the current solution design workflow as-is.
 
 ### Option B: Adopt OpenSpec with Custom Architecture Schema
 
-Adopt OpenSpec as the workflow engine, creating a custom schema that maps to NovaTrek's artifact structure.
+Adopt OpenSpec as the workflow engine, creating a custom schema that maps to the existing artifact structure.
 
 **Advantages**:
 - Schema-enforced workflow ordering
@@ -223,11 +223,11 @@ Run a single architecture scenario through both workflows in parallel.
 
 ### Why Not OpenSpec
 
-#### 1. OpenSpec solves a problem we don't have
+#### 1. OpenSpec solves a problem most architecture teams don't have
 
-OpenSpec's primary value is **multi-tool AI agent portability** (works with 20+ tools) and **workflow enforcement via schema**. NovaTrek currently uses a single AI tool (GitHub Copilot) with no plans to diversify. Multi-tool portability is a solution looking for a problem.
+OpenSpec's primary value is **multi-tool AI agent portability** (works with 20+ tools) and **workflow enforcement via schema**. An architecture team typically uses a single AI tool with no immediate plans to diversify. Multi-tool portability is a solution looking for a problem.
 
-Workflow enforcement is a real gap, but we are actively addressing it through purpose-built mechanisms (`.instructions.md` files, prompt templates, copilot-instructions.md improvements) that are native to our toolchain and cost nothing to adopt.
+Workflow enforcement is a real gap, but it can be addressed through purpose-built mechanisms (`.instructions.md` files, prompt templates, tool-specific instruction files) that are native to the AI toolchain and cost nothing to adopt.
 
 #### 2. OpenSpec was designed for feature development, not architecture governance
 
@@ -235,7 +235,7 @@ OpenSpec's default artifact model (proposal + specs + design + tasks) is a flat,
 
 - **MADR-format decision records** with required sections (Status, Date, Context, Decision Drivers, 2+ Options with pros/cons, Outcome, Consequences) — OpenSpec's `design.md` has no equivalent rigor
 - **Per-service impact assessments** documenting API contract changes, data model modifications, and integration point changes — OpenSpec has no concept of service-level impacts
-- **Capability model tracking** recording L3 capability emergence per solution and feeding portal generators — OpenSpec has no capability model
+- **Capability model tracking** recording L2/L3 capability emergence per solution and feeding portal generators or dashboards — OpenSpec has no capability model
 - **Dedicated assumptions, risks, and guidance artifacts** — OpenSpec merges these into proposal/design documents without separation
 
 These are not minor gaps. They are the core of what makes architecture governance different from feature development.
@@ -245,8 +245,8 @@ These are not minor gaps. They are the core of what makes architecture governanc
 The theoretical custom schema (Section 4) could map artifact types, but critical questions remain unanswered:
 
 - Can schemas enforce **content structure within artifacts** (e.g., MADR sections)? Likely not — schema validation appears to check file existence, not file content.
-- Can schemas handle **variable-count subdirectories** (e.g., `impacts/impact.1/`, `impacts/impact.2/`)? Unknown.
-- Can schemas **trigger metadata rollups** (e.g., updating `capability-changelog.yaml` on archive)? Almost certainly not — this is custom business logic, not file generation.
+- Can schemas handle **variable-count subdirectories** (e.g., per-service impact files)? Unknown.
+- Can schemas **trigger metadata rollups** (e.g., updating a capability changelog on archive)? Almost certainly not — this is custom business logic, not file generation.
 
 Building custom tooling to bridge these gaps would likely cost more than the value OpenSpec provides.
 
@@ -263,7 +263,7 @@ GitHub stars (31.5k) reflect developer interest, not enterprise suitability. The
 
 #### 5. Opportunity cost is real
 
-Every hour spent evaluating, configuring, and integrating OpenSpec is an hour not spent on higher-value work: completing solution designs for pending NTK tickets, improving portal generators, building CI governance rules, or extending the capability model. The existing workflow is functional and actively improving. The ROI on OpenSpec investigation is speculative at best.
+Every hour spent evaluating, configuring, and integrating OpenSpec is an hour not spent on higher-value work: completing solution designs for pending tickets, improving portal generators, building CI governance rules, or extending the capability model. The existing workflow is functional and actively improving. The ROI on OpenSpec investigation is speculative at best.
 
 ### What We Lose by Not Adopting
 
@@ -271,11 +271,11 @@ To be fair, we forgo:
 
 | Capability | Impact of Not Having It |
 |-----------|------------------------|
-| Schema-enforced artifact ordering | LOW — `.instructions.md` and copilot-instructions.md provide adequate guidance; AI compliance is high |
-| Multi-tool portability | NONE — we use one tool with no plans to change |
-| Delta-based behavioral specs | LOW — capability changelog tracks architectural changes; behavioral contract evolution is tracked via OpenAPI spec versioning |
+| Schema-enforced artifact ordering | LOW — `.instructions.md` and AI tool instruction files provide adequate guidance; AI compliance is high |
+| Multi-tool portability | NONE — single-tool usage with no plans to change |
+| Delta-based behavioral specs | LOW — capability changelog tracks architectural changes; behavioral contract evolution is tracked via API spec versioning |
 | Given/When/Then formalized specs | LOW — requirements from tickets are captured narratively; formalization adds precision but not enough to justify tooling overhead |
-| Slash commands for AI workflow | LOW — Copilot Agent Mode handles multi-step workflows through instruction files effectively |
+| Slash commands for AI workflow | LOW — AI Agent Mode handles multi-step workflows through instruction files effectively |
 
 None of these losses represent a material risk to architecture quality or delivery velocity.
 
@@ -283,12 +283,12 @@ None of these losses represent a material risk to architecture quality or delive
 
 Revisit this decision if ANY of the following conditions change:
 
-1. **We adopt a second AI coding tool** (e.g., Claude Code, Cursor) and need portable workflow instructions
+1. **The team adopts a second AI coding tool** (e.g., Claude Code, Cursor) and needs portable workflow instructions
 2. **Workflow enforcement becomes a real pain point** — repeated failures where the AI agent produces architecturally incomplete solutions despite instruction file improvements
 3. **OpenSpec achieves foundation governance** (joins FINOS, Linux Foundation, or equivalent) and demonstrates enterprise architecture adoption
 4. **OpenSpec adds architecture-specific features** — capability models, MADR templates, per-service impact tracking, or metadata rollup hooks
 
-Until then, invest in improving the existing workflow through native Copilot customization mechanisms.
+Until then, invest in improving the existing workflow through native AI tool customization mechanisms.
 
 ---
 
@@ -312,4 +312,3 @@ Until then, invest in improving the existing workflow through native Copilot cus
 | OpenSpec concepts docs (docs/concepts.md) | 2026-03-17 |
 | OpenSpec OPSX workflow docs (docs/opsx.md) | 2026-03-17 |
 | OpenSpec getting started (docs/getting-started.md) | 2026-03-17 |
-| NovaTrek solution design workflow (copilot-instructions.md) | 2026-03-17 |
