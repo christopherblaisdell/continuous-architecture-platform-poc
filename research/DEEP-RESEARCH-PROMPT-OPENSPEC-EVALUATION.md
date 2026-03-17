@@ -2,7 +2,7 @@
 
 ## Research Objective
 
-I need a technically precise analysis of **OpenSpec** (by Fission AI) evaluated as a potential workflow framework for my architecture solution design process. I am NOT comparing OpenSpec to CALM — they are completely different categories of tool. CALM is an architecture topology specification (nodes, relationships, interfaces). OpenSpec is a development workflow framework (specs, changes, AI agent workflow). Do NOT compare OpenSpec to CALM in your research.
+I need a technically precise analysis of **OpenSpec** (by Fission AI) evaluated as a potential workflow framework for my architecture solution design process.
 
 The question is: **Should I adopt OpenSpec to improve my existing custom solution design workflow?**
 
@@ -73,7 +73,6 @@ OpenSpec structures work as "changes" containing artifacts (proposal, specs, des
 
 ## Important Constraints
 
-- Do NOT compare OpenSpec to CALM. They are different categories of tool.
 - Do NOT assume OpenSpec is designed for architecture work — verify whether anyone uses it for architecture governance vs. feature development
 - Do NOT rely on marketing claims — look for independent usage evidence
 - Do cite specific GitHub issues, commits, or documentation pages where possible

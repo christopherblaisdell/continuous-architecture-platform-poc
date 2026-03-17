@@ -12,8 +12,6 @@ OpenSpec is a **spec-driven development workflow framework** for AI coding agent
 
 NovaTrek already has a **purpose-built architecture solution design workflow** with a richer artifact structure (requirements, analysis, assumptions, capabilities, MADR decisions, guidance, per-service impacts, risks, user stories). The question is whether OpenSpec's workflow tooling — slash commands, schema-driven dependency graphs, delta spec merging, and multi-tool agent support — provides enough value to justify adopting it alongside or in place of the existing workflow.
 
-**NOTE**: This evaluation is independent of NovaTrek's CALM (Architecture as Code) integration. CALM is a machine-readable architecture topology specification — a completely different category of tool. CALM handles system structure and governance; OpenSpec handles development workflow. They do not compete, and comparing them is a category error.
-
 ---
 
 ## 2. What OpenSpec Actually Is
