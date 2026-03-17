@@ -4,7 +4,7 @@
 |-----------|-------|
 | **Author** | Christopher Blaisdell |
 | **Date** | 2026-03-11 |
-| **Status** | Proposed |
+| **Status** | In Progress |
 | **Purpose** | Define a comprehensive testing methodology for NovaTrek Adventures — establishing TDD/BDD practices, coverage standards, automated regression, and contract testing as integral parts of the delivery practice |
 
 ---
