@@ -1,8 +1,37 @@
 # Incorporating Everything Claude Code (ECC) into the NovaTrek Continuous Architecture Platform
 
 **Date**: 2026-03-17
-**Status**: Proposed
+**Status**: In Progress
 **Author**: Solution Architecture Team
+
+---
+
+## Decisions Made
+
+| # | Decision | Selection | Rationale |
+|---|----------|-----------|-----------|
+| 1 | Scope | **Tier 1 only** (13 skills) | Start focused; validate quality improvement before expanding |
+| 2 | Delivery format | **Both `.instructions.md` + `.prompt.md`** (Option C) | Always-on rules for quality; invokable prompts for demos |
+| 3 | Demo strategy | **Live demo with saved baseline** (Option C) | Pre-save baseline output; live-demo with skill; compare side-by-side |
+| 4 | Demo prompts | **Security Review, Investigation, Verification** (Option C) | Maximum before/after contrast for leadership audience |
+| 5 | Demo target | **NTK-10003** (Unregistered Guest Self-Check-In) | Richest PII/auth/cross-service scenario for all three prompts |
+
+### Demo Rollback Methodology
+
+The demo creates or modifies files during live demonstration. To reset cleanly:
+
+```bash
+# Before demo: save a checkpoint
+./scripts/demo-reset.sh save
+
+# Run the demo (invoke prompts, show outputs)
+
+# After demo: reset to checkpoint
+./scripts/demo-reset.sh reset
+
+# Check what would be reset (without resetting)
+./scripts/demo-reset.sh status
+```
 
 ---
 
