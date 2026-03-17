@@ -1,333 +1,287 @@
-# OpenSpec vs CALM: Comprehensive Analysis for NovaTrek Continuous Architecture Platform
+# OpenSpec Evaluation: Should We Adopt It for Architecture Solution Design Workflow?
 
 **Date**: 2026-03-17
 **Status**: Draft
-**Context**: Evaluate OpenSpec as a complement or alternative to CALM within the NovaTrek Continuous Architecture Platform
+**Context**: Evaluate whether OpenSpec improves NovaTrek's AI-assisted architecture solution design workflow
 
 ---
 
 ## 1. Executive Summary
 
-CALM (Common Architecture Language Model) and OpenSpec are **fundamentally different tools solving different problems in the software development lifecycle**. CALM is a machine-readable architecture specification format for system topology — nodes, relationships, interfaces, patterns, and governance controls. OpenSpec is a spec-driven development framework for AI coding agents that structures behavioral requirements, design decisions, and implementation workflows around change proposals.
+OpenSpec is a **spec-driven development workflow framework** for AI coding agents. It structures how developers and AI assistants plan, specify, and implement changes using organized artifacts (proposals, behavioral specs, design documents, task checklists) with a delta-based change tracking model.
 
-The two frameworks operate at **different abstraction layers**: CALM operates at the **architecture governance layer** (structure, topology, validation rules), while OpenSpec operates at the **development workflow layer** (requirements, design, implementation tracking). They are complementary by nature, not competing. However, OpenSpec's artifact model overlaps partially with NovaTrek's existing solution design workflow, which means adoption requires careful integration to avoid creating duplicate structures.
+NovaTrek already has a **purpose-built architecture solution design workflow** with a richer artifact structure (requirements, analysis, assumptions, capabilities, MADR decisions, guidance, per-service impacts, risks, user stories). The question is whether OpenSpec's workflow tooling — slash commands, schema-driven dependency graphs, delta spec merging, and multi-tool agent support — provides enough value to justify adopting it alongside or in place of the existing workflow.
 
----
-
-## 2. Framework Comparison Matrix
-
-| Dimension | CALM (FINOS) | OpenSpec (Fission AI) |
-|-----------|-------------|----------------------|
-| **Primary purpose** | Architecture-as-code: model, validate, govern system topology | Spec-driven development: structure AI-assisted coding workflows |
-| **Core abstraction** | Nodes, relationships, interfaces, patterns | Specs, changes, artifacts, delta specs |
-| **Format** | JSON (JSON Schema 2020-12 based) | Markdown (structured with conventions) |
-| **Schema enforcement** | JSON Schema validation, pattern matching | Convention-based (ADDED/MODIFIED/REMOVED sections), YAML schema definitions |
-| **What it models** | System topology: services, databases, actors, integrations, deployment | Behavioral contracts: what the system should do (requirements + scenarios) |
-| **Governance** | CI-enforced architecture rules (patterns, controls, standards) | Convention-based verification (`/opsx:verify`) |
-| **AI integration** | AI consumes CALM as context for topology-aware decisions | AI is the primary user — slash commands drive agent workflows |
-| **Visualization** | Topology graphs, dependency matrices, domain maps | Change status dashboards, artifact dependency graphs |
-| **Change tracking** | Timelines (moments with architectural snapshots) | Delta specs (ADDED/MODIFIED/REMOVED merge into source of truth) |
-| **Tool ecosystem** | CALM CLI (`@finos/calm-cli`), custom generators | OpenSpec CLI, 20+ AI tool integrations (Claude Code, Copilot, Cursor, etc.) |
-| **Governance body** | FINOS (Fintech Open Source Foundation) — Linux Foundation member | Fission AI (startup) |
-| **License** | Apache 2.0 | MIT |
-| **Community size** | 44 contributors, 287 stars, 94 forks | 50 contributors, 31.5k stars, 2.1k forks |
-| **Maturity** | v1.2+ (stable, weekly CLI releases) | v1.2.0 (34 releases in ~7 months, rapid iteration) |
-| **Installation** | npm (`@finos/calm-cli`) or custom scripts | npm (`@fission-ai/openspec`) |
-| **Language** | 66% TypeScript, 22.8% Java | 98.7% TypeScript |
-| **Primary users** | Architects, platform engineers | Developers, AI coding assistants |
+**NOTE**: This evaluation is independent of NovaTrek's CALM (Architecture as Code) integration. CALM is a machine-readable architecture topology specification — a completely different category of tool. CALM handles system structure and governance; OpenSpec handles development workflow. They do not compete, and comparing them is a category error.
 
 ---
 
-## 3. Complementarity Analysis
+## 2. What OpenSpec Actually Is
 
-### 3.1 Where They Are Orthogonal (No Overlap)
+### Core Concepts
 
-| CALM Capability | OpenSpec Equivalent | Verdict |
-|----------------|--------------------|---------| 
-| System topology modeling (nodes, relationships) | None | CALM only |
-| Interface definition (host-port, path, URL, OAuth2) | None | CALM only |
-| Architecture pattern enforcement (JSON Schema) | None | CALM only |
-| Governance controls (data ownership, API-mediated access) | None | CALM only |
-| Deployment decorators (Kubernetes, Helm) | None | CALM only |
-| Standards composition (org-specific JSON Schema extensions) | None | CALM only |
-| Timeline/moment tracking (architectural evolution snapshots) | None | CALM only |
-| Behavioral requirements (SHALL/MUST/SHOULD with scenarios) | None | OpenSpec only |
-| Delta spec model (ADDED/MODIFIED/REMOVED merge) | None | OpenSpec only |
-| AI agent slash commands (`/opsx:propose`, `/opsx:apply`) | None | OpenSpec only |
-| Task tracking with checkbox implementation flow | None | OpenSpec only |
-| Change-scoped artifact packaging (proposal + design + tasks + specs) | None | OpenSpec only |
+| Concept | Description |
+|---------|-------------|
+| **Specs** | Behavioral contracts describing how the system works, organized by domain. Requirements use RFC 2119 keywords (SHALL/MUST/SHOULD/MAY) with Given/When/Then scenarios. Live in `openspec/specs/`. |
+| **Changes** | Proposed modifications packaged as folders. Each change contains artifacts (proposal, design, tasks) and delta specs. Live in `openspec/changes/<name>/`. |
+| **Delta Specs** | Describe what's changing (ADDED/MODIFIED/REMOVED requirements) relative to current specs. On archive, deltas merge into main specs. |
+| **Artifacts** | Documents within a change: `proposal.md` (why + scope), `design.md` (how), `tasks.md` (implementation checklist), `specs/` (delta specs). |
+| **Schemas** | YAML definitions of artifact types and their dependency graph. Customizable per project. |
+| **Slash Commands** | AI agent workflow commands: `/opsx:propose`, `/opsx:apply`, `/opsx:archive`, etc. |
 
-### 3.2 Where They Potentially Overlap
+### How It Works
 
-| Concern | CALM Approach | OpenSpec Approach | Overlap Degree |
-|---------|-------------|-------------------|----------------|
-| **API contract evolution** | Interface definitions in topology JSON; timeline moments capture state snapshots | Delta specs can describe API behavior changes (MODIFIED requirements) | Low — CALM models the structure, OpenSpec models the behavior |
-| **Architecture decisions** | Not native; ADRs are separate artifacts | `design.md` captures technical approach and architecture decisions per change | Low — different scope (system-level vs. change-level) |
-| **Change management** | Timelines track architectural state at significant moments | Changes track the full lifecycle of a proposed modification | Medium — both track evolution, but at different granularity |
-| **Validation/CI** | JSON Schema validation of topology, pattern conformance | Convention-based verification of spec formatting, manual `/opsx:verify` | Low — different validation targets |
+```
+/opsx:propose "add-dark-mode"
+    │
+    ▼
+openspec/changes/add-dark-mode/
+├── proposal.md           # Why and what (intent, scope, approach)
+├── specs/ui/spec.md      # Delta: ADDED/MODIFIED/REMOVED requirements
+├── design.md             # How (technical approach, architecture decisions)
+└── tasks.md              # Implementation checklist with checkboxes
+    │
+    ▼  (/opsx:apply — work through tasks)
+    │
+    ▼  (/opsx:archive — when done)
+    │
+openspec/specs/ui/spec.md  # Main spec now includes merged deltas
+openspec/changes/archive/2026-03-17-add-dark-mode/  # Change preserved
+```
 
-### 3.3 Where They Overlap with NovaTrek's Existing Workflow
+### Key Properties
 
-This is the critical analysis — OpenSpec's artifact model overlaps significantly with our existing solution design workflow:
-
-| NovaTrek Current Artifact | Location | OpenSpec Equivalent | Overlap Risk |
-|--------------------------|----------|--------------------|-----------| 
-| Ticket report | `1.requirements/` | `proposal.md` (Intent section) | HIGH |
-| Simple explanation | `2.analysis/` | `proposal.md` (Scope + Approach sections) | HIGH |
-| Assumptions | `3.solution/a.assumptions/` | Part of `proposal.md` or `design.md` | MEDIUM |
-| Capabilities | `3.solution/c.capabilities/` | No equivalent — OpenSpec has no capability model | NONE |
-| Decisions (MADR) | `3.solution/d.decisions/` | `design.md` (Architecture Decisions section) | HIGH |
-| Guidance | `3.solution/g.guidance/` | `design.md` (Technical Approach section) | HIGH |
-| Impacts | `3.solution/i.impacts/` | No direct equivalent | NONE |
-| Risks | `3.solution/r.risks/` | Part of `proposal.md` | LOW |
-| User stories | `3.solution/u.user.stories/` | `specs/` (scenarios in Given/When/Then) | MEDIUM |
-| Solution master document | `NTK-XXXXX-solution-design.md` | `proposal.md` + cross-references | HIGH |
-| Capability changelog | `architecture/metadata/capability-changelog.yaml` | `openspec/specs/` (delta merge on archive) | MEDIUM |
-
-**Key Insight**: OpenSpec's change model (proposal + specs + design + tasks) is a **simpler, flatter version** of NovaTrek's solution design folder structure. NovaTrek's structure is richer (separate impacts, capabilities, assumptions, guidance) but more complex. The question is whether simplification would be a net benefit or would lose critical architecture governance artifacts.
+- **31.5k GitHub stars**, 50 contributors, MIT license, v1.2.0
+- **Supports 20+ AI tools**: Claude Code, Cursor, Codex, GitHub Copilot, Windsurf, etc.
+- **Custom schemas**: Define your own artifact types and dependency graphs
+- **Brownfield-first**: Delta model designed for modifying existing systems, not just greenfield
+- **No API keys, no MCP**: Pure file-based, convention-driven
+- **By Fission AI** (startup) — not under a foundation governance model
 
 ---
 
-## 4. Where OpenSpec Could Add Value
+## 3. Comparison: OpenSpec vs NovaTrek's Existing Solution Design Workflow
 
-### 4.1 AI Agent Workflow Structuring
+### 3.1 Artifact Mapping
 
-**Current gap**: NovaTrek's solution design workflow is documented in `copilot-instructions.md` as a long instruction set. The AI agent reads these instructions and tries to follow the folder structure, but there is no automated enforcement of the workflow sequence.
+| NovaTrek Current Artifact | Location | OpenSpec Equivalent | Assessment |
+|--------------------------|----------|---------------------|------------|
+| Ticket report | `1.requirements/` | `proposal.md` (Intent section) | OpenSpec lighter — merges requirements into proposal |
+| Simple explanation | `2.analysis/` | `proposal.md` (Scope + Approach) | OpenSpec lighter — no separate analysis artifact |
+| Assumptions | `3.solution/a.assumptions/` | Part of `proposal.md` or `design.md` | **Gap** — no dedicated assumptions artifact |
+| Capabilities | `3.solution/c.capabilities/` | No equivalent | **Gap** — OpenSpec has no capability model |
+| Decisions (MADR) | `3.solution/d.decisions/` | `design.md` (Architecture Decisions section) | **Gap** — OpenSpec's format is less rigorous than MADR |
+| Guidance | `3.solution/g.guidance/` | `design.md` (Technical Approach) | Merged — not separated from decisions |
+| Per-service impacts | `3.solution/i.impacts/` | No direct equivalent | **Gap** — no per-service impact assessment |
+| Risks | `3.solution/r.risks/` | Part of `proposal.md` | **Gap** — no dedicated risk artifact |
+| User stories | `3.solution/u.user.stories/` | `specs/` (Given/When/Then scenarios) | Different framing — behavioral specs vs. user stories |
+| Master document | `NTK-XXXXX-solution-design.md` | `proposal.md` + cross-refs | OpenSpec lighter |
+| Capability changelog | `capability-changelog.yaml` | `openspec/specs/` (delta merge) | Different mechanism entirely |
 
-**OpenSpec value**: OpenSpec's slash commands (`/opsx:propose`, `/opsx:continue`, `/opsx:apply`, `/opsx:archive`) provide a structured, tool-aware workflow that AI agents natively understand. The schema-driven dependency graph (proposal -> specs -> design -> tasks) ensures artifacts are created in the right order.
+**Summary**: OpenSpec's default artifact model (proposal + specs + design + tasks) is a **simpler, flatter structure** designed for feature development. NovaTrek's solution design workflow is richer and purpose-built for architecture governance. OpenSpec's default schema lacks dedicated artifacts for assumptions, capabilities, impacts, risks, and MADR-format decisions.
 
-### 4.2 Behavioral Specification as a Gap-Filler
+### 3.2 Workflow Comparison
 
-**Current gap**: NovaTrek documents architecture (topology, API contracts, service interactions) but does not formally specify **behavioral requirements** with testable scenarios. Requirements come from JIRA tickets (mock) and are captured narratively.
+| Dimension | NovaTrek Current | OpenSpec |
+|-----------|-----------------|----------|
+| **Workflow enforcement** | Convention-based — documented in copilot-instructions.md, agent tries to follow | Schema-driven — dependency graph enforces artifact creation order |
+| **AI agent guidance** | Long instruction document (~800 lines) AI reads and interprets | Slash commands + skill files AI tools natively understand |
+| **Tool portability** | Copilot-specific (copilot-instructions.md) | 20+ tools supported natively |
+| **Change tracking** | Capability changelog records what changed per solution | Delta specs (ADDED/MODIFIED/REMOVED) merge into behavioral source of truth |
+| **Iteration model** | Linear: create artifacts in folder structure | Fluid: update any artifact anytime, no phase gates |
+| **Artifact dependencies** | Implicit (documented conventions) | Explicit (YAML schema with `requires:` declarations) |
+| **Archive/completion** | Solution folder stays in `architecture/solutions/` | Change moves to `archive/`, deltas merge into main specs |
+| **Behavioral specs** | Requirements captured narratively from tickets | Formalized Given/When/Then scenarios with RFC 2119 keywords |
+| **Review experience** | Reviewer reads full solution folder | Reviewer reads delta showing exactly what changed |
 
-**OpenSpec value**: OpenSpec's spec format (requirements with Given/When/Then scenarios) provides a structured way to capture behavioral contracts that are testable and version-controlled. The delta spec model makes it natural to track how behavior evolves over time.
+### 3.3 Where OpenSpec Is Stronger
 
-### 4.3 Brownfield Change Management
+1. **Workflow enforcement via schema**: OpenSpec's dependency graph (proposal -> specs -> design -> tasks) ensures artifacts are created in order. NovaTrek relies on AI reading instructions and hoping it follows the structure.
 
-**Current gap**: NovaTrek's capability changelog tracks what changed per solution, but does not capture a "before and after" behavioral diff.
+2. **AI agent portability**: OpenSpec works with 20+ tools natively. NovaTrek's workflow is encoded in Copilot-specific instructions. If we switch tools or add new ones, we must rewrite instructions.
 
-**OpenSpec value**: Delta specs (ADDED/MODIFIED/REMOVED) provide a clear behavioral diff that reviewers can understand quickly. The archive process merges deltas into the main specs, building a cumulative behavioral specification over time.
+3. **Delta-based change tracking**: OpenSpec's ADDED/MODIFIED/REMOVED model provides a clear behavioral diff. NovaTrek's capability changelog tracks capability changes but not behavioral contract evolution.
 
-### 4.4 Multi-Tool Agent Support
+4. **Formalized behavioral specifications**: Given/When/Then scenarios with RFC 2119 keywords are testable and precise. NovaTrek captures requirements narratively.
 
-**Current gap**: NovaTrek's AI workflow is tightly bound to GitHub Copilot instructions. Phase 1 compares Copilot vs. Roo Code, but the instruction format differs between tools.
+5. **Fluid iteration**: OpenSpec explicitly supports updating artifacts mid-implementation without "going back." NovaTrek's workflow is implicitly linear.
 
-**OpenSpec value**: OpenSpec supports 20+ AI tools natively. If NovaTrek expands beyond Copilot/Roo Code, OpenSpec provides a universal workflow layer that works across all AI coding assistants.
+### 3.4 Where NovaTrek's Existing Workflow Is Stronger
+
+1. **Architecture-specific artifacts**: Dedicated assumptions, capabilities, impacts (per-service), risks, and guidance artifacts. OpenSpec lacks these.
+
+2. **MADR decision rigor**: MADR format with required sections (Status, Date, Context, Decision Drivers, 2+ Options with pros/cons, Outcome, Consequences). OpenSpec's `design.md` has a simpler, less structured decisions section.
+
+3. **Capability model integration**: NovaTrek's `capability-changelog.yaml` tracks L3 capability emergence per solution, feeding portal generators. OpenSpec has no capability concept.
+
+4. **Per-service impact assessment**: NovaTrek creates separate impact files for each affected service, documenting API contract changes, data model modifications, and integration point changes. OpenSpec has no equivalent.
+
+5. **Purpose-built for architecture**: The workflow was designed for architecture governance. OpenSpec was designed for feature development.
 
 ---
 
-## 5. Where OpenSpec Would NOT Add Value (or Would Conflict)
+## 4. Can OpenSpec's Custom Schemas Bridge the Gap?
 
-### 5.1 Architecture Topology and Governance
+OpenSpec supports custom schemas that define artifact types and dependencies:
 
-OpenSpec has **zero** capability for modeling system topology, service dependencies, database ownership, or infrastructure architecture. CALM is the only tool in this comparison that addresses these concerns. OpenSpec cannot replace CALM for:
-- System topology visualization
-- CI-enforced architecture rules
-- Pattern-based governance
-- Deployment architecture modeling
-- Cross-service dependency analysis
-- Blast radius assessment
+```yaml
+# Hypothetical novatrek-architecture schema
+name: novatrek-architecture
+artifacts:
+  - id: requirements
+    generates: requirements.md
+    requires: []
+  - id: analysis
+    generates: analysis.md
+    requires: [requirements]
+  - id: specs
+    generates: specs/**/*.md
+    requires: [requirements]
+  - id: decisions
+    generates: decisions.md
+    requires: [specs]
+  - id: impacts
+    generates: impacts/**/*.md
+    requires: [specs, decisions]
+  - id: risks
+    generates: risks.md
+    requires: [specs]
+  - id: tasks
+    generates: tasks.md
+    requires: [specs, decisions, impacts]
+```
 
-### 5.2 Capability Model
+**Unknown**: Whether custom schemas can:
+- Enforce specific formats within artifacts (e.g., MADR structure in decisions.md)
+- Support template injection for artifact-specific conventions (e.g., ISO 25010 quality attributes in risks)
+- Handle the capability changelog rollup pattern (metadata YAML update triggered by change completion)
+- Accommodate per-service impact subdirectories with variable count
 
-NovaTrek's capability model (L1/L2 capabilities in `capabilities.yaml`, L3 emergence in `capability-changelog.yaml`) has no equivalent in OpenSpec. OpenSpec tracks behavioral specs, not business capabilities.
-
-### 5.3 Impact Assessment
-
-NovaTrek's per-service impact assessment artifacts have no OpenSpec equivalent. OpenSpec's `design.md` captures technical approach but not the structured "what changes for each affected service" analysis that the solution design workflow requires.
-
-### 5.4 MADR Decision Records
-
-NovaTrek uses MADR format with required sections (Status, Date, Context, Decision Drivers, Considered Options with pros/cons, Decision Outcome, Consequences). OpenSpec's `design.md` has an "Architecture Decisions" section but uses a simpler format without the rigor of MADR. Adopting OpenSpec's decision format would be a regression in decision quality.
-
-### 5.5 Duplicate Source of Truth Risk
-
-If OpenSpec specs (`openspec/specs/`) and CALM topology (`architecture/calm/`) both claim to be the source of truth for different aspects of the same services, drift is inevitable. Any integration must establish clear ownership boundaries.
+This is a **critical unknown** that deep research should resolve before committing to adoption.
 
 ---
 
-## 6. Options Analysis
+## 5. Options Analysis
 
-### Option A: CALM Only (Status Quo)
+### Option A: Keep Existing Workflow (No OpenSpec)
 
-Continue the current CALM integration plan through phases 2-5 without adopting OpenSpec.
+Continue the current solution design workflow as-is.
 
 **Advantages**:
-- No new tooling to learn, integrate, or maintain
-- No risk of duplicate source-of-truth conflicts
-- CALM roadmap (phases 2-5) already addresses topology governance, drift detection, blast radius
-- FINOS governance provides long-term stability
-- Existing solution design workflow is mature and purpose-built for architecture work
+- No new tooling to learn or maintain
+- Workflow is purpose-built for architecture governance
+- All required artifacts (impacts, capabilities, MADR decisions) are first-class
+- No dependency on a startup's framework
 
 **Disadvantages**:
-- No formalized behavioral specification layer — requirements remain narrative
-- Solution design workflow depends on copilot-instructions.md conventions rather than tool-enforced structure
+- Workflow enforcement is convention-based, not tool-enforced
+- AI agent guidance is Copilot-specific, not portable
+- No formalized behavioral specification layer
 - No delta-based change tracking for behavioral contracts
-- AI agent workflow is Copilot-specific, not portable
 
-**Risk level**: LOW (known path, no new dependencies)
+**Risk level**: LOW
 
-### Option B: CALM + OpenSpec (Complementary Adoption)
+### Option B: Adopt OpenSpec with Custom Architecture Schema
 
-Adopt OpenSpec as a **development workflow layer** operating alongside CALM as the **architecture governance layer**. OpenSpec handles behavioral specs and AI agent workflow; CALM handles topology, validation, and governance.
-
-**Integration model**:
-```
-                    Developer workflow (OpenSpec)
-                    ┌─────────────────────────┐
-                    │ /opsx:propose           │
-                    │   proposal.md           │
-                    │   specs/ (behavioral)   │
-                    │   design.md             │
-                    │   tasks.md              │
-                    └────────────┬────────────┘
-                                 │
-                    Architecture governance (CALM)
-                    ┌────────────▼────────────┐
-                    │ Topology validation     │
-                    │ Pattern enforcement     │
-                    │ Control verification    │
-                    │ Impact analysis         │
-                    └─────────────────────────┘
-```
+Adopt OpenSpec as the workflow engine, creating a custom schema that maps to NovaTrek's artifact structure. Use OpenSpec's slash commands, dependency graph, and delta model while preserving architecture-specific artifacts.
 
 **Advantages**:
-- Adds behavioral specification layer that CALM lacks
-- Improves AI agent workflow portability across 20+ tools
-- Delta spec model provides structured change tracking
-- Both tools are open source (MIT and Apache 2.0)
-- Can be piloted on a single solution design before full adoption
+- Schema-enforced workflow ordering
+- Multi-tool AI agent portability
+- Delta spec model for behavioral change tracking
+- Formalized Given/When/Then specifications
+- Fluid iteration without phase gates
 
 **Disadvantages**:
-- Two frameworks to maintain, update, and integrate
-- Requires mapping between OpenSpec artifacts and NovaTrek's richer solution design structure
-- Risk of artifact duplication (OpenSpec proposal.md vs. solution master document)
-- OpenSpec is from a startup (Fission AI) — long-term governance uncertain
-- Team must learn OpenSpec's workflow in addition to existing architecture practices
-- Additional npm dependency in the workspace
+- Custom schema feasibility is unvalidated
+- MADR format enforcement within OpenSpec artifacts is unclear
+- Capability changelog integration requires custom work
+- OpenSpec is from a startup — governance uncertain
+- Additional npm dependency and learning curve
+- Existing completed solutions would be in old format (inconsistency)
 
-**Risk level**: MEDIUM (integration complexity, governance uncertainty)
+**Risk level**: MEDIUM
 
-**Required adaptations**:
-1. Custom OpenSpec schema mapping artifacts to NovaTrek's solution structure
-2. Clear ownership boundary: OpenSpec owns behavioral specs, CALM owns topology
-3. CI pipeline integration — OpenSpec verify + CALM validate in same workflow
-4. Suppress or adapt overlapping artifacts (don't generate OpenSpec `design.md` if using MADR in `decisions/`)
+### Option C: Time-Boxed PoC
 
-### Option C: Replace Solution Design Workflow with OpenSpec (Partial Migration)
-
-Replace the current `architecture/solutions/` folder structure with OpenSpec's change model. Keep CALM for topology governance.
+Run a single architecture scenario through both workflows (existing and OpenSpec) in parallel to collect evidence before deciding.
 
 **Advantages**:
-- Simplifies the solution design workflow (fewer artifacts, flatter structure)
-- OpenSpec's workflow is AI-native and tool-agnostic
-- Archive model provides clean change history with behavioral delta merge
-- Eliminates custom folder structure in favor of an open standard
+- Evidence-based decision instead of speculation
+- Minimal commitment, fully reversible
+- Tests the critical unknowns (custom schema feasibility, AI quality improvement, artifact coverage)
+- Aligns with NovaTrek's PoC methodology
 
 **Disadvantages**:
-- **Loses critical artifacts**: impacts, capabilities, assumptions, guidance are not part of the OpenSpec model
-- MADR decision format would need to be shoe-horned into OpenSpec's design.md
-- Capability changelog has no OpenSpec equivalent — would need custom schema
-- All existing solution designs (already completed) would be in old format, creating inconsistency
-- OpenSpec's schema customization is available but untested at architecture-governance scale
-- The NovaTrek solution design workflow was purpose-built for architecture work; OpenSpec was designed for feature development
+- Time investment for setup and dual execution
+- PoC results from one scenario may not generalize
 
-**Risk level**: HIGH (loss of architecture-specific artifacts, untested at this use case scale)
-
-### Option D: Evaluate OpenSpec in a Time-Boxed PoC
-
-Run a single architecture scenario (e.g., one NTK ticket) using OpenSpec alongside the existing workflow specifically to test:
-1. Whether OpenSpec's slash commands improve AI agent guidance quality
-2. Whether delta specs add value for tracking behavioral changes
-3. Whether the two-framework overhead is manageable
-4. Whether a custom OpenSpec schema can accommodate NovaTrek's artifact needs
-
-**Advantages**:
-- Minimal commitment — learn before deciding
-- Reversible — remove OpenSpec if it doesn't add value
-- Provides real evidence for the CALM+OpenSpec vs. CALM-only decision
-- Aligns with NovaTrek's existing PoC methodology (Phase 1 AI tool comparison)
-
-**Disadvantages**:
-- Time investment for setup and evaluation
-- PoC results may not generalize to full-scale adoption
-- OpenSpec's workspace features (team collaboration) are still "coming soon"
-
-**Risk level**: LOW (reversible, time-boxed)
+**Risk level**: LOW
 
 ---
 
-## 7. Recommendation
+## 6. Recommendation
 
-**Recommendation: Option D (Time-Boxed PoC), with Option A as the fallback**
+**Recommendation: Option C (Time-Boxed PoC)**
 
 ### Rationale
 
-1. **CALM and OpenSpec solve different problems** — they are complementary, not competing. The question is not "which one?" but "does the second one add enough value to justify the overhead?"
+1. **The critical unknowns are testable.** We don't know if custom schemas can accommodate architecture artifacts, if slash commands improve AI output quality, or if the delta model adds review value. A PoC answers all three.
 
-2. **NovaTrek's existing solution design workflow already covers most of what OpenSpec offers** — the folder structure, artifact types, and AI instructions are purpose-built for architecture work. OpenSpec's simpler model is designed for feature development, not architecture governance.
+2. **The existing workflow works.** It's not broken — it just lacks enforcement tooling and multi-tool portability. There's no urgency to replace it.
 
-3. **The areas where OpenSpec genuinely adds new value are narrow but potentially significant**:
-   - Formalized behavioral specs with Given/When/Then scenarios
-   - Delta-based change tracking with merge semantics
-   - AI agent workflow portability across tools
-   - Structured slash commands for workflow enforcement
+3. **OpenSpec's value proposition is narrow for architecture work.** The strongest value-adds (workflow enforcement, AI portability, delta specs) are real but modest. The gaps (no impacts, no capabilities, simpler decisions format) are significant for architecture governance.
 
-4. **A PoC provides evidence without commitment** — run one architecture scenario through both workflows and compare the output quality, AI agent behavior, and developer experience.
+4. **A PoC is reversible.** If OpenSpec doesn't improve the workflow, remove it and continue as-is.
 
-5. **If the PoC shows insufficient value, no harm done** — the CALM integration plan continues on its current trajectory.
+### Decision Criteria (Post-PoC)
 
-### Decision Criteria for PoC Evaluation
+Adopt OpenSpec if ALL of the following are true:
+- Custom schema successfully accommodates all NovaTrek artifact types
+- AI agent output quality improves (fewer corrections, better artifact structure)
+- Delta specs add clear review value beyond narrative analysis
+- The overhead (npm dependency, learning curve, additional config) is justified
 
-After the PoC, adopt OpenSpec (Option B) if ALL of the following are true:
-- OpenSpec's slash commands measurably improve AI agent guidance quality (fewer corrections, better-structured output)
-- Delta specs provide review-time value that narrative analysis does not
-- The custom schema can accommodate NovaTrek-specific artifacts (impacts, capabilities, assumptions) without excessive ceremony
-- OpenSpec's overhead (npm dependency, additional files, learning curve) is justified by the value delivered
-
-If ANY of the following are true, stay with CALM only (Option A):
-- The custom schema cannot accommodate NovaTrek's artifact needs without losing critical governance artifacts
-- The two-framework overhead creates confusion about where artifacts live
-- OpenSpec's delta specs duplicate information already captured in capability-changelog.yaml
-- The AI agent workflow improvement is marginal (< significant qualitative improvement)
+Stay with existing workflow if ANY of the following are true:
+- Custom schema cannot accommodate impacts, capabilities, or MADR decisions
+- AI agent quality improvement is marginal
+- Delta specs duplicate information already in capability-changelog.yaml
+- The two-system overhead creates confusion about where artifacts live
 
 ---
 
-## 8. Key Unknowns Requiring Deep Research
+## 7. Risks
 
-The following questions cannot be answered from the current research and require deeper investigation. The companion deep research prompt covers these in detail:
-
-1. **Enterprise evidence**: Who is actually using OpenSpec at scale? What does Comcast's adoption look like specifically?
-2. **Custom schema limits**: Can OpenSpec's custom schema model accommodate architecture-specific artifacts (impact assessments, capability mapping, MADR decisions)?
-3. **CALM interoperability**: Has anyone integrated CALM and OpenSpec? Are there known integration patterns?
-4. **Governance trajectory**: Is Fission AI (OpenSpec's creator) planning to join a foundation (CNCF, FINOS, Linux Foundation)? What is the long-term governance plan?
-5. **Workspace features**: OpenSpec's team collaboration features are "coming soon" — what's the timeline and scope?
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|-----------|
+| Custom schema can't accommodate architecture artifacts | Medium | High | Test in PoC; fall back to existing workflow |
+| Fission AI abandons OpenSpec | Low | High | MIT license allows forking; evaluate governance trajectory |
+| OpenSpec updates break custom schema | Medium | Medium | Pin version; test updates in CI |
+| Team confusion about artifact locations | Medium | Medium | Clear documentation; single source-of-truth table |
+| Behavioral specs drift from OpenAPI contracts | Medium | Medium | CI check comparing specs against OpenAPI |
+| Maturity risk (v1.2.0, rapid iteration) | Medium | Medium | Pin version; evaluate stability before upgrading |
 
 ---
 
-## Appendix A: Glossary
+## 8. Key Unknowns for Deep Research
 
-| Term | Definition |
-|------|-----------|
-| CALM | Common Architecture Language Model — JSON-based architecture specification by FINOS |
-| OpenSpec | Spec-driven development framework for AI coding agents by Fission AI |
-| FINOS | Fintech Open Source Foundation — Linux Foundation member hosting CALM |
-| Delta spec | OpenSpec's change format showing ADDED/MODIFIED/REMOVED behavioral requirements |
-| Pattern (CALM) | JSON Schema-based blueprint defining required architecture structures |
-| Control (CALM) | Governance requirement applied to architecture elements |
-| Artifact (OpenSpec) | Document within a change: proposal, design, tasks, or delta specs |
-| MADR | Markdown Any Decision Record — NovaTrek's architecture decision format |
-| Topology | CALM's graph of nodes (services, databases, actors) and relationships (interactions, connections) |
+These questions cannot be answered from current research and are covered in [DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md](DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md):
 
-## Appendix B: Source Material
+1. **Custom schema limits**: Can OpenSpec schemas enforce artifact-internal formats (MADR), handle variable-count subdirectories (impacts), and trigger external rollups (capability changelog)?
+2. **Enterprise adoption**: Who is actually using OpenSpec at scale? What is Comcast's specific use case?
+3. **AI integration mechanics**: What exactly does OpenSpec generate for Copilot? Does it conflict with existing copilot-instructions.md?
+4. **Governance trajectory**: Is Fission AI planning foundation membership?
+5. **Architecture use cases**: Has anyone used OpenSpec for architecture governance, not just feature development?
 
-| Source | URL | Access Date |
-|--------|-----|-------------|
-| OpenSpec website | openspec.dev | 2026-03-17 |
-| OpenSpec GitHub | github.com/Fission-AI/OpenSpec | 2026-03-17 |
-| OpenSpec concepts docs | github.com/Fission-AI/OpenSpec/blob/main/docs/concepts.md | 2026-03-17 |
-| OpenSpec OPSX workflow docs | github.com/Fission-AI/OpenSpec/blob/main/docs/opsx.md | 2026-03-17 |
-| OpenSpec getting started | github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md | 2026-03-17 |
-| CALM specification | github.com/finos/architecture-as-code | 2026-03-10 |
-| NovaTrek CALM integration plan | docs/CALM-INTEGRATION-PLAN.md | 2026-03-17 |
-| NovaTrek CALM research summary | /memories/repo/calm-research-summary.md | 2026-03-17 |
+---
+
+## Appendix: Source Material
+
+| Source | Access Date |
+|--------|-------------|
+| OpenSpec website (openspec.dev) | 2026-03-17 |
+| OpenSpec GitHub (github.com/Fission-AI/OpenSpec) | 2026-03-17 |
+| OpenSpec concepts docs (docs/concepts.md) | 2026-03-17 |
+| OpenSpec OPSX workflow docs (docs/opsx.md) | 2026-03-17 |
+| OpenSpec getting started (docs/getting-started.md) | 2026-03-17 |
+| NovaTrek solution design workflow (copilot-instructions.md) | 2026-03-17 |
