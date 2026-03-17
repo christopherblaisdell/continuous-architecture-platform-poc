@@ -51,6 +51,30 @@ jobs:
         working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         run: ./gradlew build test
 
+      - name: Verify coverage thresholds (JaCoCo)
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+        run: ./gradlew jacocoTestCoverageVerification
+
+      - name: Run contract tests (Spring Cloud Contract)
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+        run: ./gradlew contractTest
+        continue-on-error: true
+
+      - name: Mutation testing report (PITest — advisory)
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+        run: ./gradlew pitest
+        continue-on-error: true
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ inputs.service-name }}
+          path: |
+            ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}/build/reports/tests/
+            ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}/build/reports/jacoco/
+            ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}/build/reports/pitest/
+
       - name: OWASP dependency check
         working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         run: ./gradlew dependencyCheckAnalyze

@@ -4,7 +4,7 @@
 |-----------|-------|
 | **Author** | Christopher Blaisdell |
 | **Date** | 2026-03-11 |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Purpose** | Define a comprehensive testing methodology for NovaTrek Adventures — establishing TDD/BDD practices, coverage standards, automated regression, and contract testing as integral parts of the delivery practice |
 
 ---
@@ -185,30 +185,30 @@ Test plan contents:
 
 | Step | Task | Effort |
 |------|------|--------|
-| B.1 | Evaluate Pact vs Spring Cloud Contract for NovaTrek services | Small |
-| B.2 | Create ADR for contract testing tool selection | Small |
-| B.3 | Set up Pact Broker (or equivalent) infrastructure | Medium |
-| B.4 | Write contract tests for highest-traffic cross-service calls (svc-check-in boundaries) | Medium |
-| B.5 | Add contract verification to CI pipeline | Small |
+| B.1 | COMPLETE -- Evaluated Pact vs Spring Cloud Contract; SCC selected for native Spring Boot integration and provider-first model | Small |
+| B.2 | COMPLETE -- Created ADR-013 for Spring Cloud Contract selection | Small |
+| B.3 | COMPLETE -- Added SCC verifier plugin, Spring Cloud BOM, contract test dependencies, and base test class to service template | Medium |
+| B.4 | COMPLETE -- Created exemplar contract tests for svc-check-in consumer boundaries (guest profile lookup with happy path and 404) and consumer stub test example | Medium |
+| B.5 | COMPLETE -- Added contract verification, coverage verification, mutation testing, and test report upload steps to service-ci.yml | Small |
 
 ### Phase C: BDD Adoption (Acceptance Testing)
 
 | Step | Task | Effort |
 |------|------|--------|
-| C.1 | Set up Cucumber-JVM in service build templates | Small |
-| C.3 | Write step definitions for common patterns (API calls, database assertions) | Medium |
-| C.4 | Add BDD scenario execution to CI pipeline | Small |
-| C.5 | Document BDD authoring guide for architects and developers | Small |
+| C.1 | COMPLETE -- Cucumber-JVM dependencies added to build template in Phase A (A.3) | Small |
+| C.3 | COMPLETE -- Created CommonSteps.java with reusable step definitions for guest identity, reservations, and response assertions; CucumberSuiteTest.java runner; cucumber.properties config | Medium |
+| C.4 | COMPLETE -- BDD scenarios execute as part of `./gradlew test` via JUnit Platform engine; CI runs them in service-ci.yml | Small |
+| C.5 | COMPLETE -- Created BDD Authoring Guide at docs/BDD-AUTHORING-GUIDE.md with Gherkin patterns, step organization, tagging strategy | Small |
 
 ### Phase D: Coverage Enforcement (Quality Gates)
 
 | Step | Task | Effort |
 |------|------|--------|
-| D.1 | Enable JaCoCo coverage gate in CI (fail PR below 80% line coverage) | Small |
-| D.2 | Enable mutation testing reports in CI (advisory) | Small |
-| D.3 | Create coverage dashboard (SonarCloud or custom) | Medium |
-| D.4 | Promote mutation score to gate (fail PR below 60%) | Small |
-| D.5 | Quarterly coverage review and threshold adjustment | Ongoing |
+| D.1 | COMPLETE -- JaCoCo coverage gate enabled in build template (fail build below 80% line, 70% branch) and enforced in service-ci.yml | Small |
+| D.2 | COMPLETE -- PITest mutation testing reports added to CI (advisory, uploaded as artifacts) | Small |
+| D.3 | COMPLETE -- SonarCloud configuration created at config/sonar-project.properties; requires organization provisioning to activate | Medium |
+| D.4 | Pending -- Promote mutation score to gate (fail PR below 60%) when baseline established across services | Small |
+| D.5 | Ongoing -- Quarterly coverage review and threshold adjustment | Ongoing |
 
 ---
 

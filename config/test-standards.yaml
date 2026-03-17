@@ -27,9 +27,12 @@ tooling:
     database: postgresql
   contract:
     approach: spec-driven       # auto-generated from OpenAPI specs
-    tool: tbd                   # Pact or Spring Cloud Contract — decided in Phase B
+    tool: spring-cloud-contract # ADR-013
+    version: "4.1.4"
     spec_source: architecture/specs/
     boundary_source: architecture/metadata/cross-service-calls.yaml
+    contracts_dir: src/test/resources/contracts/
+    stubs_output: build/stubs/
   acceptance:
     framework: cucumber-jvm
     methodology: bdd

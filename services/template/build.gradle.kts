@@ -5,6 +5,7 @@ plugins {
     id("org.owasp.dependencycheck") version "10.0.3"
     id("jacoco")
     id("info.solidsoft.pitest") version "1.15.0"
+    id("org.springframework.cloud.contract") version "4.1.4"
 }
 
 group = "com.novatrek"
@@ -24,6 +25,8 @@ dependencyManagement {
     imports {
         // Spring Cloud Azure BOM — aligns all Azure SDK versions
         mavenBom("com.azure.spring:spring-cloud-azure-dependencies:5.18.0")
+        // Spring Cloud BOM — aligns Spring Cloud Contract and related modules
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.4")
     }
 }
 
@@ -64,6 +67,10 @@ dependencies {
     testImplementation("io.cucumber:cucumber-java:7.20.1")
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.20.1")
     testImplementation("io.cucumber:cucumber-spring:7.20.1")
+
+    // --- Contract Testing (Spring Cloud Contract) ---
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 }
 
 tasks.withType<Test> {
@@ -105,6 +112,13 @@ pitest {
     mutationThreshold = 0  // advisory — set to 60 when promoted to gate
     outputFormats = listOf("HTML", "XML")
     timestampedReports = false
+}
+
+// Spring Cloud Contract — provider-side contract verification (ADR-013)
+contracts {
+    testFramework = org.springframework.cloud.contract.verifier.config.TestFramework.JUNIT5
+    baseClassForTests = "com.novatrek.contract.BaseContractTest"
+    contractsDslDir = file("src/test/resources/contracts")
 }
 
 // OWASP Dependency Check — fail on CRITICAL/HIGH CVEs
