@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: svc-loyalty-rewards
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: loyalty_rewards
+
+  flyway:
+    enabled: true
+    schemas: loyalty_rewards
+    clean-disabled: true
+    baseline-on-migrate: true
+
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus

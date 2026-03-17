@@ -1,0 +1,11 @@
+package com.novatrek.partnerintegrations;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class PartnerIntegrationsApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(PartnerIntegrationsApplication.class, args);
+    }
+}
