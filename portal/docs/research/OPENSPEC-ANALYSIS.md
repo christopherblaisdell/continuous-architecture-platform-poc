@@ -1,7 +1,7 @@
 # OpenSpec Evaluation: Why Native AI Tool Customization Wins
 
 **Date**: 2026-03-17
-**Status**: Decided — Do Not Adopt
+**Status**: Not Recommended
 
 ---
 
@@ -49,9 +49,9 @@ OpenSpec merges all of these into its flat proposal/design model or omits them e
 
 ---
 
-## Decision
+## Recommendation
 
-**Do not adopt OpenSpec.** Native AI tool customization (`.instructions.md`, `copilot-instructions.md`, prompt templates) is simpler, more powerful for architecture work, and free.
+**OpenSpec is not recommended.** Native AI tool customization (`.instructions.md`, `copilot-instructions.md`, prompt templates) is simpler, more powerful for architecture work, and free.
 
 OpenSpec adds a layer of indirection that would be useful if you were switching AI tools frequently. If you are not, every feature OpenSpec provides is either unnecessary or already achievable through native customization — with the added benefit of full content control that OpenSpec's schema model cannot match.
 
