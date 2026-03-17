@@ -151,3 +151,7 @@ nav:
       - Deep Research 1: research/DEEP-RESEARCH-1.md
       - Deep Research 2: research/DEEP-RESEARCH-2.md
       - Copilot Billing Research: research/DEEP-RESEARCH-PROMPT-COPILOT-BILLING.md
+      - OpenSpec Evaluation:
+          - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
+          - Evaluation Plan: research/OPENSPEC-EVALUATION-PLAN.md
+          - Deep Research Prompt: research/DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md
