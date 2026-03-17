@@ -159,6 +159,52 @@ Requirements capture explicit functional behaviors and non-functional quality at
 
 **NOTE**: Only include this section if requirements documents exist. See [Optional Sections Standard](/.ai-instructions/customizations/solution-design-optional-sections-standard.md).
 
+## Test Plan
+
+The test plan identifies which test layers are affected by this solution and what new or updated tests are required. Test methodology follows ADR-012 (TDD/BDD hybrid). Coverage thresholds are defined in `config/test-standards.yaml`.
+
+### Affected Test Layers
+
+| Layer | Affected | Rationale |
+|-------|----------|----------|
+| Unit (TDD) | [Yes/No] | [What service logic requires new unit tests] |
+| Integration (TDD) | [Yes/No] | [What data access or service composition requires integration tests] |
+| Contract (Spec-driven) | [Yes/No] | [What new cross-service integrations require contract tests] |
+| Acceptance (BDD) | [Yes/No] | [What user stories produce Gherkin scenarios] |
+| E2E | [Yes/No] | [What critical paths require end-to-end validation] |
+
+### New Test Scenarios
+
+| Service | Test Type | Scenario | Priority |
+|---------|-----------|----------|----------|
+| [svc-xxx] | Unit | [Brief description of test scenario] | [HIGH/MEDIUM/LOW] |
+| [svc-yyy] | Contract | [Brief description of contract test] | [HIGH/MEDIUM/LOW] |
+
+### BDD Scenarios
+
+Derived from user story acceptance criteria:
+
+```gherkin
+Feature: [Feature name from user story]
+
+  Scenario: [Scenario name]
+    Given [precondition]
+    When [action]
+    Then [expected outcome]
+```
+
+### Contract Test Additions
+
+| Consumer | Provider | Endpoint | Description |
+|----------|----------|----------|-------------|
+| [svc-consumer] | [svc-provider] | [METHOD /path] | [What the contract validates] |
+
+### Existing Tests to Update
+
+| Service | Test File/Class | Change Required |
+|---------|----------------|----------------|
+| [svc-xxx] | [TestClassName] | [What needs updating and why] |
+
 ## Implementation Guidance *(Optional - only if guidance exists)*
 
 Guidance provides optional, advisory-only HOW recommendations prepared by the solution architect to help development teams with implementation. This is the one section that intentionally crosses the WHAT/WHY boundary into implementation detail -- including code examples, configuration patterns, testing approaches, and data structure specifications. Guidance is supplementary and does not constrain development teams; they may adopt, adapt, or disregard these recommendations.

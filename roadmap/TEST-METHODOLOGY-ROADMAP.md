@@ -175,11 +175,11 @@ Test plan contents:
 
 | Step | Task | Effort |
 |------|------|--------|
-| A.1 | Create ADR for test methodology (TDD + BDD hybrid) | Small |
-| A.2 | Define coverage thresholds in a shared config (e.g., `config/test-standards.yaml`) | Small |
-| A.3 | Add JaCoCo + PITest to service build templates | Small |
-| A.4 | Add test plan section to solution design template | Small |
-| A.5 | Update PR review checklist with test criteria | Small |
+| A.1 | COMPLETE -- Created ADR-012 for test methodology (TDD + BDD hybrid) | Small |
+| A.2 | COMPLETE -- Defined coverage thresholds in `config/test-standards.yaml` | Small |
+| A.3 | COMPLETE -- Added JaCoCo coverage verification (80% line, 70% branch gates), PITest mutation testing (advisory), and Cucumber-JVM BDD to service build template | Small |
+| A.4 | COMPLETE -- Added test plan section to solution design template | Small |
+| A.5 | COMPLETE -- Updated PR review checklist with test criteria | Small |
 
 ### Phase B: Contract Testing (Cross-Service Safety)
 

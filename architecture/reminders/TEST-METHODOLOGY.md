@@ -21,14 +21,14 @@ Establish a comprehensive testing methodology across the NovaTrek platform deliv
 ## Action Items
 
 - [x] Define a test methodology document covering unit, integration, contract, and end-to-end testing layers
-- [ ] Evaluate TDD (Test-Driven Development) as the standard practice for service implementation
-- [ ] Evaluate BDD (Behavior-Driven Development) with Gherkin/Cucumber for acceptance criteria validation
-- [ ] Establish minimum coverage thresholds per service (unit, branch, mutation)
+- [x] Evaluate TDD (Test-Driven Development) as the standard practice for service implementation
+- [x] Evaluate BDD (Behavior-Driven Development) with Gherkin/Cucumber for acceptance criteria validation
+- [x] Establish minimum coverage thresholds per service (unit, branch, mutation) -- see `config/test-standards.yaml`
 - [ ] Add automated regression test suites to CI pipelines (run on every PR)
 - [ ] Define contract testing strategy for cross-service API boundaries (e.g., Pact, Spring Cloud Contract)
-- [ ] Add test requirements to the solution design template (test plan section in guidance)
+- [x] Add test requirements to the solution design template (test plan section in guidance)
 - [ ] Add test coverage validation to `validate-solution.yml` CI workflow
-- [ ] Create an ADR for the chosen testing approach (TDD vs BDD vs hybrid)
+- [x] Create an ADR for the chosen testing approach (TDD vs BDD vs hybrid) -- ADR-012
 - [ ] Document test data management strategy (synthetic test data generation, fixture conventions)
 
 ## Delivery Practice Integration Points

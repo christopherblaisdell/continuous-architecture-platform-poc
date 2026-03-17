@@ -41,6 +41,14 @@
 - [ ] `architecture/metadata/cross-service-calls.yaml` updated (if new integrations)
 - [ ] Backward compatibility addressed for all API changes
 
+#### Test Plan (ADR-012)
+
+- [ ] Test plan included at `3.solution/g.guidance/test-plan.md`
+- [ ] Coverage thresholds met for affected services (see `config/test-standards.yaml`)
+- [ ] Contract tests added for new cross-service integrations
+- [ ] BDD scenarios correspond to user story acceptance criteria
+- [ ] No test gaps flagged by mutation testing (if applicable)
+
 #### Data Isolation
 
 - [ ] No corporate identifiers introduced

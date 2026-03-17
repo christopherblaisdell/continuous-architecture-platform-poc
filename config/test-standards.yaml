@@ -1,0 +1,75 @@
+# Test Standards Configuration
+# Single source of truth for testing thresholds and conventions across all NovaTrek services.
+# Referenced by: ADR-012, CI pipelines, solution design test plans.
+
+coverage:
+  line:
+    minimum: 80
+    target: 90
+  branch:
+    minimum: 70
+    target: 80
+  mutation:
+    minimum: 60
+    target: 75
+    enforcement: advisory   # advisory | gate — promoted to gate in Phase D
+
+tooling:
+  unit:
+    framework: junit5
+    methodology: tdd
+    assertions: assertj
+    mocking: mockito
+  integration:
+    framework: junit5
+    methodology: tdd
+    containers: testcontainers
+    database: postgresql
+  contract:
+    approach: spec-driven       # auto-generated from OpenAPI specs
+    tool: tbd                   # Pact or Spring Cloud Contract — decided in Phase B
+    spec_source: architecture/specs/
+    boundary_source: architecture/metadata/cross-service-calls.yaml
+  acceptance:
+    framework: cucumber-jvm
+    methodology: bdd
+    feature_location: src/test/resources/features/
+    step_definitions: src/test/java/**/steps/
+  e2e:
+    approach: scripted
+    count: critical-paths-only
+
+build:
+  coverage_plugin: jacoco
+  mutation_plugin: pitest
+  dependency_check: owasp-dependency-check
+  coverage_report_formats:
+    - xml
+    - html
+
+ci:
+  stages:
+    - name: build
+      gate: true
+      description: Compile and run unit tests
+    - name: coverage
+      gate: true
+      description: Line >= 80%, Branch >= 70%
+    - name: mutation
+      gate: false
+      description: Score >= 60% (advisory — promoted to gate in Phase D)
+    - name: contract
+      gate: true
+      description: All contracts verified against OpenAPI specs
+    - name: acceptance
+      gate: true
+      description: All BDD scenarios pass
+
+solution_design:
+  test_plan_location: 3.solution/g.guidance/test-plan.md
+  required_sections:
+    - affected_test_layers
+    - new_test_scenarios
+    - existing_tests_to_update
+    - bdd_scenarios
+    - contract_test_additions

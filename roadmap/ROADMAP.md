@@ -540,6 +540,14 @@ This checklist is applied during PR review of every solution design:
 - [ ] Cross-service calls updated if new integrations added
 - [ ] Backward compatibility addressed for all API changes
 
+### Test Plan (ADR-012)
+
+- [ ] Test plan included at `3.solution/g.guidance/test-plan.md`
+- [ ] Coverage thresholds met for affected services (see `config/test-standards.yaml`)
+- [ ] Contract tests added for new cross-service integrations
+- [ ] BDD scenarios correspond to acceptance criteria in user stories
+- [ ] No test gaps flagged by mutation testing
+
 ---
 
 ## 9. Success Criteria

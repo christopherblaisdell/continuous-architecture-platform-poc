@@ -4,6 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("org.owasp.dependencycheck") version "10.0.3"
     id("jacoco")
+    id("info.solidsoft.pitest") version "1.15.0"
 }
 
 group = "com.novatrek"
@@ -58,6 +59,11 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:1.20.3")
     testImplementation("org.testcontainers:junit-jupiter:1.20.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // --- BDD (Cucumber) ---
+    testImplementation("io.cucumber:cucumber-java:7.20.1")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine:7.20.1")
+    testImplementation("io.cucumber:cucumber-spring:7.20.1")
 }
 
 tasks.withType<Test> {
@@ -70,6 +76,35 @@ tasks.jacocoTestReport {
         xml.required = true
         html.required = true
     }
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
+    violationRules {
+        rule {
+            limit {
+                counter = "LINE"
+                minimum = "0.80".toBigDecimal()
+            }
+            limit {
+                counter = "BRANCH"
+                minimum = "0.70".toBigDecimal()
+            }
+        }
+    }
+}
+
+tasks.check {
+    dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
+// PITest mutation testing — advisory in Phase A, promoted to gate in Phase D
+pitest {
+    junit5PluginVersion = "1.2.1"
+    targetClasses = listOf("com.novatrek.*")
+    mutationThreshold = 0  // advisory — set to 60 when promoted to gate
+    outputFormats = listOf("HTML", "XML")
+    timestampedReports = false
 }
 
 // OWASP Dependency Check — fail on CRITICAL/HIGH CVEs
