@@ -467,10 +467,11 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 
 | Initiative | Status | Companion Document | Summary |
 |-----------|--------|-------------------|---------|
+| Azure Microservices Delivery | Active (Priority #3) | [AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. 7 delivery waves from shared infrastructure through full platform. All resources scale to zero when idle — target $5/mo idle, $25-30/mo light usage. Services scaffolded, Bicep modules built, CI/CD workflows ready. Next: provision Azure, write tests, deploy Wave 0 |
 | Test Methodology and Practice | Complete (Priority #1) | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) | Comprehensive TDD/BDD practice, coverage standards (80% line, 70% branch, 60% mutation), contract testing for cross-service boundaries, automated regression gates in CI |
 | Implement All Swagger-Defined Services | Complete (Priority #2) | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) | 19 services generated from OpenAPI specs via `scripts/generate-service-scaffold.py`. Each service has JPA entities, REST controllers, repositories, Flyway migrations, application config, Dockerfile, and full test methodology tooling (JaCoCo, PITest, SCC, Cucumber). 310 files across 19 services |
-| Fix Deploy Failures | Backlog | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | Audit and fix recurring CI/CD pipeline failures — flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts. Prerequisite for reliable incremental delivery |
-| Azure Microservices Implementation | Draft | [docs/AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Build out the full NovaTrek microservices platform in Azure — cheapest possible, IaC with Bicep, ephemeral environments, deep linking from architecture artifacts to live implementations |
+| Fix Deploy Failures | Backlog | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | Audit and fix recurring CI/CD pipeline failures — flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts. Subsumed into Priority #3 Azure delivery work |
+| Azure Microservices Implementation | Active (Priority #3) | [docs/AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Build out the full NovaTrek microservices platform in Azure — scale-to-zero everywhere, IaC with Bicep, ephemeral environments, deep linking from architecture artifacts to live implementations. See Priority #3 above |
 
 #### Priority: MEDIUM
 
@@ -502,6 +503,7 @@ These are deferred evaluations and operational items tracked in `architecture/re
 
 | Reminder | Date | Status | File |
 |----------|------|--------|------|
+| Azure Microservices Delivery | 2026-03-17 | Active (HIGH, Priority #3) | [architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md](../architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md) |
 | CALM Evaluation | 2026-03-06 | Deferred | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
 | Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
 | Implement All Swagger-Defined Services | 2026-03-17 | Complete (HIGH, Priority #2) | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) |

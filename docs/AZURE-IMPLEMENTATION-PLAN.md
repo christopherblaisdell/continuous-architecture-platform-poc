@@ -2,8 +2,8 @@
 
 > **Goal**: Build out the entire NovaTrek Adventures microservices platform in Azure, as documented in the [architecture portal](https://architecture.novatrek.cc), using the cheapest possible approach with full IaC, ephemeral environments, and deep linking from every architecture artifact to its live implementation.
 
-**Date**: 2026-03-10
-**Status**: Draft
+**Date**: 2026-03-17
+**Status**: Active (Priority #3)
 
 ---
 
@@ -1705,6 +1705,24 @@ Runbooks are generated from `architecture/metadata/delivery-status.yaml` and pub
 - [ ] No AKS — Container Apps Consumption plan instead
 - [ ] Weekly review of Azure Cost Management alerts
 
+### POC Cost Shield — Mandatory Rules
+
+This is a synthetic proof-of-concept project running on personal Azure credits. Every resource MUST scale to zero or be stoppable when not in use. No exceptions.
+
+| Rule | Implementation | Enforcement |
+|------|---------------|-------------|
+| **All Container Apps scale to zero** | `minReplicas: 0` in every container-app.bicep deployment — never set minReplicas > 0 in any environment | Bicep module default; Azure Policy to deny minReplicas > 0 |
+| **PostgreSQL stops when not in use** | `nightly-stop-dev.yml` stops dev database at 8 PM UTC; `nightly-start-dev.yml` starts at 1 PM UTC (8 AM EST) | GitHub Actions cron + manual dispatch |
+| **No always-on resources** | Only ACR Basic ($5/mo) runs continuously. Everything else scales to zero or is stopped nightly | Budget alert at $30/mo dev, $50/mo prod |
+| **Ephemeral environments auto-destroy** | PR environments destroyed on PR close via `az group delete` in `ephemeral-env.yml` | GitHub Actions PR lifecycle trigger |
+| **Budget alerts fire early** | 80% and 100% threshold alerts on Azure budgets; budget amounts: $30/mo dev, $50/mo prod | `budget.bicep` module |
+| **No Premium/Standard tiers** | PostgreSQL: Burstable B1ms only. Redis: Basic C0 only. Service Bus: Basic only (dev), Standard for prod only when needed | Parameter files enforce tier; code review catches upgrades |
+| **No always-on Redis in dev** | Dev environment skips Redis entirely — use in-memory caching (Spring Cache with ConcurrentMapCacheManager) | Environment-specific Spring profiles |
+| **Manual teardown available** | `infra-teardown.yml` workflow with DESTROY confirmation — deletes entire resource group in one command | GitHub Actions manual dispatch |
+| **Cold start is acceptable** | First request after scale-to-zero takes 2-5 seconds. This is a POC — latency SLAs do not apply | Document as expected behavior |
+
+**Target monthly cost when idle: $5 (ACR only). Target monthly cost with light usage: $25-30.**
+
 ### Azure Cost Alerts
 
 ```bicep
@@ -1841,23 +1859,23 @@ These are the things that must exist or be decided before Wave 0 can begin. Noth
 
 | Item | Status | Action |
 |------|--------|--------|
-| GitHub repository for service code | Does not exist | Decide: **monorepo** (add `services/` to this repo) or **separate repo** (new `novatrek/platform` repo). Monorepo recommended for PoC — simplifies CI/CD, Bicep, and cross-service changes |
+| GitHub repository for service code | COMPLETE — monorepo, all 22 services in `services/` | Monorepo simplifies CI/CD, Bicep, and cross-service changes |
 | GitHub Environments (dev, prod) | Not created | Create environments in repo settings with protection rules (prod requires approval) |
-| GitHub OIDC federation to Azure | Not configured | Create User-Assigned Managed Identity in Azure, add Federated Credential for `repo:novatrek/platform:environment:dev` and `:environment:prod` |
+| GitHub OIDC federation to Azure | Not configured | Create User-Assigned Managed Identity in Azure, add Federated Credential for `repo:{org}/{repo}:environment:dev` and `:environment:prod` |
 | GitHub Secrets | Not set | Required: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` (OIDC — no password secrets needed) |
-| Branch protection on main | Not configured | Require: CI passing, 1 approval, squash merge |
+| Branch protection on main | COMPLETE — ruleset ID 13600522 | Requires PRs and `validate-solution` status check, admin bypass |
 
 #### Service Code Bootstrapping
 
-The workspace currently contains **OpenAPI specs and architecture documentation only** — there is no actual Java source code for the 22 microservices. Each service needs to be scaffolded:
+All 22 microservices are now scaffolded in `services/`. The generator (`scripts/generate-service-scaffold.py`) read every OpenAPI spec and produced complete Spring Boot projects. The template (`services/template/`) defines the standard build configuration.
 
-| Artifact | What Needs to Be Created |
-|----------|-------------------------|
-| **Spring Boot project template** | A shared Gradle archetype/template with: Spring Boot 3.x, Java 21, Spring Web, Spring Data JPA, Flyway, Actuator, Micrometer, OpenTelemetry agent, Resilience4j, Spring Cloud Azure (Key Vault, Service Bus) |
-| **Shared parent build** (if monorepo) | Root `build.gradle.kts` with shared dependency versions, BOM alignment, code quality plugins (Checkstyle, SpotBugs, JaCoCo) |
-| **Dockerfile template** | Multi-stage: JDK build stage → JRE distroless runtime stage. Standard for all services |
-| **Per-service scaffolding** | For each of the 22 services: controller stubs matching the OpenAPI spec, JPA entities matching the data store schema, Flyway baseline migration SQL, `application.yaml` + `application-{env}.yaml` |
-| **Code generation option** | Consider OpenAPI Generator to produce server stubs from the existing specs. Eliminates manual transcription errors and guarantees spec-code alignment from day one |
+| Artifact | Status |
+|----------|--------|
+| **Spring Boot project template** | COMPLETE — `services/template/` with Spring Boot 3.3.5, Java 21, Spring Web, Spring Data JPA, Flyway, Actuator, Micrometer, OpenTelemetry, Resilience4j, Spring Cloud Azure | 
+| **Dockerfile template** | COMPLETE — Multi-stage distroless build, standard for all services |
+| **Per-service scaffolding** | COMPLETE — 22 services with controllers, JPA entities, repositories, Flyway V1 baseline, application.yaml + application-dev.yaml |
+| **Test scaffolding** | NOT STARTED — Generated services have zero tests. Need unit, integration, contract, and BDD tests to meet 80% coverage gate |
+| **Build verification** | NOT STARTED — Services compile locally but have not been verified in CI (Gradle build + Docker build) |
 
 #### Database Schema Bootstrapping
 
@@ -1874,7 +1892,7 @@ The data store schemas are documented in `architecture/metadata/data-stores.yaml
 
 | # | Decision | Choice | Rationale |
 |---|----------|--------|-----------|
-| 1 | **Monorepo vs polyrepo** | **Polyrepo** — separate `novatrek/platform` repo for service code | Architecture repo stays focused on docs, specs, and metadata. Service repo gets its own CI/CD, branch protection, and team ownership. Cross-repo references via Git submodules or shared Bicep registry if needed |
+| 1 | **Monorepo vs polyrepo** | **Monorepo** — all services in `services/` within this repo | All 22 services already scaffolded in the architecture repo. Simplifies CI/CD, Bicep, cross-service changes, and OpenAPI spec alignment. One repo, one branch protection, one set of workflows |
 | 2 | **API gateway routing** | **ACA built-in ingress** ($0/mo) | Free Envoy-based path routing is sufficient for all waves. Revisit Azure API Management only if consumer-specific rate limiting or API keys are needed (Wave 6+ partner integrations) |
 | 3 | **API versioning strategy** | **URL path versioning** (`/v1/check-ins`) | Most debuggable, easiest to route at ingress layer. Locked in from day one — all OpenAPI specs must include `/v1` prefix |
 | 4 | **Event broker** | **Azure Service Bus** | Native dead-letter queues, scheduled delivery, message sessions. Basic tier (~$0.05/100K ops) for dev, Standard ($10/mo) for prod topics/subscriptions |
