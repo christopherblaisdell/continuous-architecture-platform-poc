@@ -1389,6 +1389,8 @@ def build_event_flow_puml():
     L.append("skinparam defaultFontSize 12")
     L.append("skinparam roundCorner 8")
     L.append("skinparam componentStyle rectangle")
+    L.append("skinparam rectangleBorderColor transparent")
+    L.append("skinparam rectangleBackgroundColor transparent")
     L.append("title NovaTrek Event Flow")
     L.append("")
 
@@ -1402,43 +1404,29 @@ def build_event_flow_puml():
 
     sorted_producers = sorted(producers)
     sorted_consumers = sorted(consumers)
+    cols = 4
 
-    # Declare producers (top) — use unique aliases prefixed with p_ to avoid
-    # collisions when a service appears in both producers and consumers.
-    L.append("rectangle \"Producers\" {")
-    for p in sorted_producers:
-        _, color = get_domain_info(p)
-        alias = "p_" + p.replace("-", "_")
-        L.append(f'  component "{p}" as {alias} [[/microservices/{p}/]] {color}')
-    L.append("}")
-    L.append("")
+    def _emit_grid(items, prefix, group_label):
+        """Emit components in nested row containers for grid layout."""
+        L.append(f'package "{group_label}" {{')
+        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
+        for row_idx, row in enumerate(rows):
+            L.append(f'  rectangle "row{row_idx}" as {prefix}row{row_idx} {{')
+            for svc in row:
+                _, color = get_domain_info(svc)
+                alias = prefix + svc.replace("-", "_")
+                L.append(f'    component "{svc}" as {alias} [[/microservices/{svc}/]] {color}')
+            L.append("  }")
+        L.append("}")
+        L.append("")
+
+    _emit_grid(sorted_producers, "p_", "Producers")
 
     # Kafka in the middle
     L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
     L.append("")
 
-    # Declare consumers (bottom) — unique aliases prefixed with c_
-    L.append("rectangle \"Consumers\" {")
-    for c in sorted_consumers:
-        _, color = get_domain_info(c)
-        alias = "c_" + c.replace("-", "_")
-        L.append(f'  component "{c}" as {alias} [[/microservices/{c}/]] {color}')
-    L.append("}")
-    L.append("")
-
-    # Layout hints — arrange producers and consumers in a grid (~4 per row)
-    # Note: Lay_D is C4-only; standard PlantUML uses hidden links instead.
-    def _add_grid_hints(items, prefix):
-        aliases = [prefix + s.replace("-", "_") for s in items]
-        cols = 4
-        if len(aliases) > cols:
-            L.append(f"' Grid layout for {prefix}* elements")
-            for i in range(len(aliases) - cols):
-                L.append(f"{aliases[i]} -[hidden]down-> {aliases[i + cols]}")
-            L.append("")
-
-    _add_grid_hints(sorted_producers, "p_")
-    _add_grid_hints(sorted_consumers, "c_")
+    _emit_grid(sorted_consumers, "c_", "Consumers")
 
     # Draw arrows from producers to Kafka (down)
     for evt_name, evt in sorted(EVENT_CATALOG.items()):
