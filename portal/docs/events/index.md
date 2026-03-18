@@ -22,11 +22,15 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 
 ## Event Flow Overview
 
-<div class="diagram-wrap"><a href="../microservices/svg/event-flow.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow.svg" type="image/svg+xml" style="width:100%;max-width:1400px"></object></div>
+This overview shows which domains produce and consume events through the Kafka event bus. Drill into each domain section below for service-level detail.
+
+<div class="diagram-wrap"><a href="../microservices/svg/event-flow-overview.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-overview.svg" type="image/svg+xml" style="width:100%;max-width:900px"></object></div>
 
 ---
 
 ## Operations
+
+<div class="diagram-wrap"><a href="../microservices/svg/event-flow-operations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-operations.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
@@ -35,11 +39,15 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 
 ## Guest Identity
 
+<div class="diagram-wrap"><a href="../microservices/svg/event-flow-guest-identity.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-guest-identity.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
 | **guest.registered** | `novatrek.guest-identity.guest.registered` | [svc-guest-profiles](../microservices/svc-guest-profiles/) | [svc-loyalty-rewards](../microservices/svc-loyalty-rewards/), [svc-analytics](../microservices/svc-analytics/) | [:material-code-json:](../events-ui/svc-guest-profiles.html "View event schema") |
 
 ## Booking
+
+<div class="diagram-wrap"><a href="../microservices/svg/event-flow-booking.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-booking.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
@@ -48,6 +56,8 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 
 ## Safety
 
+<div class="diagram-wrap"><a href="../microservices/svg/event-flow-safety.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-safety.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
 | **emergency.triggered** | `novatrek.safety.emergency.triggered` | [svc-emergency-response](../microservices/svc-emergency-response/) | [svc-notifications](../microservices/svc-notifications/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/), [svc-safety-compliance](../microservices/svc-safety-compliance/), [svc-analytics](../microservices/svc-analytics/) | [:material-code-json:](../events-ui/svc-emergency-response.html "View event schema") |
@@ -55,6 +65,8 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 | **wildlife_alert.issued** | `novatrek.safety.wildlife-alert.issued` | [svc-wildlife-tracking](../microservices/svc-wildlife-tracking/) | [svc-notifications](../microservices/svc-notifications/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/), [svc-trail-management](../microservices/svc-trail-management/), [svc-analytics](../microservices/svc-analytics/) | [:material-code-json:](../events-ui/svc-wildlife-tracking.html "View event schema") |
 
 ## Support
+
+<div class="diagram-wrap"><a href="../microservices/svg/event-flow-support.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-support.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|

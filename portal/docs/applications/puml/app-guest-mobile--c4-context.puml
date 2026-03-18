@@ -13,20 +13,34 @@ Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 Container(app_guest_mobile, "NovaTrek Adventure App", "React Native 0.74", "Mobile application", $link="/applications/app-guest-mobile/")
 
 System_Boundary(platform, "NovaTrek Platform") {
-    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "2 screens", $link="/microservices/svc-check-in/#integration-context")
-    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "2 screens", $link="/microservices/svc-gear-inventory/#integration-context")
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "2 screens", $link="/microservices/svc-guest-profiles/#integration-context")
-    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "1 screens", $link="/microservices/svc-location-services/#integration-context")
-    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "1 screens", $link="/microservices/svc-loyalty-rewards/#integration-context")
-    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "1 screens", $link="/microservices/svc-media-gallery/#integration-context")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "2 screens", $link="/microservices/svc-notifications/#integration-context")
-    Container(svc_payments, "svc-payments", "Java / Spring Boot", "1 screens", $link="/microservices/svc-payments/#integration-context")
-    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "3 screens", $link="/microservices/svc-reservations/#integration-context")
-    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "1 screens", $link="/microservices/svc-safety-compliance/#integration-context")
-    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "1 screens", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
-    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "2 screens", $link="/microservices/svc-trail-management/#integration-context")
-    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "1 screens", $link="/microservices/svc-trip-catalog/#integration-context")
-    Container(svc_weather, "svc-weather", "Java / Spring Boot", "2 screens", $link="/microservices/svc-weather/#integration-context")
+    Container_Boundary(domain_Booking, "Booking") {
+        Container(svc_reservations, "svc-reservations\nJava / Spring Boot", "3 screens", $link="/microservices/svc-reservations/#integration-context")
+    }
+    Container_Boundary(domain_Guest_Identity, "Guest Identity") {
+        Container(svc_guest_profiles, "svc-guest-profiles\nJava / Spring Boot", "2 screens", $link="/microservices/svc-guest-profiles/#integration-context")
+    }
+    Container_Boundary(domain_Logistics, "Logistics") {
+        Container(svc_gear_inventory, "svc-gear-inventory\nJava / Spring Boot", "2 screens", $link="/microservices/svc-gear-inventory/#integration-context")
+    }
+    Container_Boundary(domain_Operations, "Operations") {
+        Container(svc_check_in, "svc-check-in\nJava / Spring Boot", "2 screens", $link="/microservices/svc-check-in/#integration-context")
+        Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator\nJava / Spring Boot", "1 screens", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+    }
+    Container_Boundary(domain_Product_Catalog, "Product Catalog") {
+        Container(svc_trail_management, "svc-trail-management\nJava / Spring Boot", "2 screens", $link="/microservices/svc-trail-management/#integration-context")
+        Container(svc_trip_catalog, "svc-trip-catalog\nJava / Spring Boot", "1 screens", $link="/microservices/svc-trip-catalog/#integration-context")
+    }
+    Container_Boundary(domain_Safety, "Safety") {
+        Container(svc_safety_compliance, "svc-safety-compliance\nJava / Spring Boot", "1 screens", $link="/microservices/svc-safety-compliance/#integration-context")
+    }
+    Container_Boundary(domain_Support, "Support") {
+        Container(svc_location_services, "svc-location-services\nJava / Spring Boot", "1 screens", $link="/microservices/svc-location-services/#integration-context")
+        Container(svc_loyalty_rewards, "svc-loyalty-rewards\nJava / Spring Boot", "1 screens", $link="/microservices/svc-loyalty-rewards/#integration-context")
+        Container(svc_media_gallery, "svc-media-gallery\nJava / Spring Boot", "1 screens", $link="/microservices/svc-media-gallery/#integration-context")
+        Container(svc_notifications, "svc-notifications\nJava / Spring Boot", "2 screens", $link="/microservices/svc-notifications/#integration-context")
+        Container(svc_payments, "svc-payments\nJava / Spring Boot", "1 screens", $link="/microservices/svc-payments/#integration-context")
+        Container(svc_weather, "svc-weather\nJava / Spring Boot", "2 screens", $link="/microservices/svc-weather/#integration-context")
+    }
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
@@ -51,5 +65,13 @@ Rel(app_guest_mobile, svc_weather, "2 screens", "REST/HTTPS")
 Rel(app_guest_mobile, Google_Maps_Platform, "Uses", "HTTPS")
 Rel(app_guest_mobile, Object_Store, "Uses", "HTTPS")
 Rel(app_guest_mobile, OpenWeather_API, "Uses", "HTTPS")
+
+' Layout hints: stack domain groups vertically
+Lay_R(svc_reservations, svc_guest_profiles)
+Lay_R(svc_gear_inventory, svc_check_in)
+Lay_R(svc_trail_management, svc_safety_compliance)
+Lay_D(svc_reservations, svc_gear_inventory)
+Lay_D(svc_gear_inventory, svc_trail_management)
+Lay_D(svc_trail_management, svc_location_services)
 
 @enduml

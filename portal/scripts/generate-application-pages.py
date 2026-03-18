@@ -50,7 +50,7 @@ def endpoint_anchor(target_svc, target_method, target_path):
 # -- Application metadata loaded from YAML (architecture/metadata/applications.yaml) --
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from load_metadata import APPLICATIONS, get_service_light_color  # noqa: E402
+from load_metadata import APPLICATIONS, DOMAINS, get_service_light_color  # noqa: E402
 
 # ── Infrastructure Colors (same constants as microservice generator) ──
 COLOR_GATEWAY    = "#E0F2FE"   # sky-100   — API entry point
@@ -251,29 +251,84 @@ def build_c4_app_puml(app_name, app_info):
     L.append(f'Container({_safe_alias(app_name)}, "{title}", "{tech}", "{app_type} application", $link="/applications/{app_name}/")')
     L.append("")
 
-    # Backend services inside platform boundary
-    L.append('System_Boundary(platform, "NovaTrek Platform") {')
+    # Build service-to-domain lookup
+    svc_to_domain = {}
+    for domain_name, dinfo in DOMAINS.items():
+        for svc in dinfo["services"]:
+            svc_to_domain[svc] = domain_name
+
+    # Group services by domain
+    domain_svcs = {}  # domain_name -> [svc_name, ...]
     for svc in sorted(all_svcs.keys()):
-        screen_count = len(all_svcs[svc])
-        L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens", $link="/microservices/{svc}/#integration-context")')
-    L.append("}")
-    L.append("")
+        domain_name = svc_to_domain.get(svc, "Support")
+        domain_svcs.setdefault(domain_name, []).append(svc)
 
-    # External systems
-    for ext in sorted(all_externals.keys()):
-        L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
-    L.append("")
+    # Decision: aggregate to domain level when too many services (>8)
+    aggregate = len(all_svcs) > 8
 
-    # Relationships
-    app_alias = _safe_alias(app_name)
-    L.append(f'Rel(user, {app_alias}, "Uses", "HTTPS")')
-    for svc in sorted(all_svcs.keys()):
-        screen_count = len(all_svcs[svc])
-        label = f"{screen_count} screens" if screen_count > 1 else "1 screen"
-        L.append(f'Rel({app_alias}, {_safe_alias(svc)}, "{label}", "REST/HTTPS")')
+    if aggregate:
+        # Domain-level aggregation — one container per domain
+        L.append('System_Boundary(platform, "NovaTrek Platform") {')
+        for domain_name in sorted(domain_svcs.keys()):
+            svcs = domain_svcs[domain_name]
+            svc_list = ", ".join(s.replace("svc-", "") for s in svcs)
+            total_screens = sum(len(all_svcs[s]) for s in svcs)
+            domain_alias = _safe_alias(f"domain_{domain_name}")
+            L.append(f'    Container({domain_alias}, "{domain_name}\\n({len(svcs)} services)", "Java / Spring Boot", "{svc_list}", $link="/microservices/")')
+        L.append("}")
+        L.append("")
 
-    for ext in sorted(all_externals.keys()):
-        L.append(f'Rel({app_alias}, {_safe_alias(ext)}, "Uses", "HTTPS")')
+        # External systems
+        for ext in sorted(all_externals.keys()):
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+        L.append("")
+
+        # Relationships — aggregated to domain
+        app_alias = _safe_alias(app_name)
+        L.append(f'Rel(user, {app_alias}, "Uses", "HTTPS")')
+        for domain_name in sorted(domain_svcs.keys()):
+            svcs = domain_svcs[domain_name]
+            total_screens = sum(len(all_svcs[s]) for s in svcs)
+            label = f"{total_screens} screens" if total_screens > 1 else "1 screen"
+            domain_alias = _safe_alias(f"domain_{domain_name}")
+            L.append(f'Rel({app_alias}, {domain_alias}, "{label}", "REST/HTTPS")')
+
+        for ext in sorted(all_externals.keys()):
+            L.append(f'Rel({app_alias}, {_safe_alias(ext)}, "Uses", "HTTPS")')
+    else:
+        # Service-level detail — few enough services to show individually
+        L.append('System_Boundary(platform, "NovaTrek Platform") {')
+        for domain_name in sorted(domain_svcs.keys()):
+            svcs = domain_svcs[domain_name]
+            if len(domain_svcs) > 1:
+                boundary_alias = _safe_alias(f"domain_{domain_name}")
+                L.append(f'    Container_Boundary({boundary_alias}, "{domain_name}") {{')
+                for svc in svcs:
+                    screen_count = len(all_svcs[svc])
+                    L.append(f'        Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens", $link="/microservices/{svc}/#integration-context")')
+                L.append("    }")
+            else:
+                for svc in svcs:
+                    screen_count = len(all_svcs[svc])
+                    L.append(f'    Container({_safe_alias(svc)}, "{svc}", "Java / Spring Boot", "{screen_count} screens", $link="/microservices/{svc}/#integration-context")')
+        L.append("}")
+        L.append("")
+
+        # External systems
+        for ext in sorted(all_externals.keys()):
+            L.append(f'System_Ext({_safe_alias(ext)}, "{ext}", "Third-party service")')
+        L.append("")
+
+        # Relationships
+        app_alias = _safe_alias(app_name)
+        L.append(f'Rel(user, {app_alias}, "Uses", "HTTPS")')
+        for svc in sorted(all_svcs.keys()):
+            screen_count = len(all_svcs[svc])
+            label = f"{screen_count} screens" if screen_count > 1 else "1 screen"
+            L.append(f'Rel({app_alias}, {_safe_alias(svc)}, "{label}", "REST/HTTPS")')
+
+        for ext in sorted(all_externals.keys()):
+            L.append(f'Rel({app_alias}, {_safe_alias(ext)}, "Uses", "HTTPS")')
 
     L.append("")
     L.append("@enduml")

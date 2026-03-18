@@ -13,16 +13,26 @@ Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 Container(web_guest_portal, "NovaTrek Guest Portal", "React 18", "Web application", $link="/applications/web-guest-portal/")
 
 System_Boundary(platform, "NovaTrek Platform") {
-    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "4 screens", $link="/microservices/svc-guest-profiles/#integration-context")
-    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "2 screens", $link="/microservices/svc-loyalty-rewards/#integration-context")
-    Container(svc_media_gallery, "svc-media-gallery", "Java / Spring Boot", "2 screens", $link="/microservices/svc-media-gallery/#integration-context")
-    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "3 screens", $link="/microservices/svc-notifications/#integration-context")
-    Container(svc_payments, "svc-payments", "Java / Spring Boot", "2 screens", $link="/microservices/svc-payments/#integration-context")
-    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "4 screens", $link="/microservices/svc-reservations/#integration-context")
-    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "1 screens", $link="/microservices/svc-safety-compliance/#integration-context")
-    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "1 screens", $link="/microservices/svc-trail-management/#integration-context")
-    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "2 screens", $link="/microservices/svc-trip-catalog/#integration-context")
-    Container(svc_weather, "svc-weather", "Java / Spring Boot", "1 screens", $link="/microservices/svc-weather/#integration-context")
+    Container_Boundary(domain_Booking, "Booking") {
+        Container(svc_reservations, "svc-reservations\nJava / Spring Boot", "4 screens", $link="/microservices/svc-reservations/#integration-context")
+    }
+    Container_Boundary(domain_Guest_Identity, "Guest Identity") {
+        Container(svc_guest_profiles, "svc-guest-profiles\nJava / Spring Boot", "4 screens", $link="/microservices/svc-guest-profiles/#integration-context")
+    }
+    Container_Boundary(domain_Product_Catalog, "Product Catalog") {
+        Container(svc_trail_management, "svc-trail-management\nJava / Spring Boot", "1 screens", $link="/microservices/svc-trail-management/#integration-context")
+        Container(svc_trip_catalog, "svc-trip-catalog\nJava / Spring Boot", "2 screens", $link="/microservices/svc-trip-catalog/#integration-context")
+    }
+    Container_Boundary(domain_Safety, "Safety") {
+        Container(svc_safety_compliance, "svc-safety-compliance\nJava / Spring Boot", "1 screens", $link="/microservices/svc-safety-compliance/#integration-context")
+    }
+    Container_Boundary(domain_Support, "Support") {
+        Container(svc_loyalty_rewards, "svc-loyalty-rewards\nJava / Spring Boot", "2 screens", $link="/microservices/svc-loyalty-rewards/#integration-context")
+        Container(svc_media_gallery, "svc-media-gallery\nJava / Spring Boot", "2 screens", $link="/microservices/svc-media-gallery/#integration-context")
+        Container(svc_notifications, "svc-notifications\nJava / Spring Boot", "3 screens", $link="/microservices/svc-notifications/#integration-context")
+        Container(svc_payments, "svc-payments\nJava / Spring Boot", "2 screens", $link="/microservices/svc-payments/#integration-context")
+        Container(svc_weather, "svc-weather\nJava / Spring Boot", "1 screens", $link="/microservices/svc-weather/#integration-context")
+    }
 }
 
 System_Ext(DocuSign_API, "DocuSign API", "Third-party service")
@@ -41,5 +51,11 @@ Rel(web_guest_portal, svc_trip_catalog, "2 screens", "REST/HTTPS")
 Rel(web_guest_portal, svc_weather, "1 screen", "REST/HTTPS")
 Rel(web_guest_portal, DocuSign_API, "Uses", "HTTPS")
 Rel(web_guest_portal, Stripe_API, "Uses", "HTTPS")
+
+' Layout hints: stack domain groups vertically
+Lay_R(svc_reservations, svc_guest_profiles)
+Lay_R(svc_trail_management, svc_safety_compliance)
+Lay_D(svc_reservations, svc_trail_management)
+Lay_D(svc_trail_management, svc_loyalty_rewards)
 
 @enduml

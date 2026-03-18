@@ -286,6 +286,25 @@ Diagrams that spread too wide become unreadable in the portal and break on small
 6. **Split diagrams at 10+ elements** — a Component diagram with more than 10 components should be decomposed into separate diagrams per layer or subdomain. Link between them using `$link` references.
 7. **Avoid `LAYOUT_LEFT_RIGHT()`** for Component diagrams — left-to-right layout is only acceptable for simple 3-4 element context diagrams where the flow is naturally horizontal.
 
+### Event Flow Diagram Decomposition
+
+Event flow diagrams MUST be decomposed by domain — never place all events on a single diagram. This is a mandatory practice, not a guideline.
+
+**Structure:**
+
+| Diagram | Level | Contents | Purpose |
+|---------|-------|----------|---------|
+| Overview (`event-flow-overview`) | L1 | One box per domain with event counts, connected through Kafka | High-level orientation |
+| Per-domain (`event-flow-{domain}`) | L2 | Specific services and named events for one domain, plus cross-domain consumers | Domain team reference |
+
+**Rules:**
+
+1. **One diagram per domain** — each domain in `events.yaml` gets its own event flow diagram showing that domain's producers, their events, and all consumers (including cross-domain subscribers)
+2. **Overview diagram uses domain bubbles, not services** — the overview shows aggregated domain nodes with event counts, not individual microservices
+3. **Cross-domain consumers are grouped by their domain** — when a Safety event is consumed by a Support service, the consumer appears in a labeled "Support" package on the Safety domain diagram
+4. **Generator is the source of truth** — `generate-microservice-pages.py` produces all event flow diagrams from `architecture/metadata/events.yaml`. Manual PUML files for event flows are not permitted
+5. **Never create a monolithic "all events" diagram** — if someone asks for "the event flow diagram", produce the overview plus per-domain set, not a single diagram with every service and every event
+
 ### Wireframe Management
 
 **Source location**: `architecture/wireframes/{app}/` (architect-edited Excalidraw JSON)
