@@ -482,6 +482,16 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 | Event Catalog Expansion | Proposed | [portal/EVENT-CATALOG-PLAN.md](../portal/EVENT-CATALOG-PLAN.md) | Formalize domain events with AsyncAPI specs — producers, consumers, schemas, portal pages with the same rigor as REST API documentation |
 | Presentation Site | Draft | [portal/PRESENTATION-SITE-PLAN.md](../portal/PRESENTATION-SITE-PLAN.md) | Executive pitch deck as a third MkDocs Material site — live demo selling Continuous Architecture Platform adoption to leadership and budget holders |
 
+#### Priority: MEDIUM
+
+| Initiative | Status | Companion Document | Summary |
+|-----------|--------|-------------------|---------|
+| Kong AI Gateway Translation Failures | Research Complete | [docs/research/DEEP-RESEARCH-RESULTS-KONG-TOOL-CALL-FAILURES.md](../docs/research/DEEP-RESEARCH-RESULTS-KONG-TOOL-CALL-FAILURES.md) | Kong ai-proxy Lua translation layer corrupts Anthropic tool call responses, strips error semantics (context_length_exceeded), and causes infinite retry loops in Roo Code. Three fix paths identified: (1) native format passthrough in Kong 3.10+, (2) migrate to dedicated AI gateway (OpenRouter/Portkey), (3) custom Lua error mapping plugins. Research validates Copilot as the lower-risk toolchain for enterprise AI-assisted architecture workflows. Prior analysis: [ROO-KONG-TOOL-CALL-FAILURES-ANALYSIS.md](../docs/research/ROO-KONG-TOOL-CALL-FAILURES-ANALYSIS.md) |
+| Separation of Concerns | Proposed | [portal/SEPARATION-OF-CONCERNS-PLAN.md](../portal/SEPARATION-OF-CONCERNS-PLAN.md) | Extract metadata from Python generators into YAML files; stop committing generated artifacts; CI handles all generation; architects edit YAML only |
+| Figma Wireframes | Proposed | [portal/FIGMA-WIREFRAMES-PLAN.md](../portal/FIGMA-WIREFRAMES-PLAN.md) | Embed Figma wireframes directly into portal application pages — connect architecture artifacts to visual design layer |
+| Event Catalog Expansion | Proposed | [portal/EVENT-CATALOG-PLAN.md](../portal/EVENT-CATALOG-PLAN.md) | Formalize domain events with AsyncAPI specs — producers, consumers, schemas, portal pages with the same rigor as REST API documentation |
+| Presentation Site | Draft | [portal/PRESENTATION-SITE-PLAN.md](../portal/PRESENTATION-SITE-PLAN.md) | Executive pitch deck as a third MkDocs Material site — live demo selling Continuous Architecture Platform adoption to leadership and budget holders |
+
 #### Priority: LOW
 
 | Initiative | Status | Companion Document | Summary |
