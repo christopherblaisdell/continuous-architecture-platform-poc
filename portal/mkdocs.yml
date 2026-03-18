@@ -231,6 +231,7 @@ nav:
       - Security Research Prompt: security/research-prompt.md
       - Research Results: security/research-prompt-response.md
     - Database Change Workflow: database-change-workflow.md
+    - GitHub Copilot Customization: github-copilot-customization-guide.md
     - Research:
       - OpenSpec Evaluation:
         - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
