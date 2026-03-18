@@ -16,9 +16,12 @@ Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. Ev
 | Service scaffolds (22) | COMPLETE — `services/svc-*` with controllers, entities, repos, Flyway, Dockerfile |
 | Bicep modules (13) | COMPLETE — `infra/modules/` (container-app, postgresql, redis, service-bus, key-vault, acr, monitoring, etc.) |
 | CI/CD workflows (14) | COMPLETE — `service-ci.yml`, `service-cd.yml`, `infra-deploy.yml`, `ephemeral-env.yml`, nightly start/stop, etc. |
-| Tests | NOT STARTED — generated services have zero tests |
-| Azure infrastructure deployed | NOT STARTED — no resource groups, no ACA environment, no database |
-| Services deployed | NOT STARTED — no container images built or pushed |
+| Test methodology | COMPLETE — ADR-012, ADR-013, Cucumber, BDD, coverage gates (80%/70%) |
+| Wave 0 infrastructure | COMPLETE — rg-novatrek-dev (eastus2), ACA env, ACR, PostgreSQL, Key Vault, Service Bus |
+| Wave 1 tests (3 svc) | COMPLETE — 27 tests, H2 in-memory, all green |
+| Wave 1 deployed | COMPLETE — container apps running, scale-to-zero, latest images in ACR |
+| Wave 2 tests + deploy | IN PROGRESS |
+| Wave 3-4 tests + deploy | NOT STARTED |
 
 ## Delivery Waves
 
