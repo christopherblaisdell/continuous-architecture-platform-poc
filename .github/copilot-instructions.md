@@ -280,7 +280,7 @@ Diagrams that spread too wide become unreadable in the portal and break on small
 
 1. **Always set `LAYOUT_TOP_DOWN()`** — vertical stacking is the default orientation for all C4 diagrams. Never rely on PlantUML's default left-to-right layout.
 2. **Group elements with `Boundary` or `Container_Boundary`** — cluster related components (e.g., API layer, domain layer, infrastructure adapters) inside boundaries. This constrains horizontal spread by grouping peers vertically within their boundary.
-3. **Limit peer elements to ~10 per row** — if a diagram has more than 10 elements at the same level, split them into sub-boundaries or decompose into multiple diagrams.
+3. **Target a height:width ratio between 1:1 and 2:1** — diagrams should be roughly square to moderately tall, never wider than they are tall. If the rendered output is landscape-oriented, restructure by moving peer elements into boundaries, stacking with `Lay_D`, or splitting into sub-diagrams. A 5-element diagram might be fine as a single row; a 20-element diagram should be arranged in a grid or layered boundaries to maintain the ratio.
 4. **Use `Lay_D` / `Lay_R` for layout hints** — when PlantUML places elements in an unwanted arrangement, add invisible layout constraints: `Lay_D(a, b)` forces b below a, `Lay_R(a, b)` forces b right of a.
 5. **Wrap long labels with `\n`** — component names, descriptions, and technology annotations should use line breaks to avoid wide boxes (e.g., `"Adventure\nClassification\nEngine"`).
 6. **Split diagrams at 10+ elements** — a Component diagram with more than 10 components should be decomposed into separate diagrams per layer or subdomain. Link between them using `$link` references.
