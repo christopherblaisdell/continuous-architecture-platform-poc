@@ -1,0 +1,136 @@
+# ===========================================================================
+# Schema Isolation Setup — One-Time Workflow
+# ===========================================================================
+# Creates per-service PostgreSQL users with schema-isolated permissions.
+# Run manually via workflow_dispatch after OIDC secrets are configured.
+# Can be safely re-run (idempotent — checks for existing roles).
+# ===========================================================================
+
+name: "Setup Schema Isolation"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  setup:
+    name: "Create Per-Service DB Users"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Ensure PostgreSQL is running
+        run: |
+          STATE=$(az postgres flexible-server show \
+            -g rg-novatrek-dev \
+            -n pg-novatrek-dev-smwd6ded4e3so \
+            --query state -o tsv)
+          echo "Current state: ${STATE}"
+          if [ "$STATE" != "Ready" ]; then
+            echo "Starting PostgreSQL..."
+            az postgres flexible-server start \
+              -g rg-novatrek-dev \
+              -n pg-novatrek-dev-smwd6ded4e3so
+            sleep 30
+          fi
+
+      - name: Add runner IP to firewall
+        run: |
+          RUNNER_IP=$(curl -s https://checkip.amazonaws.com)
+          echo "Runner IP: ${RUNNER_IP}"
+          az postgres flexible-server firewall-rule create \
+            -g rg-novatrek-dev \
+            -n pg-novatrek-dev-smwd6ded4e3so \
+            --rule-name GitHubRunner \
+            --start-ip-address "${RUNNER_IP}" \
+            --end-ip-address "${RUNNER_IP}" \
+          || echo "Firewall rule may already exist"
+
+      - name: Run schema isolation SQL
+        env:
+          PGPASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+          psql "host=pg-novatrek-dev-smwd6ded4e3so.postgres.database.azure.com \
+                port=5432 dbname=novatrek_dev user=novatrekadmin sslmode=require" \
+            -f infra/db/setup-schema-isolation.sql
+
+      - name: Verify isolation
+        env:
+          PGPASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
+        run: |
+          psql "host=pg-novatrek-dev-smwd6ded4e3so.postgres.database.azure.com \
+                port=5432 dbname=novatrek_dev user=novatrekadmin sslmode=require" \
+            -c "SELECT rolname FROM pg_roles WHERE rolname LIKE 'svc_%' ORDER BY rolname;"
+
+      - name: Remove runner IP from firewall
+        if: always()
+        run: |
+          az postgres flexible-server firewall-rule delete \
+            -g rg-novatrek-dev \
+            -n pg-novatrek-dev-smwd6ded4e3so \
+            --rule-name GitHubRunner \
+            --yes \
+          || echo "Firewall rule already removed"
+
+  update-apps:
+    name: "Update Container App Credentials"
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Update all container apps with per-service users
+        run: |
+          RG="rg-novatrek-dev"
+          declare -A SVCS=(
+            [ca-svc-analytics]=svc_analytics
+            [ca-svc-check-in]=svc_check_in
+            [ca-svc-emergency-response]=svc_emergency_response
+            [ca-svc-gear-inventory]=svc_gear_inventory
+            [ca-svc-guest-profiles]=svc_guest_profiles
+            [ca-svc-guide-management]=svc_guide_management
+            [ca-svc-inventory-procurement]=svc_inventory_procurement
+            [ca-svc-location-services]=svc_location_services
+            [ca-svc-loyalty-rewards]=svc_loyalty_rewards
+            [ca-svc-media-gallery]=svc_media_gallery
+            [ca-svc-notifications]=svc_notifications
+            [ca-svc-partner-integrations]=svc_partner_integrations
+            [ca-svc-payments]=svc_payments
+            [ca-svc-reservations]=svc_reservations
+            [ca-svc-reviews]=svc_reviews
+            [ca-svc-safety-compliance]=svc_safety_compliance
+            [ca-svc-scheduling-orchestrator]=svc_scheduling_orchestrator
+            [ca-svc-trail-management]=svc_trail_management
+            [ca-svc-transport-logistics]=svc_transport_logistics
+            [ca-svc-trip-catalog]=svc_trip_catalog
+            [ca-svc-weather]=svc_weather
+            [ca-svc-wildlife-tracking]=svc_wildlife_tracking
+          )
+          for APP in "${!SVCS[@]}"; do
+            USER="${SVCS[$APP]}"
+            echo "→ ${APP}: user=${USER}"
+            az containerapp update \
+              --name "$APP" --resource-group "$RG" \
+              --set-env-vars \
+                "SPRING_DATASOURCE_USERNAME=${USER}" \
+                "SPRING_DATASOURCE_PASSWORD=${USER}_2026x" \
+            || echo "✗ Failed: ${APP}"
+          done
+          echo "All container apps updated."
