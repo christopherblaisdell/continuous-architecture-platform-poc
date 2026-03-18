@@ -1429,6 +1429,7 @@ def build_event_overview_puml():
     all_domains = sorted(set(producer_domains) | set(consumer_domains))
 
     slug = lambda d: d.lower().replace(" ", "_")
+    anchor = lambda d: d.lower().replace(" ", "-")
 
     # Emit producer domain boxes
     L.append('package "Producing Domains" {')
@@ -1436,7 +1437,7 @@ def build_event_overview_puml():
         if d in producer_domains:
             n = len(producer_domains[d])
             light = DOMAINS.get(d, {}).get("light", "#DCEEFB")
-            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as prod_{slug(d)} {light}')
+            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as prod_{slug(d)} [[/events/#{anchor(d)}]] {light}')
     L.append("}")
     L.append("")
 
@@ -1449,7 +1450,7 @@ def build_event_overview_puml():
         if d in consumer_domains:
             n = len(consumer_domains[d])
             light = DOMAINS.get(d, {}).get("light", "#DCEEFB")
-            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as cons_{slug(d)} {light}')
+            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as cons_{slug(d)} [[/events/#{anchor(d)}]] {light}')
     L.append("}")
     L.append("")
 
