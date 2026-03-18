@@ -1384,11 +1384,20 @@ def _puml_preamble(title):
         "@startuml",
         "!theme plain",
         "top to bottom direction",
-        "skinparam backgroundColor #FAFAFA",
+        "skinparam backgroundColor #FEFEFE",
         "skinparam defaultFontName Inter",
         "skinparam defaultFontSize 12",
         "skinparam roundCorner 8",
         "skinparam componentStyle rectangle",
+        "skinparam componentFontColor #333333",
+        "skinparam componentBorderColor #93B7E3",
+        "skinparam componentBackgroundColor #DCEEFB",
+        "skinparam packageBorderColor #93B7E3",
+        "skinparam packageFontColor #4A6FA5",
+        "skinparam packageBackgroundColor #F0F6FD",
+        "skinparam arrowColor #586D8A",
+        "skinparam arrowFontColor #586D8A",
+        "skinparam arrowFontSize 11",
         f"title {title}",
         "",
     ]
@@ -1419,23 +1428,6 @@ def build_event_overview_puml():
 
     all_domains = sorted(set(producer_domains) | set(consumer_domains))
 
-    # Domain color map
-    domain_colors = {}
-    for d in all_domains:
-        # Use the first service in this domain to derive color
-        for evt_name, evt in EVENT_CATALOG.items():
-            svc_domain, color = get_domain_info(evt["producer"])
-            if svc_domain == d:
-                domain_colors[d] = color
-                break
-        if d not in domain_colors:
-            for evt_name, evt in EVENT_CATALOG.items():
-                for c in evt["consumers"]:
-                    svc_domain, color = get_domain_info(c)
-                    if svc_domain == d:
-                        domain_colors[d] = color
-                        break
-
     slug = lambda d: d.lower().replace(" ", "_")
 
     # Emit producer domain boxes
@@ -1443,12 +1435,12 @@ def build_event_overview_puml():
     for d in all_domains:
         if d in producer_domains:
             n = len(producer_domains[d])
-            color = domain_colors.get(d, "#64748b")
-            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as prod_{slug(d)} {color}')
+            light = DOMAINS.get(d, {}).get("light", "#DCEEFB")
+            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as prod_{slug(d)} {light}')
     L.append("}")
     L.append("")
 
-    L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
+    L.append('queue "Kafka Event Bus" as kafka #E8E0F0')
     L.append("")
 
     # Emit consumer domain boxes
@@ -1456,8 +1448,8 @@ def build_event_overview_puml():
     for d in all_domains:
         if d in consumer_domains:
             n = len(consumer_domains[d])
-            color = domain_colors.get(d, "#64748b")
-            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as cons_{slug(d)} {color}')
+            light = DOMAINS.get(d, {}).get("light", "#DCEEFB")
+            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as cons_{slug(d)} {light}')
     L.append("}")
     L.append("")
 
@@ -1501,13 +1493,13 @@ def build_domain_event_flow_puml(domain_name):
     # Emit producers
     L.append(f'package "{safe_title} Producers" {{')
     for svc in producers:
-        _, color = get_domain_info(svc)
+        light = get_service_light_color(svc)
         alias = "p_" + svc.replace("-", "_")
-        L.append(f'  component "{svc}" as {alias} [[/microservices/{svc}/]] {color}')
+        L.append(f'  component "{svc}" as {alias} [[/microservices/{svc}/]] {light}')
     L.append("}")
     L.append("")
 
-    L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
+    L.append('queue "Kafka Event Bus" as kafka #E8E0F0')
     L.append("")
 
     # Group consumers by domain for clarity
@@ -1521,9 +1513,9 @@ def build_domain_event_flow_puml(domain_name):
         safe_label = label.replace("&", "and")
         L.append(f'package "{safe_label}" {{')
         for svc in sorted(cons_by_domain[d]):
-            _, color = get_domain_info(svc)
+            light = get_service_light_color(svc)
             alias = "c_" + svc.replace("-", "_")
-            L.append(f'  component "{svc}" as {alias} [[/microservices/{svc}/]] {color}')
+            L.append(f'  component "{svc}" as {alias} [[/microservices/{svc}/]] {light}')
         L.append("}")
         L.append("")
 
