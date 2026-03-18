@@ -1378,66 +1378,165 @@ EVENTS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "events")
 EVENTS_OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "events")
 
 
-def build_event_flow_puml():
-    """Generate a PlantUML diagram showing all event producers, Kafka, and consumers."""
-    L = []
-    L.append("@startuml")
-    L.append("!theme plain")
-    L.append("top to bottom direction")
-    L.append("skinparam backgroundColor #FAFAFA")
-    L.append("skinparam defaultFontName Inter")
-    L.append("skinparam defaultFontSize 12")
-    L.append("skinparam roundCorner 8")
-    L.append("skinparam componentStyle rectangle")
-    L.append("skinparam rectangleBorderColor transparent")
-    L.append("skinparam rectangleBackgroundColor transparent")
-    L.append("title NovaTrek Event Flow")
+def _puml_preamble(title):
+    """Return standard PlantUML preamble lines."""
+    return [
+        "@startuml",
+        "!theme plain",
+        "top to bottom direction",
+        "skinparam backgroundColor #FAFAFA",
+        "skinparam defaultFontName Inter",
+        "skinparam defaultFontSize 12",
+        "skinparam roundCorner 8",
+        "skinparam componentStyle rectangle",
+        f"title {title}",
+        "",
+    ]
+
+
+def build_event_overview_puml():
+    """Generate a lightweight overview diagram showing domain bubbles through Kafka.
+
+    This is the L1 (System Context) event overview — one box per domain with
+    event counts, not individual services.
+    """
+    L = _puml_preamble("NovaTrek Event Flow — Overview")
+
+    # Group events by domain
+    by_domain = {}
+    for evt_name, evt in EVENT_CATALOG.items():
+        by_domain.setdefault(evt["domain"], []).append((evt_name, evt))
+
+    # Collect domains that produce / consume
+    producer_domains = {}  # domain -> set of event names
+    consumer_domains = {}  # domain -> set of event names
+    for evt_name, evt in EVENT_CATALOG.items():
+        prod_domain, _ = get_domain_info(evt["producer"])
+        producer_domains.setdefault(prod_domain, set()).add(evt_name)
+        for c in evt["consumers"]:
+            cons_domain, _ = get_domain_info(c)
+            consumer_domains.setdefault(cons_domain, set()).add(evt_name)
+
+    all_domains = sorted(set(producer_domains) | set(consumer_domains))
+
+    # Domain color map
+    domain_colors = {}
+    for d in all_domains:
+        # Use the first service in this domain to derive color
+        for evt_name, evt in EVENT_CATALOG.items():
+            svc_domain, color = get_domain_info(evt["producer"])
+            if svc_domain == d:
+                domain_colors[d] = color
+                break
+        if d not in domain_colors:
+            for evt_name, evt in EVENT_CATALOG.items():
+                for c in evt["consumers"]:
+                    svc_domain, color = get_domain_info(c)
+                    if svc_domain == d:
+                        domain_colors[d] = color
+                        break
+
+    slug = lambda d: d.lower().replace(" ", "_")
+
+    # Emit producer domain boxes
+    L.append('package "Producing Domains" {')
+    for d in all_domains:
+        if d in producer_domains:
+            n = len(producer_domains[d])
+            color = domain_colors.get(d, "#64748b")
+            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as prod_{slug(d)} {color}')
+    L.append("}")
     L.append("")
 
-    # Collect unique producers and consumers
-    producers = set()
-    consumers = set()
-    for evt_name, evt in EVENT_CATALOG.items():
-        producers.add(evt["producer"])
-        for c in evt["consumers"]:
-            consumers.add(c)
-
-    sorted_producers = sorted(producers)
-    sorted_consumers = sorted(consumers)
-    cols = 4
-
-    def _emit_grid(items, prefix, group_label):
-        """Emit components in nested row containers for grid layout."""
-        L.append(f'package "{group_label}" {{')
-        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
-        for row_idx, row in enumerate(rows):
-            L.append(f'  rectangle "row{row_idx}" as {prefix}row{row_idx} {{')
-            for svc in row:
-                _, color = get_domain_info(svc)
-                alias = prefix + svc.replace("-", "_")
-                L.append(f'    component "{svc}" as {alias} [[/microservices/{svc}/]] {color}')
-            L.append("  }")
-        L.append("}")
-        L.append("")
-
-    _emit_grid(sorted_producers, "p_", "Producers")
-
-    # Kafka in the middle
     L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
     L.append("")
 
-    _emit_grid(sorted_consumers, "c_", "Consumers")
+    # Emit consumer domain boxes
+    L.append('package "Consuming Domains" {')
+    for d in all_domains:
+        if d in consumer_domains:
+            n = len(consumer_domains[d])
+            color = domain_colors.get(d, "#64748b")
+            L.append(f'  component "{d}\\n({n} event{"s" if n != 1 else ""})" as cons_{slug(d)} {color}')
+    L.append("}")
+    L.append("")
 
-    # Draw arrows from producers to Kafka (down)
+    # Arrows: producing domain -> kafka
+    for d in sorted(producer_domains):
+        L.append(f'prod_{slug(d)} --> kafka')
+
+    L.append("")
+
+    # Arrows: kafka -> consuming domain
+    for d in sorted(consumer_domains):
+        L.append(f'kafka --> cons_{slug(d)}')
+
+    L.append("")
+    L.append("@enduml")
+    return "\n".join(L)
+
+
+def build_domain_event_flow_puml(domain_name):
+    """Generate a per-domain event flow diagram (L2 detail).
+
+    Shows the specific services and events for a single domain, including
+    cross-domain consumers that subscribe to this domain's events.
+    """
+    # Collect events produced by this domain
+    domain_events = []
     for evt_name, evt in sorted(EVENT_CATALOG.items()):
+        if evt["domain"] == domain_name:
+            domain_events.append((evt_name, evt))
+
+    if not domain_events:
+        return None
+
+    safe_title = domain_name.replace("&", "and")
+    L = _puml_preamble(f"NovaTrek Event Flow — {safe_title}")
+
+    # Collect unique producers (all in this domain) and consumers (may be cross-domain)
+    producers = sorted(set(evt["producer"] for _, evt in domain_events))
+    consumers = sorted(set(c for _, evt in domain_events for c in evt["consumers"]))
+
+    # Emit producers
+    L.append(f'package "{safe_title} Producers" {{')
+    for svc in producers:
+        _, color = get_domain_info(svc)
+        alias = "p_" + svc.replace("-", "_")
+        L.append(f'  component "{svc}" as {alias} [[/microservices/{svc}/]] {color}')
+    L.append("}")
+    L.append("")
+
+    L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
+    L.append("")
+
+    # Group consumers by domain for clarity
+    cons_by_domain = {}
+    for c in consumers:
+        d, _ = get_domain_info(c)
+        cons_by_domain.setdefault(d, []).append(c)
+
+    for d in sorted(cons_by_domain):
+        label = d if d != domain_name else f"{safe_title} Consumers"
+        safe_label = label.replace("&", "and")
+        L.append(f'package "{safe_label}" {{')
+        for svc in sorted(cons_by_domain[d]):
+            _, color = get_domain_info(svc)
+            alias = "c_" + svc.replace("-", "_")
+            L.append(f'  component "{svc}" as {alias} [[/microservices/{svc}/]] {color}')
+        L.append("}")
+        L.append("")
+
+    # Arrows: producer -> kafka
+    for evt_name, evt in domain_events:
         p_alias = "p_" + evt["producer"].replace("-", "_")
         L.append(f'{p_alias} --> kafka : {evt_name}')
 
     L.append("")
 
-    # Draw arrows from Kafka to consumers (down)
+    # Arrows: kafka -> consumer
     drawn = set()
-    for evt_name, evt in sorted(EVENT_CATALOG.items()):
+    for evt_name, evt in domain_events:
         for c in evt["consumers"]:
             c_alias = "c_" + c.replace("-", "_")
             key = (evt_name, c_alias)
@@ -1488,16 +1587,22 @@ def generate_event_catalog_page():
     )
     lines.append("")
 
-    # Event flow diagram
+    # Event flow overview diagram (domain-level)
     lines.append("---")
     lines.append("")
     lines.append("## Event Flow Overview")
     lines.append("")
     lines.append(
+        "This overview shows which domains produce and consume events "
+        "through the Kafka event bus. Drill into each domain section below "
+        "for service-level detail."
+    )
+    lines.append("")
+    lines.append(
         '<div class="diagram-wrap">'
-        '<a href="../microservices/svg/event-flow.svg" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
-        '<object data="../microservices/svg/event-flow.svg" type="image/svg+xml" '
-        'style="width:100%;max-width:1400px"></object></div>'
+        '<a href="../microservices/svg/event-flow-overview.svg" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
+        '<object data="../microservices/svg/event-flow-overview.svg" type="image/svg+xml" '
+        'style="width:100%;max-width:900px"></object></div>'
     )
     lines.append("")
 
@@ -1520,6 +1625,16 @@ def generate_event_catalog_page():
             continue
 
         lines.append(f"## {domain_name}")
+        lines.append("")
+
+        # Embed per-domain event flow diagram
+        slug = domain_name.lower().replace(" ", "-")
+        lines.append(
+            f'<div class="diagram-wrap">'
+            f'<a href="../microservices/svg/event-flow-{slug}.svg" target="_blank" class="diagram-expand" title="Open in new tab">\u2922</a>'
+            f'<object data="../microservices/svg/event-flow-{slug}.svg" type="image/svg+xml" '
+            f'style="width:100%;max-width:1000px"></object></div>'
+        )
         lines.append("")
         lines.append("| Event | Channel | Producer | Consumers | Schema |")
         lines.append("|-------|---------|----------|-----------|--------|")
@@ -1866,16 +1981,28 @@ def main():
         f.write(enterprise_puml)
     all_pumls.append(enterprise_path)
 
-    # Generate event flow diagram
-    event_flow_puml = build_event_flow_puml()
-    event_flow_path = os.path.join(PUML_DIR, "event-flow.puml")
-    with open(event_flow_path, "w") as f:
-        f.write(event_flow_puml)
-    all_pumls.append(event_flow_path)
+    # Generate per-domain event flow diagrams + overview
+    event_overview_puml = build_event_overview_puml()
+    overview_path = os.path.join(PUML_DIR, "event-flow-overview.puml")
+    with open(overview_path, "w") as f:
+        f.write(event_overview_puml)
+    all_pumls.append(overview_path)
+
+    event_domains = sorted(set(evt["domain"] for evt in EVENT_CATALOG.values()))
+    domain_event_count = 0
+    for domain_name in event_domains:
+        domain_puml = build_domain_event_flow_puml(domain_name)
+        if domain_puml:
+            slug = domain_name.lower().replace(" ", "-")
+            domain_path = os.path.join(PUML_DIR, f"event-flow-{slug}.puml")
+            with open(domain_path, "w") as f:
+                f.write(domain_puml)
+            all_pumls.append(domain_path)
+            domain_event_count += 1
 
     total_ep = sum(s[2] for s in all_services)
     override_msg = f" ({override_count} architect overrides)" if override_count else ""
-    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {erd_count} ERD + {len(all_services)} C4 context + 1 enterprise + 1 event flow){override_msg}")
+    print(f"\n  Generated {len(all_pumls)} PUML files ({total_ep} endpoint + {erd_count} ERD + {len(all_services)} C4 context + 1 enterprise + 1 overview + {domain_event_count} domain event){override_msg}")
 
     # Copy theme.puml so architect overrides can resolve !include ../theme.puml
     theme_src = os.path.join(WORKSPACE_ROOT, "architecture", "diagrams", "theme.puml")
