@@ -26,7 +26,10 @@ Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. Ev
 | Wave 3 deployed | COMPLETE — ca-svc-check-in, ca-svc-scheduling-orchestrator, ca-svc-gear-inventory, ca-svc-safety-compliance |
 | Wave 4 tests (3 svc) | COMPLETE — 45 tests (guide-management 13, transport-logistics 16, location-services 16) |
 | Wave 4 deployed | COMPLETE — ca-svc-guide-management, ca-svc-transport-logistics, ca-svc-location-services |
-| Wave 5-6 tests + deploy | NOT STARTED |
+| Wave 5 tests (3 svc) | COMPLETE — 31 tests (analytics 9, loyalty-rewards 11, media-gallery 11) |
+| Wave 5 deployed | COMPLETE — ca-svc-analytics, ca-svc-loyalty-rewards, ca-svc-media-gallery |
+| Wave 6 tests (5 svc) | COMPLETE — 62 tests (partner-integrations 13, weather 7, inventory-procurement 13, emergency-response 13, wildlife-tracking 16) |
+| Wave 6 deployed | COMPLETE — ca-svc-partner-integrations, ca-svc-weather, ca-svc-inventory-procurement, ca-svc-emergency-response, ca-svc-wildlife-tracking |
 
 ## Delivery Waves
 
@@ -54,11 +57,9 @@ Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. Ev
 
 ## Next Steps
 
-1. Write tests for Wave 5 services (svc-analytics, svc-loyalty-rewards, svc-media-gallery)
-2. Build and deploy Wave 5 to ACA
-3. Write tests for Wave 6 services (svc-partner-integrations, svc-weather, svc-inventory-procurement, svc-emergency-response, svc-wildlife-tracking)
-4. Build and deploy Wave 6 to ACA
-5. Validate health checks and Swagger UI across all deployed services
+1. Write tests for Wave 7 services (svc-reviews, svc-adventure-tracking, svc-referral-engine, svc-campaign-management)
+2. Build and deploy Wave 7 to ACA
+3. Validate health checks and Swagger UI across all 21 deployed services
 
 ## Deployed Container Apps
 
@@ -79,6 +80,14 @@ All apps: 0.25 CPU, 0.5Gi memory, min 0 / max 2, external ingress, port 8080.
 | ca-svc-guide-management | ca-svc-guide-management.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 4 |
 | ca-svc-transport-logistics | ca-svc-transport-logistics.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 4 |
 | ca-svc-location-services | ca-svc-location-services.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 4 |
+| ca-svc-analytics | ca-svc-analytics.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 5 |
+| ca-svc-loyalty-rewards | ca-svc-loyalty-rewards.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 5 |
+| ca-svc-media-gallery | ca-svc-media-gallery.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 5 |
+| ca-svc-partner-integrations | ca-svc-partner-integrations.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 6 |
+| ca-svc-weather | ca-svc-weather.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 6 |
+| ca-svc-inventory-procurement | ca-svc-inventory-procurement.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 6 |
+| ca-svc-emergency-response | ca-svc-emergency-response.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 6 |
+| ca-svc-wildlife-tracking | ca-svc-wildlife-tracking.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 6 |
 
 ## Companion Document
 
