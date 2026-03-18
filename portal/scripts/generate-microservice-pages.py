@@ -947,20 +947,19 @@ def generate_service_page(svc_name, spec, svg_files):
         lines.append(f"**Delivery Wave:** {wave_num} -- {wave_name}")
         lines.append("")
 
-        # Stage progress table
+        # Stage progress table — split into deployment and pipeline sections
+        deploy_method = stages.get("deploy-method", "manual")
         lines.append("| Stage | Status |")
         lines.append("|-------|--------|")
 
-        stage_labels = {
+        deploy_stage_labels = {
             "bicep-module": "Infrastructure (Bicep)",
             "db-schema": "Database Schema (Flyway)",
-            "ci-pipeline": "CI Pipeline",
-            "cd-pipeline": "CD Pipeline",
             "deployed-dev": "Deployed to Dev",
             "smoke-tested": "Smoke Tested",
             "deployed-prod": "Deployed to Prod",
         }
-        for stage_key, stage_label in stage_labels.items():
+        for stage_key, stage_label in deploy_stage_labels.items():
             status = stages.get(stage_key, "not-started")
             if status == "complete":
                 icon = ":white_check_mark:"
@@ -969,6 +968,31 @@ def generate_service_page(svc_name, spec, svg_files):
             else:
                 icon = ":material-circle-outline:"
             lines.append(f"| {stage_label} | {icon} {status} |")
+        lines.append("")
+
+        # Pipeline maturity
+        ci_status = stages.get("ci-pipeline", "not-started")
+        cd_status = stages.get("cd-pipeline", "not-started")
+        if ci_status != "complete" or cd_status != "complete":
+            if deploy_method == "manual":
+                lines.append(
+                    "!!! info \"Deployment Method\"\n"
+                    "    This service was deployed manually via Azure CLI. "
+                    "Automated CI/CD pipelines are not yet configured."
+                )
+            else:
+                lines.append("| CI Pipeline | {} {} |".format(
+                    ":white_check_mark:" if ci_status == "complete" else ":material-circle-outline:",
+                    ci_status))
+                lines.append("| CD Pipeline | {} {} |".format(
+                    ":white_check_mark:" if cd_status == "complete" else ":material-circle-outline:",
+                    cd_status))
+        else:
+            lines.append("")
+            lines.append("| Pipeline | Status |")
+            lines.append("|----------|--------|")
+            lines.append(f"| CI Pipeline | :white_check_mark: complete |")
+            lines.append(f"| CD Pipeline | :white_check_mark: complete |")
         lines.append("")
 
         # Azure resource links

@@ -27,11 +27,12 @@ tags:
 |-------|--------|
 | Infrastructure (Bicep) | :white_check_mark: complete |
 | Database Schema (Flyway) | :white_check_mark: complete |
-| CI Pipeline | :material-circle-outline: not-started |
-| CD Pipeline | :material-circle-outline: not-started |
 | Deployed to Dev | :white_check_mark: complete |
 | Smoke Tested | :white_check_mark: complete |
 | Deployed to Prod | :material-circle-outline: not-started |
+
+!!! info "Deployment Method"
+    This service was deployed manually via Azure CLI. Automated CI/CD pipelines are not yet configured.
 
 **Azure Resources (Dev):**
 
