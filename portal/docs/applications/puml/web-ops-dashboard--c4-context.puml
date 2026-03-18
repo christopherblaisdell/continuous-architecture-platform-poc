@@ -13,73 +13,31 @@ Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 Container(web_ops_dashboard, "NovaTrek Operations Dashboard", "Angular 17", "Web application", $link="/applications/web-ops-dashboard/")
 
 System_Boundary(platform, "NovaTrek Platform") {
-    Container_Boundary(domain_Booking, "Booking") {
-        Container(svc_reservations, "svc-reservations\nJava / Spring Boot", "4 screens", $link="/microservices/svc-reservations/#integration-context")
-    }
-    Container_Boundary(domain_External, "External") {
-        Container(svc_partner_integrations, "svc-partner-integrations\nJava / Spring Boot", "1 screens", $link="/microservices/svc-partner-integrations/#integration-context")
-    }
-    Container_Boundary(domain_Guest_Identity, "Guest Identity") {
-        Container(svc_guest_profiles, "svc-guest-profiles\nJava / Spring Boot", "2 screens", $link="/microservices/svc-guest-profiles/#integration-context")
-    }
-    Container_Boundary(domain_Guide_Management, "Guide Management") {
-        Container(svc_guide_management, "svc-guide-management\nJava / Spring Boot", "3 screens", $link="/microservices/svc-guide-management/#integration-context")
-    }
-    Container_Boundary(domain_Logistics, "Logistics") {
-        Container(svc_gear_inventory, "svc-gear-inventory\nJava / Spring Boot", "2 screens", $link="/microservices/svc-gear-inventory/#integration-context")
-        Container(svc_transport_logistics, "svc-transport-logistics\nJava / Spring Boot", "1 screens", $link="/microservices/svc-transport-logistics/#integration-context")
-    }
-    Container_Boundary(domain_Operations, "Operations") {
-        Container(svc_check_in, "svc-check-in\nJava / Spring Boot", "1 screens", $link="/microservices/svc-check-in/#integration-context")
-        Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator\nJava / Spring Boot", "2 screens", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
-    }
-    Container_Boundary(domain_Product_Catalog, "Product Catalog") {
-        Container(svc_trail_management, "svc-trail-management\nJava / Spring Boot", "2 screens", $link="/microservices/svc-trail-management/#integration-context")
-    }
-    Container_Boundary(domain_Safety, "Safety") {
-        Container(svc_safety_compliance, "svc-safety-compliance\nJava / Spring Boot", "2 screens", $link="/microservices/svc-safety-compliance/#integration-context")
-    }
-    Container_Boundary(domain_Support, "Support") {
-        Container(svc_analytics, "svc-analytics\nJava / Spring Boot", "1 screens", $link="/microservices/svc-analytics/#integration-context")
-        Container(svc_inventory_procurement, "svc-inventory-procurement\nJava / Spring Boot", "1 screens", $link="/microservices/svc-inventory-procurement/#integration-context")
-        Container(svc_location_services, "svc-location-services\nJava / Spring Boot", "2 screens", $link="/microservices/svc-location-services/#integration-context")
-        Container(svc_notifications, "svc-notifications\nJava / Spring Boot", "1 screens", $link="/microservices/svc-notifications/#integration-context")
-        Container(svc_payments, "svc-payments\nJava / Spring Boot", "2 screens", $link="/microservices/svc-payments/#integration-context")
-        Container(svc_weather, "svc-weather\nJava / Spring Boot", "1 screens", $link="/microservices/svc-weather/#integration-context")
-    }
+    Container(domain_Booking, "Booking\n(1 services)", "Java / Spring Boot", "reservations", $link="/microservices/")
+    Container(domain_External, "External\n(1 services)", "Java / Spring Boot", "partner-integrations", $link="/microservices/")
+    Container(domain_Guest_Identity, "Guest Identity\n(1 services)", "Java / Spring Boot", "guest-profiles", $link="/microservices/")
+    Container(domain_Guide_Management, "Guide Management\n(1 services)", "Java / Spring Boot", "guide-management", $link="/microservices/")
+    Container(domain_Logistics, "Logistics\n(2 services)", "Java / Spring Boot", "gear-inventory, transport-logistics", $link="/microservices/")
+    Container(domain_Operations, "Operations\n(2 services)", "Java / Spring Boot", "check-in, scheduling-orchestrator", $link="/microservices/")
+    Container(domain_Product_Catalog, "Product Catalog\n(1 services)", "Java / Spring Boot", "trail-management", $link="/microservices/")
+    Container(domain_Safety, "Safety\n(1 services)", "Java / Spring Boot", "safety-compliance", $link="/microservices/")
+    Container(domain_Support, "Support\n(6 services)", "Java / Spring Boot", "analytics, inventory-procurement, location-services, notifications, payments, weather", $link="/microservices/")
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
 System_Ext(Snowflake_Data_Cloud, "Snowflake Data Cloud", "Third-party service")
 
 Rel(user, web_ops_dashboard, "Uses", "HTTPS")
-Rel(web_ops_dashboard, svc_analytics, "1 screen", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_check_in, "1 screen", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_gear_inventory, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_guest_profiles, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_guide_management, "3 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_inventory_procurement, "1 screen", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_location_services, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_notifications, "1 screen", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_partner_integrations, "1 screen", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_payments, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_reservations, "4 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_safety_compliance, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_scheduling_orchestrator, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_trail_management, "2 screens", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_transport_logistics, "1 screen", "REST/HTTPS")
-Rel(web_ops_dashboard, svc_weather, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Booking, "4 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_External, "1 screen", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Guest_Identity, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Guide_Management, "3 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Logistics, "3 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Operations, "3 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Product_Catalog, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Safety, "2 screens", "REST/HTTPS")
+Rel(web_ops_dashboard, domain_Support, "8 screens", "REST/HTTPS")
 Rel(web_ops_dashboard, Google_Maps_Platform, "Uses", "HTTPS")
 Rel(web_ops_dashboard, Snowflake_Data_Cloud, "Uses", "HTTPS")
-
-' Layout hints: stack domain groups vertically
-Lay_R(svc_reservations, svc_partner_integrations)
-Lay_R(svc_guest_profiles, svc_guide_management)
-Lay_R(svc_gear_inventory, svc_check_in)
-Lay_R(svc_trail_management, svc_safety_compliance)
-Lay_D(svc_reservations, svc_guest_profiles)
-Lay_D(svc_guest_profiles, svc_gear_inventory)
-Lay_D(svc_gear_inventory, svc_trail_management)
-Lay_D(svc_trail_management, svc_analytics)
 
 @enduml

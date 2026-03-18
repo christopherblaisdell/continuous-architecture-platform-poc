@@ -13,34 +13,13 @@ Person(user, "Guest", "NovaTrek customer", $link="/actors/#guest")
 Container(app_guest_mobile, "NovaTrek Adventure App", "React Native 0.74", "Mobile application", $link="/applications/app-guest-mobile/")
 
 System_Boundary(platform, "NovaTrek Platform") {
-    Container_Boundary(domain_Booking, "Booking") {
-        Container(svc_reservations, "svc-reservations\nJava / Spring Boot", "3 screens", $link="/microservices/svc-reservations/#integration-context")
-    }
-    Container_Boundary(domain_Guest_Identity, "Guest Identity") {
-        Container(svc_guest_profiles, "svc-guest-profiles\nJava / Spring Boot", "2 screens", $link="/microservices/svc-guest-profiles/#integration-context")
-    }
-    Container_Boundary(domain_Logistics, "Logistics") {
-        Container(svc_gear_inventory, "svc-gear-inventory\nJava / Spring Boot", "2 screens", $link="/microservices/svc-gear-inventory/#integration-context")
-    }
-    Container_Boundary(domain_Operations, "Operations") {
-        Container(svc_check_in, "svc-check-in\nJava / Spring Boot", "2 screens", $link="/microservices/svc-check-in/#integration-context")
-        Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator\nJava / Spring Boot", "1 screens", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
-    }
-    Container_Boundary(domain_Product_Catalog, "Product Catalog") {
-        Container(svc_trail_management, "svc-trail-management\nJava / Spring Boot", "2 screens", $link="/microservices/svc-trail-management/#integration-context")
-        Container(svc_trip_catalog, "svc-trip-catalog\nJava / Spring Boot", "1 screens", $link="/microservices/svc-trip-catalog/#integration-context")
-    }
-    Container_Boundary(domain_Safety, "Safety") {
-        Container(svc_safety_compliance, "svc-safety-compliance\nJava / Spring Boot", "1 screens", $link="/microservices/svc-safety-compliance/#integration-context")
-    }
-    Container_Boundary(domain_Support, "Support") {
-        Container(svc_location_services, "svc-location-services\nJava / Spring Boot", "1 screens", $link="/microservices/svc-location-services/#integration-context")
-        Container(svc_loyalty_rewards, "svc-loyalty-rewards\nJava / Spring Boot", "1 screens", $link="/microservices/svc-loyalty-rewards/#integration-context")
-        Container(svc_media_gallery, "svc-media-gallery\nJava / Spring Boot", "1 screens", $link="/microservices/svc-media-gallery/#integration-context")
-        Container(svc_notifications, "svc-notifications\nJava / Spring Boot", "2 screens", $link="/microservices/svc-notifications/#integration-context")
-        Container(svc_payments, "svc-payments\nJava / Spring Boot", "1 screens", $link="/microservices/svc-payments/#integration-context")
-        Container(svc_weather, "svc-weather\nJava / Spring Boot", "2 screens", $link="/microservices/svc-weather/#integration-context")
-    }
+    Container(domain_Booking, "Booking\n(1 services)", "Java / Spring Boot", "reservations", $link="/microservices/")
+    Container(domain_Guest_Identity, "Guest Identity\n(1 services)", "Java / Spring Boot", "guest-profiles", $link="/microservices/")
+    Container(domain_Logistics, "Logistics\n(1 services)", "Java / Spring Boot", "gear-inventory", $link="/microservices/")
+    Container(domain_Operations, "Operations\n(2 services)", "Java / Spring Boot", "check-in, scheduling-orchestrator", $link="/microservices/")
+    Container(domain_Product_Catalog, "Product Catalog\n(2 services)", "Java / Spring Boot", "trail-management, trip-catalog", $link="/microservices/")
+    Container(domain_Safety, "Safety\n(1 services)", "Java / Spring Boot", "safety-compliance", $link="/microservices/")
+    Container(domain_Support, "Support\n(6 services)", "Java / Spring Boot", "location-services, loyalty-rewards, media-gallery, notifications, payments, weather", $link="/microservices/")
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service")
@@ -48,30 +27,15 @@ System_Ext(Object_Store, "Object Store", "Third-party service")
 System_Ext(OpenWeather_API, "OpenWeather API", "Third-party service")
 
 Rel(user, app_guest_mobile, "Uses", "HTTPS")
-Rel(app_guest_mobile, svc_check_in, "2 screens", "REST/HTTPS")
-Rel(app_guest_mobile, svc_gear_inventory, "2 screens", "REST/HTTPS")
-Rel(app_guest_mobile, svc_guest_profiles, "2 screens", "REST/HTTPS")
-Rel(app_guest_mobile, svc_location_services, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_loyalty_rewards, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_media_gallery, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_notifications, "2 screens", "REST/HTTPS")
-Rel(app_guest_mobile, svc_payments, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_reservations, "3 screens", "REST/HTTPS")
-Rel(app_guest_mobile, svc_safety_compliance, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_scheduling_orchestrator, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_trail_management, "2 screens", "REST/HTTPS")
-Rel(app_guest_mobile, svc_trip_catalog, "1 screen", "REST/HTTPS")
-Rel(app_guest_mobile, svc_weather, "2 screens", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Booking, "3 screens", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Guest_Identity, "2 screens", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Logistics, "2 screens", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Operations, "3 screens", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Product_Catalog, "3 screens", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Safety, "1 screen", "REST/HTTPS")
+Rel(app_guest_mobile, domain_Support, "8 screens", "REST/HTTPS")
 Rel(app_guest_mobile, Google_Maps_Platform, "Uses", "HTTPS")
 Rel(app_guest_mobile, Object_Store, "Uses", "HTTPS")
 Rel(app_guest_mobile, OpenWeather_API, "Uses", "HTTPS")
-
-' Layout hints: stack domain groups vertically
-Lay_R(svc_reservations, svc_guest_profiles)
-Lay_R(svc_gear_inventory, svc_check_in)
-Lay_R(svc_trail_management, svc_safety_compliance)
-Lay_D(svc_reservations, svc_gear_inventory)
-Lay_D(svc_gear_inventory, svc_trail_management)
-Lay_D(svc_trail_management, svc_location_services)
 
 @enduml
