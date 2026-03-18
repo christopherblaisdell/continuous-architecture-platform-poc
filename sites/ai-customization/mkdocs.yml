@@ -1,0 +1,58 @@
+site_name: AI Workflow Customization -- NovaTrek
+site_url: https://ai.customization.novatrek.cc
+site_description: GitHub Copilot vs OpenSpec -- AI workflow customization reference for NovaTrek Adventures
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+
+nav:
+  - Comparison and Recommendation: index.md
+  - Reference Guides:
+    - GitHub Copilot Customization: github-copilot-customization-guide.md
+    - OpenSpec Customization: openspec-customization-guide.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/christopherblaisdell/continuous-architecture-platform-poc
+
+copyright: NovaTrek Adventures -- AI Workflow Customization Reference
