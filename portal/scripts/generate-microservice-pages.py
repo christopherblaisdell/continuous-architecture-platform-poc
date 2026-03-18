@@ -1427,13 +1427,14 @@ def build_event_flow_puml():
     L.append("")
 
     # Layout hints — arrange producers and consumers in a grid (~4 per row)
+    # Note: Lay_D is C4-only; standard PlantUML uses hidden links instead.
     def _add_grid_hints(items, prefix):
         aliases = [prefix + s.replace("-", "_") for s in items]
         cols = 4
         if len(aliases) > cols:
             L.append(f"' Grid layout for {prefix}* elements")
             for i in range(len(aliases) - cols):
-                L.append(f"Lay_D({aliases[i]}, {aliases[i + cols]})")
+                L.append(f"{aliases[i]} -[hidden]down-> {aliases[i + cols]}")
             L.append("")
 
     _add_grid_hints(sorted_producers, "p_")

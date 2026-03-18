@@ -33,16 +33,16 @@ rectangle "Consumers" {
 }
 
 ' Grid layout for p_* elements
-Lay_D(p_svc_check_in, p_svc_reservations)
-Lay_D(p_svc_emergency_response, p_svc_safety_compliance)
-Lay_D(p_svc_guest_profiles, p_svc_scheduling_orchestrator)
-Lay_D(p_svc_payments, p_svc_wildlife_tracking)
+p_svc_check_in -[hidden]down-> p_svc_reservations
+p_svc_emergency_response -[hidden]down-> p_svc_safety_compliance
+p_svc_guest_profiles -[hidden]down-> p_svc_scheduling_orchestrator
+p_svc_payments -[hidden]down-> p_svc_wildlife_tracking
 
 ' Grid layout for c_* elements
-Lay_D(c_svc_analytics, c_svc_reservations)
-Lay_D(c_svc_guide_management, c_svc_safety_compliance)
-Lay_D(c_svc_loyalty_rewards, c_svc_scheduling_orchestrator)
-Lay_D(c_svc_notifications, c_svc_trail_management)
+c_svc_analytics -[hidden]down-> c_svc_reservations
+c_svc_guide_management -[hidden]down-> c_svc_safety_compliance
+c_svc_loyalty_rewards -[hidden]down-> c_svc_scheduling_orchestrator
+c_svc_notifications -[hidden]down-> c_svc_trail_management
 
 p_svc_check_in --> kafka : checkin.completed
 p_svc_emergency_response --> kafka : emergency.triggered
