@@ -47,18 +47,20 @@ def svc_link(svc_id):
     return f"[{svc_id}](../microservices/{svc_id}.md)"
 
 
-def generate_system_map(topology):
-    """Generate a Mermaid flowchart of the full system topology."""
+def _extract_topology_data(topology):
+    """Extract services, domains, and edges from topology data."""
     nodes = topology.get("nodes", [])
     relationships = topology.get("relationships", [])
 
     services = [n for n in nodes if n.get("node-type") == "service"]
     service_ids = {n["unique-id"] for n in services}
 
-    # Group services by domain
+    # Map service -> domain
+    svc_domain = {}
     domains = defaultdict(list)
     for svc in services:
         domain = svc.get("metadata", {}).get("domain", "Unknown")
+        svc_domain[svc["unique-id"]] = domain
         domains[domain].append(svc)
 
     # Collect service-to-service relationships (deduplicated)
@@ -74,43 +76,146 @@ def generate_system_map(topology):
             elif proto == "Kafka":
                 kafka_edges.add((src, tgt))
 
-    # Build Mermaid diagram
-    lines = ["```mermaid", "flowchart LR"]
+    return services, service_ids, svc_domain, domains, rest_edges, kafka_edges
 
-    # Style definitions
+
+def generate_domain_overview(topology):
+    """Generate a domain-level Mermaid diagram (domains as nodes, aggregated edges)."""
+    _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
+
+    # Aggregate edges to domain-to-domain level
+    domain_rest = defaultdict(int)
+    domain_kafka = defaultdict(int)
+    for src, tgt in rest_edges:
+        src_d = svc_domain[src]
+        tgt_d = svc_domain[tgt]
+        if src_d != tgt_d:
+            domain_rest[(src_d, tgt_d)] += 1
+    for src, tgt in kafka_edges:
+        src_d = svc_domain[src]
+        tgt_d = svc_domain[tgt]
+        if src_d != tgt_d:
+            domain_kafka[(src_d, tgt_d)] += 1
+
+    # Also count intra-domain edges for the node labels
+    intra_rest = defaultdict(int)
+    intra_kafka = defaultdict(int)
+    for src, tgt in rest_edges:
+        src_d = svc_domain[src]
+        tgt_d = svc_domain[tgt]
+        if src_d == tgt_d:
+            intra_rest[src_d] += 1
+    for src, tgt in kafka_edges:
+        src_d = svc_domain[src]
+        tgt_d = svc_domain[tgt]
+        if src_d == tgt_d:
+            intra_kafka[src_d] += 1
+
+    lines = ["```mermaid", "flowchart TB"]
     lines.append("")
-    lines.append("    %% Domain subgraphs")
 
+    # Domain nodes with service counts
     for domain in sorted(domains.keys()):
-        svcs = domains[domain]
-        safe_domain = domain.replace(" ", "_")
-        lines.append(f"    subgraph {safe_domain}[\"{domain}\"]")
-        for svc in sorted(svcs, key=lambda s: s["unique-id"]):
-            sid = svc["unique-id"]
-            label = short_name(sid)
-            lines.append(f"        {sid}[\"{label}\"]")
+        safe = domain.replace(" ", "_")
+        n_svcs = len(domains[domain])
+        svc_word = "service" if n_svcs == 1 else "services"
+        intra = intra_rest[domain] + intra_kafka[domain]
+        intra_note = f"\\n{intra} internal connections" if intra > 0 else ""
+        lines.append(f"    {safe}[\"{domain}\\n{n_svcs} {svc_word}{intra_note}\"]")
+    lines.append("")
+
+    # Cross-domain REST edges with counts
+    lines.append("    %% Cross-domain REST calls")
+    for (src_d, tgt_d), count in sorted(domain_rest.items()):
+        src_safe = src_d.replace(" ", "_")
+        tgt_safe = tgt_d.replace(" ", "_")
+        lines.append(f"    {src_safe} -->|{count} REST| {tgt_safe}")
+    lines.append("")
+
+    # Cross-domain Kafka edges with counts
+    lines.append("    %% Cross-domain event flows")
+    for (src_d, tgt_d), count in sorted(domain_kafka.items()):
+        src_safe = src_d.replace(" ", "_")
+        tgt_safe = tgt_d.replace(" ", "_")
+        lines.append(f"    {src_safe} -.->|{count} events| {tgt_safe}")
+    lines.append("")
+
+    # Styling
+    lines.append("    %% Styling")
+    for domain in domains:
+        safe = domain.replace(" ", "_")
+        color = DOMAIN_COLORS.get(domain, "#616161")
+        lines.append(f"    style {safe} fill:{color}20,stroke:{color},stroke-width:2px,color:#fff")
+
+    lines.append("```")
+    return "\n".join(lines)
+
+
+def generate_domain_diagram(topology, target_domain):
+    """Generate a Mermaid diagram for a single domain showing its services and cross-domain connections."""
+    _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
+
+    domain_svc_ids = {s["unique-id"] for s in domains[target_domain]}
+
+    # Find all edges involving this domain's services
+    relevant_rest = [(s, t) for s, t in rest_edges if s in domain_svc_ids or t in domain_svc_ids]
+    relevant_kafka = [(s, t) for s, t in kafka_edges if s in domain_svc_ids or t in domain_svc_ids]
+
+    # Collect external services that connect to this domain, grouped by their domain
+    external_svcs = set()
+    for s, t in relevant_rest + relevant_kafka:
+        if s not in domain_svc_ids:
+            external_svcs.add(s)
+        if t not in domain_svc_ids:
+            external_svcs.add(t)
+
+    external_by_domain = defaultdict(set)
+    for sid in external_svcs:
+        external_by_domain[svc_domain[sid]].add(sid)
+
+    lines = ["```mermaid", "flowchart TB"]
+    lines.append("")
+
+    # Target domain subgraph
+    safe_target = target_domain.replace(" ", "_")
+    lines.append(f"    subgraph {safe_target}[\"{target_domain}\"]")
+    for svc in sorted(domains[target_domain], key=lambda s: s["unique-id"]):
+        sid = svc["unique-id"]
+        lines.append(f"        {sid}[\"{short_name(sid)}\"]")
+    lines.append("    end")
+    lines.append("")
+
+    # External domain subgraphs
+    for ext_domain in sorted(external_by_domain.keys()):
+        safe_ext = ext_domain.replace(" ", "_")
+        lines.append(f"    subgraph {safe_ext}[\"{ext_domain}\"]")
+        for sid in sorted(external_by_domain[ext_domain]):
+            lines.append(f"        {sid}[\"{short_name(sid)}\"]")
         lines.append("    end")
         lines.append("")
 
-    # REST edges (solid arrows)
-    lines.append("    %% REST calls (HTTPS)")
-    for src, tgt in sorted(rest_edges):
-        lines.append(f"    {src} --> {tgt}")
+    # REST edges
+    if relevant_rest:
+        lines.append("    %% REST calls")
+        for src, tgt in sorted(relevant_rest):
+            lines.append(f"    {src} --> {tgt}")
+        lines.append("")
 
-    lines.append("")
+    # Kafka edges
+    if relevant_kafka:
+        lines.append("    %% Event flows")
+        for src, tgt in sorted(relevant_kafka):
+            lines.append(f"    {src} -.-> {tgt}")
+        lines.append("")
 
-    # Kafka edges (dashed arrows)
-    lines.append("    %% Event flows (Kafka)")
-    for src, tgt in sorted(kafka_edges):
-        lines.append(f"    {src} -.-> {tgt}")
-
-    # Style classes
-    lines.append("")
+    # Styling
     lines.append("    %% Styling")
-    for domain, svcs in domains.items():
-        safe_domain = domain.replace(" ", "_")
-        color = DOMAIN_COLORS.get(domain, "#616161")
-        lines.append(f"    style {safe_domain} fill:{color}15,stroke:{color},stroke-width:2px")
+    target_color = DOMAIN_COLORS.get(target_domain, "#616161")
+    lines.append(f"    style {safe_target} fill:{target_color}15,stroke:{target_color},stroke-width:2px")
+    for ext_domain in external_by_domain:
+        safe_ext = ext_domain.replace(" ", "_")
+        color = DOMAIN_COLORS.get(ext_domain, "#616161")
+        lines.append(f"    style {safe_ext} fill:{color}08,stroke:{color},stroke-width:1px,stroke-dasharray: 5 5")
 
     lines.append("```")
     return "\n".join(lines)
@@ -245,42 +350,68 @@ The generator reads 6 metadata sources:
 
 
 def write_system_map_page(topology):
-    """Write the system map page with Mermaid diagram."""
-    mermaid = generate_system_map(topology)
+    """Write the system map page with domain-level overview and links to per-domain detail."""
+    overview = generate_domain_overview(topology)
+    _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
+
+    n_services = sum(1 for n in topology["nodes"] if n.get("node-type") == "service")
+    n_domains = len(set(n.get("metadata", {}).get("domain") for n in topology["nodes"] if n.get("node-type") == "service"))
+
+    # Build domain summary table
+    domain_table_rows = ""
+    for domain in sorted(domains.keys()):
+        n_svcs = len(domains[domain])
+        domain_svc_ids = {s["unique-id"] for s in domains[domain]}
+        n_rest_out = sum(1 for s, t in rest_edges if s in domain_svc_ids and t not in domain_svc_ids)
+        n_kafka_out = sum(1 for s, t in kafka_edges if s in domain_svc_ids and t not in domain_svc_ids)
+        slug = domain.lower().replace(" ", "-")
+        domain_table_rows += f"| [{domain}](domain-views.md#{slug}) | {n_svcs} | {n_rest_out} | {n_kafka_out} |\n"
 
     content = f"""# System Map
 
-Interactive service topology for NovaTrek Adventures — {sum(1 for n in topology['nodes'] if n.get('node-type') == 'service')} services across {len(set(n.get('metadata', {}).get('domain') for n in topology['nodes'] if n.get('node-type') == 'service'))} domains.
+Domain-level topology for NovaTrek Adventures — {n_services} services across {n_domains} domains.
 
 !!! info "Everything on this portal is entirely fictional"
     NovaTrek Adventures is a completely fictitious company used as a synthetic workspace for the Continuous Architecture Platform proof of concept.
 
 ---
 
-## Full System Topology
+## Domain Overview
+
+Each node represents a domain (bounded context) containing one or more microservices. Arrows show **cross-domain** communication — internal connections within a domain are noted on each node.
 
 **Solid arrows** = synchronous REST calls (HTTPS)
 **Dashed arrows** = asynchronous event flows (Kafka)
 
-{mermaid}
+{overview}
 
+---
+
+## Domains
+
+Click a domain to see its service-level topology diagram with individual service connections.
+
+| Domain | Services | REST Out | Events Out |
+|--------|----------|----------|------------|
+{domain_table_rows}
 ---
 
 ## Legend
 
 | Element | Meaning |
 |---------|---------|
-| Solid box | Microservice |
-| Colored subgraph | Domain boundary |
-| Solid arrow (-->) | Synchronous REST call |
-| Dashed arrow (-.->) | Asynchronous Kafka event |
+| Domain node | Bounded context containing one or more services |
+| Solid arrow with count | Cross-domain synchronous REST calls |
+| Dashed arrow with count | Cross-domain asynchronous Kafka events |
+| Internal connections note | Intra-domain service-to-service calls |
 
 ## How to Read This Diagram
 
-1. **Domains** are grouped as colored subgraphs — services within the same subgraph belong to the same bounded context
-2. **High fan-in services** (many arrows pointing in) are shared platform services — `Guest Profiles`, `Notifications`, `Reservations`
-3. **High fan-out services** (many arrows pointing out) are orchestrators — `Check In`, `Scheduling Orchestrator`, `Emergency Response`
-4. **Dashed lines** indicate event-driven decoupling — the source publishes an event without knowing the consumer
+1. **Each box is a domain** — a bounded context owning a group of related microservices
+2. **Arrows between domains** show cross-boundary communication with the number of distinct service-to-service connections
+3. **High fan-in domains** (many arrows pointing in) provide shared platform capabilities — Guest Identity, Support
+4. **Dashed lines** indicate event-driven decoupling — the source domain publishes events without knowing the consumers
+5. **Drill down** into any domain via the [Domain Views](domain-views.md) page to see individual service connections
 
 ## Data Source
 
@@ -444,6 +575,14 @@ Per-domain topology breakdown showing services, databases, and integration patte
 
         team = svcs[0].get("metadata", {}).get("team", "Unknown") if svcs else "Unknown"
         content += f"**Team:** {team}\n\n"
+
+        # Per-domain topology diagram
+        domain_diagram = generate_domain_diagram(topology, domain)
+        content += "### Topology\n\n"
+        content += "**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  "
+        content += "Dashed border = external domain\n\n"
+        content += domain_diagram
+        content += "\n\n"
 
         # Services table
         content += "### Services\n\n"
