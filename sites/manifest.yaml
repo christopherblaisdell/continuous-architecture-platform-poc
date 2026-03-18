@@ -1,0 +1,56 @@
+# Site Content Manifest
+#
+# Single source of truth for which docs/ files are published to which sites.
+# Run `python3 sites/sync-sites.py` to copy and transform files.
+#
+# Source files live in docs/ with UPPERCASE names (author-edited).
+# Each site gets transformed copies with per-site filenames and link rewrites.
+
+sites:
+  portal:
+    docs_dir: portal/docs
+    description: Architecture Portal (architecture.novatrek.cc)
+
+  ai-customization:
+    docs_dir: sites/ai-customization/docs
+    description: AI Workflow Customization (ai.customization.novatrek.cc)
+
+# Each entry maps a source file to one or more site destinations.
+# link_rewrites are applied as simple string replacements after copying.
+
+pages:
+  - source: docs/COPILOT-VS-OPENSPEC-COMPARISON.md
+    targets:
+      - site: portal
+        dest: copilot-vs-openspec-comparison.md
+      - site: ai-customization
+        dest: index.md
+
+  - source: docs/GITHUB-COPILOT-CUSTOMIZATION-GUIDE.md
+    targets:
+      - site: portal
+        dest: github-copilot-customization-guide.md
+      - site: ai-customization
+        dest: github-copilot-customization-guide.md
+
+  - source: docs/OPENSPEC-CUSTOMIZATION-GUIDE.md
+    targets:
+      - site: portal
+        dest: openspec-customization-guide.md
+      - site: ai-customization
+        dest: openspec-customization-guide.md
+
+# Link rewrites applied per site after copying.
+# Keys are literal strings found in source; values are replacements.
+# Applied in order, so more specific patterns should come first.
+
+link_rewrites:
+  portal:
+    "GITHUB-COPILOT-CUSTOMIZATION-GUIDE.md": "github-copilot-customization-guide.md"
+    "OPENSPEC-CUSTOMIZATION-GUIDE.md": "openspec-customization-guide.md"
+    "COPILOT-VS-OPENSPEC-COMPARISON.md": "copilot-vs-openspec-comparison.md"
+
+  ai-customization:
+    "GITHUB-COPILOT-CUSTOMIZATION-GUIDE.md": "github-copilot-customization-guide.md"
+    "OPENSPEC-CUSTOMIZATION-GUIDE.md": "openspec-customization-guide.md"
+    "COPILOT-VS-OPENSPEC-COMPARISON.md": "index.md"
