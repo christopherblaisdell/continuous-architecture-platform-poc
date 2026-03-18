@@ -35,4 +35,10 @@ Rel(svc_trail_management, svc_notifications, "Alert park rangers", "HTTPS")
 Rel(svc_trail_management, svc_safety_compliance, "Update trail safety assessment", "HTTPS")
 Rel(svc_trail_management, svc_weather, "Correlate weather data", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_scheduling_orchestrator, svc_location_services)
+Lay_D(svc_wildlife_tracking, svc_notifications)
+Lay_D(svc_location_services, svc_safety_compliance)
+Lay_D(svc_notifications, svc_weather)
+
 @enduml

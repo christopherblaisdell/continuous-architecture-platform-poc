@@ -57,4 +57,15 @@ Rel(svc_notifications, Firebase_Cloud_Messaging, "Send bulk push notifications, 
 Rel(svc_notifications, SendGrid_API, "Deliver bulk emails, Deliver email", "HTTPS")
 Rel(svc_notifications, Twilio_API, "Deliver SMS, Deliver bulk SMS", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_check_in, svc_partner_integrations)
+Lay_D(svc_emergency_response, svc_payments)
+Lay_D(svc_inventory_procurement, svc_reservations)
+Lay_D(svc_loyalty_rewards, svc_safety_compliance)
+Lay_D(svc_media_gallery, svc_scheduling_orchestrator)
+Lay_D(svc_partner_integrations, svc_trail_management)
+Lay_D(svc_payments, svc_transport_logistics)
+Lay_D(svc_reservations, svc_weather)
+Lay_D(svc_safety_compliance, svc_wildlife_tracking)
+
 @enduml

@@ -37,4 +37,11 @@ Rel(svc_scheduling_orchestrator, svc_trail_management, "Verify trail conditions"
 Rel(svc_scheduling_orchestrator, svc_trip_catalog, "2 calls", "HTTPS")
 Rel(svc_scheduling_orchestrator, svc_weather, "Get forecast", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_wildlife_tracking, svc_location_services)
+Lay_D(svc_analytics, svc_notifications)
+Lay_D(svc_guide_management, svc_trail_management)
+Lay_D(svc_location_services, svc_trip_catalog)
+Lay_D(svc_notifications, svc_weather)
+
 @enduml

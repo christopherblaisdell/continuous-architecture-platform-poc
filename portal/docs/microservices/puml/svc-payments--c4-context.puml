@@ -39,4 +39,9 @@ Rel(svc_payments, svc_notifications, "2 calls", "HTTPS")
 Rel(svc_payments, Fraud_Detection_API, "Screen transaction", "HTTPS", $tags="pci")
 Rel(svc_payments, Payment_Gateway, "Process refund via gateway, Tokenize & route payment", "HTTPS", $tags="pci")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_inventory_procurement, svc_partner_integrations)
+Lay_D(svc_loyalty_rewards, svc_reservations)
+Lay_D(svc_partner_integrations, svc_notifications)
+
 @enduml

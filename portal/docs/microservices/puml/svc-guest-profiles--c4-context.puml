@@ -44,4 +44,12 @@ Rel(svc_guest_profiles, svc_analytics, "Get satisfaction scores", "HTTPS")
 Rel(svc_guest_profiles, svc_reservations, "Query past bookings", "HTTPS")
 Rel(svc_guest_profiles, IDVerify_API, "Verify identity document", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_check_in, svc_loyalty_rewards)
+Lay_D(svc_emergency_response, svc_partner_integrations)
+Lay_D(svc_gear_inventory, svc_reservations)
+Lay_D(svc_loyalty_rewards, svc_reviews)
+Lay_D(svc_partner_integrations, svc_safety_compliance)
+Lay_D(svc_reservations, svc_analytics)
+
 @enduml

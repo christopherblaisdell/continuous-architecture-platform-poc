@@ -33,4 +33,10 @@ Rel(svc_check_in, svc_reservations, "Verify reservation exists", "HTTPS")
 Rel(svc_check_in, svc_safety_compliance, "2 calls", "HTTPS")
 Rel(svc_check_in, svc_trip_catalog, "Get adventure category", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_gear_inventory, svc_notifications)
+Lay_D(svc_guest_profiles, svc_reservations)
+Lay_D(svc_notifications, svc_safety_compliance)
+Lay_D(svc_reservations, svc_trip_catalog)
+
 @enduml

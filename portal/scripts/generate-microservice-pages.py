@@ -379,6 +379,20 @@ def build_c4_context_puml(svc_name):
         pci_tag = ', $tags="pci"' if is_pci_flow(svc_name, ext) else ""
         L.append(f'Rel({svc_alias}, {_safe_alias(ext)}, "{label}", "HTTPS"{pci_tag})')
 
+    # Layout hints — arrange peer services in columns to prevent horizontal sprawl
+    all_peers = []
+    for peer in sorted(inbound_svcs.keys()):
+        all_peers.append(_safe_alias(peer))
+    for peer in sorted(outbound_svcs.keys()):
+        if peer not in inbound_svcs:
+            all_peers.append(_safe_alias(peer))
+    if len(all_peers) > 4:
+        L.append("")
+        L.append("' Layout hints: stack peers in columns")
+        col_size = max(2, (len(all_peers) + 2) // 3)  # ~3 columns
+        for i in range(len(all_peers) - col_size):
+            L.append(f'Lay_D({all_peers[i]}, {all_peers[i + col_size]})')
+
     L.append("")
     L.append("@enduml")
 
@@ -1369,6 +1383,7 @@ def build_event_flow_puml():
     L = []
     L.append("@startuml")
     L.append("!theme plain")
+    L.append("top to bottom direction")
     L.append("skinparam backgroundColor #FAFAFA")
     L.append("skinparam defaultFontName Inter")
     L.append("skinparam defaultFontSize 12")
@@ -1385,11 +1400,16 @@ def build_event_flow_puml():
         for c in evt["consumers"]:
             consumers.add(c)
 
-    # Declare producers (left side)
+    sorted_producers = sorted(producers)
+    sorted_consumers = sorted(consumers)
+
+    # Declare producers (top) — use unique aliases prefixed with p_ to avoid
+    # collisions when a service appears in both producers and consumers.
     L.append("rectangle \"Producers\" {")
-    for p in sorted(producers):
+    for p in sorted_producers:
         _, color = get_domain_info(p)
-        L.append(f'  component "{p}" as {p.replace("-", "_")} [[/microservices/{p}/]] {color}')
+        alias = "p_" + p.replace("-", "_")
+        L.append(f'  component "{p}" as {alias} [[/microservices/{p}/]] {color}')
     L.append("}")
     L.append("")
 
@@ -1397,30 +1417,44 @@ def build_event_flow_puml():
     L.append('queue "Kafka Event Bus" as kafka #F0E6FF')
     L.append("")
 
-    # Declare consumers (right side)
+    # Declare consumers (bottom) — unique aliases prefixed with c_
     L.append("rectangle \"Consumers\" {")
-    for c in sorted(consumers):
+    for c in sorted_consumers:
         _, color = get_domain_info(c)
-        L.append(f'  component "{c}" as {c.replace("-", "_")} [[/microservices/{c}/]] {color}')
+        alias = "c_" + c.replace("-", "_")
+        L.append(f'  component "{c}" as {alias} [[/microservices/{c}/]] {color}')
     L.append("}")
     L.append("")
 
-    # Draw arrows from producers to Kafka
+    # Layout hints — arrange producers and consumers in a grid (~4 per row)
+    def _add_grid_hints(items, prefix):
+        aliases = [prefix + s.replace("-", "_") for s in items]
+        cols = 4
+        if len(aliases) > cols:
+            L.append(f"' Grid layout for {prefix}* elements")
+            for i in range(len(aliases) - cols):
+                L.append(f"Lay_D({aliases[i]}, {aliases[i + cols]})")
+            L.append("")
+
+    _add_grid_hints(sorted_producers, "p_")
+    _add_grid_hints(sorted_consumers, "c_")
+
+    # Draw arrows from producers to Kafka (down)
     for evt_name, evt in sorted(EVENT_CATALOG.items()):
-        p_alias = evt["producer"].replace("-", "_")
-        L.append(f'{p_alias} -right-> kafka : {evt_name}')
+        p_alias = "p_" + evt["producer"].replace("-", "_")
+        L.append(f'{p_alias} --> kafka : {evt_name}')
 
     L.append("")
 
-    # Draw arrows from Kafka to consumers
+    # Draw arrows from Kafka to consumers (down)
     drawn = set()
     for evt_name, evt in sorted(EVENT_CATALOG.items()):
         for c in evt["consumers"]:
-            c_alias = c.replace("-", "_")
+            c_alias = "c_" + c.replace("-", "_")
             key = (evt_name, c_alias)
             if key not in drawn:
                 drawn.add(key)
-                L.append(f'kafka -right-> {c_alias} : {evt_name}')
+                L.append(f'kafka --> {c_alias} : {evt_name}')
 
     L.append("")
     L.append("@enduml")

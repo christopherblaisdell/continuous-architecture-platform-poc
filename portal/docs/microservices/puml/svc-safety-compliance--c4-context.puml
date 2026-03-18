@@ -41,4 +41,11 @@ Rel(svc_safety_compliance, svc_guide_management, "Get assigned guide", "HTTPS")
 Rel(svc_safety_compliance, svc_notifications, "2 calls", "HTTPS")
 Rel(svc_safety_compliance, DocuSign_API, "Verify digital signature", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_check_in, svc_trail_management)
+Lay_D(svc_emergency_response, svc_wildlife_tracking)
+Lay_D(svc_gear_inventory, svc_guest_profiles)
+Lay_D(svc_trail_management, svc_guide_management)
+Lay_D(svc_wildlife_tracking, svc_notifications)
+
 @enduml

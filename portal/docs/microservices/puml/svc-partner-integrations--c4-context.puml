@@ -31,4 +31,9 @@ Rel(svc_partner_integrations, svc_payments, "Process commission", "HTTPS", $tags
 Rel(svc_partner_integrations, svc_reservations, "2 calls", "HTTPS")
 Rel(svc_partner_integrations, svc_trip_catalog, "Check trip availability", "HTTPS")
 
+' Layout hints: stack peers in columns
+Lay_D(svc_guest_profiles, svc_payments)
+Lay_D(svc_notifications, svc_reservations)
+Lay_D(svc_payments, svc_trip_catalog)
+
 @enduml

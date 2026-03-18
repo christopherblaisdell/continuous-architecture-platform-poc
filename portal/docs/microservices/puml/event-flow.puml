@@ -1,5 +1,6 @@
 @startuml
 !theme plain
+top to bottom direction
 skinparam backgroundColor #FAFAFA
 skinparam defaultFontName Inter
 skinparam defaultFontSize 12
@@ -8,60 +9,72 @@ skinparam componentStyle rectangle
 title NovaTrek Event Flow
 
 rectangle "Producers" {
-  component "svc-check-in" as svc_check_in [[/microservices/svc-check-in/]] #2563eb
-  component "svc-emergency-response" as svc_emergency_response [[/microservices/svc-emergency-response/]] #dc2626
-  component "svc-guest-profiles" as svc_guest_profiles [[/microservices/svc-guest-profiles/]] #7c3aed
-  component "svc-payments" as svc_payments [[/microservices/svc-payments/]] #64748b
-  component "svc-reservations" as svc_reservations [[/microservices/svc-reservations/]] #059669
-  component "svc-safety-compliance" as svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
-  component "svc-scheduling-orchestrator" as svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
-  component "svc-wildlife-tracking" as svc_wildlife_tracking [[/microservices/svc-wildlife-tracking/]] #dc2626
+  component "svc-check-in" as p_svc_check_in [[/microservices/svc-check-in/]] #2563eb
+  component "svc-emergency-response" as p_svc_emergency_response [[/microservices/svc-emergency-response/]] #dc2626
+  component "svc-guest-profiles" as p_svc_guest_profiles [[/microservices/svc-guest-profiles/]] #7c3aed
+  component "svc-payments" as p_svc_payments [[/microservices/svc-payments/]] #64748b
+  component "svc-reservations" as p_svc_reservations [[/microservices/svc-reservations/]] #059669
+  component "svc-safety-compliance" as p_svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
+  component "svc-scheduling-orchestrator" as p_svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
+  component "svc-wildlife-tracking" as p_svc_wildlife_tracking [[/microservices/svc-wildlife-tracking/]] #dc2626
 }
 
 queue "Kafka Event Bus" as kafka #F0E6FF
 
 rectangle "Consumers" {
-  component "svc-analytics" as svc_analytics [[/microservices/svc-analytics/]] #64748b
-  component "svc-guide-management" as svc_guide_management [[/microservices/svc-guide-management/]] #4f46e5
-  component "svc-loyalty-rewards" as svc_loyalty_rewards [[/microservices/svc-loyalty-rewards/]] #64748b
-  component "svc-notifications" as svc_notifications [[/microservices/svc-notifications/]] #64748b
-  component "svc-reservations" as svc_reservations [[/microservices/svc-reservations/]] #059669
-  component "svc-safety-compliance" as svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
-  component "svc-scheduling-orchestrator" as svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
-  component "svc-trail-management" as svc_trail_management [[/microservices/svc-trail-management/]] #d97706
+  component "svc-analytics" as c_svc_analytics [[/microservices/svc-analytics/]] #64748b
+  component "svc-guide-management" as c_svc_guide_management [[/microservices/svc-guide-management/]] #4f46e5
+  component "svc-loyalty-rewards" as c_svc_loyalty_rewards [[/microservices/svc-loyalty-rewards/]] #64748b
+  component "svc-notifications" as c_svc_notifications [[/microservices/svc-notifications/]] #64748b
+  component "svc-reservations" as c_svc_reservations [[/microservices/svc-reservations/]] #059669
+  component "svc-safety-compliance" as c_svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
+  component "svc-scheduling-orchestrator" as c_svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
+  component "svc-trail-management" as c_svc_trail_management [[/microservices/svc-trail-management/]] #d97706
 }
 
-svc_check_in -right-> kafka : checkin.completed
-svc_emergency_response -right-> kafka : emergency.triggered
-svc_guest_profiles -right-> kafka : guest.registered
-svc_safety_compliance -right-> kafka : incident.reported
-svc_payments -right-> kafka : payment.processed
-svc_reservations -right-> kafka : reservation.created
-svc_reservations -right-> kafka : reservation.status_changed
-svc_scheduling_orchestrator -right-> kafka : schedule.published
-svc_wildlife_tracking -right-> kafka : wildlife_alert.issued
+' Grid layout for p_* elements
+Lay_D(p_svc_check_in, p_svc_reservations)
+Lay_D(p_svc_emergency_response, p_svc_safety_compliance)
+Lay_D(p_svc_guest_profiles, p_svc_scheduling_orchestrator)
+Lay_D(p_svc_payments, p_svc_wildlife_tracking)
 
-kafka -right-> svc_analytics : checkin.completed
-kafka -right-> svc_notifications : checkin.completed
-kafka -right-> svc_notifications : emergency.triggered
-kafka -right-> svc_scheduling_orchestrator : emergency.triggered
-kafka -right-> svc_safety_compliance : emergency.triggered
-kafka -right-> svc_analytics : emergency.triggered
-kafka -right-> svc_loyalty_rewards : guest.registered
-kafka -right-> svc_analytics : guest.registered
-kafka -right-> svc_notifications : incident.reported
-kafka -right-> svc_analytics : incident.reported
-kafka -right-> svc_reservations : payment.processed
-kafka -right-> svc_notifications : payment.processed
-kafka -right-> svc_scheduling_orchestrator : reservation.created
-kafka -right-> svc_analytics : reservation.created
-kafka -right-> svc_notifications : reservation.status_changed
-kafka -right-> svc_analytics : reservation.status_changed
-kafka -right-> svc_guide_management : schedule.published
-kafka -right-> svc_notifications : schedule.published
-kafka -right-> svc_notifications : wildlife_alert.issued
-kafka -right-> svc_scheduling_orchestrator : wildlife_alert.issued
-kafka -right-> svc_trail_management : wildlife_alert.issued
-kafka -right-> svc_analytics : wildlife_alert.issued
+' Grid layout for c_* elements
+Lay_D(c_svc_analytics, c_svc_reservations)
+Lay_D(c_svc_guide_management, c_svc_safety_compliance)
+Lay_D(c_svc_loyalty_rewards, c_svc_scheduling_orchestrator)
+Lay_D(c_svc_notifications, c_svc_trail_management)
+
+p_svc_check_in --> kafka : checkin.completed
+p_svc_emergency_response --> kafka : emergency.triggered
+p_svc_guest_profiles --> kafka : guest.registered
+p_svc_safety_compliance --> kafka : incident.reported
+p_svc_payments --> kafka : payment.processed
+p_svc_reservations --> kafka : reservation.created
+p_svc_reservations --> kafka : reservation.status_changed
+p_svc_scheduling_orchestrator --> kafka : schedule.published
+p_svc_wildlife_tracking --> kafka : wildlife_alert.issued
+
+kafka --> c_svc_analytics : checkin.completed
+kafka --> c_svc_notifications : checkin.completed
+kafka --> c_svc_notifications : emergency.triggered
+kafka --> c_svc_scheduling_orchestrator : emergency.triggered
+kafka --> c_svc_safety_compliance : emergency.triggered
+kafka --> c_svc_analytics : emergency.triggered
+kafka --> c_svc_loyalty_rewards : guest.registered
+kafka --> c_svc_analytics : guest.registered
+kafka --> c_svc_notifications : incident.reported
+kafka --> c_svc_analytics : incident.reported
+kafka --> c_svc_reservations : payment.processed
+kafka --> c_svc_notifications : payment.processed
+kafka --> c_svc_scheduling_orchestrator : reservation.created
+kafka --> c_svc_analytics : reservation.created
+kafka --> c_svc_notifications : reservation.status_changed
+kafka --> c_svc_analytics : reservation.status_changed
+kafka --> c_svc_guide_management : schedule.published
+kafka --> c_svc_notifications : schedule.published
+kafka --> c_svc_notifications : wildlife_alert.issued
+kafka --> c_svc_scheduling_orchestrator : wildlife_alert.issued
+kafka --> c_svc_trail_management : wildlife_alert.issued
+kafka --> c_svc_analytics : wildlife_alert.issued
 
 @enduml
