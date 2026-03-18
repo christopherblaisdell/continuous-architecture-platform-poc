@@ -13,11 +13,11 @@ Auto-generated from the [CALM topology](../calm.md) — the machine-readable arc
 |--------|-------|
 | Services | 22 |
 | Databases | 22 |
-| REST integrations | 70 |
+| REST integrations | 72 |
 | Event flows (Kafka) | 55 |
 | Database connections | 22 |
-| Total nodes | 76 |
-| Total relationships | 147 |
+| Total nodes | 78 |
+| Total relationships | 149 |
 
 ## Domain Summary
 

@@ -219,6 +219,7 @@ nav:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
   - Operations:
+    - Artifact Registry: artifact-registry.md
     - Platform Operations: platform-operations.md
     - Platform Roadmap: roadmap.md
     - Security Model:

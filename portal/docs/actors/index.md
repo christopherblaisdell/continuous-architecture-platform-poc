@@ -11,7 +11,7 @@ tags:
 # Actor Catalog
 
 <p class="subtitle">All Actors Across the NovaTrek Enterprise</p>
-<span class="version-badge">20 Actors &middot; 11 External Systems &middot; 3 Frontend Applications &middot; 3 Humans &middot; 3 Infrastructures</span>
+<span class="version-badge">22 Actors &middot; 11 External Systems &middot; 3 Frontend Applications &middot; 5 Humans &middot; 3 Infrastructures</span>
 
 </div>
 
@@ -26,6 +26,8 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 | **Adventure Guide** | Guide Management | Certified outdoor guides who lead adventure trips, manage guest safety, and report incidents. | [Adventure App](../applications/app-guest-mobile/), [Operations Dashboard](../applications/web-ops-dashboard/) |
 | **Guest** | Guest Identity | NovaTrek customer who books, checks in for, and participates in adventure trips. | [Guest Portal](../applications/web-guest-portal/), [Adventure App](../applications/app-guest-mobile/) |
 | **Operations Staff** | Operations | On-site NovaTrek employees who manage daily operations including check-in, scheduling, gear assignment, and incident response. | [Operations Dashboard](../applications/web-ops-dashboard/) |
+| **Software Developer** | Engineering | Implements approved architecture designs in service source code, writes tests, and proposes API contract updates via pull request when implementation reveals contract gaps. | [Operations Dashboard](../applications/web-ops-dashboard/) |
+| **Solution Architect** | Architecture | Owns architecture metadata, API contracts, solution designs, decisions, and diagrams. Proposes and documents architectural changes to the NovaTrek platform. | [Operations Dashboard](../applications/web-ops-dashboard/) |
 
 ---
 
@@ -248,6 +250,18 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 **Referenced by:**
 
 - [svc-analytics](../microservices/svc-analytics/)
+
+### Software Developer
+
+- **Type:** Human
+- **Domain:** Engineering
+- **Description:** Implements approved architecture designs in service source code, writes tests, and proposes API contract updates via pull request when implementation reveals contract gaps.
+
+### Solution Architect
+
+- **Type:** Human
+- **Domain:** Architecture
+- **Description:** Owns architecture metadata, API contracts, solution designs, decisions, and diagrams. Proposes and documents architectural changes to the NovaTrek platform.
 
 ### Stripe API
 

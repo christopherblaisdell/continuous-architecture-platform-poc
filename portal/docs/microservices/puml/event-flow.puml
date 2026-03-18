@@ -6,43 +6,41 @@ skinparam defaultFontName Inter
 skinparam defaultFontSize 12
 skinparam roundCorner 8
 skinparam componentStyle rectangle
+skinparam rectangleBorderColor transparent
+skinparam rectangleBackgroundColor transparent
 title NovaTrek Event Flow
 
-rectangle "Producers" {
-  component "svc-check-in" as p_svc_check_in [[/microservices/svc-check-in/]] #2563eb
-  component "svc-emergency-response" as p_svc_emergency_response [[/microservices/svc-emergency-response/]] #dc2626
-  component "svc-guest-profiles" as p_svc_guest_profiles [[/microservices/svc-guest-profiles/]] #7c3aed
-  component "svc-payments" as p_svc_payments [[/microservices/svc-payments/]] #64748b
-  component "svc-reservations" as p_svc_reservations [[/microservices/svc-reservations/]] #059669
-  component "svc-safety-compliance" as p_svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
-  component "svc-scheduling-orchestrator" as p_svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
-  component "svc-wildlife-tracking" as p_svc_wildlife_tracking [[/microservices/svc-wildlife-tracking/]] #dc2626
+package "Producers" {
+  rectangle "row0" as p_row0 {
+    component "svc-check-in" as p_svc_check_in [[/microservices/svc-check-in/]] #2563eb
+    component "svc-emergency-response" as p_svc_emergency_response [[/microservices/svc-emergency-response/]] #dc2626
+    component "svc-guest-profiles" as p_svc_guest_profiles [[/microservices/svc-guest-profiles/]] #7c3aed
+    component "svc-payments" as p_svc_payments [[/microservices/svc-payments/]] #64748b
+  }
+  rectangle "row1" as p_row1 {
+    component "svc-reservations" as p_svc_reservations [[/microservices/svc-reservations/]] #059669
+    component "svc-safety-compliance" as p_svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
+    component "svc-scheduling-orchestrator" as p_svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
+    component "svc-wildlife-tracking" as p_svc_wildlife_tracking [[/microservices/svc-wildlife-tracking/]] #dc2626
+  }
 }
 
 queue "Kafka Event Bus" as kafka #F0E6FF
 
-rectangle "Consumers" {
-  component "svc-analytics" as c_svc_analytics [[/microservices/svc-analytics/]] #64748b
-  component "svc-guide-management" as c_svc_guide_management [[/microservices/svc-guide-management/]] #4f46e5
-  component "svc-loyalty-rewards" as c_svc_loyalty_rewards [[/microservices/svc-loyalty-rewards/]] #64748b
-  component "svc-notifications" as c_svc_notifications [[/microservices/svc-notifications/]] #64748b
-  component "svc-reservations" as c_svc_reservations [[/microservices/svc-reservations/]] #059669
-  component "svc-safety-compliance" as c_svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
-  component "svc-scheduling-orchestrator" as c_svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
-  component "svc-trail-management" as c_svc_trail_management [[/microservices/svc-trail-management/]] #d97706
+package "Consumers" {
+  rectangle "row0" as c_row0 {
+    component "svc-analytics" as c_svc_analytics [[/microservices/svc-analytics/]] #64748b
+    component "svc-guide-management" as c_svc_guide_management [[/microservices/svc-guide-management/]] #4f46e5
+    component "svc-loyalty-rewards" as c_svc_loyalty_rewards [[/microservices/svc-loyalty-rewards/]] #64748b
+    component "svc-notifications" as c_svc_notifications [[/microservices/svc-notifications/]] #64748b
+  }
+  rectangle "row1" as c_row1 {
+    component "svc-reservations" as c_svc_reservations [[/microservices/svc-reservations/]] #059669
+    component "svc-safety-compliance" as c_svc_safety_compliance [[/microservices/svc-safety-compliance/]] #dc2626
+    component "svc-scheduling-orchestrator" as c_svc_scheduling_orchestrator [[/microservices/svc-scheduling-orchestrator/]] #2563eb
+    component "svc-trail-management" as c_svc_trail_management [[/microservices/svc-trail-management/]] #d97706
+  }
 }
-
-' Grid layout for p_* elements
-p_svc_check_in -[hidden]down-> p_svc_reservations
-p_svc_emergency_response -[hidden]down-> p_svc_safety_compliance
-p_svc_guest_profiles -[hidden]down-> p_svc_scheduling_orchestrator
-p_svc_payments -[hidden]down-> p_svc_wildlife_tracking
-
-' Grid layout for c_* elements
-c_svc_analytics -[hidden]down-> c_svc_reservations
-c_svc_guide_management -[hidden]down-> c_svc_safety_compliance
-c_svc_loyalty_rewards -[hidden]down-> c_svc_scheduling_orchestrator
-c_svc_notifications -[hidden]down-> c_svc_trail_management
 
 p_svc_check_in --> kafka : checkin.completed
 p_svc_emergency_response --> kafka : emergency.triggered

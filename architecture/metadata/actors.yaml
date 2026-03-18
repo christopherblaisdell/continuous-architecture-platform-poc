@@ -2,6 +2,20 @@
 # Source of truth for portal generation.
 # Edit this file, commit, push -- CI rebuilds the portal automatically.
 
+Solution Architect:
+  type: Human
+  description: Owns architecture metadata, API contracts, solution designs, decisions, and diagrams. Proposes and documents
+    architectural changes to the NovaTrek platform.
+  interacts_with:
+  - web-ops-dashboard
+  domain: Architecture
+Software Developer:
+  type: Human
+  description: Implements approved architecture designs in service source code, writes tests, and proposes API contract updates
+    via pull request when implementation reveals contract gaps.
+  interacts_with:
+  - web-ops-dashboard
+  domain: Engineering
 Guest:
   type: Human
   description: NovaTrek customer who books, checks in for, and participates in adventure trips.

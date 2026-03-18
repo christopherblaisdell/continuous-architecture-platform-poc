@@ -2522,6 +2522,28 @@
       }
     },
     {
+      "unique-id": "solution-architect",
+      "node-type": "actor",
+      "name": "Solution Architect",
+      "description": "Owns architecture metadata, API contracts, solution designs, decisions, and diagrams. Proposes and documents architectural changes to the NovaTrek platform.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "Human",
+        "domain": "Architecture"
+      }
+    },
+    {
+      "unique-id": "software-developer",
+      "node-type": "actor",
+      "name": "Software Developer",
+      "description": "Implements approved architecture designs in service source code, writes tests, and proposes API contract updates via pull request when implementation reveals contract gaps.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "Human",
+        "domain": "Engineering"
+      }
+    },
+    {
       "unique-id": "guest",
       "node-type": "actor",
       "name": "Guest",
@@ -3154,6 +3176,30 @@
       "protocol": "JDBC",
       "metadata": {
         "description": "svc-reviews connects to its database"
+      }
+    },
+    {
+      "unique-id": "rel-solution-architect-to-web-ops-dashboard",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "solution-architect",
+        "target": "web-ops-dashboard"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "description": "Solution Architect uses web-ops-dashboard"
+      }
+    },
+    {
+      "unique-id": "rel-software-developer-to-web-ops-dashboard",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "software-developer",
+        "target": "web-ops-dashboard"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "description": "Software Developer uses web-ops-dashboard"
       }
     },
     {
