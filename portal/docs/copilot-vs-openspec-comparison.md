@@ -179,19 +179,21 @@ The "both" approach is only justified when multi-tool portability is a hard requ
 
 **For this workspace: GitHub Copilot Native customization is recommended. OpenSpec is not adopted.**
 
+OpenSpec solves a problem we do not have. Its primary value proposition is multi-tool portability -- a single customization layer that works across 20+ AI coding platforms. We are not looking to adopt multiple platforms. This workspace uses GitHub Copilot exclusively, and there is no plan or business driver to change that. Adopting OpenSpec would mean taking on a framework dependency, a learning curve, and ongoing maintenance cost to gain portability we will never use.
+
 ### Justification
 
-**1. Architecture governance requires artifact types OpenSpec cannot represent.**
+**1. OpenSpec's core differentiator -- multi-tool portability -- provides zero value here.**
+
+OpenSpec exists so that teams using Cursor, Claude Code, Windsurf, Copilot, and other tools can share one set of workflow definitions across all of them. That is a real problem for multi-tool teams. It is not our problem. We use GitHub Copilot. Portability only matters on the day you actually switch tools, and introducing framework complexity today for a theoretical future migration is not a sound trade-off.
+
+**2. Architecture governance requires artifact types OpenSpec cannot represent.**
 
 This workspace produces MADR decision records, per-service impact assessments, capability tracking with L3 emergence, risk registers against ISO 25010, assumption registers, guidance documents, and user stories. OpenSpec's proposal/specs/design/tasks model has no place for these. Every architecture-specific artifact would need to be built as custom tooling on top of OpenSpec, negating the benefit of using a framework.
 
-**2. Content enforcement is a requirement, not a nice-to-have.**
+**3. Content enforcement is a requirement, not a nice-to-have.**
 
 OpenSpec schemas validate file existence only. This workspace needs content structure enforcement: MADR format with 2+ options, impact assessments that stay separate from implementation guidance, capability changelog entries in a specific YAML format. Copilot's instruction-based approach (non-deterministic but effective) combined with hooks (deterministic) provides this. OpenSpec provides neither.
-
-**3. Multi-tool portability has zero value for a single-tool team.**
-
-This workspace uses GitHub Copilot exclusively. OpenSpec's primary differentiator -- portability across 20+ tools -- provides no benefit. Portability only matters on the day you actually switch tools, and that day may never come. Adding a framework for theoretical future portability introduces real present-day complexity.
 
 **4. OpenSpec adds a dependency without proportional value.**
 
