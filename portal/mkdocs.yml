@@ -232,9 +232,10 @@ nav:
       - Research Results: security/research-prompt-response.md
     - Database Change Workflow: database-change-workflow.md
     - AI Workflow Customization:
-      - GitHub Copilot Customization: github-copilot-customization-guide.md
-      - OpenSpec Customization: openspec-customization-guide.md
       - Copilot vs OpenSpec Comparison: copilot-vs-openspec-comparison.md
+      - Reference Guides:
+        - GitHub Copilot Customization: github-copilot-customization-guide.md
+        - OpenSpec Customization: openspec-customization-guide.md
     - Research:
       - OpenSpec Evaluation:
         - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
