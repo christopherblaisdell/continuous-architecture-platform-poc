@@ -11,8 +11,12 @@ Usage:
 """
 
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from load_metadata import diagram_source_badge  # noqa: E402
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent.parent
 CALM_DIR = WORKSPACE_ROOT / "architecture" / "calm"
@@ -384,6 +388,10 @@ Each node represents a domain (bounded context) containing one or more microserv
 **Dashed arrows** = asynchronous event flows (Kafka)
 
 {overview}
+{diagram_source_badge(
+    'architecture/calm/novatrek-topology.json',
+    'https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json',
+)}
 
 ---
 
@@ -582,6 +590,11 @@ Per-domain topology breakdown showing services, databases, and integration patte
         content += "**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  "
         content += "Dashed border = external domain\n\n"
         content += domain_diagram
+        content += "\n"
+        content += diagram_source_badge(
+            "architecture/calm/novatrek-topology.json",
+            "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json",
+        )
         content += "\n\n"
 
         # Services table

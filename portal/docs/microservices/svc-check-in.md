@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-check-in C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-check-in entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -154,6 +156,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/listCheckIns){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--get-check-ins.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--get-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml`</a>
 
 ---
 
@@ -164,6 +167,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/createCheckIn){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--post-check-ins.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--post-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml`</a>
 
 ---
 
@@ -172,6 +176,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/getCheckIn){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--get-check-ins-check_in_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--get-check-ins-check_in_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /check-ins/{check_in_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml`</a>
 
 ---
 
@@ -182,6 +187,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/verifyGear){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/gear-verification sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml`</a>
 
 ---
 
@@ -192,6 +198,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/assignWristband){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--post-check-ins-check_in_id-wristband-assignment.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/wristband-assignment sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml`</a>
 
 ---
 

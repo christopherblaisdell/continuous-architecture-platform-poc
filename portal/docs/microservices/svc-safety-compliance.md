@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-safety-compliance C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-safety-compliance entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -145,6 +147,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/listWaivers){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-waivers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-waivers.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -153,6 +156,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/signWaiver){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--post-waivers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--post-waivers.svg" type="image/svg+xml" style="max-width: 100%;">POST /waivers sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -161,6 +165,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Waivers/getWaiver){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-waivers-waiver_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-waivers-waiver_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers/{waiver_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -169,6 +174,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/createIncident){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--post-incidents.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--post-incidents.svg" type="image/svg+xml" style="max-width: 100%;">POST /incidents sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -177,6 +183,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/getIncident){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-incidents-incident_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /incidents/{incident_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -185,6 +192,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Incidents/updateIncident){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--patch-incidents-incident_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--patch-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /incidents/{incident_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -193,6 +201,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Inspections/listSafetyInspections){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-safety-inspections.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">GET /safety-inspections sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 
@@ -201,6 +210,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-safety-compliance.html#/Inspections/createSafetyInspection){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--post-safety-inspections.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--post-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">POST /safety-inspections sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
 
 ---
 

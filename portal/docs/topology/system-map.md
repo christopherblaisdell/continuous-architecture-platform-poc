@@ -84,6 +84,7 @@ flowchart TB
     style External fill:#37474F20,stroke:#37474F,stroke-width:2px,color:#fff
     style Support fill:#4E342E20,stroke:#4E342E,stroke-width:2px,color:#fff
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ---
 

@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-transport-logistics C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-transport-logistics entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -127,6 +129,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-routes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-routes.svg" type="image/svg+xml" style="max-width: 100%;">GET /routes sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 
@@ -135,6 +138,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--post-routes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--post-routes.svg" type="image/svg+xml" style="max-width: 100%;">POST /routes sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 
@@ -145,6 +149,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-routes-route_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-routes-route_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /routes/{route_id}/schedule sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 
@@ -155,6 +160,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--post-transport-requests.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--post-transport-requests.svg" type="image/svg+xml" style="max-width: 100%;">POST /transport-requests sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 
@@ -163,6 +169,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-transport-requests-request_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-transport-requests-request_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /transport-requests/{request_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 
@@ -171,6 +178,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--get-vehicles.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--get-vehicles.svg" type="image/svg+xml" style="max-width: 100%;">GET /vehicles sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 
@@ -179,6 +187,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-transport-logistics.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-transport-logistics--patch-vehicles-vehicle_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /vehicles/{vehicle_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-transport-logistics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-transport-logistics.yaml`</a>
 
 ---
 

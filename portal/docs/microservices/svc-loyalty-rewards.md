@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-loyalty-rewards C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-loyalty-rewards entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -140,6 +142,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Members/getMemberBalance){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--get-members-guest_id-balance.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--get-members-guest_id-balance.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/balance sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
 
 ---
 
@@ -148,6 +151,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/earnPoints){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--post-members-guest_id-earn.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--post-members-guest_id-earn.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/earn sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
 
 ---
 
@@ -156,6 +160,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/redeemPoints){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--post-members-guest_id-redeem.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--post-members-guest_id-redeem.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/redeem sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
 
 ---
 
@@ -164,6 +169,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/getMemberTransactions){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--get-members-guest_id-transactions.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--get-members-guest_id-transactions.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/transactions sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
 
 ---
 
@@ -172,6 +178,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Tiers/listTiers){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--get-tiers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--get-tiers.svg" type="image/svg+xml" style="max-width: 100%;">GET /tiers sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
 
 ---
 

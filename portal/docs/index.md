@@ -145,6 +145,7 @@ Unknown categories default to **Pattern 3** (ADR-005).
 <a href="microservices/svg/enterprise-c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
 <object data="microservices/svg/enterprise-c4-context.svg" type="image/svg+xml" style="width:100%;max-width:1200px;display:block;margin:0 auto"></object>
 </div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from all OpenAPI specs + cross-service-calls.yaml</a>
 
 </div>
 

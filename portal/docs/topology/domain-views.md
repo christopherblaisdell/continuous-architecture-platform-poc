@@ -73,12 +73,13 @@ flowchart TB
     %% Styling
     style Booking fill:#E6510015,stroke:#E65100,stroke-width:2px
     style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
+    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
+    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
     style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
     style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
     style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -154,10 +155,11 @@ flowchart TB
     %% Styling
     style External fill:#37474F15,stroke:#37474F,stroke-width:2px
     style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
     style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
     style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
+    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -238,13 +240,14 @@ flowchart TB
 
     %% Styling
     style Guest_Identity fill:#0D47A115,stroke:#0D47A1,stroke-width:2px
+    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
+    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
+    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
+    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
     style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
     style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -313,6 +316,7 @@ flowchart TB
     style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
     style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -385,11 +389,12 @@ flowchart TB
     %% Styling
     style Logistics fill:#00606415,stroke:#006064,stroke-width:2px
     style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
     style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
     style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
+    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
+    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -495,13 +500,14 @@ flowchart TB
     %% Styling
     style Operations fill:#1B5E2015,stroke:#1B5E20,stroke-width:2px
     style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
     style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
     style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
+    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
+    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
+    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
     style Guide_Management fill:#33691E08,stroke:#33691E,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -593,11 +599,12 @@ flowchart TB
     %% Styling
     style Product_Catalog fill:#4A148C15,stroke:#4A148C,stroke-width:2px
     style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
     style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
     style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
+    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
+    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -703,12 +710,13 @@ flowchart TB
     %% Styling
     style Safety fill:#B71C1C15,stroke:#B71C1C,stroke-width:2px
     style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
     style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
+    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
+    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
     style Guide_Management fill:#33691E08,stroke:#33691E,stroke-width:1px,stroke-dasharray: 5 5
+    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 
@@ -844,14 +852,15 @@ flowchart TB
 
     %% Styling
     style Support fill:#4E342E15,stroke:#4E342E,stroke-width:2px
-    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
     style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
     style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
     style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
+    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
+    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
+    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
+    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
 ```
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
 
 ### Services
 

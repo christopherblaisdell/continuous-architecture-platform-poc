@@ -39,6 +39,21 @@ def get_service_light_color(svc_name):
     """Return the pastel background color for a service's domain."""
     return _SVC_TO_LIGHT.get(svc_name, "#F1F5F9")
 
+
+def diagram_source_badge(label, url=None):
+    """Return HTML for a diagram provenance badge.
+
+    Args:
+        label: Short description of the data source (e.g. "events.yaml").
+        url: Optional link target. If provided, badge is a clickable <a>.
+             If None, badge is a static <span>.
+    """
+    icon = '<span class="diagram-source-icon">&#x2699;</span>'
+    text = f"{icon} Generated from {label}"
+    if url:
+        return f'<a class="diagram-source" href="{url}" title="View data source">{text}</a>'
+    return f'<span class="diagram-source">{text}</span>'
+
 # ── Label Mappings ──
 LABEL_TO_SVC = _load("label-to-svc.yaml")
 

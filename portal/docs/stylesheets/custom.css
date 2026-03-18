@@ -334,8 +334,167 @@ h3.endpoint-delete {
   transform: scale(1.1);
 }
 
+/* ── Diagram provenance badge ── */
+.diagram-source {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.25rem 0 1.25rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.72rem;
+  font-family: var(--md-text-font-family);
+  color: #6b7a8d;
+  background: #f4f6f9;
+  border: 1px solid #e2e6ec;
+  border-radius: 0.375rem;
+  width: fit-content;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+  line-height: 1.4;
+}
+.diagram-source:hover {
+  color: #4a6fa5;
+  border-color: #93b7e3;
+  text-decoration: none;
+}
+.diagram-source .diagram-source-icon {
+  font-size: 0.82rem;
+  opacity: 0.65;
+}
+[data-md-color-scheme="slate"] .diagram-source {
+  color: #9ba8b8;
+  background: #1e2a3a;
+  border-color: #2e3d50;
+}
+[data-md-color-scheme="slate"] .diagram-source:hover {
+  color: #93b7e3;
+  border-color: #4a6fa5;
+}
+
+/* ── C4-Style Actor Cards ── */
+.actor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.actor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 0.625rem;
+  padding: 1.25rem 1rem 1rem;
+  border: 2px solid var(--actor-border, #374151);
+  background: var(--actor-bg, #F9FAFB);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+.actor-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: inherit;
+}
+
+/* C4 person silhouette — head circle + body trapezoid */
+.actor-card .c4-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.actor-card .c4-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Actor name */
+.actor-card .actor-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+  color: var(--md-default-fg-color);
+  word-break: break-word;
+}
+
+/* Actor description — truncated to 3 lines */
+.actor-card .actor-desc {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--md-default-fg-color--light);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+/* Domain badge */
+.actor-card .actor-domain {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.75rem;
+  background: var(--actor-border, #374151);
+  color: #ffffff;
+  margin-top: auto;
+}
+
+/* PCI badge */
+.actor-card .actor-pci {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* Technology subtitle */
+.actor-card .actor-tech {
+  font-size: 0.68rem;
+  color: var(--md-default-fg-color--lighter);
+  margin-bottom: 0.35rem;
+  font-style: italic;
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] .actor-card {
+  background: var(--actor-bg-dark, #1e293b);
+}
+[data-md-color-scheme="slate"] .actor-card .actor-name {
+  color: #e2e8f0;
+}
+
+/* Responsive: smaller cards on mobile */
+@media (max-width: 600px) {
+  .actor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+  .actor-card {
+    padding: 1rem 0.75rem 0.75rem;
+  }
+}
+
 /* ── Print-friendly ── */
 @media print {
   .hero { background: #1a2744 !important; -webkit-print-color-adjust: exact; }
   .portal-card { break-inside: avoid; }
+  .actor-card { break-inside: avoid; }
 }

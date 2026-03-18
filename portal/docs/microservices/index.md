@@ -24,6 +24,7 @@ All services are built on the same [technology stack](../technologies.md) — Ja
 ## Enterprise Architecture
 
 <div class="diagram-wrap"><a href="svg/enterprise-c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="svg/enterprise-c4-context.svg" type="image/svg+xml" style="width:100%;max-width:1400px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from all OpenAPI specs + `cross-service-calls.yaml`</a>
 
 ---
 

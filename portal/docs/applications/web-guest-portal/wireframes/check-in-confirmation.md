@@ -3,6 +3,7 @@
 ## Preview
 
 <object data="../check-in-confirmation.svg" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/wireframes/web-guest-portal/check-in-confirmation.excalidraw</a>
 
 ## Interactive Viewer
 

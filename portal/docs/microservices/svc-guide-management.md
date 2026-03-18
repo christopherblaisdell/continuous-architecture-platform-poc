@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-guide-management C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-guide-management entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -161,6 +163,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/searchGuides){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -171,6 +174,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/createGuide){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -181,6 +185,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/getGuide){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -191,6 +196,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Guides/updateGuide){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--patch-guides-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--patch-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guides/{guide_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -201,6 +207,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Certifications/getGuideCertifications){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/certifications sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -211,6 +218,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Certifications/addGuideCertification){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/certifications sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -221,6 +229,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Scheduling/getGuideSchedule){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/schedule sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -231,6 +240,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Availability/getGuideAvailability){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-availability.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/availability sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -241,6 +251,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Availability/setGuideAvailability){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-availability.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/availability sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -251,6 +262,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Ratings/getGuideRatings){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/ratings sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -261,6 +273,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Ratings/submitGuideRating){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/ratings sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 
@@ -271,6 +284,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-guide-management.html#/Availability/findAvailableGuides){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-available.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-available.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/available sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
 
 ---
 

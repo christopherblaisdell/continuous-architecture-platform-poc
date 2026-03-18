@@ -50,7 +50,7 @@ def endpoint_anchor(target_svc, target_method, target_path):
 # -- Application metadata loaded from YAML (architecture/metadata/applications.yaml) --
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from load_metadata import APPLICATIONS, DOMAINS, get_service_light_color  # noqa: E402
+from load_metadata import APPLICATIONS, DOMAINS, get_service_light_color, diagram_source_badge  # noqa: E402
 
 # ── Infrastructure Colors (same constants as microservice generator) ──
 COLOR_GATEWAY    = "#E0F2FE"   # sky-100   — API entry point
@@ -398,6 +398,10 @@ def generate_app_page(app_name, app_info, svg_files):
             f'<object data="../svg/{c4_svg}" type="image/svg+xml" '
             f'style="max-width: 100%;">{app_name} C4 context diagram</object></div>'
         )
+        lines.append(diagram_source_badge(
+            "architecture/metadata/applications.yaml",
+            "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml",
+        ))
         lines.append("")
         lines.append("---")
         lines.append("")
@@ -471,6 +475,10 @@ def generate_app_page(app_name, app_info, svg_files):
                 f'{screen_name} user journey diagram</object>'
                 f'</div>'
             )
+            lines.append(diagram_source_badge(
+                "architecture/metadata/applications.yaml",
+                "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml",
+            ))
         else:
             lines.append(f"*Diagram not available for {screen_name}*")
         lines.append("")

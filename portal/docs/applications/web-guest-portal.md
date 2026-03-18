@@ -20,6 +20,7 @@ tags:
 ## :material-map: Service Dependencies
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-guest-portal C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -56,6 +57,7 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/media`](../../microservices/svc-media-gallery/#get-media-list-media-by-reservation-or-trip) | `svc-media-gallery` | Load trip photos |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--trip-browser.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--trip-browser.svg" type="image/svg+xml" style="max-width: 100%;">Trip Browser user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -74,6 +76,7 @@ This application interacts with **10 microservices** across 7 screens.
 | -- | *Stripe API* | External | Charge card |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--booking-flow.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--booking-flow.svg" type="image/svg+xml" style="max-width: 100%;">Booking Flow user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -91,6 +94,7 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/reservations`](../../microservices/svc-reservations/#get-reservations-search-reservations) | `svc-reservations` | Get upcoming bookings |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--guest-profile.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--guest-profile.svg" type="image/svg+xml" style="max-width: 100%;">Guest Profile user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -109,6 +113,7 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send cancellation notice |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--reservation-management.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--reservation-management.svg" type="image/svg+xml" style="max-width: 100%;">Reservation Management user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -125,6 +130,7 @@ This application interacts with **10 microservices** across 7 screens.
 | GET | [GET `/guests/{guest_id}`](../../microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile) | `svc-guest-profiles` | Get guest profile |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--loyalty-dashboard.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--loyalty-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Loyalty Dashboard user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -143,6 +149,7 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send waiver copy |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--waiver-signing.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--waiver-signing.svg" type="image/svg+xml" style="max-width: 100%;">Waiver Signing user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -160,3 +167,4 @@ This application interacts with **10 microservices** across 7 screens.
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send share notification |
 
 <div class="diagram-wrap"><a href="../svg/web-guest-portal--trip-gallery.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-guest-portal--trip-gallery.svg" type="image/svg+xml" style="max-width: 100%;">Trip Gallery user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>

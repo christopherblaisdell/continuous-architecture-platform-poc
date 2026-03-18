@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-payments C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-payments entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -155,6 +157,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/processPayment){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-payments.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-payments.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -165,6 +168,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/getPayment){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-payments-payment_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-payments-payment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/{payment_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -175,6 +179,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Refunds/refundPayment){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-payments-payment_id-refund.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-payments-payment_id-refund.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments/{payment_id}/refund sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -185,6 +190,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Payments/getGuestPaymentHistory){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-guests-guest_id-payment-history.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-guests-guest_id-payment-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/payment-history sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -193,6 +199,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/listDisputes){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-disputes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-disputes.svg" type="image/svg+xml" style="max-width: 100%;">GET /disputes sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -203,6 +210,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/createDispute){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-disputes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-disputes.svg" type="image/svg+xml" style="max-width: 100%;">POST /disputes sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -211,6 +219,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/getDispute){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-disputes-dispute_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-disputes-dispute_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /disputes/{dispute_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -221,6 +230,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/updateDispute){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--patch-disputes-dispute_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--patch-disputes-dispute_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /disputes/{dispute_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -231,6 +241,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/resolveDispute){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-disputes-dispute_id-resolve.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-disputes-dispute_id-resolve.svg" type="image/svg+xml" style="max-width: 100%;">POST /disputes/{dispute_id}/resolve sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -241,6 +252,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/ingestChargeback){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-chargebacks.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-chargebacks.svg" type="image/svg+xml" style="max-width: 100%;">POST /chargebacks sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -251,6 +263,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Disputes/evaluateRefundPolicy){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-refund-policy-evaluate.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-refund-policy-evaluate.svg" type="image/svg+xml" style="max-width: 100%;">POST /refund-policy/evaluate sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 
@@ -261,6 +274,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-payments.html#/Reporting/getDailySummary){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-payments-daily-summary.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-payments-daily-summary.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/daily-summary sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
 
 ---
 

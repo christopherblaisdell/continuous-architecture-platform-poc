@@ -20,6 +20,7 @@ tags:
 ## :material-map: Service Dependencies
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">web-ops-dashboard C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -57,6 +58,7 @@ This application interacts with **16 microservices** across 8 screens.
 | GET | [GET `/locations/{location_id}/capacity`](../../microservices/svc-location-services/#get-locationslocation_idcapacity-get-current-capacity-utilization) | `svc-location-services` | Get location capacity |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--daily-schedule-board.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--daily-schedule-board.svg" type="image/svg+xml" style="max-width: 100%;">Daily Schedule Board user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -75,6 +77,7 @@ This application interacts with **16 microservices** across 8 screens.
 | POST | [POST `/gear-assignments`](../../microservices/svc-gear-inventory/#post-gear-assignments-assign-gear-to-a-participant) | `svc-gear-inventory` | Assign gear package |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--check-in-station.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--check-in-station.svg" type="image/svg+xml" style="max-width: 100%;">Check-In Station user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -92,6 +95,7 @@ This application interacts with **16 microservices** across 8 screens.
 | GET | [GET `/trails/{trail_id}`](../../microservices/svc-trail-management/#get-trailstrail_id-get-trail-details) | `svc-trail-management` | Verify trail status |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--guide-assignment.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--guide-assignment.svg" type="image/svg+xml" style="max-width: 100%;">Guide Assignment user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -110,6 +114,7 @@ This application interacts with **16 microservices** across 8 screens.
 | POST | [POST `/notifications`](../../microservices/svc-notifications/#post-notifications-send-a-notification) | `svc-notifications` | Send safety alerts |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--safety-incident-board.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--safety-incident-board.svg" type="image/svg+xml" style="max-width: 100%;">Safety Incident Board user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -126,6 +131,7 @@ This application interacts with **16 microservices** across 8 screens.
 | POST | [POST `/purchase-orders`](../../microservices/svc-inventory-procurement/#post-purchase-orders-create-a-new-purchase-order) | `svc-inventory-procurement` | Create purchase order |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--inventory-management.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--inventory-management.svg" type="image/svg+xml" style="max-width: 100%;">Inventory Management user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -144,6 +150,7 @@ This application interacts with **16 microservices** across 8 screens.
 | -- | *Google Maps Platform* | External | Calculate optimal route |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--transport-dispatch.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--transport-dispatch.svg" type="image/svg+xml" style="max-width: 100%;">Transport Dispatch user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -161,6 +168,7 @@ This application interacts with **16 microservices** across 8 screens.
 | -- | *Snowflake Data Cloud* | External | Query data warehouse |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--analytics-dashboard.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--analytics-dashboard.svg" type="image/svg+xml" style="max-width: 100%;">Analytics Dashboard user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>
 
 ---
 
@@ -178,3 +186,4 @@ This application interacts with **16 microservices** across 8 screens.
 | GET | [GET `/payments/{payment_id}`](../../microservices/svc-payments/#get-paymentspayment_id-retrieve-payment-details) | `svc-payments` | Get payment status |
 
 <div class="diagram-wrap"><a href="../svg/web-ops-dashboard--partner-bookings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/web-ops-dashboard--partner-bookings.svg" type="image/svg+xml" style="max-width: 100%;">Partner Bookings user journey diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/applications.yaml</a>

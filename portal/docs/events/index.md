@@ -25,12 +25,14 @@ The NovaTrek platform uses **Apache Kafka** as its event bus for asynchronous in
 This overview shows which domains produce and consume events through the Kafka event bus. Drill into each domain section below for service-level detail.
 
 <div class="diagram-wrap"><a href="../microservices/svg/event-flow-overview.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-overview.svg" type="image/svg+xml" style="width:100%;max-width:900px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/events.yaml</a>
 
 ---
 
 ## Operations
 
 <div class="diagram-wrap"><a href="../microservices/svg/event-flow-operations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-operations.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/events.yaml</a>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
@@ -40,6 +42,7 @@ This overview shows which domains produce and consume events through the Kafka e
 ## Guest Identity
 
 <div class="diagram-wrap"><a href="../microservices/svg/event-flow-guest-identity.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-guest-identity.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/events.yaml</a>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
@@ -48,6 +51,7 @@ This overview shows which domains produce and consume events through the Kafka e
 ## Booking
 
 <div class="diagram-wrap"><a href="../microservices/svg/event-flow-booking.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-booking.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/events.yaml</a>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
@@ -57,6 +61,7 @@ This overview shows which domains produce and consume events through the Kafka e
 ## Safety
 
 <div class="diagram-wrap"><a href="../microservices/svg/event-flow-safety.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-safety.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/events.yaml</a>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|
@@ -67,6 +72,7 @@ This overview shows which domains produce and consume events through the Kafka e
 ## Support
 
 <div class="diagram-wrap"><a href="../microservices/svg/event-flow-support.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../microservices/svg/event-flow-support.svg" type="image/svg+xml" style="width:100%;max-width:1000px"></object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/metadata/events.yaml</a>
 
 | Event | Channel | Producer | Consumers | Schema |
 |-------|---------|----------|-----------|--------|

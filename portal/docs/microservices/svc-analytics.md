@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-analytics C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-analytics entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -147,6 +149,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Bookings/getBookingAnalytics){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-bookings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-bookings.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/bookings sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml`</a>
 
 ---
 
@@ -155,6 +158,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Revenue/getRevenueAnalytics){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-revenue.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-revenue.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/revenue sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml`</a>
 
 ---
 
@@ -163,6 +167,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Utilization/getUtilizationAnalytics){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-utilization.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-utilization.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/utilization sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml`</a>
 
 ---
 
@@ -171,6 +176,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Guest%20Experience/getGuestSatisfaction){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-guest-satisfaction.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-guest-satisfaction.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guest-satisfaction sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml`</a>
 
 ---
 
@@ -181,6 +187,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Safety/getSafetyMetrics){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-safety-metrics.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-safety-metrics.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/safety-metrics sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml`</a>
 
 ---
 
@@ -189,6 +196,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-analytics.html#/Staff/getGuidePerformance){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-analytics--get-analytics-guide-performance-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /analytics/guide-performance/{guide_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-analytics.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-analytics.yaml`</a>
 
 ---
 

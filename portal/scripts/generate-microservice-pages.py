@@ -43,7 +43,7 @@ from load_metadata import (  # noqa: E402
     DELIVERY_STATUS, DELIVERY_WAVES,
     PIPELINE_REPO_URL, PIPELINE_AZURE, PIPELINE_PORTAL_LINKS,
     PIPELINE_PER_SERVICE, PIPELINE_GLOBAL,
-    get_service_light_color,
+    get_service_light_color, diagram_source_badge,
 )
 
 # ── Infrastructure Colors (fixed, not domain-dependent) ──
@@ -1046,6 +1046,10 @@ def generate_service_page(svc_name, spec, svg_files):
             f'<object data="../svg/{c4_svg}" type="image/svg+xml" '
             f'style="max-width: 100%;">{svc_name} C4 context diagram</object></div>'
         )
+        lines.append(diagram_source_badge(
+            f"`architecture/specs/{svc_name}.yaml` + `cross-service-calls.yaml`",
+            f"https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/{svc_name}.yaml"
+        ))
         lines.append("")
         lines.append("")
     lines.append("## :material-database: Data Store { #data-store }")
@@ -1062,6 +1066,10 @@ def generate_service_page(svc_name, spec, svg_files):
             f'<object data="../svg/{erd_svg}" type="image/svg+xml" '
             f'style="max-width: 100%;">{svc_name} entity relationship diagram</object></div>'
         )
+        lines.append(diagram_source_badge(
+            "`architecture/metadata/data-stores.yaml`",
+            "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml"
+        ))
         lines.append("")
 
     if ds:
@@ -1192,6 +1200,10 @@ def generate_service_page(svc_name, spec, svg_files):
                 f'{method} {path} sequence diagram</object>'
                 f'</div>'
             )
+            lines.append(diagram_source_badge(
+                f"`architecture/specs/{svc_name}.yaml`",
+                f"https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/{svc_name}.yaml"
+            ))
         else:
             lines.append(f"*Diagram not available for {method} {path}*")
 
@@ -1324,6 +1336,10 @@ def generate_index_page(all_services):
         '<object data="svg/enterprise-c4-context.svg" type="image/svg+xml" '
         'style="width:100%;max-width:1400px"></object></div>'
     )
+    lines.append(diagram_source_badge(
+        "all OpenAPI specs + `cross-service-calls.yaml`",
+        "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs"
+    ))
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -1597,6 +1613,10 @@ def generate_event_catalog_page():
         '<object data="../microservices/svg/event-flow-overview.svg" type="image/svg+xml" '
         'style="width:100%;max-width:900px"></object></div>'
     )
+    lines.append(diagram_source_badge(
+        "architecture/metadata/events.yaml",
+        "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml",
+    ))
     lines.append("")
 
     # Group events by domain
@@ -1628,6 +1648,10 @@ def generate_event_catalog_page():
             f'<object data="../microservices/svg/event-flow-{slug}.svg" type="image/svg+xml" '
             f'style="width:100%;max-width:1000px"></object></div>'
         )
+        lines.append(diagram_source_badge(
+            "architecture/metadata/events.yaml",
+            "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml",
+        ))
         lines.append("")
         lines.append("| Event | Channel | Producer | Consumers | Schema |")
         lines.append("|-------|---------|----------|-----------|--------|")
@@ -1716,8 +1740,130 @@ def actor_anchor(name):
     return re.sub(r'[-\s]+', '-', text)
 
 
+# ── C4-style SVG icons per actor type ──
+# Person silhouette (matches C4 Person shape)
+_C4_PERSON_SVG = (
+    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<circle cx="24" cy="12" r="8" fill="{color}"/>'
+    '<path d="M8 44 C8 30 16 24 24 24 C32 24 40 30 40 44" '
+    'fill="{color}" stroke="none"/>'
+    '</svg>'
+)
+# Container box (Frontend Application)
+_C4_CONTAINER_SVG = (
+    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<rect x="4" y="8" width="40" height="32" rx="4" ry="4" '
+    'fill="{color}" stroke="{border}" stroke-width="1.5"/>'
+    '<rect x="4" y="8" width="40" height="8" rx="4" ry="4" '
+    'fill="{border}" opacity="0.25"/>'
+    '</svg>'
+)
+# Cylinder (Infrastructure)
+_C4_INFRA_SVG = (
+    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<ellipse cx="24" cy="12" rx="18" ry="6" fill="{color}" '
+    'stroke="{border}" stroke-width="1.5"/>'
+    '<rect x="6" y="12" width="36" height="24" fill="{color}" '
+    'stroke="{border}" stroke-width="1.5"/>'
+    '<ellipse cx="24" cy="36" rx="18" ry="6" fill="{color}" '
+    'stroke="{border}" stroke-width="1.5"/>'
+    '<ellipse cx="24" cy="12" rx="18" ry="6" fill="{color}" '
+    'stroke="none"/>'
+    '</svg>'
+)
+# External system box (dashed border)
+_C4_EXTERNAL_SVG = (
+    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<rect x="4" y="8" width="40" height="32" rx="4" ry="4" '
+    'fill="{color}" stroke="{border}" stroke-width="1.5" '
+    'stroke-dasharray="4 2"/>'
+    '</svg>'
+)
+# Hexagon (Internal Microservice)
+_C4_MICROSERVICE_SVG = (
+    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<polygon points="24,4 44,14 44,34 24,44 4,34 4,14" '
+    'fill="{color}" stroke="{border}" stroke-width="1.5"/>'
+    '</svg>'
+)
+
+# Domain → (border_color, bg_color) matching theme.puml
+_DOMAIN_COLORS = {
+    "Operations":       ("#2563eb", "#DBEAFE"),
+    "Guest Identity":   ("#7c3aed", "#EDE9FE"),
+    "Booking":          ("#059669", "#D1FAE5"),
+    "Product Catalog":  ("#d97706", "#FEF3C7"),
+    "Safety":           ("#dc2626", "#FEE2E2"),
+    "Logistics":        ("#0891b2", "#CFFAFE"),
+    "Guide Management": ("#4f46e5", "#E0E7FF"),
+    "External":         ("#9333ea", "#F3E8FF"),
+    "Support":          ("#64748b", "#F1F5F9"),
+    # Non-service domains (for human actors and infra)
+    "Platform":         ("#374151", "#F3F4F6"),
+    "Architecture":     ("#1a2744", "#E2E8F0"),
+    "Engineering":      ("#475569", "#F1F5F9"),
+}
+
+# Type → SVG template
+_TYPE_SVG = {
+    "Human": _C4_PERSON_SVG,
+    "Frontend Application": _C4_CONTAINER_SVG,
+    "Infrastructure": _C4_INFRA_SVG,
+    "External System": _C4_EXTERNAL_SVG,
+}
+
+
+def _actor_card_html(name, info, link=None):
+    """Render a single C4-styled actor card as HTML."""
+    domain = info.get("domain", "Support")
+    border, bg = _DOMAIN_COLORS.get(domain, ("#64748b", "#F1F5F9"))
+    actor_type = info.get("type", "External System")
+
+    # Pick SVG template
+    svg_tmpl = _TYPE_SVG.get(actor_type, _C4_EXTERNAL_SVG)
+    svg = svg_tmpl.format(color=bg, border=border)
+
+    style = f'style="--actor-border: {border}; --actor-bg: {bg};"'
+    pci_html = '<span class="actor-pci">PCI</span>' if info.get("pci") else ""
+    tech_html = (
+        f'<span class="actor-tech">[{info["technology"]}]</span>'
+        if info.get("technology") else ""
+    )
+    desc = info.get("description", "")
+    domain_badge = f'<span class="actor-domain">{domain}</span>'
+
+    inner = (
+        f'{pci_html}'
+        f'<span class="c4-icon">{svg}</span>'
+        f'<span class="actor-name">{name}</span>'
+        f'{tech_html}'
+        f'<span class="actor-desc">{desc}</span>'
+        f'{domain_badge}'
+    )
+
+    if link:
+        return f'<a class="actor-card" href="{link}" {style}>{inner}</a>'
+    return f'<div class="actor-card" {style}>{inner}</div>'
+
+
+def _svc_card_html(svc_name):
+    """Render an internal microservice as a C4-styled hexagon card."""
+    domain, border = get_domain_info(svc_name)
+    bg = DOMAINS.get(domain, {}).get("light", "#F1F5F9")
+    svg = _C4_MICROSERVICE_SVG.format(color=bg, border=border)
+    style = f'style="--actor-border: {border}; --actor-bg: {bg};"'
+    link = f"../microservices/{svc_name}/"
+    return (
+        f'<a class="actor-card" href="{link}" {style}>'
+        f'<span class="c4-icon">{svg}</span>'
+        f'<span class="actor-name">{svc_name}</span>'
+        f'<span class="actor-domain">{domain}</span>'
+        f'</a>'
+    )
+
+
 def generate_actors_page():
-    """Generate the Actor Catalog index page."""
+    """Generate the Actor Catalog index page with C4-styled cards."""
     lines = []
     lines.append("---")
     lines.append("hide:")
@@ -1750,7 +1896,7 @@ def generate_actors_page():
     lines.append(
         "This catalog lists every actor that interacts with the NovaTrek platform: "
         "people, frontend applications, internal microservices, external systems, and infrastructure components. "
-        "Each actor links to its detailed page where available."
+        "Each card uses the same C4 model shapes and domain color scheme as the architecture diagrams."
     )
     lines.append("")
 
@@ -1760,84 +1906,46 @@ def generate_actors_page():
     for name, info in ACTORS.items():
         by_type.setdefault(info["type"], []).append((name, info))
 
-    # Icon per type
-    type_icon = {
-        "Human": ":material-account:",
-        "Frontend Application": ":material-application:",
-        "Infrastructure": ":material-server-network:",
-        "External System": ":material-cloud:",
+    # Section headers
+    type_label = {
+        "Human": "Humans",
+        "Frontend Application": "Frontend Applications",
+        "Infrastructure": "Infrastructure",
+        "External System": "External Systems",
     }
 
     for actor_type in type_order:
         actors = by_type.get(actor_type, [])
         if not actors:
             continue
-        icon = type_icon.get(actor_type, "")
         lines.append("---")
         lines.append("")
-        lines.append(f"## {icon} {actor_type}s")
+        lines.append(f"## {type_label.get(actor_type, actor_type)}")
         lines.append("")
-
-        if actor_type == "Human":
-            lines.append("| Actor | Domain | Description | Interacts With |")
-            lines.append("|-------|--------|-------------|----------------|")
-            for name, info in sorted(actors):
-                interactions = ", ".join(
-                    f"[{APP_TITLES.get(i, i)}](../applications/{i}/)" for i in info.get("interacts_with", [])
-                )
-                lines.append(f"| **{name}** | {info['domain']} | {info['description']} | {interactions} |")
-            lines.append("")
-
-        elif actor_type == "Frontend Application":
-            lines.append("| Application | Display Name | Domain | Technology | Team | Description |")
-            lines.append("|-------------|-------------|--------|------------|------|-------------|")
-            for name, info in sorted(actors):
-                display = APP_TITLES.get(name, name)
-                lines.append(
-                    f"| [{name}](../applications/{name}/) | {display} | {info['domain']} "
-                    f"| {info.get('technology', '')} | {info.get('team', '')} | {info['description']} |"
-                )
-            lines.append("")
-
-        elif actor_type == "Infrastructure":
-            lines.append("| Component | Technology | Domain | Description |")
-            lines.append("|-----------|------------|--------|-------------|")
-            for name, info in sorted(actors):
-                lines.append(
-                    f"| **{name}** | {info.get('technology', '')} "
-                    f"| {info['domain']} | {info['description']} |"
-                )
-            lines.append("")
-
-        elif actor_type == "External System":
-            lines.append("| System | Technology | Domain | PCI | Description |")
-            lines.append("|--------|------------|--------|-----|-------------|")
-            for name, info in sorted(actors):
-                pci_badge = ":material-shield-lock: PCI" if info.get("pci") else ""
-                lines.append(
-                    f"| **{name}** | {info.get('technology', '')} "
-                    f"| {info['domain']} | {pci_badge} | {info['description']} |"
-                )
-            lines.append("")
+        lines.append('<div class="actor-grid" markdown>' if False else '<div class="actor-grid">')
+        for name, info in sorted(actors):
+            link = None
+            if actor_type == "Frontend Application":
+                link = f"../applications/{name}/"
+            lines.append(_actor_card_html(name, info, link=link))
+        lines.append("</div>")
+        lines.append("")
 
     # Internal Microservices section (from DOMAINS, not ACTORS dict)
     lines.append("---")
     lines.append("")
-    lines.append("## :material-hexagon-multiple: Internal Microservices")
+    lines.append("## Internal Microservices")
     lines.append("")
-    lines.append("| Service | Domain | Description |")
-    lines.append("|---------|--------|-------------|")
+    lines.append('<div class="actor-grid">')
     all_svcs = set()
     for domain_name, domain_info in sorted(DOMAINS.items()):
         for svc in sorted(domain_info["services"]):
             all_svcs.add(svc)
-            lines.append(
-                f"| [{svc}](../microservices/{svc}/) | {domain_name} "
-                f"| See [microservice page](../microservices/{svc}/) for full details |"
-            )
+            lines.append(_svc_card_html(svc))
+    lines.append("</div>")
     lines.append("")
 
-    # Detail sections for deep-link anchors (one H3 per actor)
+    # Detail sections for deep-link anchors (one H3 per actor) — kept for backward compat
     lines.append("---")
     lines.append("")
     lines.append("## Actor Details")

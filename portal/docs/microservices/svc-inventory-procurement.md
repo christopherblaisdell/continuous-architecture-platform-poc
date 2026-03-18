@@ -45,6 +45,7 @@ tags:
 ## :material-map: Integration Context
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--c4-context.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--c4-context.svg" type="image/svg+xml" style="max-width: 100%;">svc-inventory-procurement C4 context diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml` + `cross-service-calls.yaml`</a>
 
 
 ## :material-database: Data Store { #data-store }
@@ -52,6 +53,7 @@ tags:
 ### Entity Relationship Diagram
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--erd.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--erd.svg" type="image/svg+xml" style="max-width: 100%;">svc-inventory-procurement entity relationship diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/metadata/data-stores.yaml`</a>
 
 ### Overview
 
@@ -143,6 +145,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-purchase-orders.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-purchase-orders.svg" type="image/svg+xml" style="max-width: 100%;">POST /purchase-orders sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -151,6 +154,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /purchase-orders/{po_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -161,6 +165,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /purchase-orders/{po_id} sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -169,6 +174,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-suppliers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">GET /suppliers sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -177,6 +183,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-suppliers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">POST /suppliers sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -187,6 +194,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-stock-levels.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-stock-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /stock-levels sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -197,6 +205,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-stock-adjustments.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-stock-adjustments.svg" type="image/svg+xml" style="max-width: 100%;">POST /stock-adjustments sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
@@ -207,6 +216,7 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-reorder-alerts.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-reorder-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /reorder-alerts sequence diagram</object></div>
+<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
 
 ---
 
