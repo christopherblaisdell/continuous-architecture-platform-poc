@@ -548,13 +548,15 @@ Use hooks when behavior **must be guaranteed**: blocking destructive commands, f
 
 ### What Tool Restrictions Are For
 
-Tool restrictions (the `tools` field in `.agent.md` files) control **what actions an agent can perform**. They are the primary mechanism for implementing:
+Tool restrictions (the `tools` field in `.agent.md` files) control **what actions an agent can perform within that agent's session**. They are the primary mechanism for implementing:
 
 - **Least privilege**: Agents only get the tools they need for their role
-- **Safety boundaries**: Prevent agents from running destructive commands or editing production files
+- **Workflow optimization**: Make the right thing easy -- a research agent does not need edit tools cluttering its focus
 - **Role separation**: Research agents that only read, review agents that only analyze, writer agents that edit
-- **Compliance**: Ensure certain workflows cannot execute arbitrary code
+- **Accidental damage prevention**: Reduce the chance of unintended edits or command execution
 - **Workflow integrity**: Force agents to delegate to specialized subagents instead of doing everything themselves
+
+IMPORTANT: Agent tool restrictions are **workflow guardrails, not security boundaries**. See the section below on what prevents developers from simply switching agents.
 
 ### Practical Examples
 
@@ -595,9 +597,32 @@ tools: []
 ---
 ```
 
-### What Prevents Developers from Deleting Tool Restrictions?
+### What Prevents Developers from Switching to a Different Agent?
 
-This is an important governance question. The short answer: **tool restriction files are version-controlled, code-reviewed, and optionally enforced through multiple layers.**
+This is the most important governance question. A developer who is using a read-only custom agent can simply **switch to the default "Agent" mode** (which has all tools) using the agent selector dropdown. Nothing in the `.agent.md` system prevents this.
+
+This means agent tool restrictions are fundamentally **opt-in guardrails** -- they make the right workflow convenient, but they do not enforce security policy. They are analogous to creating a `read-only` VS Code workspace profile: helpful for focus, but anyone can switch profiles.
+
+**If you need hard enforcement, use hooks.** Hooks run at lifecycle events regardless of which agent is selected. A `PreToolUse` hook fires before ANY tool invocation in ANY agent mode -- the default Agent, a custom agent, or even Ask mode. The developer cannot bypass a hook by switching agents.
+
+Here is the honest breakdown:
+
+| Mechanism | Enforcement Level | Can Be Bypassed by Switching Agents? |
+|-----------|-------------------|--------------------------------------|
+| Agent `tools` field | Opt-in guardrail | YES -- switch to default Agent |
+| Workspace hooks (`.github/hooks/`) | Deterministic | NO -- fires in all agent modes |
+| User-level hooks (`~/.claude/settings.json`) | Deterministic | NO -- lives outside workspace |
+| GitHub org admin settings | Platform policy | NO -- outside developer control |
+
+The practical guidance:
+
+- **Use agent tool restrictions for workflow optimization** -- making the right thing easy, reducing cognitive load, preventing accidental damage
+- **Use hooks for security enforcement** -- blocking destructive commands, requiring approval for sensitive operations, enforcing policy
+- **Use org-level settings for platform governance** -- controlling model access, disabling features, audit logging
+
+### What Prevents Developers from Deleting Tool Restriction Files?
+
+Even though agent restrictions are opt-in, deleting or modifying the `.agent.md` files themselves is governed through standard software engineering controls.
 
 #### Layer 1: Version Control and Code Review
 
@@ -653,20 +678,28 @@ GitHub Copilot admins at the organization level can:
 
 These controls exist outside the repository entirely and cannot be modified by individual developers.
 
-#### Layer 5: The Agent Itself
+#### Layer 5: The Agent Runtime
 
-Even without external enforcement, tool restrictions in `.agent.md` are respected by the Copilot runtime. The `tools` field is not a suggestion -- it is **processed by the Copilot infrastructure** to filter which tools are made available to the model. The agent literally does not have access to tools not listed in its `tools` field. A developer cannot bypass this by prompting the agent to "ignore tool restrictions" -- the tools are simply not present in the agent's capability set.
+Within a given agent session, the `tools` field is enforced by the Copilot runtime infrastructure. The model literally does not have access to tools not listed in the `tools` field -- a developer cannot bypass this by prompting "ignore tool restrictions." However, the developer CAN switch to a different agent that has more tools. The restriction is per-agent, not per-developer.
 
 #### Summary of Governance Layers
 
-| Layer | What It Protects | Can a Developer Bypass It? |
-|-------|-----------------|---------------------------|
-| Agent `tools` field | Runtime tool availability | Only by editing the `.agent.md` file (visible in PR) |
-| CODEOWNERS | Change review requirement | Not without admin override |
-| Branch protection | Merge requirements | Not without admin override |
-| Workspace hooks | Deterministic tool blocking | Only by editing hook files (visible in PR) |
-| User-level hooks | Personal/org enforcement | Not from workspace -- lives outside repo |
-| GitHub org settings | Platform-level controls | Only by org admins |
+| Layer | What It Protects | Can Developer Bypass? | How? |
+|-------|-----------------|----------------------|------|
+| Agent `tools` field | Tools within that agent session | YES | Switch to default Agent mode |
+| CODEOWNERS | File change review | NO | Requires admin override |
+| Branch protection | Merge requirements | NO | Requires admin override |
+| Workspace hooks | Tool invocations in ALL modes | PARTIALLY | Edit hook files (visible in PR) |
+| User-level hooks | Tool invocations in ALL modes | NO | Lives outside repo |
+| GitHub org settings | Platform-level controls | NO | Only org admins |
+
+#### The Bottom Line
+
+**Agent tool restrictions = workflow optimization.** They make the right path easy and prevent accidental damage.
+
+**Hooks = security enforcement.** They run regardless of which agent is active and cannot be bypassed by agent switching.
+
+If you need to **guarantee** that a developer cannot run destructive commands via Copilot, use a `PreToolUse` hook -- not an agent restriction.
 
 ---
 
