@@ -1,0 +1,100 @@
+@startuml
+!include <c4/C4_Context>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+
+title NovaTrek Adventures — Domain Overview
+
+System(Booking, "Booking", "1 service", $link="/topology/domain-views/#booking", $tags="domain")
+System(External, "External", "1 service", $link="/topology/domain-views/#external", $tags="domain")
+System(Guest_Identity, "Guest Identity", "1 service", $link="/topology/domain-views/#guest-identity", $tags="domain")
+System(Guide_Management, "Guide Management", "1 service", $link="/topology/domain-views/#guide-management", $tags="domain")
+System(Logistics, "Logistics", "2 services", $link="/topology/domain-views/#logistics", $tags="domain")
+System(Operations, "Operations", "2 services", $link="/topology/domain-views/#operations", $tags="domain")
+System(Product_Catalog, "Product Catalog", "2 services", $link="/topology/domain-views/#product-catalog", $tags="domain")
+System(Safety, "Safety", "3 services", $link="/topology/domain-views/#safety", $tags="domain")
+System(Support, "Support", "9 services", $link="/topology/domain-views/#support", $tags="domain")
+
+Rel(Booking, Guest_Identity, "1 REST calls", "HTTPS")
+Rel(Booking, Operations, "1 events", "Kafka", $tags="kafka")
+Rel(Booking, Product_Catalog, "1 REST calls", "HTTPS")
+Rel(Booking, Support, "1 REST + 2 events", "HTTPS / Kafka")
+Rel(External, Booking, "1 REST calls", "HTTPS")
+Rel(External, Guest_Identity, "1 REST calls", "HTTPS")
+Rel(External, Product_Catalog, "1 REST calls", "HTTPS")
+Rel(External, Support, "1 REST + 1 events", "HTTPS / Kafka")
+Rel(Guest_Identity, Booking, "1 REST calls", "HTTPS")
+Rel(Guest_Identity, Support, "1 REST + 2 events", "HTTPS / Kafka")
+Rel(Logistics, Booking, "2 REST calls", "HTTPS")
+Rel(Logistics, Guest_Identity, "1 REST calls", "HTTPS")
+Rel(Logistics, Safety, "1 REST calls", "HTTPS")
+Rel(Logistics, Support, "1 REST + 1 events", "HTTPS / Kafka")
+Rel(Operations, Booking, "1 REST calls", "HTTPS")
+Rel(Operations, Guest_Identity, "1 REST calls", "HTTPS")
+Rel(Operations, Guide_Management, "1 REST + 1 events", "HTTPS / Kafka")
+Rel(Operations, Logistics, "1 REST calls", "HTTPS")
+Rel(Operations, Product_Catalog, "3 REST calls", "HTTPS")
+Rel(Operations, Safety, "1 REST calls", "HTTPS")
+Rel(Operations, Support, "2 REST + 4 events", "HTTPS / Kafka")
+Rel(Product_Catalog, Safety, "1 REST calls", "HTTPS")
+Rel(Product_Catalog, Support, "2 REST + 1 events", "HTTPS / Kafka")
+Rel(Safety, Guest_Identity, "2 REST calls", "HTTPS")
+Rel(Safety, Guide_Management, "2 REST calls", "HTTPS")
+Rel(Safety, Operations, "1 REST + 2 events", "HTTPS / Kafka")
+Rel(Safety, Product_Catalog, "1 REST + 1 events", "HTTPS / Kafka")
+Rel(Safety, Support, "2 REST + 6 events", "HTTPS / Kafka")
+Rel(Support, Booking, "2 REST + 1 events", "HTTPS / Kafka")
+Rel(Support, Guest_Identity, "2 REST calls", "HTTPS")
+Rel(Support, Logistics, "1 REST calls", "HTTPS")
+
+' Domain colors
+skinparam rectangle<<Booking>> {
+    BackgroundColor #D1FAE5
+    BorderColor #059669
+    FontColor #059669
+}
+skinparam rectangle<<External>> {
+    BackgroundColor #F3E8FF
+    BorderColor #9333ea
+    FontColor #9333ea
+}
+skinparam rectangle<<Guest_Identity>> {
+    BackgroundColor #EDE9FE
+    BorderColor #7c3aed
+    FontColor #7c3aed
+}
+skinparam rectangle<<Guide_Management>> {
+    BackgroundColor #E0E7FF
+    BorderColor #4f46e5
+    FontColor #4f46e5
+}
+skinparam rectangle<<Logistics>> {
+    BackgroundColor #CFFAFE
+    BorderColor #0891b2
+    FontColor #0891b2
+}
+skinparam rectangle<<Operations>> {
+    BackgroundColor #DBEAFE
+    BorderColor #2563eb
+    FontColor #2563eb
+}
+skinparam rectangle<<Product_Catalog>> {
+    BackgroundColor #FEF3C7
+    BorderColor #d97706
+    FontColor #d97706
+}
+skinparam rectangle<<Safety>> {
+    BackgroundColor #FEE2E2
+    BorderColor #dc2626
+    FontColor #dc2626
+}
+skinparam rectangle<<Support>> {
+    BackgroundColor #F1F5F9
+    BorderColor #64748b
+    FontColor #64748b
+}
+
+@enduml

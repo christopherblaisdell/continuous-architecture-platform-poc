@@ -13,73 +13,12 @@ Per-domain topology breakdown showing services, databases, and integration patte
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph External["External"]
-        svc-partner-integrations["Partner Integrations"]
-    end
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Logistics["Logistics"]
-        svc-gear-inventory["Gear Inventory"]
-        svc-transport-logistics["Transport Logistics"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-        svc-scheduling-orchestrator["Scheduling Orchestrator"]
-    end
-
-    subgraph Product_Catalog["Product Catalog"]
-        svc-trip-catalog["Trip Catalog"]
-    end
-
-    subgraph Support["Support"]
-        svc-analytics["Analytics"]
-        svc-loyalty-rewards["Loyalty Rewards"]
-        svc-notifications["Notifications"]
-        svc-payments["Payments"]
-        svc-reviews["Reviews"]
-    end
-
-    %% REST calls
-    svc-check-in --> svc-reservations
-    svc-gear-inventory --> svc-reservations
-    svc-guest-profiles --> svc-reservations
-    svc-loyalty-rewards --> svc-reservations
-    svc-partner-integrations --> svc-reservations
-    svc-reservations --> svc-guest-profiles
-    svc-reservations --> svc-payments
-    svc-reservations --> svc-trip-catalog
-    svc-reviews --> svc-reservations
-    svc-transport-logistics --> svc-reservations
-
-    %% Event flows
-    svc-payments -.-> svc-reservations
-    svc-reservations -.-> svc-analytics
-    svc-reservations -.-> svc-notifications
-    svc-reservations -.-> svc-scheduling-orchestrator
-
-    %% Styling
-    style Booking fill:#E6510015,stroke:#E65100,stroke-width:2px
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-booking.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-booking.svg" type="image/svg+xml" style="max-width: 100%;">
+    Booking Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -117,49 +56,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph External["External"]
-        svc-partner-integrations["Partner Integrations"]
-    end
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Product_Catalog["Product Catalog"]
-        svc-trip-catalog["Trip Catalog"]
-    end
-
-    subgraph Support["Support"]
-        svc-notifications["Notifications"]
-        svc-payments["Payments"]
-    end
-
-    %% REST calls
-    svc-partner-integrations --> svc-guest-profiles
-    svc-partner-integrations --> svc-payments
-    svc-partner-integrations --> svc-reservations
-    svc-partner-integrations --> svc-trip-catalog
-
-    %% Event flows
-    svc-partner-integrations -.-> svc-notifications
-
-    %% Styling
-    style External fill:#37474F15,stroke:#37474F,stroke-width:2px
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-external.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-external.svg" type="image/svg+xml" style="max-width: 100%;">
+    External Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -186,68 +88,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph External["External"]
-        svc-partner-integrations["Partner Integrations"]
-    end
-
-    subgraph Logistics["Logistics"]
-        svc-gear-inventory["Gear Inventory"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-    end
-
-    subgraph Safety["Safety"]
-        svc-emergency-response["Emergency Response"]
-        svc-safety-compliance["Safety Compliance"]
-    end
-
-    subgraph Support["Support"]
-        svc-analytics["Analytics"]
-        svc-loyalty-rewards["Loyalty Rewards"]
-        svc-reviews["Reviews"]
-    end
-
-    %% REST calls
-    svc-check-in --> svc-guest-profiles
-    svc-emergency-response --> svc-guest-profiles
-    svc-gear-inventory --> svc-guest-profiles
-    svc-guest-profiles --> svc-analytics
-    svc-guest-profiles --> svc-reservations
-    svc-loyalty-rewards --> svc-guest-profiles
-    svc-partner-integrations --> svc-guest-profiles
-    svc-reservations --> svc-guest-profiles
-    svc-reviews --> svc-guest-profiles
-    svc-safety-compliance --> svc-guest-profiles
-
-    %% Event flows
-    svc-guest-profiles -.-> svc-analytics
-    svc-guest-profiles -.-> svc-loyalty-rewards
-
-    %% Styling
-    style Guest_Identity fill:#0D47A115,stroke:#0D47A1,stroke-width:2px
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-guest-identity.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-guest-identity.svg" type="image/svg+xml" style="max-width: 100%;">
+    Guest Identity Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -285,38 +131,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Guide_Management["Guide Management"]
-        svc-guide-management["Guide Management"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-scheduling-orchestrator["Scheduling Orchestrator"]
-    end
-
-    subgraph Safety["Safety"]
-        svc-emergency-response["Emergency Response"]
-        svc-safety-compliance["Safety Compliance"]
-    end
-
-    %% REST calls
-    svc-emergency-response --> svc-guide-management
-    svc-safety-compliance --> svc-guide-management
-    svc-scheduling-orchestrator --> svc-guide-management
-
-    %% Event flows
-    svc-scheduling-orchestrator -.-> svc-guide-management
-
-    %% Styling
-    style Guide_Management fill:#33691E15,stroke:#33691E,stroke-width:2px
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-guide-management.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-guide-management.svg" type="image/svg+xml" style="max-width: 100%;">
+    Guide Management Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -342,59 +162,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Logistics["Logistics"]
-        svc-gear-inventory["Gear Inventory"]
-        svc-transport-logistics["Transport Logistics"]
-    end
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-    end
-
-    subgraph Safety["Safety"]
-        svc-safety-compliance["Safety Compliance"]
-    end
-
-    subgraph Support["Support"]
-        svc-inventory-procurement["Inventory Procurement"]
-        svc-location-services["Location Services"]
-        svc-notifications["Notifications"]
-    end
-
-    %% REST calls
-    svc-check-in --> svc-gear-inventory
-    svc-gear-inventory --> svc-guest-profiles
-    svc-gear-inventory --> svc-reservations
-    svc-gear-inventory --> svc-safety-compliance
-    svc-inventory-procurement --> svc-gear-inventory
-    svc-transport-logistics --> svc-location-services
-    svc-transport-logistics --> svc-reservations
-
-    %% Event flows
-    svc-transport-logistics -.-> svc-notifications
-
-    %% Styling
-    style Logistics fill:#00606415,stroke:#006064,stroke-width:2px
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-logistics.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-logistics.svg" type="image/svg+xml" style="max-width: 100%;">
+    Logistics Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -430,84 +203,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-        svc-scheduling-orchestrator["Scheduling Orchestrator"]
-    end
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Guide_Management["Guide Management"]
-        svc-guide-management["Guide Management"]
-    end
-
-    subgraph Logistics["Logistics"]
-        svc-gear-inventory["Gear Inventory"]
-    end
-
-    subgraph Product_Catalog["Product Catalog"]
-        svc-trail-management["Trail Management"]
-        svc-trip-catalog["Trip Catalog"]
-    end
-
-    subgraph Safety["Safety"]
-        svc-emergency-response["Emergency Response"]
-        svc-safety-compliance["Safety Compliance"]
-        svc-wildlife-tracking["Wildlife Tracking"]
-    end
-
-    subgraph Support["Support"]
-        svc-analytics["Analytics"]
-        svc-location-services["Location Services"]
-        svc-notifications["Notifications"]
-        svc-weather["Weather"]
-    end
-
-    %% REST calls
-    svc-check-in --> svc-gear-inventory
-    svc-check-in --> svc-guest-profiles
-    svc-check-in --> svc-reservations
-    svc-check-in --> svc-safety-compliance
-    svc-check-in --> svc-trip-catalog
-    svc-scheduling-orchestrator --> svc-guide-management
-    svc-scheduling-orchestrator --> svc-location-services
-    svc-scheduling-orchestrator --> svc-trail-management
-    svc-scheduling-orchestrator --> svc-trip-catalog
-    svc-scheduling-orchestrator --> svc-weather
-    svc-wildlife-tracking --> svc-scheduling-orchestrator
-
-    %% Event flows
-    svc-check-in -.-> svc-analytics
-    svc-check-in -.-> svc-notifications
-    svc-emergency-response -.-> svc-scheduling-orchestrator
-    svc-reservations -.-> svc-scheduling-orchestrator
-    svc-scheduling-orchestrator -.-> svc-analytics
-    svc-scheduling-orchestrator -.-> svc-guide-management
-    svc-scheduling-orchestrator -.-> svc-notifications
-    svc-wildlife-tracking -.-> svc-scheduling-orchestrator
-
-    %% Styling
-    style Operations fill:#1B5E2015,stroke:#1B5E20,stroke-width:2px
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Guide_Management fill:#33691E08,stroke:#33691E,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-operations.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-operations.svg" type="image/svg+xml" style="max-width: 100%;">
+    Operations Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -547,64 +248,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Product_Catalog["Product Catalog"]
-        svc-trail-management["Trail Management"]
-        svc-trip-catalog["Trip Catalog"]
-    end
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph External["External"]
-        svc-partner-integrations["Partner Integrations"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-        svc-scheduling-orchestrator["Scheduling Orchestrator"]
-    end
-
-    subgraph Safety["Safety"]
-        svc-safety-compliance["Safety Compliance"]
-        svc-wildlife-tracking["Wildlife Tracking"]
-    end
-
-    subgraph Support["Support"]
-        svc-location-services["Location Services"]
-        svc-notifications["Notifications"]
-        svc-weather["Weather"]
-    end
-
-    %% REST calls
-    svc-check-in --> svc-trip-catalog
-    svc-partner-integrations --> svc-trip-catalog
-    svc-reservations --> svc-trip-catalog
-    svc-scheduling-orchestrator --> svc-trail-management
-    svc-scheduling-orchestrator --> svc-trip-catalog
-    svc-trail-management --> svc-location-services
-    svc-trail-management --> svc-safety-compliance
-    svc-trail-management --> svc-weather
-    svc-wildlife-tracking --> svc-trail-management
-
-    %% Event flows
-    svc-trail-management -.-> svc-notifications
-    svc-wildlife-tracking -.-> svc-trail-management
-
-    %% Styling
-    style Product_Catalog fill:#4A148C15,stroke:#4A148C,stroke-width:2px
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-product-catalog.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-product-catalog.svg" type="image/svg+xml" style="max-width: 100%;">
+    Product Catalog Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -642,81 +291,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Safety["Safety"]
-        svc-emergency-response["Emergency Response"]
-        svc-safety-compliance["Safety Compliance"]
-        svc-wildlife-tracking["Wildlife Tracking"]
-    end
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Guide_Management["Guide Management"]
-        svc-guide-management["Guide Management"]
-    end
-
-    subgraph Logistics["Logistics"]
-        svc-gear-inventory["Gear Inventory"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-        svc-scheduling-orchestrator["Scheduling Orchestrator"]
-    end
-
-    subgraph Product_Catalog["Product Catalog"]
-        svc-trail-management["Trail Management"]
-    end
-
-    subgraph Support["Support"]
-        svc-analytics["Analytics"]
-        svc-location-services["Location Services"]
-        svc-notifications["Notifications"]
-        svc-weather["Weather"]
-    end
-
-    %% REST calls
-    svc-check-in --> svc-safety-compliance
-    svc-emergency-response --> svc-guest-profiles
-    svc-emergency-response --> svc-guide-management
-    svc-emergency-response --> svc-location-services
-    svc-gear-inventory --> svc-safety-compliance
-    svc-safety-compliance --> svc-guest-profiles
-    svc-safety-compliance --> svc-guide-management
-    svc-trail-management --> svc-safety-compliance
-    svc-wildlife-tracking --> svc-scheduling-orchestrator
-    svc-wildlife-tracking --> svc-trail-management
-    svc-wildlife-tracking --> svc-weather
-
-    %% Event flows
-    svc-emergency-response -.-> svc-analytics
-    svc-emergency-response -.-> svc-notifications
-    svc-emergency-response -.-> svc-safety-compliance
-    svc-emergency-response -.-> svc-scheduling-orchestrator
-    svc-safety-compliance -.-> svc-analytics
-    svc-safety-compliance -.-> svc-notifications
-    svc-wildlife-tracking -.-> svc-analytics
-    svc-wildlife-tracking -.-> svc-notifications
-    svc-wildlife-tracking -.-> svc-safety-compliance
-    svc-wildlife-tracking -.-> svc-scheduling-orchestrator
-    svc-wildlife-tracking -.-> svc-trail-management
-
-    %% Styling
-    style Safety fill:#B71C1C15,stroke:#B71C1C,stroke-width:2px
-    style Support fill:#4E342E08,stroke:#4E342E,stroke-width:1px,stroke-dasharray: 5 5
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-    style Guide_Management fill:#33691E08,stroke:#33691E,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-safety.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-safety.svg" type="image/svg+xml" style="max-width: 100%;">
+    Safety Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 
@@ -757,110 +337,12 @@ flowchart TB
 
 ### Topology
 
-**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  Dashed border = external domain
-
-```mermaid
-flowchart TB
-
-    subgraph Support["Support"]
-        svc-analytics["Analytics"]
-        svc-inventory-procurement["Inventory Procurement"]
-        svc-location-services["Location Services"]
-        svc-loyalty-rewards["Loyalty Rewards"]
-        svc-media-gallery["Media Gallery"]
-        svc-notifications["Notifications"]
-        svc-payments["Payments"]
-        svc-reviews["Reviews"]
-        svc-weather["Weather"]
-    end
-
-    subgraph Booking["Booking"]
-        svc-reservations["Reservations"]
-    end
-
-    subgraph External["External"]
-        svc-partner-integrations["Partner Integrations"]
-    end
-
-    subgraph Guest_Identity["Guest Identity"]
-        svc-guest-profiles["Guest Profiles"]
-    end
-
-    subgraph Logistics["Logistics"]
-        svc-gear-inventory["Gear Inventory"]
-        svc-transport-logistics["Transport Logistics"]
-    end
-
-    subgraph Operations["Operations"]
-        svc-check-in["Check In"]
-        svc-scheduling-orchestrator["Scheduling Orchestrator"]
-    end
-
-    subgraph Product_Catalog["Product Catalog"]
-        svc-trail-management["Trail Management"]
-    end
-
-    subgraph Safety["Safety"]
-        svc-emergency-response["Emergency Response"]
-        svc-safety-compliance["Safety Compliance"]
-        svc-wildlife-tracking["Wildlife Tracking"]
-    end
-
-    %% REST calls
-    svc-emergency-response --> svc-location-services
-    svc-guest-profiles --> svc-analytics
-    svc-inventory-procurement --> svc-gear-inventory
-    svc-inventory-procurement --> svc-payments
-    svc-loyalty-rewards --> svc-guest-profiles
-    svc-loyalty-rewards --> svc-payments
-    svc-loyalty-rewards --> svc-reservations
-    svc-partner-integrations --> svc-payments
-    svc-reservations --> svc-payments
-    svc-reviews --> svc-guest-profiles
-    svc-reviews --> svc-reservations
-    svc-scheduling-orchestrator --> svc-location-services
-    svc-scheduling-orchestrator --> svc-weather
-    svc-trail-management --> svc-location-services
-    svc-trail-management --> svc-weather
-    svc-transport-logistics --> svc-location-services
-    svc-wildlife-tracking --> svc-weather
-
-    %% Event flows
-    svc-check-in -.-> svc-analytics
-    svc-check-in -.-> svc-notifications
-    svc-emergency-response -.-> svc-analytics
-    svc-emergency-response -.-> svc-notifications
-    svc-guest-profiles -.-> svc-analytics
-    svc-guest-profiles -.-> svc-loyalty-rewards
-    svc-inventory-procurement -.-> svc-notifications
-    svc-loyalty-rewards -.-> svc-notifications
-    svc-media-gallery -.-> svc-notifications
-    svc-partner-integrations -.-> svc-notifications
-    svc-payments -.-> svc-notifications
-    svc-payments -.-> svc-reservations
-    svc-reservations -.-> svc-analytics
-    svc-reservations -.-> svc-notifications
-    svc-safety-compliance -.-> svc-analytics
-    svc-safety-compliance -.-> svc-notifications
-    svc-scheduling-orchestrator -.-> svc-analytics
-    svc-scheduling-orchestrator -.-> svc-notifications
-    svc-trail-management -.-> svc-notifications
-    svc-transport-logistics -.-> svc-notifications
-    svc-weather -.-> svc-notifications
-    svc-wildlife-tracking -.-> svc-analytics
-    svc-wildlife-tracking -.-> svc-notifications
-
-    %% Styling
-    style Support fill:#4E342E15,stroke:#4E342E,stroke-width:2px
-    style Logistics fill:#00606408,stroke:#006064,stroke-width:1px,stroke-dasharray: 5 5
-    style Booking fill:#E6510008,stroke:#E65100,stroke-width:1px,stroke-dasharray: 5 5
-    style Safety fill:#B71C1C08,stroke:#B71C1C,stroke-width:1px,stroke-dasharray: 5 5
-    style External fill:#37474F08,stroke:#37474F,stroke-width:1px,stroke-dasharray: 5 5
-    style Guest_Identity fill:#0D47A108,stroke:#0D47A1,stroke-width:1px,stroke-dasharray: 5 5
-    style Operations fill:#1B5E2008,stroke:#1B5E20,stroke-width:1px,stroke-dasharray: 5 5
-    style Product_Catalog fill:#4A148C08,stroke:#4A148C,stroke-width:1px,stroke-dasharray: 5 5
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-support.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-support.svg" type="image/svg+xml" style="max-width: 100%;">
+    Support Service Topology C4 Diagram
+  </object>
+</div>
 
 ### Services
 

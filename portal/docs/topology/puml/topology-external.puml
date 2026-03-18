@@ -1,0 +1,40 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+
+header [[/topology/system-map/ ⬆ System Map]]
+title External — Service Topology
+
+System_Boundary(External, "External") {
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations", $link="/microservices/svc-partner-integrations/#integration-context")
+}
+
+System_Boundary(Booking, "Booking") {
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Reservations", $link="/microservices/svc-reservations/#integration-context")
+}
+
+System_Boundary(Guest_Identity, "Guest Identity") {
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Profiles", $link="/microservices/svc-guest-profiles/#integration-context")
+}
+
+System_Boundary(Product_Catalog, "Product Catalog") {
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Trip Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
+}
+
+System_Boundary(Support, "Support") {
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments", $link="/microservices/svc-payments/#integration-context")
+}
+
+Rel(svc_partner_integrations, svc_guest_profiles, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_payments, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_reservations, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_trip_catalog, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_notifications, "Event", "Kafka", $tags="kafka")
+Lay_D(svc_notifications, svc_payments)
+
+@enduml

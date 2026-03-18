@@ -1,0 +1,50 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+
+header [[/topology/system-map/ ⬆ System Map]]
+title Logistics — Service Topology
+
+System_Boundary(Logistics, "Logistics") {
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Gear Inventory", $link="/microservices/svc-gear-inventory/#integration-context")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Transport Logistics", $link="/microservices/svc-transport-logistics/#integration-context")
+}
+
+System_Boundary(Booking, "Booking") {
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Reservations", $link="/microservices/svc-reservations/#integration-context")
+}
+
+System_Boundary(Guest_Identity, "Guest Identity") {
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Profiles", $link="/microservices/svc-guest-profiles/#integration-context")
+}
+
+System_Boundary(Operations, "Operations") {
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Check In", $link="/microservices/svc-check-in/#integration-context")
+}
+
+System_Boundary(Safety, "Safety") {
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance", $link="/microservices/svc-safety-compliance/#integration-context")
+}
+
+System_Boundary(Support, "Support") {
+    Container(svc_inventory_procurement, "svc-inventory-procurement", "Java / Spring Boot", "Inventory Procurement", $link="/microservices/svc-inventory-procurement/#integration-context")
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services", $link="/microservices/svc-location-services/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications", $link="/microservices/svc-notifications/#integration-context")
+}
+
+Rel(svc_check_in, svc_gear_inventory, "API call", "HTTPS")
+Rel(svc_gear_inventory, svc_guest_profiles, "API call", "HTTPS")
+Rel(svc_gear_inventory, svc_reservations, "API call", "HTTPS")
+Rel(svc_gear_inventory, svc_safety_compliance, "API call", "HTTPS")
+Rel(svc_inventory_procurement, svc_gear_inventory, "API call", "HTTPS")
+Rel(svc_transport_logistics, svc_location_services, "API call", "HTTPS")
+Rel(svc_transport_logistics, svc_reservations, "API call", "HTTPS")
+Rel(svc_transport_logistics, svc_notifications, "Event", "Kafka", $tags="kafka")
+Lay_D(svc_inventory_procurement, svc_location_services)
+Lay_D(svc_location_services, svc_notifications)
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+
+header [[/topology/system-map/ ⬆ System Map]]
+title Product Catalog — Service Topology
+
+System_Boundary(Product_Catalog, "Product Catalog") {
+    Container(svc_trail_management, "svc-trail-management", "Java / Spring Boot", "Trail Management", $link="/microservices/svc-trail-management/#integration-context")
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Trip Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
+}
+
+System_Boundary(Booking, "Booking") {
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Reservations", $link="/microservices/svc-reservations/#integration-context")
+}
+
+System_Boundary(External, "External") {
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations", $link="/microservices/svc-partner-integrations/#integration-context")
+}
+
+System_Boundary(Operations, "Operations") {
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Check In", $link="/microservices/svc-check-in/#integration-context")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+}
+
+System_Boundary(Safety, "Safety") {
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance", $link="/microservices/svc-safety-compliance/#integration-context")
+    Container(svc_wildlife_tracking, "svc-wildlife-tracking", "Java / Spring Boot", "Wildlife Tracking", $link="/microservices/svc-wildlife-tracking/#integration-context")
+}
+
+System_Boundary(Support, "Support") {
+    Container(svc_location_services, "svc-location-services", "Java / Spring Boot", "Location Services", $link="/microservices/svc-location-services/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_weather, "svc-weather", "Java / Spring Boot", "Weather", $link="/microservices/svc-weather/#integration-context")
+}
+
+Rel(svc_check_in, svc_trip_catalog, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_trip_catalog, "API call", "HTTPS")
+Rel(svc_reservations, svc_trip_catalog, "API call", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_trail_management, "API call", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_trip_catalog, "API call", "HTTPS")
+Rel(svc_trail_management, svc_location_services, "API call", "HTTPS")
+Rel(svc_trail_management, svc_safety_compliance, "API call", "HTTPS")
+Rel(svc_trail_management, svc_weather, "API call", "HTTPS")
+Rel(svc_wildlife_tracking, svc_trail_management, "API call", "HTTPS")
+Rel(svc_trail_management, svc_notifications, "Event", "Kafka", $tags="kafka")
+Rel(svc_wildlife_tracking, svc_trail_management, "Event", "Kafka", $tags="kafka")
+Lay_D(svc_check_in, svc_scheduling_orchestrator)
+Lay_D(svc_safety_compliance, svc_wildlife_tracking)
+Lay_D(svc_location_services, svc_notifications)
+Lay_D(svc_notifications, svc_weather)
+
+@enduml

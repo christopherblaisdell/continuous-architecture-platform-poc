@@ -11,28 +11,32 @@ Usage:
 """
 
 import json
+import shutil
+import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from load_metadata import diagram_source_badge  # noqa: E402
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent.parent
 CALM_DIR = WORKSPACE_ROOT / "architecture" / "calm"
 OUTPUT_DIR = WORKSPACE_ROOT / "portal" / "docs" / "topology"
+PUML_DIR = OUTPUT_DIR / "puml"
+SVG_DIR = OUTPUT_DIR / "svg"
 
-# Domain colors for Mermaid styling
+# Domain colors matching architecture/diagrams/theme.puml
+# (strong = border/accent, light = background)
 DOMAIN_COLORS = {
-    "Operations": "#1B5E20",
-    "Guest Identity": "#0D47A1",
-    "Booking": "#E65100",
-    "Product Catalog": "#4A148C",
-    "Safety": "#B71C1C",
-    "Logistics": "#006064",
-    "Guide Management": "#33691E",
-    "External": "#37474F",
-    "Support": "#4E342E",
+    "Operations":       {"strong": "#2563eb", "light": "#DBEAFE"},
+    "Guest Identity":   {"strong": "#7c3aed", "light": "#EDE9FE"},
+    "Booking":          {"strong": "#059669", "light": "#D1FAE5"},
+    "Product Catalog":  {"strong": "#d97706", "light": "#FEF3C7"},
+    "Safety":           {"strong": "#dc2626", "light": "#FEE2E2"},
+    "Logistics":        {"strong": "#0891b2", "light": "#CFFAFE"},
+    "Guide Management": {"strong": "#4f46e5", "light": "#E0E7FF"},
+    "External":         {"strong": "#9333ea", "light": "#F3E8FF"},
+    "Support":          {"strong": "#64748b", "light": "#F1F5F9"},
 }
 
 
@@ -83,80 +87,90 @@ def _extract_topology_data(topology):
     return services, service_ids, svc_domain, domains, rest_edges, kafka_edges
 
 
-def generate_domain_overview(topology):
-    """Generate a domain-level Mermaid diagram (domains as nodes, aggregated edges)."""
+def _safe_id(name):
+    """Convert a domain name to a valid PlantUML identifier."""
+    return name.replace(" ", "_").replace("-", "_")
+
+
+def generate_domain_overview_puml(topology):
+    """Generate a C4 Container PUML for the domain-level overview."""
     _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
 
     # Aggregate edges to domain-to-domain level
     domain_rest = defaultdict(int)
     domain_kafka = defaultdict(int)
     for src, tgt in rest_edges:
-        src_d = svc_domain[src]
-        tgt_d = svc_domain[tgt]
+        src_d, tgt_d = svc_domain[src], svc_domain[tgt]
         if src_d != tgt_d:
             domain_rest[(src_d, tgt_d)] += 1
     for src, tgt in kafka_edges:
-        src_d = svc_domain[src]
-        tgt_d = svc_domain[tgt]
+        src_d, tgt_d = svc_domain[src], svc_domain[tgt]
         if src_d != tgt_d:
             domain_kafka[(src_d, tgt_d)] += 1
 
-    # Also count intra-domain edges for the node labels
-    intra_rest = defaultdict(int)
-    intra_kafka = defaultdict(int)
-    for src, tgt in rest_edges:
-        src_d = svc_domain[src]
-        tgt_d = svc_domain[tgt]
-        if src_d == tgt_d:
-            intra_rest[src_d] += 1
-    for src, tgt in kafka_edges:
-        src_d = svc_domain[src]
-        tgt_d = svc_domain[tgt]
-        if src_d == tgt_d:
-            intra_kafka[src_d] += 1
+    lines = [
+        "@startuml",
+        "!include <c4/C4_Context>",
+        "",
+        "LAYOUT_WITH_LEGEND()",
+        "LAYOUT_TOP_DOWN()",
+        "",
+        'AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")',
+        "",
+        "title NovaTrek Adventures — Domain Overview",
+        "",
+    ]
 
-    lines = ["```mermaid", "flowchart TB"]
-    lines.append("")
-
-    # Domain nodes with service counts
+    # Each domain as a System node with domain color
     for domain in sorted(domains.keys()):
-        safe = domain.replace(" ", "_")
+        safe = _safe_id(domain)
         n_svcs = len(domains[domain])
         svc_word = "service" if n_svcs == 1 else "services"
-        intra = intra_rest[domain] + intra_kafka[domain]
-        intra_note = f"\\n{intra} internal connections" if intra > 0 else ""
-        lines.append(f"    {safe}[\"{domain}\\n{n_svcs} {svc_word}{intra_note}\"]")
+        colors = DOMAIN_COLORS.get(domain, {"strong": "#616161", "light": "#F5F5F5"})
+        link = domain.lower().replace(" ", "-")
+        lines.append(
+            f'System({safe}, "{domain}", "{n_svcs} {svc_word}",'
+            f' $link="/topology/domain-views/#{link}",'
+            f' $tags="domain")'
+        )
+
     lines.append("")
 
-    # Cross-domain REST edges with counts
-    lines.append("    %% Cross-domain REST calls")
-    for (src_d, tgt_d), count in sorted(domain_rest.items()):
-        src_safe = src_d.replace(" ", "_")
-        tgt_safe = tgt_d.replace(" ", "_")
-        lines.append(f"    {src_safe} -->|{count} REST| {tgt_safe}")
+    # Merge REST and Kafka edges between same domain pairs for cleaner diagram
+    all_pairs = set(domain_rest.keys()) | set(domain_kafka.keys())
+    for src_d, tgt_d in sorted(all_pairs):
+        src_safe, tgt_safe = _safe_id(src_d), _safe_id(tgt_d)
+        rest_count = domain_rest.get((src_d, tgt_d), 0)
+        kafka_count = domain_kafka.get((src_d, tgt_d), 0)
+
+        if rest_count > 0 and kafka_count > 0:
+            lines.append(f'Rel({src_safe}, {tgt_safe}, "{rest_count} REST + {kafka_count} events", "HTTPS / Kafka")')
+        elif rest_count > 0:
+            lines.append(f'Rel({src_safe}, {tgt_safe}, "{rest_count} REST calls", "HTTPS")')
+        elif kafka_count > 0:
+            lines.append(f'Rel({src_safe}, {tgt_safe}, "{kafka_count} events", "Kafka", $tags="kafka")')
+
     lines.append("")
 
-    # Cross-domain Kafka edges with counts
-    lines.append("    %% Cross-domain event flows")
-    for (src_d, tgt_d), count in sorted(domain_kafka.items()):
-        src_safe = src_d.replace(" ", "_")
-        tgt_safe = tgt_d.replace(" ", "_")
-        lines.append(f"    {src_safe} -.->|{count} events| {tgt_safe}")
+    # Apply domain colors via skinparam overrides
+    lines.append("' Domain colors")
+    for domain in sorted(domains.keys()):
+        safe = _safe_id(domain)
+        colors = DOMAIN_COLORS.get(domain, {"strong": "#616161", "light": "#F5F5F5"})
+        lines.append(f"skinparam rectangle<<{safe}>> {{")
+        lines.append(f"    BackgroundColor {colors['light']}")
+        lines.append(f"    BorderColor {colors['strong']}")
+        lines.append(f"    FontColor {colors['strong']}")
+        lines.append("}")
+
     lines.append("")
+    lines.append("@enduml")
 
-    # Styling
-    lines.append("    %% Styling")
-    for domain in domains:
-        safe = domain.replace(" ", "_")
-        color = DOMAIN_COLORS.get(domain, "#616161")
-        lines.append(f"    style {safe} fill:{color}20,stroke:{color},stroke-width:2px,color:#fff")
-
-    lines.append("```")
     return "\n".join(lines)
 
 
-def generate_domain_diagram(topology, target_domain):
-    """Generate a Mermaid diagram for a single domain showing its services and cross-domain connections."""
+def generate_domain_detail_puml(topology, target_domain):
+    """Generate a C4 Container PUML for a single domain with its services and cross-domain connections."""
     _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
 
     domain_svc_ids = {s["unique-id"] for s in domains[target_domain]}
@@ -165,7 +179,7 @@ def generate_domain_diagram(topology, target_domain):
     relevant_rest = [(s, t) for s, t in rest_edges if s in domain_svc_ids or t in domain_svc_ids]
     relevant_kafka = [(s, t) for s, t in kafka_edges if s in domain_svc_ids or t in domain_svc_ids]
 
-    # Collect external services that connect to this domain, grouped by their domain
+    # Collect external services grouped by their domain
     external_svcs = set()
     for s, t in relevant_rest + relevant_kafka:
         if s not in domain_svc_ids:
@@ -177,52 +191,95 @@ def generate_domain_diagram(topology, target_domain):
     for sid in external_svcs:
         external_by_domain[svc_domain[sid]].add(sid)
 
-    lines = ["```mermaid", "flowchart TB"]
-    lines.append("")
+    lines = [
+        "@startuml",
+        "!include <c4/C4_Container>",
+        "",
+        "LAYOUT_WITH_LEGEND()",
+        "LAYOUT_TOP_DOWN()",
+        "",
+        'AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")',
+        "",
+        'header [[/topology/system-map/ \u2B06 System Map]]',
+        f'title {target_domain} — Service Topology',
+        "",
+    ]
 
-    # Target domain subgraph
-    safe_target = target_domain.replace(" ", "_")
-    lines.append(f"    subgraph {safe_target}[\"{target_domain}\"]")
+    # Target domain boundary with its services
+    safe_target = _safe_id(target_domain)
+    lines.append(f'System_Boundary({safe_target}, "{target_domain}") {{')
     for svc in sorted(domains[target_domain], key=lambda s: s["unique-id"]):
         sid = svc["unique-id"]
-        lines.append(f"        {sid}[\"{short_name(sid)}\"]")
-    lines.append("    end")
+        safe_svc = _safe_id(sid)
+        label = short_name(sid)
+        lines.append(
+            f'    Container({safe_svc}, "{sid}", "Java / Spring Boot", "{label}",'
+            f' $link="/microservices/{sid}/#integration-context")'
+        )
+    lines.append("}")
     lines.append("")
 
-    # External domain subgraphs
+    # External domain boundaries
     for ext_domain in sorted(external_by_domain.keys()):
-        safe_ext = ext_domain.replace(" ", "_")
-        lines.append(f"    subgraph {safe_ext}[\"{ext_domain}\"]")
+        safe_ext = _safe_id(ext_domain)
+        lines.append(f'System_Boundary({safe_ext}, "{ext_domain}") {{')
         for sid in sorted(external_by_domain[ext_domain]):
-            lines.append(f"        {sid}[\"{short_name(sid)}\"]")
-        lines.append("    end")
+            safe_svc = _safe_id(sid)
+            label = short_name(sid)
+            lines.append(
+                f'    Container({safe_svc}, "{sid}", "Java / Spring Boot", "{label}",'
+                f' $link="/microservices/{sid}/#integration-context")'
+            )
+        lines.append("}")
         lines.append("")
 
-    # REST edges
-    if relevant_rest:
-        lines.append("    %% REST calls")
-        for src, tgt in sorted(relevant_rest):
-            lines.append(f"    {src} --> {tgt}")
-        lines.append("")
+    # REST relationships
+    for src, tgt in sorted(relevant_rest):
+        src_safe, tgt_safe = _safe_id(src), _safe_id(tgt)
+        lines.append(f'Rel({src_safe}, {tgt_safe}, "API call", "HTTPS")')
 
-    # Kafka edges
-    if relevant_kafka:
-        lines.append("    %% Event flows")
-        for src, tgt in sorted(relevant_kafka):
-            lines.append(f"    {src} -.-> {tgt}")
-        lines.append("")
+    # Kafka relationships
+    for src, tgt in sorted(relevant_kafka):
+        src_safe, tgt_safe = _safe_id(src), _safe_id(tgt)
+        lines.append(f'Rel({src_safe}, {tgt_safe}, "Event", "Kafka", $tags="kafka")')
 
-    # Styling
-    lines.append("    %% Styling")
-    target_color = DOMAIN_COLORS.get(target_domain, "#616161")
-    lines.append(f"    style {safe_target} fill:{target_color}15,stroke:{target_color},stroke-width:2px")
-    for ext_domain in external_by_domain:
-        safe_ext = ext_domain.replace(" ", "_")
-        color = DOMAIN_COLORS.get(ext_domain, "#616161")
-        lines.append(f"    style {safe_ext} fill:{color}08,stroke:{color},stroke-width:1px,stroke-dasharray: 5 5")
+    # Layout hints: stack external domain services vertically to reduce width
+    for ext_domain in sorted(external_by_domain.keys()):
+        ext_svcs = sorted(external_by_domain[ext_domain])
+        for i in range(len(ext_svcs) - 1):
+            lines.append(f"Lay_D({_safe_id(ext_svcs[i])}, {_safe_id(ext_svcs[i + 1])})")
 
-    lines.append("```")
+    lines.append("")
+    lines.append("@enduml")
+
     return "\n".join(lines)
+
+
+def render_pumls_to_svg(puml_files):
+    """Render PlantUML files to SVG."""
+    if not puml_files:
+        return
+    svg_dir = str(SVG_DIR)
+    result = subprocess.run(
+        ["plantuml", "-tsvg", "-o", svg_dir] + [str(p) for p in puml_files],
+        capture_output=True, text=True, timeout=120, check=False,
+    )
+    if result.returncode != 0:
+        print(f"  WARNING: PlantUML returned {result.returncode}")
+        if result.stderr:
+            print(f"  stderr: {result.stderr[:500]}")
+
+
+def svg_embed(svg_filename, alt_text):
+    """Return HTML to embed an SVG diagram in the same style as microservice pages."""
+    return (
+        f'<div class="diagram-wrap">\n'
+        f'  <a href="../svg/{svg_filename}" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>\n'
+        f'  <object data="../svg/{svg_filename}" type="image/svg+xml" style="max-width: 100%;">\n'
+        f"    {alt_text}\n"
+        f"  </object>\n"
+        f"</div>"
+    )
 
 
 def generate_dependency_matrix(topology):
@@ -353,10 +410,14 @@ The generator reads 6 metadata sources:
     print(f"  Generated {path.relative_to(WORKSPACE_ROOT)}")
 
 
-def write_system_map_page(topology):
-    """Write the system map page with domain-level overview and links to per-domain detail."""
-    overview = generate_domain_overview(topology)
-    _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
+def write_system_map_page(topology, puml_files):
+    """Write the system map page with C4 domain-level overview SVG."""
+    _, _, _, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
+
+    # Write overview PUML
+    puml_path = PUML_DIR / "topology-domain-overview.puml"
+    puml_path.write_text(generate_domain_overview_puml(topology))
+    puml_files.append(puml_path)
 
     n_services = sum(1 for n in topology["nodes"] if n.get("node-type") == "service")
     n_domains = len(set(n.get("metadata", {}).get("domain") for n in topology["nodes"] if n.get("node-type") == "service"))
@@ -371,6 +432,8 @@ def write_system_map_page(topology):
         slug = domain.lower().replace(" ", "-")
         domain_table_rows += f"| [{domain}](domain-views.md#{slug}) | {n_svcs} | {n_rest_out} | {n_kafka_out} |\n"
 
+    overview_svg = svg_embed("topology-domain-overview.svg", "Domain Overview C4 Diagram")
+
     content = f"""# System Map
 
 Domain-level topology for NovaTrek Adventures — {n_services} services across {n_domains} domains.
@@ -382,22 +445,15 @@ Domain-level topology for NovaTrek Adventures — {n_services} services across {
 
 ## Domain Overview
 
-Each node represents a domain (bounded context) containing one or more microservices. Arrows show **cross-domain** communication — internal connections within a domain are noted on each node.
+Each node represents a domain (bounded context) containing one or more microservices. Arrows show **cross-domain** communication with connection counts.
 
-**Solid arrows** = synchronous REST calls (HTTPS)
-**Dashed arrows** = asynchronous event flows (Kafka)
-
-{overview}
-{diagram_source_badge(
-    'architecture/calm/novatrek-topology.json',
-    'https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json',
-)}
+{overview_svg}
 
 ---
 
 ## Domains
 
-Click a domain to see its service-level topology diagram with individual service connections.
+Click a domain in the diagram or table to see its service-level topology with individual connections.
 
 | Domain | Services | REST Out | Events Out |
 |--------|----------|----------|------------|
@@ -408,10 +464,9 @@ Click a domain to see its service-level topology diagram with individual service
 
 | Element | Meaning |
 |---------|---------|
-| Domain node | Bounded context containing one or more services |
-| Solid arrow with count | Cross-domain synchronous REST calls |
-| Dashed arrow with count | Cross-domain asynchronous Kafka events |
-| Internal connections note | Intra-domain service-to-service calls |
+| Blue box | Domain (bounded context) containing one or more services |
+| Solid arrow with label | Synchronous REST calls (count shown) |
+| Dashed purple arrow | Asynchronous Kafka events (count shown) |
 
 ## How to Read This Diagram
 
@@ -526,7 +581,7 @@ Generated from `architecture/calm/novatrek-topology.json` by `portal/scripts/gen
     print(f"  Generated {path.relative_to(WORKSPACE_ROOT)}")
 
 
-def write_domain_views_page(topology):
+def write_domain_views_page(topology, puml_files):
     """Write per-domain topology details."""
     nodes = topology.get("nodes", [])
     relationships = topology.get("relationships", [])
@@ -584,17 +639,16 @@ Per-domain topology breakdown showing services, databases, and integration patte
         team = svcs[0].get("metadata", {}).get("team", "Unknown") if svcs else "Unknown"
         content += f"**Team:** {team}\n\n"
 
-        # Per-domain topology diagram
-        domain_diagram = generate_domain_diagram(topology, domain)
+        # Per-domain topology diagram (C4 PlantUML SVG)
+        slug = domain.lower().replace(" ", "-")
+        puml_name = f"topology-{slug}.puml"
+        svg_name = f"topology-{slug}.svg"
+        puml_path = PUML_DIR / puml_name
+        puml_path.write_text(generate_domain_detail_puml(topology, domain))
+        puml_files.append(puml_path)
+
         content += "### Topology\n\n"
-        content += "**Solid arrows** = REST calls  |  **Dashed arrows** = Kafka events  |  "
-        content += "Dashed border = external domain\n\n"
-        content += domain_diagram
-        content += "\n"
-        content += diagram_source_badge(
-            "architecture/calm/novatrek-topology.json",
-            "https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json",
-        )
+        content += svg_embed(svg_name, f"{domain} Service Topology C4 Diagram")
         content += "\n\n"
 
         # Services table
@@ -689,13 +743,29 @@ def main():
 
     topology = load_calm(topology_path)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PUML_DIR.mkdir(parents=True, exist_ok=True)
+    SVG_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Copy theme.puml so PUML files can reference it
+    theme_src = WORKSPACE_ROOT / "architecture" / "diagrams" / "theme.puml"
+    if theme_src.is_file():
+        shutil.copy2(theme_src, PUML_DIR / "theme.puml")
+
+    puml_files = []
 
     write_index_page(topology)
-    write_system_map_page(topology)
+    write_system_map_page(topology, puml_files)
     write_dependency_matrix_page(topology)
-    write_domain_views_page(topology)
+    write_domain_views_page(topology, puml_files)
 
-    print(f"Done — {4} pages written to {OUTPUT_DIR.relative_to(WORKSPACE_ROOT)}")
+    # Render all PUMLs to SVG
+    if puml_files:
+        print(f"  Rendering {len(puml_files)} PUML files to SVG...")
+        render_pumls_to_svg(puml_files)
+        svg_count = sum(1 for f in SVG_DIR.iterdir() if f.suffix == ".svg")
+        print(f"  Rendered {svg_count} SVGs")
+
+    print(f"Done — 4 pages + {len(puml_files)} diagrams written to {OUTPUT_DIR.relative_to(WORKSPACE_ROOT)}")
 
 
 if __name__ == "__main__":

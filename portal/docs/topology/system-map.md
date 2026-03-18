@@ -9,88 +9,20 @@ Domain-level topology for NovaTrek Adventures — 22 services across 9 domains.
 
 ## Domain Overview
 
-Each node represents a domain (bounded context) containing one or more microservices. Arrows show **cross-domain** communication — internal connections within a domain are noted on each node.
+Each node represents a domain (bounded context) containing one or more microservices. Arrows show **cross-domain** communication with connection counts.
 
-**Solid arrows** = synchronous REST calls (HTTPS)
-**Dashed arrows** = asynchronous event flows (Kafka)
-
-```mermaid
-flowchart TB
-
-    Booking["Booking\n1 service"]
-    External["External\n1 service"]
-    Guest_Identity["Guest Identity\n1 service"]
-    Guide_Management["Guide Management\n1 service"]
-    Logistics["Logistics\n2 services"]
-    Operations["Operations\n2 services"]
-    Product_Catalog["Product Catalog\n2 services"]
-    Safety["Safety\n3 services\n2 internal connections"]
-    Support["Support\n9 services\n7 internal connections"]
-
-    %% Cross-domain REST calls
-    Booking -->|1 REST| Guest_Identity
-    Booking -->|1 REST| Product_Catalog
-    Booking -->|1 REST| Support
-    External -->|1 REST| Booking
-    External -->|1 REST| Guest_Identity
-    External -->|1 REST| Product_Catalog
-    External -->|1 REST| Support
-    Guest_Identity -->|1 REST| Booking
-    Guest_Identity -->|1 REST| Support
-    Logistics -->|2 REST| Booking
-    Logistics -->|1 REST| Guest_Identity
-    Logistics -->|1 REST| Safety
-    Logistics -->|1 REST| Support
-    Operations -->|1 REST| Booking
-    Operations -->|1 REST| Guest_Identity
-    Operations -->|1 REST| Guide_Management
-    Operations -->|1 REST| Logistics
-    Operations -->|3 REST| Product_Catalog
-    Operations -->|1 REST| Safety
-    Operations -->|2 REST| Support
-    Product_Catalog -->|1 REST| Safety
-    Product_Catalog -->|2 REST| Support
-    Safety -->|2 REST| Guest_Identity
-    Safety -->|2 REST| Guide_Management
-    Safety -->|1 REST| Operations
-    Safety -->|1 REST| Product_Catalog
-    Safety -->|2 REST| Support
-    Support -->|2 REST| Booking
-    Support -->|2 REST| Guest_Identity
-    Support -->|1 REST| Logistics
-
-    %% Cross-domain event flows
-    Booking -.->|1 events| Operations
-    Booking -.->|2 events| Support
-    External -.->|1 events| Support
-    Guest_Identity -.->|2 events| Support
-    Logistics -.->|1 events| Support
-    Operations -.->|1 events| Guide_Management
-    Operations -.->|4 events| Support
-    Product_Catalog -.->|1 events| Support
-    Safety -.->|2 events| Operations
-    Safety -.->|1 events| Product_Catalog
-    Safety -.->|6 events| Support
-    Support -.->|1 events| Booking
-
-    %% Styling
-    style Operations fill:#1B5E2020,stroke:#1B5E20,stroke-width:2px,color:#fff
-    style Guest_Identity fill:#0D47A120,stroke:#0D47A1,stroke-width:2px,color:#fff
-    style Booking fill:#E6510020,stroke:#E65100,stroke-width:2px,color:#fff
-    style Product_Catalog fill:#4A148C20,stroke:#4A148C,stroke-width:2px,color:#fff
-    style Safety fill:#B71C1C20,stroke:#B71C1C,stroke-width:2px,color:#fff
-    style Logistics fill:#00606420,stroke:#006064,stroke-width:2px,color:#fff
-    style Guide_Management fill:#33691E20,stroke:#33691E,stroke-width:2px,color:#fff
-    style External fill:#37474F20,stroke:#37474F,stroke-width:2px,color:#fff
-    style Support fill:#4E342E20,stroke:#4E342E,stroke-width:2px,color:#fff
-```
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from architecture/calm/novatrek-topology.json</a>
+<div class="diagram-wrap">
+  <a href="../svg/topology-domain-overview.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../svg/topology-domain-overview.svg" type="image/svg+xml" style="max-width: 100%;">
+    Domain Overview C4 Diagram
+  </object>
+</div>
 
 ---
 
 ## Domains
 
-Click a domain to see its service-level topology diagram with individual service connections.
+Click a domain in the diagram or table to see its service-level topology with individual connections.
 
 | Domain | Services | REST Out | Events Out |
 |--------|----------|----------|------------|
@@ -110,10 +42,9 @@ Click a domain to see its service-level topology diagram with individual service
 
 | Element | Meaning |
 |---------|---------|
-| Domain node | Bounded context containing one or more services |
-| Solid arrow with count | Cross-domain synchronous REST calls |
-| Dashed arrow with count | Cross-domain asynchronous Kafka events |
-| Internal connections note | Intra-domain service-to-service calls |
+| Blue box | Domain (bounded context) containing one or more services |
+| Solid arrow with label | Synchronous REST calls (count shown) |
+| Dashed purple arrow | Asynchronous Kafka events (count shown) |
 
 ## How to Read This Diagram
 

@@ -1,0 +1,67 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+
+header [[/topology/system-map/ ⬆ System Map]]
+title Booking — Service Topology
+
+System_Boundary(Booking, "Booking") {
+    Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Reservations", $link="/microservices/svc-reservations/#integration-context")
+}
+
+System_Boundary(External, "External") {
+    Container(svc_partner_integrations, "svc-partner-integrations", "Java / Spring Boot", "Partner Integrations", $link="/microservices/svc-partner-integrations/#integration-context")
+}
+
+System_Boundary(Guest_Identity, "Guest Identity") {
+    Container(svc_guest_profiles, "svc-guest-profiles", "Java / Spring Boot", "Guest Profiles", $link="/microservices/svc-guest-profiles/#integration-context")
+}
+
+System_Boundary(Logistics, "Logistics") {
+    Container(svc_gear_inventory, "svc-gear-inventory", "Java / Spring Boot", "Gear Inventory", $link="/microservices/svc-gear-inventory/#integration-context")
+    Container(svc_transport_logistics, "svc-transport-logistics", "Java / Spring Boot", "Transport Logistics", $link="/microservices/svc-transport-logistics/#integration-context")
+}
+
+System_Boundary(Operations, "Operations") {
+    Container(svc_check_in, "svc-check-in", "Java / Spring Boot", "Check In", $link="/microservices/svc-check-in/#integration-context")
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+}
+
+System_Boundary(Product_Catalog, "Product Catalog") {
+    Container(svc_trip_catalog, "svc-trip-catalog", "Java / Spring Boot", "Trip Catalog", $link="/microservices/svc-trip-catalog/#integration-context")
+}
+
+System_Boundary(Support, "Support") {
+    Container(svc_analytics, "svc-analytics", "Java / Spring Boot", "Analytics", $link="/microservices/svc-analytics/#integration-context")
+    Container(svc_loyalty_rewards, "svc-loyalty-rewards", "Java / Spring Boot", "Loyalty Rewards", $link="/microservices/svc-loyalty-rewards/#integration-context")
+    Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Notifications", $link="/microservices/svc-notifications/#integration-context")
+    Container(svc_payments, "svc-payments", "Java / Spring Boot", "Payments", $link="/microservices/svc-payments/#integration-context")
+    Container(svc_reviews, "svc-reviews", "Java / Spring Boot", "Reviews", $link="/microservices/svc-reviews/#integration-context")
+}
+
+Rel(svc_check_in, svc_reservations, "API call", "HTTPS")
+Rel(svc_gear_inventory, svc_reservations, "API call", "HTTPS")
+Rel(svc_guest_profiles, svc_reservations, "API call", "HTTPS")
+Rel(svc_loyalty_rewards, svc_reservations, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_reservations, "API call", "HTTPS")
+Rel(svc_reservations, svc_guest_profiles, "API call", "HTTPS")
+Rel(svc_reservations, svc_payments, "API call", "HTTPS")
+Rel(svc_reservations, svc_trip_catalog, "API call", "HTTPS")
+Rel(svc_reviews, svc_reservations, "API call", "HTTPS")
+Rel(svc_transport_logistics, svc_reservations, "API call", "HTTPS")
+Rel(svc_payments, svc_reservations, "Event", "Kafka", $tags="kafka")
+Rel(svc_reservations, svc_analytics, "Event", "Kafka", $tags="kafka")
+Rel(svc_reservations, svc_notifications, "Event", "Kafka", $tags="kafka")
+Rel(svc_reservations, svc_scheduling_orchestrator, "Event", "Kafka", $tags="kafka")
+Lay_D(svc_gear_inventory, svc_transport_logistics)
+Lay_D(svc_check_in, svc_scheduling_orchestrator)
+Lay_D(svc_analytics, svc_loyalty_rewards)
+Lay_D(svc_loyalty_rewards, svc_notifications)
+Lay_D(svc_notifications, svc_payments)
+Lay_D(svc_payments, svc_reviews)
+
+@enduml

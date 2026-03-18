@@ -1,0 +1,31 @@
+@startuml
+!include <c4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+
+header [[/topology/system-map/ ⬆ System Map]]
+title Guide Management — Service Topology
+
+System_Boundary(Guide_Management, "Guide Management") {
+    Container(svc_guide_management, "svc-guide-management", "Java / Spring Boot", "Guide Management", $link="/microservices/svc-guide-management/#integration-context")
+}
+
+System_Boundary(Operations, "Operations") {
+    Container(svc_scheduling_orchestrator, "svc-scheduling-orchestrator", "Java / Spring Boot", "Scheduling Orchestrator", $link="/microservices/svc-scheduling-orchestrator/#integration-context")
+}
+
+System_Boundary(Safety, "Safety") {
+    Container(svc_emergency_response, "svc-emergency-response", "Java / Spring Boot", "Emergency Response", $link="/microservices/svc-emergency-response/#integration-context")
+    Container(svc_safety_compliance, "svc-safety-compliance", "Java / Spring Boot", "Safety Compliance", $link="/microservices/svc-safety-compliance/#integration-context")
+}
+
+Rel(svc_emergency_response, svc_guide_management, "API call", "HTTPS")
+Rel(svc_safety_compliance, svc_guide_management, "API call", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_guide_management, "API call", "HTTPS")
+Rel(svc_scheduling_orchestrator, svc_guide_management, "Event", "Kafka", $tags="kafka")
+Lay_D(svc_emergency_response, svc_safety_compliance)
+
+@enduml
