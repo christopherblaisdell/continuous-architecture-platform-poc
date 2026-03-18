@@ -66,11 +66,12 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 
 ### Static Web Apps
 
-| Site | Custom Domain | Purpose |
-|------|--------------|---------|
-| Architecture Portal | [architecture.novatrek.cc](https://architecture.novatrek.cc) | MkDocs Material — architecture knowledge base (primary) |
-| Presentation Site | [presentation.novatrek.cc](https://presentation.novatrek.cc) | MkDocs Material — executive briefing slides |
-| Confluence Mirror | [novatrek.atlassian.net/wiki](https://novatrek.atlassian.net/wiki) (space: `ARCH`) | Read-only mirror of portal content |
+| Site | Custom Domain | Azure Resource | Purpose |
+|------|--------------|----------------|---------||
+| Architecture Portal | [architecture.novatrek.cc](https://architecture.novatrek.cc) | `swa-cap-portal-prod` | MkDocs Material — architecture knowledge base (primary) |
+| AI Customization | [ai.customization.novatrek.cc](https://ai.customization.novatrek.cc) | `swa-cap-ai-customization` | MkDocs Material — AI workflow customization reference (Copilot vs OpenSpec) |
+| Presentation Site | [presentation.novatrek.cc](https://presentation.novatrek.cc) | `swa-cap-docs-prod` | MkDocs Material — executive briefing slides |
+| Confluence Mirror | [novatrek.atlassian.net/wiki](https://novatrek.atlassian.net/wiki) (space: `ARCH`) | N/A | Read-only mirror of portal content |
 
 ### Azure Resources (via `platform.bicep`)
 
@@ -108,6 +109,41 @@ Code push (portal/**)
   → Deploy: Azure Static Web Apps (production)
   → Confluence: prepare staging → publish pages → lock pages
 ```
+
+### Multi-Site Content Sync
+
+Some documentation pages are published to multiple sites (e.g., the AI workflow customization guides appear on both the Architecture Portal and the standalone AI Customization site). A manifest-driven sync system keeps these in sync.
+
+**Source of truth**: `docs/` directory (uppercase filenames, author-edited)
+
+**Manifest**: `sites/manifest.yaml` declares which source files go to which sites, with per-site link rewrites (e.g., uppercase filenames mapped to lowercase, comparison page mapped to `index.md` on the mini-site)
+
+**Sync command**:
+
+```bash
+# Sync all shared files to all sites (copy + link rewrite)
+python3 sites/sync-sites.py
+
+# Check for drift without writing (CI-friendly, exits 1 if drifted)
+python3 sites/sync-sites.py --check
+```
+
+**Workflow for editing shared content**:
+
+```
+1. Edit source file in docs/ (e.g., docs/COPILOT-VS-OPENSPEC-COMPARISON.md)
+2. Run: python3 sites/sync-sites.py
+3. Build and deploy each affected site
+4. Commit all changed files (source + synced copies)
+```
+
+**Currently shared pages**:
+
+| Source | Portal | AI Customization |
+|--------|--------|------------------|
+| `docs/COPILOT-VS-OPENSPEC-COMPARISON.md` | `copilot-vs-openspec-comparison.md` | `index.md` |
+| `docs/GITHUB-COPILOT-CUSTOMIZATION-GUIDE.md` | `github-copilot-customization-guide.md` | `github-copilot-customization-guide.md` |
+| `docs/OPENSPEC-CUSTOMIZATION-GUIDE.md` | `openspec-customization-guide.md` | `openspec-customization-guide.md` |
 
 ### PR Preview Flow
 
@@ -168,5 +204,6 @@ Weekend            → Dev environment fully stopped
 | GitHub Repository | [continuous-architecture-platform-poc](https://github.com/christopherblaisdell/continuous-architecture-platform-poc) |
 | All Workflows | [Actions tab](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions) |
 | Architecture Portal | [architecture.novatrek.cc](https://architecture.novatrek.cc) |
+| AI Customization Site | [ai.customization.novatrek.cc](https://ai.customization.novatrek.cc) |
 | Presentation Site | [presentation.novatrek.cc](https://presentation.novatrek.cc) |
 | Confluence Mirror | [novatrek.atlassian.net/wiki](https://novatrek.atlassian.net/wiki) |
