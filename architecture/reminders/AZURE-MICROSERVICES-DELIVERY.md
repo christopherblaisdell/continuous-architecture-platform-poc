@@ -20,8 +20,13 @@ Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. Ev
 | Wave 0 infrastructure | COMPLETE — rg-novatrek-dev (eastus2), ACA env, ACR, PostgreSQL, Key Vault, Service Bus |
 | Wave 1 tests (3 svc) | COMPLETE — 27 tests, H2 in-memory, all green |
 | Wave 1 deployed | COMPLETE — container apps running, scale-to-zero, latest images in ACR |
-| Wave 2 tests + deploy | IN PROGRESS |
-| Wave 3-4 tests + deploy | NOT STARTED |
+| Wave 2 tests (3 svc) | COMPLETE — 34 tests, H2 in-memory, all green |
+| Wave 2 deployed | COMPLETE — ca-svc-reservations, ca-svc-payments, ca-svc-notifications |
+| Wave 3 tests (4 svc) | COMPLETE — 44 tests (check-in 10, scheduling 9, gear-inventory 11, safety-compliance 15) |
+| Wave 3 deployed | COMPLETE — ca-svc-check-in, ca-svc-scheduling-orchestrator, ca-svc-gear-inventory, ca-svc-safety-compliance |
+| Wave 4 tests (3 svc) | COMPLETE — 45 tests (guide-management 13, transport-logistics 16, location-services 16) |
+| Wave 4 deployed | COMPLETE — ca-svc-guide-management, ca-svc-transport-logistics, ca-svc-location-services |
+| Wave 5-6 tests + deploy | NOT STARTED |
 
 ## Delivery Waves
 
@@ -49,14 +54,31 @@ Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. Ev
 
 ## Next Steps
 
-1. Provision Azure subscription and configure OIDC federation
-2. Deploy Wave 0 shared infrastructure via `infra-deploy.yml`
-3. Verify all 22 services compile locally (`./gradlew build` per service)
-4. Write baseline tests for Wave 1 services (meet 80% coverage gate)
-5. Build and push Docker images for Wave 1 to ACR
-6. Deploy Wave 1 services to dev ACA environment
-7. Validate health checks and Swagger UI access
-8. Repeat for Waves 2-6
+1. Write tests for Wave 5 services (svc-analytics, svc-loyalty-rewards, svc-media-gallery)
+2. Build and deploy Wave 5 to ACA
+3. Write tests for Wave 6 services (svc-partner-integrations, svc-weather, svc-inventory-procurement, svc-emergency-response, svc-wildlife-tracking)
+4. Build and deploy Wave 6 to ACA
+5. Validate health checks and Swagger UI across all deployed services
+
+## Deployed Container Apps
+
+All apps: 0.25 CPU, 0.5Gi memory, min 0 / max 2, external ingress, port 8080.
+
+| App | FQDN | Wave |
+|-----|------|------|
+| ca-svc-guest-profiles | ca-svc-guest-profiles.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 1 |
+| ca-svc-trip-catalog | ca-svc-trip-catalog.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 1 |
+| ca-svc-trail-management | ca-svc-trail-management.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 1 |
+| ca-svc-reservations | ca-svc-reservations.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 2 |
+| ca-svc-payments | ca-svc-payments.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 2 |
+| ca-svc-notifications | ca-svc-notifications.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 2 |
+| ca-svc-check-in | ca-svc-check-in.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 3 |
+| ca-svc-scheduling-orchestrator | ca-svc-scheduling-orchestrator.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 3 |
+| ca-svc-gear-inventory | ca-svc-gear-inventory.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 3 |
+| ca-svc-safety-compliance | ca-svc-safety-compliance.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 3 |
+| ca-svc-guide-management | ca-svc-guide-management.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 4 |
+| ca-svc-transport-logistics | ca-svc-transport-logistics.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 4 |
+| ca-svc-location-services | ca-svc-location-services.blackwater-fd4bc06d.eastus2.azurecontainerapps.io | 4 |
 
 ## Companion Document
 
