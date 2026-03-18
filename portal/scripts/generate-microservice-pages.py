@@ -1741,9 +1741,14 @@ def actor_anchor(name):
 
 
 # ── C4-style SVG icons per actor type ──
+# These are encoded as data URIs to avoid MkDocs HTML minifier mangling
+# SVG attributes (viewBox → viewbox, stripping quotes from fill values).
+
+import urllib.parse as _urlparse
+
 # Person silhouette (matches C4 Person shape)
 _C4_PERSON_SVG = (
-    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
     '<circle cx="24" cy="12" r="8" fill="{color}"/>'
     '<path d="M8 44 C8 30 16 24 24 24 C32 24 40 30 40 44" '
     'fill="{color}" stroke="none"/>'
@@ -1751,7 +1756,7 @@ _C4_PERSON_SVG = (
 )
 # Container box (Frontend Application)
 _C4_CONTAINER_SVG = (
-    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
     '<rect x="4" y="8" width="40" height="32" rx="4" ry="4" '
     'fill="{color}" stroke="{border}" stroke-width="1.5"/>'
     '<rect x="4" y="8" width="40" height="8" rx="4" ry="4" '
@@ -1760,7 +1765,7 @@ _C4_CONTAINER_SVG = (
 )
 # Cylinder (Infrastructure)
 _C4_INFRA_SVG = (
-    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
     '<ellipse cx="24" cy="12" rx="18" ry="6" fill="{color}" '
     'stroke="{border}" stroke-width="1.5"/>'
     '<rect x="6" y="12" width="36" height="24" fill="{color}" '
@@ -1773,7 +1778,7 @@ _C4_INFRA_SVG = (
 )
 # External system box (dashed border)
 _C4_EXTERNAL_SVG = (
-    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
     '<rect x="4" y="8" width="40" height="32" rx="4" ry="4" '
     'fill="{color}" stroke="{border}" stroke-width="1.5" '
     'stroke-dasharray="4 2"/>'
@@ -1781,7 +1786,7 @@ _C4_EXTERNAL_SVG = (
 )
 # Hexagon (Internal Microservice)
 _C4_MICROSERVICE_SVG = (
-    '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
     '<polygon points="24,4 44,14 44,34 24,44 4,34 4,14" '
     'fill="{color}" stroke="{border}" stroke-width="1.5"/>'
     '</svg>'
@@ -1813,15 +1818,22 @@ _TYPE_SVG = {
 }
 
 
+def _svg_data_uri(svg_str):
+    """Encode an SVG string as a data URI for use in CSS background-image."""
+    encoded = _urlparse.quote(svg_str, safe='')
+    return f"data:image/svg+xml,{encoded}"
+
+
 def _actor_card_html(name, info, link=None):
     """Render a single C4-styled actor card as HTML."""
     domain = info.get("domain", "Support")
     border, bg = _DOMAIN_COLORS.get(domain, ("#64748b", "#F1F5F9"))
     actor_type = info.get("type", "External System")
 
-    # Pick SVG template
+    # Pick SVG template and encode as data URI
     svg_tmpl = _TYPE_SVG.get(actor_type, _C4_EXTERNAL_SVG)
-    svg = svg_tmpl.format(color=bg, border=border)
+    svg_raw = svg_tmpl.format(color=bg, border=border)
+    icon_uri = _svg_data_uri(svg_raw)
 
     style = f'style="--actor-border: {border}; --actor-bg: {bg};"'
     pci_html = '<span class="actor-pci">PCI</span>' if info.get("pci") else ""
@@ -1834,7 +1846,7 @@ def _actor_card_html(name, info, link=None):
 
     inner = (
         f'{pci_html}'
-        f'<span class="c4-icon">{svg}</span>'
+        f'<span class="c4-icon" style="background-image:url(&quot;{icon_uri}&quot;);"></span>'
         f'<span class="actor-name">{name}</span>'
         f'{tech_html}'
         f'<span class="actor-desc">{desc}</span>'
@@ -1850,12 +1862,13 @@ def _svc_card_html(svc_name):
     """Render an internal microservice as a C4-styled hexagon card."""
     domain, border = get_domain_info(svc_name)
     bg = DOMAINS.get(domain, {}).get("light", "#F1F5F9")
-    svg = _C4_MICROSERVICE_SVG.format(color=bg, border=border)
+    svg_raw = _C4_MICROSERVICE_SVG.format(color=bg, border=border)
+    icon_uri = _svg_data_uri(svg_raw)
     style = f'style="--actor-border: {border}; --actor-bg: {bg};"'
     link = f"../microservices/{svc_name}/"
     return (
         f'<a class="actor-card" href="{link}" {style}>'
-        f'<span class="c4-icon">{svg}</span>'
+        f'<span class="c4-icon" style="background-image:url(&quot;{icon_uri}&quot;);"></span>'
         f'<span class="actor-name">{svc_name}</span>'
         f'<span class="actor-domain">{domain}</span>'
         f'</a>'
