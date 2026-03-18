@@ -838,6 +838,13 @@ Models can be selected:
 
 ## Further Reading
 
+### Internal References
+
+- [OpenSpec Customization Guide](openspec-customization-guide.md) -- how OpenSpec's spec-driven workflow framework works
+- [Copilot vs OpenSpec Comparison](copilot-vs-openspec-comparison.md) -- side-by-side comparison with recommendation
+
+### Official Documentation
+
 - [VS Code: Custom Instructions](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 - [VS Code: Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
 - [VS Code: Custom Agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
