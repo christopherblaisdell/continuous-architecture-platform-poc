@@ -20,7 +20,7 @@ waves:
       - cae-novatrek-dev (Container Apps Environment, eastus2)
       - kv-novatrek-dev (Key Vault, eastus2)
       - id-novatrek-dev (Managed Identity, eastus2)
-      - pg-novatrek-dev-* (PostgreSQL Flexible Server, centralus, 19 databases)
+      - pg-novatrek-dev-* (PostgreSQL Flexible Server, centralus, 22 schemas)
   1:
     name: Guest Identity and Product Catalog
     description: Core data services with no upstream dependencies
@@ -33,26 +33,54 @@ waves:
   2:
     name: Booking and Payments
     description: Transaction core — reservations and payment processing
-    status: not-started
+    status: deployed
+    deployed_date: '2026-03-17'
+    services:
+      - ca-svc-reservations (Container App, eastus2)
+      - ca-svc-payments (Container App, eastus2)
+      - ca-svc-notifications (Container App, eastus2)
   3:
     name: Day-of-Adventure Operations
     description: Check-in flow — the most complex orchestration
-    status: not-started
+    status: deployed
+    deployed_date: '2026-03-17'
+    services:
+      - ca-svc-check-in (Container App, eastus2)
+      - ca-svc-scheduling-orchestrator (Container App, eastus2)
+      - ca-svc-gear-inventory (Container App, eastus2)
+      - ca-svc-safety-compliance (Container App, eastus2)
   4:
     name: Guide and Transport Operations
     description: Guide management, transport logistics, location services
-    status: not-started
+    status: deployed
+    deployed_date: '2026-03-17'
+    services:
+      - ca-svc-guide-management (Container App, eastus2)
+      - ca-svc-transport-logistics (Container App, eastus2)
+      - ca-svc-location-services (Container App, eastus2)
   5:
     name: Analytics, Loyalty, and Media
     description: Supporting services for reporting and engagement
-    status: not-started
+    status: deployed
+    deployed_date: '2026-03-18'
+    services:
+      - ca-svc-analytics (Container App, eastus2)
+      - ca-svc-loyalty-rewards (Container App, eastus2)
+      - ca-svc-media-gallery (Container App, eastus2)
   6:
     name: External Integrations
     description: Partner integrations, weather, procurement, emergency
-    status: not-started
+    status: deployed
+    deployed_date: '2026-03-18'
+    services:
+      - ca-svc-partner-integrations (Container App, eastus2)
+      - ca-svc-weather (Container App, eastus2)
+      - ca-svc-inventory-procurement (Container App, eastus2)
+      - ca-svc-emergency-response (Container App, eastus2)
+      - ca-svc-wildlife-tracking (Container App, eastus2)
   7:
     name: New Capabilities
-    description: Ticket-driven new services (reviews, tracking, referrals)
+    description: Ticket-driven new services (reviews)
     status: not-started
 
 # ---------------------------------------------------------------------------
@@ -104,216 +132,247 @@ services:
     wave: 2
     domain: Booking
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-reservations.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-payments:
     wave: 2
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-payments.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-notifications:
     wave: 2
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-notifications.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   # --- Wave 3 ---
   svc-check-in:
     wave: 3
     domain: Operations
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-check-in.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-scheduling-orchestrator:
     wave: 3
     domain: Operations
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-scheduling-orchestrator.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-gear-inventory:
     wave: 3
     domain: Logistics
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-gear-inventory.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-safety-compliance:
     wave: 3
     domain: Safety
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-safety-compliance.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   # --- Wave 4 ---
   svc-guide-management:
     wave: 4
     domain: Guide Management
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-guide-management.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-transport-logistics:
     wave: 4
     domain: Logistics
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-transport-logistics.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-location-services:
     wave: 4
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-location-services.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   # --- Wave 5 ---
   svc-analytics:
     wave: 5
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-analytics.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-loyalty-rewards:
     wave: 5
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-loyalty-rewards.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-media-gallery:
     wave: 5
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-media-gallery.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   # --- Wave 6 ---
   svc-partner-integrations:
     wave: 6
     domain: External
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-partner-integrations.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-weather:
     wave: 6
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-weather.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-inventory-procurement:
     wave: 6
     domain: Support
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-inventory-procurement.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-emergency-response:
     wave: 6
     domain: Safety
     stages:
-      bicep-module: not-started
-      db-schema: not-started
+      bicep-module: complete
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
-      deployed-dev: not-started
-      smoke-tested: not-started
+      deployed-dev: complete
+      smoke-tested: complete
       deployed-prod: not-started
+    url: https://ca-svc-emergency-response.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
 
   svc-wildlife-tracking:
     wave: 6
     domain: Safety
     stages:
+      bicep-module: complete
+      db-schema: complete
+      ci-pipeline: not-started
+      cd-pipeline: not-started
+      deployed-dev: complete
+      smoke-tested: complete
+      deployed-prod: not-started
+    url: https://ca-svc-wildlife-tracking.blackwater-fd4bc06d.eastus2.azurecontainerapps.io
+
+  # --- Wave 7 ---
+  svc-reviews:
+    wave: 7
+    domain: Guest Experience
+    stages:
       bicep-module: not-started
-      db-schema: not-started
+      db-schema: complete
       ci-pipeline: not-started
       cd-pipeline: not-started
       deployed-dev: not-started

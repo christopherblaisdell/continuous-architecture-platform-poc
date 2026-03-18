@@ -13,6 +13,8 @@ tags:
 
 [:material-api: Swagger UI](../services/api/svc-partner-integrations.html){ .md-button .md-button--primary }
 [:material-file-download: Download OpenAPI Spec](../specs/svc-partner-integrations.yaml){ .md-button }
+[:material-rocket-launch: Live Service (Dev)](https://ca-svc-partner-integrations.blackwater-fd4bc06d.eastus2.azurecontainerapps.io/actuator/health){ .md-button }
+[:material-microsoft-azure: Azure Portal](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.App/containerApps/ca-svc-partner-integrations){ .md-button }
 [:material-pipe: CI/CD Pipeline](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions/workflows/service-ci.yml){ .md-button }
 [:material-source-branch: Source Code](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/services/svc-partner-integrations){ .md-button }
 [:material-language-java: Technology Stack](../technologies.md){ .md-button }
@@ -23,16 +25,17 @@ tags:
 
 | Stage | Status |
 |-------|--------|
-| Infrastructure (Bicep) | :material-circle-outline: not-started |
-| Database Schema (Flyway) | :material-circle-outline: not-started |
+| Infrastructure (Bicep) | :white_check_mark: complete |
+| Database Schema (Flyway) | :white_check_mark: complete |
 | CI Pipeline | :material-circle-outline: not-started |
 | CD Pipeline | :material-circle-outline: not-started |
-| Deployed to Dev | :material-circle-outline: not-started |
-| Smoke Tested | :material-circle-outline: not-started |
+| Deployed to Dev | :white_check_mark: complete |
+| Smoke Tested | :white_check_mark: complete |
 | Deployed to Prod | :material-circle-outline: not-started |
 
 **Azure Resources (Dev):**
 
+- [:material-microsoft-azure: Container App](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.App/containerApps/ca-svc-partner-integrations)
 - [:material-database: PostgreSQL Server](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.DBforPostgreSQL/flexibleServers/pg-novatrek-dev-smwd6ded4e3so)
 - [:material-text-search: Log Analytics](https://portal.azure.com/#@/resource/subscriptions/19e4c997-f9c1-46a9-b66b-1ad5a8260b8b/resourceGroups/rg-novatrek-dev/providers/Microsoft.OperationalInsights/workspaces/log-novatrek-dev/logs)
 
