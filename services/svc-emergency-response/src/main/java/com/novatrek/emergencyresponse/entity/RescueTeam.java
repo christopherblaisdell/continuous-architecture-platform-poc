@@ -47,7 +47,7 @@ public class RescueTeam {
         updatedAt = OffsetDateTime.now();
     }
 
-    public enum Status { available, deployed, off-duty }
+    public enum Status { available, deployed, off_duty }
 
     // --- Getters and Setters ---
 
