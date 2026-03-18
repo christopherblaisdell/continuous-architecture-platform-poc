@@ -110,16 +110,62 @@ markdown_extensions:
 # ---------------------------------------------------------------------------
 nav:
   - Home: index.md
-  - Project:
-      - Overview: README.md
-      - Roadmap:
-          - Delivery Roadmap: roadmap/ROADMAP.md
-          - Test Methodology: roadmap/TEST-METHODOLOGY-ROADMAP.md
-      - Closing the Loop: CLOSING-THE-LOOP.md
-  - Architecture Practice:
-      - Capability Map Analysis: CAPABILITY-MAP-ANALYSIS.md
-      - Solution Design Lifecycle: SOLUTION-DESIGN-LIFECYCLE-ANALYSIS.md
-      - Ticketing Integration: TICKETING-INTEGRATION-ANALYSIS.md
+  - Microservices:
+      - microservices/index.md
+      - svc-check-in: microservices/svc-check-in.md
+      - svc-scheduling-orchestrator: microservices/svc-scheduling-orchestrator.md
+      - svc-guest-profiles: microservices/svc-guest-profiles.md
+      - svc-reservations: microservices/svc-reservations.md
+      - svc-trip-catalog: microservices/svc-trip-catalog.md
+      - svc-trail-management: microservices/svc-trail-management.md
+      - svc-safety-compliance: microservices/svc-safety-compliance.md
+      - svc-transport-logistics: microservices/svc-transport-logistics.md
+      - svc-gear-inventory: microservices/svc-gear-inventory.md
+      - svc-guide-management: microservices/svc-guide-management.md
+      - svc-partner-integrations: microservices/svc-partner-integrations.md
+      - svc-notifications: microservices/svc-notifications.md
+      - svc-payments: microservices/svc-payments.md
+      - svc-loyalty-rewards: microservices/svc-loyalty-rewards.md
+      - svc-media-gallery: microservices/svc-media-gallery.md
+      - svc-analytics: microservices/svc-analytics.md
+      - svc-weather: microservices/svc-weather.md
+      - svc-location-services: microservices/svc-location-services.md
+      - svc-inventory-procurement: microservices/svc-inventory-procurement.md
+      - svc-adventure-tracking: microservices/svc-adventure-tracking.md
+      - svc-emergency-response: microservices/svc-emergency-response.md
+      - svc-reviews: microservices/svc-reviews.md
+      - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
+  - Applications:
+      - applications/index.md
+      - Web Guest Portal: applications/web-guest-portal.md
+      - Web Ops Dashboard: applications/web-ops-dashboard.md
+      - Mobile Guest App: applications/app-guest-mobile.md
+  - Events: events/index.md
+  - Actors: actors/index.md
+  - Topology:
+      - topology/index.md
+      - System Map: topology/system-map.md
+      - Domain Views: topology/domain-views.md
+      - Dependency Matrix: topology/dependency-matrix.md
+  - Solutions:
+      - solutions/index.md
+      - NTK-10001 Elevation Data: solutions/_NTK-10001-add-elevation-to-trail-response.md
+      - NTK-10002 Adventure Classification: solutions/_NTK-10002-adventure-category-classification.md
+      - NTK-10004 Schedule Overwrite: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
+      - NTK-10005 Wristband RFID: solutions/_NTK-10005-wristband-rfid-field.md
+      - NTK-10008 Reviews and Ratings: solutions/_NTK-10008-guest-reviews-and-ratings.md
+      - NTK-10009 Refund Disputes: solutions/_NTK-10009-refund-dispute-management.md
+  - Tickets:
+      - tickets/index.md
+      - NTK-10001: tickets/NTK-10001.md
+      - NTK-10002: tickets/NTK-10002.md
+      - NTK-10004: tickets/NTK-10004.md
+      - NTK-10005: tickets/NTK-10005.md
+      - NTK-10006: tickets/NTK-10006.md
+      - NTK-10007: tickets/NTK-10007.md
+      - NTK-10008: tickets/NTK-10008.md
+      - NTK-10009: tickets/NTK-10009.md
+  - Capabilities: capabilities/index.md
   - Decisions:
       - Decision Log: decisions/README.md
       - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
@@ -133,19 +179,69 @@ nav:
       - ADR-009 Session-Scoped Kiosk Access: decisions/ADR-009-session-scoped-kiosk-access.md
       - ADR-010 PATCH Semantics Schedule Updates: decisions/ADR-010-patch-semantics-schedule-updates.md
       - ADR-011 Optimistic Locking Daily Schedule: decisions/ADR-011-optimistic-locking-daily-schedule.md
-  - Phase 1 - AI Tool Comparison:
-      - Comparison Plan: phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md
-      - Cost Methodology: phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md
-      - Results: phase-1-ai-tool-cost-comparison/outputs/README.md
-      - Playbooks:
-          - SC-01 Ticket Triage: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-01-new-ticket-triage.md
-          - SC-02 Solution Design: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-02-solution-design.md
-          - SC-03 Investigation: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-03-investigation-analysis.md
-          - SC-04 Architecture Update: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-04-architecture-update.md
-          - SC-05 Cross-Service: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-05-complex-cross-service.md
-          - Measurement Protocol: phase-1-ai-tool-cost-comparison/workspace/playbooks/measurement-protocol.md
-  - Phase 6 - Documentation Publishing:
-      - Publishing Plan: phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md
+      - ADR-012 TDD/BDD Hybrid: decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md
+      - ADR-013 Spring Cloud Contract Testing: decisions/ADR-013-spring-cloud-contract-testing.md
+  - Security:
+      - security/index.md
+      - Security Comparison: security/security-comparison.md
+      - Headers and Attack Surface: security/headers-and-attack-surface.md
+      - Access Control and Audit: security/access-control-and-audit.md
+      - Data Protection: security/data-protection.md
+      - Pipeline Security Gates: security/pipeline-security-gates.md
+      - Research Prompt: security/research-prompt.md
+      - Research Response: security/research-prompt-response.md
+  - Standards:
+      - standards/index.md
+      - MADR:
+          - standards/madr/index.md
+          - ADR Template: standards/madr/adr-template.md
+          - ADR Template (Short): standards/madr/adr-template-short.md
+          - "Example: Use MADR": standards/madr/0000-use-madr.md
+          - "Example: Technology Selection": standards/madr/0001-example-technology-selection.md
+      - ADR Templates:
+          - standards/adr-templates/index.md
+          - Nygard Template: standards/adr-templates/nygard-template.md
+          - Tyree-Akerman Template: standards/adr-templates/tyree-akerman-template.md
+          - Alexandrian Template: standards/adr-templates/alexandrian-template.md
+      - C4 Model:
+          - standards/c4-model/index.md
+          - C4-PlantUML Guide: standards/c4-model/c4-plantuml-guide.md
+          - Notation Guide: standards/c4-model/c4-notation-guide.md
+          - Diagram Checklist: standards/c4-model/c4-diagram-checklist.md
+      - arc42:
+          - standards/arc42/index.md
+          - Full Template: standards/arc42/00_arc42-template.md
+          - 01 Introduction and Goals: standards/arc42/01_introduction_and_goals.md
+          - 02 Architecture Constraints: standards/arc42/02_architecture_constraints.md
+          - 03 Context and Scope: standards/arc42/03_context_and_scope.md
+          - 04 Solution Strategy: standards/arc42/04_solution_strategy.md
+          - 05 Building Block View: standards/arc42/05_building_block_view.md
+          - 06 Runtime View: standards/arc42/06_runtime_view.md
+          - 07 Deployment View: standards/arc42/07_deployment_view.md
+          - 08 Cross-cutting Concepts: standards/arc42/08_concepts.md
+          - 09 Architecture Decisions: standards/arc42/09_architecture_decisions.md
+          - 10 Quality Requirements: standards/arc42/10_quality_requirements.md
+          - 11 Risks and Technical Debt: standards/arc42/11_risks_and_technical_debt.md
+          - 12 Glossary: standards/arc42/12_glossary.md
+      - Quality Model:
+          - standards/quality-model/index.md
+          - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
+      - OpenAPI Contracts: standards/openapi-contracts/index.md
+      - Metadata Registry: standards/metadata-registry/index.md
+      - Solution Design Template: standards/solution-design/solution-design-template.md
+  - Operations:
+      - Platform Operations: platform-operations.md
+      - Artifact Registry: artifact-registry.md
+      - CALM Topology: calm.md
+      - Technologies: technologies.md
+      - Database Index Workflow: database-change-workflow.md
+      - Copilot Customization: github-copilot-customization-guide.md
+      - Copilot vs OpenSpec: copilot-vs-openspec-comparison.md
+      - OpenSpec Guide: openspec-customization-guide.md
+      - Roadmap:
+          - Delivery Roadmap: roadmap/ROADMAP.md
+          - Test Methodology: roadmap/TEST-METHODOLOGY-ROADMAP.md
+      - Closing the Loop: CLOSING-THE-LOOP.md
   - Research:
       - Context Window Analysis: research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md
       - Deep Research 1: research/DEEP-RESEARCH-1.md
@@ -158,3 +254,16 @@ nav:
           - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
           - Evaluation Plan: research/OPENSPEC-EVALUATION-PLAN.md
           - Deep Research Prompt: research/DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md
+  - Phase 1:
+      - Comparison Plan: phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md
+      - Cost Methodology: phase-1-ai-tool-cost-comparison/COST-MEASUREMENT-METHODOLOGY.md
+      - Results: phase-1-ai-tool-cost-comparison/outputs/README.md
+      - Playbooks:
+          - SC-01 Ticket Triage: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-01-new-ticket-triage.md
+          - SC-02 Solution Design: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-02-solution-design.md
+          - SC-03 Investigation: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-03-investigation-analysis.md
+          - SC-04 Architecture Update: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-04-architecture-update.md
+          - SC-05 Cross-Service: phase-1-ai-tool-cost-comparison/workspace/playbooks/scenario-05-complex-cross-service.md
+          - Measurement Protocol: phase-1-ai-tool-cost-comparison/workspace/playbooks/measurement-protocol.md
+  - Phase 6:
+      - Publishing Plan: phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md
