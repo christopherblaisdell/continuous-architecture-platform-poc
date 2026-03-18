@@ -31,8 +31,11 @@ tags:
 | Smoke Tested | :white_check_mark: complete |
 | Deployed to Prod | :material-circle-outline: not-started |
 
-!!! info "Deployment Method"
-    This service was deployed manually via Azure CLI. Automated CI/CD pipelines are not yet configured.
+
+| Pipeline | Status |
+|----------|--------|
+| CI Pipeline | :white_check_mark: complete |
+| CD Pipeline | :white_check_mark: complete |
 
 **Azure Resources (Dev):**
 

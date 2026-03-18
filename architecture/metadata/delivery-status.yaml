@@ -94,9 +94,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -108,9 +108,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -122,9 +122,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -137,9 +137,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -151,9 +151,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -165,9 +165,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -180,9 +180,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -194,9 +194,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -208,9 +208,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -222,9 +222,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -237,9 +237,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -251,9 +251,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -265,9 +265,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -280,9 +280,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -294,9 +294,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -308,9 +308,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -323,9 +323,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -337,9 +337,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -351,9 +351,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -365,9 +365,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -379,9 +379,9 @@ services:
     stages:
       bicep-module: complete
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
-      deploy-method: manual
+      ci-pipeline: complete
+      cd-pipeline: complete
+      deploy-method: automated
       deployed-dev: complete
       smoke-tested: complete
       deployed-prod: not-started
@@ -394,8 +394,8 @@ services:
     stages:
       bicep-module: not-started
       db-schema: complete
-      ci-pipeline: not-started
-      cd-pipeline: not-started
+      ci-pipeline: complete
+      cd-pipeline: complete
       deployed-dev: not-started
       smoke-tested: not-started
       deployed-prod: not-started
