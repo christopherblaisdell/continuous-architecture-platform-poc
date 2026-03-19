@@ -162,6 +162,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-trips.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-trips.svg" type="image/svg+xml" style="max-width: 100%;">GET /trips sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -173,6 +174,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--post-trips.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--post-trips.svg" type="image/svg+xml" style="max-width: 100%;">POST /trips sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -184,6 +186,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-trips-trip_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-trips-trip_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /trips/{trip_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -195,6 +198,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--patch-trips-trip_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--patch-trips-trip_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /trips/{trip_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -206,6 +210,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-trips-trip_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-trips-trip_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /trips/{trip_id}/schedule sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -217,6 +222,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--post-trips-trip_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--post-trips-trip_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">POST /trips/{trip_id}/schedule sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -228,6 +234,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-trips-trip_id-pricing.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-trips-trip_id-pricing.svg" type="image/svg+xml" style="max-width: 100%;">GET /trips/{trip_id}/pricing sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -239,6 +246,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--put-trips-trip_id-pricing.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--put-trips-trip_id-pricing.svg" type="image/svg+xml" style="max-width: 100%;">PUT /trips/{trip_id}/pricing sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -250,6 +258,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-trips-trip_id-requirements.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-trips-trip_id-requirements.svg" type="image/svg+xml" style="max-width: 100%;">GET /trips/{trip_id}/requirements sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -261,6 +270,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-regions.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-regions.svg" type="image/svg+xml" style="max-width: 100%;">GET /regions sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -272,6 +282,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-trip-catalog--get-activity-types.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trip-catalog--get-activity-types.svg" type="image/svg+xml" style="max-width: 100%;">GET /activity-types sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trip-catalog.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trip-catalog.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 

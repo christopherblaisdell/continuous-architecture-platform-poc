@@ -54,6 +54,25 @@ def diagram_source_badge(label, url=None):
         return f'<a class="diagram-source" href="{url}" title="View data source">{text}</a>'
     return f'<span class="diagram-source">{text}</span>'
 
+
+def diagram_source_badge_with_subtitle(label, url=None, subtitle=None):
+    """Return HTML for a diagram provenance badge with an optional subtitle line."""
+    badge = diagram_source_badge(label, url)
+    if subtitle:
+        badge += f'\n<span class="diagram-source-subtitle">{subtitle}</span>'
+    return badge
+
+
+def diagram_override_badge(source_path):
+    """Return HTML for an architect-authored diagram badge."""
+    icon = '<span class="diagram-source-icon">&#x270E;</span>'
+    text = f"{icon} Architect-authored — overrides auto-generated baseline"
+    return (
+        f'<span class="diagram-source diagram-source--override">{text}</span>'
+        f'\n<span class="diagram-source-subtitle">'
+        f'Source: <code>{source_path}</code></span>'
+    )
+
 # ── Label Mappings ──
 LABEL_TO_SVC = _load("label-to-svc.yaml")
 

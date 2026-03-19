@@ -163,6 +163,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--get-reservations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--get-reservations.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -174,6 +175,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--post-reservations.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--post-reservations.svg" type="image/svg+xml" style="max-width: 100%;">POST /reservations sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -183,6 +185,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--get-reservations-reservation_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--get-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations/{reservation_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -194,6 +197,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--patch-reservations-reservation_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--patch-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /reservations/{reservation_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -203,6 +207,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--delete-reservations-reservation_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--delete-reservations-reservation_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /reservations/{reservation_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -212,6 +217,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--get-reservations-reservation_id-participants.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--get-reservations-reservation_id-participants.svg" type="image/svg+xml" style="max-width: 100%;">GET /reservations/{reservation_id}/participants sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -221,6 +227,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--post-reservations-reservation_id-participants.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--post-reservations-reservation_id-participants.svg" type="image/svg+xml" style="max-width: 100%;">POST /reservations/{reservation_id}/participants sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -232,6 +239,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-reservations--put-reservations-reservation_id-status.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-reservations--put-reservations-reservation_id-status.svg" type="image/svg+xml" style="max-width: 100%;">PUT /reservations/{reservation_id}/status sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-reservations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-reservations.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 

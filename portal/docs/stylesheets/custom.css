@@ -379,6 +379,45 @@ h3.endpoint-delete {
   color: #93b7e3;
   border-color: #4a6fa5;
 }
+.diagram-source--override {
+  color: #7c3aed;
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+.diagram-source--override:hover {
+  color: #6d28d9;
+  border-color: #a78bfa;
+}
+[data-md-color-scheme="slate"] .diagram-source--override {
+  color: #c4b5fd;
+  background: #2e1065;
+  border-color: #4c1d95;
+}
+[data-md-color-scheme="slate"] .diagram-source--override:hover {
+  color: #ddd6fe;
+  border-color: #7c3aed;
+}
+.diagram-source-subtitle {
+  display: block;
+  font-size: 0.68rem;
+  color: #8b95a3;
+  margin: -0.25rem 0 1rem;
+  padding-left: 0.65rem;
+  line-height: 1.5;
+}
+.diagram-source-subtitle a {
+  color: #4a6fa5;
+  text-decoration: none;
+}
+.diagram-source-subtitle a:hover {
+  text-decoration: underline;
+}
+[data-md-color-scheme="slate"] .diagram-source-subtitle {
+  color: #7b8a9d;
+}
+[data-md-color-scheme="slate"] .diagram-source-subtitle a {
+  color: #93b7e3;
+}
 
 /* ── C4-Style Actor Cards ── */
 .actor-grid {

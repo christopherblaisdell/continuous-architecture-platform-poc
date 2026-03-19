@@ -44,6 +44,7 @@ from load_metadata import (  # noqa: E402
     PIPELINE_REPO_URL, PIPELINE_AZURE, PIPELINE_PORTAL_LINKS,
     PIPELINE_PER_SERVICE, PIPELINE_GLOBAL,
     get_service_light_color, diagram_source_badge,
+    diagram_source_badge_with_subtitle, diagram_override_badge,
 )
 
 # ── Infrastructure Colors (fixed, not domain-dependent) ──
@@ -854,7 +855,7 @@ def build_puml(svc_name, method, path, summary, db_engine, ext_calls,
 # Page Generation
 # ============================================================
 
-def generate_service_page(svc_name, spec, svg_files):
+def generate_service_page(svc_name, spec, svg_files, overridden_endpoints=None):
     info = spec.get("info", {})
     title = info.get("title", svc_name)
     version = info.get("version", "0.0.0")
@@ -1191,6 +1192,8 @@ def generate_service_page(svc_name, spec, svg_files):
         lines.append("")
 
         svg_filename = make_puml_filename(svc_name, method, path) + ".svg"
+        ep_key = (svc_name, method, path)
+        is_override = overridden_endpoints and ep_key in overridden_endpoints
         if svg_filename in svg_files:
             lines.append(
                 f'<div class="diagram-wrap">'
@@ -1200,10 +1203,19 @@ def generate_service_page(svc_name, spec, svg_files):
                 f'{method} {path} sequence diagram</object>'
                 f'</div>'
             )
-            lines.append(diagram_source_badge(
-                f"`architecture/specs/{svc_name}.yaml`",
-                f"https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/{svc_name}.yaml"
-            ))
+            if is_override:
+                fname = make_puml_filename(svc_name, method, path)
+                lines.append(diagram_override_badge(
+                    f"architecture/diagrams/endpoints/{fname}.puml"
+                ))
+            else:
+                lines.append(diagram_source_badge_with_subtitle(
+                    f"`architecture/specs/{svc_name}.yaml`",
+                    f"https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/{svc_name}.yaml",
+                    'Auto-generated baseline — shows standard request flow. '
+                    'For detailed behavioral sequences, see the relevant '
+                    '<a href="../solutions/">solution design</a>.'
+                ))
         else:
             lines.append(f"*Diagram not available for {method} {path}*")
 
@@ -2031,6 +2043,7 @@ def main():
 
     all_pumls = []
     all_services = []
+    overridden_endpoints = set()
 
     for spec_file in spec_files:
         svc_name = spec_file.replace(".yaml", "")
@@ -2061,6 +2074,7 @@ def main():
             if os.path.isfile(override_path):
                 # Architect-crafted override takes precedence
                 shutil.copy2(override_path, puml_path)
+                overridden_endpoints.add((svc_name, ep["method"], ep["path"]))
                 override_count += 1
             else:
                 with open(puml_path, "w") as f:
@@ -2147,7 +2161,7 @@ def main():
         with open(spec_path) as f:
             spec = yaml.safe_load(f)
 
-        page = generate_service_page(svc_name, spec, svg_files)
+        page = generate_service_page(svc_name, spec, svg_files, overridden_endpoints)
         with open(os.path.join(OUTPUT_DIR, f"{svc_name}.md"), "w") as f:
             f.write(page)
 

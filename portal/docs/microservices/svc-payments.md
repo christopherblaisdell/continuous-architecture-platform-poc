@@ -161,6 +161,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-payments.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-payments.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -172,6 +173,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-payments-payment_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-payments-payment_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/{payment_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -183,6 +185,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-payments-payment_id-refund.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-payments-payment_id-refund.svg" type="image/svg+xml" style="max-width: 100%;">POST /payments/{payment_id}/refund sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -194,6 +197,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-guests-guest_id-payment-history.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-guests-guest_id-payment-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/payment-history sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -203,6 +207,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-disputes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-disputes.svg" type="image/svg+xml" style="max-width: 100%;">GET /disputes sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -214,6 +219,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-disputes.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-disputes.svg" type="image/svg+xml" style="max-width: 100%;">POST /disputes sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -223,6 +229,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-disputes-dispute_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-disputes-dispute_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /disputes/{dispute_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -234,6 +241,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--patch-disputes-dispute_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--patch-disputes-dispute_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /disputes/{dispute_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -245,6 +253,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-disputes-dispute_id-resolve.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-disputes-dispute_id-resolve.svg" type="image/svg+xml" style="max-width: 100%;">POST /disputes/{dispute_id}/resolve sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -256,6 +265,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-chargebacks.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-chargebacks.svg" type="image/svg+xml" style="max-width: 100%;">POST /chargebacks sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -267,6 +277,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--post-refund-policy-evaluate.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--post-refund-policy-evaluate.svg" type="image/svg+xml" style="max-width: 100%;">POST /refund-policy/evaluate sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -278,6 +289,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-payments--get-payments-daily-summary.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-payments--get-payments-daily-summary.svg" type="image/svg+xml" style="max-width: 100%;">GET /payments/daily-summary sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-payments.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-payments.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 

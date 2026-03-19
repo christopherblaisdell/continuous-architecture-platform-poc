@@ -159,6 +159,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-notifications--get-notifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--get-notifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-notifications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-notifications.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -170,6 +171,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-notifications--post-notifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--post-notifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-notifications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-notifications.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -181,6 +183,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-notifications--get-notifications-notification_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--get-notifications-notification_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /notifications/{notification_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-notifications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-notifications.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -192,6 +195,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-notifications--post-notifications-bulk.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--post-notifications-bulk.svg" type="image/svg+xml" style="max-width: 100%;">POST /notifications/bulk sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-notifications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-notifications.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -203,6 +207,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-notifications--get-templates.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--get-templates.svg" type="image/svg+xml" style="max-width: 100%;">GET /templates sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-notifications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-notifications.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
@@ -214,6 +219,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-notifications--post-templates.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-notifications--post-templates.svg" type="image/svg+xml" style="max-width: 100%;">POST /templates sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-notifications.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-notifications.yaml`</a>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
 
 ---
 
