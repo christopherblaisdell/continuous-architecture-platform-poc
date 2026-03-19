@@ -252,6 +252,10 @@ nav:
         - ADR-003 Nullable Elevation Fields: decisions/ADR-003-nullable-elevation-fields.md
         - ADR-004 Config-Driven Classification: decisions/ADR-004-configuration-driven-classification.md
         - ADR-005 Pattern 3 Default Fallback: decisions/ADR-005-pattern3-default-fallback.md
+        - ADR-006 Orchestrator Pattern: decisions/ADR-006-orchestrator-pattern-checkin.md
+        - ADR-007 Four-Field Verification: decisions/ADR-007-four-field-identity-verification.md
+        - ADR-008 Temporary Guest Profile: decisions/ADR-008-temporary-guest-profile.md
+        - ADR-009 Session-Scoped Kiosk: decisions/ADR-009-session-scoped-kiosk-access.md
         - ADR-010 PATCH Semantics: decisions/ADR-010-patch-semantics-schedule-updates.md
         - ADR-011 Optimistic Locking: decisions/ADR-011-optimistic-locking-daily-schedule.md
         - ADR-012 TDD/BDD Hybrid: decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md

@@ -5,7 +5,7 @@
 | **Owner** | Architecture Practice |
 | **Created** | 2026-03-01 |
 | **Last Updated** | 2026-03-03 |
-| **Total Decisions** | 11 |
+| **Total Decisions** | 13 |
 
 ---
 
@@ -26,6 +26,10 @@ Decisions originate in ticket-level solution designs and are **promoted** to thi
 | [ADR-003](ADR-003-nullable-elevation-fields.md) | Use Nullable Fields for Elevation Data | Accepted | 2026-02-15 | svc-trail-management | NTK-10001 |
 | [ADR-004](ADR-004-configuration-driven-classification.md) | Configuration-Driven Classification over Database-Driven | Accepted | 2024-08-14 | svc-check-in, svc-trip-catalog | NTK-10002 |
 | [ADR-005](ADR-005-pattern3-default-fallback.md) | Pattern 3 as Default Fallback for Unknown Categories | Accepted | 2024-08-19 | svc-check-in | NTK-10002 |
+| [ADR-006](ADR-006-orchestrator-pattern-checkin.md) | Orchestrator Pattern for Self-Service Check-In | Accepted | 2025-01-28 | svc-check-in, svc-reservations, svc-guest-profiles, svc-safety-compliance | NTK-10003 |
+| [ADR-007](ADR-007-four-field-identity-verification.md) | Four-Field Identity Verification for Unregistered Guests | Accepted | 2025-01-28 | svc-check-in, svc-reservations | NTK-10003 |
+| [ADR-008](ADR-008-temporary-guest-profile.md) | Temporary Guest Profile for Unregistered Check-In | Accepted | 2025-01-28 | svc-guest-profiles, svc-check-in | NTK-10003 |
+| [ADR-009](ADR-009-session-scoped-kiosk-access.md) | Session-Scoped Kiosk Access for Self-Service Check-In | Accepted | 2025-01-28 | svc-check-in | NTK-10003 |
 | [ADR-010](ADR-010-patch-semantics-schedule-updates.md) | Switch from PUT to PATCH Semantics for Schedule Updates | Proposed | 2026-02-28 | svc-scheduling-orchestrator | NTK-10004 |
 | [ADR-011](ADR-011-optimistic-locking-daily-schedule.md) | Add Optimistic Locking to DailySchedule Entity | Proposed | 2026-02-28 | svc-scheduling-orchestrator | NTK-10004 |
 
