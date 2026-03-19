@@ -4,6 +4,231 @@ The NovaTrek Adventures platform is decomposed into **9 bounded contexts** (doma
 
 Click any domain to view its comprehensive detail page including services, data stores, integrations, events, decisions, and capabilities.
 
+## System Overview
+
+<div class="diagram-wrap">
+  <a href="../topology/svg/topology-domain-overview.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>
+  <object data="../topology/svg/topology-domain-overview.svg" type="image/svg+xml" style="max-width: 100%;">
+    NovaTrek Domain Overview C4 Diagram
+  </object>
+</div>
+
+---
+
+## Domain Gallery
+
+Each domain's service topology. Click a diagram to explore the domain in detail.
+
+<div style="border: 2px solid #2563eb; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #2563eb; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="operations" style="color: white; text-decoration: none;">Operations</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">NovaTrek Operations Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Day-of-adventure workflows including guest check-in, schedule management, and real-time operational coordination. This domain orchestrates the core guest experience on the day of their adventure.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>2</strong> services &nbsp;|&nbsp; 
+      <strong>2</strong> events produced &nbsp;|&nbsp; 
+      <strong>3</strong> events consumed &nbsp;|&nbsp; 
+      <strong>2</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="operations">
+      <object data="../topology/svg/topology-operations.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Operations Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #7c3aed; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #7c3aed; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="guest-identity" style="color: white; text-decoration: none;">Guest Identity</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Guest Experience Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Guest identity resolution, profile management, certifications, and medical information. The single source of truth for all guest identity data across the platform.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>1</strong> services &nbsp;|&nbsp; 
+      <strong>1</strong> events produced &nbsp;|&nbsp; 
+      <strong>0</strong> events consumed &nbsp;|&nbsp; 
+      <strong>1</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="guest-identity">
+      <object data="../topology/svg/topology-guest-identity.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Guest Identity Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #059669; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #059669; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="booking" style="color: white; text-decoration: none;">Booking</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Booking Platform Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Reservation lifecycle management from creation through completion, including participant management, insurance add-ons, and status tracking.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>1</strong> services &nbsp;|&nbsp; 
+      <strong>2</strong> events produced &nbsp;|&nbsp; 
+      <strong>1</strong> events consumed &nbsp;|&nbsp; 
+      <strong>1</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="booking">
+      <object data="../topology/svg/topology-booking.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Booking Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #d97706; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #d97706; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="product-catalog" style="color: white; text-decoration: none;">Product Catalog</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Product Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Adventure products, trip definitions, trail data, and the classification system that drives check-in UI patterns and safety workflows.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>2</strong> services &nbsp;|&nbsp; 
+      <strong>0</strong> events produced &nbsp;|&nbsp; 
+      <strong>1</strong> events consumed &nbsp;|&nbsp; 
+      <strong>4</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="product-catalog">
+      <object data="../topology/svg/topology-product-catalog.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Product Catalog Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #dc2626; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #dc2626; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="safety" style="color: white; text-decoration: none;">Safety</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Safety and Compliance Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Guest and staff safety including waiver management, incident reporting, emergency response coordination, and wildlife/environmental monitoring.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>3</strong> services &nbsp;|&nbsp; 
+      <strong>3</strong> events produced &nbsp;|&nbsp; 
+      <strong>1</strong> events consumed &nbsp;|&nbsp; 
+      <strong>4</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="safety">
+      <object data="../topology/svg/topology-safety.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Safety Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #0891b2; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #0891b2; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="logistics" style="color: white; text-decoration: none;">Logistics</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Logistics Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Physical asset management covering gear inventory, equipment tracking, transport coordination, and vehicle dispatch.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>2</strong> services &nbsp;|&nbsp; 
+      <strong>0</strong> events produced &nbsp;|&nbsp; 
+      <strong>0</strong> events consumed &nbsp;|&nbsp; 
+      <strong>3</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="logistics">
+      <object data="../topology/svg/topology-logistics.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Logistics Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #4f46e5; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #4f46e5; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="guide-management" style="color: white; text-decoration: none;">Guide Management</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Guide Operations Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Guide assignment, certification tracking, availability management, and preference handling for adventure staffing.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>1</strong> services &nbsp;|&nbsp; 
+      <strong>0</strong> events produced &nbsp;|&nbsp; 
+      <strong>1</strong> events consumed &nbsp;|&nbsp; 
+      <strong>1</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="guide-management">
+      <object data="../topology/svg/topology-guide-management.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Guide Management Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #9333ea; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #9333ea; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="external" style="color: white; text-decoration: none;">External</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Integration Team</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Third-party booking channel integrations, partner API gateway, and external system connectivity.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>1</strong> services &nbsp;|&nbsp; 
+      <strong>0</strong> events produced &nbsp;|&nbsp; 
+      <strong>0</strong> events consumed &nbsp;|&nbsp; 
+      <strong>2</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="external">
+      <object data="../topology/svg/topology-external.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        External Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+<div style="border: 2px solid #64748b; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">
+  <div style="background: #64748b; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">
+    <strong style="font-size: 1.2em;"><a href="support" style="color: white; text-decoration: none;">Support</a></strong>
+    <span style="font-size: 0.85em; opacity: 0.9;">Various (cross-cutting platform services)</span>
+  </div>
+  <div style="padding: 0.8em 1em 0.4em;">
+    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">Cross-cutting platform services including notifications, payments, loyalty rewards, analytics, weather, location services, media gallery, procurement, and reviews.</p>
+    <p style="margin: 0 0 0.5em; font-size: 0.85em;">
+      <strong>9</strong> services &nbsp;|&nbsp; 
+      <strong>1</strong> events produced &nbsp;|&nbsp; 
+      <strong>15</strong> events consumed &nbsp;|&nbsp; 
+      <strong>13</strong> capabilities
+    </p>
+  </div>
+  <div style="padding: 0 1em 1em;">
+    <a href="support">
+      <object data="../topology/svg/topology-support.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
+        Support Service Topology
+      </object>
+    </a>
+  </div>
+</div>
+
+
+---
+
 ## Domain Overview
 
 | Domain | Services | Team | Events Produced | Events Consumed | Capabilities |

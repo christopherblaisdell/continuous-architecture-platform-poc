@@ -626,7 +626,77 @@ def generate_index_page(domains_data, data_stores, events_data, caps_data, svc_t
     lines.append("The NovaTrek Adventures platform is decomposed into **9 bounded contexts** (domains), each owning a set of microservices with clearly defined data ownership boundaries.\n")
     lines.append("Click any domain to view its comprehensive detail page including services, data stores, integrations, events, decisions, and capabilities.\n")
 
+    # ------------------------------------------------------------------
+    # System Overview Diagram
+    # ------------------------------------------------------------------
+    lines.append("## System Overview\n")
+    lines.append('<div class="diagram-wrap">')
+    lines.append('  <a href="../topology/svg/topology-domain-overview.svg" target="_blank" class="diagram-expand" title="Open in new tab">&#x2922;</a>')
+    lines.append('  <object data="../topology/svg/topology-domain-overview.svg" type="image/svg+xml" style="max-width: 100%;">')
+    lines.append("    NovaTrek Domain Overview C4 Diagram")
+    lines.append("  </object>")
+    lines.append("</div>\n")
+
+    # ------------------------------------------------------------------
+    # Domain Gallery — visual card per domain
+    # ------------------------------------------------------------------
+    domain_colors = {
+        "Operations":       {"strong": "#2563eb", "light": "#DBEAFE"},
+        "Guest Identity":   {"strong": "#7c3aed", "light": "#EDE9FE"},
+        "Booking":          {"strong": "#059669", "light": "#D1FAE5"},
+        "Product Catalog":  {"strong": "#d97706", "light": "#FEF3C7"},
+        "Safety":           {"strong": "#dc2626", "light": "#FEE2E2"},
+        "Logistics":        {"strong": "#0891b2", "light": "#CFFAFE"},
+        "Guide Management": {"strong": "#4f46e5", "light": "#E0E7FF"},
+        "External":         {"strong": "#9333ea", "light": "#F3E8FF"},
+        "Support":          {"strong": "#64748b", "light": "#F1F5F9"},
+    }
+
+    lines.append("---\n")
+    lines.append("## Domain Gallery\n")
+    lines.append("Each domain's service topology. Click a diagram to explore the domain in detail.\n")
+
+    for domain_name in domains_data:
+        info = domains_data[domain_name]
+        services = info.get("services", [])
+        domain_services_set = set(services)
+        team = DOMAIN_TEAMS.get(domain_name, "Unknown")
+        description = DOMAIN_DESCRIPTIONS.get(domain_name, "")
+        domain_slug_str = slug(domain_name)
+        colors = domain_colors.get(domain_name, {"strong": "#616161", "light": "#F5F5F5"})
+
+        produced, consumed = find_domain_events(events_data, domain_services_set, svc_to_domain)
+        capabilities = find_domain_capabilities(caps_data, domain_services_set)
+
+        svg_file = f"topology-{domain_slug_str}.svg"
+
+        lines.append(f'<div style="border: 2px solid {colors["strong"]}; border-radius: 8px; margin-bottom: 1.5em; overflow: hidden;">')
+        lines.append(f'  <div style="background: {colors["strong"]}; color: white; padding: 0.6em 1em; display: flex; justify-content: space-between; align-items: center;">')
+        lines.append(f'    <strong style="font-size: 1.2em;"><a href="{domain_slug_str}" style="color: white; text-decoration: none;">{domain_name}</a></strong>')
+        lines.append(f'    <span style="font-size: 0.85em; opacity: 0.9;">{team}</span>')
+        lines.append(f'  </div>')
+        lines.append(f'  <div style="padding: 0.8em 1em 0.4em;">')
+        lines.append(f'    <p style="margin: 0 0 0.5em; font-size: 0.9em; color: #555;">{description}</p>')
+        lines.append(f'    <p style="margin: 0 0 0.5em; font-size: 0.85em;">')
+        lines.append(f'      <strong>{len(services)}</strong> services &nbsp;|&nbsp; ')
+        lines.append(f'      <strong>{len(produced)}</strong> events produced &nbsp;|&nbsp; ')
+        lines.append(f'      <strong>{len(consumed)}</strong> events consumed &nbsp;|&nbsp; ')
+        lines.append(f'      <strong>{len(capabilities)}</strong> capabilities')
+        lines.append(f'    </p>')
+        lines.append(f'  </div>')
+        lines.append(f'  <div style="padding: 0 1em 1em;">')
+        lines.append(f'    <a href="{domain_slug_str}">')
+        lines.append(f'      <object data="../topology/svg/{svg_file}" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">')
+        lines.append(f"        {domain_name} Service Topology")
+        lines.append(f"      </object>")
+        lines.append(f'    </a>')
+        lines.append(f'  </div>')
+        lines.append(f'</div>\n')
+
+    lines.append("")
+
     # Summary table
+    lines.append("---\n")
     lines.append("## Domain Overview\n")
     lines.append("| Domain | Services | Team | Events Produced | Events Consumed | Capabilities |")
     lines.append("|--------|----------|------|-----------------|-----------------|-------------|")
