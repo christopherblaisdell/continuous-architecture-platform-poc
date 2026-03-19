@@ -6,6 +6,7 @@ plugins {
     id("jacoco")
     id("info.solidsoft.pitest") version "1.15.0"
     id("org.springframework.cloud.contract") version "4.1.4"
+    id("org.sonarqube") version "5.1.0.4882"
 }
 
 group = "com.novatrek"

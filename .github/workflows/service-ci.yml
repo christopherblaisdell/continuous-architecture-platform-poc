@@ -75,6 +75,14 @@ jobs:
             ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}/build/reports/jacoco/
             ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}/build/reports/pitest/
 
+      - name: SonarCloud analysis
+        if: env.SONAR_TOKEN != ''
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew sonar -Dsonar.projectKey=novatrek_${{ inputs.service-name }} -Dsonar.organization=novatrek -Dsonar.host.url=https://sonarcloud.io
+
       - name: OWASP dependency check
         working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         run: ./gradlew dependencyCheckAnalyze
