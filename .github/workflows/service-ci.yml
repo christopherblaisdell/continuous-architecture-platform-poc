@@ -76,7 +76,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: env.SONAR_TOKEN != ''
         working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
-        run: ./gradlew sonar -Dsonar.projectKey=christopherblaisdell_continuous-architecture-platform-poc -Dsonar.organization=christopherblaisdell -Dsonar.host.url=https://sonarcloud.io
+        run: >
+          ./gradlew sonar
+          -Dsonar.projectKey=christopherblaisdell_continuous-architecture-platform-poc
+          -Dsonar.organization=christopherblaisdell
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+          -Dsonar.java.binaries=build/classes
         continue-on-error: true
 
       - name: OWASP dependency check
