@@ -246,6 +246,13 @@ def build_cross_service_relationships(cross_calls):
         "Google Maps Platform": "ext-google-maps",
         "OpenWeather API": "ext-openweather",
         "Snowflake Data Cloud": "ext-snowflake",
+        "National Parks Permit API": "ext-national-parks-permit",
+        "Travel Insurance API": "ext-travel-insurance",
+        "Search and Rescue Dispatch API": "ext-sar-dispatch",
+        "Instagram Graph API": "ext-instagram",
+        "Currency Exchange API": "ext-currency-exchange",
+        "Fleet GPS Tracking API": "ext-fleet-gps",
+        "Supplier Procurement Portal": "ext-supplier-procurement",
     }
 
     for source_svc, endpoints in (cross_calls or {}).items():
@@ -431,6 +438,13 @@ def generate_calm(domain_filter=None):
         "ext-google-maps": ("Google Maps Platform", "Geolocation, routing, and map rendering"),
         "ext-openweather": ("OpenWeather API", "Weather forecast and alert data provider"),
         "ext-snowflake": ("Snowflake Data Cloud", "Cloud data warehouse for analytics"),
+        "ext-national-parks-permit": ("National Parks Permit API", "Government parks and forestry trail access permit system"),
+        "ext-travel-insurance": ("Travel Insurance API", "Third-party adventure trip insurance quoting and binding"),
+        "ext-sar-dispatch": ("Search and Rescue Dispatch API", "Regional SAR team emergency dispatch coordination"),
+        "ext-instagram": ("Instagram Graph API", "Social media photo sharing to guest Instagram accounts"),
+        "ext-currency-exchange": ("Currency Exchange API", "Real-time foreign currency exchange rate conversion"),
+        "ext-fleet-gps": ("Fleet GPS Tracking API", "Vehicle telematics and real-time fleet GPS tracking"),
+        "ext-supplier-procurement": ("Supplier Procurement Portal", "External vendor ordering platform for gear and supplies"),
     }
     for ext_id in sorted(ext_systems):
         name, desc = ext_descriptions.get(ext_id, (ext_id, "External system"))

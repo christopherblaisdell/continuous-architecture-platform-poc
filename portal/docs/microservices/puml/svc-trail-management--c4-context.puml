@@ -23,6 +23,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_weather, "svc-weather", "Java / Spring Boot", "Support", $link="/microservices/svc-weather/#integration-context")
 }
 
+System_Ext(National_Parks_Permit_API, "National Parks Permit API", "Third-party service", $link="/actors/#national-parks-permit-api")
 
 Rel(app_guest_mobile, svc_trail_management, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_trail_management, "Uses API", "HTTPS")
@@ -32,8 +33,9 @@ Rel(svc_wildlife_tracking, svc_trail_management, "2 calls", "HTTPS")
 Rel(svc_trail_management, svc_trail_management_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_trail_management, svc_location_services, "Get trail coordinates", "HTTPS")
 Rel(svc_trail_management, svc_notifications, "Alert park rangers", "HTTPS")
-Rel(svc_trail_management, svc_safety_compliance, "Update trail safety assessment", "HTTPS")
+Rel(svc_trail_management, svc_safety_compliance, "2 calls", "HTTPS")
 Rel(svc_trail_management, svc_weather, "Correlate weather data", "HTTPS")
+Rel(svc_trail_management, National_Parks_Permit_API, "Check permit approval status, Submit trail access permit request", "HTTPS")
 
 ' Layout hints: stack peers in columns
 Lay_D(svc_scheduling_orchestrator, svc_location_services)

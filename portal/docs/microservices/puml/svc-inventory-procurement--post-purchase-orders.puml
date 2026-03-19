@@ -22,6 +22,7 @@ participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
 participant "svc-inventory-procurement" as Svc [[/microservices/svc-inventory-procurement/]] #F1F5F9
 participant "Gear Inventory" as GI [[/microservices/svc-gear-inventory/]] #CFFAFE
+participant "Supplier Procurement Portal" as Supplier [[/actors/#supplier-procurement-portal]] #F3F4F6
 participant "Payments Svc" as Pay [[/microservices/svc-payments/]] #FEE2E2
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
 database "PostgreSQL" as DB [[/microservices/svc-inventory-procurement/#data-store]] #FEF9C3
@@ -43,6 +44,11 @@ Svc -> GI : [[/microservices/svc-gear-inventory/#get-gear-items-search-gear-inve
 activate GI #CFFAFE
 GI --> Svc : OK
 deactivate GI
+
+Svc -> Supplier : Submit purchase order to approved vendor
+activate Supplier #F3F4F6
+Supplier --> Svc : OK
+deactivate Supplier
 
 Svc -[#DC2626]> Pay : [[/microservices/svc-payments/#post-payments-process-a-payment Process PO payment]]
 activate Pay #F1F5F9

@@ -138,3 +138,45 @@ Snowflake Data Cloud:
     all NovaTrek domains.
   technology: Snowflake SQL API
   domain: Support
+National Parks Permit API:
+  type: External System
+  description: Government parks and forestry service API for submitting trail access permits, validating permit status, and
+    receiving seasonal trail closure notifications.
+  technology: REST API
+  domain: Product Catalog
+Travel Insurance API:
+  type: External System
+  description: Third-party travel insurance provider for quoting and binding adventure trip insurance policies based on activity
+    risk level and participant profile.
+  technology: REST API
+  domain: Booking
+Search and Rescue Dispatch API:
+  type: External System
+  description: Regional search and rescue coordination API for dispatching emergency response teams to backcountry locations
+    during safety incidents.
+  technology: REST API
+  domain: Safety
+Instagram Graph API:
+  type: External System
+  description: Meta social media API enabling guests to share adventure trip photos and stories directly from the NovaTrek
+    media gallery to their Instagram accounts.
+  technology: Instagram Graph REST API
+  domain: Support
+Currency Exchange API:
+  type: External System
+  description: Real-time foreign currency exchange rate provider for converting international guest payments to the base operating
+    currency.
+  technology: REST API
+  domain: Support
+Fleet GPS Tracking API:
+  type: External System
+  description: Vehicle telematics and GPS tracking platform providing real-time location, speed, and ETA data for NovaTrek
+    transport fleet vehicles including shuttles, vans, and boats.
+  technology: REST API / WebSocket
+  domain: Logistics
+Supplier Procurement Portal:
+  type: External System
+  description: External supplier ordering platform for procuring adventure gear, safety equipment, and consumable supplies
+    from approved NovaTrek vendors.
+  technology: REST API
+  domain: Logistics

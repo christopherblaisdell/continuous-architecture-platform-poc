@@ -24,6 +24,7 @@ participant "svc-transport-logistics" as Svc [[/microservices/svc-transport-logi
 participant "Reservations" as Res [[/microservices/svc-reservations/]] #D1FAE5
 participant "Location Svc" as LS [[/microservices/svc-location-services/]] #F1F5F9
 participant "Google Maps Platform" as ExtMap [[/actors/#google-maps-platform]] #F3F4F6
+participant "Fleet GPS Tracking API" as FleetGPS [[/actors/#fleet-gps-tracking-api]] #F3F4F6
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
 database "PostgreSQL" as DB [[/microservices/svc-transport-logistics/#data-store]] #FEF9C3
 
@@ -54,6 +55,11 @@ Svc -> ExtMap : Calculate optimal route
 activate ExtMap #F3F4F6
 ExtMap --> Svc : OK
 deactivate ExtMap
+
+Svc -> FleetGPS : Get real-time vehicle location and ETA
+activate FleetGPS #F3F4F6
+FleetGPS --> Svc : OK
+deactivate FleetGPS
 
 == Database ==
 

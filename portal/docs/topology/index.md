@@ -13,25 +13,25 @@ Auto-generated from the [CALM topology](../calm.md) — the machine-readable arc
 |--------|-------|
 | Services | 22 |
 | Databases | 22 |
-| REST integrations | 72 |
-| Event flows (Kafka) | 55 |
+| REST integrations | 80 |
+| Event flows (Kafka) | 57 |
 | Database connections | 22 |
-| Total nodes | 78 |
-| Total relationships | 149 |
+| Total nodes | 92 |
+| Total relationships | 159 |
 
 ## Domain Summary
 
 | Domain | Services | REST Calls | Event Flows | Total Relationships |
 |--------|----------|------------|-------------|---------------------|
-| Booking | 1 | 5 | 8 | 14 |
+| Booking | 1 | 6 | 9 | 16 |
 | External | 1 | 5 | 1 | 7 |
 | Guest Identity | 1 | 3 | 3 | 7 |
 | Guide Management | 1 | 0 | 0 | 1 |
-| Logistics | 2 | 6 | 1 | 9 |
+| Logistics | 2 | 7 | 1 | 10 |
 | Operations | 2 | 14 | 8 | 24 |
-| Product Catalog | 2 | 3 | 1 | 6 |
-| Safety | 3 | 12 | 17 | 32 |
-| Support | 9 | 17 | 16 | 42 |
+| Product Catalog | 2 | 6 | 1 | 9 |
+| Safety | 3 | 13 | 17 | 33 |
+| Support | 9 | 19 | 17 | 45 |
 
 ## Pages
 

@@ -18,6 +18,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_reservations, "svc-reservations", "Java / Spring Boot", "Booking", $link="/microservices/svc-reservations/#integration-context")
 }
 
+System_Ext(Fleet_GPS_Tracking_API, "Fleet GPS Tracking API", "Third-party service", $link="/actors/#fleet-gps-tracking-api")
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service", $link="/actors/#google-maps-platform")
 
 Rel(web_ops_dashboard, svc_transport_logistics, "Uses API", "HTTPS")
@@ -25,6 +26,7 @@ Rel(svc_transport_logistics, svc_transport_logistics_db, "Reads/Writes", "SQL/TC
 Rel(svc_transport_logistics, svc_location_services, "Validate pickup location", "HTTPS")
 Rel(svc_transport_logistics, svc_notifications, "Send transport details", "HTTPS")
 Rel(svc_transport_logistics, svc_reservations, "Get booking details", "HTTPS")
+Rel(svc_transport_logistics, Fleet_GPS_Tracking_API, "Get real-time vehicle location and ETA", "HTTPS")
 Rel(svc_transport_logistics, Google_Maps_Platform, "Calculate optimal route", "HTTPS")
 
 @enduml

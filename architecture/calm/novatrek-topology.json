@@ -2781,6 +2781,101 @@
       }
     },
     {
+      "unique-id": "national-parks-permit-api",
+      "node-type": "system",
+      "name": "National Parks Permit API",
+      "description": "Government parks and forestry service API for submitting trail access permits, validating permit status, and receiving seasonal trail closure notifications.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Product Catalog",
+        "technology": "REST API"
+      }
+    },
+    {
+      "unique-id": "travel-insurance-api",
+      "node-type": "system",
+      "name": "Travel Insurance API",
+      "description": "Third-party travel insurance provider for quoting and binding adventure trip insurance policies based on activity risk level and participant profile.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Booking",
+        "technology": "REST API"
+      }
+    },
+    {
+      "unique-id": "search-and-rescue-dispatch-api",
+      "node-type": "system",
+      "name": "Search and Rescue Dispatch API",
+      "description": "Regional search and rescue coordination API for dispatching emergency response teams to backcountry locations during safety incidents.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Safety",
+        "technology": "REST API"
+      }
+    },
+    {
+      "unique-id": "instagram-graph-api",
+      "node-type": "system",
+      "name": "Instagram Graph API",
+      "description": "Meta social media API enabling guests to share adventure trip photos and stories directly from the NovaTrek media gallery to their Instagram accounts.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Support",
+        "technology": "Instagram Graph REST API"
+      }
+    },
+    {
+      "unique-id": "currency-exchange-api",
+      "node-type": "system",
+      "name": "Currency Exchange API",
+      "description": "Real-time foreign currency exchange rate provider for converting international guest payments to the base operating currency.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Support",
+        "technology": "REST API"
+      }
+    },
+    {
+      "unique-id": "fleet-gps-tracking-api",
+      "node-type": "system",
+      "name": "Fleet GPS Tracking API",
+      "description": "Vehicle telematics and GPS tracking platform providing real-time location, speed, and ETA data for NovaTrek transport fleet vehicles including shuttles, vans, and boats.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Logistics",
+        "technology": "REST API / WebSocket"
+      }
+    },
+    {
+      "unique-id": "supplier-procurement-portal",
+      "node-type": "system",
+      "name": "Supplier Procurement Portal",
+      "description": "External supplier ordering platform for procuring adventure gear, safety equipment, and consumable supplies from approved NovaTrek vendors.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Logistics",
+        "technology": "REST API"
+      }
+    },
+    {
+      "unique-id": "ext-currency-exchange",
+      "node-type": "system",
+      "name": "Currency Exchange API",
+      "description": "Real-time foreign currency exchange rate conversion",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
       "unique-id": "ext-docusign",
       "node-type": "system",
       "name": "DocuSign API",
@@ -2796,6 +2891,17 @@
       "node-type": "system",
       "name": "Firebase Cloud Messaging",
       "description": "Push notification delivery for mobile apps",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-fleet-gps",
+      "node-type": "system",
+      "name": "Fleet GPS Tracking API",
+      "description": "Vehicle telematics and real-time fleet GPS tracking",
       "interfaces": [],
       "metadata": {
         "domain": "External",
@@ -2836,10 +2942,32 @@
       }
     },
     {
+      "unique-id": "ext-instagram",
+      "node-type": "system",
+      "name": "Instagram Graph API",
+      "description": "Social media photo sharing to guest Instagram accounts",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
       "unique-id": "ext-kafka-broker",
       "node-type": "system",
       "name": "Kafka Event Bus",
       "description": "Apache Kafka message broker for asynchronous event-driven integration",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-national-parks-permit",
+      "node-type": "system",
+      "name": "National Parks Permit API",
+      "description": "Government parks and forestry trail access permit system",
       "interfaces": [],
       "metadata": {
         "domain": "External",
@@ -2880,6 +3008,17 @@
       }
     },
     {
+      "unique-id": "ext-sar-dispatch",
+      "node-type": "system",
+      "name": "Search and Rescue Dispatch API",
+      "description": "Regional SAR team emergency dispatch coordination",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
       "unique-id": "ext-sendgrid",
       "node-type": "system",
       "name": "SendGrid API",
@@ -2895,6 +3034,28 @@
       "node-type": "system",
       "name": "Snowflake Data Cloud",
       "description": "Cloud data warehouse for analytics",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-supplier-procurement",
+      "node-type": "system",
+      "name": "Supplier Procurement Portal",
+      "description": "External vendor ordering platform for gear and supplies",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-travel-insurance",
+      "node-type": "system",
+      "name": "Travel Insurance API",
+      "description": "Third-party adventure trip insurance quoting and binding",
       "interfaces": [],
       "metadata": {
         "domain": "External",
@@ -3503,6 +3664,36 @@
       }
     },
     {
+      "unique-id": "rel-svc-reservations-post--reservations-{reservation_id}-insurance-to-ext-travel-insurance",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "ext-travel-insurance"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /reservations/{reservation_id}/insurance",
+        "target-endpoint": "GET ",
+        "action": "Quote and bind trip insurance policy",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-post--reservations-{reservation_id}-insurance-to-svc-notifications",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-notifications"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /reservations/{reservation_id}/insurance",
+        "target-endpoint": "POST /notifications",
+        "action": "Send insurance confirmation",
+        "async": true
+      }
+    },
+    {
       "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-requests-to-svc-guide-management",
       "relationship-type": "interacts",
       "parties": {
@@ -3814,6 +4005,21 @@
         "source-endpoint": "GET /guests/{guest_id}/adventure-history",
         "target-endpoint": "GET /events",
         "action": "Get satisfaction scores",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-payments-post--payments-to-ext-currency-exchange",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-payments",
+        "target": "ext-currency-exchange"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /payments",
+        "target-endpoint": "GET ",
+        "action": "Convert foreign currency to base currency",
         "async": false
       }
     },
@@ -4163,6 +4369,21 @@
       }
     },
     {
+      "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-ext-fleet-gps",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-transport-logistics",
+        "target": "ext-fleet-gps"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /transport-requests",
+        "target-endpoint": "GET ",
+        "action": "Get real-time vehicle location and ETA",
+        "async": false
+      }
+    },
+    {
       "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-svc-notifications",
       "relationship-type": "interacts",
       "parties": {
@@ -4298,6 +4519,21 @@
       }
     },
     {
+      "unique-id": "rel-svc-media-gallery-post--media-{media_id}-share-to-ext-instagram",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-media-gallery",
+        "target": "ext-instagram"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /media/{media_id}/share",
+        "target-endpoint": "GET ",
+        "action": "Publish adventure photo to guest Instagram",
+        "async": true
+      }
+    },
+    {
       "unique-id": "rel-svc-media-gallery-post--media-{media_id}-share-to-svc-notifications",
       "relationship-type": "interacts",
       "parties": {
@@ -4324,6 +4560,21 @@
         "source-endpoint": "POST /purchase-orders",
         "target-endpoint": "GET /gear-items",
         "action": "Verify item catalog",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-inventory-procurement-post--purchase-orders-to-ext-supplier-procurement",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-inventory-procurement",
+        "target": "ext-supplier-procurement"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /purchase-orders",
+        "target-endpoint": "GET ",
+        "action": "Submit purchase order to approved vendor",
         "async": false
       }
     },
@@ -4478,6 +4729,51 @@
       }
     },
     {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-permits-to-ext-national-parks-permit",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "ext-national-parks-permit"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/permits",
+        "target-endpoint": "GET ",
+        "action": "Submit trail access permit request",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-permits-to-svc-safety-compliance",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-safety-compliance"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/permits",
+        "target-endpoint": "GET /trails/{trail_id}/safety-rating",
+        "action": "Validate trail safety rating",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-get--trails-{trail_id}-permit-status-to-ext-national-parks-permit",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "ext-national-parks-permit"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "GET /trails/{trail_id}/permit-status",
+        "target-endpoint": "GET ",
+        "action": "Check permit approval status",
+        "async": false
+      }
+    },
+    {
       "unique-id": "rel-svc-location-services-post--locations-to-ext-google-maps",
       "relationship-type": "interacts",
       "parties": {
@@ -4594,6 +4890,21 @@
         "source-endpoint": "POST /emergencies/{emergency_id}/dispatch",
         "target-endpoint": "GET /guides/on-duty",
         "action": "Check guide availability for rescue",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-emergency-response-post--emergencies-{emergency_id}-dispatch-to-ext-sar-dispatch",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-emergency-response",
+        "target": "ext-sar-dispatch"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /emergencies/{emergency_id}/dispatch",
+        "target-endpoint": "GET ",
+        "action": "Dispatch regional SAR team to incident coordinates",
         "async": false
       }
     },

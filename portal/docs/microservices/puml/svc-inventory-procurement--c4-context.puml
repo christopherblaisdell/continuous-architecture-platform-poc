@@ -20,11 +20,13 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_payments, "svc-payments", "Java / Spring Boot", "Support", $link="/microservices/svc-payments/#integration-context")
 }
 
+System_Ext(Supplier_Procurement_Portal, "Supplier Procurement Portal", "Third-party service", $link="/actors/#supplier-procurement-portal")
 
 Rel(web_ops_dashboard, svc_inventory_procurement, "Uses API", "HTTPS")
 Rel(svc_inventory_procurement, svc_inventory_procurement_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_inventory_procurement, svc_gear_inventory, "Verify item catalog", "HTTPS")
 Rel(svc_inventory_procurement, svc_notifications, "Notify procurement team", "HTTPS")
 Rel(svc_inventory_procurement, svc_payments, "Process PO payment", "HTTPS", $tags="pci")
+Rel(svc_inventory_procurement, Supplier_Procurement_Portal, "Submit purchase order to approved vendor", "HTTPS")
 
 @enduml

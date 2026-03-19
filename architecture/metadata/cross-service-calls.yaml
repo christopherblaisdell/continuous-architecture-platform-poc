@@ -116,6 +116,18 @@ svc-reservations:
     target:
       method: POST
       path: /notifications
+  POST /reservations/{reservation_id}/insurance:
+  - alias: TIns
+    label: Travel Insurance API
+    action: Quote and bind trip insurance policy
+    async: false
+  - alias: Ntfy
+    label: Notifications
+    action: Send insurance confirmation
+    async: true
+    target:
+      method: POST
+      path: /notifications
 svc-scheduling-orchestrator:
   POST /schedule-requests:
   - alias: GM
@@ -269,6 +281,10 @@ svc-guest-profiles:
       path: /events
 svc-payments:
   POST /payments:
+  - alias: FX
+    label: Currency Exchange API
+    action: Convert foreign currency to base currency
+    async: false
   - alias: FD
     label: Fraud Detection API
     action: Screen transaction
@@ -408,6 +424,10 @@ svc-transport-logistics:
     label: Google Maps Platform
     action: Calculate optimal route
     async: false
+  - alias: FleetGPS
+    label: Fleet GPS Tracking API
+    action: Get real-time vehicle location and ETA
+    async: false
   - alias: Ntfy
     label: Notifications
     action: Send transport details
@@ -471,6 +491,10 @@ svc-media-gallery:
     action: Reverse geocode GPS metadata
     async: false
   POST /media/{media_id}/share:
+  - alias: IG
+    label: Instagram Graph API
+    action: Publish adventure photo to guest Instagram
+    async: true
   - alias: Ntfy
     label: Notifications
     action: Send share link
@@ -487,6 +511,10 @@ svc-inventory-procurement:
     target:
       method: GET
       path: /gear-items
+  - alias: Supplier
+    label: Supplier Procurement Portal
+    action: Submit purchase order to approved vendor
+    async: false
   - alias: Pay
     label: Payments Svc
     action: Process PO payment
@@ -554,6 +582,23 @@ svc-trail-management:
     target:
       method: POST
       path: /notifications
+  POST /trails/{trail_id}/permits:
+  - alias: NPS
+    label: National Parks Permit API
+    action: Submit trail access permit request
+    async: false
+  - alias: Safety
+    label: Safety Compliance
+    action: Validate trail safety rating
+    async: false
+    target:
+      method: GET
+      path: /trails/{trail_id}/safety-rating
+  GET /trails/{trail_id}/permit-status:
+  - alias: NPS
+    label: National Parks Permit API
+    action: Check permit approval status
+    async: false
 svc-location-services:
   POST /locations:
   - alias: ExtMap
@@ -611,6 +656,10 @@ svc-emergency-response:
     target:
       method: GET
       path: /guides/on-duty
+  - alias: SAR
+    label: Search and Rescue Dispatch API
+    action: Dispatch regional SAR team to incident coordinates
+    async: false
   - alias: Ntfy
     label: Notifications
     action: Notify dispatched rescue team

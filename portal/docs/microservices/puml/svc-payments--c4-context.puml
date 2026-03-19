@@ -24,6 +24,7 @@ System_Boundary(boundary, "NovaTrek Platform") {
     Container(svc_notifications, "svc-notifications", "Java / Spring Boot", "Support", $link="/microservices/svc-notifications/#integration-context")
 }
 
+System_Ext(Currency_Exchange_API, "Currency Exchange API", "Third-party service", $link="/actors/#currency-exchange-api")
 System_Ext(Fraud_Detection_API, "Fraud Detection API", "PCI-certified third-party", $link="/actors/#fraud-detection-api")
 System_Ext(Payment_Gateway, "Payment Gateway", "PCI-certified third-party", $link="/actors/#payment-gateway")
 
@@ -36,6 +37,7 @@ Rel(svc_partner_integrations, svc_payments, "Process commission", "HTTPS", $tags
 Rel(svc_reservations, svc_payments, "Process deposit payment", "HTTPS", $tags="pci")
 Rel(svc_payments, svc_payments_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_payments, svc_notifications, "2 calls", "HTTPS")
+Rel(svc_payments, Currency_Exchange_API, "Convert foreign currency to base currency", "HTTPS")
 Rel(svc_payments, Fraud_Detection_API, "Screen transaction", "HTTPS", $tags="pci")
 Rel(svc_payments, Payment_Gateway, "Process refund via gateway, Tokenize & route payment", "HTTPS", $tags="pci")
 

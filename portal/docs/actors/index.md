@@ -11,7 +11,7 @@ tags:
 # Actor Catalog
 
 <p class="subtitle">All Actors Across the NovaTrek Enterprise</p>
-<span class="version-badge">22 Actors &middot; 11 External Systems &middot; 3 Frontend Applications &middot; 5 Humans &middot; 3 Infrastructures</span>
+<span class="version-badge">29 Actors &middot; 18 External Systems &middot; 3 Frontend Applications &middot; 5 Humans &middot; 3 Infrastructures</span>
 
 </div>
 
@@ -54,16 +54,23 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 ## External Systems
 
 <div class="actor-grid">
+<a class="actor-card" href="#currency-exchange-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Currency Exchange API</span><span class="actor-tech">[REST API]</span><span class="actor-desc">Real-time foreign currency exchange rate provider for converting international guest payments to the base operating currency.</span><span class="actor-domain">Support</span></a>
 <a class="actor-card" href="#docusign-api" style="--actor-border: #dc2626; --actor-bg: #FEE2E2;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23FEE2E2%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">DocuSign API</span><span class="actor-tech">[DocuSign eSignature REST API]</span><span class="actor-desc">Electronic signature platform used for legally-binding adventure liability waivers and safety acknowledgments.</span><span class="actor-domain">Safety</span></a>
 <a class="actor-card" href="#firebase-cloud-messaging" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Firebase Cloud Messaging</span><span class="actor-tech">[Firebase FCM]</span><span class="actor-desc">Push notification delivery service for real-time alerts to guest mobile devices (weather warnings, check-in reminders, schedule changes).</span><span class="actor-domain">Support</span></a>
+<a class="actor-card" href="#fleet-gps-tracking-api" style="--actor-border: #0891b2; --actor-bg: #CFFAFE;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23CFFAFE%22%20stroke%3D%22%230891b2%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Fleet GPS Tracking API</span><span class="actor-tech">[REST API / WebSocket]</span><span class="actor-desc">Vehicle telematics and GPS tracking platform providing real-time location, speed, and ETA data for NovaTrek transport fleet vehicles including shuttles, vans, and boats.</span><span class="actor-domain">Logistics</span></a>
 <a class="actor-card" href="#fraud-detection-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="actor-pci">PCI</span><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Fraud Detection API</span><span class="actor-tech">[REST API]</span><span class="actor-desc">Third-party fraud prevention service that scores payment transactions for risk before authorization.</span><span class="actor-domain">Support</span></a>
 <a class="actor-card" href="#google-maps-platform" style="--actor-border: #0891b2; --actor-bg: #CFFAFE;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23CFFAFE%22%20stroke%3D%22%230891b2%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Google Maps Platform</span><span class="actor-tech">[Google Maps REST API]</span><span class="actor-desc">Geolocation and mapping service used for trail positioning, location tracking, and capacity management at adventure sites.</span><span class="actor-domain">Logistics</span></a>
 <a class="actor-card" href="#idverify-api" style="--actor-border: #7c3aed; --actor-bg: #EDE9FE;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23EDE9FE%22%20stroke%3D%22%237c3aed%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">IDVerify API</span><span class="actor-tech">[REST API]</span><span class="actor-desc">Identity verification service used during check-in to validate guest identity against government-issued IDs.</span><span class="actor-domain">Guest Identity</span></a>
+<a class="actor-card" href="#instagram-graph-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Instagram Graph API</span><span class="actor-tech">[Instagram Graph REST API]</span><span class="actor-desc">Meta social media API enabling guests to share adventure trip photos and stories directly from the NovaTrek media gallery to their Instagram accounts.</span><span class="actor-domain">Support</span></a>
+<a class="actor-card" href="#national-parks-permit-api" style="--actor-border: #d97706; --actor-bg: #FEF3C7;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23FEF3C7%22%20stroke%3D%22%23d97706%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">National Parks Permit API</span><span class="actor-tech">[REST API]</span><span class="actor-desc">Government parks and forestry service API for submitting trail access permits, validating permit status, and receiving seasonal trail closure notifications.</span><span class="actor-domain">Product Catalog</span></a>
 <a class="actor-card" href="#openweather-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">OpenWeather API</span><span class="actor-tech">[OpenWeather REST API]</span><span class="actor-desc">Weather data provider delivering current conditions, forecasts, and severe weather alerts for trail and adventure locations.</span><span class="actor-domain">Support</span></a>
 <a class="actor-card" href="#payment-gateway" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="actor-pci">PCI</span><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Payment Gateway</span><span class="actor-tech">[Stripe]</span><span class="actor-desc">PCI-certified payment processing gateway that handles credit card authorization, capture, and refund transactions.</span><span class="actor-domain">Support</span></a>
+<a class="actor-card" href="#search-and-rescue-dispatch-api" style="--actor-border: #dc2626; --actor-bg: #FEE2E2;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23FEE2E2%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Search and Rescue Dispatch API</span><span class="actor-tech">[REST API]</span><span class="actor-desc">Regional search and rescue coordination API for dispatching emergency response teams to backcountry locations during safety incidents.</span><span class="actor-domain">Safety</span></a>
 <a class="actor-card" href="#sendgrid-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">SendGrid API</span><span class="actor-tech">[SendGrid REST API]</span><span class="actor-desc">Transactional email delivery service for reservation confirmations, waiver requests, and loyalty point notifications.</span><span class="actor-domain">Support</span></a>
 <a class="actor-card" href="#snowflake-data-cloud" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Snowflake Data Cloud</span><span class="actor-tech">[Snowflake SQL API]</span><span class="actor-desc">Cloud data warehouse used for business intelligence, analytics aggregation, and historical trend analysis across all NovaTrek domains.</span><span class="actor-domain">Support</span></a>
 <a class="actor-card" href="#stripe-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="actor-pci">PCI</span><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Stripe API</span><span class="actor-tech">[Stripe REST API]</span><span class="actor-desc">Payment platform API for processing charges, managing payment methods, and handling disputes.</span><span class="actor-domain">Support</span></a>
+<a class="actor-card" href="#supplier-procurement-portal" style="--actor-border: #0891b2; --actor-bg: #CFFAFE;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23CFFAFE%22%20stroke%3D%22%230891b2%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Supplier Procurement Portal</span><span class="actor-tech">[REST API]</span><span class="actor-desc">External supplier ordering platform for procuring adventure gear, safety equipment, and consumable supplies from approved NovaTrek vendors.</span><span class="actor-domain">Logistics</span></a>
+<a class="actor-card" href="#travel-insurance-api" style="--actor-border: #059669; --actor-bg: #D1FAE5;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23D1FAE5%22%20stroke%3D%22%23059669%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Travel Insurance API</span><span class="actor-tech">[REST API]</span><span class="actor-desc">Third-party travel insurance provider for quoting and binding adventure trip insurance policies based on activity risk level and participant profile.</span><span class="actor-domain">Booking</span></a>
 <a class="actor-card" href="#twilio-api" style="--actor-border: #64748b; --actor-bg: #F1F5F9;"><span class="c4-icon" style="background-image:url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2240%22%20height%3D%2232%22%20rx%3D%224%22%20ry%3D%224%22%20fill%3D%22%23F1F5F9%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%202%22%2F%3E%3C%2Fsvg%3E&quot;);"></span><span class="actor-name">Twilio API</span><span class="actor-tech">[Twilio REST API]</span><span class="actor-desc">SMS and messaging service for check-in reminders, schedule updates, and emergency notifications to guests and guides.</span><span class="actor-domain">Support</span></a>
 </div>
 
@@ -113,6 +120,17 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - **Domain:** Guide Management
 - **Description:** Certified outdoor guides who lead adventure trips, manage guest safety, and report incidents.
 
+### Currency Exchange API
+
+- **Type:** External System
+- **Domain:** Support
+- **Description:** Real-time foreign currency exchange rate provider for converting international guest payments to the base operating currency.
+- **Technology:** REST API
+
+**Referenced by:**
+
+- [svc-payments](../microservices/svc-payments/)
+
 ### DocuSign API
 
 - **Type:** External System
@@ -146,6 +164,17 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 **Referenced by:**
 
 - [svc-notifications](../microservices/svc-notifications/)
+
+### Fleet GPS Tracking API
+
+- **Type:** External System
+- **Domain:** Logistics
+- **Description:** Vehicle telematics and GPS tracking platform providing real-time location, speed, and ETA data for NovaTrek transport fleet vehicles including shuttles, vans, and boats.
+- **Technology:** REST API / WebSocket
+
+**Referenced by:**
+
+- [svc-transport-logistics](../microservices/svc-transport-logistics/)
 
 ### Fraud Detection API
 
@@ -189,6 +218,28 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 
 - [svc-guest-profiles](../microservices/svc-guest-profiles/)
 
+### Instagram Graph API
+
+- **Type:** External System
+- **Domain:** Support
+- **Description:** Meta social media API enabling guests to share adventure trip photos and stories directly from the NovaTrek media gallery to their Instagram accounts.
+- **Technology:** Instagram Graph REST API
+
+**Referenced by:**
+
+- [svc-media-gallery](../microservices/svc-media-gallery/)
+
+### National Parks Permit API
+
+- **Type:** External System
+- **Domain:** Product Catalog
+- **Description:** Government parks and forestry service API for submitting trail access permits, validating permit status, and receiving seasonal trail closure notifications.
+- **Technology:** REST API
+
+**Referenced by:**
+
+- [svc-trail-management](../microservices/svc-trail-management/)
+
 ### Object Store
 
 - **Type:** Infrastructure
@@ -228,6 +279,17 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 **Referenced by:**
 
 - [svc-payments](../microservices/svc-payments/)
+
+### Search and Rescue Dispatch API
+
+- **Type:** External System
+- **Domain:** Safety
+- **Description:** Regional search and rescue coordination API for dispatching emergency response teams to backcountry locations during safety incidents.
+- **Technology:** REST API
+
+**Referenced by:**
+
+- [svc-emergency-response](../microservices/svc-emergency-response/)
 
 ### SendGrid API
 
@@ -270,6 +332,28 @@ This catalog lists every actor that interacts with the NovaTrek platform: people
 - **Description:** Payment platform API for processing charges, managing payment methods, and handling disputes.
 - **Technology:** Stripe REST API
 - **Compliance:** :material-shield-lock: PCI DSS scope
+
+### Supplier Procurement Portal
+
+- **Type:** External System
+- **Domain:** Logistics
+- **Description:** External supplier ordering platform for procuring adventure gear, safety equipment, and consumable supplies from approved NovaTrek vendors.
+- **Technology:** REST API
+
+**Referenced by:**
+
+- [svc-inventory-procurement](../microservices/svc-inventory-procurement/)
+
+### Travel Insurance API
+
+- **Type:** External System
+- **Domain:** Booking
+- **Description:** Third-party travel insurance provider for quoting and binding adventure trip insurance policies based on activity risk level and participant profile.
+- **Technology:** REST API
+
+**Referenced by:**
+
+- [svc-reservations](../microservices/svc-reservations/)
 
 ### Twilio API
 

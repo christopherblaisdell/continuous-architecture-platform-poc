@@ -18,11 +18,13 @@ System_Boundary(boundary, "NovaTrek Platform") {
 }
 
 System_Ext(Google_Maps_Platform, "Google Maps Platform", "Third-party service", $link="/actors/#google-maps-platform")
+System_Ext(Instagram_Graph_API, "Instagram Graph API", "Third-party service", $link="/actors/#instagram-graph-api")
 
 Rel(app_guest_mobile, svc_media_gallery, "Uses API", "HTTPS")
 Rel(web_guest_portal, svc_media_gallery, "Uses API", "HTTPS")
 Rel(svc_media_gallery, svc_media_gallery_db, "Reads/Writes", "SQL/TCP")
 Rel(svc_media_gallery, svc_notifications, "Send share link", "HTTPS")
 Rel(svc_media_gallery, Google_Maps_Platform, "Reverse geocode GPS metadata", "HTTPS")
+Rel(svc_media_gallery, Instagram_Graph_API, "Publish adventure photo to guest Instagram", "HTTPS")
 
 @enduml

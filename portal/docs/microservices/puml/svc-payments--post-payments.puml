@@ -21,6 +21,7 @@ title POST /payments\nProcess a payment
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
 participant "svc-payments" as Svc [[/microservices/svc-payments/]] #FEE2E2
+participant "Currency Exchange API" as FX [[/actors/#currency-exchange-api]] #F3F4F6
 participant "Fraud Detection API" as FD [[/actors/#fraud-detection-api]] #FEE2E2
 participant "Payment Gateway" as PGW [[/actors/#payment-gateway]] #FEE2E2
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
@@ -38,6 +39,11 @@ activate Svc #059669
 note right of Svc : Validate request body
 
 == Cross-Service Integration ==
+
+Svc -> FX : Convert foreign currency to base currency
+activate FX #F3F4F6
+FX --> Svc : OK
+deactivate FX
 
 Svc -[#DC2626]> FD : Screen transaction
 activate FD #F3F4F6

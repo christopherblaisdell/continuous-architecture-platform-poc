@@ -21,6 +21,7 @@ title POST /media/{media_id}/share\nCreate a shareable link for a media item
 participant "Client" as Client [[/applications/]]
 participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
 participant "svc-media-gallery" as Svc [[/microservices/svc-media-gallery/]] #F1F5F9
+participant "Instagram Graph API" as IG [[/actors/#instagram-graph-api]] #F3F4F6
 participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
 database "PostgreSQL" as DB [[/microservices/svc-media-gallery/#data-store]] #FEF9C3
 
@@ -50,6 +51,7 @@ deactivate DB
 
 == Async Events ==
 
+Svc ->> IG : Publish adventure photo to guest Instagram
 Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send share link]]
 
 Svc --> GW : 201 Created
