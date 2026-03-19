@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 1040 740" width="100%" height="auto">
+<rect x="-20" y="-20" width="1040" height="740" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="240" height="700" fill="#2C3E50" stroke="#2C3E50" stroke-width="2" rx="4"/>
+<text x="15" y="31" font-size="16" fill="#FFFFFF" font-family="sans-serif">Operations Dashboard</text>
+<text x="15" y="94" font-size="14" fill="#CCCCCC" font-family="sans-serif">Daily Schedule</text>
+<text x="15" y="134" font-size="14" fill="#CCCCCC" font-family="sans-serif">Check-In Station</text>
+<text x="15" y="174" font-size="14" fill="#CCCCCC" font-family="sans-serif">Guide Assignment</text>
+<text x="15" y="214" font-size="14" fill="#CCCCCC" font-family="sans-serif">Safety Incidents</text>
+<text x="15" y="254" font-size="14" fill="#CCCCCC" font-family="sans-serif">Inventory</text>
+<text x="15" y="294" font-size="14" fill="#CCCCCC" font-family="sans-serif">Transport Dispatch</text>
+<text x="15" y="334" font-size="14" fill="#4CAF50" font-family="sans-serif">Analytics</text>
+<text x="15" y="374" font-size="14" fill="#CCCCCC" font-family="sans-serif">Partner Bookings</text>
+<rect x="240" y="0" width="760" height="60" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
+<text x="260" y="33" font-size="18" fill="#333333" font-family="sans-serif">Analytics Dashboard</text>
+<rect x="700" y="12" width="250" height="35" fill="#FFFFFF" stroke="#BDBDBD" stroke-width="2" rx="4"/>
+<text x="715" y="33" font-size="13" fill="#333333" font-family="sans-serif">Mar 1 - Mar 19, 2026</text>
+<rect x="260" y="80" width="170" height="100" fill="#E3F2FD" stroke="#2196F3" stroke-width="2" rx="4"/>
+<text x="275" y="102" font-size="12" fill="#1565C0" font-family="sans-serif">Total Bookings</text>
+<text x="300" y="144" font-size="24" fill="#1565C0" font-family="sans-serif">1,247</text>
+<text x="300" y="165" font-size="10" fill="#4CAF50" font-family="sans-serif">+12% vs prior period</text>
+<rect x="450" y="80" width="170" height="100" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="4"/>
+<text x="465" y="102" font-size="12" fill="#2E7D32" font-family="sans-serif">Revenue</text>
+<text x="475" y="142" font-size="22" fill="#2E7D32" font-family="sans-serif">$284,500</text>
+<text x="485" y="165" font-size="10" fill="#4CAF50" font-family="sans-serif">+8% vs prior period</text>
+<rect x="640" y="80" width="170" height="100" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" rx="4"/>
+<text x="655" y="102" font-size="12" fill="#E65100" font-family="sans-serif">Capacity Utilization</text>
+<text x="695" y="144" font-size="24" fill="#E65100" font-family="sans-serif">73%</text>
+<text x="680" y="165" font-size="10" fill="#FF9800" font-family="sans-serif">-2% vs prior period</text>
+<rect x="830" y="80" width="170" height="100" fill="#F3E5F5" stroke="#9C27B0" stroke-width="2" rx="4"/>
+<text x="845" y="102" font-size="12" fill="#6A1B9A" font-family="sans-serif">Guest Satisfaction</text>
+<text x="875" y="142" font-size="22" fill="#6A1B9A" font-family="sans-serif">4.6 / 5</text>
+<text x="875" y="165" font-size="10" fill="#4CAF50" font-family="sans-serif">+0.2 vs prior</text>
+<rect x="260" y="200" width="360" height="220" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
+<text x="275" y="224" font-size="14" fill="#333333" font-family="sans-serif">Booking Trends (Daily)</text>
+<text x="365" y="322" font-size="12" fill="#999999" font-family="sans-serif">[ Line Chart ]
+Bookings per day
+with trend line</text>
+<rect x="640" y="200" width="360" height="220" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
+<text x="655" y="224" font-size="14" fill="#333333" font-family="sans-serif">Revenue by Adventure Type</text>
+<text x="745" y="322" font-size="12" fill="#999999" font-family="sans-serif">[ Bar Chart ]
+Revenue breakdown
+by category</text>
+<rect x="260" y="440" width="360" height="220" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
+<text x="275" y="464" font-size="14" fill="#333333" font-family="sans-serif">Guide Utilization Heatmap</text>
+<text x="365" y="562" font-size="12" fill="#999999" font-family="sans-serif">[ Heatmap ]
+Guide hours by
+day of week</text>
+<rect x="640" y="440" width="360" height="220" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
+<text x="655" y="464" font-size="14" fill="#333333" font-family="sans-serif">Top Adventures by Revenue</text>
+<text x="655" y="492" font-size="12" fill="#555555" font-family="sans-serif">1. Mountain Rappelling     $42,800
+2. River Kayaking Exped.   $38,200
+3. Canopy Zipline Tour     $35,600
+4. Sunrise Peak Hike       $28,400
+5. Wildlife Safari Walk    $24,100</text>
+<text x="655" y="630" font-size="10" fill="#999999" font-family="sans-serif">Data source: Snowflake Data Cloud</text>
+</svg>

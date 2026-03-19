@@ -184,7 +184,15 @@ nav:
       - web-ops-dashboard:
         - applications/web-ops-dashboard.md
         - Wireframes:
+          - Daily Schedule Board: applications/web-ops-dashboard/wireframes/daily-schedule-board.md
+          - Check-In Station: applications/web-ops-dashboard/wireframes/check-in-station.md
+          - Guide Assignment: applications/web-ops-dashboard/wireframes/guide-assignment.md
           - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
+          - Safety Incident Board: applications/web-ops-dashboard/wireframes/safety-incident-board.md
+          - Inventory Management: applications/web-ops-dashboard/wireframes/inventory-management.md
+          - Transport Dispatch: applications/web-ops-dashboard/wireframes/transport-dispatch.md
+          - Analytics Dashboard: applications/web-ops-dashboard/wireframes/analytics-dashboard.md
+          - Partner Bookings: applications/web-ops-dashboard/wireframes/partner-bookings.md
       - app-guest-mobile:
         - applications/app-guest-mobile.md
         - Wireframes:

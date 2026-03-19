@@ -28,15 +28,15 @@ tags:
 
 This application interacts with **14 microservices** across 7 screens.
 
-| Screen | Services | Description |
-|--------|----------|-------------|
-| [Self Check-In](#self-check-in) | `svc-check-in`, `svc-gear-inventory`, `svc-guest-profiles`, `svc-reservations`, `svc-safety-compliance` | Guest self-service check-in with QR code scan, identity verification, waiver con... |
-| [Live Trip Map](#live-trip-map) | `svc-location-services`, `svc-scheduling-orchestrator`, `svc-trail-management`, `svc-weather` | Real-time interactive map showing current trail position, nearby waypoints, weat... |
-| [Photo Upload](#photo-upload) | `svc-media-gallery`, `svc-notifications` + Google Maps Platform, Object Store | Capture and upload adventure photos with GPS metadata, auto-tagging, and instant... |
-| [My Reservations](#my-reservations) | `svc-payments`, `svc-reservations`, `svc-trip-catalog` | View upcoming and past reservations with trip details, payment history, and modi... |
-| [Weather and Trail Alerts](#weather-and-trail-alerts) | `svc-notifications`, `svc-trail-management`, `svc-weather` + OpenWeather API | Push-notification-driven alerts for severe weather, trail closures, and safety a... |
-| [Digital Wristband](#digital-wristband) | `svc-check-in`, `svc-gear-inventory` | Display NFC-enabled digital wristband for tap-to-verify at activity stations and... |
-| [Earn Loyalty Points](#earn-loyalty-points) | `svc-guest-profiles`, `svc-loyalty-rewards`, `svc-reservations` | View point earnings after trip completion, tier progress, and available redempti... |
+| Screen | Services | Wireframe | Description |
+|--------|----------|-----------|-------------|
+| [Self Check-In](#self-check-in) | `svc-check-in`, `svc-gear-inventory`, `svc-guest-profiles`, `svc-reservations`, `svc-safety-compliance` | -- | Guest self-service check-in with QR code scan, identity verification, waiver con... |
+| [Live Trip Map](#live-trip-map) | `svc-location-services`, `svc-scheduling-orchestrator`, `svc-trail-management`, `svc-weather` | -- | Real-time interactive map showing current trail position, nearby waypoints, weat... |
+| [Photo Upload](#photo-upload) | `svc-media-gallery`, `svc-notifications` + Google Maps Platform, Object Store | -- | Capture and upload adventure photos with GPS metadata, auto-tagging, and instant... |
+| [My Reservations](#my-reservations) | `svc-payments`, `svc-reservations`, `svc-trip-catalog` | -- | View upcoming and past reservations with trip details, payment history, and modi... |
+| [Weather and Trail Alerts](#weather-and-trail-alerts) | `svc-notifications`, `svc-trail-management`, `svc-weather` + OpenWeather API | -- | Push-notification-driven alerts for severe weather, trail closures, and safety a... |
+| [Digital Wristband](#digital-wristband) | `svc-check-in`, `svc-gear-inventory` | -- | Display NFC-enabled digital wristband for tap-to-verify at activity stations and... |
+| [Earn Loyalty Points](#earn-loyalty-points) | `svc-guest-profiles`, `svc-loyalty-rewards`, `svc-reservations` | -- | View point earnings after trip completion, tier progress, and available redempti... |
 
 ---
 

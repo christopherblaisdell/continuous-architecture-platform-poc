@@ -28,15 +28,15 @@ tags:
 
 This application interacts with **10 microservices** across 7 screens.
 
-| Screen | Services | Description |
-|--------|----------|-------------|
-| [Trip Browser](#trip-browser) | `svc-media-gallery`, `svc-trail-management`, `svc-trip-catalog`, `svc-weather` | Search and explore available adventures with trail info, weather forecasts, and ... |
-| [Booking Flow](#booking-flow) | `svc-guest-profiles`, `svc-payments`, `svc-reservations`, `svc-trip-catalog` + Stripe API | End-to-end reservation flow from trip selection through payment confirmation.... |
-| [Guest Profile](#guest-profile) | `svc-guest-profiles`, `svc-loyalty-rewards`, `svc-reservations` | View and edit guest profile, certifications, past adventures, and loyalty tier.... |
-| [Reservation Management](#reservation-management) | `svc-notifications`, `svc-payments`, `svc-reservations` | View, modify, or cancel existing reservations and process refunds.... |
-| [Loyalty Dashboard](#loyalty-dashboard) | `svc-guest-profiles`, `svc-loyalty-rewards` | View loyalty points balance, tier status, transaction history, and available rew... |
-| [Waiver Signing](#waiver-signing) | `svc-guest-profiles`, `svc-notifications`, `svc-safety-compliance` + DocuSign API | Review and digitally sign safety waivers before trip departure.... |
-| [Trip Gallery](#trip-gallery) | `svc-media-gallery`, `svc-notifications`, `svc-reservations` | Browse and share photos and videos from past adventures.... |
+| Screen | Services | Wireframe | Description |
+|--------|----------|-----------|-------------|
+| [Trip Browser](#trip-browser) | `svc-media-gallery`, `svc-trail-management`, `svc-trip-catalog`, `svc-weather` | -- | Search and explore available adventures with trail info, weather forecasts, and ... |
+| [Booking Flow](#booking-flow) | `svc-guest-profiles`, `svc-payments`, `svc-reservations`, `svc-trip-catalog` + Stripe API | -- | End-to-end reservation flow from trip selection through payment confirmation.... |
+| [Guest Profile](#guest-profile) | `svc-guest-profiles`, `svc-loyalty-rewards`, `svc-reservations` | -- | View and edit guest profile, certifications, past adventures, and loyalty tier.... |
+| [Reservation Management](#reservation-management) | `svc-notifications`, `svc-payments`, `svc-reservations` | -- | View, modify, or cancel existing reservations and process refunds.... |
+| [Loyalty Dashboard](#loyalty-dashboard) | `svc-guest-profiles`, `svc-loyalty-rewards` | -- | View loyalty points balance, tier status, transaction history, and available rew... |
+| [Waiver Signing](#waiver-signing) | `svc-guest-profiles`, `svc-notifications`, `svc-safety-compliance` + DocuSign API | -- | Review and digitally sign safety waivers before trip departure.... |
+| [Trip Gallery](#trip-gallery) | `svc-media-gallery`, `svc-notifications`, `svc-reservations` | -- | Browse and share photos and videos from past adventures.... |
 
 ---
 

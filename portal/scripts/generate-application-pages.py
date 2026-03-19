@@ -26,6 +26,7 @@ SPECS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "specs")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "applications")
 PUML_DIR = os.path.join(OUTPUT_DIR, "puml")
 SVG_DIR = os.path.join(OUTPUT_DIR, "svg")
+WIREFRAMES_ROOT = os.path.join(WORKSPACE_ROOT, "architecture", "wireframes")
 
 # Pre-loaded endpoint summaries: (svc_name, METHOD, /path) -> summary
 ALL_ENDPOINT_SUMMARIES = {}
@@ -419,15 +420,18 @@ def generate_app_page(app_name, app_info, svg_files):
     lines.append("")
 
     # Screen summary table
-    lines.append("| Screen | Services | Description |")
-    lines.append("|--------|----------|-------------|")
+    lines.append("| Screen | Services | Wireframe | Description |")
+    lines.append("|--------|----------|-----------|-------------|")
     for screen_name, screen in screens.items():
         svcs = sorted(set(s[2] for s in screen["steps"] if s[2]))
         ext = sorted(set(s[1] for s in screen["steps"] if not s[2]))
         svc_list = ", ".join(f"`{s}`" for s in svcs)
         if ext:
             svc_list += " + " + ", ".join(ext)
-        lines.append(f"| [{screen_name}](#{screen_name.lower().replace(' ', '-').replace('&', 'and')}) | {svc_list} | {screen['description'][:80]}... |")
+        wf_slug = screen_name.lower().replace(' ', '-').replace('&', 'and')
+        wf_path = os.path.join(WIREFRAMES_ROOT, app_name, f"{wf_slug}.excalidraw")
+        wf_cell = f"[:material-pencil-ruler: View](wireframes/{wf_slug}/)" if os.path.exists(wf_path) else "--"
+        lines.append(f"| [{screen_name}](#{wf_slug}) | {svc_list} | {wf_cell} | {screen['description'][:80]}... |")
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -440,6 +444,13 @@ def generate_app_page(app_name, app_info, svg_files):
         lines.append("")
         lines.append(f"> {screen['description']}")
         lines.append("")
+
+        # Wireframe link
+        wf_slug = screen_name.lower().replace(' ', '-').replace('&', 'and')
+        wf_path = os.path.join(WIREFRAMES_ROOT, app_name, f"{wf_slug}.excalidraw")
+        if os.path.exists(wf_path):
+            lines.append(f":material-pencil-ruler: **[View Wireframe](wireframes/{wf_slug}/)**")
+            lines.append("")
 
         # API dependency table
         lines.append("**API Dependencies:**")

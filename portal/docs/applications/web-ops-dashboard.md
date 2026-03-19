@@ -28,16 +28,16 @@ tags:
 
 This application interacts with **16 microservices** across 8 screens.
 
-| Screen | Services | Description |
-|--------|----------|-------------|
-| [Daily Schedule Board](#daily-schedule-board) | `svc-guide-management`, `svc-location-services`, `svc-scheduling-orchestrator`, `svc-trail-management`, `svc-weather` | View and manage the day's adventure schedule with guide assignments, weather con... |
-| [Check-In Station](#check-in-station) | `svc-check-in`, `svc-gear-inventory`, `svc-guest-profiles`, `svc-reservations`, `svc-safety-compliance` | Staff-assisted check-in workflow: verify reservation, validate identity, check w... |
-| [Guide Assignment](#guide-assignment) | `svc-guide-management`, `svc-scheduling-orchestrator`, `svc-trail-management` | Assign guides to scheduled adventures based on certification, availability, and ... |
-| [Safety Incident Board](#safety-incident-board) | `svc-guest-profiles`, `svc-guide-management`, `svc-notifications`, `svc-safety-compliance` | Log and manage safety incidents with guest contact, guide notification, and regu... |
-| [Inventory Management](#inventory-management) | `svc-gear-inventory`, `svc-inventory-procurement` | Track gear inventory levels, manage assignments, and create procurement orders.... |
-| [Transport Dispatch](#transport-dispatch) | `svc-location-services`, `svc-reservations`, `svc-transport-logistics` + Google Maps Platform | Coordinate guest transport with route optimization, vehicle assignment, and real... |
-| [Analytics Dashboard](#analytics-dashboard) | `svc-analytics`, `svc-payments`, `svc-reservations` + Snowflake Data Cloud | Business intelligence views for booking trends, revenue, utilization, and guest ... |
-| [Partner Bookings](#partner-bookings) | `svc-partner-integrations`, `svc-payments`, `svc-reservations` | Manage partner-originated bookings, commission tracking, and reconciliation.... |
+| Screen | Services | Wireframe | Description |
+|--------|----------|-----------|-------------|
+| [Daily Schedule Board](#daily-schedule-board) | `svc-guide-management`, `svc-location-services`, `svc-scheduling-orchestrator`, `svc-trail-management`, `svc-weather` | [:material-pencil-ruler: View](wireframes/daily-schedule-board/) | View and manage the day's adventure schedule with guide assignments, weather con... |
+| [Check-In Station](#check-in-station) | `svc-check-in`, `svc-gear-inventory`, `svc-guest-profiles`, `svc-reservations`, `svc-safety-compliance` | [:material-pencil-ruler: View](wireframes/check-in-station/) | Staff-assisted check-in workflow: verify reservation, validate identity, check w... |
+| [Guide Assignment](#guide-assignment) | `svc-guide-management`, `svc-scheduling-orchestrator`, `svc-trail-management` | [:material-pencil-ruler: View](wireframes/guide-assignment/) | Assign guides to scheduled adventures based on certification, availability, and ... |
+| [Safety Incident Board](#safety-incident-board) | `svc-guest-profiles`, `svc-guide-management`, `svc-notifications`, `svc-safety-compliance` | [:material-pencil-ruler: View](wireframes/safety-incident-board/) | Log and manage safety incidents with guest contact, guide notification, and regu... |
+| [Inventory Management](#inventory-management) | `svc-gear-inventory`, `svc-inventory-procurement` | [:material-pencil-ruler: View](wireframes/inventory-management/) | Track gear inventory levels, manage assignments, and create procurement orders.... |
+| [Transport Dispatch](#transport-dispatch) | `svc-location-services`, `svc-reservations`, `svc-transport-logistics` + Google Maps Platform | [:material-pencil-ruler: View](wireframes/transport-dispatch/) | Coordinate guest transport with route optimization, vehicle assignment, and real... |
+| [Analytics Dashboard](#analytics-dashboard) | `svc-analytics`, `svc-payments`, `svc-reservations` + Snowflake Data Cloud | [:material-pencil-ruler: View](wireframes/analytics-dashboard/) | Business intelligence views for booking trends, revenue, utilization, and guest ... |
+| [Partner Bookings](#partner-bookings) | `svc-partner-integrations`, `svc-payments`, `svc-reservations` | [:material-pencil-ruler: View](wireframes/partner-bookings/) | Manage partner-originated bookings, commission tracking, and reconciliation.... |
 
 ---
 
@@ -46,6 +46,8 @@ This application interacts with **16 microservices** across 8 screens.
 ### Daily Schedule Board
 
 > View and manage the day's adventure schedule with guide assignments, weather conditions, and trail status.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/daily-schedule-board/)**
 
 **API Dependencies:**
 
@@ -66,6 +68,8 @@ This application interacts with **16 microservices** across 8 screens.
 
 > Staff-assisted check-in workflow: verify reservation, validate identity, check waivers, assign gear, and issue wristband.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/check-in-station/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -85,6 +89,8 @@ This application interacts with **16 microservices** across 8 screens.
 
 > Assign guides to scheduled adventures based on certification, availability, and guest preferences.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/guide-assignment/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -102,6 +108,8 @@ This application interacts with **16 microservices** across 8 screens.
 ### Safety Incident Board
 
 > Log and manage safety incidents with guest contact, guide notification, and regulatory reporting.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/safety-incident-board/)**
 
 **API Dependencies:**
 
@@ -122,6 +130,8 @@ This application interacts with **16 microservices** across 8 screens.
 
 > Track gear inventory levels, manage assignments, and create procurement orders.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/inventory-management/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -138,6 +148,8 @@ This application interacts with **16 microservices** across 8 screens.
 ### Transport Dispatch
 
 > Coordinate guest transport with route optimization, vehicle assignment, and real-time tracking.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/transport-dispatch/)**
 
 **API Dependencies:**
 
@@ -158,6 +170,8 @@ This application interacts with **16 microservices** across 8 screens.
 
 > Business intelligence views for booking trends, revenue, utilization, and guest satisfaction.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/analytics-dashboard/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -175,6 +189,8 @@ This application interacts with **16 microservices** across 8 screens.
 ### Partner Bookings
 
 > Manage partner-originated bookings, commission tracking, and reconciliation.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/partner-bookings/)**
 
 **API Dependencies:**
 
