@@ -137,25 +137,6 @@ nav:
       - Metadata and Artifacts: architect-guide/metadata-and-artifacts.md
       - AI-Assisted Workflow: architect-guide/ai-assisted-workflow.md
       - Anti-Patterns: architect-guide/anti-patterns.md
-  - Solutions:
-    - solutions/index.md
-    - Solution Designs:
-      - _NTK-10001: solutions/_NTK-10001-add-elevation-to-trail-response.md
-      - _NTK-10002: solutions/_NTK-10002-adventure-category-classification.md
-      - _NTK-10004: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
-      - _NTK-10005: solutions/_NTK-10005-wristband-rfid-field.md
-      - _NTK-10008: solutions/_NTK-10008-guest-reviews-and-ratings.md
-      - _NTK-10009: solutions/_NTK-10009-refund-dispute-management.md
-    - Tickets:
-      - tickets/index.md
-      - NTK-10001: tickets/NTK-10001.md
-      - NTK-10002: tickets/NTK-10002.md
-      - NTK-10004: tickets/NTK-10004.md
-      - NTK-10005: tickets/NTK-10005.md
-      - NTK-10006: tickets/NTK-10006.md
-      - NTK-10007: tickets/NTK-10007.md
-      - NTK-10008: tickets/NTK-10008.md
-      - NTK-10009: tickets/NTK-10009.md
   - Services:
     - Microservices:
       - microservices/index.md
@@ -197,6 +178,25 @@ nav:
         - Wireframes:
           - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
     - Event Catalog: events/index.md
+  - Solutions:
+    - solutions/index.md
+    - Solution Designs:
+      - _NTK-10001: solutions/_NTK-10001-add-elevation-to-trail-response.md
+      - _NTK-10002: solutions/_NTK-10002-adventure-category-classification.md
+      - _NTK-10004: solutions/_NTK-10004-guide-schedule-overwrite-bug.md
+      - _NTK-10005: solutions/_NTK-10005-wristband-rfid-field.md
+      - _NTK-10008: solutions/_NTK-10008-guest-reviews-and-ratings.md
+      - _NTK-10009: solutions/_NTK-10009-refund-dispute-management.md
+    - Tickets:
+      - tickets/index.md
+      - NTK-10001: tickets/NTK-10001.md
+      - NTK-10002: tickets/NTK-10002.md
+      - NTK-10004: tickets/NTK-10004.md
+      - NTK-10005: tickets/NTK-10005.md
+      - NTK-10006: tickets/NTK-10006.md
+      - NTK-10007: tickets/NTK-10007.md
+      - NTK-10008: tickets/NTK-10008.md
+      - NTK-10009: tickets/NTK-10009.md
   - Design Standards:
     - standards/index.md
     - arc42 Template:
