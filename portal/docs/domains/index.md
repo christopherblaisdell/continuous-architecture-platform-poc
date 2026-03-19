@@ -34,11 +34,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="operations">
-      <object data="../topology/svg/topology-operations.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Operations Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-operations.svg" type="image/svg+xml" style="max-width: 100%;">
+      Operations Service Topology
+    </object>
   </div>
 </div>
 
@@ -57,11 +55,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="guest-identity">
-      <object data="../topology/svg/topology-guest-identity.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Guest Identity Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-guest-identity.svg" type="image/svg+xml" style="max-width: 100%;">
+      Guest Identity Service Topology
+    </object>
   </div>
 </div>
 
@@ -80,11 +76,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="booking">
-      <object data="../topology/svg/topology-booking.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Booking Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-booking.svg" type="image/svg+xml" style="max-width: 100%;">
+      Booking Service Topology
+    </object>
   </div>
 </div>
 
@@ -103,11 +97,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="product-catalog">
-      <object data="../topology/svg/topology-product-catalog.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Product Catalog Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-product-catalog.svg" type="image/svg+xml" style="max-width: 100%;">
+      Product Catalog Service Topology
+    </object>
   </div>
 </div>
 
@@ -126,11 +118,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="safety">
-      <object data="../topology/svg/topology-safety.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Safety Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-safety.svg" type="image/svg+xml" style="max-width: 100%;">
+      Safety Service Topology
+    </object>
   </div>
 </div>
 
@@ -149,11 +139,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="logistics">
-      <object data="../topology/svg/topology-logistics.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Logistics Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-logistics.svg" type="image/svg+xml" style="max-width: 100%;">
+      Logistics Service Topology
+    </object>
   </div>
 </div>
 
@@ -172,11 +160,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="guide-management">
-      <object data="../topology/svg/topology-guide-management.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Guide Management Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-guide-management.svg" type="image/svg+xml" style="max-width: 100%;">
+      Guide Management Service Topology
+    </object>
   </div>
 </div>
 
@@ -195,11 +181,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="external">
-      <object data="../topology/svg/topology-external.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        External Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-external.svg" type="image/svg+xml" style="max-width: 100%;">
+      External Service Topology
+    </object>
   </div>
 </div>
 
@@ -218,11 +202,9 @@ Each domain's service topology. Click a diagram to explore the domain in detail.
     </p>
   </div>
   <div style="padding: 0 1em 1em;">
-    <a href="support">
-      <object data="../topology/svg/topology-support.svg" type="image/svg+xml" style="max-width: 100%; pointer-events: none;">
-        Support Service Topology
-      </object>
-    </a>
+    <object data="../topology/svg/topology-support.svg" type="image/svg+xml" style="max-width: 100%;">
+      Support Service Topology
+    </object>
   </div>
 </div>
 
