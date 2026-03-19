@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novatrek.reservations.entity.Reservation;
 import com.novatrek.reservations.repository.ReservationRepository;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -103,10 +104,11 @@ class ReservationsControllerTest {
     }
 
     @Test
-    void updateReservation_unimplemented_returns500() throws Exception {
-        mockMvc.perform(patch("/reservations/{reservation_id}", UUID.randomUUID())
+    void updateReservation_unimplemented_throwsException() throws Exception {
+        assertThrows(jakarta.servlet.ServletException.class, () ->
+                mockMvc.perform(patch("/reservations/{reservation_id}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isInternalServerError());
+        );
     }
 }

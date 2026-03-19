@@ -8,6 +8,7 @@ import com.novatrek.guidemanagement.repository.GuideScheduleEntryRepository;
 import com.novatrek.guidemanagement.repository.GuideRatingRepository;
 import com.novatrek.guidemanagement.repository.AvailabilityWindowRepository;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -143,10 +144,11 @@ class GuidesControllerTest {
     }
 
     @Test
-    void updateGuide_unimplemented_returns500() throws Exception {
-        mockMvc.perform(patch("/guides/{guide_id}", UUID.randomUUID())
+    void updateGuide_unimplemented_throwsException() throws Exception {
+        assertThrows(jakarta.servlet.ServletException.class, () ->
+                mockMvc.perform(patch("/guides/{guide_id}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isInternalServerError());
+        );
     }
 }

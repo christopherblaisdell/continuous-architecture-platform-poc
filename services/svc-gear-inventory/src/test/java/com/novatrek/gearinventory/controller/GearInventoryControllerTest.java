@@ -10,6 +10,7 @@ import com.novatrek.gearinventory.repository.GearAssignmentRepository;
 import com.novatrek.gearinventory.repository.MaintenanceRecordRepository;
 import com.novatrek.gearinventory.repository.InventoryLevelRepository;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -143,10 +144,11 @@ class GearInventoryControllerTest {
     }
 
     @Test
-    void updateGearItem_unimplemented_returns500() throws Exception {
-        mockMvc.perform(patch("/gear-items/{item_id}", UUID.randomUUID())
+    void updateGearItem_unimplemented_throwsException() throws Exception {
+        assertThrows(jakarta.servlet.ServletException.class, () ->
+                mockMvc.perform(patch("/gear-items/{item_id}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isInternalServerError());
+        );
     }
 }

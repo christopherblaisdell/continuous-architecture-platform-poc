@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novatrek.schedulingorchestrator.entity.ConflictResolutionResult;
 import com.novatrek.schedulingorchestrator.repository.ConflictResolutionResultRepository;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import jakarta.servlet.ServletException;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +56,14 @@ class ScheduleRequestsControllerTest {
 
         mockMvc.perform(get("/schedule-requests/{id}", id))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createScheduleRequest_throwsUnsupported() {
+        assertThrows(ServletException.class, () ->
+                mockMvc.perform(post("/schedule-requests")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+        );
     }
 }

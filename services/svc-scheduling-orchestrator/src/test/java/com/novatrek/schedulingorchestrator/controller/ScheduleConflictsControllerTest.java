@@ -3,10 +3,14 @@ package com.novatrek.schedulingorchestrator.controller;
 import com.novatrek.schedulingorchestrator.entity.ConflictResolutionResult;
 import com.novatrek.schedulingorchestrator.repository.ConflictResolutionResultRepository;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import jakarta.servlet.ServletException;
 
 import java.util.List;
 
@@ -44,5 +48,14 @@ class ScheduleConflictsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].resolutionStatus", is("FAILED")));
+    }
+
+    @Test
+    void resolveScheduleConflict_throwsUnsupported() {
+        assertThrows(ServletException.class, () ->
+                mockMvc.perform(post("/schedule-conflicts/resolve")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+        );
     }
 }
