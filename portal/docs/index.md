@@ -13,7 +13,7 @@ hide:
 
 <p class="subtitle">Living Architecture for Adventure Operations</p>
 
-<span class="version-badge">19 Services &middot; 7 Events &middot; 39 Actors &middot; 11 ADRs</span>
+<span class="version-badge"><a href="microservices/">19 Services</a> &middot; <a href="events/">7 Events</a> &middot; <a href="actors/">39 Actors</a> &middot; <a href="decisions/">11 ADRs</a></span>
 
 </div>
 
@@ -97,15 +97,15 @@ Future initiatives including CALM automated governance, test methodology, Azure 
 
 | Domain | Services |
 |--------|----------|
-| Operations | svc-check-in, svc-scheduling-orchestrator |
-| Guest Identity | svc-guest-profiles |
-| Booking | svc-reservations |
-| Product Catalog | svc-trip-catalog, svc-trail-management |
-| Safety | svc-safety-compliance |
-| Logistics | svc-transport-logistics, svc-gear-inventory |
-| Guide Management | svc-guide-management |
-| External | svc-partner-integrations |
-| Support | svc-notifications, svc-payments, svc-loyalty-rewards, svc-media-gallery, svc-analytics, svc-weather, svc-location-services, svc-inventory-procurement |
+| Operations | [svc-check-in](microservices/svc-check-in/), [svc-scheduling-orchestrator](microservices/svc-scheduling-orchestrator/) |
+| Guest Identity | [svc-guest-profiles](microservices/svc-guest-profiles/) |
+| Booking | [svc-reservations](microservices/svc-reservations/) |
+| Product Catalog | [svc-trip-catalog](microservices/svc-trip-catalog/), [svc-trail-management](microservices/svc-trail-management/) |
+| Safety | [svc-safety-compliance](microservices/svc-safety-compliance/) |
+| Logistics | [svc-transport-logistics](microservices/svc-transport-logistics/), [svc-gear-inventory](microservices/svc-gear-inventory/) |
+| Guide Management | [svc-guide-management](microservices/svc-guide-management/) |
+| External | [svc-partner-integrations](microservices/svc-partner-integrations/) |
+| Support | [svc-notifications](microservices/svc-notifications/), [svc-payments](microservices/svc-payments/), [svc-loyalty-rewards](microservices/svc-loyalty-rewards/), [svc-media-gallery](microservices/svc-media-gallery/), [svc-analytics](microservices/svc-analytics/), [svc-weather](microservices/svc-weather/), [svc-location-services](microservices/svc-location-services/), [svc-inventory-procurement](microservices/svc-inventory-procurement/) |
 
 </div>
 
@@ -114,8 +114,8 @@ Future initiatives including CALM automated governance, test methodology, Azure 
 ### :material-transit-connection-variant: Key Integration Patterns
 
 - **Synchronous REST** within bounded contexts for real-time reads
-- **Apache Kafka** event bus for cross-domain async communication
-- **API Gateway** as the single entry point for all external traffic
+- **[Apache Kafka](actors/#event-bus)** event bus for cross-domain async communication
+- **[API Gateway](actors/#api-gateway)** as the single entry point for all external traffic
 - **Saga/orchestrator pattern** for multi-service workflows (check-in, scheduling)
 - **CQRS** separation in analytics and reporting paths
 
