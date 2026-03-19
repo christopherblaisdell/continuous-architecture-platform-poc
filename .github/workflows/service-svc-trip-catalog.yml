@@ -5,49 +5,17 @@ on:
     branches: [main]
     paths:
       - 'services/svc-trip-catalog/**'
+      - '.github/workflows/service-ci.yml'
+      - '.github/workflows/service-svc-trip-catalog.yml'
   pull_request:
     paths:
       - 'services/svc-trip-catalog/**'
+      - '.github/workflows/service-ci.yml'
+      - '.github/workflows/service-svc-trip-catalog.yml'
 
 jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml
     with:
       service-name: svc-trip-catalog
-    secrets: inherit
-
-  cd-dev:
-    needs: ci
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/service-cd.yml
-    with:
-      service-name: svc-trip-catalog
-      environment: dev
-    secrets: inherit
-
-  migrate-dev:
-    needs: cd-dev
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-trip-catalog
-      environment: dev
-    secrets: inherit
-
-  cd-prod:
-    needs: [ci, cd-dev, migrate-dev]
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/service-cd.yml
-    with:
-      service-name: svc-trip-catalog
-      environment: prod
-    secrets: inherit
-
-  migrate-prod:
-    needs: cd-prod
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-trip-catalog
-      environment: prod
     secrets: inherit

@@ -5,52 +5,19 @@ on:
     branches: [main]
     paths:
       - 'services/svc-check-in/**'
+      - '.github/workflows/service-ci.yml'
+      - '.github/workflows/service-svc-check-in.yml'
       - 'config/adventure-classification.yaml'
   pull_request:
     paths:
       - 'services/svc-check-in/**'
+      - '.github/workflows/service-ci.yml'
+      - '.github/workflows/service-svc-check-in.yml'
+      - 'config/adventure-classification.yaml'
 
 jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml
     with:
       service-name: svc-check-in
-    secrets: inherit
-
-  cd-dev:
-    needs: ci
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/service-cd.yml
-    with:
-      service-name: svc-check-in
-      environment: dev
-    secrets: inherit
-
-  migrate-dev:
-    needs: cd-dev
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-check-in
-      environment: dev
-      schema-name: checkin
-    secrets: inherit
-
-  cd-prod:
-    needs: [ci, cd-dev, migrate-dev]
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/service-cd.yml
-    with:
-      service-name: svc-check-in
-      environment: prod
-    secrets: inherit
-
-  migrate-prod:
-    needs: cd-prod
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-check-in
-      environment: prod
-      schema-name: checkin
     secrets: inherit

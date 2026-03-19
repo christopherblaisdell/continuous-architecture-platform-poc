@@ -5,49 +5,17 @@ on:
     branches: [main]
     paths:
       - 'services/svc-guest-profiles/**'
+      - '.github/workflows/service-ci.yml'
+      - '.github/workflows/service-svc-guest-profiles.yml'
   pull_request:
     paths:
       - 'services/svc-guest-profiles/**'
+      - '.github/workflows/service-ci.yml'
+      - '.github/workflows/service-svc-guest-profiles.yml'
 
 jobs:
   ci:
     uses: ./.github/workflows/service-ci.yml
     with:
       service-name: svc-guest-profiles
-    secrets: inherit
-
-  cd-dev:
-    needs: ci
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/service-cd.yml
-    with:
-      service-name: svc-guest-profiles
-      environment: dev
-    secrets: inherit
-
-  migrate-dev:
-    needs: cd-dev
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-guest-profiles
-      environment: dev
-    secrets: inherit
-
-  cd-prod:
-    needs: [ci, cd-dev, migrate-dev]
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/service-cd.yml
-    with:
-      service-name: svc-guest-profiles
-      environment: prod
-    secrets: inherit
-
-  migrate-prod:
-    needs: cd-prod
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-guest-profiles
-      environment: prod
     secrets: inherit
