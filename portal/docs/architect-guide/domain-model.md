@@ -16,15 +16,15 @@ The platform is decomposed into 9 bounded contexts, each owning a set of microse
 
 | Domain | Services | Team | Responsibility |
 |--------|----------|------|----------------|
-| **Operations** | [svc-check-in](../microservices/svc-check-in/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | NovaTrek Operations | Day-of-adventure workflows, schedule management |
-| **Guest Identity** | [svc-guest-profiles](../microservices/svc-guest-profiles/) | Guest Experience | Guest identity resolution, profile management |
-| **Booking** | [svc-reservations](../microservices/svc-reservations/) | Booking Platform | Reservation lifecycle |
-| **Product Catalog** | [svc-trip-catalog](../microservices/svc-trip-catalog/), [svc-trail-management](../microservices/svc-trail-management/) | Product | Adventure products and trail data |
-| **Safety** | [svc-safety-compliance](../microservices/svc-safety-compliance/) | Safety and Compliance | Waivers, safety certifications, compliance |
-| **Logistics** | [svc-transport-logistics](../microservices/svc-transport-logistics/), [svc-gear-inventory](../microservices/svc-gear-inventory/) | Logistics | Transport coordination, gear tracking |
-| **Guide Management** | [svc-guide-management](../microservices/svc-guide-management/) | Guide Operations | Guide assignments, certifications, preferences |
-| **External** | [svc-partner-integrations](../microservices/svc-partner-integrations/) | Integration | Third-party booking channels, external systems |
-| **Support** | [svc-notifications](../microservices/svc-notifications/), [svc-payments](../microservices/svc-payments/), [svc-loyalty-rewards](../microservices/svc-loyalty-rewards/), [svc-media-gallery](../microservices/svc-media-gallery/), [svc-analytics](../microservices/svc-analytics/), [svc-weather](../microservices/svc-weather/), [svc-location-services](../microservices/svc-location-services/), [svc-inventory-procurement](../microservices/svc-inventory-procurement/) | Various | Cross-cutting platform services |
+| **[Operations](../topology/domain-views.md#operations)** | [svc-check-in](../microservices/svc-check-in/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | NovaTrek Operations | Day-of-adventure workflows, schedule management |
+| **[Guest Identity](../topology/domain-views.md#guest-identity)** | [svc-guest-profiles](../microservices/svc-guest-profiles/) | Guest Experience | Guest identity resolution, profile management |
+| **[Booking](../topology/domain-views.md#booking)** | [svc-reservations](../microservices/svc-reservations/) | Booking Platform | Reservation lifecycle |
+| **[Product Catalog](../topology/domain-views.md#product-catalog)** | [svc-trip-catalog](../microservices/svc-trip-catalog/), [svc-trail-management](../microservices/svc-trail-management/) | Product | Adventure products and trail data |
+| **[Safety](../topology/domain-views.md#safety)** | [svc-safety-compliance](../microservices/svc-safety-compliance/) | Safety and Compliance | Waivers, safety certifications, compliance |
+| **[Logistics](../topology/domain-views.md#logistics)** | [svc-transport-logistics](../microservices/svc-transport-logistics/), [svc-gear-inventory](../microservices/svc-gear-inventory/) | Logistics | Transport coordination, gear tracking |
+| **[Guide Management](../topology/domain-views.md#guide-management)** | [svc-guide-management](../microservices/svc-guide-management/) | Guide Operations | Guide assignments, certifications, preferences |
+| **[External](../topology/domain-views.md#external)** | [svc-partner-integrations](../microservices/svc-partner-integrations/) | Integration | Third-party booking channels, external systems |
+| **[Support](../topology/domain-views.md#support)** | [svc-notifications](../microservices/svc-notifications/), [svc-payments](../microservices/svc-payments/), [svc-loyalty-rewards](../microservices/svc-loyalty-rewards/), [svc-media-gallery](../microservices/svc-media-gallery/), [svc-analytics](../microservices/svc-analytics/), [svc-weather](../microservices/svc-weather/), [svc-location-services](../microservices/svc-location-services/), [svc-inventory-procurement](../microservices/svc-inventory-procurement/) | Various | Cross-cutting platform services |
 
 ---
 
