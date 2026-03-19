@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 840 640" width="100%" height="auto">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 840 640" width="100%">
 <rect x="-20" y="-20" width="840" height="640" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
 <rect x="0" y="0" width="240" height="600" fill="#2C3E50" stroke="#2C3E50" stroke-width="2" rx="4"/>
 <text x="15" y="31" font-size="16" fill="#FFFFFF" font-family="sans-serif">Operations Dashboard</text>
 <text x="15" y="94" font-size="14" fill="#4CAF50" font-family="sans-serif">Live Tracking</text>
 <text x="15" y="134" font-size="14" fill="#CCCCCC" font-family="sans-serif">Adventures Today</text>
-<text x="15" y="174" font-size="14" fill="#CCCCCC" font-family="sans-serif">Alerts & Incidents</text>
+<text x="15" y="174" font-size="14" fill="#CCCCCC" font-family="sans-serif">Alerts &amp; Incidents</text>
 <rect x="240" y="0" width="560" height="60" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" rx="4"/>
 <text x="260" y="33" font-size="18" fill="#333333" font-family="sans-serif">Live Adventure Tracking - 15 Active Adventures</text>
 <rect x="240" y="80" width="560" height="350" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="4"/>
