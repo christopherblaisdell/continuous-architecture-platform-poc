@@ -181,4 +181,45 @@ class PartnerIntegrationsControllerTest {
         mockMvc.perform(post("/partner-bookings/{id}/confirm", id))
                 .andExpect(status().isOk());
     }
+
+    // --- PartnerBookingsController PATCH coverage ---
+
+    @Test
+    void updatePartnerBooking_allFields() throws Exception {
+        UUID id = UUID.randomUUID();
+        PartnerBooking existing = new PartnerBooking();
+        existing.setId(id);
+        when(partnerBookingRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(partnerBookingRepository.save(any(PartnerBooking.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/partner-bookings/{bookingId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"partnerId\":\"00000000-0000-0000-0000-000000000001\",\"externalReference\":\"EXT-ALL\",\"reservationId\":\"00000000-0000-0000-0000-000000000002\",\"status\":\"PENDING\",\"commissionRate\":15.00,\"commissionAmount\":150.00,\"bookingTotal\":1000.00,\"activityId\":\"00000000-0000-0000-0000-000000000003\",\"tripDate\":\"2026-06-15\",\"participantCount\":4}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePartnerBooking_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        PartnerBooking existing = new PartnerBooking();
+        existing.setId(id);
+        when(partnerBookingRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(partnerBookingRepository.save(any(PartnerBooking.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/partner-bookings/{bookingId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePartnerBooking_notFound() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(partnerBookingRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/partner-bookings/{bookingId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

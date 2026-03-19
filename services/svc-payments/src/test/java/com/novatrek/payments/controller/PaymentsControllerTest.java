@@ -216,4 +216,45 @@ class PaymentsControllerTest {
         mockMvc.perform(get("/guests/{guestId}/payment-history", guestId))
                 .andExpect(status().isNotFound());
     }
+
+    // --- DisputesController PATCH coverage ---
+
+    @Test
+    void updateDispute_allFields() throws Exception {
+        UUID id = UUID.randomUUID();
+        Dispute existing = new Dispute();
+        existing.setId(id);
+        when(disputeRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(disputeRepository.save(any(Dispute.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/disputes/{disputeId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"paymentId\":\"00000000-0000-0000-0000-000000000001\",\"reservationId\":\"00000000-0000-0000-0000-000000000002\",\"guestId\":\"00000000-0000-0000-0000-000000000003\",\"type\":\"CANCELLATION\",\"status\":\"UNDER_REVIEW\",\"tier\":\"AGENT\",\"amountRequested\":500.00,\"amountApproved\":400.00,\"resolution\":\"PARTIAL_REFUND\",\"justification\":\"Below standard\",\"assignedTo\":\"agent-1\",\"rev\":2}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateDispute_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        Dispute existing = new Dispute();
+        existing.setId(id);
+        when(disputeRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(disputeRepository.save(any(Dispute.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/disputes/{disputeId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateDispute_notFound() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(disputeRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/disputes/{disputeId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

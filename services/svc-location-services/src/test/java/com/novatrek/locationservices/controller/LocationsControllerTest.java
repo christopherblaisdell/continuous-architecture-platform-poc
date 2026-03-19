@@ -194,4 +194,24 @@ class LocationsControllerTest {
         mockMvc.perform(get("/locations/{id}/operating-hours", id))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void updateLocation_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        Location existing = new Location();
+        existing.setId(id);
+        existing.setName("Base Camp");
+        existing.setType(Location.LocationType.BASE_CAMP);
+        existing.setRegionId(UUID.randomUUID());
+        existing.setCapacity(50);
+        existing.setStatus(Location.LocationStatus.ACTIVE);
+
+        when(locationRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(locationRepository.save(any(Location.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/locations/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
 }

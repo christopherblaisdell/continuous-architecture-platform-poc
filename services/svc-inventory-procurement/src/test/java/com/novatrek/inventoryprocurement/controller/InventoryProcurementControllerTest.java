@@ -165,4 +165,45 @@ class InventoryProcurementControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
     }
+
+    // --- PurchaseOrdersController PATCH coverage ---
+
+    @Test
+    void updatePurchaseOrder_allFields() throws Exception {
+        UUID poId = UUID.randomUUID();
+        PurchaseOrder existing = new PurchaseOrder();
+        existing.setId(poId);
+        when(purchaseOrderRepository.findById(poId)).thenReturn(Optional.of(existing));
+        when(purchaseOrderRepository.save(any(PurchaseOrder.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/purchase-orders/{poId}", poId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"supplierId\":\"00000000-0000-0000-0000-000000000001\",\"status\":\"APPROVED\",\"totalAmount\":2500.00,\"currency\":\"USD\",\"deliveryLocationId\":\"00000000-0000-0000-0000-000000000002\",\"expectedDeliveryDate\":\"2026-06-01\",\"notes\":\"urgent\",\"createdBy\":\"00000000-0000-0000-0000-000000000003\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePurchaseOrder_emptyBody() throws Exception {
+        UUID poId = UUID.randomUUID();
+        PurchaseOrder existing = new PurchaseOrder();
+        existing.setId(poId);
+        when(purchaseOrderRepository.findById(poId)).thenReturn(Optional.of(existing));
+        when(purchaseOrderRepository.save(any(PurchaseOrder.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/purchase-orders/{poId}", poId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePurchaseOrder_notFound() throws Exception {
+        UUID poId = UUID.randomUUID();
+        when(purchaseOrderRepository.findById(poId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/purchase-orders/{poId}", poId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

@@ -207,4 +207,43 @@ class WildlifeTrackingControllerTest {
                         .content("{\"status\":\"cancelled\"}"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void updateWildlifeAlert_allFields() throws Exception {
+        UUID id = UUID.randomUUID();
+        WildlifeAlert existing = new WildlifeAlert();
+        existing.setAlertId(id);
+        when(wildlifeAlertRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(wildlifeAlertRepository.save(any(WildlifeAlert.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/alerts/{alertId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"speciesId\":\"00000000-0000-0000-0000-000000000001\",\"speciesName\":\"Mountain Lion\",\"sightingId\":\"00000000-0000-0000-0000-000000000002\",\"threatLevel\":\"HIGH\",\"status\":\"active\",\"radiusMeters\":500,\"recommendedAction\":\"Avoid area\",\"notes\":\"Near trail 7\",\"rev\":\"2\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateWildlifeAlert_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        WildlifeAlert existing = new WildlifeAlert();
+        existing.setAlertId(id);
+        when(wildlifeAlertRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(wildlifeAlertRepository.save(any(WildlifeAlert.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/alerts/{alertId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateWildlifeAlert_notFound() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(wildlifeAlertRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/alerts/{alertId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

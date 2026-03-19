@@ -141,4 +141,12 @@ class GearInventoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    void updateGearItem_unimplemented_returns500() throws Exception {
+        mockMvc.perform(patch("/gear-items/{item_id}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isInternalServerError());
+    }
 }

@@ -220,4 +220,43 @@ class SafetyComplianceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("RESOLVED")));
     }
+
+    @Test
+    void updateIncident_allFields() throws Exception {
+        UUID id = UUID.randomUUID();
+        IncidentReport existing = new IncidentReport();
+        existing.setId(id);
+        when(incidentReportRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(incidentReportRepository.save(any(IncidentReport.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/incidents/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservationId\":\"00000000-0000-0000-0000-000000000001\",\"guideId\":\"00000000-0000-0000-0000-000000000002\",\"type\":\"INJURY\",\"severity\":\"MEDIUM\",\"description\":\"Test\",\"actionsTaken\":\"First aid\",\"followUpRequired\":true,\"followUpNotes\":\"Check tomorrow\",\"status\":\"UNDER_REVIEW\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateIncident_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        IncidentReport existing = new IncidentReport();
+        existing.setId(id);
+        when(incidentReportRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(incidentReportRepository.save(any(IncidentReport.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/incidents/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateIncident_notFound() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(incidentReportRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/incidents/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

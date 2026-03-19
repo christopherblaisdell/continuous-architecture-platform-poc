@@ -101,4 +101,12 @@ class ReservationsControllerTest {
                         .content(objectMapper.writeValueAsString(r)))
                 .andExpect(status().isCreated());
     }
+
+    @Test
+    void updateReservation_unimplemented_returns500() throws Exception {
+        mockMvc.perform(patch("/reservations/{reservation_id}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isInternalServerError());
+    }
 }

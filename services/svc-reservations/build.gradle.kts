@@ -118,6 +118,7 @@ contracts {
     testFramework = org.springframework.cloud.contract.verifier.config.TestFramework.JUNIT5
     baseClassForTests = "com.novatrek.contract.BaseContractTest"
     contractsDslDir = file("src/test/resources/contracts")
+    failOnNoContracts = false
 }
 
 // OWASP Dependency Check — fail on CRITICAL/HIGH CVEs

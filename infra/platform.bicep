@@ -96,6 +96,7 @@ var allDatabases = [
   'location'
   'partners'
   'procurement'
+  'reviews'
 ]
 
 // Blob containers

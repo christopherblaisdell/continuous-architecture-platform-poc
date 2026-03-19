@@ -129,4 +129,26 @@ class CheckInsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("INITIATED")));
     }
+
+    @Test
+    void verifyGear_notFound_returns404() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(checkInRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/check-ins/{id}/gear-verification", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void assignWristband_notFound_returns404() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(checkInRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/check-ins/{id}/wristband-assignment", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

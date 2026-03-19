@@ -168,4 +168,45 @@ class EmergencyResponseControllerTest {
                         .content("{\"priority\":\"critical\"}"))
                 .andExpect(status().isOk());
     }
+
+    // --- EmergenciesController PATCH coverage ---
+
+    @Test
+    void updateEmergency_allFields() throws Exception {
+        UUID id = UUID.randomUUID();
+        Emergency existing = new Emergency();
+        existing.setEmergencyId(id);
+        when(emergencyRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(emergencyRepository.save(any(Emergency.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/emergencies/{emergencyId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"guestId\":\"00000000-0000-0000-0000-000000000001\",\"reservationId\":\"00000000-0000-0000-0000-000000000002\",\"type\":\"MEDICAL\",\"severity\":\"HIGH\",\"status\":\"IN_PROGRESS\",\"description\":\"Test\",\"reportedBy\":\"Guide\",\"dispatchId\":\"00000000-0000-0000-0000-000000000003\",\"resolutionNotes\":\"Resolved\",\"rev\":\"2\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateEmergency_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        Emergency existing = new Emergency();
+        existing.setEmergencyId(id);
+        when(emergencyRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(emergencyRepository.save(any(Emergency.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/emergencies/{emergencyId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateEmergency_notFound() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(emergencyRepository.findById(id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/emergencies/{emergencyId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound());
+    }
 }

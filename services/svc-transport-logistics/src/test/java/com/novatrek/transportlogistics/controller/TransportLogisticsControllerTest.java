@@ -215,4 +215,34 @@ class TransportLogisticsControllerTest {
         mockMvc.perform(get("/transport-requests/{id}", id))
                 .andExpect(status().isNotFound());
     }
+
+    // --- VehiclesController PATCH coverage ---
+
+    @Test
+    void updateVehicle_allFields() throws Exception {
+        UUID id = UUID.randomUUID();
+        Vehicle existing = new Vehicle();
+        existing.setId(id);
+        when(vehicleRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(vehicleRepository.save(any(Vehicle.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/vehicles/{vehicleId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"type\":\"SHUTTLE_BUS\",\"capacity\":15,\"licensePlate\":\"NT-9999\",\"status\":\"AVAILABLE\",\"assignedLocationId\":\"00000000-0000-0000-0000-000000000001\",\"mileage\":50000,\"lastMaintenanceDate\":\"2026-01-15\",\"nextMaintenanceDate\":\"2026-07-15\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateVehicle_emptyBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        Vehicle existing = new Vehicle();
+        existing.setId(id);
+        when(vehicleRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(vehicleRepository.save(any(Vehicle.class))).thenReturn(existing);
+
+        mockMvc.perform(patch("/vehicles/{vehicleId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isOk());
+    }
 }

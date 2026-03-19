@@ -141,4 +141,12 @@ class GuidesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    void updateGuide_unimplemented_returns500() throws Exception {
+        mockMvc.perform(patch("/guides/{guide_id}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isInternalServerError());
+    }
 }
