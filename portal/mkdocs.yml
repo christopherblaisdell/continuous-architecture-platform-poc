@@ -199,7 +199,7 @@ nav:
       - NTK-10007: tickets/NTK-10007.md
       - NTK-10008: tickets/NTK-10008.md
       - NTK-10009: tickets/NTK-10009.md
-  - Design Standards:
+  - Standards:
     - standards/index.md
     - arc42 Template:
       - standards/arc42/index.md

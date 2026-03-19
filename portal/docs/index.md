@@ -63,7 +63,7 @@ Consolidated inventory with domain ownership, API contracts, dependencies, and O
 <a href="standards/" class="portal-card" markdown>
 <span class="card-icon">:material-draw:</span>
 
-### Design Standards
+### Standards
 
 arc42 templates, C4 model notation, MADR decision records, ISO 25010 quality attributes, and ADR templates.
 </a>
