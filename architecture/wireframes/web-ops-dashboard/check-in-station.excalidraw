@@ -1,0 +1,350 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 240,
+      "height": 700,
+      "backgroundColor": "#2C3E50",
+      "strokeColor": "#2C3E50"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 15,
+      "y": 15,
+      "text": "Operations Dashboard",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "menu_1",
+      "x": 15,
+      "y": 80,
+      "text": "Daily Schedule",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_active",
+      "x": 15,
+      "y": 120,
+      "text": "Check-In Station",
+      "fontSize": 14,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "menu_3",
+      "x": 15,
+      "y": 160,
+      "text": "Guide Assignment",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_4",
+      "x": 15,
+      "y": 200,
+      "text": "Safety Incidents",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_header",
+      "x": 240,
+      "y": 0,
+      "width": 760,
+      "height": 60,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "x": 260,
+      "y": 15,
+      "text": "Check-In Station",
+      "fontSize": 18,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "search_bar",
+      "x": 260,
+      "y": 80,
+      "width": 400,
+      "height": 40,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#BDBDBD"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "x": 275,
+      "y": 90,
+      "text": "Scan QR code or enter reservation ID...",
+      "fontSize": 13,
+      "strokeColor": "#9E9E9E"
+    },
+    {
+      "type": "rectangle",
+      "id": "search_btn",
+      "x": 670,
+      "y": 80,
+      "width": 100,
+      "height": 40,
+      "backgroundColor": "#1565C0",
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "search_btn_text",
+      "x": 695,
+      "y": 90,
+      "text": "Lookup",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "reservation_panel",
+      "x": 260,
+      "y": 140,
+      "width": 350,
+      "height": 220,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "res_title",
+      "x": 275,
+      "y": 150,
+      "text": "Reservation Details",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "res_data",
+      "x": 275,
+      "y": 180,
+      "text": "Confirmation:  RES-2026-4821\nAdventure:     Sunrise Peak Hike\nDate:          March 19, 2026\nGuests:        2 adults\nPattern:       Pattern 2 (Guided)\nStatus:        Confirmed",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "guest_panel",
+      "x": 630,
+      "y": 140,
+      "width": 350,
+      "height": 220,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "guest_title",
+      "x": 645,
+      "y": 150,
+      "text": "Guest Identity Verification",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "guest_data",
+      "x": 645,
+      "y": 180,
+      "text": "Name:          Sarah Johnson\nEmail:         sarah.j@example.com\nPhone:         +1 (555) 234-5678\nLoyalty Tier:   Gold Member",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "verify_btn",
+      "x": 645,
+      "y": 300,
+      "width": 140,
+      "height": 35,
+      "backgroundColor": "#4CAF50",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "verify_btn_text",
+      "x": 665,
+      "y": 308,
+      "text": "Identity Verified",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "checklist_panel",
+      "x": 260,
+      "y": 380,
+      "width": 350,
+      "height": 300,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "checklist_title",
+      "x": 275,
+      "y": 390,
+      "text": "Check-In Checklist",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "check_1",
+      "x": 275,
+      "y": 425,
+      "text": "[x]  Reservation verified",
+      "fontSize": 13,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "check_2",
+      "x": 275,
+      "y": 455,
+      "text": "[x]  Guest identity confirmed",
+      "fontSize": 13,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "check_3",
+      "x": 275,
+      "y": 485,
+      "text": "[x]  Waiver signed (2026-03-18)",
+      "fontSize": 13,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "check_4",
+      "x": 275,
+      "y": 515,
+      "text": "[ ]  Gear package assigned",
+      "fontSize": 13,
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "check_5",
+      "x": 275,
+      "y": 545,
+      "text": "[ ]  Wristband issued",
+      "fontSize": 13,
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "rectangle",
+      "id": "complete_btn",
+      "x": 275,
+      "y": 590,
+      "width": 200,
+      "height": 45,
+      "backgroundColor": "#E0E0E0",
+      "strokeColor": "#BDBDBD"
+    },
+    {
+      "type": "text",
+      "id": "complete_btn_text",
+      "x": 310,
+      "y": 602,
+      "text": "Complete Check-In",
+      "fontSize": 14,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "rectangle",
+      "id": "gear_panel",
+      "x": 630,
+      "y": 380,
+      "width": 350,
+      "height": 300,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "gear_title",
+      "x": 645,
+      "y": 390,
+      "text": "Gear Assignment",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "gear_data",
+      "x": 645,
+      "y": 425,
+      "text": "Recommended Gear Package:\n\n  Hiking boots (Size 9)\n  Trekking poles (pair)\n  Hydration pack (2L)\n  Safety helmet\n  First aid kit (personal)",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "assign_gear_btn",
+      "x": 645,
+      "y": 580,
+      "width": 160,
+      "height": 35,
+      "backgroundColor": "#1565C0",
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "assign_gear_btn_text",
+      "x": 675,
+      "y": 588,
+      "text": "Assign Gear",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "wristband_btn",
+      "x": 830,
+      "y": 580,
+      "width": 140,
+      "height": 35,
+      "backgroundColor": "#FF9800",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "wristband_btn_text",
+      "x": 848,
+      "y": 588,
+      "text": "Issue Wristband",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    }
+  ],
+  "appState": {
+    "name": "Operations Dashboard - Check-In Station",
+    "currentItemBackgroundColor": "#ffffff",
+    "currentItemOpacity": 100,
+    "fileTitle": "check-in-station",
+    "gridMode": false
+  }
+}

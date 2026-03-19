@@ -1,0 +1,590 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 240,
+      "height": 700,
+      "backgroundColor": "#2C3E50",
+      "strokeColor": "#2C3E50"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 15,
+      "y": 15,
+      "text": "Operations Dashboard",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "menu_1",
+      "x": 15,
+      "y": 80,
+      "text": "Daily Schedule",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_2",
+      "x": 15,
+      "y": 120,
+      "text": "Check-In Station",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_3",
+      "x": 15,
+      "y": 160,
+      "text": "Guide Assignment",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_active",
+      "x": 15,
+      "y": 200,
+      "text": "Safety Incidents",
+      "fontSize": 14,
+      "strokeColor": "#E91E63"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_header",
+      "x": 240,
+      "y": 0,
+      "width": 760,
+      "height": 60,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "x": 260,
+      "y": 15,
+      "text": "Safety Incident Board",
+      "fontSize": 18,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "new_incident_btn",
+      "x": 830,
+      "y": 12,
+      "width": 150,
+      "height": 35,
+      "backgroundColor": "#E91E63",
+      "strokeColor": "#E91E63"
+    },
+    {
+      "type": "text",
+      "id": "new_incident_text",
+      "x": 852,
+      "y": 20,
+      "text": "Log Incident",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_active",
+      "x": 260,
+      "y": 80,
+      "width": 160,
+      "height": 80,
+      "backgroundColor": "#FFEBEE",
+      "strokeColor": "#E91E63"
+    },
+    {
+      "type": "text",
+      "id": "stat_active_label",
+      "x": 275,
+      "y": 90,
+      "text": "Active Incidents",
+      "fontSize": 12,
+      "strokeColor": "#AD1457"
+    },
+    {
+      "type": "text",
+      "id": "stat_active_value",
+      "x": 315,
+      "y": 118,
+      "text": "3",
+      "fontSize": 24,
+      "strokeColor": "#C62828"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_today",
+      "x": 440,
+      "y": 80,
+      "width": 160,
+      "height": 80,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "stat_today_label",
+      "x": 455,
+      "y": 90,
+      "text": "Logged Today",
+      "fontSize": 12,
+      "strokeColor": "#E65100"
+    },
+    {
+      "type": "text",
+      "id": "stat_today_value",
+      "x": 500,
+      "y": 118,
+      "text": "5",
+      "fontSize": 24,
+      "strokeColor": "#E65100"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_resolved",
+      "x": 620,
+      "y": 80,
+      "width": 160,
+      "height": 80,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "stat_resolved_label",
+      "x": 635,
+      "y": 90,
+      "text": "Resolved Today",
+      "fontSize": 12,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "text",
+      "id": "stat_resolved_value",
+      "x": 680,
+      "y": 118,
+      "text": "2",
+      "fontSize": 24,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "rectangle",
+      "id": "stat_avg",
+      "x": 800,
+      "y": 80,
+      "width": 160,
+      "height": 80,
+      "backgroundColor": "#E3F2FD",
+      "strokeColor": "#2196F3"
+    },
+    {
+      "type": "text",
+      "id": "stat_avg_label",
+      "x": 815,
+      "y": 90,
+      "text": "Avg Resolution",
+      "fontSize": 12,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "stat_avg_value",
+      "x": 845,
+      "y": 118,
+      "text": "18 min",
+      "fontSize": 20,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "rectangle",
+      "id": "incident_table_hdr",
+      "x": 260,
+      "y": 185,
+      "width": 700,
+      "height": 35,
+      "backgroundColor": "#F5F5F5",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "hdr_id",
+      "x": 275,
+      "y": 193,
+      "text": "ID",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_severity",
+      "x": 345,
+      "y": 193,
+      "text": "Severity",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_desc",
+      "x": 445,
+      "y": 193,
+      "text": "Description",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_guest",
+      "x": 635,
+      "y": 193,
+      "text": "Guest",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_guide",
+      "x": 755,
+      "y": 193,
+      "text": "Guide",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_status",
+      "x": 885,
+      "y": 193,
+      "text": "Status",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "rectangle",
+      "id": "inc_row_1",
+      "x": 260,
+      "y": 220,
+      "width": 700,
+      "height": 50,
+      "backgroundColor": "#FFEBEE",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "r1_id",
+      "x": 275,
+      "y": 235,
+      "text": "INC-042",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "r1_sev_badge",
+      "x": 345,
+      "y": 230,
+      "width": 65,
+      "height": 22,
+      "backgroundColor": "#E91E63",
+      "strokeColor": "#E91E63"
+    },
+    {
+      "type": "text",
+      "id": "r1_sev",
+      "x": 355,
+      "y": 234,
+      "text": "Critical",
+      "fontSize": 11,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "r1_desc",
+      "x": 445,
+      "y": 228,
+      "text": "Guest ankle injury on\nRidge Trail descent",
+      "fontSize": 11,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r1_guest",
+      "x": 635,
+      "y": 235,
+      "text": "J. Williams",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r1_guide",
+      "x": 755,
+      "y": 235,
+      "text": "M. Chen",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r1_status",
+      "x": 885,
+      "y": 235,
+      "text": "Active",
+      "fontSize": 12,
+      "strokeColor": "#C62828"
+    },
+    {
+      "type": "rectangle",
+      "id": "inc_row_2",
+      "x": 260,
+      "y": 270,
+      "width": 700,
+      "height": 50,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "r2_id",
+      "x": 275,
+      "y": 285,
+      "text": "INC-041",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "r2_sev_badge",
+      "x": 345,
+      "y": 280,
+      "width": 65,
+      "height": 22,
+      "backgroundColor": "#FF9800",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "r2_sev",
+      "x": 352,
+      "y": 284,
+      "text": "Warning",
+      "fontSize": 11,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "r2_desc",
+      "x": 445,
+      "y": 278,
+      "text": "Equipment malfunction\nzipline harness #7",
+      "fontSize": 11,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r2_guest",
+      "x": 635,
+      "y": 285,
+      "text": "N/A",
+      "fontSize": 12,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "text",
+      "id": "r2_guide",
+      "x": 755,
+      "y": 285,
+      "text": "C. Rivera",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r2_status",
+      "x": 885,
+      "y": 285,
+      "text": "Active",
+      "fontSize": 12,
+      "strokeColor": "#E65100"
+    },
+    {
+      "type": "rectangle",
+      "id": "inc_row_3",
+      "x": 260,
+      "y": 320,
+      "width": 700,
+      "height": 50,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "r3_id",
+      "x": 275,
+      "y": 335,
+      "text": "INC-040",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "r3_sev_badge",
+      "x": 345,
+      "y": 330,
+      "width": 50,
+      "height": 22,
+      "backgroundColor": "#4CAF50",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "r3_sev",
+      "x": 355,
+      "y": 334,
+      "text": "Low",
+      "fontSize": 11,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "r3_desc",
+      "x": 445,
+      "y": 328,
+      "text": "Minor trail obstruction\nfallen branch, Sunset Loop",
+      "fontSize": 11,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r3_guest",
+      "x": 635,
+      "y": 335,
+      "text": "N/A",
+      "fontSize": 12,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "text",
+      "id": "r3_guide",
+      "x": 755,
+      "y": 335,
+      "text": "A. Patel",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "r3_status",
+      "x": 885,
+      "y": 335,
+      "text": "Resolved",
+      "fontSize": 12,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "rectangle",
+      "id": "detail_panel",
+      "x": 260,
+      "y": 395,
+      "width": 700,
+      "height": 285,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "detail_title",
+      "x": 275,
+      "y": 405,
+      "text": "Incident Detail - INC-042",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "detail_data",
+      "x": 275,
+      "y": 435,
+      "text": "Reported:      2026-03-19 09:45 AM\nLocation:      Ridge Trail, marker 14\nSeverity:      Critical\nGuest:         James Williams (guest-4821)\nGuide:         Maria Chen\nDescription:   Guest twisted ankle on steep descent.\n               Assessed on-site, moderate swelling.\n               Medical transport requested.",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "notify_btn",
+      "x": 275,
+      "y": 600,
+      "width": 160,
+      "height": 35,
+      "backgroundColor": "#FF9800",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "notify_btn_text",
+      "x": 300,
+      "y": 608,
+      "text": "Send Alert",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "resolve_btn",
+      "x": 460,
+      "y": 600,
+      "width": 160,
+      "height": 35,
+      "backgroundColor": "#4CAF50",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "resolve_btn_text",
+      "x": 490,
+      "y": 608,
+      "text": "Resolve",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "report_btn",
+      "x": 645,
+      "y": 600,
+      "width": 180,
+      "height": 35,
+      "backgroundColor": "#1565C0",
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "report_btn_text",
+      "x": 660,
+      "y": 608,
+      "text": "Regulatory Report",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    }
+  ],
+  "appState": {
+    "name": "Operations Dashboard - Safety Incident Board",
+    "currentItemBackgroundColor": "#ffffff",
+    "currentItemOpacity": 100,
+    "fileTitle": "safety-incident-board",
+    "gridMode": false
+  }
+}

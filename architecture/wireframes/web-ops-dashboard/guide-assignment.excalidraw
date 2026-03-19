@@ -1,0 +1,479 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 240,
+      "height": 700,
+      "backgroundColor": "#2C3E50",
+      "strokeColor": "#2C3E50"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 15,
+      "y": 15,
+      "text": "Operations Dashboard",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "menu_1",
+      "x": 15,
+      "y": 80,
+      "text": "Daily Schedule",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_2",
+      "x": 15,
+      "y": 120,
+      "text": "Check-In Station",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_active",
+      "x": 15,
+      "y": 160,
+      "text": "Guide Assignment",
+      "fontSize": 14,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "menu_4",
+      "x": 15,
+      "y": 200,
+      "text": "Safety Incidents",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_header",
+      "x": 240,
+      "y": 0,
+      "width": 760,
+      "height": 60,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "x": 260,
+      "y": 15,
+      "text": "Guide Assignment - March 19, 2026",
+      "fontSize": 18,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "adventure_select_panel",
+      "x": 260,
+      "y": 80,
+      "width": 700,
+      "height": 50,
+      "backgroundColor": "#F5F5F5",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "adventure_select_label",
+      "x": 275,
+      "y": 92,
+      "text": "Adventure:",
+      "fontSize": 13,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "rectangle",
+      "id": "adventure_dropdown",
+      "x": 365,
+      "y": 85,
+      "width": 350,
+      "height": 35,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#BDBDBD"
+    },
+    {
+      "type": "text",
+      "id": "adventure_dropdown_text",
+      "x": 380,
+      "y": 95,
+      "text": "Canopy Zipline Tour - 09:00 AM (Needs Guide)",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "adventure_detail",
+      "x": 260,
+      "y": 150,
+      "width": 340,
+      "height": 180,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "adv_detail_title",
+      "x": 275,
+      "y": 160,
+      "text": "Adventure Details",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "adv_detail_data",
+      "x": 275,
+      "y": 190,
+      "text": "Type:          Zipline / Canopy\nPattern:       Pattern 3 (Full Service)\nTrail:         Eagle Ridge Canopy\nTrail Status:  Open\nCapacity:      15 guests\nBooked:        10 guests\nRequired Cert: Zipline Safety L2",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "trail_panel",
+      "x": 620,
+      "y": 150,
+      "width": 340,
+      "height": 180,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "trail_title",
+      "x": 635,
+      "y": 160,
+      "text": "Trail Status (svc-trail-management)",
+      "fontSize": 13,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "text",
+      "id": "trail_data",
+      "x": 635,
+      "y": 190,
+      "text": "Name:          Eagle Ridge Canopy Trail\nCondition:     Good\nLast Inspected: 2026-03-18\nHazards:       None reported\nEquipment:     All platforms inspected\nWeather Clear: Yes",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "guide_table_header",
+      "x": 260,
+      "y": 350,
+      "width": 700,
+      "height": 35,
+      "backgroundColor": "#F5F5F5",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "guide_hdr_name",
+      "x": 275,
+      "y": 358,
+      "text": "Guide Name",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "guide_hdr_cert",
+      "x": 435,
+      "y": 358,
+      "text": "Certifications",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "guide_hdr_avail",
+      "x": 620,
+      "y": 358,
+      "text": "Availability",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "guide_hdr_rating",
+      "x": 755,
+      "y": 358,
+      "text": "Rating",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "guide_hdr_action",
+      "x": 880,
+      "y": 358,
+      "text": "Action",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "rectangle",
+      "id": "guide_row_1",
+      "x": 260,
+      "y": 385,
+      "width": 700,
+      "height": 45,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "g1_name",
+      "x": 275,
+      "y": 397,
+      "text": "Carlos Rivera",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "g1_cert",
+      "x": 435,
+      "y": 397,
+      "text": "Zipline L2, First Aid",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "g1_avail",
+      "x": 620,
+      "y": 397,
+      "text": "Available 08:00-16:00",
+      "fontSize": 12,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "g1_rating",
+      "x": 755,
+      "y": 397,
+      "text": "4.9 / 5.0",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "g1_assign_btn",
+      "x": 868,
+      "y": 393,
+      "width": 75,
+      "height": 28,
+      "backgroundColor": "#1565C0",
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "g1_assign_text",
+      "x": 883,
+      "y": 399,
+      "text": "Assign",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "guide_row_2",
+      "x": 260,
+      "y": 430,
+      "width": 700,
+      "height": 45,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "g2_name",
+      "x": 275,
+      "y": 442,
+      "text": "Mei Zhang",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "g2_cert",
+      "x": 435,
+      "y": 442,
+      "text": "Zipline L2, Rappelling",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "g2_avail",
+      "x": 620,
+      "y": 442,
+      "text": "Available 09:30-17:00",
+      "fontSize": 12,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "g2_rating",
+      "x": 755,
+      "y": 442,
+      "text": "4.7 / 5.0",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "g2_assign_btn",
+      "x": 868,
+      "y": 438,
+      "width": 75,
+      "height": 28,
+      "backgroundColor": "#1565C0",
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "g2_assign_text",
+      "x": 883,
+      "y": 444,
+      "text": "Assign",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "guide_row_3",
+      "x": 260,
+      "y": 475,
+      "width": 700,
+      "height": 45,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "g3_name",
+      "x": 275,
+      "y": 487,
+      "text": "Tom Eriksen",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "g3_cert",
+      "x": 435,
+      "y": 487,
+      "text": "Hiking L3, First Aid",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "g3_avail",
+      "x": 620,
+      "y": 487,
+      "text": "Assigned until 10:00",
+      "fontSize": 12,
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "g3_rating",
+      "x": 755,
+      "y": 487,
+      "text": "4.5 / 5.0",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "g3_assign_btn",
+      "x": 868,
+      "y": 483,
+      "width": 75,
+      "height": 28,
+      "backgroundColor": "#E0E0E0",
+      "strokeColor": "#BDBDBD"
+    },
+    {
+      "type": "text",
+      "id": "g3_assign_text",
+      "x": 883,
+      "y": 489,
+      "text": "Assign",
+      "fontSize": 12,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "rectangle",
+      "id": "schedule_confirm",
+      "x": 260,
+      "y": 550,
+      "width": 700,
+      "height": 130,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "schedule_title",
+      "x": 275,
+      "y": 560,
+      "text": "Submit Schedule Request",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "schedule_summary",
+      "x": 275,
+      "y": 590,
+      "text": "Selected Guide:     Carlos Rivera\nAdventure:          Canopy Zipline Tour (09:00 AM)\nSchedule Conflict:  None detected",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "submit_btn",
+      "x": 275,
+      "y": 640,
+      "width": 180,
+      "height": 35,
+      "backgroundColor": "#4CAF50",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "submit_btn_text",
+      "x": 305,
+      "y": 648,
+      "text": "Submit Assignment",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    }
+  ],
+  "appState": {
+    "name": "Operations Dashboard - Guide Assignment",
+    "currentItemBackgroundColor": "#ffffff",
+    "currentItemOpacity": 100,
+    "fileTitle": "guide-assignment",
+    "gridMode": false
+  }
+}

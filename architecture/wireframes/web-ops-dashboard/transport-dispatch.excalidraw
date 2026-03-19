@@ -1,0 +1,532 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 240,
+      "height": 700,
+      "backgroundColor": "#2C3E50",
+      "strokeColor": "#2C3E50"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 15,
+      "y": 15,
+      "text": "Operations Dashboard",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "menu_1",
+      "x": 15,
+      "y": 80,
+      "text": "Daily Schedule",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_2",
+      "x": 15,
+      "y": 120,
+      "text": "Check-In Station",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_3",
+      "x": 15,
+      "y": 160,
+      "text": "Guide Assignment",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_4",
+      "x": 15,
+      "y": 200,
+      "text": "Safety Incidents",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_5",
+      "x": 15,
+      "y": 240,
+      "text": "Inventory",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_active",
+      "x": 15,
+      "y": 280,
+      "text": "Transport Dispatch",
+      "fontSize": 14,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_header",
+      "x": 240,
+      "y": 0,
+      "width": 760,
+      "height": 60,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "x": 260,
+      "y": 15,
+      "text": "Transport Dispatch",
+      "fontSize": 18,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "new_request_btn",
+      "x": 830,
+      "y": 12,
+      "width": 150,
+      "height": 35,
+      "backgroundColor": "#1565C0",
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "new_request_text",
+      "x": 845,
+      "y": 20,
+      "text": "New Request",
+      "fontSize": 13,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "map_area",
+      "x": 260,
+      "y": 80,
+      "width": 480,
+      "height": 300,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "map_title",
+      "x": 275,
+      "y": 90,
+      "text": "Route Map (Google Maps)",
+      "fontSize": 13,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "text",
+      "id": "map_placeholder",
+      "x": 400,
+      "y": 220,
+      "text": "[ Live Route Map with\n  Vehicle Positions\n  and Pickup Points ]",
+      "fontSize": 14,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "rectangle",
+      "id": "vehicle_panel",
+      "x": 760,
+      "y": 80,
+      "width": 240,
+      "height": 300,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "vehicle_title",
+      "x": 775,
+      "y": 90,
+      "text": "Active Vehicles",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "v1_card",
+      "x": 770,
+      "y": 120,
+      "width": 215,
+      "height": 65,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "v1_data",
+      "x": 780,
+      "y": 128,
+      "text": "Shuttle A - VAN-201\nRoute: Base Camp > Summit\nStatus: En Route  |  8 pax",
+      "fontSize": 11,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "v2_card",
+      "x": 770,
+      "y": 195,
+      "width": 215,
+      "height": 65,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "v2_data",
+      "x": 780,
+      "y": 203,
+      "text": "Shuttle B - VAN-205\nRoute: Hotel > River Launch\nStatus: Loading  |  4 pax",
+      "fontSize": 11,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "v3_card",
+      "x": 770,
+      "y": 270,
+      "width": 215,
+      "height": 65,
+      "backgroundColor": "#E3F2FD",
+      "strokeColor": "#2196F3"
+    },
+    {
+      "type": "text",
+      "id": "v3_data",
+      "x": 780,
+      "y": 278,
+      "text": "Shuttle C - VAN-208\nRoute: Return to Base\nStatus: Returning  |  0 pax",
+      "fontSize": 11,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "requests_hdr",
+      "x": 260,
+      "y": 400,
+      "width": 700,
+      "height": 35,
+      "backgroundColor": "#F5F5F5",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "hdr_req_id",
+      "x": 275,
+      "y": 408,
+      "text": "Request",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_pickup",
+      "x": 365,
+      "y": 408,
+      "text": "Pickup Location",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_dest",
+      "x": 520,
+      "y": 408,
+      "text": "Destination",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_guests",
+      "x": 658,
+      "y": 408,
+      "text": "Guests",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_time",
+      "x": 740,
+      "y": 408,
+      "text": "Pickup Time",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "hdr_status",
+      "x": 865,
+      "y": 408,
+      "text": "Status",
+      "fontSize": 12,
+      "strokeColor": "#666666"
+    },
+    {
+      "type": "rectangle",
+      "id": "req_row_1",
+      "x": 260,
+      "y": 435,
+      "width": 700,
+      "height": 40,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "rr1_id",
+      "x": 275,
+      "y": 445,
+      "text": "TR-0891",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr1_pickup",
+      "x": 365,
+      "y": 445,
+      "text": "Mountain Lodge",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr1_dest",
+      "x": 520,
+      "y": 445,
+      "text": "Eagle Ridge Trail",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr1_guests",
+      "x": 680,
+      "y": 445,
+      "text": "6",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr1_time",
+      "x": 740,
+      "y": 445,
+      "text": "08:15 AM",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr1_status",
+      "x": 865,
+      "y": 445,
+      "text": "Assigned",
+      "fontSize": 12,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "rectangle",
+      "id": "req_row_2",
+      "x": 260,
+      "y": 475,
+      "width": 700,
+      "height": 40,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "rr2_id",
+      "x": 275,
+      "y": 485,
+      "text": "TR-0892",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr2_pickup",
+      "x": 365,
+      "y": 485,
+      "text": "Resort Lobby",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr2_dest",
+      "x": 520,
+      "y": 485,
+      "text": "River Launch Point",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr2_guests",
+      "x": 680,
+      "y": 485,
+      "text": "12",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr2_time",
+      "x": 740,
+      "y": 485,
+      "text": "09:00 AM",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr2_status",
+      "x": 865,
+      "y": 485,
+      "text": "Pending",
+      "fontSize": 12,
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "rectangle",
+      "id": "req_row_3",
+      "x": 260,
+      "y": 515,
+      "width": 700,
+      "height": 40,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "rr3_id",
+      "x": 275,
+      "y": 525,
+      "text": "TR-0893",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr3_pickup",
+      "x": 365,
+      "y": 525,
+      "text": "Summit Lodge",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr3_dest",
+      "x": 520,
+      "y": 525,
+      "text": "Base Camp",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr3_guests",
+      "x": 680,
+      "y": 525,
+      "text": "8",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr3_time",
+      "x": 740,
+      "y": 525,
+      "text": "04:30 PM",
+      "fontSize": 12,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "rr3_status",
+      "x": 865,
+      "y": 525,
+      "text": "Scheduled",
+      "fontSize": 12,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "rectangle",
+      "id": "route_detail",
+      "x": 260,
+      "y": 580,
+      "width": 700,
+      "height": 100,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "route_title",
+      "x": 275,
+      "y": 590,
+      "text": "Optimized Route Detail - TR-0892",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "route_data",
+      "x": 275,
+      "y": 615,
+      "text": "Distance: 14.2 km  |  Est. Time: 22 min  |  Stops: 2 (Hotel Pickup, Gear Shed)  |  Vehicle: VAN-205",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "rectangle",
+      "id": "dispatch_btn",
+      "x": 275,
+      "y": 645,
+      "width": 140,
+      "height": 30,
+      "backgroundColor": "#4CAF50",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "dispatch_btn_text",
+      "x": 310,
+      "y": 652,
+      "text": "Dispatch",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    }
+  ],
+  "appState": {
+    "name": "Operations Dashboard - Transport Dispatch",
+    "currentItemBackgroundColor": "#ffffff",
+    "currentItemOpacity": 100,
+    "fileTitle": "transport-dispatch",
+    "gridMode": false
+  }
+}

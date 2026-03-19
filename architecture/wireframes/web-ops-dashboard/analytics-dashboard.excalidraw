@@ -1,0 +1,412 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 240,
+      "height": 700,
+      "backgroundColor": "#2C3E50",
+      "strokeColor": "#2C3E50"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 15,
+      "y": 15,
+      "text": "Operations Dashboard",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "menu_1",
+      "x": 15,
+      "y": 80,
+      "text": "Daily Schedule",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_2",
+      "x": 15,
+      "y": 120,
+      "text": "Check-In Station",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_3",
+      "x": 15,
+      "y": 160,
+      "text": "Guide Assignment",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_4",
+      "x": 15,
+      "y": 200,
+      "text": "Safety Incidents",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_5",
+      "x": 15,
+      "y": 240,
+      "text": "Inventory",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_6",
+      "x": 15,
+      "y": 280,
+      "text": "Transport Dispatch",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "text",
+      "id": "menu_active",
+      "x": 15,
+      "y": 320,
+      "text": "Analytics",
+      "fontSize": 14,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "menu_8",
+      "x": 15,
+      "y": 360,
+      "text": "Partner Bookings",
+      "fontSize": 14,
+      "strokeColor": "#CCCCCC"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_header",
+      "x": 240,
+      "y": 0,
+      "width": 760,
+      "height": 60,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "x": 260,
+      "y": 15,
+      "text": "Analytics Dashboard",
+      "fontSize": 18,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "date_range",
+      "x": 700,
+      "y": 12,
+      "width": 250,
+      "height": 35,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#BDBDBD"
+    },
+    {
+      "type": "text",
+      "id": "date_range_text",
+      "x": 715,
+      "y": 20,
+      "text": "Mar 1 - Mar 19, 2026",
+      "fontSize": 13,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "rectangle",
+      "id": "kpi_bookings",
+      "x": 260,
+      "y": 80,
+      "width": 170,
+      "height": 100,
+      "backgroundColor": "#E3F2FD",
+      "strokeColor": "#2196F3"
+    },
+    {
+      "type": "text",
+      "id": "kpi_bookings_label",
+      "x": 275,
+      "y": 90,
+      "text": "Total Bookings",
+      "fontSize": 12,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "kpi_bookings_value",
+      "x": 300,
+      "y": 120,
+      "text": "1,247",
+      "fontSize": 24,
+      "strokeColor": "#1565C0"
+    },
+    {
+      "type": "text",
+      "id": "kpi_bookings_delta",
+      "x": 300,
+      "y": 155,
+      "text": "+12% vs prior period",
+      "fontSize": 10,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "rectangle",
+      "id": "kpi_revenue",
+      "x": 450,
+      "y": 80,
+      "width": 170,
+      "height": 100,
+      "backgroundColor": "#E8F5E9",
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "text",
+      "id": "kpi_revenue_label",
+      "x": 465,
+      "y": 90,
+      "text": "Revenue",
+      "fontSize": 12,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "text",
+      "id": "kpi_revenue_value",
+      "x": 475,
+      "y": 120,
+      "text": "$284,500",
+      "fontSize": 22,
+      "strokeColor": "#2E7D32"
+    },
+    {
+      "type": "text",
+      "id": "kpi_revenue_delta",
+      "x": 485,
+      "y": 155,
+      "text": "+8% vs prior period",
+      "fontSize": 10,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "rectangle",
+      "id": "kpi_utilization",
+      "x": 640,
+      "y": 80,
+      "width": 170,
+      "height": 100,
+      "backgroundColor": "#FFF3E0",
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "text",
+      "id": "kpi_util_label",
+      "x": 655,
+      "y": 90,
+      "text": "Capacity Utilization",
+      "fontSize": 12,
+      "strokeColor": "#E65100"
+    },
+    {
+      "type": "text",
+      "id": "kpi_util_value",
+      "x": 695,
+      "y": 120,
+      "text": "73%",
+      "fontSize": 24,
+      "strokeColor": "#E65100"
+    },
+    {
+      "type": "text",
+      "id": "kpi_util_delta",
+      "x": 680,
+      "y": 155,
+      "text": "-2% vs prior period",
+      "fontSize": 10,
+      "strokeColor": "#FF9800"
+    },
+    {
+      "type": "rectangle",
+      "id": "kpi_satisfaction",
+      "x": 830,
+      "y": 80,
+      "width": 170,
+      "height": 100,
+      "backgroundColor": "#F3E5F5",
+      "strokeColor": "#9C27B0"
+    },
+    {
+      "type": "text",
+      "id": "kpi_sat_label",
+      "x": 845,
+      "y": 90,
+      "text": "Guest Satisfaction",
+      "fontSize": 12,
+      "strokeColor": "#6A1B9A"
+    },
+    {
+      "type": "text",
+      "id": "kpi_sat_value",
+      "x": 875,
+      "y": 120,
+      "text": "4.6 / 5",
+      "fontSize": 22,
+      "strokeColor": "#6A1B9A"
+    },
+    {
+      "type": "text",
+      "id": "kpi_sat_delta",
+      "x": 875,
+      "y": 155,
+      "text": "+0.2 vs prior",
+      "fontSize": 10,
+      "strokeColor": "#4CAF50"
+    },
+    {
+      "type": "rectangle",
+      "id": "chart_bookings",
+      "x": 260,
+      "y": 200,
+      "width": 360,
+      "height": 220,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "chart_bookings_title",
+      "x": 275,
+      "y": 210,
+      "text": "Booking Trends (Daily)",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "chart_bookings_placeholder",
+      "x": 365,
+      "y": 310,
+      "text": "[ Line Chart ]\nBookings per day\nwith trend line",
+      "fontSize": 12,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "rectangle",
+      "id": "chart_revenue",
+      "x": 640,
+      "y": 200,
+      "width": 360,
+      "height": 220,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "chart_revenue_title",
+      "x": 655,
+      "y": 210,
+      "text": "Revenue by Adventure Type",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "chart_revenue_placeholder",
+      "x": 745,
+      "y": 310,
+      "text": "[ Bar Chart ]\nRevenue breakdown\nby category",
+      "fontSize": 12,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "rectangle",
+      "id": "chart_util",
+      "x": 260,
+      "y": 440,
+      "width": 360,
+      "height": 220,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "chart_util_title",
+      "x": 275,
+      "y": 450,
+      "text": "Guide Utilization Heatmap",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "chart_util_placeholder",
+      "x": 365,
+      "y": 550,
+      "text": "[ Heatmap ]\nGuide hours by\nday of week",
+      "fontSize": 12,
+      "strokeColor": "#999999"
+    },
+    {
+      "type": "rectangle",
+      "id": "table_top",
+      "x": 640,
+      "y": 440,
+      "width": 360,
+      "height": 220,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#E0E0E0"
+    },
+    {
+      "type": "text",
+      "id": "table_top_title",
+      "x": 655,
+      "y": 450,
+      "text": "Top Adventures by Revenue",
+      "fontSize": 14,
+      "strokeColor": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "table_top_data",
+      "x": 655,
+      "y": 480,
+      "text": "1. Mountain Rappelling     $42,800\n2. River Kayaking Exped.   $38,200\n3. Canopy Zipline Tour     $35,600\n4. Sunrise Peak Hike       $28,400\n5. Wildlife Safari Walk    $24,100",
+      "fontSize": 12,
+      "strokeColor": "#555555"
+    },
+    {
+      "type": "text",
+      "id": "snowflake_badge",
+      "x": 655,
+      "y": 620,
+      "text": "Data source: Snowflake Data Cloud",
+      "fontSize": 10,
+      "strokeColor": "#999999"
+    }
+  ],
+  "appState": {
+    "name": "Operations Dashboard - Analytics Dashboard",
+    "currentItemBackgroundColor": "#ffffff",
+    "currentItemOpacity": 100,
+    "fileTitle": "analytics-dashboard",
+    "gridMode": false
+  }
+}
