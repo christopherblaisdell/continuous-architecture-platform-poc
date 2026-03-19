@@ -138,6 +138,17 @@ nav:
       - Metadata and Artifacts: architect-guide/metadata-and-artifacts.md
       - AI-Assisted Workflow: architect-guide/ai-assisted-workflow.md
       - Anti-Patterns: architect-guide/anti-patterns.md
+  - Domains:
+    - domains/index.md
+    - Operations: domains/operations.md
+    - Guest Identity: domains/guest-identity.md
+    - Booking: domains/booking.md
+    - Product Catalog: domains/product-catalog.md
+    - Safety: domains/safety.md
+    - Logistics: domains/logistics.md
+    - Guide Management: domains/guide-management.md
+    - External: domains/external.md
+    - Support: domains/support.md
   - Services:
     - Microservices:
       - microservices/index.md

@@ -80,9 +80,16 @@ python3 "$SCRIPT_DIR/generate-capability-pages.py"
 echo ""
 
 # ------------------------------------------------------------------
+# Step 7b: Generate domain pages
+# ------------------------------------------------------------------
+echo "[7b/12] Generating domain pages..."
+python3 "$SCRIPT_DIR/generate-domain-pages.py"
+echo ""
+
+# ------------------------------------------------------------------
 # Step 8: Generate ticket pages
 # ------------------------------------------------------------------
-echo "[8/10] Generating ticket pages..."
+echo "[8/12] Generating ticket pages..."
 python3 "$SCRIPT_DIR/generate-ticket-pages.py"
 echo ""
 
