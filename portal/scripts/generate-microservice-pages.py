@@ -1937,9 +1937,10 @@ def generate_actors_page():
         lines.append("")
         lines.append('<div class="actor-grid" markdown>' if False else '<div class="actor-grid">')
         for name, info in sorted(actors):
-            link = None
             if actor_type == "Frontend Application":
                 link = f"../applications/{name}/"
+            else:
+                link = f"#{actor_anchor(name)}"
             lines.append(_actor_card_html(name, info, link=link))
         lines.append("</div>")
         lines.append("")
