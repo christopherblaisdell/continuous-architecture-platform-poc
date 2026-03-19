@@ -4,9 +4,6 @@ A side-by-side evaluation of security controls across 12 dimensions. For each di
 
 For the complete evidence base with 78 authoritative citations, see [Research Results](research-prompt-response.md).
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All examples reference synthetic NovaTrek systems only.
-
 ---
 
 ## Summary Scorecard

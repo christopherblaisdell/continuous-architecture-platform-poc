@@ -2,9 +2,6 @@
 
 This page contains the full output from an AI deep research prompt (see [Security Research Prompt](research-prompt.md)), enriched with authoritative citations from NIST, CISA, OWASP, SLSA, Gartner, and vendor security advisories. The key findings are integrated into the other security documentation pages with direct source links.
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. The security analysis and citations are real — the enterprise context is synthetic.
-
 ---
 
 ## 1. Executive Overview and Architectural Threat Modeling

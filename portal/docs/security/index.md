@@ -2,9 +2,6 @@
 
 This section documents the security architecture of the NovaTrek Architecture Portal — a static documentation site built with MkDocs Material, source-controlled in Git, deployed through gated CI/CD pipelines to Azure Static Web Apps. It demonstrates that a docs-as-code publishing model provides **stronger security controls** than wiki-based platforms like Confluence.
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company created solely as a proof of concept for continuous architecture practices. All microservices, API specs, tickets, architecture decisions, event schemas, and operational data are synthetic. No real corporate systems, data, or organizations are represented.
-
 ---
 
 ## Why This Matters

@@ -499,6 +499,22 @@ h3.endpoint-delete {
   }
 }
 
+/* ── Announcement bar (site-wide disclaimer) ── */
+.md-banner {
+  background-color: #b45309;
+  color: #fff;
+}
+.md-banner a,
+.md-banner .announce-disclaimer {
+  color: #fff;
+}
+.md-banner .announce-disclaimer strong {
+  letter-spacing: 0.02em;
+}
+[data-md-color-scheme="slate"] .md-banner {
+  background-color: #92400e;
+}
+
 /* ── Print-friendly ── */
 @media print {
   .hero { background: #1a2744 !important; -webkit-print-color-adjust: exact; }

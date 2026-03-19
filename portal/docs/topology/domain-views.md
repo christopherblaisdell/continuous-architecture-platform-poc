@@ -2,9 +2,6 @@
 
 Per-domain topology breakdown showing services, databases, and integration patterns for each bounded context.
 
-!!! info "Everything on this portal is entirely fictional"
-    NovaTrek Adventures is a completely fictitious company used as a synthetic workspace for the Continuous Architecture Platform proof of concept.
-
 ---
 
 ## Booking

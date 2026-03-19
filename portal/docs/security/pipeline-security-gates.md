@@ -4,9 +4,6 @@ Every piece of content published to the NovaTrek Architecture Portal passes thro
 
 For the complete evidence base including NIST, SLSA, and OWASP citations, see [Research Results](research-prompt-response.md).
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All pipeline references describe the NovaTrek proof-of-concept implementation.
-
 ---
 
 ## Gate Architecture

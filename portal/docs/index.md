@@ -4,9 +4,6 @@ hide:
   - toc
 ---
 
-!!! warning "Synthetic Demonstration Environment"
-    **Everything on this portal is entirely fictional.** NovaTrek Adventures is a completely fictitious company created solely as a proof of concept for continuous architecture practices. All microservices, API specs, tickets, architecture decisions, event schemas, and operational data are synthetic. No real corporate systems, data, or organizations are represented.
-
 <div class="hero" markdown>
 
 # NovaTrek Architecture Portal
@@ -127,7 +124,7 @@ Future initiatives including CALM automated governance, test methodology, Azure 
 | Pattern 2 (Guided) | Medium | Guide-assisted |
 | Pattern 3 (Full Service) | High | Staff-assisted |
 
-Unknown categories default to **Pattern 3** (ADR-005).
+Unknown categories default to **Pattern 3** ([ADR-005](decisions/ADR-005-pattern3-default-fallback.md)).
 
 </div>
 

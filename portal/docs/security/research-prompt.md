@@ -2,9 +2,6 @@
 
 This page contains the AI deep-research prompt used to gather authoritative, citable sources for the NovaTrek Architecture Portal security assessment. The prompt was designed to query across government agencies, standards bodies, vendor documentation, and industry analysts to build an evidence-based security comparison.
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. This prompt was used to research real-world security frameworks, CVEs, and best practices — but all application of those findings is to the fictional NovaTrek platform.
-
 ---
 
 ## Purpose

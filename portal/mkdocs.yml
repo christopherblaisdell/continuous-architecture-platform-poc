@@ -5,6 +5,7 @@ copyright: "&copy; 2026 NovaTrek Adventures — Architecture Practice"
 
 theme:
   name: material
+  custom_dir: overrides
   language: en
   font:
     text: Inter

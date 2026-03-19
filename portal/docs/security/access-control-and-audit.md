@@ -4,9 +4,6 @@ This page compares how access control and audit trails work in Confluence vs. th
 
 For the complete evidence base with NIST SP 800-53 control mappings and forensic analysis, see [Research Results](research-prompt-response.md), Sections 4 and 6.
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All examples reference the NovaTrek proof-of-concept implementation.
-
 ---
 
 ## Access Control Comparison

@@ -4,9 +4,6 @@ This page documents the data protection controls in the NovaTrek docs-as-code pi
 
 For the complete evidence base including GitGuardian statistics and data residency analysis, see [Research Results](research-prompt-response.md), Sections 5 and 10.
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All examples reference the NovaTrek proof-of-concept implementation. The data isolation controls described here are real pipeline gates — but the data they protect is synthetic.
-
 ---
 
 ## Defense-in-Depth: Four Layers of Data Protection

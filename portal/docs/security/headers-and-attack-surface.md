@@ -6,9 +6,6 @@ The NovaTrek Architecture Portal is a static site — pre-rendered HTML, CSS, an
 
 For the complete evidence base, see [Research Results](research-prompt-response.md).
 
-!!! note "Fictional Domain"
-    Everything on this portal is entirely fictional. NovaTrek Adventures is a completely fictitious company. All configuration examples reference the NovaTrek proof-of-concept implementation.
-
 ---
 
 ## HTTP Security Headers
