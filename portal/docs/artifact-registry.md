@@ -21,34 +21,34 @@ These files are hand-authored. All generated pages, diagrams, and portal content
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `architecture/metadata/domains.yaml` | Service domain groupings (9 domains), colors, team ownership | Solution Architect |
-| `architecture/metadata/cross-service-calls.yaml` | All inter-service API calls (the arrows in C4 diagrams) | Solution Architect |
-| `architecture/metadata/data-stores.yaml` | Database engine, schema, tables, and features per service | Solution Architect |
-| `architecture/metadata/applications.yaml` | Frontend applications, screens, user journey steps | Solution Architect |
-| `architecture/metadata/actors.yaml` | Human actors, frontend apps, infrastructure, and external systems | Solution Architect |
-| `architecture/metadata/events.yaml` | Kafka event producers, consumers, and topic mappings | Solution Architect |
-| `architecture/metadata/consumers.yaml` | Which frontend apps consume which services | Solution Architect |
-| `architecture/metadata/capabilities.yaml` | Business capability hierarchy (L1 domains, L2 capabilities) | Solution Architect |
-| `architecture/metadata/capability-changelog.yaml` | Per-solution capability changes (L3 emergence, decisions) | Solution Architect |
-| `architecture/metadata/tickets.yaml` | Ticket registry with service and capability mappings | Solution Architect |
-| `architecture/metadata/pci.yaml` | PCI DSS compliance scope (services, externals, data flows) | Solution Architect |
-| `architecture/metadata/label-to-svc.yaml` | Display label to service name mappings | Solution Architect |
-| `architecture/metadata/delivery-status.yaml` | Service delivery waves (GA, beta, planning) | Solution Architect |
-| `architecture/metadata/pipeline-registry.yaml` | CI/CD pipeline configurations per service | Solution Architect |
-| `architecture/metadata/app-titles.yaml` | Frontend application display names and metadata | Solution Architect |
+| [`architecture/metadata/domains.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/domains.yaml) | Service domain groupings (9 domains), colors, team ownership | Solution Architect |
+| [`architecture/metadata/cross-service-calls.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/cross-service-calls.yaml) | All inter-service API calls (the arrows in C4 diagrams) | Solution Architect |
+| [`architecture/metadata/data-stores.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/data-stores.yaml) | Database engine, schema, tables, and features per service | Solution Architect |
+| [`architecture/metadata/applications.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml) | Frontend applications, screens, user journey steps | Solution Architect |
+| [`architecture/metadata/actors.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/actors.yaml) | Human actors, frontend apps, infrastructure, and external systems | Solution Architect |
+| [`architecture/metadata/events.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml) | Kafka event producers, consumers, and topic mappings | Solution Architect |
+| [`architecture/metadata/consumers.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/consumers.yaml) | Which frontend apps consume which services | Solution Architect |
+| [`architecture/metadata/capabilities.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/capabilities.yaml) | Business capability hierarchy (L1 domains, L2 capabilities) | Solution Architect |
+| [`architecture/metadata/capability-changelog.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/capability-changelog.yaml) | Per-solution capability changes (L3 emergence, decisions) | Solution Architect |
+| [`architecture/metadata/tickets.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/tickets.yaml) | Ticket registry with service and capability mappings | Solution Architect |
+| [`architecture/metadata/pci.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/pci.yaml) | PCI DSS compliance scope (services, externals, data flows) | Solution Architect |
+| [`architecture/metadata/label-to-svc.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/label-to-svc.yaml) | Display label to service name mappings | Solution Architect |
+| [`architecture/metadata/delivery-status.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/delivery-status.yaml) | Service delivery waves (GA, beta, planning) | Solution Architect |
+| [`architecture/metadata/pipeline-registry.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/pipeline-registry.yaml) | CI/CD pipeline configurations per service | Solution Architect |
+| [`architecture/metadata/app-titles.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/app-titles.yaml) | Frontend application display names and metadata | Solution Architect |
 
 ### API Contracts
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `architecture/specs/*.yaml` (23 files) | OpenAPI 3.x REST API contracts for every microservice | Solution Architect (primary), Software Developer (via PR) |
-| `architecture/events/*.events.yaml` (8 files) | AsyncAPI event schemas, producers, and consumers | Solution Architect (primary), Software Developer (via PR) |
+| [`architecture/specs/*.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs) (23 files) | OpenAPI 3.x REST API contracts for every microservice | Solution Architect (primary), Software Developer (via PR) |
+| [`architecture/events/*.events.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/events) (8 files) | AsyncAPI event schemas, producers, and consumers | Solution Architect (primary), Software Developer (via PR) |
 
 ### Solution Designs
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `architecture/solutions/_NTK-XXXXX-slug/` | Complete architecture change proposals per ticket | Solution Architect |
+| [`architecture/solutions/_NTK-XXXXX-slug/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/solutions) | Complete architecture change proposals per ticket | Solution Architect |
 | `NTK-XXXXX-solution-design.md` | Master solution document | Solution Architect |
 | `1.requirements/` | Ticket requirements report | Solution Architect |
 | `2.analysis/` | Plain-language explanation of the problem | Solution Architect |
@@ -64,77 +64,77 @@ These files are hand-authored. All generated pages, diagrams, and portal content
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `decisions/ADR-*.md` (9 files) | Global architecture decisions in MADR format | Solution Architect |
+| [`decisions/ADR-*.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/decisions) (9 files) | Global architecture decisions in MADR format | Solution Architect |
 
 ### Hand-Authored Diagrams
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `architecture/diagrams/System/*.puml` | C4 System Context diagrams | Solution Architect |
-| `architecture/diagrams/Components/*.puml` | C4 Component diagrams per domain | Solution Architect |
-| `architecture/diagrams/Sequence/*.puml` | Cross-service sequence diagrams | Solution Architect |
-| `architecture/diagrams/Tickets/*.puml` | Ticket-specific diagrams | Solution Architect |
-| `architecture/diagrams/endpoints/*.puml` | Per-endpoint diagram overrides (replace generated versions) | Solution Architect |
-| `architecture/diagrams/theme.puml` | PlantUML color theme (derived from domains.yaml) | Solution Architect |
-| `architecture/diagrams/include.puml` | Shared PlantUML macros and skinparams | Solution Architect |
-| `architecture/diagrams/templates.puml` | Reusable diagram templates | Solution Architect |
+| [`architecture/diagrams/System/*.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams/System) | C4 System Context diagrams | Solution Architect |
+| [`architecture/diagrams/Components/*.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams/Components) | C4 Component diagrams per domain | Solution Architect |
+| [`architecture/diagrams/Sequence/*.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams/Sequence) | Cross-service sequence diagrams | Solution Architect |
+| [`architecture/diagrams/Tickets/*.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams/Tickets) | Ticket-specific diagrams | Solution Architect |
+| [`architecture/diagrams/endpoints/*.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams/endpoints) | Per-endpoint diagram overrides (replace generated versions) | Solution Architect |
+| [`architecture/diagrams/theme.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/theme.puml) | PlantUML color theme (derived from domains.yaml) | Solution Architect |
+| [`architecture/diagrams/include.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/include.puml) | Shared PlantUML macros and skinparams | Solution Architect |
+| [`architecture/diagrams/templates.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/templates.puml) | Reusable diagram templates | Solution Architect |
 
 ### Wireframes
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `architecture/wireframes/web-guest-portal/*.excalidraw` | Guest portal screen designs | Solution Architect |
-| `architecture/wireframes/web-ops-dashboard/*.excalidraw` | Operations dashboard screen designs | Solution Architect |
-| `architecture/wireframes/app-guest-mobile/*.excalidraw` | Mobile app screen designs | Solution Architect |
+| [`architecture/wireframes/web-guest-portal/*.excalidraw`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/wireframes/web-guest-portal) | Guest portal screen designs | Solution Architect |
+| [`architecture/wireframes/web-ops-dashboard/*.excalidraw`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/wireframes/web-ops-dashboard) | Operations dashboard screen designs | Solution Architect |
+| [`architecture/wireframes/app-guest-mobile/*.excalidraw`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/wireframes/app-guest-mobile) | Mobile app screen designs | Solution Architect |
 
 ### Configuration
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `config/adventure-classification.yaml` | 25 adventure categories mapped to UX patterns (1/2/3) | Solution Architect |
-| `config/test-standards.yaml` | TDD/BDD testing conventions (ADR-012) | Solution Architect |
-| `config/sonar-project.properties` | SonarQube analysis configuration | Software Developer |
+| [`config/adventure-classification.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/adventure-classification.yaml) | 25 adventure categories mapped to UX patterns (1/2/3) | Solution Architect |
+| [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml) | TDD/BDD testing conventions (ADR-012) | Solution Architect |
+| [`config/sonar-project.properties`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/sonar-project.properties) | SonarQube analysis configuration | Software Developer |
 
 ### Service Source Code
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `services/svc-*/` (19 services) | Java/Spring Boot microservice implementations | Software Developer |
-| `services/template/` | Service scaffold template | Software Developer |
+| [`services/svc-*/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/services) (19 services) | Java/Spring Boot microservice implementations | Software Developer |
+| [`services/template/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/services/template) | Service scaffold template | Software Developer |
 
 ### Portal Configuration
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `portal/mkdocs.yml` | MkDocs Material navigation and theme | Solution Architect |
-| `staticwebapp.config.json` | Azure Static Web App routing, headers, CSP | Solution Architect |
-| `requirements-docs.txt` | Python dependencies for portal generators | Solution Architect |
+| [`portal/mkdocs.yml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/mkdocs.yml) | MkDocs Material navigation and theme | Solution Architect |
+| [`staticwebapp.config.json`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/staticwebapp.config.json) | Azure Static Web App routing, headers, CSP | Solution Architect |
+| [`requirements-docs.txt`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/requirements-docs.txt) | Python dependencies for portal generators | Solution Architect |
 
 ### Infrastructure
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `infra/main.bicep` | Azure Static Web App resource | Software Developer |
-| `infra/platform.bicep` | Platform-level Azure resources | Software Developer |
-| `infra/deploy.sh` | Portal deployment script | Software Developer |
-| `infra/db/` | Database schemas and migrations | Software Developer |
+| [`infra/main.bicep`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/infra/main.bicep) | Azure Static Web App resource | Software Developer |
+| [`infra/platform.bicep`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/infra/platform.bicep) | Platform-level Azure resources | Software Developer |
+| [`infra/deploy.sh`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/infra/deploy.sh) | Portal deployment script | Software Developer |
+| [`infra/db/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/infra/db) | Database schemas and migrations | Software Developer |
 
 ### Hand-Authored Documentation
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `docs/*.md` (20+ files) | Guides, research, phase outputs, comparisons | Solution Architect |
-| `portal/docs/platform-operations.md` | Platform operations overview | Solution Architect |
-| `portal/docs/security/*.md` | Security model documentation | Solution Architect |
-| `portal/docs/standards/**/*.md` | arc42, C4, MADR, OpenAPI, quality model standards | Solution Architect |
+| [`docs/*.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/docs) (20+ files) | Guides, research, phase outputs, comparisons | Solution Architect |
+| [`portal/docs/platform-operations.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/docs/platform-operations.md) | Platform operations overview | Solution Architect |
+| [`portal/docs/security/*.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/security) | Security model documentation | Solution Architect |
+| [`portal/docs/standards/**/*.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/standards) | arc42, C4, MADR, OpenAPI, quality model standards | Solution Architect |
 
 ### CI/CD Workflows
 
 | File | Defines | Edited By |
 |------|---------|-----------|
-| `.github/workflows/docs-deploy.yml` | Portal build and deployment pipeline | Software Developer |
-| `.github/workflows/validate-solution.yml` | Solution design validation checks | Software Developer |
-| `.github/copilot-instructions.md` | AI agent instructions for this workspace | Solution Architect |
+| [`.github/workflows/docs-deploy.yml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/.github/workflows/docs-deploy.yml) | Portal build and deployment pipeline | Software Developer |
+| [`.github/workflows/validate-solution.yml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/.github/workflows/validate-solution.yml) | Solution design validation checks | Software Developer |
+| [`.github/copilot-instructions.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/.github/copilot-instructions.md) | AI agent instructions for this workspace | Solution Architect |
 
 ---
 
@@ -146,43 +146,43 @@ These are produced by scripts from the defined artifacts above. Never edit gener
 
 | Generator Script | Reads From | Writes To | Output |
 |------------------|-----------|-----------|--------|
-| `portal/scripts/generate-swagger-pages.py` | `architecture/specs/*.yaml` | `portal/docs/services/api/` | Swagger UI HTML pages (23 services) |
-| `portal/scripts/generate-microservice-pages.py` | `architecture/specs/*.yaml` + all metadata YAML | `portal/docs/microservices/` + `puml/` + `svg/` | Service pages, endpoint sequence SVGs, C4 context SVGs, ERD SVGs, enterprise diagram, event flow diagram, actor catalog |
-| `portal/scripts/generate-application-pages.py` | `architecture/metadata/applications.yaml` + specs | `portal/docs/applications/` + `puml/` + `svg/` | App pages, user journey SVGs, C4 app context SVGs |
-| `portal/scripts/generate-wireframe-pages.py` | `architecture/wireframes/**/*.excalidraw` | `portal/docs/applications/*/wireframes/` | SVG previews, HTML viewers, Markdown wrappers |
-| `portal/scripts/generate-event-pages.py` | `architecture/events/*.events.yaml` | `portal/docs/events/` | AsyncAPI event catalog pages |
-| `portal/scripts/generate-solution-pages.py` | `architecture/solutions/*/NTK-*-solution-design.md` | `portal/docs/solutions/` | Solution index + detail pages |
-| `portal/scripts/generate-capability-pages.py` | `capabilities.yaml` + `capability-changelog.yaml` | `portal/docs/capabilities/` | Capability hierarchy + timeline pages |
-| `portal/scripts/generate-ticket-pages.py` | `tickets.yaml` + `capability-changelog.yaml` | `portal/docs/tickets/` | Ticket index + detail pages |
-| `portal/scripts/generate-topology-pages.py` | `architecture/calm/*.json` + metadata YAML | `portal/docs/topology/` | System map, dependency matrix, domain views |
-| `portal/scripts/generate-svgs.sh` | `architecture/diagrams/**/*.puml` | `portal/docs/diagrams/svg/` | Standalone C4 and sequence diagram SVGs |
+| [`portal/scripts/generate-swagger-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-swagger-pages.py) | [`architecture/specs/*.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs) | [`portal/docs/services/api/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/services/api) | Swagger UI HTML pages (23 services) |
+| [`portal/scripts/generate-microservice-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-microservice-pages.py) | [`architecture/specs/*.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs) + all metadata YAML | [`portal/docs/microservices/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/microservices) + `puml/` + `svg/` | Service pages, endpoint sequence SVGs, C4 context SVGs, ERD SVGs, enterprise diagram, event flow diagram, actor catalog |
+| [`portal/scripts/generate-application-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-application-pages.py) | [`architecture/metadata/applications.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/applications.yaml) + specs | [`portal/docs/applications/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/applications) + `puml/` + `svg/` | App pages, user journey SVGs, C4 app context SVGs |
+| [`portal/scripts/generate-wireframe-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-wireframe-pages.py) | [`architecture/wireframes/**/*.excalidraw`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/wireframes) | [`portal/docs/applications/*/wireframes/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/applications) | SVG previews, HTML viewers, Markdown wrappers |
+| [`portal/scripts/generate-event-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-event-pages.py) | [`architecture/events/*.events.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/events) | [`portal/docs/events/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/events) | AsyncAPI event catalog pages |
+| [`portal/scripts/generate-solution-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-solution-pages.py) | [`architecture/solutions/*/NTK-*-solution-design.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/solutions) | [`portal/docs/solutions/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/solutions) | Solution index + detail pages |
+| [`portal/scripts/generate-capability-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-capability-pages.py) | [`capabilities.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/capabilities.yaml) + [`capability-changelog.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/capability-changelog.yaml) | [`portal/docs/capabilities/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/capabilities) | Capability hierarchy + timeline pages |
+| [`portal/scripts/generate-ticket-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-ticket-pages.py) | [`tickets.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/tickets.yaml) + [`capability-changelog.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/capability-changelog.yaml) | [`portal/docs/tickets/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/tickets) | Ticket index + detail pages |
+| [`portal/scripts/generate-topology-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-topology-pages.py) | [`architecture/calm/*.json`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/calm) + metadata YAML | [`portal/docs/topology/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/topology) | System map, dependency matrix, domain views |
+| [`portal/scripts/generate-svgs.sh`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-svgs.sh) | [`architecture/diagrams/**/*.puml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams) | [`portal/docs/diagrams/svg/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/docs/diagrams/svg) | Standalone C4 and sequence diagram SVGs |
 
 ### CALM Topology
 
 | Generator Script | Reads From | Writes To | Output |
 |------------------|-----------|-----------|--------|
-| `scripts/generate-calm.py` | All metadata YAML + OpenAPI specs | `architecture/calm/novatrek-topology.json` + per-domain JSON | CALM-formatted system topology |
-| `scripts/validate-calm.py` | `architecture/calm/*.json` | stdout (validation report) | Topology integrity check |
+| [`scripts/generate-calm.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/scripts/generate-calm.py) | All metadata YAML + OpenAPI specs | [`architecture/calm/novatrek-topology.json`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/calm/novatrek-topology.json) + per-domain JSON | CALM-formatted system topology |
+| [`scripts/validate-calm.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/scripts/validate-calm.py) | [`architecture/calm/*.json`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/calm) | stdout (validation report) | Topology integrity check |
 
 ### Metadata Loader
 
 | Module | Purpose |
 |--------|---------|
-| `portal/scripts/load_metadata.py` | Central Python module that loads all 15 metadata YAML files into Python data structures. All generators import from this module. |
+| [`portal/scripts/load_metadata.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/load_metadata.py) | Central Python module that loads all 15 metadata YAML files into Python data structures. All generators import from this module. |
 
 ### Confluence Mirror
 
 | Generator Script | Reads From | Writes To | Output |
 |------------------|-----------|-----------|--------|
-| `portal/scripts/confluence-prepare.py` | `portal/docs/**/*.md` (generated + hand-authored) | `portal/confluence/` | Confluence-compatible Markdown with `mark` headers |
-| `portal/scripts/confluence-lock-pages.py` | Confluence REST API | Confluence page restrictions | Edit locks on auto-generated pages |
-| `portal/scripts/confluence-drift-check.py` | Confluence REST API + `portal/confluence/` | stdout (drift report) | Detects unauthorized edits |
+| [`portal/scripts/confluence-prepare.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/confluence-prepare.py) | `portal/docs/**/*.md` (generated + hand-authored) | [`portal/confluence/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/portal/confluence) | Confluence-compatible Markdown with `mark` headers |
+| [`portal/scripts/confluence-lock-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/confluence-lock-pages.py) | Confluence REST API | Confluence page restrictions | Edit locks on auto-generated pages |
+| [`portal/scripts/confluence-drift-check.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/confluence-drift-check.py) | Confluence REST API + `portal/confluence/` | stdout (drift report) | Detects unauthorized edits |
 
 ### Multi-Site Sync
 
 | Tool | Reads From | Writes To | Output |
 |------|-----------|-----------|--------|
-| `sites/sync-sites.py` | `docs/*.md` + `sites/manifest.yaml` | `portal/docs/` + `sites/ai-customization/docs/` | Copies shared docs with per-site link rewrites |
+| [`sites/sync-sites.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/sites/sync-sites.py) | [`docs/*.md`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/docs) + [`sites/manifest.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/sites/manifest.yaml) | `portal/docs/` + `sites/ai-customization/docs/` | Copies shared docs with per-site link rewrites |
 
 ### MkDocs HTML Site
 
