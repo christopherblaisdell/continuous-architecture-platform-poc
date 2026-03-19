@@ -26,9 +26,10 @@ Done condition:
   - [x] `Microsoft.ContainerRegistry`
 
 ### DNS planning
-- [ ] Cloudflare plan documented for `api.novatrek.cc`.
-- [ ] Cloudflare plan documented for `api-dev.novatrek.cc`.
-- [ ] Cloudflare wildcard strategy documented for `*.pr.novatrek.cc`.
+- [x] Cloudflare plan documented for `api.novatrek.cc`.
+- [x] Cloudflare plan documented for `api-dev.novatrek.cc`.
+- [x] Cloudflare wildcard strategy documented for `*.pr.novatrek.cc`.
+- [x] DNS planning notes captured in [docs/AZURE-DNS-PLAN.md](AZURE-DNS-PLAN.md).
 
 ## 2. GitHub and Identity Setup
 
@@ -134,6 +135,8 @@ az containerapp env show -n cae-novatrek-dev -g rg-novatrek-dev \
 ## 7. Wave 0 Sign Off
 
 - [x] Capture resource inventory (`az resource list -g rg-novatrek-dev -o table`).
-- [ ] Capture deployment outputs and store in ticket/notes.
-- [ ] Mark Wave 0 complete in roadmap tracking.
-- [ ] Create Wave 1 kickoff issue (Guest Identity + Product Catalog).
+- [x] Capture deployment outputs and store in ticket/notes.
+- [x] Mark Wave 0 complete in roadmap tracking.
+- [x] Create Wave 1 kickoff issue (Guest Identity + Product Catalog).
+- [x] Deployment evidence captured in [docs/AZURE-WAVE-0-DEPLOYMENT-EVIDENCE.md](AZURE-WAVE-0-DEPLOYMENT-EVIDENCE.md).
+- [x] Wave 1 kickoff issue created: https://github.com/christopherblaisdell/continuous-architecture-platform-poc/issues/22
