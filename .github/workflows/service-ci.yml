@@ -1,8 +1,8 @@
 # ===========================================================================
 # Service CI — Reusable Build, Test, and Scan Workflow
 # ===========================================================================
-# Called by each per-service workflow. Builds Java service, runs tests,
-# scans dependencies, builds Docker image, pushes to ACR.
+# Called by each per-service workflow. Builds Java service, runs unit tests,
+# verifies coverage thresholds, runs SonarCloud analysis, and scans deps.
 # ===========================================================================
 
 name: "Service CI (Reusable)"
@@ -22,23 +22,18 @@ on:
         required: false
         type: string
         default: ''
-    outputs:
-      image-tag:
-        description: "Full Docker image tag"
-        value: ${{ jobs.build.outputs.image-tag }}
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
   build:
     name: "Build ${{ inputs.service-name }}"
     runs-on: ubuntu-latest
-    outputs:
-      image-tag: ${{ steps.meta.outputs.image-tag }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java ${{ inputs.java-version }}
         uses: actions/setup-java@v4
@@ -76,41 +71,14 @@ jobs:
             ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}/build/reports/pitest/
 
       - name: SonarCloud analysis
-        if: env.SONAR_TOKEN != ''
-        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: env.SONAR_TOKEN != ''
+        working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         run: ./gradlew sonar -Dsonar.projectKey=christopherblaisdell_${{ inputs.service-name }} -Dsonar.organization=christopherblaisdell -Dsonar.host.url=https://sonarcloud.io
 
       - name: OWASP dependency check
         working-directory: ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
         run: ./gradlew dependencyCheckAnalyze
         continue-on-error: true
-
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Login to ACR
-        run: az acr login --name ${{ secrets.ACR_NAME }}
-
-      - name: Build and push Docker image
-        id: meta
-        run: |
-          TAG="${{ github.sha }}"
-          IMAGE="${{ secrets.ACR_LOGIN_SERVER }}/${{ inputs.service-name }}:${TAG}"
-          docker build -t "${IMAGE}" ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
-          docker push "${IMAGE}"
-          echo "image-tag=${IMAGE}" >> "$GITHUB_OUTPUT"
-
-      - name: Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.meta.outputs.image-tag }}
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH'
-          format: 'table'

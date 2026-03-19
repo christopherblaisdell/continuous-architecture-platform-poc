@@ -1,8 +1,9 @@
 # ===========================================================================
-# Service CD — Reusable Deploy Workflow
+# Service CD — Reusable Build, Push, and Deploy Workflow
 # ===========================================================================
-# Deploys a container image to Azure Container Apps. Called by per-service
-# orchestrator workflows after CI completes.
+# Builds Docker image, pushes to ACR, scans for vulnerabilities, and
+# deploys to Azure Container Apps. Called by per-service orchestrator
+# workflows after CI completes.
 # ===========================================================================
 
 name: "Service CD (Reusable)"
@@ -18,10 +19,10 @@ on:
         required: true
         type: string
         description: 'Target environment (dev, prod)'
-      image-tag:
-        required: true
+      working-directory:
+        required: false
         type: string
-        description: 'Full Docker image reference'
+        default: ''
 
 permissions:
   id-token: write
@@ -42,12 +43,32 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Login to ACR
+        run: az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Build and push Docker image
+        id: meta
+        run: |
+          TAG="${{ github.sha }}"
+          IMAGE="${{ secrets.ACR_LOGIN_SERVER }}/${{ inputs.service-name }}:${TAG}"
+          docker build -t "${IMAGE}" ${{ inputs.working-directory || format('services/{0}', inputs.service-name) }}
+          docker push "${IMAGE}"
+          echo "image-tag=${IMAGE}" >> "$GITHUB_OUTPUT"
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.image-tag }}
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          format: 'table'
+
       - name: Deploy to Container Apps
         run: |
           az containerapp update \
             --name "ca-${{ inputs.service-name }}" \
             --resource-group "rg-novatrek-${{ inputs.environment }}" \
-            --image "${{ inputs.image-tag }}" \
+            --image "${{ steps.meta.outputs.image-tag }}" \
             --set-env-vars "SPRING_PROFILES_ACTIVE=${{ inputs.environment }}"
 
       - name: Verify deployment health

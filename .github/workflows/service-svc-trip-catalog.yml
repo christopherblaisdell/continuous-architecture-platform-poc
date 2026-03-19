@@ -1,9 +1,3 @@
-# ===========================================================================
-# svc-trip-catalog — CI/CD Orchestrator
-# ===========================================================================
-# Builds, tests, scans, and deploys the trip catalog microservice.
-# ===========================================================================
-
 name: "svc-trip-catalog"
 
 on:
@@ -22,40 +16,38 @@ jobs:
       service-name: svc-trip-catalog
     secrets: inherit
 
-  migrate-dev:
-    needs: ci
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/db-migrate.yml
-    with:
-      service-name: svc-trip-catalog
-      environment: dev
-    secrets: inherit
-
   cd-dev:
-    needs: [ci, migrate-dev]
-    if: github.ref == 'refs/heads/main'
+    needs: ci
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
     uses: ./.github/workflows/service-cd.yml
     with:
       service-name: svc-trip-catalog
       environment: dev
-      image-tag: ${{ needs.ci.outputs.image-tag }}
     secrets: inherit
 
-  migrate-prod:
+  migrate-dev:
     needs: cd-dev
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
     uses: ./.github/workflows/db-migrate.yml
     with:
       service-name: svc-trip-catalog
-      environment: prod
+      environment: dev
     secrets: inherit
 
   cd-prod:
-    needs: [ci, cd-dev, migrate-prod]
-    if: github.ref == 'refs/heads/main'
+    needs: [ci, cd-dev, migrate-dev]
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
     uses: ./.github/workflows/service-cd.yml
     with:
       service-name: svc-trip-catalog
       environment: prod
-      image-tag: ${{ needs.ci.outputs.image-tag }}
+    secrets: inherit
+
+  migrate-prod:
+    needs: cd-prod
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+    uses: ./.github/workflows/db-migrate.yml
+    with:
+      service-name: svc-trip-catalog
+      environment: prod
     secrets: inherit
