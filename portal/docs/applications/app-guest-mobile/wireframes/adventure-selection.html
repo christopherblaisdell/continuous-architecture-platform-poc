@@ -3,35 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile App - Adventure Selection</title>
-    <script async src="https://cdn.jsdelivr.net/npm/excalidraw@0.15.0/dist/excalidraw.production.min.js"></script>
+    <title>Mobile App - Adventure Selection — Excalidraw Editor</title>
     <style>
-        body { margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
-        #root { width: 100vw; height: 100vh; }
-        .header { position: absolute; top: 10px; left: 10px; z-index: 10; background: white; padding: 10px 15px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; font-size: 16px; color: #333; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
         <h1>Mobile App - Adventure Selection</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
     </div>
-    <div id="root"></div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
     <script>
-        const excalidrawAPI = window.ExcalidrawAPI;
-        const excalidrawData = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "phone_frame", "x": 50, "y": 50, "width": 350, "height": 680, "backgroundColor": "#000000", "strokeColor": "#000000"}, {"type": "rectangle", "id": "screen", "x": 60, "y": 70, "width": 330, "height": 640, "backgroundColor": "#FFFFFF", "strokeColor": "#CCCCCC"}, {"type": "rectangle", "id": "status_bar", "x": 60, "y": 70, "width": 330, "height": 30, "backgroundColor": "#000000", "strokeColor": "#000000"}, {"type": "text", "id": "status_time", "x": 75, "y": 78, "text": "9:41", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "header", "x": 60, "y": 100, "width": 330, "height": 60, "backgroundColor": "#4C63D2", "strokeColor": "#4C63D2"}, {"type": "text", "id": "header_text", "x": 75, "y": 125, "text": "Available Adventures", "fontSize": 18, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "adventure_card_1", "x": 75, "y": 180, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_title_1", "x": 90, "y": 195, "text": "Sunrise Ridge Trail", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adventure_detail_1", "x": 90, "y": 220, "text": "Difficulty: Moderate | 4.2 km", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "adventure_detail_2", "x": 90, "y": 245, "text": "Today: 9:00 AM, 11:00 AM", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "adventure_card_2", "x": 75, "y": 300, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_title_2", "x": 90, "y": 315, "text": "Eagle Point Summit Climb", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adventure_detail_3", "x": 90, "y": 340, "text": "Difficulty: Challenging | 6.7 km", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "adventure_detail_4", "x": 90, "y": 365, "text": "Today: 2:00 PM (Last slot)", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "adventure_card_3", "x": 75, "y": 420, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_title_3", "x": 90, "y": 435, "text": "Forest Waterfall Trek", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adventure_detail_5", "x": 90, "y": 460, "text": "Difficulty: Easy | 2.3 km", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "adventure_detail_6", "x": 90, "y": 485, "text": "Today: FULLY BOOKED", "fontSize": 12, "strokeColor": "#CC0000"}, {"type": "rectangle", "id": "nav_bar", "x": 60, "y": 620, "width": 330, "height": 90, "backgroundColor": "#F9F9F9", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "nav_home", "x": 90, "y": 640, "text": "Home", "fontSize": 12, "strokeColor": "#4C63D2"}, {"type": "text", "id": "nav_bookings", "x": 160, "y": 640, "text": "My Bookings", "fontSize": 12, "strokeColor": "#999999"}, {"type": "text", "id": "nav_profile", "x": 260, "y": 640, "text": "Profile", "fontSize": 12, "strokeColor": "#999999"}], "appState": {"name": "Mobile App - Adventure Selection", "viewport": {"enableVaporMode": false, "isResizing": false, "offset": {"x": 0, "y": 0}}, "currentItemBackgroundColor": "#ffffff", "currentItemOpacity": 100, "fileTitle": "mobile-adventure-selection", "gridMode": false}};
-        
-        excalidrawAPI.render(
-            document.getElementById("root"),
-            {
-                elements: excalidrawData.elements,
-                appState: {
-                    ...excalidrawData.appState,
-                    readOnly: true
-                },
-                onChange: () => {}
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "phone_frame", "x": 50, "y": 50, "width": 350, "height": 680, "backgroundColor": "#000000", "strokeColor": "#000000"}, {"type": "rectangle", "id": "screen", "x": 60, "y": 70, "width": 330, "height": 640, "backgroundColor": "#FFFFFF", "strokeColor": "#CCCCCC"}, {"type": "rectangle", "id": "status_bar", "x": 60, "y": 70, "width": 330, "height": 30, "backgroundColor": "#000000", "strokeColor": "#000000"}, {"type": "text", "id": "status_time", "x": 75, "y": 78, "text": "9:41", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "header", "x": 60, "y": 100, "width": 330, "height": 60, "backgroundColor": "#4C63D2", "strokeColor": "#4C63D2"}, {"type": "text", "id": "header_text", "x": 75, "y": 125, "text": "Available Adventures", "fontSize": 18, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "adventure_card_1", "x": 75, "y": 180, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_title_1", "x": 90, "y": 195, "text": "Sunrise Ridge Trail", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adventure_detail_1", "x": 90, "y": 220, "text": "Difficulty: Moderate | 4.2 km", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "adventure_detail_2", "x": 90, "y": 245, "text": "Today: 9:00 AM, 11:00 AM", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "adventure_card_2", "x": 75, "y": 300, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_title_2", "x": 90, "y": 315, "text": "Eagle Point Summit Climb", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adventure_detail_3", "x": 90, "y": 340, "text": "Difficulty: Challenging | 6.7 km", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "adventure_detail_4", "x": 90, "y": 365, "text": "Today: 2:00 PM (Last slot)", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "adventure_card_3", "x": 75, "y": 420, "width": 300, "height": 100, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_title_3", "x": 90, "y": 435, "text": "Forest Waterfall Trek", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adventure_detail_5", "x": 90, "y": 460, "text": "Difficulty: Easy | 2.3 km", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "adventure_detail_6", "x": 90, "y": 485, "text": "Today: FULLY BOOKED", "fontSize": 12, "strokeColor": "#CC0000"}, {"type": "rectangle", "id": "nav_bar", "x": 60, "y": 620, "width": 330, "height": 90, "backgroundColor": "#F9F9F9", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "nav_home", "x": 90, "y": 640, "text": "Home", "fontSize": 12, "strokeColor": "#4C63D2"}, {"type": "text", "id": "nav_bookings", "x": 160, "y": 640, "text": "My Bookings", "fontSize": 12, "strokeColor": "#999999"}, {"type": "text", "id": "nav_profile", "x": 260, "y": 640, "text": "Profile", "fontSize": 12, "strokeColor": "#999999"}], "appState": {"name": "Mobile App - Adventure Selection", "viewport": {"enableVaporMode": false, "isResizing": false, "offset": {"x": 0, "y": 0}}, "currentItemBackgroundColor": "#ffffff", "currentItemOpacity": 100, "fileTitle": "mobile-adventure-selection", "gridMode": false}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
             }
-        );
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "adventure-selection.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
     </script>
 </body>
 </html>

@@ -3,35 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operations Dashboard - Guide Assignment</title>
-    <script async src="https://cdn.jsdelivr.net/npm/excalidraw@0.15.0/dist/excalidraw.production.min.js"></script>
+    <title>Operations Dashboard - Guide Assignment — Excalidraw Editor</title>
     <style>
-        body { margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
-        #root { width: 100vw; height: 100vh; }
-        .header { position: absolute; top: 10px; left: 10px; z-index: 10; background: white; padding: 10px 15px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; font-size: 16px; color: #333; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
         <h1>Operations Dashboard - Guide Assignment</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
     </div>
-    <div id="root"></div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
     <script>
-        const excalidrawAPI = window.ExcalidrawAPI;
-        const excalidrawData = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "sidebar", "x": 0, "y": 0, "width": 240, "height": 700, "backgroundColor": "#2C3E50", "strokeColor": "#2C3E50"}, {"type": "text", "id": "sidebar_title", "x": 15, "y": 15, "text": "Operations Dashboard", "fontSize": 16, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "menu_1", "x": 15, "y": 80, "text": "Daily Schedule", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_2", "x": 15, "y": 120, "text": "Check-In Station", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_active", "x": 15, "y": 160, "text": "Guide Assignment", "fontSize": 14, "strokeColor": "#4CAF50"}, {"type": "text", "id": "menu_4", "x": 15, "y": 200, "text": "Safety Incidents", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "rectangle", "id": "main_header", "x": 240, "y": 0, "width": 760, "height": 60, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "main_title", "x": 260, "y": 15, "text": "Guide Assignment - March 19, 2026", "fontSize": 18, "strokeColor": "#333333"}, {"type": "rectangle", "id": "adventure_select_panel", "x": 260, "y": 80, "width": 700, "height": 50, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_select_label", "x": 275, "y": 92, "text": "Adventure:", "fontSize": 13, "strokeColor": "#666666"}, {"type": "rectangle", "id": "adventure_dropdown", "x": 365, "y": 85, "width": 350, "height": 35, "backgroundColor": "#FFFFFF", "strokeColor": "#BDBDBD"}, {"type": "text", "id": "adventure_dropdown_text", "x": 380, "y": 95, "text": "Canopy Zipline Tour - 09:00 AM (Needs Guide)", "fontSize": 12, "strokeColor": "#333333"}, {"type": "rectangle", "id": "adventure_detail", "x": 260, "y": 150, "width": 340, "height": 180, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adv_detail_title", "x": 275, "y": 160, "text": "Adventure Details", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adv_detail_data", "x": 275, "y": 190, "text": "Type:          Zipline / Canopy\nPattern:       Pattern 3 (Full Service)\nTrail:         Eagle Ridge Canopy\nTrail Status:  Open\nCapacity:      15 guests\nBooked:        10 guests\nRequired Cert: Zipline Safety L2", "fontSize": 12, "strokeColor": "#555555"}, {"type": "rectangle", "id": "trail_panel", "x": 620, "y": 150, "width": 340, "height": 180, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "trail_title", "x": 635, "y": 160, "text": "Trail Status (svc-trail-management)", "fontSize": 13, "strokeColor": "#2E7D32"}, {"type": "text", "id": "trail_data", "x": 635, "y": 190, "text": "Name:          Eagle Ridge Canopy Trail\nCondition:     Good\nLast Inspected: 2026-03-18\nHazards:       None reported\nEquipment:     All platforms inspected\nWeather Clear: Yes", "fontSize": 12, "strokeColor": "#555555"}, {"type": "rectangle", "id": "guide_table_header", "x": 260, "y": 350, "width": 700, "height": 35, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "guide_hdr_name", "x": 275, "y": 358, "text": "Guide Name", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_cert", "x": 435, "y": 358, "text": "Certifications", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_avail", "x": 620, "y": 358, "text": "Availability", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_rating", "x": 755, "y": 358, "text": "Rating", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_action", "x": 880, "y": 358, "text": "Action", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "guide_row_1", "x": 260, "y": 385, "width": 700, "height": 45, "backgroundColor": "#E8F5E9", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "g1_name", "x": 275, "y": 397, "text": "Carlos Rivera", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "g1_cert", "x": 435, "y": 397, "text": "Zipline L2, First Aid", "fontSize": 12, "strokeColor": "#333333"}, {"type": "text", "id": "g1_avail", "x": 620, "y": 397, "text": "Available 08:00-16:00", "fontSize": 12, "strokeColor": "#4CAF50"}, {"type": "text", "id": "g1_rating", "x": 755, "y": 397, "text": "4.9 / 5.0", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "g1_assign_btn", "x": 868, "y": 393, "width": 75, "height": 28, "backgroundColor": "#1565C0", "strokeColor": "#1565C0"}, {"type": "text", "id": "g1_assign_text", "x": 883, "y": 399, "text": "Assign", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "guide_row_2", "x": 260, "y": 430, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "g2_name", "x": 275, "y": 442, "text": "Mei Zhang", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "g2_cert", "x": 435, "y": 442, "text": "Zipline L2, Rappelling", "fontSize": 12, "strokeColor": "#333333"}, {"type": "text", "id": "g2_avail", "x": 620, "y": 442, "text": "Available 09:30-17:00", "fontSize": 12, "strokeColor": "#4CAF50"}, {"type": "text", "id": "g2_rating", "x": 755, "y": 442, "text": "4.7 / 5.0", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "g2_assign_btn", "x": 868, "y": 438, "width": 75, "height": 28, "backgroundColor": "#1565C0", "strokeColor": "#1565C0"}, {"type": "text", "id": "g2_assign_text", "x": 883, "y": 444, "text": "Assign", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "guide_row_3", "x": 260, "y": 475, "width": 700, "height": 45, "backgroundColor": "#FFF3E0", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "g3_name", "x": 275, "y": 487, "text": "Tom Eriksen", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "g3_cert", "x": 435, "y": 487, "text": "Hiking L3, First Aid", "fontSize": 12, "strokeColor": "#333333"}, {"type": "text", "id": "g3_avail", "x": 620, "y": 487, "text": "Assigned until 10:00", "fontSize": 12, "strokeColor": "#FF9800"}, {"type": "text", "id": "g3_rating", "x": 755, "y": 487, "text": "4.5 / 5.0", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "g3_assign_btn", "x": 868, "y": 483, "width": 75, "height": 28, "backgroundColor": "#E0E0E0", "strokeColor": "#BDBDBD"}, {"type": "text", "id": "g3_assign_text", "x": 883, "y": 489, "text": "Assign", "fontSize": 12, "strokeColor": "#999999"}, {"type": "rectangle", "id": "schedule_confirm", "x": 260, "y": 550, "width": 700, "height": 130, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "schedule_title", "x": 275, "y": 560, "text": "Submit Schedule Request", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "schedule_summary", "x": 275, "y": 590, "text": "Selected Guide:     Carlos Rivera\nAdventure:          Canopy Zipline Tour (09:00 AM)\nSchedule Conflict:  None detected", "fontSize": 12, "strokeColor": "#555555"}, {"type": "rectangle", "id": "submit_btn", "x": 275, "y": 640, "width": 180, "height": 35, "backgroundColor": "#4CAF50", "strokeColor": "#4CAF50"}, {"type": "text", "id": "submit_btn_text", "x": 305, "y": 648, "text": "Submit Assignment", "fontSize": 13, "strokeColor": "#FFFFFF"}], "appState": {"name": "Operations Dashboard - Guide Assignment", "currentItemBackgroundColor": "#ffffff", "currentItemOpacity": 100, "fileTitle": "guide-assignment", "gridMode": false}};
-        
-        excalidrawAPI.render(
-            document.getElementById("root"),
-            {
-                elements: excalidrawData.elements,
-                appState: {
-                    ...excalidrawData.appState,
-                    readOnly: true
-                },
-                onChange: () => {}
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "sidebar", "x": 0, "y": 0, "width": 240, "height": 700, "backgroundColor": "#2C3E50", "strokeColor": "#2C3E50"}, {"type": "text", "id": "sidebar_title", "x": 15, "y": 15, "text": "Operations Dashboard", "fontSize": 16, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "menu_1", "x": 15, "y": 80, "text": "Daily Schedule", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_2", "x": 15, "y": 120, "text": "Check-In Station", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_active", "x": 15, "y": 160, "text": "Guide Assignment", "fontSize": 14, "strokeColor": "#4CAF50"}, {"type": "text", "id": "menu_4", "x": 15, "y": 200, "text": "Safety Incidents", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "rectangle", "id": "main_header", "x": 240, "y": 0, "width": 760, "height": 60, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "main_title", "x": 260, "y": 15, "text": "Guide Assignment - March 19, 2026", "fontSize": 18, "strokeColor": "#333333"}, {"type": "rectangle", "id": "adventure_select_panel", "x": 260, "y": 80, "width": 700, "height": 50, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adventure_select_label", "x": 275, "y": 92, "text": "Adventure:", "fontSize": 13, "strokeColor": "#666666"}, {"type": "rectangle", "id": "adventure_dropdown", "x": 365, "y": 85, "width": 350, "height": 35, "backgroundColor": "#FFFFFF", "strokeColor": "#BDBDBD"}, {"type": "text", "id": "adventure_dropdown_text", "x": 380, "y": 95, "text": "Canopy Zipline Tour - 09:00 AM (Needs Guide)", "fontSize": 12, "strokeColor": "#333333"}, {"type": "rectangle", "id": "adventure_detail", "x": 260, "y": 150, "width": 340, "height": 180, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "adv_detail_title", "x": 275, "y": 160, "text": "Adventure Details", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "adv_detail_data", "x": 275, "y": 190, "text": "Type:          Zipline / Canopy\nPattern:       Pattern 3 (Full Service)\nTrail:         Eagle Ridge Canopy\nTrail Status:  Open\nCapacity:      15 guests\nBooked:        10 guests\nRequired Cert: Zipline Safety L2", "fontSize": 12, "strokeColor": "#555555"}, {"type": "rectangle", "id": "trail_panel", "x": 620, "y": 150, "width": 340, "height": 180, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "trail_title", "x": 635, "y": 160, "text": "Trail Status (svc-trail-management)", "fontSize": 13, "strokeColor": "#2E7D32"}, {"type": "text", "id": "trail_data", "x": 635, "y": 190, "text": "Name:          Eagle Ridge Canopy Trail\nCondition:     Good\nLast Inspected: 2026-03-18\nHazards:       None reported\nEquipment:     All platforms inspected\nWeather Clear: Yes", "fontSize": 12, "strokeColor": "#555555"}, {"type": "rectangle", "id": "guide_table_header", "x": 260, "y": 350, "width": 700, "height": 35, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "guide_hdr_name", "x": 275, "y": 358, "text": "Guide Name", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_cert", "x": 435, "y": 358, "text": "Certifications", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_avail", "x": 620, "y": 358, "text": "Availability", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_rating", "x": 755, "y": 358, "text": "Rating", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "guide_hdr_action", "x": 880, "y": 358, "text": "Action", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "guide_row_1", "x": 260, "y": 385, "width": 700, "height": 45, "backgroundColor": "#E8F5E9", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "g1_name", "x": 275, "y": 397, "text": "Carlos Rivera", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "g1_cert", "x": 435, "y": 397, "text": "Zipline L2, First Aid", "fontSize": 12, "strokeColor": "#333333"}, {"type": "text", "id": "g1_avail", "x": 620, "y": 397, "text": "Available 08:00-16:00", "fontSize": 12, "strokeColor": "#4CAF50"}, {"type": "text", "id": "g1_rating", "x": 755, "y": 397, "text": "4.9 / 5.0", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "g1_assign_btn", "x": 868, "y": 393, "width": 75, "height": 28, "backgroundColor": "#1565C0", "strokeColor": "#1565C0"}, {"type": "text", "id": "g1_assign_text", "x": 883, "y": 399, "text": "Assign", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "guide_row_2", "x": 260, "y": 430, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "g2_name", "x": 275, "y": 442, "text": "Mei Zhang", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "g2_cert", "x": 435, "y": 442, "text": "Zipline L2, Rappelling", "fontSize": 12, "strokeColor": "#333333"}, {"type": "text", "id": "g2_avail", "x": 620, "y": 442, "text": "Available 09:30-17:00", "fontSize": 12, "strokeColor": "#4CAF50"}, {"type": "text", "id": "g2_rating", "x": 755, "y": 442, "text": "4.7 / 5.0", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "g2_assign_btn", "x": 868, "y": 438, "width": 75, "height": 28, "backgroundColor": "#1565C0", "strokeColor": "#1565C0"}, {"type": "text", "id": "g2_assign_text", "x": 883, "y": 444, "text": "Assign", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "guide_row_3", "x": 260, "y": 475, "width": 700, "height": 45, "backgroundColor": "#FFF3E0", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "g3_name", "x": 275, "y": 487, "text": "Tom Eriksen", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "g3_cert", "x": 435, "y": 487, "text": "Hiking L3, First Aid", "fontSize": 12, "strokeColor": "#333333"}, {"type": "text", "id": "g3_avail", "x": 620, "y": 487, "text": "Assigned until 10:00", "fontSize": 12, "strokeColor": "#FF9800"}, {"type": "text", "id": "g3_rating", "x": 755, "y": 487, "text": "4.5 / 5.0", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "g3_assign_btn", "x": 868, "y": 483, "width": 75, "height": 28, "backgroundColor": "#E0E0E0", "strokeColor": "#BDBDBD"}, {"type": "text", "id": "g3_assign_text", "x": 883, "y": 489, "text": "Assign", "fontSize": 12, "strokeColor": "#999999"}, {"type": "rectangle", "id": "schedule_confirm", "x": 260, "y": 550, "width": 700, "height": 130, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "schedule_title", "x": 275, "y": 560, "text": "Submit Schedule Request", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "schedule_summary", "x": 275, "y": 590, "text": "Selected Guide:     Carlos Rivera\nAdventure:          Canopy Zipline Tour (09:00 AM)\nSchedule Conflict:  None detected", "fontSize": 12, "strokeColor": "#555555"}, {"type": "rectangle", "id": "submit_btn", "x": 275, "y": 640, "width": 180, "height": 35, "backgroundColor": "#4CAF50", "strokeColor": "#4CAF50"}, {"type": "text", "id": "submit_btn_text", "x": 305, "y": 648, "text": "Submit Assignment", "fontSize": 13, "strokeColor": "#FFFFFF"}], "appState": {"name": "Operations Dashboard - Guide Assignment", "currentItemBackgroundColor": "#ffffff", "currentItemOpacity": 100, "fileTitle": "guide-assignment", "gridMode": false}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
             }
-        );
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "guide-assignment.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
     </script>
 </body>
 </html>

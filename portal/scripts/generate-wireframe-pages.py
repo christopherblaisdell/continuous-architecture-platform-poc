@@ -109,40 +109,132 @@ def generate_wireframe_page(wireframe_dir: Path, excalidraw_file: Path) -> None:
     html_path = wireframe_dir / html_filename
     
     # Excalidraw JSON is embedded for client-side rendering
+    json_data = json.dumps(data)
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{name}</title>
-    <script async src="https://cdn.jsdelivr.net/npm/excalidraw@0.15.0/dist/excalidraw.production.min.js"></script>
+    <title>{name} — Excalidraw Editor</title>
     <style>
-        body {{ margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }}
-        #root {{ width: 100vw; height: 100vh; }}
-        .header {{ position: absolute; top: 10px; left: 10px; z-index: 10; background: white; padding: 10px 15px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-        .header h1 {{ margin: 0; font-size: 16px; color: #333; }}
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+        body {{ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }}
+        .toolbar {{
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }}
+        .toolbar h1 {{ font-size: 16px; color: #333; flex: 1; }}
+        .toolbar button {{
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }}
+        .btn-save {{ background: #4CAF50; color: white; }}
+        .btn-save:hover {{ background: #388E3C; }}
+        .btn-back {{ background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }}
+        .btn-back:hover {{ background: #eee; }}
+        .canvas-wrap {{
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }}
+        svg {{ display: block; width: 100%; height: 100%; }}
+        .pan-zoom {{
+            transform-origin: 0 0; cursor: grab;
+        }}
+        .pan-zoom:active {{ cursor: grabbing; }}
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
         <h1>{name}</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
     </div>
-    <div id="root"></div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
     <script>
-        const excalidrawAPI = window.ExcalidrawAPI;
-        const excalidrawData = {json.dumps(data)};
-        
-        excalidrawAPI.render(
-            document.getElementById("root"),
-            {{
-                elements: excalidrawData.elements,
-                appState: {{
-                    ...excalidrawData.appState,
-                    readOnly: true
-                }},
-                onChange: () => {{}}
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {json_data};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {{
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        }});
+        if (!isFinite(minX)) {{ minX = 0; minY = 0; maxX = 800; maxY = 600; }}
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) {{ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }}
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {{
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {{
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            }} else if (t === "ellipse") {{
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            }} else if (t === "text") {{
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\\n");
+                lines.forEach((line, i) => {{
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                }});
+            }} else if (t === "line") {{
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {{
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }}
             }}
-        );
+        }});
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() {{ pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }}
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {{
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }}, {{ passive: false }});
+
+        wrap.addEventListener("mousedown", e => {{ dragging = true; lastX = e.clientX; lastY = e.clientY; }});
+        window.addEventListener("mousemove", e => {{
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        }});
+        window.addEventListener("mouseup", () => {{ dragging = false; }});
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {{
+            const blob = new Blob([JSON.stringify(data, null, 2)], {{ type: "application/json" }});
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "{wireframe_name}.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }});
     </script>
 </body>
 </html>"""
@@ -167,11 +259,11 @@ def generate_wireframe_page(wireframe_dir: Path, excalidraw_file: Path) -> None:
 <object data="../{svg_filename}" type="image/svg+xml" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px;"></object>
 {badge_html}
 
-## Interactive Viewer
+## Edit Wireframe
 
-**[Open Interactive Editor →](../{html_filename})**
+<a href="../{html_filename}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.2rem; background: #4CAF50; color: white; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.95rem;">:material-pencil: Open in Excalidraw Editor</a>
 
-Open in the interactive Excalidraw viewer to explore the wireframe with zoom and pan controls.
+Opens the full Excalidraw editor in a new tab with this wireframe pre-loaded. Edit directly in the browser, then click **Save .excalidraw** to download the updated file.
 
 ## Design Notes
 

@@ -3,35 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operations Dashboard - Daily Schedule Board</title>
-    <script async src="https://cdn.jsdelivr.net/npm/excalidraw@0.15.0/dist/excalidraw.production.min.js"></script>
+    <title>Operations Dashboard - Daily Schedule Board — Excalidraw Editor</title>
     <style>
-        body { margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
-        #root { width: 100vw; height: 100vh; }
-        .header { position: absolute; top: 10px; left: 10px; z-index: 10; background: white; padding: 10px 15px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; font-size: 16px; color: #333; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
         <h1>Operations Dashboard - Daily Schedule Board</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
     </div>
-    <div id="root"></div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
     <script>
-        const excalidrawAPI = window.ExcalidrawAPI;
-        const excalidrawData = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "sidebar", "x": 0, "y": 0, "width": 240, "height": 700, "backgroundColor": "#2C3E50", "strokeColor": "#2C3E50"}, {"type": "text", "id": "sidebar_title", "x": 15, "y": 15, "text": "Operations Dashboard", "fontSize": 16, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "menu_active", "x": 15, "y": 80, "text": "Daily Schedule", "fontSize": 14, "strokeColor": "#4CAF50"}, {"type": "text", "id": "menu_2", "x": 15, "y": 120, "text": "Check-In Station", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_3", "x": 15, "y": 160, "text": "Guide Assignment", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_4", "x": 15, "y": 200, "text": "Safety Incidents", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_5", "x": 15, "y": 240, "text": "Inventory", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_6", "x": 15, "y": 280, "text": "Transport Dispatch", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_7", "x": 15, "y": 320, "text": "Analytics", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_8", "x": 15, "y": 360, "text": "Partner Bookings", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "rectangle", "id": "main_header", "x": 240, "y": 0, "width": 760, "height": 60, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "main_title", "x": 260, "y": 15, "text": "Daily Schedule Board - March 19, 2026", "fontSize": 18, "strokeColor": "#333333"}, {"type": "rectangle", "id": "weather_card", "x": 260, "y": 80, "width": 220, "height": 90, "backgroundColor": "#E3F2FD", "strokeColor": "#2196F3"}, {"type": "text", "id": "weather_label", "x": 275, "y": 90, "text": "Weather Forecast", "fontSize": 12, "strokeColor": "#1565C0"}, {"type": "text", "id": "weather_value", "x": 275, "y": 115, "text": "72F  Partly Cloudy\nWind: 8 mph NW", "fontSize": 14, "strokeColor": "#333333"}, {"type": "rectangle", "id": "trail_card", "x": 500, "y": 80, "width": 220, "height": 90, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "trail_label", "x": 515, "y": 90, "text": "Trail Conditions", "fontSize": 12, "strokeColor": "#2E7D32"}, {"type": "text", "id": "trail_value", "x": 515, "y": 115, "text": "12 Open  |  2 Restricted\n1 Closed (maintenance)", "fontSize": 14, "strokeColor": "#333333"}, {"type": "rectangle", "id": "capacity_card", "x": 740, "y": 80, "width": 220, "height": 90, "backgroundColor": "#FFF3E0", "strokeColor": "#FF9800"}, {"type": "text", "id": "capacity_label", "x": 755, "y": 90, "text": "Location Capacity", "fontSize": 12, "strokeColor": "#E65100"}, {"type": "text", "id": "capacity_value", "x": 755, "y": 115, "text": "Base Camp: 78%\nSummit Lodge: 45%", "fontSize": 14, "strokeColor": "#333333"}, {"type": "rectangle", "id": "schedule_table_header", "x": 260, "y": 190, "width": 700, "height": 40, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "col_time", "x": 275, "y": 200, "text": "Time", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_adventure", "x": 365, "y": 200, "text": "Adventure", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_guide", "x": 535, "y": 200, "text": "Guide", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_guests", "x": 665, "y": 200, "text": "Guests", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_status", "x": 775, "y": 200, "text": "Status", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_action", "x": 885, "y": 200, "text": "Action", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "row_1", "x": 260, "y": 230, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_1_time", "x": 275, "y": 242, "text": "07:00 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_1_adv", "x": 365, "y": 242, "text": "Sunrise Peak Hike", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_1_guide", "x": 535, "y": 242, "text": "Maria Chen", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_1_guests", "x": 665, "y": 242, "text": "8 / 12", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_1_status_badge", "x": 770, "y": 240, "width": 80, "height": 24, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "row_1_status", "x": 785, "y": 245, "text": "On Track", "fontSize": 11, "strokeColor": "#2E7D32"}, {"type": "text", "id": "row_1_action", "x": 885, "y": 242, "text": "[Edit]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_2", "x": 260, "y": 275, "width": 700, "height": 45, "backgroundColor": "#FFF8E1", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_2_time", "x": 275, "y": 287, "text": "08:30 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_2_adv", "x": 365, "y": 287, "text": "River Kayaking Exped.", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_2_guide", "x": 535, "y": 287, "text": "Jake Morrison", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_2_guests", "x": 665, "y": 287, "text": "6 / 6", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_2_status_badge", "x": 770, "y": 285, "width": 80, "height": 24, "backgroundColor": "#FFF3E0", "strokeColor": "#FF9800"}, {"type": "text", "id": "row_2_status", "x": 779, "y": 290, "text": "Weather", "fontSize": 11, "strokeColor": "#E65100"}, {"type": "text", "id": "row_2_action", "x": 885, "y": 287, "text": "[Edit]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_3", "x": 260, "y": 320, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_3_time", "x": 275, "y": 332, "text": "09:00 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_3_adv", "x": 365, "y": 332, "text": "Canopy Zipline Tour", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_3_guide", "x": 535, "y": 332, "text": "Unassigned", "fontSize": 13, "strokeColor": "#E91E63"}, {"type": "text", "id": "row_3_guests", "x": 665, "y": 332, "text": "10 / 15", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_3_status_badge", "x": 770, "y": 330, "width": 100, "height": 24, "backgroundColor": "#FCE4EC", "strokeColor": "#E91E63"}, {"type": "text", "id": "row_3_status", "x": 778, "y": 335, "text": "Needs Guide", "fontSize": 11, "strokeColor": "#AD1457"}, {"type": "text", "id": "row_3_action", "x": 885, "y": 332, "text": "[Assign]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_4", "x": 260, "y": 365, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_4_time", "x": 275, "y": 377, "text": "10:00 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_4_adv", "x": 365, "y": 377, "text": "Wildlife Safari Walk", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_4_guide", "x": 535, "y": 377, "text": "Arun Patel", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_4_guests", "x": 665, "y": 377, "text": "4 / 8", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_4_status_badge", "x": 770, "y": 375, "width": 80, "height": 24, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "row_4_status", "x": 785, "y": 380, "text": "On Track", "fontSize": 11, "strokeColor": "#2E7D32"}, {"type": "text", "id": "row_4_action", "x": 885, "y": 377, "text": "[Edit]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_5", "x": 260, "y": 410, "width": 700, "height": 45, "backgroundColor": "#FFEBEE", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_5_time", "x": 275, "y": 422, "text": "01:00 PM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_5_adv", "x": 365, "y": 422, "text": "Mountain Rappelling", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_5_guide", "x": 535, "y": 422, "text": "Lisa Torres", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_5_guests", "x": 665, "y": 422, "text": "3 / 4", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_5_status_badge", "x": 770, "y": 420, "width": 100, "height": 24, "backgroundColor": "#FFEBEE", "strokeColor": "#E91E63"}, {"type": "text", "id": "row_5_status", "x": 778, "y": 425, "text": "Trail Closed", "fontSize": 11, "strokeColor": "#C62828"}, {"type": "text", "id": "row_5_action", "x": 885, "y": 422, "text": "[Reroute]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "guide_summary", "x": 260, "y": 480, "width": 340, "height": 200, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "guide_summary_title", "x": 275, "y": 490, "text": "Guide Availability Summary", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "guide_summary_data", "x": 275, "y": 520, "text": "Total Guides On Duty:     14\nAssigned:                 11\nAvailable:                 3\nOn Break:                  2\nCertified for Rappelling:  4", "fontSize": 13, "strokeColor": "#555555"}, {"type": "rectangle", "id": "schedule_stats", "x": 620, "y": 480, "width": 340, "height": 200, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "schedule_stats_title", "x": 635, "y": 490, "text": "Today's Schedule Summary", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "schedule_stats_data", "x": 635, "y": 520, "text": "Total Adventures:         18\nCompleted:                 3\nIn Progress:               2\nUpcoming:                 12\nCancelled:                 1\nTotal Guests Booked:     142", "fontSize": 13, "strokeColor": "#555555"}], "appState": {"name": "Operations Dashboard - Daily Schedule Board", "currentItemBackgroundColor": "#ffffff", "currentItemOpacity": 100, "fileTitle": "daily-schedule-board", "gridMode": false}};
-        
-        excalidrawAPI.render(
-            document.getElementById("root"),
-            {
-                elements: excalidrawData.elements,
-                appState: {
-                    ...excalidrawData.appState,
-                    readOnly: true
-                },
-                onChange: () => {}
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "sidebar", "x": 0, "y": 0, "width": 240, "height": 700, "backgroundColor": "#2C3E50", "strokeColor": "#2C3E50"}, {"type": "text", "id": "sidebar_title", "x": 15, "y": 15, "text": "Operations Dashboard", "fontSize": 16, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "menu_active", "x": 15, "y": 80, "text": "Daily Schedule", "fontSize": 14, "strokeColor": "#4CAF50"}, {"type": "text", "id": "menu_2", "x": 15, "y": 120, "text": "Check-In Station", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_3", "x": 15, "y": 160, "text": "Guide Assignment", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_4", "x": 15, "y": 200, "text": "Safety Incidents", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_5", "x": 15, "y": 240, "text": "Inventory", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_6", "x": 15, "y": 280, "text": "Transport Dispatch", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_7", "x": 15, "y": 320, "text": "Analytics", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "text", "id": "menu_8", "x": 15, "y": 360, "text": "Partner Bookings", "fontSize": 14, "strokeColor": "#CCCCCC"}, {"type": "rectangle", "id": "main_header", "x": 240, "y": 0, "width": 760, "height": 60, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "main_title", "x": 260, "y": 15, "text": "Daily Schedule Board - March 19, 2026", "fontSize": 18, "strokeColor": "#333333"}, {"type": "rectangle", "id": "weather_card", "x": 260, "y": 80, "width": 220, "height": 90, "backgroundColor": "#E3F2FD", "strokeColor": "#2196F3"}, {"type": "text", "id": "weather_label", "x": 275, "y": 90, "text": "Weather Forecast", "fontSize": 12, "strokeColor": "#1565C0"}, {"type": "text", "id": "weather_value", "x": 275, "y": 115, "text": "72F  Partly Cloudy\nWind: 8 mph NW", "fontSize": 14, "strokeColor": "#333333"}, {"type": "rectangle", "id": "trail_card", "x": 500, "y": 80, "width": 220, "height": 90, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "trail_label", "x": 515, "y": 90, "text": "Trail Conditions", "fontSize": 12, "strokeColor": "#2E7D32"}, {"type": "text", "id": "trail_value", "x": 515, "y": 115, "text": "12 Open  |  2 Restricted\n1 Closed (maintenance)", "fontSize": 14, "strokeColor": "#333333"}, {"type": "rectangle", "id": "capacity_card", "x": 740, "y": 80, "width": 220, "height": 90, "backgroundColor": "#FFF3E0", "strokeColor": "#FF9800"}, {"type": "text", "id": "capacity_label", "x": 755, "y": 90, "text": "Location Capacity", "fontSize": 12, "strokeColor": "#E65100"}, {"type": "text", "id": "capacity_value", "x": 755, "y": 115, "text": "Base Camp: 78%\nSummit Lodge: 45%", "fontSize": 14, "strokeColor": "#333333"}, {"type": "rectangle", "id": "schedule_table_header", "x": 260, "y": 190, "width": 700, "height": 40, "backgroundColor": "#F5F5F5", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "col_time", "x": 275, "y": 200, "text": "Time", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_adventure", "x": 365, "y": 200, "text": "Adventure", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_guide", "x": 535, "y": 200, "text": "Guide", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_guests", "x": 665, "y": 200, "text": "Guests", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_status", "x": 775, "y": 200, "text": "Status", "fontSize": 12, "strokeColor": "#666666"}, {"type": "text", "id": "col_action", "x": 885, "y": 200, "text": "Action", "fontSize": 12, "strokeColor": "#666666"}, {"type": "rectangle", "id": "row_1", "x": 260, "y": 230, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_1_time", "x": 275, "y": 242, "text": "07:00 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_1_adv", "x": 365, "y": 242, "text": "Sunrise Peak Hike", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_1_guide", "x": 535, "y": 242, "text": "Maria Chen", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_1_guests", "x": 665, "y": 242, "text": "8 / 12", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_1_status_badge", "x": 770, "y": 240, "width": 80, "height": 24, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "row_1_status", "x": 785, "y": 245, "text": "On Track", "fontSize": 11, "strokeColor": "#2E7D32"}, {"type": "text", "id": "row_1_action", "x": 885, "y": 242, "text": "[Edit]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_2", "x": 260, "y": 275, "width": 700, "height": 45, "backgroundColor": "#FFF8E1", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_2_time", "x": 275, "y": 287, "text": "08:30 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_2_adv", "x": 365, "y": 287, "text": "River Kayaking Exped.", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_2_guide", "x": 535, "y": 287, "text": "Jake Morrison", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_2_guests", "x": 665, "y": 287, "text": "6 / 6", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_2_status_badge", "x": 770, "y": 285, "width": 80, "height": 24, "backgroundColor": "#FFF3E0", "strokeColor": "#FF9800"}, {"type": "text", "id": "row_2_status", "x": 779, "y": 290, "text": "Weather", "fontSize": 11, "strokeColor": "#E65100"}, {"type": "text", "id": "row_2_action", "x": 885, "y": 287, "text": "[Edit]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_3", "x": 260, "y": 320, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_3_time", "x": 275, "y": 332, "text": "09:00 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_3_adv", "x": 365, "y": 332, "text": "Canopy Zipline Tour", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_3_guide", "x": 535, "y": 332, "text": "Unassigned", "fontSize": 13, "strokeColor": "#E91E63"}, {"type": "text", "id": "row_3_guests", "x": 665, "y": 332, "text": "10 / 15", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_3_status_badge", "x": 770, "y": 330, "width": 100, "height": 24, "backgroundColor": "#FCE4EC", "strokeColor": "#E91E63"}, {"type": "text", "id": "row_3_status", "x": 778, "y": 335, "text": "Needs Guide", "fontSize": 11, "strokeColor": "#AD1457"}, {"type": "text", "id": "row_3_action", "x": 885, "y": 332, "text": "[Assign]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_4", "x": 260, "y": 365, "width": 700, "height": 45, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_4_time", "x": 275, "y": 377, "text": "10:00 AM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_4_adv", "x": 365, "y": 377, "text": "Wildlife Safari Walk", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_4_guide", "x": 535, "y": 377, "text": "Arun Patel", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_4_guests", "x": 665, "y": 377, "text": "4 / 8", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_4_status_badge", "x": 770, "y": 375, "width": 80, "height": 24, "backgroundColor": "#E8F5E9", "strokeColor": "#4CAF50"}, {"type": "text", "id": "row_4_status", "x": 785, "y": 380, "text": "On Track", "fontSize": 11, "strokeColor": "#2E7D32"}, {"type": "text", "id": "row_4_action", "x": 885, "y": 377, "text": "[Edit]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "row_5", "x": 260, "y": 410, "width": 700, "height": 45, "backgroundColor": "#FFEBEE", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "row_5_time", "x": 275, "y": 422, "text": "01:00 PM", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_5_adv", "x": 365, "y": 422, "text": "Mountain Rappelling", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_5_guide", "x": 535, "y": 422, "text": "Lisa Torres", "fontSize": 13, "strokeColor": "#333333"}, {"type": "text", "id": "row_5_guests", "x": 665, "y": 422, "text": "3 / 4", "fontSize": 13, "strokeColor": "#333333"}, {"type": "rectangle", "id": "row_5_status_badge", "x": 770, "y": 420, "width": 100, "height": 24, "backgroundColor": "#FFEBEE", "strokeColor": "#E91E63"}, {"type": "text", "id": "row_5_status", "x": 778, "y": 425, "text": "Trail Closed", "fontSize": 11, "strokeColor": "#C62828"}, {"type": "text", "id": "row_5_action", "x": 885, "y": 422, "text": "[Reroute]", "fontSize": 13, "strokeColor": "#1565C0"}, {"type": "rectangle", "id": "guide_summary", "x": 260, "y": 480, "width": 340, "height": 200, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "guide_summary_title", "x": 275, "y": 490, "text": "Guide Availability Summary", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "guide_summary_data", "x": 275, "y": 520, "text": "Total Guides On Duty:     14\nAssigned:                 11\nAvailable:                 3\nOn Break:                  2\nCertified for Rappelling:  4", "fontSize": 13, "strokeColor": "#555555"}, {"type": "rectangle", "id": "schedule_stats", "x": 620, "y": 480, "width": 340, "height": 200, "backgroundColor": "#FFFFFF", "strokeColor": "#E0E0E0"}, {"type": "text", "id": "schedule_stats_title", "x": 635, "y": 490, "text": "Today's Schedule Summary", "fontSize": 14, "strokeColor": "#333333"}, {"type": "text", "id": "schedule_stats_data", "x": 635, "y": 520, "text": "Total Adventures:         18\nCompleted:                 3\nIn Progress:               2\nUpcoming:                 12\nCancelled:                 1\nTotal Guests Booked:     142", "fontSize": 13, "strokeColor": "#555555"}], "appState": {"name": "Operations Dashboard - Daily Schedule Board", "currentItemBackgroundColor": "#ffffff", "currentItemOpacity": 100, "fileTitle": "daily-schedule-board", "gridMode": false}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
             }
-        );
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "daily-schedule-board.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
     </script>
 </body>
 </html>

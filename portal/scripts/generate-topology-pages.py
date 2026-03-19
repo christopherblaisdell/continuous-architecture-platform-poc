@@ -93,7 +93,7 @@ def _safe_id(name):
 
 
 def generate_domain_overview_puml(topology):
-    """Generate a C4 Container PUML for the domain-level overview."""
+    """Generate a C4 Context PUML for the domain-level overview."""
     _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
 
     # Aggregate edges to domain-to-domain level
@@ -112,56 +112,82 @@ def generate_domain_overview_puml(topology):
         "@startuml",
         "!include <c4/C4_Context>",
         "",
-        "LAYOUT_WITH_LEGEND()",
         "LAYOUT_TOP_DOWN()",
         "",
-        'AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")',
+        'AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed")',
         "",
         "title NovaTrek Adventures — Domain Overview",
         "",
     ]
 
-    # Each domain as a System node with domain color
+    # Define per-domain element tags for color differentiation
+    for domain in sorted(domains.keys()):
+        safe = _safe_id(domain)
+        colors = DOMAIN_COLORS.get(domain, {"strong": "#616161", "light": "#F5F5F5"})
+        lines.append(
+            f'AddElementTag("{safe}", $bgColor="{colors["light"]}",'
+            f' $borderColor="{colors["strong"]}",'
+            f' $fontColor="{colors["strong"]}")'
+        )
+    lines.append("")
+
+    # Each domain as a System node with its own color tag
     for domain in sorted(domains.keys()):
         safe = _safe_id(domain)
         n_svcs = len(domains[domain])
         svc_word = "service" if n_svcs == 1 else "services"
-        colors = DOMAIN_COLORS.get(domain, {"strong": "#616161", "light": "#F5F5F5"})
         link = domain.lower().replace(" ", "-")
         lines.append(
             f'System({safe}, "{domain}", "{n_svcs} {svc_word}",'
             f' $link="/topology/domain-views/#{link}",'
-            f' $tags="domain")'
+            f' $tags="{safe}")'
         )
 
     lines.append("")
 
-    # Merge REST and Kafka edges between same domain pairs for cleaner diagram
+    # Consolidate bidirectional edges: if A->B and B->A both exist,
+    # merge into a single Rel_Neighbor (bidirectional) to reduce arrow noise.
     all_pairs = set(domain_rest.keys()) | set(domain_kafka.keys())
-    for src_d, tgt_d in sorted(all_pairs):
-        src_safe, tgt_safe = _safe_id(src_d), _safe_id(tgt_d)
-        rest_count = domain_rest.get((src_d, tgt_d), 0)
-        kafka_count = domain_kafka.get((src_d, tgt_d), 0)
+    emitted = set()  # track (min,max) pairs already written
 
-        if rest_count > 0 and kafka_count > 0:
-            lines.append(f'Rel({src_safe}, {tgt_safe}, "{rest_count} REST + {kafka_count} events", "HTTPS / Kafka")')
-        elif rest_count > 0:
-            lines.append(f'Rel({src_safe}, {tgt_safe}, "{rest_count} REST calls", "HTTPS")')
-        elif kafka_count > 0:
-            lines.append(f'Rel({src_safe}, {tgt_safe}, "{kafka_count} events", "Kafka", $tags="kafka")')
+    for src_d, tgt_d in sorted(all_pairs):
+        pair_key = tuple(sorted([src_d, tgt_d]))
+        if pair_key in emitted:
+            continue
+        emitted.add(pair_key)
+
+        src_safe, tgt_safe = _safe_id(src_d), _safe_id(tgt_d)
+
+        # Sum connections in both directions
+        rest_fwd = domain_rest.get((src_d, tgt_d), 0)
+        rest_rev = domain_rest.get((tgt_d, src_d), 0)
+        kafka_fwd = domain_kafka.get((src_d, tgt_d), 0)
+        kafka_rev = domain_kafka.get((tgt_d, src_d), 0)
+        rest_total = rest_fwd + rest_rev
+        kafka_total = kafka_fwd + kafka_rev
+
+        if rest_total > 0 and kafka_total > 0:
+            lines.append(f'Rel({src_safe}, {tgt_safe}, "{rest_total} REST + {kafka_total} events", "HTTPS / Kafka")')
+        elif rest_total > 0:
+            lines.append(f'Rel({src_safe}, {tgt_safe}, "{rest_total} REST calls", "HTTPS")')
+        elif kafka_total > 0:
+            lines.append(f'Rel({src_safe}, {tgt_safe}, "{kafka_total} events", "Kafka", $tags="kafka")')
 
     lines.append("")
 
-    # Apply domain colors via skinparam overrides
-    lines.append("' Domain colors")
-    for domain in sorted(domains.keys()):
-        safe = _safe_id(domain)
-        colors = DOMAIN_COLORS.get(domain, {"strong": "#616161", "light": "#F5F5F5"})
-        lines.append(f"skinparam rectangle<<{safe}>> {{")
-        lines.append(f"    BackgroundColor {colors['light']}")
-        lines.append(f"    BorderColor {colors['strong']}")
-        lines.append(f"    FontColor {colors['strong']}")
-        lines.append("}")
+    # Layout hints: arrange domains in a roughly 3x3 grid
+    # Row 1: External, Guest Identity, Booking (entry points)
+    # Row 2: Product Catalog, Operations, Safety (core adventure)
+    # Row 3: Guide Management, Logistics, Support (supporting)
+    lines.append("' Layout hints: 3-row grid")
+    lines.append("Lay_R(External, Guest_Identity)")
+    lines.append("Lay_R(Guest_Identity, Booking)")
+    lines.append("Lay_D(External, Product_Catalog)")
+    lines.append("Lay_R(Product_Catalog, Operations)")
+    lines.append("Lay_R(Operations, Safety)")
+    lines.append("Lay_D(Product_Catalog, Guide_Management)")
+    lines.append("Lay_R(Guide_Management, Logistics)")
+    lines.append("Lay_R(Logistics, Support)")
 
     lines.append("")
     lines.append("@enduml")
