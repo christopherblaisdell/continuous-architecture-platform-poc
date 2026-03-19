@@ -127,3 +127,4 @@ dependencyCheck {
     failBuildOnCVSS = 7.0f
     formats = listOf("HTML", "JSON")
 }
+
