@@ -1,0 +1,87 @@
+@startuml svc-emergency-response--post-emergencies-emergency_id-dispatch
+
+!include ../theme.puml
+skinparam sequence {
+    ArrowColor #dc2626
+}
+
+header [[/microservices/svc-emergency-response/#integration-context ⬆ svc-emergency-response Integration Context]]
+
+title POST /emergencies/{emergency_id}/dispatch\nDispatch rescue team to emergency\n<size:10><color:#7c3aed>ARCHITECT OVERRIDE — enriched with SAR coordination logic</color></size>
+
+participant "Client" as Client [[/applications/]]
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-emergency-response" as Svc [[/microservices/svc-emergency-response/]] #FEE2E2
+participant "Guide Mgmt" as Guide [[/microservices/svc-guide-management/]] #E0E7FF
+participant "SAR Dispatch" as SAR #F3E8FF
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "PostgreSQL" as DB [[/microservices/svc-emergency-response/#data-store]] #FEF9C3
+
+note over Svc
+  [[/services/api/svc-emergency-response.html View in Swagger UI]]
+end note
+
+Client -> GW : POST /emergencies/{id}/dispatch
+activate GW #dc2626
+GW -> Svc : route request
+activate Svc #dc2626
+
+note right of Svc : Load emergency record\nValidate status = ACTIVE\nReject if already DISPATCHED
+
+Svc -> DB : SELECT FROM emergencies\nWHERE emergency_id = ?
+activate DB #FEF9C3
+DB --> Svc : Emergency record\n(severity, location, guest_id)
+deactivate DB
+
+== Guide Availability for Rescue ==
+
+Svc -> Guide : [[/microservices/svc-guide-management/#get-guideson-duty-list-on-duty-guides GET /guides/on-duty]]
+activate Guide #E0E7FF
+Guide --> Svc : Available guides\n(with rescue certifications)
+deactivate Guide
+
+note right of Svc : Filter guides by:\n- Rescue/first-aid certification\n- Distance to incident\n- Not already on active rescue
+
+alt Qualified guide available within 30 min
+    note right of Svc #D1FAE5 : Assign guide as primary\nrescue responder
+else No guide available nearby
+    note right of Svc #FEE2E2 : Flag as EXTERNAL_REQUIRED\nSAR dispatch mandatory
+end
+
+== SAR Dispatch (External Agency) ==
+
+Svc -> SAR : Dispatch regional SAR team\n(incident coordinates, severity,\nguest count, terrain type)
+activate SAR #F3E8FF
+alt SAR acknowledges dispatch
+    SAR --> Svc : Dispatch confirmed\n(SAR team ID, ETA)
+    deactivate SAR
+else SAR unavailable or timeout
+    SAR --> Svc : 503 / timeout
+    deactivate SAR
+    note right of Svc #FEE2E2 : Log SAR failure\nEscalate to regional\nemergency services (911)\nRetry SAR in 5 min
+end
+
+== Update Emergency Record ==
+
+group Transaction boundary (PostgreSQL)
+    Svc -> DB : UPDATE emergencies\nSET status = DISPATCHED,\nassigned_guide_id, sar_team_id,\nsar_eta, dispatched_at
+    activate DB #FEF9C3
+    DB --> Svc : Updated
+    deactivate DB
+
+    Svc -> DB : INSERT INTO emergency_timeline\n(event_type = DISPATCHED,\nsar_team_id, guide_id)
+    activate DB #FEF9C3
+    DB --> Svc : Created
+    deactivate DB
+end
+
+== Async Notifications ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Notify dispatched rescue team]]
+
+Svc --> GW : 200 OK\n(dispatch_id, assigned_guide,\nsar_team, eta)
+deactivate Svc
+GW --> Client : 200 OK
+deactivate GW
+
+@enduml

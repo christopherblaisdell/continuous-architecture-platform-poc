@@ -1,0 +1,92 @@
+@startuml svc-emergency-response--post-emergencies
+
+!include ../theme.puml
+skinparam sequence {
+    ArrowColor #dc2626
+}
+
+header [[/microservices/svc-emergency-response/#integration-context ⬆ svc-emergency-response Integration Context]]
+
+title POST /emergencies\nTrigger emergency SOS response\n<size:10><color:#7c3aed>ARCHITECT OVERRIDE — enriched with severity escalation logic</color></size>
+
+participant "Client" as Client [[/applications/]]
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-emergency-response" as Svc [[/microservices/svc-emergency-response/]] #FEE2E2
+participant "Guest Profiles" as GP [[/microservices/svc-guest-profiles/]] #EDE9FE
+participant "Location Svc" as Loc [[/microservices/svc-location-services/]] #F1F5F9
+participant "Guide Mgmt" as Guide [[/microservices/svc-guide-management/]] #E0E7FF
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+participant "Safety Compliance" as Safety [[/microservices/svc-safety-compliance/]] #FEE2E2
+database "PostgreSQL" as DB [[/microservices/svc-emergency-response/#data-store]] #FEF9C3
+
+note over Svc
+  [[/services/api/svc-emergency-response.html View in Swagger UI]]
+end note
+
+Client -> GW : POST /emergencies
+activate GW #dc2626
+GW -> Svc : route request
+activate Svc #dc2626
+
+note right of Svc : Validate request body\n(guest_id, location, severity required)\nClassify severity: LOW | MEDIUM | HIGH | CRITICAL
+
+== Guest Medical Information ==
+
+Svc -> GP : [[/microservices/svc-guest-profiles/#get-guestsguest_id-get-guest-profile GET /guests/{guest_id}]]
+activate GP #EDE9FE
+GP --> Svc : Guest profile\n(emergency contacts, medical notes,\nallergies, blood type)
+deactivate GP
+
+== Location Resolution ==
+
+Svc -> Loc : [[/microservices/svc-location-services/#get-locationsdevice_id-get-device-location GET /locations/{device_id}]]
+activate Loc #F1F5F9
+Loc --> Svc : Last known GPS position\n(lat, lng, accuracy, timestamp)
+deactivate Loc
+
+note right of Svc : Validate GPS freshness\n(reject if > 15 min stale)\nCalculate distance to nearest\ntrailhead and road access point
+
+== Nearest Guide Identification ==
+
+Svc -> Guide : [[/microservices/svc-guide-management/#get-guideson-duty-list-on-duty-guides GET /guides/on-duty]]
+activate Guide #E0E7FF
+Guide --> Svc : On-duty guides with\ncurrent assignments and locations
+deactivate Guide
+
+note right of Svc : Sort guides by:\n1. Distance to incident\n2. First-aid certification level\n3. Current assignment load\nSelect nearest qualified guide
+
+== Severity-Based Escalation ==
+
+alt CRITICAL or HIGH severity
+    note right of Svc #FEE2E2 : CRITICAL/HIGH: Full escalation\n- Emergency record created\n- SAR dispatch queued\n- All staff alerted\n- Emergency contacts notified
+else MEDIUM severity
+    note right of Svc #FEF3C7 : MEDIUM: Guide dispatch only\n- Emergency record created\n- Nearest guide dispatched\n- Operations team notified
+else LOW severity
+    note right of Svc #D1FAE5 : LOW: Advisory only\n- Incident logged\n- Guide informed\n- No external dispatch
+end
+
+== Database Transaction ==
+
+group Transaction boundary (PostgreSQL)
+    Svc -> DB : INSERT INTO emergencies\n(emergency_id, guest_id, severity,\nlocation, nearest_guide_id,\nstatus = ACTIVE)
+    activate DB #FEF9C3
+    DB --> Svc : Created row
+    deactivate DB
+
+    Svc -> DB : INSERT INTO emergency_timeline\n(event_type = CREATED,\ntimestamp, details)
+    activate DB #FEF9C3
+    DB --> Svc : Created row
+    deactivate DB
+end
+
+== Async Notifications ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Send emergency alerts to staff and guests]]
+Svc ->> Safety : [[/microservices/svc-safety-compliance/#post-incidents-file-a-safety-incident-report Log emergency as safety incident]]
+
+Svc --> GW : 201 Created\n(emergency_id, severity,\nnearest_guide, status)
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

@@ -171,8 +171,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-scheduling-orchestrator.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-scheduling-orchestrator--post-schedule-requests.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-scheduling-orchestrator--post-schedule-requests.svg" type="image/svg+xml" style="max-width: 100%;">POST /schedule-requests sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-scheduling-orchestrator.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-scheduling-orchestrator.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-scheduling-orchestrator--post-schedule-requests.puml"><code>architecture/diagrams/endpoints/svc-scheduling-orchestrator--post-schedule-requests.puml</code></a></span>
 
 ---
 
@@ -195,8 +195,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-scheduling-orchestrator.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-scheduling-orchestrator--get-schedule-optimization.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-scheduling-orchestrator--get-schedule-optimization.svg" type="image/svg+xml" style="max-width: 100%;">GET /schedule-optimization sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-scheduling-orchestrator.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-scheduling-orchestrator.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-scheduling-orchestrator--get-schedule-optimization.puml"><code>architecture/diagrams/endpoints/svc-scheduling-orchestrator--get-schedule-optimization.puml</code></a></span>
 
 ---
 
@@ -219,8 +219,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-scheduling-orchestrator.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.svg" type="image/svg+xml" style="max-width: 100%;">POST /schedule-conflicts/resolve sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-scheduling-orchestrator.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-scheduling-orchestrator.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.puml"><code>architecture/diagrams/endpoints/svc-scheduling-orchestrator--post-schedule-conflicts-resolve.puml</code></a></span>
 
 ---
 

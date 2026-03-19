@@ -155,8 +155,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/earnPoints){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--post-members-guest_id-earn.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--post-members-guest_id-earn.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/earn sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-loyalty-rewards--post-members-guest_id-earn.puml"><code>architecture/diagrams/endpoints/svc-loyalty-rewards--post-members-guest_id-earn.puml</code></a></span>
 
 ---
 
@@ -165,8 +165,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-loyalty-rewards.html#/Transactions/redeemPoints){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--post-members-guest_id-redeem.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--post-members-guest_id-redeem.svg" type="image/svg+xml" style="max-width: 100%;">POST /members/{guest_id}/redeem sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-loyalty-rewards--post-members-guest_id-redeem.puml"><code>architecture/diagrams/endpoints/svc-loyalty-rewards--post-members-guest_id-redeem.puml</code></a></span>
 
 ---
 

@@ -172,7 +172,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--post-check-ins.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--post-check-ins.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins sequence diagram</object></div>
 <span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
-<span class="diagram-source-subtitle">Source: <code>architecture/diagrams/endpoints/svc-check-in--post-check-ins.puml</code></span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-check-in--post-check-ins.puml"><code>architecture/diagrams/endpoints/svc-check-in--post-check-ins.puml</code></a></span>
 
 ---
 
@@ -193,8 +193,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-check-in.html#/Check-Ins/verifyGear){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-check-in--post-check-ins-check_in_id-gear-verification.svg" type="image/svg+xml" style="max-width: 100%;">POST /check-ins/{check_in_id}/gear-verification sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-check-in.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-check-in.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-check-in--post-check-ins-check_in_id-gear-verification.puml"><code>architecture/diagrams/endpoints/svc-check-in--post-check-ins-check_in_id-gear-verification.puml</code></a></span>
 
 ---
 

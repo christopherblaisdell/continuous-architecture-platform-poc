@@ -148,8 +148,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-inventory-procurement.html){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-purchase-orders.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-purchase-orders.svg" type="image/svg+xml" style="max-width: 100%;">POST /purchase-orders sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-inventory-procurement--post-purchase-orders.puml"><code>architecture/diagrams/endpoints/svc-inventory-procurement--post-purchase-orders.puml</code></a></span>
 
 ---
 

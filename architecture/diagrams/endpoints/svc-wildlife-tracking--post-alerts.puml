@@ -1,0 +1,72 @@
+@startuml svc-wildlife-tracking--post-alerts
+
+!include ../theme.puml
+skinparam sequence {
+    ArrowColor #dc2626
+}
+
+header [[/microservices/svc-wildlife-tracking/#integration-context ⬆ svc-wildlife-tracking Integration Context]]
+
+title POST /alerts\nCreate wildlife threat alert\n<size:10><color:#7c3aed>ARCHITECT OVERRIDE — enriched with trail closure decision tree</color></size>
+
+participant "Client" as Client [[/applications/]]
+participant "API Gateway" as GW [[/actors/#api-gateway]] #E0F2FE
+participant "svc-wildlife-tracking" as Svc [[/microservices/svc-wildlife-tracking/]] #F1F5F9
+participant "Trail Mgmt" as Trail [[/microservices/svc-trail-management/]] #FEF3C7
+participant "Notifications" as Ntfy [[/microservices/svc-notifications/]] #F1F5F9
+database "PostgreSQL" as DB [[/microservices/svc-wildlife-tracking/#data-store]] #FEF9C3
+
+note over Svc
+  [[/services/api/svc-wildlife-tracking.html View in Swagger UI]]
+end note
+
+Client -> GW : POST /alerts
+activate GW #dc2626
+GW -> Svc : route request
+activate Svc #dc2626
+
+note right of Svc : Validate alert payload\n(species, threat_level, location,\nsighting_id required)\n\nClassify threat level:\nLOW | MODERATE | HIGH | CRITICAL
+
+== Affected Trail Identification ==
+
+Svc -> Trail : [[/microservices/svc-trail-management/#get-trails-list-all-trails GET /trails]]
+activate Trail #FEF3C7
+Trail --> Svc : All trails with coordinates\nand active adventure bookings
+deactivate Trail
+
+note right of Svc : Geo-spatial query:\nFind trails within threat radius\n- Bear/cougar: 2 mi radius\n- Snake: 0.5 mi radius\n- Other predator: 1 mi radius
+
+== Threat-Based Response ==
+
+alt CRITICAL — Large predator in active area
+    note right of Svc #FEE2E2 : TRAIL CLOSURE required\n- Close all trails in radius\n- Alert all active guides\n- Notify operations manager\n- Cancel pending check-ins
+
+    Svc -> Trail : [[/microservices/svc-trail-management/#post-trailstrail_id-conditions-update-trail-conditions POST /trails/{id}/conditions]]\n(for each affected trail)
+    activate Trail #FEF3C7
+    Trail --> Svc : Trails marked CLOSED
+    deactivate Trail
+
+else HIGH — Predator sighting, no active groups nearby
+    note right of Svc #FEF3C7 : ADVISORY issued\n- Flag trails as CAUTION\n- Notify guides on duty\n- Monitor for movement
+
+else MODERATE or LOW — Non-threatening species
+    note right of Svc #D1FAE5 : LOGGED only\n- Record sighting\n- No trail impact\n- Wildlife research data
+end
+
+== Database ==
+
+Svc -> DB : INSERT INTO wildlife_alerts\n(alert_id, species, threat_level,\nlocation, affected_trails,\nresponse_action)
+activate DB #FEF9C3
+DB --> Svc : Created row
+deactivate DB
+
+== Async Notifications ==
+
+Svc ->> Ntfy : [[/microservices/svc-notifications/#post-notifications-send-a-notification Alert operations staff and active guides]]
+
+Svc --> GW : 201 Created\n(alert_id, threat_level,\naffected_trail_count, response_action)
+deactivate Svc
+GW --> Client : 201 Created
+deactivate GW
+
+@enduml

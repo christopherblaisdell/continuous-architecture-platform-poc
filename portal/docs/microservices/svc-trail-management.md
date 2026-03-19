@@ -253,8 +253,8 @@ tags:
 [:material-open-in-new: View in Swagger UI](../services/api/svc-trail-management.html#/Conditions/getTrailCurrentConditions){ .md-button }
 
 <div class="diagram-wrap"><a href="../svg/svc-trail-management--get-trails-trail_id-conditions.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-trail-management--get-trails-trail_id-conditions.svg" type="image/svg+xml" style="max-width: 100%;">GET /trails/{trail_id}/conditions sequence diagram</object></div>
-<a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-trail-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-trail-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source diagram-source--override"><span class="diagram-source-icon">&#x270E;</span> Architect-authored — overrides auto-generated baseline</span>
+<span class="diagram-source-subtitle">Source: <a href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/diagrams/endpoints/svc-trail-management--get-trails-trail_id-conditions.puml"><code>architecture/diagrams/endpoints/svc-trail-management--get-trails-trail_id-conditions.puml</code></a></span>
 
 ---
 

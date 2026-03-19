@@ -67,10 +67,15 @@ def diagram_override_badge(source_path):
     """Return HTML for an architect-authored diagram badge."""
     icon = '<span class="diagram-source-icon">&#x270E;</span>'
     text = f"{icon} Architect-authored — overrides auto-generated baseline"
+    gh_url = (
+        "https://github.com/christopherblaisdell/"
+        "continuous-architecture-platform-poc/blob/main/"
+        + source_path
+    )
     return (
         f'<span class="diagram-source diagram-source--override">{text}</span>'
         f'\n<span class="diagram-source-subtitle">'
-        f'Source: <code>{source_path}</code></span>'
+        f'Source: <a href="{gh_url}"><code>{source_path}</code></a></span>'
     )
 
 # ── Label Mappings ──
