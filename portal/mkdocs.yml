@@ -134,7 +134,6 @@ nav:
         - Domain Views: topology/domain-views.md
       - CALM Topology: calm.md
       - Actor Catalog: actors/index.md
-      - Technology Stack: technologies.md
     - Deep Dives:
       - Metadata and Artifacts: architect-guide/metadata-and-artifacts.md
       - AI-Assisted Workflow: architect-guide/ai-assisted-workflow.md
@@ -238,9 +237,25 @@ nav:
       - standards/quality-model/index.md
       - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
   - Operations:
-    - Artifact Registry: artifact-registry.md
-    - Platform Operations: platform-operations.md
-    - Platform Roadmap: roadmap.md
+    - operations/index.md
+    - Platform Infrastructure:
+      - Platform Operations: platform-operations.md
+      - Technology Stack: technologies.md
+      - Database Change Workflow: database-change-workflow.md
+      - Platform Roadmap: roadmap.md
+    - Architecture Governance:
+      - Artifact Registry: artifact-registry.md
+      - Decision Log:
+        - decisions/README.md
+        - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
+        - ADR-002 Documentation Publishing: decisions/ADR-002-documentation-publishing-platform.md
+        - ADR-003 Nullable Elevation Fields: decisions/ADR-003-nullable-elevation-fields.md
+        - ADR-004 Config-Driven Classification: decisions/ADR-004-configuration-driven-classification.md
+        - ADR-005 Pattern 3 Default Fallback: decisions/ADR-005-pattern3-default-fallback.md
+        - ADR-010 PATCH Semantics: decisions/ADR-010-patch-semantics-schedule-updates.md
+        - ADR-011 Optimistic Locking: decisions/ADR-011-optimistic-locking-daily-schedule.md
+        - ADR-012 TDD/BDD Hybrid: decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md
+        - ADR-013 Contract Testing: decisions/ADR-013-spring-cloud-contract-testing.md
     - Security Model:
       - security/index.md
       - Security Comparison: security/security-comparison.md
@@ -250,15 +265,11 @@ nav:
       - Data Protection: security/data-protection.md
       - Security Research Prompt: security/research-prompt.md
       - Research Results: security/research-prompt-response.md
-    - Database Change Workflow: database-change-workflow.md
-    - AI Workflow Customization:
+    - AI Workflow:
       - Copilot vs OpenSpec Comparison: copilot-vs-openspec-comparison.md
-      - Reference Guides:
-        - GitHub Copilot Customization: github-copilot-customization-guide.md
-        - OpenSpec Customization: openspec-customization-guide.md
-    - Research:
-      - OpenSpec Evaluation:
+      - GitHub Copilot Customization: github-copilot-customization-guide.md
+      - OpenSpec Customization: openspec-customization-guide.md
+      - OpenSpec Research:
         - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
         - Evaluation Plan: research/OPENSPEC-EVALUATION-PLAN.md
         - Deep Research Prompt: research/DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md
-    - Tags: tags.md
