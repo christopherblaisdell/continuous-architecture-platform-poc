@@ -159,7 +159,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /purchase-orders/{po_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -171,7 +171,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--patch-purchase-orders-po_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /purchase-orders/{po_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -181,7 +181,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-suppliers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">GET /suppliers sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -191,7 +191,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-suppliers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-suppliers.svg" type="image/svg+xml" style="max-width: 100%;">POST /suppliers sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -203,7 +203,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-stock-levels.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-stock-levels.svg" type="image/svg+xml" style="max-width: 100%;">GET /stock-levels sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -215,7 +215,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--post-stock-adjustments.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--post-stock-adjustments.svg" type="image/svg+xml" style="max-width: 100%;">POST /stock-adjustments sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -227,7 +227,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-inventory-procurement--get-reorder-alerts.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-inventory-procurement--get-reorder-alerts.svg" type="image/svg+xml" style="max-width: 100%;">GET /reorder-alerts sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-inventory-procurement.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-inventory-procurement.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

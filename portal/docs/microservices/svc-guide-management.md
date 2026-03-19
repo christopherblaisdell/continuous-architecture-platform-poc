@@ -167,7 +167,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -179,7 +179,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -191,7 +191,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -203,7 +203,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--patch-guides-guide_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--patch-guides-guide_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guides/{guide_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -215,7 +215,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/certifications sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -227,7 +227,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/certifications sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -239,7 +239,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-schedule.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/schedule sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -251,7 +251,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-availability.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/availability sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -263,7 +263,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-availability.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-availability.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/availability sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -275,7 +275,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/{guide_id}/ratings sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -287,7 +287,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--post-guides-guide_id-ratings.svg" type="image/svg+xml" style="max-width: 100%;">POST /guides/{guide_id}/ratings sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -299,7 +299,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guide-management--get-guides-available.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guide-management--get-guides-available.svg" type="image/svg+xml" style="max-width: 100%;">GET /guides/available sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guide-management.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guide-management.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

@@ -147,7 +147,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-media-gallery--get-media.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-media-gallery--get-media.svg" type="image/svg+xml" style="max-width: 100%;">GET /media sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-media-gallery.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-media-gallery.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -159,7 +159,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-media-gallery--post-media.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-media-gallery--post-media.svg" type="image/svg+xml" style="max-width: 100%;">POST /media sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-media-gallery.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-media-gallery.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -169,7 +169,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-media-gallery--get-media-media_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-media-gallery--get-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /media/{media_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-media-gallery.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-media-gallery.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -181,7 +181,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-media-gallery--delete-media-media_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-media-gallery--delete-media-media_id.svg" type="image/svg+xml" style="max-width: 100%;">DELETE /media/{media_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-media-gallery.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-media-gallery.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -193,7 +193,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-media-gallery--post-media-media_id-share.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-media-gallery--post-media-media_id-share.svg" type="image/svg+xml" style="max-width: 100%;">POST /media/{media_id}/share sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-media-gallery.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-media-gallery.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

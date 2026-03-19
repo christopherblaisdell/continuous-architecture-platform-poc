@@ -195,7 +195,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--get-guests.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--get-guests.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -219,7 +219,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--get-guests-guest_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--get-guests-guest_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -231,7 +231,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--patch-guests-guest_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--patch-guests-guest_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /guests/{guest_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -243,7 +243,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--get-guests-guest_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--get-guests-guest_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/certifications sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -255,7 +255,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--post-guests-guest_id-certifications.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--post-guests-guest_id-certifications.svg" type="image/svg+xml" style="max-width: 100%;">POST /guests/{guest_id}/certifications sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -267,7 +267,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--get-guests-guest_id-medical-info.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--get-guests-guest_id-medical-info.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/medical-info sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -279,7 +279,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--put-guests-guest_id-medical-info.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--put-guests-guest_id-medical-info.svg" type="image/svg+xml" style="max-width: 100%;">PUT /guests/{guest_id}/medical-info sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -291,7 +291,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-guest-profiles--get-guests-guest_id-adventure-history.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-guest-profiles--get-guests-guest_id-adventure-history.svg" type="image/svg+xml" style="max-width: 100%;">GET /guests/{guest_id}/adventure-history sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-guest-profiles.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-guest-profiles.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

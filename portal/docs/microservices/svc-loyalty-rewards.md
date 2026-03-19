@@ -146,7 +146,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--get-members-guest_id-balance.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--get-members-guest_id-balance.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/balance sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -176,7 +176,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--get-members-guest_id-transactions.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--get-members-guest_id-transactions.svg" type="image/svg+xml" style="max-width: 100%;">GET /members/{guest_id}/transactions sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -186,7 +186,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-loyalty-rewards--get-tiers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-loyalty-rewards--get-tiers.svg" type="image/svg+xml" style="max-width: 100%;">GET /tiers sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-loyalty-rewards.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-loyalty-rewards.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

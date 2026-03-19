@@ -151,7 +151,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-waivers.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-waivers.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -171,7 +171,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-waivers-waiver_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-waivers-waiver_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /waivers/{waiver_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -191,7 +191,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-incidents-incident_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /incidents/{incident_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -201,7 +201,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--patch-incidents-incident_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--patch-incidents-incident_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /incidents/{incident_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -211,7 +211,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--get-safety-inspections.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--get-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">GET /safety-inspections sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -221,7 +221,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-safety-compliance--post-safety-inspections.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-safety-compliance--post-safety-inspections.svg" type="image/svg+xml" style="max-width: 100%;">POST /safety-inspections sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-safety-compliance.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-safety-compliance.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

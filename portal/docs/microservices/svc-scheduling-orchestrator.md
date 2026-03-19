@@ -184,7 +184,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-scheduling-orchestrator--get-schedule-requests-request_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-scheduling-orchestrator--get-schedule-requests-request_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /schedule-requests/{request_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-scheduling-orchestrator.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-scheduling-orchestrator.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -208,7 +208,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-scheduling-orchestrator--get-schedule-conflicts.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-scheduling-orchestrator--get-schedule-conflicts.svg" type="image/svg+xml" style="max-width: 100%;">GET /schedule-conflicts sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-scheduling-orchestrator.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-scheduling-orchestrator.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 

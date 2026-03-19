@@ -1214,7 +1214,7 @@ def generate_service_page(svc_name, spec, svg_files, overridden_endpoints=None):
                     f"https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/{svc_name}.yaml",
                     'Auto-generated baseline — shows standard request flow. '
                     'For detailed behavioral sequences, see the relevant '
-                    '<a href="../solutions/">solution design</a>.'
+                    '<a href="/solutions/">solution design</a>.'
                 ))
         else:
             lines.append(f"*Diagram not available for {method} {path}*")

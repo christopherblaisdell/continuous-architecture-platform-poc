@@ -139,7 +139,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-partner-integrations--get-partner-bookings-booking_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-partner-integrations--get-partner-bookings-booking_id.svg" type="image/svg+xml" style="max-width: 100%;">GET /partner-bookings/{booking_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-partner-integrations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-partner-integrations.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -149,7 +149,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-partner-integrations--patch-partner-bookings-booking_id.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-partner-integrations--patch-partner-bookings-booking_id.svg" type="image/svg+xml" style="max-width: 100%;">PATCH /partner-bookings/{booking_id} sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-partner-integrations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-partner-integrations.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -171,7 +171,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-partner-integrations--get-partners.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-partner-integrations--get-partners.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-partner-integrations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-partner-integrations.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -181,7 +181,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-partner-integrations--post-partners.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-partner-integrations--post-partners.svg" type="image/svg+xml" style="max-width: 100%;">POST /partners sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-partner-integrations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-partner-integrations.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
@@ -191,7 +191,7 @@ tags:
 
 <div class="diagram-wrap"><a href="../svg/svc-partner-integrations--get-partners-partner_id-commission-report.svg" target="_blank" class="diagram-expand" title="Open in new tab">⤢</a><object data="../svg/svc-partner-integrations--get-partners-partner_id-commission-report.svg" type="image/svg+xml" style="max-width: 100%;">GET /partners/{partner_id}/commission-report sequence diagram</object></div>
 <a class="diagram-source" href="https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/specs/svc-partner-integrations.yaml" title="View data source"><span class="diagram-source-icon">&#x2699;</span> Generated from `architecture/specs/svc-partner-integrations.yaml`</a>
-<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="../solutions/">solution design</a>.</span>
+<span class="diagram-source-subtitle">Auto-generated baseline — shows standard request flow. For detailed behavioral sequences, see the relevant <a href="/solutions/">solution design</a>.</span>
 
 ---
 
