@@ -113,6 +113,7 @@ def generate_domain_overview_puml(topology):
         "!include <c4/C4_Context>",
         "",
         "LAYOUT_TOP_DOWN()",
+        "HIDE_STEREOTYPE()",
         "",
         'AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed")',
         "",
