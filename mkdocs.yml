@@ -110,6 +110,20 @@ markdown_extensions:
 # ---------------------------------------------------------------------------
 nav:
   - Home: index.md
+  - Architect's Guide:
+      - architect-guide/index.md
+      - Your Role: architect-guide/your-role.md
+      - Domain Model: architect-guide/domain-model.md
+      - Solution Design Workflow: architect-guide/solution-design-workflow.md
+      - Architecture Decisions: architect-guide/decisions.md
+      - API Contracts: architect-guide/api-contracts.md
+      - Metadata and Artifacts: architect-guide/metadata-and-artifacts.md
+      - Diagrams and Wireframes: architect-guide/diagrams-and-wireframes.md
+      - Testing Guide: architect-guide/testing-guide.md
+      - Portal Publishing: architect-guide/portal-publishing.md
+      - AI-Assisted Workflow: architect-guide/ai-assisted-workflow.md
+      - Anti-Patterns: architect-guide/anti-patterns.md
+      - Quick Reference: architect-guide/quick-reference.md
   - Microservices:
       - microservices/index.md
       - svc-check-in: microservices/svc-check-in.md
