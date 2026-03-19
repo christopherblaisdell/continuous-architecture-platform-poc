@@ -17,7 +17,7 @@ All architecture diagrams use the [C4 model](../standards/c4-model/index.md) not
 
 ### Creating a Diagram
 
-Diagrams are hand-authored in PlantUML and stored in `architecture/diagrams/`:
+Diagrams are hand-authored in PlantUML and stored in [`architecture/diagrams/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams):
 
 ```
 architecture/diagrams/
@@ -191,6 +191,8 @@ architecture/wireframes/
   app-guest-mobile/
     adventure-selection.excalidraw       # Mobile adventure search and booking
 ```
+
+Wireframe source files are in [`architecture/wireframes/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/wireframes).
 
 ### Editing Wireframes
 

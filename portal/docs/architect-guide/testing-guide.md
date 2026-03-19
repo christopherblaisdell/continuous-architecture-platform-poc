@@ -20,7 +20,7 @@ NovaTrek uses a hybrid TDD/BDD approach (ADR-012) with four distinct test layers
 - **User stories** with acceptance criteria -> drive BDD scenarios
 - **OpenAPI specs** -> drive contract test generation
 - **Data store schemas** (`data-stores.yaml`) -> inform integration test scope
-- **Test standards** (`config/test-standards.yaml`) -> define coverage thresholds and conventions
+- **Test standards** ([`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml)) -> define coverage thresholds and conventions
 
 ---
 
@@ -120,7 +120,7 @@ This is intentional — the contract is enforced, not advisory.
 
 ## Test Standards Configuration
 
-Test standards are centralized in `config/test-standards.yaml`:
+Test standards are centralized in [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml):
 
 - Coverage thresholds per test layer
 - Tooling versions (JUnit, Cucumber, Testcontainers)
@@ -173,4 +173,4 @@ Developers run tests with:
 
 - [ADR-012: TDD/BDD Hybrid](../decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md) — why this methodology
 - [ADR-013: Spring Cloud Contract](../decisions/ADR-013-spring-cloud-contract-testing.md) — contract testing decision
-- `config/test-standards.yaml` — coverage thresholds and conventions
+- [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml) — coverage thresholds and conventions

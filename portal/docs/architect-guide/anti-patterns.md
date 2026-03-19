@@ -14,7 +14,7 @@ This page catalogs common architectural anti-patterns at NovaTrek. Flag these in
 
 **Recommended alternative**: API-mediated access. The owning service exposes read/write APIs. Other services call those APIs instead of hitting the database directly.
 
-**Example**: If `svc-analytics` needs check-in data, it calls `svc-check-in`'s API — it does not query the check-in database.
+**Example**: If [`svc-analytics`](../microservices/svc-analytics/) needs check-in data, it calls [`svc-check-in`](../microservices/svc-check-in/)'s API — it does not query the check-in database.
 
 ---
 
@@ -52,11 +52,11 @@ This page catalogs common architectural anti-patterns at NovaTrek. Flag these in
 
 ### Shadow Guest Records
 
-**Problem**: Services maintaining their own copy of guest identity data instead of delegating to `svc-guest-profiles`.
+**Problem**: Services maintaining their own copy of guest identity data instead of delegating to [`svc-guest-profiles`](../microservices/svc-guest-profiles/).
 
 **Why it's harmful**: Guest profile updates (name change, contact info update) do not propagate to shadow copies. You end up with inconsistent guest data across services.
 
-**Recommended alternative**: Always resolve guest identity through `svc-guest-profiles`. Cache for performance if needed, but the profile service is the single source of truth.
+**Recommended alternative**: Always resolve guest identity through [`svc-guest-profiles`](../microservices/svc-guest-profiles/). Cache for performance if needed, but the profile service is the single source of truth.
 
 ---
 
@@ -80,7 +80,7 @@ This page catalogs common architectural anti-patterns at NovaTrek. Flag these in
 
 **Why it's harmful**: Adding a new adventure category requires a code change, a build, and a deployment. The business team cannot update classifications without developer involvement.
 
-**Recommended alternative**: Configuration-driven approach. Adventure classifications live in `config/adventure-classification.yaml` and are read at runtime. See [ADR-004](../decisions/ADR-004-configuration-driven-classification.md).
+**Recommended alternative**: Configuration-driven approach. Adventure classifications live in [`config/adventure-classification.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/adventure-classification.yaml) and are read at runtime. See [ADR-004](../decisions/ADR-004-configuration-driven-classification.md).
 
 ---
 

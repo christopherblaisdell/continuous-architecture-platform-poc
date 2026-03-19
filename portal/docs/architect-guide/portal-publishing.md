@@ -29,16 +29,16 @@ This executes 11 stages in order:
 
 | Stage | Generator | Output |
 |-------|-----------|--------|
-| 1 | `generate-swagger-pages.py` | Swagger UI HTML pages (23 services) |
-| 2 | `generate-microservice-pages.py` | Service pages + PlantUML + SVG (139 diagrams) |
-| 3 | `generate-application-pages.py` | App pages + user journey SVGs |
-| 4 | `generate-wireframe-pages.py` | Wireframe SVG + HTML + Markdown |
-| 5 | `generate-event-pages.py` | AsyncAPI event catalog |
-| 6 | `generate-solution-pages.py` | Solution index + detail pages |
-| 7 | `generate-capability-pages.py` | Capability hierarchy + timeline |
-| 8 | `generate-ticket-pages.py` | Ticket index + detail pages |
-| 9 | `generate-topology-pages.py` + CALM | System map, dependency matrix, domain views |
-| 10 | `generate-svgs.sh` | Hand-authored PlantUML diagram SVGs |
+| 1 | [`generate-swagger-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-swagger-pages.py) | Swagger UI HTML pages (23 services) |
+| 2 | [`generate-microservice-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-microservice-pages.py) | Service pages + PlantUML + SVG (139 diagrams) |
+| 3 | [`generate-application-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-application-pages.py) | App pages + user journey SVGs |
+| 4 | [`generate-wireframe-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-wireframe-pages.py) | Wireframe SVG + HTML + Markdown |
+| 5 | [`generate-event-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-event-pages.py) | AsyncAPI event catalog |
+| 6 | [`generate-solution-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-solution-pages.py) | Solution index + detail pages |
+| 7 | [`generate-capability-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-capability-pages.py) | Capability hierarchy + timeline |
+| 8 | [`generate-ticket-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-ticket-pages.py) | Ticket index + detail pages |
+| 9 | [`generate-topology-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-topology-pages.py) + CALM | System map, dependency matrix, domain views |
+| 10 | [`generate-svgs.sh`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-svgs.sh) | Hand-authored PlantUML diagram SVGs |
 | 11 | `mkdocs build` + asset copy | Complete HTML site in `portal/site/` |
 
 ### Why Asset Copy?

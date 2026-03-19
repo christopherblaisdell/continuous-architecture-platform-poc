@@ -66,7 +66,7 @@ See the [Artifact Registry](../artifact-registry.md) for the complete inventory 
 
 3. **Decisions are recorded.** Every architectural choice that crosses service boundaries or changes data semantics gets a MADR decision record.
 
-4. **Safety defaults to strict.** Unknown adventure categories always default to Pattern 3 (Full Service) — the highest safety level. This is non-negotiable (ADR-005).
+4. **Safety defaults to strict.** Unknown adventure categories always default to Pattern 3 (Full Service) — the highest safety level. This is non-negotiable ([ADR-005](../decisions/ADR-005-pattern3-default-fallback.md)).
 
 5. **Services own their data.** No shared databases. Every service has exclusive ownership of its data. Cross-service access goes through published APIs.
 

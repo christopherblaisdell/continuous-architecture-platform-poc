@@ -1949,6 +1949,17 @@
       }
     },
     {
+      "unique-id": "ext-currency-exchange",
+      "node-type": "system",
+      "name": "Currency Exchange API",
+      "description": "Real-time foreign currency exchange rate conversion",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
       "unique-id": "ext-firebase-fcm",
       "node-type": "system",
       "name": "Firebase Cloud Messaging",
@@ -1975,6 +1986,17 @@
       "node-type": "system",
       "name": "Google Maps Platform",
       "description": "Geolocation, routing, and map rendering",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-instagram",
+      "node-type": "system",
+      "name": "Instagram Graph API",
+      "description": "Social media photo sharing to guest Instagram accounts",
       "interfaces": [],
       "metadata": {
         "domain": "External",
@@ -2030,6 +2052,17 @@
       "node-type": "system",
       "name": "Snowflake Data Cloud",
       "description": "Cloud data warehouse for analytics",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
+      "unique-id": "ext-supplier-procurement",
+      "node-type": "system",
+      "name": "Supplier Procurement Portal",
+      "description": "External vendor ordering platform for gear and supplies",
       "interfaces": [],
       "metadata": {
         "domain": "External",
@@ -2218,6 +2251,21 @@
       }
     },
     {
+      "unique-id": "rel-svc-reservations-post--reservations-{reservation_id}-insurance-to-svc-notifications",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-notifications"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /reservations/{reservation_id}/insurance",
+        "target-endpoint": "POST /notifications",
+        "action": "Send insurance confirmation",
+        "async": true
+      }
+    },
+    {
       "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-requests-to-svc-weather",
       "relationship-type": "interacts",
       "parties": {
@@ -2334,6 +2382,21 @@
         "source-endpoint": "GET /guests/{guest_id}/adventure-history",
         "target-endpoint": "GET /events",
         "action": "Get satisfaction scores",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-payments-post--payments-to-ext-currency-exchange",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-payments",
+        "target": "ext-currency-exchange"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /payments",
+        "target-endpoint": "GET ",
+        "action": "Convert foreign currency to base currency",
         "async": false
       }
     },
@@ -2683,6 +2746,21 @@
       }
     },
     {
+      "unique-id": "rel-svc-media-gallery-post--media-{media_id}-share-to-ext-instagram",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-media-gallery",
+        "target": "ext-instagram"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /media/{media_id}/share",
+        "target-endpoint": "GET ",
+        "action": "Publish adventure photo to guest Instagram",
+        "async": true
+      }
+    },
+    {
       "unique-id": "rel-svc-media-gallery-post--media-{media_id}-share-to-svc-notifications",
       "relationship-type": "interacts",
       "parties": {
@@ -2709,6 +2787,21 @@
         "source-endpoint": "POST /purchase-orders",
         "target-endpoint": "GET /gear-items",
         "action": "Verify item catalog",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-inventory-procurement-post--purchase-orders-to-ext-supplier-procurement",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-inventory-procurement",
+        "target": "ext-supplier-procurement"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /purchase-orders",
+        "target-endpoint": "GET ",
+        "action": "Submit purchase order to approved vendor",
         "async": false
       }
     },

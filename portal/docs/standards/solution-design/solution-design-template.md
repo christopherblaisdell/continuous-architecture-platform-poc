@@ -161,7 +161,7 @@ Requirements capture explicit functional behaviors and non-functional quality at
 
 ## Test Plan
 
-The test plan identifies which test layers are affected by this solution and what new or updated tests are required. Test methodology follows ADR-012 (TDD/BDD hybrid). Coverage thresholds are defined in `config/test-standards.yaml`.
+The test plan identifies which test layers are affected by this solution and what new or updated tests are required. Test methodology follows ADR-012 (TDD/BDD hybrid). Coverage thresholds are defined in [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml).
 
 ### Affected Test Layers
 

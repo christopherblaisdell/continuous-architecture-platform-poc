@@ -842,6 +842,17 @@
       }
     },
     {
+      "unique-id": "ext-fleet-gps",
+      "node-type": "system",
+      "name": "Fleet GPS Tracking API",
+      "description": "Vehicle telematics and real-time fleet GPS tracking",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
+    },
+    {
       "unique-id": "ext-google-maps",
       "node-type": "system",
       "name": "Google Maps Platform",
@@ -980,6 +991,21 @@
         "source-endpoint": "POST /transport-requests",
         "target-endpoint": "GET ",
         "action": "Calculate optimal route",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-ext-fleet-gps",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-transport-logistics",
+        "target": "ext-fleet-gps"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /transport-requests",
+        "target-endpoint": "GET ",
+        "action": "Get real-time vehicle location and ETA",
         "async": false
       }
     },

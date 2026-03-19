@@ -2,6 +2,9 @@
 
 Service-to-service dependency table showing which services call which, and over what protocol.
 
+!!! info "Everything on this portal is entirely fictional"
+    NovaTrek Adventures is a completely fictitious company used as a synthetic workspace for the Continuous Architecture Platform proof of concept.
+
 ---
 
 ## Reading the Matrix

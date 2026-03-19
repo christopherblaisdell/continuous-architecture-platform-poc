@@ -1240,6 +1240,17 @@
         "domain": "External",
         "external": true
       }
+    },
+    {
+      "unique-id": "ext-sar-dispatch",
+      "node-type": "system",
+      "name": "Search and Rescue Dispatch API",
+      "description": "Regional SAR team emergency dispatch coordination",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
     }
   ],
   "relationships": [
@@ -1430,6 +1441,21 @@
       }
     },
     {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-permits-to-svc-safety-compliance",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-safety-compliance"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/permits",
+        "target-endpoint": "GET /trails/{trail_id}/safety-rating",
+        "action": "Validate trail safety rating",
+        "async": false
+      }
+    },
+    {
       "unique-id": "rel-svc-emergency-response-post--emergencies-to-svc-guest-profiles",
       "relationship-type": "interacts",
       "parties": {
@@ -1516,6 +1542,21 @@
         "source-endpoint": "POST /emergencies/{emergency_id}/dispatch",
         "target-endpoint": "GET /guides/on-duty",
         "action": "Check guide availability for rescue",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-emergency-response-post--emergencies-{emergency_id}-dispatch-to-ext-sar-dispatch",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-emergency-response",
+        "target": "ext-sar-dispatch"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /emergencies/{emergency_id}/dispatch",
+        "target-endpoint": "GET ",
+        "action": "Dispatch regional SAR team to incident coordinates",
         "async": false
       }
     },

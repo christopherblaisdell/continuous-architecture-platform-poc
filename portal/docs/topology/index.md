@@ -2,6 +2,9 @@
 
 Auto-generated from the [CALM topology](../calm.md) — the machine-readable architecture model for NovaTrek Adventures.
 
+!!! info "Everything on this portal is entirely fictional"
+    NovaTrek Adventures is a completely fictitious company used as a synthetic workspace for the Continuous Architecture Platform proof of concept.
+
 ---
 
 ## Topology at a Glance

@@ -2,6 +2,9 @@
 
 Domain-level topology for NovaTrek Adventures — 22 services across 9 domains.
 
+!!! info "Everything on this portal is entirely fictional"
+    NovaTrek Adventures is a completely fictitious company used as a synthetic workspace for the Continuous Architecture Platform proof of concept.
+
 ---
 
 ## Domain Overview

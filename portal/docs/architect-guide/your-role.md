@@ -94,7 +94,7 @@ Some artifacts have dual ownership:
 |----------|--------------|-----------------|
 | OpenAPI specs | Solution Architect | Developer (via PR for implementation-discovered gaps) |
 | AsyncAPI event specs | Solution Architect | Developer (via PR) |
-| `config/test-standards.yaml` | Solution Architect | Developer (proposes threshold changes) |
+| [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml) | Solution Architect | Developer (proposes threshold changes) |
 | Database migrations (Flyway) | Developer | Architect (designs schema in `data-stores.yaml`) |
 
 ---

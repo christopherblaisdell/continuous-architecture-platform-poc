@@ -24,11 +24,11 @@ Each solution maps business requirements to service changes with full capability
 Capabilities shaped by solution designs:
 
 | Capability | Solutions |
-|-----------|----------|
-| CAP-1.2 | NTK-10002, NTK-10008 |
-| CAP-1.7 | NTK-10008 |
-| CAP-2.1 | NTK-10002, NTK-10005 |
-| CAP-2.2 | NTK-10004 |
-| CAP-2.4 | NTK-10001 |
-| CAP-5.4 | NTK-10009 |
-| CAP-5.5 | NTK-10009 |
+|-----------|----------
+| [CAP-1.2 Adventure Discovery and Browsing](../capabilities/index.md#cap-12-adventure-discovery-and-browsing) | [NTK-10002](_NTK-10002-adventure-category-classification.md), [NTK-10008](_NTK-10008-guest-reviews-and-ratings.md) |
+| [CAP-1.7 Reviews and Feedback](../capabilities/index.md#cap-17-reviews-and-feedback) | [NTK-10008](_NTK-10008-guest-reviews-and-ratings.md) |
+| [CAP-2.1 Day-of-Adventure Check-In](../capabilities/index.md#cap-21-day-of-adventure-check-in) | [NTK-10002](_NTK-10002-adventure-category-classification.md), [NTK-10005](_NTK-10005-wristband-rfid-field.md) |
+| [CAP-2.2 Schedule Planning and Optimization](../capabilities/index.md#cap-22-schedule-planning-and-optimization) | [NTK-10004](_NTK-10004-guide-schedule-overwrite-bug.md) |
+| [CAP-2.4 Trail Operations](../capabilities/index.md#cap-24-trail-operations) | [NTK-10001](_NTK-10001-add-elevation-to-trail-response.md) |
+| [CAP-5.4 Financial Reporting and Reconciliation](../capabilities/index.md#cap-54-financial-reporting-and-reconciliation) | [NTK-10009](_NTK-10009-refund-dispute-management.md) |
+| [CAP-5.5 Refund and Dispute Management](../capabilities/index.md#cap-55-refund-and-dispute-management) | [NTK-10009](_NTK-10009-refund-dispute-management.md) |

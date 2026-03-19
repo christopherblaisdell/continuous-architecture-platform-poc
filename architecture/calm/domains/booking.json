@@ -1186,6 +1186,17 @@
         "domain": "External",
         "external": true
       }
+    },
+    {
+      "unique-id": "ext-travel-insurance",
+      "node-type": "system",
+      "name": "Travel Insurance API",
+      "description": "Third-party adventure trip insurance quoting and binding",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
     }
   ],
   "relationships": [
@@ -1348,6 +1359,36 @@
         "source-endpoint": "PUT /reservations/{reservation_id}/status",
         "target-endpoint": "POST /notifications",
         "action": "Send status update",
+        "async": true
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-post--reservations-{reservation_id}-insurance-to-ext-travel-insurance",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "ext-travel-insurance"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /reservations/{reservation_id}/insurance",
+        "target-endpoint": "GET ",
+        "action": "Quote and bind trip insurance policy",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-reservations-post--reservations-{reservation_id}-insurance-to-svc-notifications",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-reservations",
+        "target": "svc-notifications"
+      },
+      "protocol": "Kafka",
+      "metadata": {
+        "source-endpoint": "POST /reservations/{reservation_id}/insurance",
+        "target-endpoint": "POST /notifications",
+        "action": "Send insurance confirmation",
         "async": true
       }
     },

@@ -973,6 +973,17 @@
         "domain": "Support",
         "team": "Support Services Team"
       }
+    },
+    {
+      "unique-id": "ext-national-parks-permit",
+      "node-type": "system",
+      "name": "National Parks Permit API",
+      "description": "Government parks and forestry trail access permit system",
+      "interfaces": [],
+      "metadata": {
+        "domain": "External",
+        "external": true
+      }
     }
   ],
   "relationships": [
@@ -1163,6 +1174,51 @@
         "target-endpoint": "POST /notifications",
         "action": "Alert park rangers",
         "async": true
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-permits-to-ext-national-parks-permit",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "ext-national-parks-permit"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/permits",
+        "target-endpoint": "GET ",
+        "action": "Submit trail access permit request",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-post--trails-{trail_id}-permits-to-svc-safety-compliance",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "svc-safety-compliance"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "POST /trails/{trail_id}/permits",
+        "target-endpoint": "GET /trails/{trail_id}/safety-rating",
+        "action": "Validate trail safety rating",
+        "async": false
+      }
+    },
+    {
+      "unique-id": "rel-svc-trail-management-get--trails-{trail_id}-permit-status-to-ext-national-parks-permit",
+      "relationship-type": "interacts",
+      "parties": {
+        "source": "svc-trail-management",
+        "target": "ext-national-parks-permit"
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "source-endpoint": "GET /trails/{trail_id}/permit-status",
+        "target-endpoint": "GET ",
+        "action": "Check permit approval status",
+        "async": false
       }
     },
     {

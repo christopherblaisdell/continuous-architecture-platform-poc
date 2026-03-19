@@ -10,18 +10,18 @@ Commands, file locations, naming conventions, and common operations — all in o
 
 | What | Where |
 |------|-------|
-| Metadata YAML (15 files) | `architecture/metadata/` |
-| OpenAPI specs (23 services) | `architecture/specs/` |
-| AsyncAPI event specs (8 services) | `architecture/events/` |
-| Solution designs | `architecture/solutions/_NTK-XXXXX-slug/` |
-| Global ADRs | `decisions/` |
-| Hand-authored diagrams | `architecture/diagrams/{System,Components,Sequence,Tickets}/` |
-| Endpoint diagram overrides | `architecture/diagrams/endpoints/` |
-| Wireframes | `architecture/wireframes/{app}/` |
-| Adventure classification config | `config/adventure-classification.yaml` |
-| Test standards config | `config/test-standards.yaml` |
+| Metadata YAML (15 files) | [`architecture/metadata/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/metadata) |
+| OpenAPI specs (23 services) | [`architecture/specs/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs) |
+| AsyncAPI event specs (8 services) | [`architecture/events/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/events) |
+| Solution designs | [`architecture/solutions/_NTK-XXXXX-slug/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/solutions) |
+| Global ADRs | [`decisions/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/decisions) |
+| Hand-authored diagrams | [`architecture/diagrams/{System,Components,Sequence,Tickets}/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams) |
+| Endpoint diagram overrides | [`architecture/diagrams/endpoints/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/diagrams/endpoints) |
+| Wireframes | [`architecture/wireframes/{app}/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/wireframes) |
+| Adventure classification config | [`config/adventure-classification.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/adventure-classification.yaml) |
+| Test standards config | [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml) |
 | Portal hand-authored pages | `portal/docs/` (selected files) |
-| MkDocs configuration | `mkdocs.yml` |
+| MkDocs configuration | [`mkdocs.yml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/mkdocs.yml) |
 
 ### Generated Output (Do Not Edit)
 
@@ -43,17 +43,17 @@ Commands, file locations, naming conventions, and common operations — all in o
 
 | Script | Purpose |
 |--------|---------|
-| `portal/scripts/generate-all.sh` | Run all generators + build |
-| `portal/scripts/generate-microservice-pages.py` | Service pages + diagrams |
-| `portal/scripts/generate-application-pages.py` | App pages + wireframes |
-| `portal/scripts/generate-swagger-pages.py` | Swagger UI HTML |
-| `portal/scripts/generate-event-pages.py` | Event catalog |
-| `portal/scripts/generate-solution-pages.py` | Solution pages |
-| `portal/scripts/generate-capability-pages.py` | Capability hierarchy |
-| `portal/scripts/generate-ticket-pages.py` | Ticket registry |
-| `portal/scripts/generate-topology-pages.py` | CALM topology views |
-| `portal/scripts/generate-svgs.sh` | PlantUML -> SVG |
-| `portal/scripts/load_metadata.py` | Central metadata loader |
+| [`portal/scripts/generate-all.sh`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-all.sh) | Run all generators + build |
+| [`portal/scripts/generate-microservice-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-microservice-pages.py) | Service pages + diagrams |
+| [`portal/scripts/generate-application-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-application-pages.py) | App pages + wireframes |
+| [`portal/scripts/generate-swagger-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-swagger-pages.py) | Swagger UI HTML |
+| [`portal/scripts/generate-event-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-event-pages.py) | Event catalog |
+| [`portal/scripts/generate-solution-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-solution-pages.py) | Solution pages |
+| [`portal/scripts/generate-capability-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-capability-pages.py) | Capability hierarchy |
+| [`portal/scripts/generate-ticket-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-ticket-pages.py) | Ticket registry |
+| [`portal/scripts/generate-topology-pages.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-topology-pages.py) | CALM topology views |
+| [`portal/scripts/generate-svgs.sh`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/generate-svgs.sh) | PlantUML -> SVG |
+| [`portal/scripts/load_metadata.py`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/portal/scripts/load_metadata.py) | Central metadata loader |
 
 ---
 

@@ -73,7 +73,7 @@ python3 scripts/mock-gitlab-client.py --mr 5001
 
 ### Read the OpenAPI specs
 
-The specs in `architecture/specs/` are the definitive API contracts. Read the relevant ones:
+The specs in [`architecture/specs/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs) are the definitive API contracts. Read the relevant ones:
 
 ```bash
 # Example: understanding the check-in API
@@ -111,7 +111,7 @@ Browse `architecture/solutions/` for related work. Read the capability mappings 
 
 ### Check the changelog
 
-Review `architecture/metadata/capability-changelog.yaml` for L3 capabilities that may overlap with your design.
+Review [`architecture/metadata/capability-changelog.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/capability-changelog.yaml) for L3 capabilities that may overlap with your design.
 
 ### Reference prior decisions
 

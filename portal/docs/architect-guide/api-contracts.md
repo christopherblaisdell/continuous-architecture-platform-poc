@@ -6,7 +6,7 @@ API contracts are the machine-readable agreements between services. As a solutio
 
 ## OpenAPI Specs (REST APIs)
 
-Every microservice has an OpenAPI 3.x specification in `architecture/specs/`.
+Every microservice has an OpenAPI 3.x specification in [`architecture/specs/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/specs).
 
 ### File Location
 
@@ -80,7 +80,7 @@ Every spec gets an interactive Swagger UI page at `/services/api/{svc-name}.html
 
 ## AsyncAPI Specs (Events)
 
-Domain events use AsyncAPI specifications in `architecture/events/`.
+Domain events use AsyncAPI specifications in [`architecture/events/`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/tree/main/architecture/events).
 
 ### File Location
 
@@ -99,7 +99,7 @@ Each spec defines:
 - **Channels** — Kafka topics
 - **Messages** — event payload schemas
 - **Producers** — which service publishes
-- **Consumers** — which services subscribe (documented in `architecture/metadata/events.yaml`)
+- **Consumers** — which services subscribe (documented in [`architecture/metadata/events.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/architecture/metadata/events.yaml))
 
 ### Adding a New Event
 

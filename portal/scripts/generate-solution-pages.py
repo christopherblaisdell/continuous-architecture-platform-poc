@@ -317,7 +317,7 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
     return "\n".join(lines)
 
 
-def generate_index_page(solutions, tickets_data):
+def generate_index_page(solutions, tickets_data, cap_names):
     """Generate the solution designs index page."""
     lines = []
     lines.append("---")
@@ -354,6 +354,7 @@ def generate_index_page(solutions, tickets_data):
 
     # Capability coverage
     all_caps = {}
+    ticket_folder = {s["ticket_id"]: s["folder"] for s in solutions}
     for s in solutions:
         for c in s.get("capabilities", []):
             cap_id = c["id"]
@@ -367,10 +368,20 @@ def generate_index_page(solutions, tickets_data):
         lines.append("Capabilities shaped by solution designs:")
         lines.append("")
         lines.append("| Capability | Solutions |")
-        lines.append("|-----------|----------|")
+        lines.append("|-----------|----------")
         for cap_id in sorted(all_caps.keys()):
-            tickets = ", ".join(all_caps[cap_id])
-            lines.append(f"| {cap_id} | {tickets} |")
+            cap_name = cap_names.get(cap_id, "")
+            cap_anchor = heading_slug(f"{cap_id} {cap_name}")
+            cap_display = f"{cap_id} {cap_name}" if cap_name else cap_id
+            cap_link = f"[{cap_display}](../capabilities/index.md#{cap_anchor})"
+            ticket_links = []
+            for tid in all_caps[cap_id]:
+                folder = ticket_folder.get(tid, "")
+                if folder:
+                    ticket_links.append(f"[{tid}]({folder}.md)")
+                else:
+                    ticket_links.append(tid)
+            lines.append(f"| {cap_link} | {', '.join(ticket_links)} |")
         lines.append("")
 
     return "\n".join(lines)
@@ -404,7 +415,7 @@ def main():
                     solutions.append(meta)
 
     # Generate index
-    index_content = generate_index_page(solutions, tickets_data)
+    index_content = generate_index_page(solutions, tickets_data, cap_names)
     with open(os.path.join(OUTPUT_DIR, "index.md"), "w", encoding="utf-8") as f:
         f.write(index_content)
 

@@ -92,7 +92,7 @@ These files are hand-authored. All generated pages, diagrams, and portal content
 | File | Defines | Edited By |
 |------|---------|-----------|
 | [`config/adventure-classification.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/adventure-classification.yaml) | 25 adventure categories mapped to UX patterns (1/2/3) | Solution Architect |
-| [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml) | TDD/BDD testing conventions (ADR-012) | Solution Architect |
+| [`config/test-standards.yaml`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/test-standards.yaml) | TDD/BDD testing conventions ([ADR-012](decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md)) | Solution Architect |
 | [`config/sonar-project.properties`](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/blob/main/config/sonar-project.properties) | SonarQube analysis configuration | Software Developer |
 
 ### Service Source Code
@@ -335,7 +335,7 @@ NOTE: Source code changes do not affect the architecture portal. If the implemen
 
 1. Copy `services/template/` to `services/{svc-name}/`
 2. Implement the API contract defined in `architecture/specs/{svc-name}.yaml`
-3. Write contract tests against the OpenAPI spec (ADR-013)
+3. Write contract tests against the OpenAPI spec ([ADR-013](decisions/ADR-013-spring-cloud-contract-testing.md))
 4. Add database migrations to `infra/db/` if needed
 5. Push and open a pull request
 
@@ -394,4 +394,4 @@ bash portal/scripts/generate-svgs.sh
 
 4. **Capability changes go in the changelog.** Every solution that affects capabilities must add an entry to `architecture/metadata/capability-changelog.yaml` -- this is the single source of truth for L3 capability emergence.
 
-5. **API contracts are the shared boundary.** Solution Architects define the contract (OpenAPI spec). Software Developers implement it. Contract tests (ADR-013) verify alignment.
+5. **API contracts are the shared boundary.** Solution Architects define the contract (OpenAPI spec). Software Developers implement it. Contract tests ([ADR-013](decisions/ADR-013-spring-cloud-contract-testing.md)) verify alignment.
