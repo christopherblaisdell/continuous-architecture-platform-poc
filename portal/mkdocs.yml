@@ -52,6 +52,7 @@ extra_css:
   - stylesheets/custom.css
 
 extra_javascript:
+  - javascripts/announce-reset.js
   - javascripts/site-name-link.js
   - javascripts/external-links.js
 
