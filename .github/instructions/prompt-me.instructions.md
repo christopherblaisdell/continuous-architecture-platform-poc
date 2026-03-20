@@ -1,39 +1,56 @@
 ---
-description: "Use when the user says 'prompt me' — activates an interactive questioning workflow where the agent asks the user structured questions to clarify exactly what they want done before taking any action."
+description: "Use when the user says 'prompt me' — activates an interactive decision-loop workflow where the agent presents each step or issue with lettered options, a recommendation, and waits for the user to choose before proceeding."
 ---
 
-# Prompt Me — Interactive Task Specification
+# Prompt Me — Interactive Decision Loop
 
-When the user says **"prompt me"**, do NOT start working immediately. Instead, ask the user a focused series of questions to understand exactly what they want. Follow this workflow:
+When the user says **"prompt me"**, a plan or task list is already in progress. The user wants to step through it interactively, one item at a time, with full control over each decision.
 
-## Step 1: Ask What
+## Workflow
 
-Ask the user: **"What do you want to accomplish?"**
+For each item in the plan (issue, step, finding, change, etc.):
 
-Wait for their response before proceeding.
+### 1. Investigate
 
-## Step 2: Clarify Scope
+Before presenting anything, thoroughly research the item:
 
-Based on their answer, ask 2-4 targeted follow-up questions to pin down:
+- Read the relevant files, specs, logs, or metadata
+- Understand the current state and what changing it would involve
+- Identify risks, trade-offs, and alternatives
+- Be skeptical — do not assume the obvious answer is correct
 
-- **Where**: Which files, services, or areas of the codebase are involved?
-- **How**: Any specific approach, pattern, or constraint they have in mind?
-- **Output**: What does "done" look like — a file change, a document, a terminal command, analysis?
-- **Boundaries**: Anything explicitly out of scope or that should NOT be changed?
+### 2. Present
 
-Only ask questions that are relevant to their answer in Step 1. Skip obvious ones.
+State the item clearly, then provide:
 
-## Step 3: Confirm the Plan
+- **Context**: What the issue is, with relevant quotes or file references
+- **Lettered options** (A, B, C, etc.): Each option gets:
+  - A short label (e.g., "Accept as-is", "Add validation", "Redesign")
+  - A plain-language explanation of what it means and what happens if chosen
+  - Any trade-offs or consequences
+- **Recommendation**: State which option is recommended and a one-sentence rationale
 
-Summarize what you understood in a short numbered list and ask: **"Does this look right, or do you want to adjust anything?"**
+### 3. Wait
 
-## Step 4: Execute
+Stop and wait for the user to respond with a letter. Do NOT proceed, skip ahead, or batch multiple items.
 
-Only after the user confirms, begin the work.
+### 4. Apply
+
+Implement the user's chosen option (edit files, update docs, run commands, etc.).
+
+### 5. Wait Again
+
+After applying the change, stop and wait for the user to confirm (they may check the result and push before continuing).
+
+### 6. Next
+
+Only after confirmation, present the next item using the same format.
 
 ## Rules
 
-- Never guess the user's intent — ask.
-- Keep questions concise — no walls of text.
-- If the user's initial description is already very specific, skip to Step 3 (confirm) instead of asking redundant questions.
-- If the user says "prompt me" followed by a topic (e.g., "prompt me about testing"), use that topic as the starting context for Step 1.
+- One item at a time — never present multiple items in a single message
+- Always investigate before presenting — no shallow or speculative options
+- Be skeptical — question assumptions, flag risks, surface non-obvious concerns
+- Keep explanations simple and direct — no jargon walls
+- If the user says "prompt me" with additional context (e.g., "prompt me on the review findings"), use that to identify which plan or list to step through
+- If no plan is in progress, ask: "What plan or list should I step through with you?"
