@@ -33,11 +33,12 @@ The Continuous Architecture Platform replaces point-in-time architecture documen
 | Docs Site | Deployed | Azure Static Web Apps (project documentation) |
 | OpenAPI Specs | 19 service specs | `architecture/specs/` |
 | Microservice Pages | 19 generated pages with sequence diagrams | `portal/docs/microservices/` |
-| Architecture Decisions | 11 ADRs (ADR-001 through ADR-011) | `decisions/` |
+| Architecture Decisions | 13 ADRs (ADR-001 through ADR-013) | `decisions/` |
 | Event Catalog | 6 producers, 7 events | `architecture/events/` |
 | CALM Topology | 73 nodes, 157 relationships (CALM 1.2) | `architecture/calm/` |
 | Actor Catalog | System actors | `architecture/metadata/actors.yaml` |
 | Applications | 3 app pages with wireframes | `portal/docs/applications/` |
+| Deployed Microservices | 21 services on Azure Container Apps (Waves 0-6) | `rg-novatrek-dev` (eastus2) |
 | Service Catalog | 21 services | `portal/docs/services/` |
 | Phase 1 Evaluation | 5 scenarios compared (Copilot vs Roo Code) | `phases/phase-1-ai-tool-cost-comparison/` |
 | Mock Tools | JIRA, Elastic, GitLab (local Python scripts, no network) | `phases/.../workspace/scripts/` |
@@ -478,24 +479,14 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 
 ---
 
-#### Priority: HIGH
+#### Priority: HIGH (All Complete)
 
 | Initiative | Status | Companion Document | Summary |
 |-----------|--------|-------------------|---------|
-| Azure Microservices Delivery | Active (Priority #3) | [AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. 7 delivery waves from shared infrastructure through full platform. All resources scale to zero when idle — target $5/mo idle, $25-30/mo light usage. Services scaffolded, Bicep modules built, CI/CD workflows ready. Wave 0 foundation completed on 2026-03-19. Next: execute Wave 1 validation and rollout for svc-guest-profiles, svc-trip-catalog, and svc-trail-management. |
+| Azure Microservices Delivery | Waves 0-6 Complete (2026-03-19) | [AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | 21 NovaTrek microservices deployed to Azure Container Apps in `rg-novatrek-dev` (eastus2). 7 delivery waves completed with 243 tests total. All resources scale to zero (0.25 CPU, 0.5Gi, min 0 / max 2). Target $5/mo idle achieved. Wave 7 (4 new capability services) pending solution designs. See [AZURE-MICROSERVICES-DELIVERY.md](../architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md) for full wave breakdown. |
 | Test Methodology and Practice | Complete (Priority #1) | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) | Comprehensive TDD/BDD practice, coverage standards (80% line, 70% branch, 60% mutation), contract testing for cross-service boundaries, automated regression gates in CI |
 | Implement All Swagger-Defined Services | Complete (Priority #2) | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) | 19 services generated from OpenAPI specs via `scripts/generate-service-scaffold.py`. Each service has JPA entities, REST controllers, repositories, Flyway migrations, application config, Dockerfile, and full test methodology tooling (JaCoCo, PITest, SCC, Cucumber). 310 files across 19 services |
-| Fix Deploy Failures | Backlog | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | Audit and fix recurring CI/CD pipeline failures — flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts. Subsumed into Priority #3 Azure delivery work |
-| Azure Microservices Implementation | Active (Priority #3) | [docs/AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) | Build out the full NovaTrek microservices platform in Azure — scale-to-zero everywhere, IaC with Bicep, ephemeral environments, deep linking from architecture artifacts to live implementations. See Priority #3 above |
-
-#### Priority: MEDIUM
-
-| Initiative | Status | Companion Document | Summary |
-|-----------|--------|-------------------|---------|
-| Separation of Concerns | Proposed | [portal/SEPARATION-OF-CONCERNS-PLAN.md](../portal/SEPARATION-OF-CONCERNS-PLAN.md) | Extract metadata from Python generators into YAML files; stop committing generated artifacts; CI handles all generation; architects edit YAML only |
-| Figma Wireframes | Proposed | [portal/FIGMA-WIREFRAMES-PLAN.md](../portal/FIGMA-WIREFRAMES-PLAN.md) | Embed Figma wireframes directly into portal application pages — connect architecture artifacts to visual design layer |
-| Event Catalog Expansion | Proposed | [portal/EVENT-CATALOG-PLAN.md](../portal/EVENT-CATALOG-PLAN.md) | Formalize domain events with AsyncAPI specs — producers, consumers, schemas, portal pages with the same rigor as REST API documentation |
-| Presentation Site | Draft | [portal/PRESENTATION-SITE-PLAN.md](../portal/PRESENTATION-SITE-PLAN.md) | Executive pitch deck as a third MkDocs Material site — live demo selling Continuous Architecture Platform adoption to leadership and budget holders |
+| Fix Deploy Failures | Subsumed (resolved during Wave 0-6 delivery) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | CI/CD pipeline issues (flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts) resolved during Azure delivery waves |
 
 #### Priority: MEDIUM
 
@@ -519,6 +510,9 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 
 | Initiative | Completed | Companion Document |
 |-----------|-----------|-------------------|
+| Azure Microservices Delivery (Waves 0-6) | 2026-03-19 | [docs/AZURE-IMPLEMENTATION-PLAN.md](../docs/AZURE-IMPLEMENTATION-PLAN.md) |
+| Test Methodology and Practice | 2026-03-18 | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) |
+| Implement All Swagger-Defined Services | 2026-03-17 | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) |
 | Confluence Publishing | Phase 6 | [research/CONFLUENCE-PUBLISHING-PLAN.md](../research/CONFLUENCE-PUBLISHING-PLAN.md) |
 | Documentation Publishing Platform | Phase 6 | [phases/phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md](../phases/phase-6-documentation-publishing/PUBLISHING-PLATFORM-PLAN.md) |
 | AI Tool Cost Comparison | Phase 1 | [phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](../phases/phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md) |
@@ -529,9 +523,9 @@ These are deferred evaluations and operational items tracked in `architecture/re
 
 | Reminder | Date | Status | File |
 |----------|------|--------|------|
-| Azure Microservices Delivery | 2026-03-17 | Active (HIGH, Priority #3) | [architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md](../architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md) |
+| Azure Microservices Delivery | 2026-03-17 | Waves 0-6 Complete, Wave 7 pending | [architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md](../architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md) |
 | CALM Evaluation | 2026-03-06 | Active (TOP, Phase 0+1 Complete) | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
-| Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
+| Fix Deploy Failures | 2026-03-10 | Subsumed (resolved during Wave 0-6 delivery) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
 | Implement All Swagger-Defined Services | 2026-03-17 | Complete (HIGH, Priority #2) | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) |
 | Test Methodology | 2026-03-11 | Complete (HIGH, Priority #1) | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |
 
