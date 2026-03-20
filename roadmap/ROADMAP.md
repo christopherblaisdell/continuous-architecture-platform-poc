@@ -35,6 +35,7 @@ The Continuous Architecture Platform replaces point-in-time architecture documen
 | Microservice Pages | 19 generated pages with sequence diagrams | `portal/docs/microservices/` |
 | Architecture Decisions | 11 ADRs (ADR-001 through ADR-011) | `decisions/` |
 | Event Catalog | 6 producers, 7 events | `architecture/events/` |
+| CALM Topology | 73 nodes, 157 relationships (CALM 1.2) | `architecture/calm/` |
 | Actor Catalog | System actors | `architecture/metadata/actors.yaml` |
 | Applications | 3 app pages with wireframes | `portal/docs/applications/` |
 | Service Catalog | 21 services | `portal/docs/services/` |
@@ -433,7 +434,7 @@ See [ECC Incorporation Plan](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.m
 
 #### CALM — Automated Architecture Governance (Top Priority — Active)
 
-**Status:** In Progress | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
+**Status:** Phase 0+1 Complete (2026-03-20) | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
 
 CALM (Common Architecture Language Model) is the next major evolution of the platform. It adds a formal, machine-validatable topology layer on top of the existing architecture practice.
 
@@ -457,7 +458,21 @@ CALM (Common Architecture Language Model) is the next major evolution of the pla
 | Architecture drift | Undetected | CALM topology compared against running system metadata |
 | Topology visualization | Static PlantUML diagrams | Interactive system map generated from CALM graph |
 
-**5-phase rollout:** Pilot (1 domain) -> Full topology (all 22 services) -> Generator integration (portal consumes CALM) -> Governance automation (6+ CI-enforced rules) -> Advanced capabilities (blast radius, drift detection, timeline visualization)
+**5-phase rollout:** ~~Pilot (1 domain)~~ COMPLETE -> ~~Full topology (all 22 services)~~ COMPLETE -> Generator integration (portal consumes CALM) -> Governance automation (6+ CI-enforced rules) -> Advanced capabilities (blast radius, drift detection, timeline visualization)
+
+**Phase 0+1 deliverables (2026-03-20):**
+
+| Artifact | Details |
+|----------|--------|
+| `scripts/generate-calm.py` | CALM 1.2-compliant generator — reads 5 metadata YAML + 22 OpenAPI specs |
+| `scripts/validate-calm.py` | Architecture rule validator + CALM CLI schema validation wrapper |
+| `architecture/calm/novatrek-topology.json` | Full system topology (22 services, 22 databases, 29 actors/systems) |
+| `architecture/calm/domains/*.json` | All 9 domain topology files |
+| `architecture/calm/patterns/novatrek-microservice.json` | Microservice architecture pattern |
+| `architecture/calm/controls/` | data-ownership + api-mediated-access controls |
+| `.github/workflows/validate-solution.yml` | CI pipeline with Node.js + CALM CLI + Python validation |
+
+**Validation:** 0 errors across 10 CALM files (custom rules + CALM CLI schema). 2 warnings for unconnected infrastructure nodes (API Gateway, Stripe API) — expected metadata gaps.
 
 See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phased implementation with JSON examples, CI integration, and migration strategy.
 
@@ -515,7 +530,7 @@ These are deferred evaluations and operational items tracked in `architecture/re
 | Reminder | Date | Status | File |
 |----------|------|--------|------|
 | Azure Microservices Delivery | 2026-03-17 | Active (HIGH, Priority #3) | [architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md](../architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md) |
-| CALM Evaluation | 2026-03-06 | Active (TOP, In Progress) | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
+| CALM Evaluation | 2026-03-06 | Active (TOP, Phase 0+1 Complete) | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
 | Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
 | Implement All Swagger-Defined Services | 2026-03-17 | Complete (HIGH, Priority #2) | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) |
 | Test Methodology | 2026-03-11 | Complete (HIGH, Priority #1) | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |
