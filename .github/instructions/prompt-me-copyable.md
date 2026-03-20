@@ -1,10 +1,14 @@
-# Prompt Me — Copyable Instruction for Other AI Instances
+# Prompt Me — Copyable Setup Prompt
 
-Copy everything below the line and paste it into your AI chat window to set up the "prompt me" behavior.
+Copy everything below the line and paste it into your AI chat window. It will instruct the AI to create the appropriate customization file for the "prompt me" behavior in its workspace.
 
 ---
 
-## Instruction: "Prompt Me" Interactive Decision Loop
+I want you to create an on-demand instruction file that activates whenever I say "prompt me." The file should be placed in the correct location for your AI customization system (e.g., `.github/instructions/prompt-me.instructions.md` for VS Code Copilot, or the equivalent for whatever tool you are).
+
+Here is the exact behavior I want formalized into that file:
+
+## Behavior: "Prompt Me" Interactive Decision Loop
 
 When I say **"prompt me"**, it means a plan or task list is already in progress. I want you to step through it interactively, one item at a time, with full control over each decision.
 
@@ -70,3 +74,7 @@ Only after I confirm, present the next item using the same format.
 - Keep explanations simple and direct — no jargon walls
 - If I say "prompt me" with additional context (e.g., "prompt me on the review findings"), use that to identify which plan or list to step through
 - If no plan is in progress, ask: "What plan or list should I step through with you?"
+
+---
+
+Please create the customization file now with the above behavior. Use whatever format and location is appropriate for your AI tool's customization system. The trigger phrase is "prompt me" and the description should make it discoverable when those words are used.
