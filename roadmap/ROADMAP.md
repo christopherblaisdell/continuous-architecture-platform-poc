@@ -483,7 +483,7 @@ CALM (Common Architecture Language Model) is the next major evolution of the pla
 | `scripts/calm-impact-analysis.py` | BFS graph traversal CLI — depth-configurable, JSON/text output, multi-service, domain grouping |
 | `portal/docs/topology/` | 4 generated pages (index, system map, dependency matrix, domain views) + 9 PlantUML diagrams |
 
-**Remaining Phase 2 steps:** 2.1 (`--source calm` flag for microservice page generator), 2.2 (interactive topology visualization), 2.3 (data flow diagrams), 2.5 (capability page topology cross-links).
+**Remaining Phase 2 steps:** 2.2 (interactive topology visualization), 2.3 (data flow diagrams), 2.5 (capability page topology cross-links). Step 2.1 (`--source calm` flag) deferred — adds indirection with no user-facing benefit.
 
 See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phased implementation with JSON examples, CI integration, and migration strategy.
 

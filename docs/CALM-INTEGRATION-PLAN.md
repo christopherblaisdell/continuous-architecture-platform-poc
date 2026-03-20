@@ -268,7 +268,7 @@ The central question Phase 1 must answer:
 
 | Step | Task | Deliverable |
 |------|------|-------------|
-| 2.1 | Update `generate-microservice-pages.py` to optionally read CALM topology for cross-service relationship data instead of `cross-service-calls.yaml` | Updated generator with `--source calm` flag |
+| ~~2.1~~ | ~~Update `generate-microservice-pages.py` to optionally read CALM topology for cross-service relationship data instead of `cross-service-calls.yaml`~~ | DEFERRED — adds indirection (metadata YAML → CALM → generator) with no user-facing benefit over the current direct path (metadata YAML → generator). OpenAPI specs and metadata YAML remain the primary data sources for portal generators. |
 | 2.2 | Create a **topology visualization generator** using CALM data — produces an interactive system map (D3.js or Mermaid) | `portal/scripts/generate-topology-map.py` → `portal/docs/topology/` |
 | 2.3 | Create a **data flow diagram generator** that reads CALM relationships and produces C4-style data flow diagrams in PlantUML | `portal/scripts/generate-data-flows.py` → `portal/docs/topology/data-flows/` |
 | 2.4 | Add a **dependency matrix** page to the portal showing service-to-service dependencies from CALM | `portal/docs/topology/dependency-matrix.md` | **COMPLETE** — also fixed `generate-topology-pages.py` for CALM 1.2 format (connects/interacts relationship types, metadata.transport Kafka fallback) |
