@@ -2,8 +2,8 @@
 """Validate CALM topology documents against NovaTrek architecture patterns.
 
 Checks the generated CALM topology for architecture rule violations that
-would normally require manual PR review. This is a lightweight Python
-validator — a stepping stone to the full CALM CLI (`calm validate`).
+would normally require manual PR review. Also invokes `calm validate`
+(FINOS calm-cli) for JSON Schema validation when available.
 
 Usage:
     python3 scripts/validate-calm.py                              # validate all
@@ -23,6 +23,8 @@ Rules enforced:
 
 import argparse
 import json
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -33,6 +35,33 @@ CALM_DIR = ROOT / "architecture" / "calm"
 def load_calm(path):
     with open(path) as f:
         return json.load(f)
+
+
+def get_relationship_nodes(rel):
+    """Extract all node IDs referenced by a CALM 1.2 relationship."""
+    rt = rel.get("relationship-type", {})
+    nodes = set()
+    if "connects" in rt:
+        nodes.add(rt["connects"]["source"]["node"])
+        nodes.add(rt["connects"]["destination"]["node"])
+    elif "interacts" in rt:
+        nodes.add(rt["interacts"]["actor"])
+        nodes.update(rt["interacts"].get("nodes", []))
+    elif "deployed-in" in rt:
+        nodes.add(rt["deployed-in"]["container"])
+        nodes.update(rt["deployed-in"].get("nodes", []))
+    elif "composed-of" in rt:
+        nodes.add(rt["composed-of"]["container"])
+        nodes.update(rt["composed-of"].get("nodes", []))
+    return nodes
+
+
+def get_connects_pair(rel):
+    """Return (source, destination) for a 'connects' relationship, or None."""
+    rt = rel.get("relationship-type", {})
+    if "connects" in rt:
+        return (rt["connects"]["source"]["node"], rt["connects"]["destination"]["node"])
+    return None
 
 
 class ValidationResult:
@@ -57,9 +86,9 @@ def validate_no_shared_databases(calm, result):
     db_connections = {}
 
     for rel in calm.get("relationships", []):
-        if rel.get("relationship-type") == "connects" and rel["parties"]["target"] in db_nodes:
-            target = rel["parties"]["target"]
-            db_connections.setdefault(target, []).append(rel["parties"]["source"])
+        pair = get_connects_pair(rel)
+        if pair and pair[1] in db_nodes:
+            db_connections.setdefault(pair[1], []).append(pair[0])
 
     for db_id in db_nodes:
         sources = db_connections.get(db_id, [])
@@ -75,10 +104,9 @@ def validate_api_mediated_access(calm, result):
 
     for rel in calm.get("relationships", []):
         if rel.get("protocol") == "JDBC":
-            src = rel["parties"]["source"]
-            tgt = rel["parties"]["target"]
-            if src in service_ids and tgt in service_ids:
-                result.error("api-mediated-access", f"JDBC connection between services: {src} -> {tgt} (must use API)")
+            pair = get_connects_pair(rel)
+            if pair and pair[0] in service_ids and pair[1] in service_ids:
+                result.error("api-mediated-access", f"JDBC connection between services: {pair[0]} -> {pair[1]} (must use API)")
 
 
 def validate_service_metadata(calm, result):
@@ -98,12 +126,10 @@ def validate_relationship_integrity(calm, result):
     node_ids = {n["unique-id"] for n in calm.get("nodes", [])}
 
     for rel in calm.get("relationships", []):
-        src = rel["parties"]["source"]
-        tgt = rel["parties"]["target"]
-        if src not in node_ids:
-            result.error("relationship-integrity", f"Relationship '{rel['unique-id']}' references unknown source: '{src}'")
-        if tgt not in node_ids:
-            result.error("relationship-integrity", f"Relationship '{rel['unique-id']}' references unknown target: '{tgt}'")
+        for nid in get_relationship_nodes(rel):
+            if nid not in node_ids:
+                result.error("relationship-integrity",
+                             f"Relationship '{rel['unique-id']}' references unknown node: '{nid}'")
 
 
 def validate_no_orphan_services(calm, result):
@@ -112,8 +138,7 @@ def validate_no_orphan_services(calm, result):
     connected = set()
 
     for rel in calm.get("relationships", []):
-        connected.add(rel["parties"]["source"])
-        connected.add(rel["parties"]["target"])
+        connected.update(get_relationship_nodes(rel))
 
     for svc in service_ids:
         if svc not in connected:
@@ -131,9 +156,28 @@ def validate_calm(calm_doc):
     return result
 
 
+def run_calm_cli(path):
+    """Run `calm validate` if the CLI is installed. Returns (passed, output)."""
+    calm_bin = shutil.which("calm")
+    if not calm_bin:
+        return None, "calm CLI not installed — skipping schema validation"
+
+    try:
+        proc = subprocess.run(
+            [calm_bin, "validate", "-a", str(path), "-f", "pretty"],
+            capture_output=True, text=True, timeout=60,
+        )
+        output = (proc.stdout + proc.stderr).strip()
+        # calm validate exits 0 on success (warnings ok), non-zero on errors
+        return proc.returncode == 0, output
+    except subprocess.TimeoutExpired:
+        return False, "calm validate timed out"
+
+
 def main():
     parser = argparse.ArgumentParser(description="Validate CALM topology against NovaTrek architecture patterns")
     parser.add_argument("files", nargs="*", help="CALM JSON files to validate (default: all in architecture/calm/)")
+    parser.add_argument("--skip-cli", action="store_true", help="Skip calm CLI schema validation")
     args = parser.parse_args()
 
     # Collect files to validate
@@ -150,6 +194,7 @@ def main():
 
     total_errors = 0
     total_warnings = 0
+    cli_failures = 0
 
     for path in paths:
         calm = load_calm(path)
@@ -170,10 +215,26 @@ def main():
         total_errors += len(result.errors)
         total_warnings += len(result.warnings)
 
+    # Run calm CLI schema validation on the system topology
+    if not args.skip_cli:
+        system_topology = CALM_DIR / "novatrek-topology.json"
+        if system_topology.exists():
+            print(f"\n--- CALM CLI Schema Validation ---")
+            passed, output = run_calm_cli(system_topology)
+            if passed is None:
+                print(f"  SKIP: {output}")
+            elif passed:
+                print(f"  PASS: calm validate found no schema errors")
+            else:
+                print(f"  FAIL: calm validate reported errors:")
+                for line in output.split("\n"):
+                    print(f"    {line}")
+                cli_failures = 1
+
     print(f"\n{'='*60}")
     print(f"Validated {len(paths)} file(s): {total_errors} error(s), {total_warnings} warning(s)")
 
-    if total_errors > 0:
+    if total_errors > 0 or cli_failures > 0:
         print("VALIDATION FAILED")
         sys.exit(1)
     else:

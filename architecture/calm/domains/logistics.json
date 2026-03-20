@@ -1,18 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
-  "metadata": {
-    "name": "NovaTrek Adventures — Logistics Domain Topology",
-    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
-    "version": "1.0.0",
-    "generated-from": [
-      "architecture/metadata/domains.yaml",
-      "architecture/metadata/data-stores.yaml",
-      "architecture/metadata/cross-service-calls.yaml",
-      "architecture/metadata/events.yaml",
-      "architecture/metadata/actors.yaml",
-      "architecture/specs/*.yaml"
-    ]
-  },
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
   "nodes": [
     {
       "unique-id": "svc-transport-logistics",
@@ -22,66 +9,45 @@
       "interfaces": [
         {
           "unique-id": "svc-transport-logistics-api-get-routes",
-          "type": "path",
+          "method": "GET",
           "path": "/routes",
-          "metadata": {
-            "method": "GET",
-            "summary": "List transport routes"
-          }
+          "summary": "List transport routes"
         },
         {
           "unique-id": "svc-transport-logistics-api-post-routes",
-          "type": "path",
+          "method": "POST",
           "path": "/routes",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new transport route"
-          }
+          "summary": "Create a new transport route"
         },
         {
           "unique-id": "svc-transport-logistics-api-get-routes-{route_id}-schedule",
-          "type": "path",
+          "method": "GET",
           "path": "/routes/{route_id}/schedule",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get schedule for a transport route"
-          }
+          "summary": "Get schedule for a transport route"
         },
         {
           "unique-id": "svc-transport-logistics-api-post-transport-requests",
-          "type": "path",
+          "method": "POST",
           "path": "/transport-requests",
-          "metadata": {
-            "method": "POST",
-            "summary": "Request transport for a reservation"
-          }
+          "summary": "Request transport for a reservation"
         },
         {
           "unique-id": "svc-transport-logistics-api-get-transport-requests-{request_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/transport-requests/{request_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get transport request details"
-          }
+          "summary": "Get transport request details"
         },
         {
           "unique-id": "svc-transport-logistics-api-get-vehicles",
-          "type": "path",
+          "method": "GET",
           "path": "/vehicles",
-          "metadata": {
-            "method": "GET",
-            "summary": "List fleet vehicles"
-          }
+          "summary": "List fleet vehicles"
         },
         {
           "unique-id": "svc-transport-logistics-api-patch-vehicles-{vehicle_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/vehicles/{vehicle_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update vehicle information"
-          }
+          "summary": "Update vehicle information"
         }
       ],
       "metadata": {
@@ -97,16 +63,14 @@
       "interfaces": [
         {
           "unique-id": "svc-transport-logistics-db-jdbc",
-          "type": "host-port",
-          "metadata": {
-            "engine": "PostgreSQL 15",
-            "schema": "transport"
-          }
+          "host": "transport-logistics-db.novatrek.internal",
+          "port": 27017
         }
       ],
       "metadata": {
         "domain": "Logistics",
         "engine": "PostgreSQL 15",
+        "schema": "transport",
         "tables": [
           "routes",
           "route_schedules",
@@ -123,111 +87,75 @@
       "interfaces": [
         {
           "unique-id": "svc-gear-inventory-api-get-gear-items",
-          "type": "path",
+          "method": "GET",
           "path": "/gear-items",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search gear inventory"
-          }
+          "summary": "Search gear inventory"
         },
         {
           "unique-id": "svc-gear-inventory-api-post-gear-items",
-          "type": "path",
+          "method": "POST",
           "path": "/gear-items",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add new inventory item"
-          }
+          "summary": "Add new inventory item"
         },
         {
           "unique-id": "svc-gear-inventory-api-get-gear-items-{item_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/gear-items/{item_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get gear item details"
-          }
+          "summary": "Get gear item details"
         },
         {
           "unique-id": "svc-gear-inventory-api-patch-gear-items-{item_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/gear-items/{item_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update gear item"
-          }
+          "summary": "Update gear item"
         },
         {
           "unique-id": "svc-gear-inventory-api-get-gear-packages",
-          "type": "path",
+          "method": "GET",
           "path": "/gear-packages",
-          "metadata": {
-            "method": "GET",
-            "summary": "List gear packages"
-          }
+          "summary": "List gear packages"
         },
         {
           "unique-id": "svc-gear-inventory-api-get-gear-packages-{package_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/gear-packages/{package_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get gear package details"
-          }
+          "summary": "Get gear package details"
         },
         {
           "unique-id": "svc-gear-inventory-api-post-gear-assignments",
-          "type": "path",
+          "method": "POST",
           "path": "/gear-assignments",
-          "metadata": {
-            "method": "POST",
-            "summary": "Assign gear to a participant"
-          }
+          "summary": "Assign gear to a participant"
         },
         {
           "unique-id": "svc-gear-inventory-api-get-gear-assignments-{assignment_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/gear-assignments/{assignment_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get gear assignment details"
-          }
+          "summary": "Get gear assignment details"
         },
         {
           "unique-id": "svc-gear-inventory-api-delete-gear-assignments-{assignment_id}",
-          "type": "path",
+          "method": "DELETE",
           "path": "/gear-assignments/{assignment_id}",
-          "metadata": {
-            "method": "DELETE",
-            "summary": "Return gear (close assignment)"
-          }
+          "summary": "Return gear (close assignment)"
         },
         {
           "unique-id": "svc-gear-inventory-api-put-gear-items-{item_id}-maintenance",
-          "type": "path",
+          "method": "PUT",
           "path": "/gear-items/{item_id}/maintenance",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Log a maintenance event"
-          }
+          "summary": "Log a maintenance event"
         },
         {
           "unique-id": "svc-gear-inventory-api-get-gear-items-{item_id}-maintenance-history",
-          "type": "path",
+          "method": "GET",
           "path": "/gear-items/{item_id}/maintenance-history",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get maintenance history"
-          }
+          "summary": "Get maintenance history"
         },
         {
           "unique-id": "svc-gear-inventory-api-get-inventory-levels",
-          "type": "path",
+          "method": "GET",
           "path": "/inventory-levels",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get stock levels by location and category"
-          }
+          "summary": "Get stock levels by location and category"
         }
       ],
       "metadata": {
@@ -243,16 +171,14 @@
       "interfaces": [
         {
           "unique-id": "svc-gear-inventory-db-jdbc",
-          "type": "host-port",
-          "metadata": {
-            "engine": "PostgreSQL 15",
-            "schema": "gear"
-          }
+          "host": "gear-inventory-db.novatrek.internal",
+          "port": 27017
         }
       ],
       "metadata": {
         "domain": "Logistics",
         "engine": "PostgreSQL 15",
+        "schema": "gear",
         "tables": [
           "gear_items",
           "gear_packages",
@@ -270,57 +196,39 @@
       "interfaces": [
         {
           "unique-id": "svc-check-in-api-post-check-ins",
-          "type": "path",
+          "method": "POST",
           "path": "/check-ins",
-          "metadata": {
-            "method": "POST",
-            "summary": "Initiate check-in for a participant"
-          }
+          "summary": "Initiate check-in for a participant"
         },
         {
           "unique-id": "svc-check-in-api-get-check-ins",
-          "type": "path",
+          "method": "GET",
           "path": "/check-ins",
-          "metadata": {
-            "method": "GET",
-            "summary": "List check-ins by reservation"
-          }
+          "summary": "List check-ins by reservation"
         },
         {
           "unique-id": "svc-check-in-api-get-check-ins-{check_in_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/check-ins/{check_in_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get check-in details"
-          }
+          "summary": "Get check-in details"
         },
         {
           "unique-id": "svc-check-in-api-post-check-ins-{check_in_id}-gear-verification",
-          "type": "path",
+          "method": "POST",
           "path": "/check-ins/{check_in_id}/gear-verification",
-          "metadata": {
-            "method": "POST",
-            "summary": "Verify gear has been picked up and fitted"
-          }
+          "summary": "Verify gear has been picked up and fitted"
         },
         {
           "unique-id": "svc-check-in-api-post-check-ins-{check_in_id}-wristband-assignment",
-          "type": "path",
+          "method": "POST",
           "path": "/check-ins/{check_in_id}/wristband-assignment",
-          "metadata": {
-            "method": "POST",
-            "summary": "Assign RFID wristband to checked-in participant"
-          }
+          "summary": "Assign RFID wristband to checked-in participant"
         },
         {
           "unique-id": "svc-check-in-event-checkin-completed",
-          "type": "path",
-          "path": "novatrek.operations.checkin.completed",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.operations.checkin.completed",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -336,93 +244,63 @@
       "interfaces": [
         {
           "unique-id": "svc-guest-profiles-api-get-guests",
-          "type": "path",
+          "method": "GET",
           "path": "/guests",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search guests"
-          }
+          "summary": "Search guests"
         },
         {
           "unique-id": "svc-guest-profiles-api-post-guests",
-          "type": "path",
+          "method": "POST",
           "path": "/guests",
-          "metadata": {
-            "method": "POST",
-            "summary": "Register a new guest"
-          }
+          "summary": "Register a new guest"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest profile"
-          }
+          "summary": "Get guest profile"
         },
         {
           "unique-id": "svc-guest-profiles-api-patch-guests-{guest_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/guests/{guest_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update guest profile"
-          }
+          "summary": "Update guest profile"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-certifications",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/certifications",
-          "metadata": {
-            "method": "GET",
-            "summary": "List guest certifications"
-          }
+          "summary": "List guest certifications"
         },
         {
           "unique-id": "svc-guest-profiles-api-post-guests-{guest_id}-certifications",
-          "type": "path",
+          "method": "POST",
           "path": "/guests/{guest_id}/certifications",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a certification"
-          }
+          "summary": "Add a certification"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-medical-info",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/medical-info",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest medical information"
-          }
+          "summary": "Get guest medical information"
         },
         {
           "unique-id": "svc-guest-profiles-api-put-guests-{guest_id}-medical-info",
-          "type": "path",
+          "method": "PUT",
           "path": "/guests/{guest_id}/medical-info",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Update guest medical information"
-          }
+          "summary": "Update guest medical information"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-adventure-history",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/adventure-history",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest adventure history"
-          }
+          "summary": "Get guest adventure history"
         },
         {
           "unique-id": "svc-guest-profiles-event-guest-registered",
-          "type": "path",
-          "path": "novatrek.guest-identity.guest.registered",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.guest-identity.guest.registered",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -438,93 +316,63 @@
       "interfaces": [
         {
           "unique-id": "svc-reservations-api-get-reservations",
-          "type": "path",
+          "method": "GET",
           "path": "/reservations",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search reservations"
-          }
+          "summary": "Search reservations"
         },
         {
           "unique-id": "svc-reservations-api-post-reservations",
-          "type": "path",
+          "method": "POST",
           "path": "/reservations",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new reservation"
-          }
+          "summary": "Create a new reservation"
         },
         {
           "unique-id": "svc-reservations-api-get-reservations-{reservation_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/reservations/{reservation_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get reservation details"
-          }
+          "summary": "Get reservation details"
         },
         {
           "unique-id": "svc-reservations-api-patch-reservations-{reservation_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/reservations/{reservation_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update a reservation"
-          }
+          "summary": "Update a reservation"
         },
         {
           "unique-id": "svc-reservations-api-delete-reservations-{reservation_id}",
-          "type": "path",
+          "method": "DELETE",
           "path": "/reservations/{reservation_id}",
-          "metadata": {
-            "method": "DELETE",
-            "summary": "Cancel a reservation"
-          }
+          "summary": "Cancel a reservation"
         },
         {
           "unique-id": "svc-reservations-api-get-reservations-{reservation_id}-participants",
-          "type": "path",
+          "method": "GET",
           "path": "/reservations/{reservation_id}/participants",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get reservation participants"
-          }
+          "summary": "Get reservation participants"
         },
         {
           "unique-id": "svc-reservations-api-post-reservations-{reservation_id}-participants",
-          "type": "path",
+          "method": "POST",
           "path": "/reservations/{reservation_id}/participants",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a participant to a reservation"
-          }
+          "summary": "Add a participant to a reservation"
         },
         {
           "unique-id": "svc-reservations-api-put-reservations-{reservation_id}-status",
-          "type": "path",
+          "method": "PUT",
           "path": "/reservations/{reservation_id}/status",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Transition reservation status"
-          }
+          "summary": "Transition reservation status"
         },
         {
           "unique-id": "svc-reservations-event-reservation-created",
-          "type": "path",
-          "path": "novatrek.booking.reservation.created",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.booking.reservation.created",
+          "protocol": "Kafka",
+          "role": "producer"
         },
         {
           "unique-id": "svc-reservations-event-reservation-status_changed",
-          "type": "path",
-          "path": "novatrek.booking.reservation.status-changed",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.booking.reservation.status-changed",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -540,84 +388,57 @@
       "interfaces": [
         {
           "unique-id": "svc-safety-compliance-api-post-waivers",
-          "type": "path",
+          "method": "POST",
           "path": "/waivers",
-          "metadata": {
-            "method": "POST",
-            "summary": "Guest signs a safety waiver"
-          }
+          "summary": "Guest signs a safety waiver"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-waivers",
-          "type": "path",
+          "method": "GET",
           "path": "/waivers",
-          "metadata": {
-            "method": "GET",
-            "summary": "List waivers by guest"
-          }
+          "summary": "List waivers by guest"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-waivers-{waiver_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/waivers/{waiver_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get a specific waiver"
-          }
+          "summary": "Get a specific waiver"
         },
         {
           "unique-id": "svc-safety-compliance-api-post-incidents",
-          "type": "path",
+          "method": "POST",
           "path": "/incidents",
-          "metadata": {
-            "method": "POST",
-            "summary": "File an incident report"
-          }
+          "summary": "File an incident report"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-incidents-{incident_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/incidents/{incident_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get an incident report"
-          }
+          "summary": "Get an incident report"
         },
         {
           "unique-id": "svc-safety-compliance-api-patch-incidents-{incident_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/incidents/{incident_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update an incident report (add follow-up, change status)"
-          }
+          "summary": "Update an incident report (add follow-up, change status)"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-safety-inspections",
-          "type": "path",
+          "method": "GET",
           "path": "/safety-inspections",
-          "metadata": {
-            "method": "GET",
-            "summary": "List safety inspections for a location"
-          }
+          "summary": "List safety inspections for a location"
         },
         {
           "unique-id": "svc-safety-compliance-api-post-safety-inspections",
-          "type": "path",
+          "method": "POST",
           "path": "/safety-inspections",
-          "metadata": {
-            "method": "POST",
-            "summary": "Record a safety inspection"
-          }
+          "summary": "Record a safety inspection"
         },
         {
           "unique-id": "svc-safety-compliance-event-incident-reported",
-          "type": "path",
-          "path": "novatrek.safety.incident.reported",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.safety.incident.reported",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -633,57 +454,39 @@
       "interfaces": [
         {
           "unique-id": "svc-notifications-api-post-notifications",
-          "type": "path",
+          "method": "POST",
           "path": "/notifications",
-          "metadata": {
-            "method": "POST",
-            "summary": "Send a notification"
-          }
+          "summary": "Send a notification"
         },
         {
           "unique-id": "svc-notifications-api-get-notifications",
-          "type": "path",
+          "method": "GET",
           "path": "/notifications",
-          "metadata": {
-            "method": "GET",
-            "summary": "List notifications"
-          }
+          "summary": "List notifications"
         },
         {
           "unique-id": "svc-notifications-api-get-notifications-{notification_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/notifications/{notification_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Retrieve notification details"
-          }
+          "summary": "Retrieve notification details"
         },
         {
           "unique-id": "svc-notifications-api-post-notifications-bulk",
-          "type": "path",
+          "method": "POST",
           "path": "/notifications/bulk",
-          "metadata": {
-            "method": "POST",
-            "summary": "Send bulk notifications"
-          }
+          "summary": "Send bulk notifications"
         },
         {
           "unique-id": "svc-notifications-api-get-templates",
-          "type": "path",
+          "method": "GET",
           "path": "/templates",
-          "metadata": {
-            "method": "GET",
-            "summary": "List notification templates"
-          }
+          "summary": "List notification templates"
         },
         {
           "unique-id": "svc-notifications-api-post-templates",
-          "type": "path",
+          "method": "POST",
           "path": "/templates",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a notification template"
-          }
+          "summary": "Create a notification template"
         }
       ],
       "metadata": {
@@ -699,57 +502,39 @@
       "interfaces": [
         {
           "unique-id": "svc-location-services-api-get-locations",
-          "type": "path",
+          "method": "GET",
           "path": "/locations",
-          "metadata": {
-            "method": "GET",
-            "summary": "List all locations"
-          }
+          "summary": "List all locations"
         },
         {
           "unique-id": "svc-location-services-api-post-locations",
-          "type": "path",
+          "method": "POST",
           "path": "/locations",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new location"
-          }
+          "summary": "Create a new location"
         },
         {
           "unique-id": "svc-location-services-api-get-locations-{location_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/locations/{location_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get location details"
-          }
+          "summary": "Get location details"
         },
         {
           "unique-id": "svc-location-services-api-patch-locations-{location_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/locations/{location_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update location details"
-          }
+          "summary": "Update location details"
         },
         {
           "unique-id": "svc-location-services-api-get-locations-{location_id}-capacity",
-          "type": "path",
+          "method": "GET",
           "path": "/locations/{location_id}/capacity",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get current capacity utilization"
-          }
+          "summary": "Get current capacity utilization"
         },
         {
           "unique-id": "svc-location-services-api-get-locations-{location_id}-operating-hours",
-          "type": "path",
+          "method": "GET",
           "path": "/locations/{location_id}/operating-hours",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get operating hours for a location"
-          }
+          "summary": "Get operating hours for a location"
         }
       ],
       "metadata": {
@@ -765,75 +550,51 @@
       "interfaces": [
         {
           "unique-id": "svc-inventory-procurement-api-post-purchase-orders",
-          "type": "path",
+          "method": "POST",
           "path": "/purchase-orders",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new purchase order"
-          }
+          "summary": "Create a new purchase order"
         },
         {
           "unique-id": "svc-inventory-procurement-api-get-purchase-orders-{po_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/purchase-orders/{po_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get purchase order details"
-          }
+          "summary": "Get purchase order details"
         },
         {
           "unique-id": "svc-inventory-procurement-api-patch-purchase-orders-{po_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/purchase-orders/{po_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update purchase order status or line items"
-          }
+          "summary": "Update purchase order status or line items"
         },
         {
           "unique-id": "svc-inventory-procurement-api-get-suppliers",
-          "type": "path",
+          "method": "GET",
           "path": "/suppliers",
-          "metadata": {
-            "method": "GET",
-            "summary": "List all suppliers"
-          }
+          "summary": "List all suppliers"
         },
         {
           "unique-id": "svc-inventory-procurement-api-post-suppliers",
-          "type": "path",
+          "method": "POST",
           "path": "/suppliers",
-          "metadata": {
-            "method": "POST",
-            "summary": "Register a new supplier"
-          }
+          "summary": "Register a new supplier"
         },
         {
           "unique-id": "svc-inventory-procurement-api-get-stock-levels",
-          "type": "path",
+          "method": "GET",
           "path": "/stock-levels",
-          "metadata": {
-            "method": "GET",
-            "summary": "Query current stock levels"
-          }
+          "summary": "Query current stock levels"
         },
         {
           "unique-id": "svc-inventory-procurement-api-post-stock-adjustments",
-          "type": "path",
+          "method": "POST",
           "path": "/stock-adjustments",
-          "metadata": {
-            "method": "POST",
-            "summary": "Record a stock adjustment"
-          }
+          "summary": "Record a stock adjustment"
         },
         {
           "unique-id": "svc-inventory-procurement-api-get-reorder-alerts",
-          "type": "path",
+          "method": "GET",
           "path": "/reorder-alerts",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get active reorder alerts"
-          }
+          "summary": "Get active reorder alerts"
         }
       ],
       "metadata": {
@@ -842,201 +603,276 @@
       }
     },
     {
-      "unique-id": "ext-fleet-gps",
-      "node-type": "system",
-      "name": "Fleet GPS Tracking API",
-      "description": "Vehicle telematics and real-time fleet GPS tracking",
-      "interfaces": [],
-      "metadata": {
-        "domain": "External",
-        "external": true
-      }
-    },
-    {
       "unique-id": "ext-google-maps",
       "node-type": "system",
       "name": "Google Maps Platform",
-      "description": "Geolocation, routing, and map rendering",
+      "description": "Geolocation and mapping service used for trail positioning, location tracking, and capacity management at adventure sites.",
       "interfaces": [],
       "metadata": {
-        "domain": "External",
-        "external": true
+        "actor-type": "External System",
+        "domain": "Logistics",
+        "technology": "Google Maps REST API"
+      }
+    },
+    {
+      "unique-id": "ext-fleet-gps",
+      "node-type": "system",
+      "name": "Fleet GPS Tracking API",
+      "description": "Vehicle telematics and GPS tracking platform providing real-time location, speed, and ETA data for NovaTrek transport fleet vehicles including shuttles, vans, and boats.",
+      "interfaces": [],
+      "metadata": {
+        "actor-type": "External System",
+        "domain": "Logistics",
+        "technology": "REST API / WebSocket"
       }
     }
   ],
   "relationships": [
     {
       "unique-id": "rel-svc-transport-logistics-to-db",
-      "relationship-type": "connects",
-      "parties": {
-        "source": "svc-transport-logistics",
-        "target": "svc-transport-logistics-db"
+      "description": "svc-transport-logistics connects to its owned database",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-transport-logistics"
+          },
+          "destination": {
+            "node": "svc-transport-logistics-db"
+          }
+        }
       },
-      "protocol": "JDBC",
-      "metadata": {
-        "description": "svc-transport-logistics connects to its database"
-      }
+      "protocol": "JDBC"
     },
     {
       "unique-id": "rel-svc-gear-inventory-to-db",
-      "relationship-type": "connects",
-      "parties": {
-        "source": "svc-gear-inventory",
-        "target": "svc-gear-inventory-db"
+      "description": "svc-gear-inventory connects to its owned database",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-gear-inventory"
+          },
+          "destination": {
+            "node": "svc-gear-inventory-db"
+          }
+        }
       },
-      "protocol": "JDBC",
-      "metadata": {
-        "description": "svc-gear-inventory connects to its database"
-      }
+      "protocol": "JDBC"
     },
     {
       "unique-id": "rel-svc-check-in-post--check-ins-{check_in_id}-gear-verification-to-svc-gear-inventory",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-check-in",
-        "target": "svc-gear-inventory"
+      "description": "Verify gear assignment",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-check-in"
+          },
+          "destination": {
+            "node": "svc-gear-inventory"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /check-ins/{check_in_id}/gear-verification",
         "target-endpoint": "GET /gear-assignments/{assignment_id}",
-        "action": "Verify gear assignment",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-gear-inventory-post--gear-assignments-to-svc-guest-profiles",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-gear-inventory",
-        "target": "svc-guest-profiles"
+      "description": "Validate guest",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-gear-inventory"
+          },
+          "destination": {
+            "node": "svc-guest-profiles"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /gear-assignments",
         "target-endpoint": "GET /guests/{guest_id}",
-        "action": "Validate guest",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-gear-inventory-post--gear-assignments-to-svc-reservations",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-gear-inventory",
-        "target": "svc-reservations"
+      "description": "Verify booking",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-gear-inventory"
+          },
+          "destination": {
+            "node": "svc-reservations"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /gear-assignments",
         "target-endpoint": "GET /reservations/{reservation_id}",
-        "action": "Verify booking",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-gear-inventory-post--gear-assignments-to-svc-safety-compliance",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-gear-inventory",
-        "target": "svc-safety-compliance"
+      "description": "Check waiver status",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-gear-inventory"
+          },
+          "destination": {
+            "node": "svc-safety-compliance"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /gear-assignments",
         "target-endpoint": "GET /waivers",
-        "action": "Check waiver status",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-svc-reservations",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-transport-logistics",
-        "target": "svc-reservations"
+      "description": "Get booking details",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-transport-logistics"
+          },
+          "destination": {
+            "node": "svc-reservations"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /transport-requests",
         "target-endpoint": "GET /reservations/{reservation_id}",
-        "action": "Get booking details",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-svc-location-services",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-transport-logistics",
-        "target": "svc-location-services"
+      "description": "Validate pickup location",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-transport-logistics"
+          },
+          "destination": {
+            "node": "svc-location-services"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /transport-requests",
         "target-endpoint": "GET /locations/{location_id}",
-        "action": "Validate pickup location",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-ext-google-maps",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-transport-logistics",
-        "target": "ext-google-maps"
+      "description": "Calculate optimal route",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-transport-logistics"
+          },
+          "destination": {
+            "node": "ext-google-maps"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /transport-requests",
         "target-endpoint": "GET ",
-        "action": "Calculate optimal route",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-ext-fleet-gps",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-transport-logistics",
-        "target": "ext-fleet-gps"
+      "description": "Get real-time vehicle location and ETA",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-transport-logistics"
+          },
+          "destination": {
+            "node": "ext-fleet-gps"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /transport-requests",
         "target-endpoint": "GET ",
-        "action": "Get real-time vehicle location and ETA",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-transport-logistics-post--transport-requests-to-svc-notifications",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-transport-logistics",
-        "target": "svc-notifications"
+      "description": "Send transport details",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-transport-logistics"
+          },
+          "destination": {
+            "node": "svc-notifications"
+          }
+        }
       },
-      "protocol": "Kafka",
+      "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /transport-requests",
         "target-endpoint": "POST /notifications",
-        "action": "Send transport details",
         "async": true
       }
     },
     {
       "unique-id": "rel-svc-inventory-procurement-post--purchase-orders-to-svc-gear-inventory",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-inventory-procurement",
-        "target": "svc-gear-inventory"
+      "description": "Verify item catalog",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-inventory-procurement"
+          },
+          "destination": {
+            "node": "svc-gear-inventory"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /purchase-orders",
         "target-endpoint": "GET /gear-items",
-        "action": "Verify item catalog",
         "async": false
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "novatrek": {
+        "name": "NovaTrek Adventures — Logistics Domain Topology",
+        "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+        "version": "1.0.0",
+        "generated-from": [
+          "architecture/metadata/domains.yaml",
+          "architecture/metadata/data-stores.yaml",
+          "architecture/metadata/cross-service-calls.yaml",
+          "architecture/metadata/events.yaml",
+          "architecture/metadata/actors.yaml",
+          "architecture/specs/*.yaml"
+        ]
       }
     }
   ]

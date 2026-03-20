@@ -2,8 +2,10 @@
 """Generate a CALM (Common Architecture Language Model) topology document
 from NovaTrek's existing metadata YAML files.
 
+Produces CALM 1.2-compliant JSON validated by `calm validate` (FINOS calm-cli).
+
 Usage:
-    python3 scripts/generate-calm.py                        # all domains
+    python3 scripts/generate-calm.py                        # all domains + system
     python3 scripts/generate-calm.py --domain Operations    # single domain
     python3 scripts/generate-calm.py --output path/out.json # custom output
 
@@ -16,20 +18,49 @@ Reads:
     architecture/specs/*.yaml  (OpenAPI — for interface extraction)
 
 Produces:
-    architecture/calm/novatrek-topology.json  (or per-domain file)
+    architecture/calm/novatrek-topology.json  (full system)
+    architecture/calm/domains/{domain}.json   (per-domain files)
 """
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
 import yaml
 
+CALM_SCHEMA = "https://calm.finos.org/release/1.2/meta/calm.json"
+
 ROOT = Path(__file__).resolve().parent.parent
 META = ROOT / "architecture" / "metadata"
 SPECS = ROOT / "architecture" / "specs"
+
+# Maps actor names (from actors.yaml) to CALM node IDs for external systems
+# and infrastructure. Must stay in sync with label_to_svc in
+# build_cross_service_relationships().
+ACTOR_TO_EXT_ID = {
+    "API Gateway": "ext-api-gateway",
+    "Event Bus": "ext-kafka-broker",
+    "Object Store": "ext-object-store",
+    "Payment Gateway": "ext-payment-gateway",
+    "Stripe API": "ext-stripe",
+    "Fraud Detection API": "ext-fraud-detection",
+    "DocuSign API": "ext-docusign",
+    "IDVerify API": "ext-idverify",
+    "Google Maps Platform": "ext-google-maps",
+    "OpenWeather API": "ext-openweather",
+    "Firebase Cloud Messaging": "ext-firebase-fcm",
+    "SendGrid API": "ext-sendgrid",
+    "Twilio API": "ext-twilio",
+    "Snowflake Data Cloud": "ext-snowflake",
+    "National Parks Permit API": "ext-national-parks-permit",
+    "Travel Insurance API": "ext-travel-insurance",
+    "Search and Rescue Dispatch API": "ext-sar-dispatch",
+    "Instagram Graph API": "ext-instagram",
+    "Currency Exchange API": "ext-currency-exchange",
+    "Fleet GPS Tracking API": "ext-fleet-gps",
+    "Supplier Procurement Portal": "ext-supplier-procurement",
+}
 
 
 def load_yaml(path):
@@ -106,9 +137,9 @@ def build_service_node(svc, domains, data_stores, events_data):
                         summary = methods[method].get("summary", "")
                     interfaces.append({
                         "unique-id": f"{svc}-api-{method}-{path.replace('/', '-').strip('-')}",
-                        "type": "path",
+                        "method": method.upper(),
                         "path": path,
-                        "metadata": {"method": method.upper(), "summary": summary},
+                        "summary": summary,
                     })
 
     # Extract event interfaces (produced events)
@@ -117,9 +148,9 @@ def build_service_node(svc, domains, data_stores, events_data):
             if event.get("producer") == svc:
                 interfaces.append({
                     "unique-id": f"{svc}-event-{event_key.replace('.', '-')}",
-                    "type": "path",
-                    "path": event["channel"],
-                    "metadata": {"protocol": "Kafka", "role": "producer"},
+                    "channel": event["channel"],
+                    "protocol": "Kafka",
+                    "role": "producer",
                 })
 
     description = ""
@@ -153,13 +184,14 @@ def build_database_node(svc, ds_config, domains):
         "interfaces": [
             {
                 "unique-id": f"{svc}-db-jdbc",
-                "type": "host-port",
-                "metadata": {"engine": engine, "schema": schema},
+                "host": f"{svc.replace('svc-', '')}-db.novatrek.internal",
+                "port": 5432 if "Postgres" in engine else 27017,
             }
         ],
         "metadata": {
             "domain": domain,
             "engine": engine,
+            "schema": schema,
             "tables": tables,
         },
     }
@@ -169,8 +201,11 @@ def build_actor_node(name, actor_data):
     actor_type = actor_data.get("type", "Human")
     node_type = "actor" if actor_type == "Human" else "system"
 
+    # Use ext-* ID for external systems / infrastructure to match label_to_svc
+    node_id = ACTOR_TO_EXT_ID.get(name, name.lower().replace(" ", "-"))
+
     node = {
-        "unique-id": name.lower().replace(" ", "-"),
+        "unique-id": node_id,
         "node-type": node_type,
         "name": name,
         "description": actor_data.get("description", ""),
@@ -185,26 +220,25 @@ def build_actor_node(name, actor_data):
     return node
 
 
-# --- CALM relationship builders ---
+# --- CALM 1.2 relationship builders ---
 
 def build_service_to_db_relationship(svc):
     return {
         "unique-id": f"rel-{svc}-to-db",
-        "relationship-type": "connects",
-        "parties": {
-            "source": svc,
-            "target": f"{svc}-db",
+        "description": f"{svc} connects to its owned database",
+        "relationship-type": {
+            "connects": {
+                "source": {"node": svc},
+                "destination": {"node": f"{svc}-db"},
+            }
         },
         "protocol": "JDBC",
-        "metadata": {"description": f"{svc} connects to its database"},
     }
 
 
 def build_cross_service_relationships(cross_calls):
     relationships = []
-    # Map display labels to service/system names
     label_to_svc = {
-        # Internal services — full names
         "Reservations": "svc-reservations",
         "Guest Profiles": "svc-guest-profiles",
         "Trip Catalog": "svc-trip-catalog",
@@ -227,13 +261,11 @@ def build_cross_service_relationships(cross_calls):
         "Emergency Response": "svc-emergency-response",
         "Reviews": "svc-reviews",
         "Wildlife Tracking": "svc-wildlife-tracking",
-        # Internal services — abbreviated labels from cross-service-calls.yaml
         "Guide Mgmt": "svc-guide-management",
         "Trail Mgmt": "svc-trail-management",
         "Weather Svc": "svc-weather",
         "Location Svc": "svc-location-services",
         "Payments Svc": "svc-payments",
-        # External systems (not NovaTrek services)
         "Event Bus": "ext-kafka-broker",
         "DocuSign API": "ext-docusign",
         "IDVerify API": "ext-idverify",
@@ -265,21 +297,23 @@ def build_cross_service_relationships(cross_calls):
 
                 target_info = call.get("target", {})
                 is_async = call.get("async", False)
+                action = call.get("action", "")
 
                 rel_id = f"rel-{source_svc}-{endpoint.replace(' ', '-').replace('/', '-')}-to-{target_svc}".lower()
 
                 relationships.append({
                     "unique-id": rel_id,
-                    "relationship-type": "interacts",
-                    "parties": {
-                        "source": source_svc,
-                        "target": target_svc,
+                    "description": action or f"{source_svc} calls {target_svc} ({endpoint})",
+                    "relationship-type": {
+                        "connects": {
+                            "source": {"node": source_svc},
+                            "destination": {"node": target_svc},
+                        }
                     },
-                    "protocol": "Kafka" if is_async else "HTTPS",
+                    "protocol": "HTTPS",
                     "metadata": {
                         "source-endpoint": endpoint,
                         "target-endpoint": f"{target_info.get('method', 'GET')} {target_info.get('path', '')}",
-                        "action": call.get("action", ""),
                         "async": is_async,
                     },
                 })
@@ -297,17 +331,17 @@ def build_event_relationships(events_data):
             rel_id = f"rel-event-{event_key.replace('.', '-')}-{producer}-to-{consumer}"
             relationships.append({
                 "unique-id": rel_id,
-                "relationship-type": "interacts",
-                "parties": {
-                    "source": producer,
-                    "target": consumer,
+                "description": event.get("summary", f"{producer} publishes {event_key} consumed by {consumer}"),
+                "relationship-type": {
+                    "connects": {
+                        "source": {"node": producer},
+                        "destination": {"node": consumer},
+                    }
                 },
-                "protocol": "Kafka",
                 "metadata": {
                     "event": event_key,
                     "channel": event.get("channel", ""),
-                    "summary": event.get("summary", ""),
-                    "async": True,
+                    "transport": "Kafka",
                 },
             })
     return relationships
@@ -319,20 +353,41 @@ def build_actor_relationships(actors_data):
         return relationships
 
     for actor_name, actor_data in actors_data.items():
-        actor_id = actor_name.lower().replace(" ", "-")
-        for target in actor_data.get("interacts_with", []):
-            rel_id = f"rel-{actor_id}-to-{target}"
+        actor_id = ACTOR_TO_EXT_ID.get(actor_name, actor_name.lower().replace(" ", "-"))
+        targets = actor_data.get("interacts_with", [])
+        if targets:
+            rel_id = f"rel-{actor_id}-interacts"
             relationships.append({
                 "unique-id": rel_id,
-                "relationship-type": "interacts",
-                "parties": {
-                    "source": actor_id,
-                    "target": target,
+                "description": f"{actor_name} interacts with NovaTrek services",
+                "relationship-type": {
+                    "interacts": {
+                        "actor": actor_id,
+                        "nodes": targets,
+                    }
                 },
                 "protocol": "HTTPS",
-                "metadata": {"description": f"{actor_name} uses {target}"},
             })
     return relationships
+
+
+def get_relationship_nodes(rel):
+    """Extract source and target node IDs from a CALM 1.2 relationship."""
+    rt = rel["relationship-type"]
+    nodes = set()
+    if "connects" in rt:
+        nodes.add(rt["connects"]["source"]["node"])
+        nodes.add(rt["connects"]["destination"]["node"])
+    elif "interacts" in rt:
+        nodes.add(rt["interacts"]["actor"])
+        nodes.update(rt["interacts"]["nodes"])
+    elif "deployed-in" in rt:
+        nodes.add(rt["deployed-in"]["container"])
+        nodes.update(rt["deployed-in"]["nodes"])
+    elif "composed-of" in rt:
+        nodes.add(rt["composed-of"]["container"])
+        nodes.update(rt["composed-of"]["nodes"])
+    return nodes
 
 
 def filter_by_domain(nodes, relationships, domains, target_domain):
@@ -364,14 +419,10 @@ def filter_by_domain(nodes, relationships, domains, target_domain):
     filtered_rels = []
     external_node_ids = set()
     for rel in relationships:
-        src = rel["parties"]["source"]
-        tgt = rel["parties"]["target"]
-        if src in domain_node_ids or tgt in domain_node_ids:
+        rel_nodes = get_relationship_nodes(rel)
+        if rel_nodes & domain_node_ids:
             filtered_rels.append(rel)
-            if src not in domain_node_ids:
-                external_node_ids.add(src)
-            if tgt not in domain_node_ids:
-                external_node_ids.add(tgt)
+            external_node_ids.update(rel_nodes - domain_node_ids)
 
     # Pull in external nodes referenced by relationships
     for node in nodes:
@@ -420,9 +471,9 @@ def generate_calm(domain_filter=None):
     node_ids = {n["unique-id"] for n in nodes}
     ext_systems = set()
     for rel in relationships:
-        for party in (rel["parties"]["source"], rel["parties"]["target"]):
-            if party.startswith("ext-") and party not in node_ids:
-                ext_systems.add(party)
+        for nid in get_relationship_nodes(rel):
+            if nid.startswith("ext-") and nid not in node_ids:
+                ext_systems.add(nid)
 
     # Build external system nodes
     ext_descriptions = {
@@ -461,24 +512,29 @@ def generate_calm(domain_filter=None):
     if domain_filter:
         nodes, relationships = filter_by_domain(nodes, relationships, domains, domain_filter)
 
-    # Assemble CALM document
+    # Assemble CALM 1.2 document
+    title = "Full System" if not domain_filter else f"{domain_filter} Domain"
     calm_doc = {
-        "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
-        "metadata": {
-            "name": f"NovaTrek Adventures — {'Full System' if not domain_filter else domain_filter + ' Domain'} Topology",
-            "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
-            "version": "1.0.0",
-            "generated-from": [
-                "architecture/metadata/domains.yaml",
-                "architecture/metadata/data-stores.yaml",
-                "architecture/metadata/cross-service-calls.yaml",
-                "architecture/metadata/events.yaml",
-                "architecture/metadata/actors.yaml",
-                "architecture/specs/*.yaml",
-            ],
-        },
+        "$schema": CALM_SCHEMA,
         "nodes": nodes,
         "relationships": relationships,
+        "metadata": [
+            {
+                "novatrek": {
+                    "name": f"NovaTrek Adventures — {title} Topology",
+                    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+                    "version": "1.0.0",
+                    "generated-from": [
+                        "architecture/metadata/domains.yaml",
+                        "architecture/metadata/data-stores.yaml",
+                        "architecture/metadata/cross-service-calls.yaml",
+                        "architecture/metadata/events.yaml",
+                        "architecture/metadata/actors.yaml",
+                        "architecture/specs/*.yaml",
+                    ],
+                }
+            }
+        ],
     }
 
     return calm_doc
@@ -488,27 +544,46 @@ def main():
     parser = argparse.ArgumentParser(description="Generate CALM topology from NovaTrek metadata")
     parser.add_argument("--domain", help="Generate for a single domain (e.g., Operations)")
     parser.add_argument("--output", "-o", help="Output file path (default: architecture/calm/novatrek-topology.json)")
-    parser.add_argument("--pretty", action="store_true", default=True, help="Pretty-print JSON (default)")
+    parser.add_argument("--all-domains", action="store_true", help="Generate per-domain files for all domains")
     parser.add_argument("--compact", action="store_true", help="Compact JSON output")
     args = parser.parse_args()
 
-    calm = generate_calm(domain_filter=args.domain)
-
-    # Determine output path
-    if args.output:
-        out_path = Path(args.output)
-    elif args.domain:
-        out_path = ROOT / "architecture" / "calm" / "domains" / f"{args.domain.lower().replace(' ', '-')}.json"
-    else:
-        out_path = ROOT / "architecture" / "calm" / "novatrek-topology.json"
-
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-
     indent = None if args.compact else 2
-    with open(out_path, "w") as f:
-        json.dump(calm, f, indent=indent, ensure_ascii=False)
 
-    # Print summary
+    if args.all_domains:
+        domains = load_domains()
+        for domain_name in domains:
+            calm = generate_calm(domain_filter=domain_name)
+            slug = domain_name.lower().replace(" ", "-")
+            out_path = ROOT / "architecture" / "calm" / "domains" / f"{slug}.json"
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(out_path, "w") as f:
+                json.dump(calm, f, indent=indent, ensure_ascii=False)
+            print(f"  Domain: {domain_name} -> {out_path}")
+
+        # Also generate full system topology
+        calm = generate_calm()
+        out_path = ROOT / "architecture" / "calm" / "novatrek-topology.json"
+        with open(out_path, "w") as f:
+            json.dump(calm, f, indent=indent, ensure_ascii=False)
+        _print_summary(calm, out_path)
+    else:
+        calm = generate_calm(domain_filter=args.domain)
+
+        if args.output:
+            out_path = Path(args.output)
+        elif args.domain:
+            out_path = ROOT / "architecture" / "calm" / "domains" / f"{args.domain.lower().replace(' ', '-')}.json"
+        else:
+            out_path = ROOT / "architecture" / "calm" / "novatrek-topology.json"
+
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_path, "w") as f:
+            json.dump(calm, f, indent=indent, ensure_ascii=False)
+        _print_summary(calm, out_path)
+
+
+def _print_summary(calm, out_path):
     n_services = sum(1 for n in calm["nodes"] if n["node-type"] == "service")
     n_databases = sum(1 for n in calm["nodes"] if n["node-type"] == "database")
     n_actors = sum(1 for n in calm["nodes"] if n["node-type"] in ("actor", "system") and not n["unique-id"].startswith("svc-"))
@@ -517,8 +592,6 @@ def main():
     print(f"CALM topology generated: {out_path}")
     print(f"  Nodes: {len(calm['nodes'])} ({n_services} services, {n_databases} databases, {n_actors} actors/systems)")
     print(f"  Relationships: {n_rels}")
-    if args.domain:
-        print(f"  Domain filter: {args.domain}")
 
 
 if __name__ == "__main__":

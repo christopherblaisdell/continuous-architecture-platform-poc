@@ -1,18 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
-  "metadata": {
-    "name": "NovaTrek Adventures — External Domain Topology",
-    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
-    "version": "1.0.0",
-    "generated-from": [
-      "architecture/metadata/domains.yaml",
-      "architecture/metadata/data-stores.yaml",
-      "architecture/metadata/cross-service-calls.yaml",
-      "architecture/metadata/events.yaml",
-      "architecture/metadata/actors.yaml",
-      "architecture/specs/*.yaml"
-    ]
-  },
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
   "nodes": [
     {
       "unique-id": "svc-partner-integrations",
@@ -22,66 +9,45 @@
       "interfaces": [
         {
           "unique-id": "svc-partner-integrations-api-post-partner-bookings",
-          "type": "path",
+          "method": "POST",
           "path": "/partner-bookings",
-          "metadata": {
-            "method": "POST",
-            "summary": "External partner creates a booking"
-          }
+          "summary": "External partner creates a booking"
         },
         {
           "unique-id": "svc-partner-integrations-api-get-partner-bookings-{booking_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/partner-bookings/{booking_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get partner booking details"
-          }
+          "summary": "Get partner booking details"
         },
         {
           "unique-id": "svc-partner-integrations-api-patch-partner-bookings-{booking_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/partner-bookings/{booking_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update a partner booking"
-          }
+          "summary": "Update a partner booking"
         },
         {
           "unique-id": "svc-partner-integrations-api-post-partner-bookings-{booking_id}-confirm",
-          "type": "path",
+          "method": "POST",
           "path": "/partner-bookings/{booking_id}/confirm",
-          "metadata": {
-            "method": "POST",
-            "summary": "Confirm a pending partner booking"
-          }
+          "summary": "Confirm a pending partner booking"
         },
         {
           "unique-id": "svc-partner-integrations-api-get-partners",
-          "type": "path",
+          "method": "GET",
           "path": "/partners",
-          "metadata": {
-            "method": "GET",
-            "summary": "List registered partners"
-          }
+          "summary": "List registered partners"
         },
         {
           "unique-id": "svc-partner-integrations-api-post-partners",
-          "type": "path",
+          "method": "POST",
           "path": "/partners",
-          "metadata": {
-            "method": "POST",
-            "summary": "Register a new partner"
-          }
+          "summary": "Register a new partner"
         },
         {
           "unique-id": "svc-partner-integrations-api-get-partners-{partner_id}-commission-report",
-          "type": "path",
+          "method": "GET",
           "path": "/partners/{partner_id}/commission-report",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get commission report for a partner"
-          }
+          "summary": "Get commission report for a partner"
         }
       ],
       "metadata": {
@@ -97,16 +63,14 @@
       "interfaces": [
         {
           "unique-id": "svc-partner-integrations-db-jdbc",
-          "type": "host-port",
-          "metadata": {
-            "engine": "PostgreSQL 15",
-            "schema": "partners"
-          }
+          "host": "partner-integrations-db.novatrek.internal",
+          "port": 27017
         }
       ],
       "metadata": {
         "domain": "External",
         "engine": "PostgreSQL 15",
+        "schema": "partners",
         "tables": [
           "partners",
           "partner_bookings",
@@ -123,93 +87,63 @@
       "interfaces": [
         {
           "unique-id": "svc-guest-profiles-api-get-guests",
-          "type": "path",
+          "method": "GET",
           "path": "/guests",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search guests"
-          }
+          "summary": "Search guests"
         },
         {
           "unique-id": "svc-guest-profiles-api-post-guests",
-          "type": "path",
+          "method": "POST",
           "path": "/guests",
-          "metadata": {
-            "method": "POST",
-            "summary": "Register a new guest"
-          }
+          "summary": "Register a new guest"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest profile"
-          }
+          "summary": "Get guest profile"
         },
         {
           "unique-id": "svc-guest-profiles-api-patch-guests-{guest_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/guests/{guest_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update guest profile"
-          }
+          "summary": "Update guest profile"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-certifications",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/certifications",
-          "metadata": {
-            "method": "GET",
-            "summary": "List guest certifications"
-          }
+          "summary": "List guest certifications"
         },
         {
           "unique-id": "svc-guest-profiles-api-post-guests-{guest_id}-certifications",
-          "type": "path",
+          "method": "POST",
           "path": "/guests/{guest_id}/certifications",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a certification"
-          }
+          "summary": "Add a certification"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-medical-info",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/medical-info",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest medical information"
-          }
+          "summary": "Get guest medical information"
         },
         {
           "unique-id": "svc-guest-profiles-api-put-guests-{guest_id}-medical-info",
-          "type": "path",
+          "method": "PUT",
           "path": "/guests/{guest_id}/medical-info",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Update guest medical information"
-          }
+          "summary": "Update guest medical information"
         },
         {
           "unique-id": "svc-guest-profiles-api-get-guests-{guest_id}-adventure-history",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/adventure-history",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest adventure history"
-          }
+          "summary": "Get guest adventure history"
         },
         {
           "unique-id": "svc-guest-profiles-event-guest-registered",
-          "type": "path",
-          "path": "novatrek.guest-identity.guest.registered",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.guest-identity.guest.registered",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -225,93 +159,63 @@
       "interfaces": [
         {
           "unique-id": "svc-reservations-api-get-reservations",
-          "type": "path",
+          "method": "GET",
           "path": "/reservations",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search reservations"
-          }
+          "summary": "Search reservations"
         },
         {
           "unique-id": "svc-reservations-api-post-reservations",
-          "type": "path",
+          "method": "POST",
           "path": "/reservations",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new reservation"
-          }
+          "summary": "Create a new reservation"
         },
         {
           "unique-id": "svc-reservations-api-get-reservations-{reservation_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/reservations/{reservation_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get reservation details"
-          }
+          "summary": "Get reservation details"
         },
         {
           "unique-id": "svc-reservations-api-patch-reservations-{reservation_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/reservations/{reservation_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update a reservation"
-          }
+          "summary": "Update a reservation"
         },
         {
           "unique-id": "svc-reservations-api-delete-reservations-{reservation_id}",
-          "type": "path",
+          "method": "DELETE",
           "path": "/reservations/{reservation_id}",
-          "metadata": {
-            "method": "DELETE",
-            "summary": "Cancel a reservation"
-          }
+          "summary": "Cancel a reservation"
         },
         {
           "unique-id": "svc-reservations-api-get-reservations-{reservation_id}-participants",
-          "type": "path",
+          "method": "GET",
           "path": "/reservations/{reservation_id}/participants",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get reservation participants"
-          }
+          "summary": "Get reservation participants"
         },
         {
           "unique-id": "svc-reservations-api-post-reservations-{reservation_id}-participants",
-          "type": "path",
+          "method": "POST",
           "path": "/reservations/{reservation_id}/participants",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a participant to a reservation"
-          }
+          "summary": "Add a participant to a reservation"
         },
         {
           "unique-id": "svc-reservations-api-put-reservations-{reservation_id}-status",
-          "type": "path",
+          "method": "PUT",
           "path": "/reservations/{reservation_id}/status",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Transition reservation status"
-          }
+          "summary": "Transition reservation status"
         },
         {
           "unique-id": "svc-reservations-event-reservation-created",
-          "type": "path",
-          "path": "novatrek.booking.reservation.created",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.booking.reservation.created",
+          "protocol": "Kafka",
+          "role": "producer"
         },
         {
           "unique-id": "svc-reservations-event-reservation-status_changed",
-          "type": "path",
-          "path": "novatrek.booking.reservation.status-changed",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.booking.reservation.status-changed",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -327,102 +231,69 @@
       "interfaces": [
         {
           "unique-id": "svc-trip-catalog-api-get-trips",
-          "type": "path",
+          "method": "GET",
           "path": "/trips",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search trips with filters"
-          }
+          "summary": "Search trips with filters"
         },
         {
           "unique-id": "svc-trip-catalog-api-post-trips",
-          "type": "path",
+          "method": "POST",
           "path": "/trips",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new trip definition"
-          }
+          "summary": "Create a new trip definition"
         },
         {
           "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/trips/{trip_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get trip details"
-          }
+          "summary": "Get trip details"
         },
         {
           "unique-id": "svc-trip-catalog-api-patch-trips-{trip_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/trips/{trip_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update trip details"
-          }
+          "summary": "Update trip details"
         },
         {
           "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}-schedule",
-          "type": "path",
+          "method": "GET",
           "path": "/trips/{trip_id}/schedule",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get scheduled departures"
-          }
+          "summary": "Get scheduled departures"
         },
         {
           "unique-id": "svc-trip-catalog-api-post-trips-{trip_id}-schedule",
-          "type": "path",
+          "method": "POST",
           "path": "/trips/{trip_id}/schedule",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a scheduled departure"
-          }
+          "summary": "Add a scheduled departure"
         },
         {
           "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}-pricing",
-          "type": "path",
+          "method": "GET",
           "path": "/trips/{trip_id}/pricing",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get pricing tiers"
-          }
+          "summary": "Get pricing tiers"
         },
         {
           "unique-id": "svc-trip-catalog-api-put-trips-{trip_id}-pricing",
-          "type": "path",
+          "method": "PUT",
           "path": "/trips/{trip_id}/pricing",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Replace pricing tiers"
-          }
+          "summary": "Replace pricing tiers"
         },
         {
           "unique-id": "svc-trip-catalog-api-get-trips-{trip_id}-requirements",
-          "type": "path",
+          "method": "GET",
           "path": "/trips/{trip_id}/requirements",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get trip requirements"
-          }
+          "summary": "Get trip requirements"
         },
         {
           "unique-id": "svc-trip-catalog-api-get-regions",
-          "type": "path",
+          "method": "GET",
           "path": "/regions",
-          "metadata": {
-            "method": "GET",
-            "summary": "List operating regions"
-          }
+          "summary": "List operating regions"
         },
         {
           "unique-id": "svc-trip-catalog-api-get-activity-types",
-          "type": "path",
+          "method": "GET",
           "path": "/activity-types",
-          "metadata": {
-            "method": "GET",
-            "summary": "List available activity types"
-          }
+          "summary": "List available activity types"
         }
       ],
       "metadata": {
@@ -438,57 +309,39 @@
       "interfaces": [
         {
           "unique-id": "svc-notifications-api-post-notifications",
-          "type": "path",
+          "method": "POST",
           "path": "/notifications",
-          "metadata": {
-            "method": "POST",
-            "summary": "Send a notification"
-          }
+          "summary": "Send a notification"
         },
         {
           "unique-id": "svc-notifications-api-get-notifications",
-          "type": "path",
+          "method": "GET",
           "path": "/notifications",
-          "metadata": {
-            "method": "GET",
-            "summary": "List notifications"
-          }
+          "summary": "List notifications"
         },
         {
           "unique-id": "svc-notifications-api-get-notifications-{notification_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/notifications/{notification_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Retrieve notification details"
-          }
+          "summary": "Retrieve notification details"
         },
         {
           "unique-id": "svc-notifications-api-post-notifications-bulk",
-          "type": "path",
+          "method": "POST",
           "path": "/notifications/bulk",
-          "metadata": {
-            "method": "POST",
-            "summary": "Send bulk notifications"
-          }
+          "summary": "Send bulk notifications"
         },
         {
           "unique-id": "svc-notifications-api-get-templates",
-          "type": "path",
+          "method": "GET",
           "path": "/templates",
-          "metadata": {
-            "method": "GET",
-            "summary": "List notification templates"
-          }
+          "summary": "List notification templates"
         },
         {
           "unique-id": "svc-notifications-api-post-templates",
-          "type": "path",
+          "method": "POST",
           "path": "/templates",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a notification template"
-          }
+          "summary": "Create a notification template"
         }
       ],
       "metadata": {
@@ -504,120 +357,81 @@
       "interfaces": [
         {
           "unique-id": "svc-payments-api-post-payments",
-          "type": "path",
+          "method": "POST",
           "path": "/payments",
-          "metadata": {
-            "method": "POST",
-            "summary": "Process a payment"
-          }
+          "summary": "Process a payment"
         },
         {
           "unique-id": "svc-payments-api-get-payments-{payment_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/payments/{payment_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Retrieve payment details"
-          }
+          "summary": "Retrieve payment details"
         },
         {
           "unique-id": "svc-payments-api-post-payments-{payment_id}-refund",
-          "type": "path",
+          "method": "POST",
           "path": "/payments/{payment_id}/refund",
-          "metadata": {
-            "method": "POST",
-            "summary": "Initiate a refund"
-          }
+          "summary": "Initiate a refund"
         },
         {
           "unique-id": "svc-payments-api-get-guests-{guest_id}-payment-history",
-          "type": "path",
+          "method": "GET",
           "path": "/guests/{guest_id}/payment-history",
-          "metadata": {
-            "method": "GET",
-            "summary": "Retrieve payment history for a guest"
-          }
+          "summary": "Retrieve payment history for a guest"
         },
         {
           "unique-id": "svc-payments-api-post-disputes",
-          "type": "path",
+          "method": "POST",
           "path": "/disputes",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a refund dispute"
-          }
+          "summary": "Create a refund dispute"
         },
         {
           "unique-id": "svc-payments-api-get-disputes",
-          "type": "path",
+          "method": "GET",
           "path": "/disputes",
-          "metadata": {
-            "method": "GET",
-            "summary": "List disputes with optional filters"
-          }
+          "summary": "List disputes with optional filters"
         },
         {
           "unique-id": "svc-payments-api-get-disputes-{dispute_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/disputes/{dispute_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Retrieve dispute details"
-          }
+          "summary": "Retrieve dispute details"
         },
         {
           "unique-id": "svc-payments-api-patch-disputes-{dispute_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/disputes/{dispute_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update a dispute (assign, add notes, escalate)"
-          }
+          "summary": "Update a dispute (assign, add notes, escalate)"
         },
         {
           "unique-id": "svc-payments-api-post-disputes-{dispute_id}-resolve",
-          "type": "path",
+          "method": "POST",
           "path": "/disputes/{dispute_id}/resolve",
-          "metadata": {
-            "method": "POST",
-            "summary": "Resolve a dispute with refund decision"
-          }
+          "summary": "Resolve a dispute with refund decision"
         },
         {
           "unique-id": "svc-payments-api-post-chargebacks",
-          "type": "path",
+          "method": "POST",
           "path": "/chargebacks",
-          "metadata": {
-            "method": "POST",
-            "summary": "Ingest a chargeback notification from payment processor"
-          }
+          "summary": "Ingest a chargeback notification from payment processor"
         },
         {
           "unique-id": "svc-payments-api-post-refund-policy-evaluate",
-          "type": "path",
+          "method": "POST",
           "path": "/refund-policy/evaluate",
-          "metadata": {
-            "method": "POST",
-            "summary": "Evaluate refund eligibility against policy (dry-run)"
-          }
+          "summary": "Evaluate refund eligibility against policy (dry-run)"
         },
         {
           "unique-id": "svc-payments-api-get-payments-daily-summary",
-          "type": "path",
+          "method": "GET",
           "path": "/payments/daily-summary",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get daily payment summary"
-          }
+          "summary": "Get daily payment summary"
         },
         {
           "unique-id": "svc-payments-event-payment-processed",
-          "type": "path",
-          "path": "novatrek.support.payment.processed",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.support.payment.processed",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -629,104 +443,154 @@
   "relationships": [
     {
       "unique-id": "rel-svc-partner-integrations-to-db",
-      "relationship-type": "connects",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-partner-integrations-db"
+      "description": "svc-partner-integrations connects to its owned database",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-partner-integrations-db"
+          }
+        }
       },
-      "protocol": "JDBC",
-      "metadata": {
-        "description": "svc-partner-integrations connects to its database"
-      }
+      "protocol": "JDBC"
     },
     {
       "unique-id": "rel-svc-partner-integrations-post--partner-bookings-to-svc-guest-profiles",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-guest-profiles"
+      "description": "Validate guest identity",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-guest-profiles"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /partner-bookings",
         "target-endpoint": "GET /guests/{guest_id}",
-        "action": "Validate guest identity",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-partner-integrations-post--partner-bookings-to-svc-trip-catalog",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-trip-catalog"
+      "description": "Check trip availability",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-trip-catalog"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /partner-bookings",
         "target-endpoint": "GET /trips/{trip_id}",
-        "action": "Check trip availability",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-partner-integrations-post--partner-bookings-to-svc-reservations",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-reservations"
+      "description": "Create reservation",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-reservations"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /partner-bookings",
         "target-endpoint": "POST /reservations",
-        "action": "Create reservation",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-partner-integrations-post--partner-bookings-{booking_id}-confirm-to-svc-reservations",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-reservations"
+      "description": "Confirm reservation",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-reservations"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /partner-bookings/{booking_id}/confirm",
         "target-endpoint": "PUT /reservations/{reservation_id}/status",
-        "action": "Confirm reservation",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-partner-integrations-post--partner-bookings-{booking_id}-confirm-to-svc-payments",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-payments"
+      "description": "Process commission",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-payments"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /partner-bookings/{booking_id}/confirm",
         "target-endpoint": "POST /payments",
-        "action": "Process commission",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-partner-integrations-post--partner-bookings-{booking_id}-confirm-to-svc-notifications",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-partner-integrations",
-        "target": "svc-notifications"
+      "description": "Send partner confirmation",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-partner-integrations"
+          },
+          "destination": {
+            "node": "svc-notifications"
+          }
+        }
       },
-      "protocol": "Kafka",
+      "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /partner-bookings/{booking_id}/confirm",
         "target-endpoint": "POST /notifications",
-        "action": "Send partner confirmation",
         "async": true
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "novatrek": {
+        "name": "NovaTrek Adventures — External Domain Topology",
+        "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+        "version": "1.0.0",
+        "generated-from": [
+          "architecture/metadata/domains.yaml",
+          "architecture/metadata/data-stores.yaml",
+          "architecture/metadata/cross-service-calls.yaml",
+          "architecture/metadata/events.yaml",
+          "architecture/metadata/actors.yaml",
+          "architecture/specs/*.yaml"
+        ]
       }
     }
   ]

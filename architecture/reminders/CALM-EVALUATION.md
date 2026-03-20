@@ -1,7 +1,7 @@
 # CALM Evaluation Reminder
 
 **Date**: 2026-03-06
-**Status**: Deferred — Circle back later
+**Status**: Active (TOP, In Progress) — Phase 0+1 complete, see `docs/CALM-INTEGRATION-PLAN.md`
 
 ## What is CALM?
 

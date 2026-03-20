@@ -4,7 +4,7 @@
 |-----------|-------|
 | **Author** | Christopher Blaisdell (Solution Architect) |
 | **Date** | 2026-03-10 |
-| **Status** | Draft |
+| **Status** | In Progress — Phase 1 Complete |
 | **Purpose** | Detailed plan for incorporating CALM (Common Architecture Language Model) into the NovaTrek Adventures architecture practice |
 | **Prior Art** | `architecture/reminders/CALM-EVALUATION.md` (deferred evaluation from 2026-03-06) |
 
@@ -17,6 +17,37 @@ The Continuous Architecture Platform already implements a sophisticated architec
 CALM (Common Architecture Language Model) fills this gap. It provides a JSON Schema-based specification for declaring architecture topology — nodes, relationships, interfaces, and data flows — in a version-controlled, validatable format. Rather than replacing what we have, CALM **formalizes what we already model informally** across `domains.yaml`, `cross-service-calls.yaml`, `data-stores.yaml`, `events.yaml`, and `actors.yaml`.
 
 This document lays out a phased plan to adopt CALM, mapping each phase to concrete deliverables, risk mitigation, and measurable outcomes.
+
+---
+
+## 1.1 Progress Tracker
+
+| Phase | Step | Task | Status |
+|-------|------|------|--------|
+| 0 | 0.1 | Install CALM CLI | COMPLETE |
+| 0 | 0.2 | Model Operations domain | COMPLETE |
+| 0 | 0.3 | NovaTrek microservice pattern | COMPLETE |
+| 0 | 0.4 | CALM validation in CI | COMPLETE |
+| 0 | 0.5 | Data-ownership control | COMPLETE |
+| 0 | 0.6 | Document pilot findings | TODO |
+| 1 | 1.1 | Model all 9 domains | COMPLETE |
+| 1 | 1.2 | System-level CALM document | COMPLETE |
+| 1 | 1.3 | CALM-to-YAML bridge generator | TODO |
+| 1 | 1.4 | Validate generators produce identical output | TODO |
+| 1 | 1.5 | OpenAPI-to-CALM interface generator | COMPLETE (built into generate-calm.py) |
+| 1 | 1.6 | AsyncAPI-to-CALM interface generator | COMPLETE (built into generate-calm.py) |
+| 1 | 1.7 | CALM validation in CI for all docs | COMPLETE |
+
+**Key Deliverables Completed:**
+
+- `scripts/generate-calm.py` — CALM 1.2-compliant generator reading all metadata YAML + OpenAPI specs (73 nodes, 157 relationships)
+- `scripts/validate-calm.py` — Architecture rule validator + CALM CLI schema validation wrapper
+- `architecture/calm/novatrek-topology.json` — Full system topology (22 services, 22 databases, 29 actors/systems)
+- `architecture/calm/domains/*.json` — All 9 domain topology files
+- `architecture/calm/patterns/novatrek-microservice.json` — Microservice pattern (NovaTrek rules format)
+- `architecture/calm/controls/data-ownership.json` — Single-database-ownership control
+- `architecture/calm/controls/api-mediated-access.json` — No cross-service JDBC control
+- `.github/workflows/validate-solution.yml` — CI pipeline with Node.js + CALM CLI + Python validation
 
 ---
 

@@ -408,7 +408,7 @@ Portal  Confluence
 
 All Phases 0-6 are COMPLETE. The following initiatives represent the next wave of work, consolidated from plan documents, reminders, and proposed enhancements across the repository. Each initiative has a detailed companion document linked below.
 
-#### ECC Skills Incorporation — AI Workflow Enhancement (Top Priority)
+#### ECC Skills Incorporation — AI Workflow Enhancement (Medium Priority)
 
 **Status:** Proposed | **Companion:** [docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md)
 
@@ -431,9 +431,9 @@ See [ECC Incorporation Plan](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.m
 
 ---
 
-#### CALM — Automated Architecture Governance (Top Priority)
+#### CALM — Automated Architecture Governance (Top Priority — Active)
 
-**Status:** Planned | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
+**Status:** In Progress | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
 
 CALM (Common Architecture Language Model) is the next major evolution of the platform. It adds a formal, machine-validatable topology layer on top of the existing architecture practice.
 
@@ -491,6 +491,7 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 | Figma Wireframes | Proposed | [portal/FIGMA-WIREFRAMES-PLAN.md](../portal/FIGMA-WIREFRAMES-PLAN.md) | Embed Figma wireframes directly into portal application pages — connect architecture artifacts to visual design layer |
 | Event Catalog Expansion | Proposed | [portal/EVENT-CATALOG-PLAN.md](../portal/EVENT-CATALOG-PLAN.md) | Formalize domain events with AsyncAPI specs — producers, consumers, schemas, portal pages with the same rigor as REST API documentation |
 | Presentation Site | Draft | [portal/PRESENTATION-SITE-PLAN.md](../portal/PRESENTATION-SITE-PLAN.md) | Executive pitch deck as a third MkDocs Material site — live demo selling Continuous Architecture Platform adoption to leadership and budget holders |
+| ECC Skills Incorporation | Proposed | [EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md) | Adapt 108 skills, 25 agents, 57 commands from Everything Claude Code into Copilot `.instructions.md`/`.prompt.md` files for enhanced AI workflow |
 
 #### Priority: LOW
 
@@ -514,7 +515,7 @@ These are deferred evaluations and operational items tracked in `architecture/re
 | Reminder | Date | Status | File |
 |----------|------|--------|------|
 | Azure Microservices Delivery | 2026-03-17 | Active (HIGH, Priority #3) | [architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md](../architecture/reminders/AZURE-MICROSERVICES-DELIVERY.md) |
-| CALM Evaluation | 2026-03-06 | Deferred | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
+| CALM Evaluation | 2026-03-06 | Active (TOP, In Progress) | [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md) |
 | Fix Deploy Failures | 2026-03-10 | Backlog (HIGH) | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) |
 | Implement All Swagger-Defined Services | 2026-03-17 | Complete (HIGH, Priority #2) | [architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md](../architecture/reminders/IMPLEMENT-ALL-SWAGGER-SERVICES.md) |
 | Test Methodology | 2026-03-11 | Complete (HIGH, Priority #1) | [architecture/reminders/TEST-METHODOLOGY.md](../architecture/reminders/TEST-METHODOLOGY.md) |

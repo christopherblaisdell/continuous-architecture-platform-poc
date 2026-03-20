@@ -1,18 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/finos/architecture-as-code/main/calm/schema/calm.json",
-  "metadata": {
-    "name": "NovaTrek Adventures — Guide Management Domain Topology",
-    "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
-    "version": "1.0.0",
-    "generated-from": [
-      "architecture/metadata/domains.yaml",
-      "architecture/metadata/data-stores.yaml",
-      "architecture/metadata/cross-service-calls.yaml",
-      "architecture/metadata/events.yaml",
-      "architecture/metadata/actors.yaml",
-      "architecture/specs/*.yaml"
-    ]
-  },
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
   "nodes": [
     {
       "unique-id": "svc-guide-management",
@@ -22,111 +9,75 @@
       "interfaces": [
         {
           "unique-id": "svc-guide-management-api-get-guides",
-          "type": "path",
+          "method": "GET",
           "path": "/guides",
-          "metadata": {
-            "method": "GET",
-            "summary": "Search guides with filters"
-          }
+          "summary": "Search guides with filters"
         },
         {
           "unique-id": "svc-guide-management-api-post-guides",
-          "type": "path",
+          "method": "POST",
           "path": "/guides",
-          "metadata": {
-            "method": "POST",
-            "summary": "Create a new guide profile"
-          }
+          "summary": "Create a new guide profile"
         },
         {
           "unique-id": "svc-guide-management-api-get-guides-{guide_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/guides/{guide_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guide by ID"
-          }
+          "summary": "Get guide by ID"
         },
         {
           "unique-id": "svc-guide-management-api-patch-guides-{guide_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/guides/{guide_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update guide profile"
-          }
+          "summary": "Update guide profile"
         },
         {
           "unique-id": "svc-guide-management-api-get-guides-{guide_id}-certifications",
-          "type": "path",
+          "method": "GET",
           "path": "/guides/{guide_id}/certifications",
-          "metadata": {
-            "method": "GET",
-            "summary": "List guide certifications"
-          }
+          "summary": "List guide certifications"
         },
         {
           "unique-id": "svc-guide-management-api-post-guides-{guide_id}-certifications",
-          "type": "path",
+          "method": "POST",
           "path": "/guides/{guide_id}/certifications",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a certification to a guide"
-          }
+          "summary": "Add a certification to a guide"
         },
         {
           "unique-id": "svc-guide-management-api-get-guides-{guide_id}-schedule",
-          "type": "path",
+          "method": "GET",
           "path": "/guides/{guide_id}/schedule",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get upcoming trip assignments"
-          }
+          "summary": "Get upcoming trip assignments"
         },
         {
           "unique-id": "svc-guide-management-api-get-guides-{guide_id}-availability",
-          "type": "path",
+          "method": "GET",
           "path": "/guides/{guide_id}/availability",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guide availability windows"
-          }
+          "summary": "Get guide availability windows"
         },
         {
           "unique-id": "svc-guide-management-api-post-guides-{guide_id}-availability",
-          "type": "path",
+          "method": "POST",
           "path": "/guides/{guide_id}/availability",
-          "metadata": {
-            "method": "POST",
-            "summary": "Set availability windows"
-          }
+          "summary": "Set availability windows"
         },
         {
           "unique-id": "svc-guide-management-api-get-guides-{guide_id}-ratings",
-          "type": "path",
+          "method": "GET",
           "path": "/guides/{guide_id}/ratings",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get guest ratings and reviews"
-          }
+          "summary": "Get guest ratings and reviews"
         },
         {
           "unique-id": "svc-guide-management-api-post-guides-{guide_id}-ratings",
-          "type": "path",
+          "method": "POST",
           "path": "/guides/{guide_id}/ratings",
-          "metadata": {
-            "method": "POST",
-            "summary": "Submit a guest rating"
-          }
+          "summary": "Submit a guest rating"
         },
         {
           "unique-id": "svc-guide-management-api-get-guides-available",
-          "type": "path",
+          "method": "GET",
           "path": "/guides/available",
-          "metadata": {
-            "method": "GET",
-            "summary": "Find available guides for a date, activity, and region"
-          }
+          "summary": "Find available guides for a date, activity, and region"
         }
       ],
       "metadata": {
@@ -142,16 +93,14 @@
       "interfaces": [
         {
           "unique-id": "svc-guide-management-db-jdbc",
-          "type": "host-port",
-          "metadata": {
-            "engine": "PostgreSQL 15",
-            "schema": "guides"
-          }
+          "host": "guide-management-db.novatrek.internal",
+          "port": 27017
         }
       ],
       "metadata": {
         "domain": "Guide Management",
         "engine": "PostgreSQL 15",
+        "schema": "guides",
         "tables": [
           "guides",
           "certifications",
@@ -169,57 +118,39 @@
       "interfaces": [
         {
           "unique-id": "svc-scheduling-orchestrator-api-post-schedule-requests",
-          "type": "path",
+          "method": "POST",
           "path": "/schedule-requests",
-          "metadata": {
-            "method": "POST",
-            "summary": "Request optimal schedule for a trip"
-          }
+          "summary": "Request optimal schedule for a trip"
         },
         {
           "unique-id": "svc-scheduling-orchestrator-api-get-schedule-requests-{request_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/schedule-requests/{request_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get schedule request status and result"
-          }
+          "summary": "Get schedule request status and result"
         },
         {
           "unique-id": "svc-scheduling-orchestrator-api-get-schedule-optimization",
-          "type": "path",
+          "method": "GET",
           "path": "/schedule-optimization",
-          "metadata": {
-            "method": "GET",
-            "summary": "Run synchronous schedule optimization"
-          }
+          "summary": "Run synchronous schedule optimization"
         },
         {
           "unique-id": "svc-scheduling-orchestrator-api-get-schedule-conflicts",
-          "type": "path",
+          "method": "GET",
           "path": "/schedule-conflicts",
-          "metadata": {
-            "method": "GET",
-            "summary": "List scheduling conflicts"
-          }
+          "summary": "List scheduling conflicts"
         },
         {
           "unique-id": "svc-scheduling-orchestrator-api-post-schedule-conflicts-resolve",
-          "type": "path",
+          "method": "POST",
           "path": "/schedule-conflicts/resolve",
-          "metadata": {
-            "method": "POST",
-            "summary": "Resolve a scheduling conflict"
-          }
+          "summary": "Resolve a scheduling conflict"
         },
         {
           "unique-id": "svc-scheduling-orchestrator-event-schedule-published",
-          "type": "path",
-          "path": "novatrek.operations.schedule.published",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.operations.schedule.published",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -235,84 +166,57 @@
       "interfaces": [
         {
           "unique-id": "svc-safety-compliance-api-post-waivers",
-          "type": "path",
+          "method": "POST",
           "path": "/waivers",
-          "metadata": {
-            "method": "POST",
-            "summary": "Guest signs a safety waiver"
-          }
+          "summary": "Guest signs a safety waiver"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-waivers",
-          "type": "path",
+          "method": "GET",
           "path": "/waivers",
-          "metadata": {
-            "method": "GET",
-            "summary": "List waivers by guest"
-          }
+          "summary": "List waivers by guest"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-waivers-{waiver_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/waivers/{waiver_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get a specific waiver"
-          }
+          "summary": "Get a specific waiver"
         },
         {
           "unique-id": "svc-safety-compliance-api-post-incidents",
-          "type": "path",
+          "method": "POST",
           "path": "/incidents",
-          "metadata": {
-            "method": "POST",
-            "summary": "File an incident report"
-          }
+          "summary": "File an incident report"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-incidents-{incident_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/incidents/{incident_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get an incident report"
-          }
+          "summary": "Get an incident report"
         },
         {
           "unique-id": "svc-safety-compliance-api-patch-incidents-{incident_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/incidents/{incident_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update an incident report (add follow-up, change status)"
-          }
+          "summary": "Update an incident report (add follow-up, change status)"
         },
         {
           "unique-id": "svc-safety-compliance-api-get-safety-inspections",
-          "type": "path",
+          "method": "GET",
           "path": "/safety-inspections",
-          "metadata": {
-            "method": "GET",
-            "summary": "List safety inspections for a location"
-          }
+          "summary": "List safety inspections for a location"
         },
         {
           "unique-id": "svc-safety-compliance-api-post-safety-inspections",
-          "type": "path",
+          "method": "POST",
           "path": "/safety-inspections",
-          "metadata": {
-            "method": "POST",
-            "summary": "Record a safety inspection"
-          }
+          "summary": "Record a safety inspection"
         },
         {
           "unique-id": "svc-safety-compliance-event-incident-reported",
-          "type": "path",
-          "path": "novatrek.safety.incident.reported",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.safety.incident.reported",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -328,102 +232,69 @@
       "interfaces": [
         {
           "unique-id": "svc-emergency-response-api-get-emergencies",
-          "type": "path",
+          "method": "GET",
           "path": "/emergencies",
-          "metadata": {
-            "method": "GET",
-            "summary": "List emergency incidents with optional filters"
-          }
+          "summary": "List emergency incidents with optional filters"
         },
         {
           "unique-id": "svc-emergency-response-api-post-emergencies",
-          "type": "path",
+          "method": "POST",
           "path": "/emergencies",
-          "metadata": {
-            "method": "POST",
-            "summary": "Trigger a new emergency alert (SOS)"
-          }
+          "summary": "Trigger a new emergency alert (SOS)"
         },
         {
           "unique-id": "svc-emergency-response-api-get-emergencies-{emergency_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/emergencies/{emergency_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get emergency incident details"
-          }
+          "summary": "Get emergency incident details"
         },
         {
           "unique-id": "svc-emergency-response-api-patch-emergencies-{emergency_id}",
-          "type": "path",
+          "method": "PATCH",
           "path": "/emergencies/{emergency_id}",
-          "metadata": {
-            "method": "PATCH",
-            "summary": "Update emergency status or add resolution notes"
-          }
+          "summary": "Update emergency status or add resolution notes"
         },
         {
           "unique-id": "svc-emergency-response-api-get-emergencies-{emergency_id}-timeline",
-          "type": "path",
+          "method": "GET",
           "path": "/emergencies/{emergency_id}/timeline",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get the full event timeline for an emergency"
-          }
+          "summary": "Get the full event timeline for an emergency"
         },
         {
           "unique-id": "svc-emergency-response-api-post-emergencies-{emergency_id}-timeline",
-          "type": "path",
+          "method": "POST",
           "path": "/emergencies/{emergency_id}/timeline",
-          "metadata": {
-            "method": "POST",
-            "summary": "Add a timeline entry to an active emergency"
-          }
+          "summary": "Add a timeline entry to an active emergency"
         },
         {
           "unique-id": "svc-emergency-response-api-post-emergencies-{emergency_id}-dispatch",
-          "type": "path",
+          "method": "POST",
           "path": "/emergencies/{emergency_id}/dispatch",
-          "metadata": {
-            "method": "POST",
-            "summary": "Dispatch a rescue team to the emergency location"
-          }
+          "summary": "Dispatch a rescue team to the emergency location"
         },
         {
           "unique-id": "svc-emergency-response-api-get-rescue-teams",
-          "type": "path",
+          "method": "GET",
           "path": "/rescue-teams",
-          "metadata": {
-            "method": "GET",
-            "summary": "List available rescue teams and their current status"
-          }
+          "summary": "List available rescue teams and their current status"
         },
         {
           "unique-id": "svc-emergency-response-api-get-emergency-contacts-{guest_id}",
-          "type": "path",
+          "method": "GET",
           "path": "/emergency-contacts/{guest_id}",
-          "metadata": {
-            "method": "GET",
-            "summary": "Get emergency contacts for a guest"
-          }
+          "summary": "Get emergency contacts for a guest"
         },
         {
           "unique-id": "svc-emergency-response-api-put-emergency-contacts-{guest_id}",
-          "type": "path",
+          "method": "PUT",
           "path": "/emergency-contacts/{guest_id}",
-          "metadata": {
-            "method": "PUT",
-            "summary": "Update emergency contacts for a guest"
-          }
+          "summary": "Update emergency contacts for a guest"
         },
         {
           "unique-id": "svc-emergency-response-event-emergency-triggered",
-          "type": "path",
-          "path": "novatrek.safety.emergency.triggered",
-          "metadata": {
-            "protocol": "Kafka",
-            "role": "producer"
-          }
+          "channel": "novatrek.safety.emergency.triggered",
+          "protocol": "Kafka",
+          "role": "producer"
         }
       ],
       "metadata": {
@@ -435,119 +306,173 @@
   "relationships": [
     {
       "unique-id": "rel-svc-guide-management-to-db",
-      "relationship-type": "connects",
-      "parties": {
-        "source": "svc-guide-management",
-        "target": "svc-guide-management-db"
+      "description": "svc-guide-management connects to its owned database",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-guide-management"
+          },
+          "destination": {
+            "node": "svc-guide-management-db"
+          }
+        }
       },
-      "protocol": "JDBC",
-      "metadata": {
-        "description": "svc-guide-management connects to its database"
-      }
+      "protocol": "JDBC"
     },
     {
       "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-requests-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-scheduling-orchestrator",
-        "target": "svc-guide-management"
+      "description": "Check guide availability",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-scheduling-orchestrator"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /schedule-requests",
         "target-endpoint": "GET /guides/{guide_id}/availability",
-        "action": "Check guide availability",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-optimization-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-scheduling-orchestrator",
-        "target": "svc-guide-management"
+      "description": "Get all available guides",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-scheduling-orchestrator"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /schedule-optimization",
         "target-endpoint": "GET /guides/available",
-        "action": "Get all available guides",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-scheduling-orchestrator-post--schedule-conflicts-resolve-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-scheduling-orchestrator",
-        "target": "svc-guide-management"
+      "description": "Reassign guide",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-scheduling-orchestrator"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /schedule-conflicts/resolve",
         "target-endpoint": "PATCH /guides/{guide_id}",
-        "action": "Reassign guide",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-safety-compliance-post--incidents-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-safety-compliance",
-        "target": "svc-guide-management"
+      "description": "Get assigned guide",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-safety-compliance"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /incidents",
         "target-endpoint": "GET /guides/{guide_id}",
-        "action": "Get assigned guide",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-emergency-response-post--emergencies-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-emergency-response",
-        "target": "svc-guide-management"
+      "description": "Identify nearest on-duty guide",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-emergency-response"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /emergencies",
         "target-endpoint": "GET /guides/on-duty",
-        "action": "Identify nearest on-duty guide",
         "async": false
       }
     },
     {
       "unique-id": "rel-svc-emergency-response-post--emergencies-{emergency_id}-dispatch-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-emergency-response",
-        "target": "svc-guide-management"
+      "description": "Check guide availability for rescue",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-emergency-response"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
       "protocol": "HTTPS",
       "metadata": {
         "source-endpoint": "POST /emergencies/{emergency_id}/dispatch",
         "target-endpoint": "GET /guides/on-duty",
-        "action": "Check guide availability for rescue",
         "async": false
       }
     },
     {
       "unique-id": "rel-event-schedule-published-svc-scheduling-orchestrator-to-svc-guide-management",
-      "relationship-type": "interacts",
-      "parties": {
-        "source": "svc-scheduling-orchestrator",
-        "target": "svc-guide-management"
+      "description": "Published when a daily schedule is finalized",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "svc-scheduling-orchestrator"
+          },
+          "destination": {
+            "node": "svc-guide-management"
+          }
+        }
       },
-      "protocol": "Kafka",
       "metadata": {
         "event": "schedule.published",
         "channel": "novatrek.operations.schedule.published",
-        "summary": "Published when a daily schedule is finalized",
-        "async": true
+        "transport": "Kafka"
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "novatrek": {
+        "name": "NovaTrek Adventures — Guide Management Domain Topology",
+        "description": "Auto-generated from NovaTrek metadata YAML files and OpenAPI specs. DO NOT EDIT — regenerate with: python3 scripts/generate-calm.py",
+        "version": "1.0.0",
+        "generated-from": [
+          "architecture/metadata/domains.yaml",
+          "architecture/metadata/data-stores.yaml",
+          "architecture/metadata/cross-service-calls.yaml",
+          "architecture/metadata/events.yaml",
+          "architecture/metadata/actors.yaml",
+          "architecture/specs/*.yaml"
+        ]
       }
     }
   ]
