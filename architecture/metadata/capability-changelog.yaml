@@ -132,3 +132,35 @@ entries:
       - ADR-NTK10009-001
       - ADR-NTK10009-002
       - ADR-NTK10009-003
+
+  - ticket: NTK-10006
+    date: 2026-03-20
+    solution: _NTK-10006-real-time-adventure-tracking
+    summary: Real-time GPS tracking of active adventure guests with automated emergency alerting
+    capabilities:
+      - id: CAP-3.3
+        impact: enhanced
+        description: Emergency response triggered automatically by GPS anomaly detection with precise guest coordinates
+        l3_capabilities:
+          - name: GPS-Triggered Emergency Dispatch
+            description: Anomaly detection in svc-adventure-tracking auto-creates emergencies via svc-emergency-response with precise GPS location
+          - name: Real-Time Location in Emergency Context
+            description: Rescue teams receive last-known GPS position and can track live updates during response
+      - id: CAP-3.2
+        impact: enhanced
+        description: Incidents auto-created from tracking anomalies with GPS-enriched audit data
+        l3_capabilities:
+          - name: Automated Incident Creation from Tracking Anomalies
+            description: svc-safety-compliance subscribes to tracking.anomaly.detected and creates incident records automatically
+          - name: GPS-Enriched Incident Records
+            description: Incident reports include precise GPS coordinates and anomaly context from tracking session
+      - id: CAP-2.1
+        impact: enhanced
+        description: Check-in completion triggers GPS tracking session via Kafka event; wristband RFID is correlation key
+        l3_capabilities:
+          - name: Tracking Session Initiation at Check-In
+            description: checkin.completed event triggers svc-adventure-tracking to create session linked to wristband RFID
+          - name: Tracking Verification Gate
+            description: Pattern 2/3 adventures require confirmed tracking session before guest departure (ADR-005 safety-first)
+    decisions:
+      - ADR-014

@@ -10,13 +10,13 @@ Each ticket tracks affected services, capabilities, and links to its solution de
 Capability mappings for solved tickets are derived from the
 [Capability Changelog](../capabilities/index.md) (single source of truth).
 
-**8** tickets | **6** with solution designs
+**8** tickets | **7** with solution designs
 
 ## Critical Priority
 
 | Ticket | Summary | Status | Capabilities | Solution |
 |--------|---------|--------|-------------|----------|
-| [NTK-10006](NTK-10006.md) | Real-Time Adventure Tracking and Emergency Alerting Sys | New | CAP-3.3, CAP-3.2, CAP-2.1 | — |
+| [NTK-10006](NTK-10006.md) | Real-Time Adventure Tracking and Emergency Alerting Sys | Solved | CAP-3.3, CAP-3.2, CAP-2.1 | [View](../solutions/_NTK-10006-real-time-adventure-tracking.md) |
 
 ## High Priority
 

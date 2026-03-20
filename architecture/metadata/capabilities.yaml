@@ -108,13 +108,13 @@ domains:
       - id: CAP-3.2
         name: Incident Reporting and Response
         status: implemented
-        services: [svc-safety-compliance]
+        services: [svc-safety-compliance, svc-adventure-tracking]
         description: Incident logging, investigation workflow, and regulatory reporting
 
       - id: CAP-3.3
         name: Emergency Response Coordination
         status: implemented
-        services: [svc-safety-compliance]
+        services: [svc-safety-compliance, svc-emergency-response, svc-adventure-tracking]
         description: Emergency protocol activation, rescue dispatch, and communication coordination
 
       - id: CAP-3.4

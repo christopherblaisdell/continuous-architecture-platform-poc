@@ -39,6 +39,7 @@ Solutions that share services or capabilities with this design:
 | Solution | Shared Capabilities | Shared Services |
 |----------|-------------------|-----------------|
 | [NTK-10002 — NTK-10002: Adventure Category Classifica](_NTK-10002-adventure-category-classification.md) | CAP-2.1 | svc-check-in |
+| [NTK-10006 — NTK-10006 Solution Design — Real-Time Ad](_NTK-10006-real-time-adventure-tracking.md) | CAP-2.1 | svc-check-in |
 
 ---
 
