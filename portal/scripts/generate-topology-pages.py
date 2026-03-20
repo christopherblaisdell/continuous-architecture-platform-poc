@@ -92,6 +92,129 @@ def _safe_id(name):
     return name.replace(" ", "_").replace("-", "_")
 
 
+def generate_domain_overview_svg(topology):
+    """Generate a clean hand-laid SVG for the 9-domain overview in a 3x3 grid.
+
+    Bypasses PlantUML entirely so the layout is deterministic and clean.
+    Arrows are drawn center-to-center; boxes paint over the midpoints so
+    visible arrows appear to start/end at box edges without any math.
+    """
+    _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
+
+    # Aggregate to domain level
+    domain_rest = defaultdict(int)
+    domain_kafka = defaultdict(int)
+    for src, tgt in rest_edges:
+        src_d, tgt_d = svc_domain[src], svc_domain[tgt]
+        if src_d != tgt_d:
+            domain_rest[(src_d, tgt_d)] += 1
+    for src, tgt in kafka_edges:
+        src_d, tgt_d = svc_domain[src], svc_domain[tgt]
+        if src_d != tgt_d:
+            domain_kafka[(src_d, tgt_d)] += 1
+
+    # Fixed 3×3 grid positions (row, col)
+    GRID = {
+        "External":        (0, 0),
+        "Guest Identity":  (0, 1),
+        "Booking":         (0, 2),
+        "Product Catalog": (1, 0),
+        "Operations":      (1, 1),
+        "Safety":          (1, 2),
+        "Guide Management":(2, 0),
+        "Logistics":       (2, 1),
+        "Support":         (2, 2),
+    }
+
+    # Layout constants
+    BOX_W, BOX_H = 210, 80
+    COL_GAP, ROW_GAP = 56, 66
+    PAD_L, PAD_T = 44, 72   # PAD_T includes space for title
+
+    total_w = PAD_L * 2 + 3 * BOX_W + 2 * COL_GAP
+    total_h = PAD_T + 3 * BOX_H + 2 * ROW_GAP + 36
+    RADIUS = 10
+
+    def box_xy(domain):
+        r, c = GRID[domain]
+        return (PAD_L + c * (BOX_W + COL_GAP), PAD_T + r * (BOX_H + ROW_GAP))
+
+    def box_center(domain):
+        bx, by = box_xy(domain)
+        return (bx + BOX_W // 2, by + BOX_H // 2)
+
+    # Consolidate bidirectional pairs and build edge list
+    all_pairs = set(domain_rest.keys()) | set(domain_kafka.keys())
+    emitted = set()
+    edges = []  # (src, tgt)
+    for src_d, tgt_d in sorted(all_pairs):
+        pair_key = tuple(sorted([src_d, tgt_d]))
+        if pair_key in emitted:
+            continue
+        emitted.add(pair_key)
+        if src_d in GRID and tgt_d in GRID:
+            edges.append((src_d, tgt_d))
+
+    out = []
+    out.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{total_w}" height="{total_h}" '
+               f'viewBox="0 0 {total_w} {total_h}" role="img" '
+               f'aria-label="NovaTrek Adventures domain overview">')
+    out.append('<defs>')
+    out.append('  <marker id="ah" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">')
+    out.append('    <polygon points="0 0,8 3,0 6" fill="#94a3b8"/>')
+    out.append('  </marker>')
+    out.append('</defs>')
+    out.append(f'<rect width="{total_w}" height="{total_h}" fill="white"/>')
+
+    # Title
+    out.append(f'<text x="{total_w // 2}" y="42" '
+               f'font-family="Segoe UI,Helvetica,sans-serif" font-size="16" '
+               f'font-weight="600" text-anchor="middle" fill="#1e293b">'
+               f'NovaTrek Adventures &#8212; Domain Overview</text>')
+
+    # Arrows drawn first (boxes will paint over the center portions)
+    for src, tgt in edges:
+        sx, sy = box_center(src)
+        tx, ty = box_center(tgt)
+        out.append(f'<line x1="{sx}" y1="{sy}" x2="{tx}" y2="{ty}" '
+                   f'stroke="#cbd5e1" stroke-width="1.5" marker-end="url(#ah)"/>')
+
+    # Boxes painted on top
+    for domain in GRID:
+        colors_d = DOMAIN_COLORS.get(domain, {"strong": "#616161", "light": "#F5F5F5"})
+        bx, by = box_xy(domain)
+        cx = bx + BOX_W // 2
+        n_svcs = len(domains.get(domain, []))
+        svc_word = "service" if n_svcs == 1 else "services"
+        link_slug = domain.lower().replace(" ", "-")
+        link = f"/topology/domain-views/#{link_slug}"
+
+        out.append(f'<a href="{link}" style="text-decoration:none">')
+        out.append(f'  <rect x="{bx}" y="{by}" width="{BOX_W}" height="{BOX_H}" '
+                   f'rx="{RADIUS}" ry="{RADIUS}" fill="{colors_d["light"]}" '
+                   f'stroke="{colors_d["strong"]}" stroke-width="2.5"/>')
+        text_y1 = by + BOX_H // 2 - 7
+        text_y2 = by + BOX_H // 2 + 13
+        out.append(f'  <text x="{cx}" y="{text_y1}" '
+                   f'font-family="Segoe UI,Helvetica,sans-serif" font-size="14" '
+                   f'font-weight="600" text-anchor="middle" fill="{colors_d["strong"]}">'
+                   f'{domain}</text>')
+        out.append(f'  <text x="{cx}" y="{text_y2}" '
+                   f'font-family="Segoe UI,Helvetica,sans-serif" font-size="11" '
+                   f'text-anchor="middle" fill="{colors_d["strong"]}" opacity="0.75">'
+                   f'{n_svcs} {svc_word}</text>')
+        out.append('</a>')
+
+    # Footer
+    out.append(f'<text x="{total_w // 2}" y="{total_h - 10}" '
+               f'font-family="Segoe UI,Helvetica,sans-serif" font-size="10" '
+               f'text-anchor="middle" fill="#94a3b8">'
+               f'Click any domain to explore its services and integrations</text>')
+
+    out.append('</svg>')
+    return "\n".join(out)
+
+
 def generate_domain_overview_puml(topology):
     """Generate a C4 Context PUML for the domain-level overview."""
     _, _, svc_domain, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
@@ -438,13 +561,18 @@ The generator reads 6 metadata sources:
 
 
 def write_system_map_page(topology, puml_files):
-    """Write the system map page with C4 domain-level overview SVG."""
+    """Write the system map page with domain-level overview SVG."""
     _, _, _, domains, rest_edges, kafka_edges = _extract_topology_data(topology)
 
-    # Write overview PUML
+    # Write overview SVG directly (bypasses PlantUML for a clean 3x3 grid)
+    SVG_DIR.mkdir(parents=True, exist_ok=True)
+    svg_path = SVG_DIR / "topology-domain-overview.svg"
+    svg_path.write_text(generate_domain_overview_svg(topology))
+
+    # Still write the PUML for reference/audit, but don't add to render queue
     puml_path = PUML_DIR / "topology-domain-overview.puml"
+    PUML_DIR.mkdir(parents=True, exist_ok=True)
     puml_path.write_text(generate_domain_overview_puml(topology))
-    puml_files.append(puml_path)
 
     n_services = sum(1 for n in topology["nodes"] if n.get("node-type") == "service")
     n_domains = len(set(n.get("metadata", {}).get("domain") for n in topology["nodes"] if n.get("node-type") == "service"))
