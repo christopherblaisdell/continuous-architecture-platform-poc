@@ -45,6 +45,46 @@ def load_calm(path):
         return json.load(f)
 
 
+def _rel_endpoints(rel):
+    """Extract (source, target) node IDs from a CALM 1.2 relationship.
+
+    CALM 1.2 uses nested relationship-type dicts:
+      - connects: {source: {node: ...}, destination: {node: ...}}
+      - interacts: {actor: ..., nodes: [...]}
+    Returns (source_id, target_id) for connects, or None for actor-interacts.
+    """
+    rt = rel.get("relationship-type", {})
+    if "connects" in rt:
+        c = rt["connects"]
+        return c["source"]["node"], c["destination"]["node"]
+    if "interacts" in rt:
+        it = rt["interacts"]
+        if "source" in it and "destination" in it:
+            return it["source"]["node"], it["destination"]["node"]
+    return None
+
+
+def _rel_protocol(rel):
+    """Get the effective protocol for a relationship.
+
+    Checks top-level 'protocol' first, then falls back to
+    'metadata.transport' for event relationships where Kafka
+    is not a valid CALM 1.2 protocol enum value.
+    """
+    proto = rel.get("protocol", "")
+    if proto:
+        return proto
+    transport = rel.get("metadata", {}).get("transport", "")
+    if transport:
+        return transport
+    return ""
+
+
+def _rel_type_key(rel):
+    """Return the relationship type key ('connects' or 'interacts')."""
+    return next(iter(rel.get("relationship-type", {})), None)
+
+
 def short_name(svc_id):
     """Convert svc-check-in to Check In."""
     return svc_id.replace("svc-", "").replace("-", " ").title()
@@ -75,10 +115,12 @@ def _extract_topology_data(topology):
     rest_edges = set()
     kafka_edges = set()
     for rel in relationships:
-        src = rel["parties"]["source"]
-        tgt = rel["parties"]["target"]
+        endpoints = _rel_endpoints(rel)
+        if not endpoints:
+            continue
+        src, tgt = endpoints
         if src in service_ids and tgt in service_ids:
-            proto = rel.get("protocol", "")
+            proto = _rel_protocol(rel)
             if proto == "HTTPS":
                 rest_edges.add((src, tgt))
             elif proto == "Kafka":
@@ -446,10 +488,12 @@ def generate_dependency_matrix(topology):
     # Build dependency map: source -> target -> protocols
     deps = defaultdict(lambda: defaultdict(set))
     for rel in relationships:
-        src = rel["parties"]["source"]
-        tgt = rel["parties"]["target"]
+        endpoints = _rel_endpoints(rel)
+        if not endpoints:
+            continue
+        src, tgt = endpoints
         if src in service_ids and tgt in service_ids and src != tgt:
-            proto = rel.get("protocol", "?")
+            proto = _rel_protocol(rel) or "?"
             deps[src][tgt].add(proto)
 
     return services, deps
@@ -470,14 +514,17 @@ def generate_domain_stats(topology):
     # Count relationships per domain
     domain_rels = defaultdict(lambda: {"rest": 0, "kafka": 0, "total": 0})
     for rel in relationships:
-        src = rel["parties"]["source"]
+        endpoints = _rel_endpoints(rel)
+        if not endpoints:
+            continue
+        src, _ = endpoints
         if src not in service_ids:
             continue
         src_domain = next(
             (n.get("metadata", {}).get("domain", "?") for n in nodes if n["unique-id"] == src),
             "?",
         )
-        proto = rel.get("protocol", "")
+        proto = _rel_protocol(rel)
         if proto == "HTTPS":
             domain_rels[src_domain]["rest"] += 1
         elif proto == "Kafka":
@@ -494,9 +541,9 @@ def write_index_page(topology):
 
     n_services = sum(1 for n in nodes if n.get("node-type") == "service")
     n_databases = sum(1 for n in nodes if n.get("node-type") == "database")
-    n_rest = sum(1 for r in rels if r.get("protocol") == "HTTPS")
-    n_kafka = sum(1 for r in rels if r.get("protocol") == "Kafka")
-    n_jdbc = sum(1 for r in rels if r.get("protocol") == "JDBC")
+    n_rest = sum(1 for r in rels if _rel_protocol(r) == "HTTPS")
+    n_kafka = sum(1 for r in rels if _rel_protocol(r) == "Kafka")
+    n_jdbc = sum(1 for r in rels if _rel_protocol(r) == "JDBC")
 
     domains, domain_rels = generate_domain_stats(topology)
 
@@ -754,17 +801,21 @@ def write_domain_views_page(topology, puml_files):
     # Map database connections
     db_owner = {}
     for rel in relationships:
-        if rel.get("relationship-type") == "connects" and rel.get("protocol") == "JDBC":
-            tgt = rel["parties"]["target"]
-            if tgt in databases:
-                db_owner[tgt] = rel["parties"]["source"]
+        if _rel_type_key(rel) == "connects" and _rel_protocol(rel) == "JDBC":
+            endpoints = _rel_endpoints(rel)
+            if endpoints:
+                src_id, tgt_id = endpoints
+                if tgt_id in databases:
+                    db_owner[tgt_id] = src_id
 
     # Map service relationships
     svc_rels = defaultdict(lambda: {"rest_out": [], "rest_in": [], "kafka_out": [], "kafka_in": []})
     for rel in relationships:
-        src = rel["parties"]["source"]
-        tgt = rel["parties"]["target"]
-        proto = rel.get("protocol", "")
+        endpoints = _rel_endpoints(rel)
+        if not endpoints:
+            continue
+        src, tgt = endpoints
+        proto = _rel_protocol(rel)
         channel = rel.get("metadata", {}).get("channel", "")
         action = rel.get("metadata", {}).get("action", "")
 

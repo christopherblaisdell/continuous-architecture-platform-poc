@@ -26,14 +26,14 @@ Click a domain in the diagram or table to see its service-level topology with in
 
 | Domain | Services | REST Out | Events Out |
 |--------|----------|----------|------------|
-| [Booking](domain-views.md#booking) | 1 | 3 | 3 |
-| [External](domain-views.md#external) | 1 | 4 | 1 |
+| [Booking](domain-views.md#booking) | 1 | 4 | 3 |
+| [External](domain-views.md#external) | 1 | 5 | 0 |
 | [Guest Identity](domain-views.md#guest-identity) | 1 | 2 | 2 |
 | [Guide Management](domain-views.md#guide-management) | 1 | 0 | 0 |
-| [Logistics](domain-views.md#logistics) | 2 | 5 | 1 |
-| [Operations](domain-views.md#operations) | 2 | 10 | 5 |
-| [Product Catalog](domain-views.md#product-catalog) | 2 | 3 | 1 |
-| [Safety](domain-views.md#safety) | 3 | 8 | 9 |
+| [Logistics](domain-views.md#logistics) | 2 | 6 | 0 |
+| [Operations](domain-views.md#operations) | 2 | 13 | 4 |
+| [Product Catalog](domain-views.md#product-catalog) | 2 | 4 | 0 |
+| [Safety](domain-views.md#safety) | 3 | 11 | 9 |
 | [Support](domain-views.md#support) | 9 | 5 | 1 |
 
 ---

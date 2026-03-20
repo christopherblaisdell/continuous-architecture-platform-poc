@@ -4,7 +4,7 @@
 |-----------|-------|
 | **Author** | Christopher Blaisdell (Solution Architect) |
 | **Date** | 2026-03-10 |
-| **Status** | In Progress — Phase 1 Complete |
+| **Status** | In Progress — Phase 1 Complete, Phase 2 In Progress (2.4, 2.6 done) |
 | **Purpose** | Detailed plan for incorporating CALM (Common Architecture Language Model) into the NovaTrek Adventures architecture practice |
 | **Prior Art** | `architecture/reminders/CALM-EVALUATION.md` (deferred evaluation from 2026-03-06) |
 
@@ -37,6 +37,8 @@ This document lays out a phased plan to adopt CALM, mapping each phase to concre
 | 1 | 1.5 | OpenAPI-to-CALM interface generator | COMPLETE (built into generate-calm.py) |
 | 1 | 1.6 | AsyncAPI-to-CALM interface generator | COMPLETE (built into generate-calm.py) |
 | 1 | 1.7 | CALM validation in CI for all docs | COMPLETE |
+| 2 | 2.4 | Dependency matrix page from CALM topology | COMPLETE |
+| 2 | 2.6 | CALM-aware impact analysis script | COMPLETE |
 
 **Key Deliverables Completed:**
 
@@ -48,6 +50,9 @@ This document lays out a phased plan to adopt CALM, mapping each phase to concre
 - `architecture/calm/controls/data-ownership.json` — Single-database-ownership control
 - `architecture/calm/controls/api-mediated-access.json` — No cross-service JDBC control
 - `.github/workflows/validate-solution.yml` — CI pipeline with Node.js + CALM CLI + Python validation
+- `portal/scripts/generate-topology-pages.py` — Topology portal generator (fixed for CALM 1.2 connects/interacts format, Kafka metadata.transport fallback)
+- `scripts/calm-impact-analysis.py` — BFS graph traversal impact analysis CLI (depth-configurable, JSON/text output, domain grouping)
+- `portal/docs/topology/` — 4 generated pages (index, system map, dependency matrix, domain views) + 9 PlantUML diagrams
 
 ---
 
@@ -266,9 +271,9 @@ The central question Phase 1 must answer:
 | 2.1 | Update `generate-microservice-pages.py` to optionally read CALM topology for cross-service relationship data instead of `cross-service-calls.yaml` | Updated generator with `--source calm` flag |
 | 2.2 | Create a **topology visualization generator** using CALM data — produces an interactive system map (D3.js or Mermaid) | `portal/scripts/generate-topology-map.py` → `portal/docs/topology/` |
 | 2.3 | Create a **data flow diagram generator** that reads CALM relationships and produces C4-style data flow diagrams in PlantUML | `portal/scripts/generate-data-flows.py` → `portal/docs/topology/data-flows/` |
-| 2.4 | Add a **dependency matrix** page to the portal showing service-to-service dependencies from CALM | `portal/docs/topology/dependency-matrix.md` |
+| 2.4 | Add a **dependency matrix** page to the portal showing service-to-service dependencies from CALM | `portal/docs/topology/dependency-matrix.md` | **COMPLETE** — also fixed `generate-topology-pages.py` for CALM 1.2 format (connects/interacts relationship types, metadata.transport Kafka fallback) |
 | 2.5 | Enhance `generate-capability-pages.py` to show which CALM nodes and relationships each capability touches | Updated capability pages with topology cross-links |
-| 2.6 | Add CALM-aware **impact analysis** to solution design workflow — when a new solution touches a service, automatically list all upstream/downstream dependencies from the CALM graph | `portal/scripts/calm-impact-analysis.py` |
+| 2.6 | Add CALM-aware **impact analysis** to solution design workflow — when a new solution touches a service, automatically list all upstream/downstream dependencies from the CALM graph | `scripts/calm-impact-analysis.py` | **COMPLETE** — BFS traversal, configurable depth, JSON/text output, multi-service, domain grouping |
 
 **Portal Addition: Topology Section**
 

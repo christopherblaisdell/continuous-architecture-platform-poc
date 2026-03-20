@@ -31,10 +31,10 @@ System_Boundary(Support, "Support") {
 }
 
 Rel(svc_partner_integrations, svc_guest_profiles, "API call", "HTTPS")
+Rel(svc_partner_integrations, svc_notifications, "API call", "HTTPS")
 Rel(svc_partner_integrations, svc_payments, "API call", "HTTPS")
 Rel(svc_partner_integrations, svc_reservations, "API call", "HTTPS")
 Rel(svc_partner_integrations, svc_trip_catalog, "API call", "HTTPS")
-Rel(svc_partner_integrations, svc_notifications, "Event", "Kafka", $tags="kafka")
 Lay_D(svc_notifications, svc_payments)
 
 @enduml

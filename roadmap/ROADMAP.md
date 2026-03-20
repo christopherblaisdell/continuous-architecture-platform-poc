@@ -459,7 +459,7 @@ CALM (Common Architecture Language Model) is the next major evolution of the pla
 | Architecture drift | Undetected | CALM topology compared against running system metadata |
 | Topology visualization | Static PlantUML diagrams | Interactive system map generated from CALM graph |
 
-**5-phase rollout:** ~~Pilot (1 domain)~~ COMPLETE -> ~~Full topology (all 22 services)~~ COMPLETE -> Generator integration (portal consumes CALM) -> Governance automation (6+ CI-enforced rules) -> Advanced capabilities (blast radius, drift detection, timeline visualization)
+**5-phase rollout:** ~~Pilot (1 domain)~~ COMPLETE -> ~~Full topology (all 22 services)~~ COMPLETE -> Generator integration (2.4, 2.6 done — dependency matrix + impact analysis) -> Governance automation (6+ CI-enforced rules) -> Advanced capabilities (blast radius, drift detection, timeline visualization)
 
 **Phase 0+1 deliverables (2026-03-20):**
 
@@ -474,6 +474,16 @@ CALM (Common Architecture Language Model) is the next major evolution of the pla
 | `.github/workflows/validate-solution.yml` | CI pipeline with Node.js + CALM CLI + Python validation |
 
 **Validation:** 0 errors across 10 CALM files (custom rules + CALM CLI schema). 2 warnings for unconnected infrastructure nodes (API Gateway, Stripe API) — expected metadata gaps.
+
+**Phase 2 deliverables (2026-03-20, partial — steps 2.4 and 2.6):**
+
+| Artifact | Details |
+|----------|--------|
+| `portal/scripts/generate-topology-pages.py` | Fixed for CALM 1.2 connects/interacts format; added Kafka metadata.transport fallback |
+| `scripts/calm-impact-analysis.py` | BFS graph traversal CLI — depth-configurable, JSON/text output, multi-service, domain grouping |
+| `portal/docs/topology/` | 4 generated pages (index, system map, dependency matrix, domain views) + 9 PlantUML diagrams |
+
+**Remaining Phase 2 steps:** 2.1 (`--source calm` flag for microservice page generator), 2.2 (interactive topology visualization), 2.3 (data flow diagrams), 2.5 (capability page topology cross-links).
 
 See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phased implementation with JSON examples, CI integration, and migration strategy.
 

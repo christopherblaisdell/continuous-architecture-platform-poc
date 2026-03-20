@@ -23,7 +23,7 @@ Service-to-service dependency table showing which services call which, and over 
 |----------------|----------|
 | [svc-analytics](../microservices/svc-analytics.md) | Kafka |
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
 | [svc-payments](../microservices/svc-payments.md) | HTTPS |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | Kafka |
 | [svc-trip-catalog](../microservices/svc-trip-catalog.md) | HTTPS |
@@ -35,7 +35,7 @@ Service-to-service dependency table showing which services call which, and over 
 | Target Service | Protocol |
 |----------------|----------|
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 | [svc-payments](../microservices/svc-payments.md) | HTTPS |
 | [svc-reservations](../microservices/svc-reservations.md) | HTTPS |
 | [svc-trip-catalog](../microservices/svc-trip-catalog.md) | HTTPS |
@@ -69,7 +69,7 @@ Service-to-service dependency table showing which services call which, and over 
 | Target Service | Protocol |
 |----------------|----------|
 | [svc-location-services](../microservices/svc-location-services.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 | [svc-reservations](../microservices/svc-reservations.md) | HTTPS |
 
 ### Operations
@@ -81,7 +81,7 @@ Service-to-service dependency table showing which services call which, and over 
 | [svc-analytics](../microservices/svc-analytics.md) | Kafka |
 | [svc-gear-inventory](../microservices/svc-gear-inventory.md) | HTTPS |
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
 | [svc-reservations](../microservices/svc-reservations.md) | HTTPS |
 | [svc-safety-compliance](../microservices/svc-safety-compliance.md) | HTTPS |
 | [svc-trip-catalog](../microservices/svc-trip-catalog.md) | HTTPS |
@@ -90,10 +90,10 @@ Service-to-service dependency table showing which services call which, and over 
 
 | Target Service | Protocol |
 |----------------|----------|
-| [svc-analytics](../microservices/svc-analytics.md) | Kafka |
+| [svc-analytics](../microservices/svc-analytics.md) | HTTPS |
 | [svc-guide-management](../microservices/svc-guide-management.md) | HTTPS, Kafka |
 | [svc-location-services](../microservices/svc-location-services.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
 | [svc-trail-management](../microservices/svc-trail-management.md) | HTTPS |
 | [svc-trip-catalog](../microservices/svc-trip-catalog.md) | HTTPS |
 | [svc-weather](../microservices/svc-weather.md) | HTTPS |
@@ -105,7 +105,7 @@ Service-to-service dependency table showing which services call which, and over 
 | Target Service | Protocol |
 |----------------|----------|
 | [svc-location-services](../microservices/svc-location-services.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 | [svc-safety-compliance](../microservices/svc-safety-compliance.md) | HTTPS |
 | [svc-weather](../microservices/svc-weather.md) | HTTPS |
 
@@ -121,8 +121,8 @@ Service-to-service dependency table showing which services call which, and over 
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
 | [svc-guide-management](../microservices/svc-guide-management.md) | HTTPS |
 | [svc-location-services](../microservices/svc-location-services.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
-| [svc-safety-compliance](../microservices/svc-safety-compliance.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
+| [svc-safety-compliance](../microservices/svc-safety-compliance.md) | HTTPS, Kafka |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | Kafka |
 
 **[svc-safety-compliance](../microservices/svc-safety-compliance.md)** calls:
@@ -132,15 +132,15 @@ Service-to-service dependency table showing which services call which, and over 
 | [svc-analytics](../microservices/svc-analytics.md) | Kafka |
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
 | [svc-guide-management](../microservices/svc-guide-management.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
 
 **[svc-wildlife-tracking](../microservices/svc-wildlife-tracking.md)** calls:
 
 | Target Service | Protocol |
 |----------------|----------|
 | [svc-analytics](../microservices/svc-analytics.md) | Kafka |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
-| [svc-safety-compliance](../microservices/svc-safety-compliance.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
+| [svc-safety-compliance](../microservices/svc-safety-compliance.md) | HTTPS |
 | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator.md) | HTTPS, Kafka |
 | [svc-trail-management](../microservices/svc-trail-management.md) | HTTPS, Kafka |
 | [svc-weather](../microservices/svc-weather.md) | HTTPS |
@@ -154,7 +154,7 @@ Service-to-service dependency table showing which services call which, and over 
 | Target Service | Protocol |
 |----------------|----------|
 | [svc-gear-inventory](../microservices/svc-gear-inventory.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 | [svc-payments](../microservices/svc-payments.md) | HTTPS |
 
 **[svc-location-services](../microservices/svc-location-services.md)** — No outbound service dependencies
@@ -164,7 +164,7 @@ Service-to-service dependency table showing which services call which, and over 
 | Target Service | Protocol |
 |----------------|----------|
 | [svc-guest-profiles](../microservices/svc-guest-profiles.md) | HTTPS |
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 | [svc-payments](../microservices/svc-payments.md) | HTTPS |
 | [svc-reservations](../microservices/svc-reservations.md) | HTTPS |
 
@@ -172,7 +172,7 @@ Service-to-service dependency table showing which services call which, and over 
 
 | Target Service | Protocol |
 |----------------|----------|
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 
 **[svc-notifications](../microservices/svc-notifications.md)** — No outbound service dependencies
 
@@ -180,7 +180,7 @@ Service-to-service dependency table showing which services call which, and over 
 
 | Target Service | Protocol |
 |----------------|----------|
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS, Kafka |
 | [svc-reservations](../microservices/svc-reservations.md) | Kafka |
 
 **[svc-reviews](../microservices/svc-reviews.md)** calls:
@@ -194,7 +194,7 @@ Service-to-service dependency table showing which services call which, and over 
 
 | Target Service | Protocol |
 |----------------|----------|
-| [svc-notifications](../microservices/svc-notifications.md) | Kafka |
+| [svc-notifications](../microservices/svc-notifications.md) | HTTPS |
 
 ---
 
