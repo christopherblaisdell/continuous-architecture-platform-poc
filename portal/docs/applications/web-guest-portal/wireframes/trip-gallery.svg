@@ -1,44 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 940 703" width="100%">
 <rect x="-20" y="-20" width="940" height="703" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
 <rect x="0" y="0" width="900" height="56" fill="#2563eb" stroke="#2563eb" stroke-width="2" rx="4"/>
-<text x="20" y="34" font-size="20" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures</text>
-<text x="500" y="32" font-size="14" fill="#FFFFFF" font-family="sans-serif">Trips    My Bookings    Profile    Loyalty</text>
-<text x="50" y="104" font-size="24" fill="#1e293b" font-family="sans-serif">Trip Gallery</text>
 <rect x="50" y="125" width="800" height="44" fill="#FFFFFF" stroke="#e2e8f0" stroke-width="2" rx="4"/>
-<text x="75" y="151" font-size="13" fill="#2563eb" font-family="sans-serif">All Adventures</text>
-<text x="210" y="151" font-size="13" fill="#e2e8f0" font-family="sans-serif">|</text>
-<text x="225" y="151" font-size="13" fill="#64748b" font-family="sans-serif">Sunrise Ridge Trail</text>
-<text x="390" y="151" font-size="13" fill="#e2e8f0" font-family="sans-serif">|</text>
-<text x="405" y="151" font-size="13" fill="#64748b" font-family="sans-serif">Coastal Cliff Walk</text>
-<text x="565" y="151" font-size="13" fill="#e2e8f0" font-family="sans-serif">|</text>
-<text x="580" y="151" font-size="13" fill="#64748b" font-family="sans-serif">Forest Canopy Trek</text>
 <rect x="760" y="132" width="80" height="30" fill="#2563eb" stroke="#1d4ed8" stroke-width="2" rx="4"/>
-<text x="780" y="151" font-size="12" fill="#FFFFFF" font-family="sans-serif">Share</text>
 <rect x="50" y="188" width="270" height="200" fill="#dbeafe" stroke="#bfdbfe" stroke-width="2" rx="4"/>
-<text x="130" y="289" font-size="14" fill="#64748b" font-family="sans-serif">[ Photo ]</text>
 <rect x="50" y="348" width="270" height="40" fill="#1e293b" stroke="#1e293b" stroke-width="2" rx="4"/>
-<text x="65" y="368" font-size="11" fill="#FFFFFF" font-family="sans-serif">Sunrise Ridge  |  Mar 10, 2026</text>
 <rect x="340" y="188" width="270" height="200" fill="#dcfce7" stroke="#bbf7d0" stroke-width="2" rx="4"/>
-<text x="420" y="289" font-size="14" fill="#64748b" font-family="sans-serif">[ Photo ]</text>
 <rect x="340" y="348" width="270" height="40" fill="#1e293b" stroke="#1e293b" stroke-width="2" rx="4"/>
-<text x="355" y="368" font-size="11" fill="#FFFFFF" font-family="sans-serif">Coastal Cliff Walk  |  Feb 20, 2026</text>
 <rect x="630" y="188" width="220" height="200" fill="#fef3c7" stroke="#fde68a" stroke-width="2" rx="4"/>
-<text x="700" y="289" font-size="14" fill="#64748b" font-family="sans-serif">[ Video ]</text>
 <rect x="630" y="348" width="220" height="40" fill="#1e293b" stroke="#1e293b" stroke-width="2" rx="4"/>
-<text x="645" y="368" font-size="11" fill="#FFFFFF" font-family="sans-serif">Forest Trek  |  Jan 15, 2026</text>
 <rect x="50" y="408" width="220" height="200" fill="#e0e7ff" stroke="#c7d2fe" stroke-width="2" rx="4"/>
-<text x="120" y="509" font-size="14" fill="#64748b" font-family="sans-serif">[ Photo ]</text>
 <rect x="50" y="568" width="220" height="40" fill="#1e293b" stroke="#1e293b" stroke-width="2" rx="4"/>
-<text x="65" y="588" font-size="11" fill="#FFFFFF" font-family="sans-serif">Canyon Explorer  |  Nov 30, 2025</text>
 <rect x="290" y="408" width="270" height="200" fill="#fce7f3" stroke="#fbcfe8" stroke-width="2" rx="4"/>
-<text x="370" y="509" font-size="14" fill="#64748b" font-family="sans-serif">[ Photo ]</text>
 <rect x="290" y="568" width="270" height="40" fill="#1e293b" stroke="#1e293b" stroke-width="2" rx="4"/>
-<text x="305" y="588" font-size="11" fill="#FFFFFF" font-family="sans-serif">Sunrise Ridge  |  Sep 15, 2025</text>
 <rect x="580" y="408" width="270" height="200" fill="#ccfbf1" stroke="#99f6e4" stroke-width="2" rx="4"/>
-<text x="660" y="509" font-size="14" fill="#64748b" font-family="sans-serif">[ Video ]</text>
 <rect x="580" y="568" width="270" height="40" fill="#1e293b" stroke="#1e293b" stroke-width="2" rx="4"/>
-<text x="595" y="588" font-size="11" fill="#FFFFFF" font-family="sans-serif">Alpine Meadow Trek  |  Aug 5, 2025</text>
-<text x="370" y="648" font-size="13" fill="#2563eb" font-family="sans-serif">Load more photos (18 remaining)</text>
 <rect x="660" y="635" width="180" height="28" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2" rx="4"/>
-<text x="677" y="652" font-size="11" fill="#64748b" font-family="sans-serif">Select photos to share</text>
 </svg>

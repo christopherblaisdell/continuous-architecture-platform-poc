@@ -1,4 +1,4 @@
-# Guest Check-In Confirmation Flow
+# Check In Confirmation
 
 ## Preview
 
@@ -13,7 +13,7 @@ Opens the full Excalidraw editor in a new tab with this wireframe pre-loaded. Ed
 
 ## Design Notes
 
-- **Purpose**: Guest Check-In Confirmation Flow
+- **Purpose**: Check In Confirmation
 - **App**: Web Guest Portal
 - **Status**: Draft
 
