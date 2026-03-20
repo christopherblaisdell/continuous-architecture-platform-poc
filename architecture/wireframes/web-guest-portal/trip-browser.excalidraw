@@ -1,0 +1,427 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "nav_bar",
+      "x": 0,
+      "y": 0,
+      "width": 900,
+      "height": 56,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "nav_logo",
+      "x": 20,
+      "y": 14,
+      "text": "NovaTrek Adventures",
+      "fontSize": 20,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "nav_links",
+      "x": 500,
+      "y": 18,
+      "text": "Trips    My Bookings    Profile    Loyalty",
+      "fontSize": 14,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "page_title",
+      "x": 30,
+      "y": 80,
+      "text": "Explore Adventures",
+      "fontSize": 28,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "rectangle",
+      "id": "search_bar",
+      "x": 30,
+      "y": 130,
+      "width": 620,
+      "height": 44,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "x": 50,
+      "y": 142,
+      "text": "Search trails, locations, difficulty...",
+      "fontSize": 14,
+      "strokeColor": "#94a3b8"
+    },
+    {
+      "type": "rectangle",
+      "id": "search_btn",
+      "x": 660,
+      "y": 130,
+      "width": 100,
+      "height": 44,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "search_btn_text",
+      "x": 685,
+      "y": 142,
+      "text": "Search",
+      "fontSize": 14,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "filter_panel",
+      "x": 30,
+      "y": 194,
+      "width": 200,
+      "height": 500,
+      "backgroundColor": "#f8fafc",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "filter_title",
+      "x": 50,
+      "y": 210,
+      "text": "Filters",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "filter_diff",
+      "x": 50,
+      "y": 245,
+      "text": "Difficulty",
+      "fontSize": 13,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "filter_diff_opts",
+      "x": 50,
+      "y": 268,
+      "text": "[ ] Easy\n[x] Moderate\n[ ] Challenging\n[ ] Expert",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "filter_duration",
+      "x": 50,
+      "y": 350,
+      "text": "Duration",
+      "fontSize": 13,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "filter_dur_opts",
+      "x": 50,
+      "y": 373,
+      "text": "[x] Half Day\n[x] Full Day\n[ ] Multi-Day",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "filter_region",
+      "x": 50,
+      "y": 440,
+      "text": "Region",
+      "fontSize": 13,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "filter_region_opts",
+      "x": 50,
+      "y": 463,
+      "text": "[x] Mountain Ridge\n[ ] Coastal Trail\n[ ] Forest Valley\n[ ] Desert Canyon",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_1",
+      "x": 250,
+      "y": 194,
+      "width": 300,
+      "height": 230,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_1_img",
+      "x": 250,
+      "y": 194,
+      "width": 300,
+      "height": 120,
+      "backgroundColor": "#dbeafe",
+      "strokeColor": "#bfdbfe"
+    },
+    {
+      "type": "text",
+      "id": "card_1_photo",
+      "x": 340,
+      "y": 240,
+      "text": "[ Trail Photo ]",
+      "fontSize": 14,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "x": 265,
+      "y": 324,
+      "text": "Sunrise Ridge Trail",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "card_1_meta",
+      "x": 265,
+      "y": 350,
+      "text": "Moderate  |  6 hrs  |  Mountain Ridge",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_1_weather",
+      "x": 265,
+      "y": 375,
+      "text": "Weather: Sunny 72F  |  Trail: Good",
+      "fontSize": 11,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "card_1_price",
+      "x": 460,
+      "y": 395,
+      "text": "$129",
+      "fontSize": 18,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_2",
+      "x": 570,
+      "y": 194,
+      "width": 300,
+      "height": 230,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_2_img",
+      "x": 570,
+      "y": 194,
+      "width": 300,
+      "height": 120,
+      "backgroundColor": "#dcfce7",
+      "strokeColor": "#bbf7d0"
+    },
+    {
+      "type": "text",
+      "id": "card_2_photo",
+      "x": 660,
+      "y": 240,
+      "text": "[ Trail Photo ]",
+      "fontSize": 14,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "x": 585,
+      "y": 324,
+      "text": "Coastal Cliff Walk",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "card_2_meta",
+      "x": 585,
+      "y": 350,
+      "text": "Easy  |  3 hrs  |  Coastal Trail",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_2_weather",
+      "x": 585,
+      "y": 375,
+      "text": "Weather: Cloudy 65F  |  Trail: Fair",
+      "fontSize": 11,
+      "strokeColor": "#f59e0b"
+    },
+    {
+      "type": "text",
+      "id": "card_2_price",
+      "x": 780,
+      "y": 395,
+      "text": "$79",
+      "fontSize": 18,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_3",
+      "x": 250,
+      "y": 444,
+      "width": 300,
+      "height": 230,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_3_img",
+      "x": 250,
+      "y": 444,
+      "width": 300,
+      "height": 120,
+      "backgroundColor": "#fef3c7",
+      "strokeColor": "#fde68a"
+    },
+    {
+      "type": "text",
+      "id": "card_3_photo",
+      "x": 340,
+      "y": 490,
+      "text": "[ Trail Photo ]",
+      "fontSize": 14,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "x": 265,
+      "y": 574,
+      "text": "Canyon Explorer",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "card_3_meta",
+      "x": 265,
+      "y": 600,
+      "text": "Challenging  |  8 hrs  |  Desert Canyon",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_3_weather",
+      "x": 265,
+      "y": 625,
+      "text": "Weather: Hot 95F  |  Trail: Caution",
+      "fontSize": 11,
+      "strokeColor": "#ef4444"
+    },
+    {
+      "type": "text",
+      "id": "card_3_price",
+      "x": 460,
+      "y": 645,
+      "text": "$199",
+      "fontSize": 18,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_4",
+      "x": 570,
+      "y": 444,
+      "width": 300,
+      "height": 230,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_4_img",
+      "x": 570,
+      "y": 444,
+      "width": 300,
+      "height": 120,
+      "backgroundColor": "#e0e7ff",
+      "strokeColor": "#c7d2fe"
+    },
+    {
+      "type": "text",
+      "id": "card_4_photo",
+      "x": 660,
+      "y": 490,
+      "text": "[ Trail Photo ]",
+      "fontSize": 14,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_4_title",
+      "x": 585,
+      "y": 574,
+      "text": "Forest Canopy Trek",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "card_4_meta",
+      "x": 585,
+      "y": 600,
+      "text": "Moderate  |  5 hrs  |  Forest Valley",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "card_4_weather",
+      "x": 585,
+      "y": 625,
+      "text": "Weather: Partly Cloudy 68F  |  Trail: Good",
+      "fontSize": 11,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "card_4_price",
+      "x": 780,
+      "y": 645,
+      "text": "$149",
+      "fontSize": 18,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "results_count",
+      "x": 250,
+      "y": 700,
+      "text": "Showing 4 of 23 results    < 1 2 3 4 5 >",
+      "fontSize": 13,
+      "strokeColor": "#64748b"
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#f1f5f9"
+  }
+}

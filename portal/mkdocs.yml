@@ -180,6 +180,13 @@ nav:
       - web-guest-portal:
         - applications/web-guest-portal.md
         - Wireframes:
+          - Trip Browser: applications/web-guest-portal/wireframes/trip-browser.md
+          - Booking Flow: applications/web-guest-portal/wireframes/booking-flow.md
+          - Guest Profile: applications/web-guest-portal/wireframes/guest-profile.md
+          - Reservation Management: applications/web-guest-portal/wireframes/reservation-management.md
+          - Loyalty Dashboard: applications/web-guest-portal/wireframes/loyalty-dashboard.md
+          - Waiver Signing: applications/web-guest-portal/wireframes/waiver-signing.md
+          - Trip Gallery: applications/web-guest-portal/wireframes/trip-gallery.md
           - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
       - web-ops-dashboard:
         - applications/web-ops-dashboard.md

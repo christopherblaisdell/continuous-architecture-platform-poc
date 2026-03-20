@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Profile — Excalidraw Editor</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
+        <h1>Guest Profile</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
+    <script>
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "nav_bar", "x": 0, "y": 0, "width": 900, "height": 56, "backgroundColor": "#2563eb", "strokeColor": "#2563eb"}, {"type": "text", "id": "nav_logo", "x": 20, "y": 14, "text": "NovaTrek Adventures", "fontSize": 20, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "nav_links", "x": 500, "y": 18, "text": "Trips    My Bookings    Profile    Loyalty", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "page_title", "x": 50, "y": 80, "text": "My Profile", "fontSize": 24, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "profile_card", "x": 50, "y": 125, "width": 280, "height": 250, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "ellipse", "id": "avatar", "x": 145, "y": 140, "width": 80, "height": 80, "backgroundColor": "#dbeafe", "strokeColor": "#93c5fd"}, {"type": "text", "id": "avatar_text", "x": 168, "y": 170, "text": "AT", "fontSize": 20, "strokeColor": "#2563eb"}, {"type": "text", "id": "name", "x": 130, "y": 230, "text": "Alex Thompson", "fontSize": 18, "strokeColor": "#1e293b"}, {"type": "text", "id": "email", "x": 105, "y": 258, "text": "alex.t@novatrek.example.com", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "member_since", "x": 130, "y": 280, "text": "Member since 2024", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "loyalty_badge", "x": 130, "y": 310, "width": 110, "height": 28, "backgroundColor": "#fef3c7", "strokeColor": "#fbbf24"}, {"type": "text", "id": "loyalty_tier", "x": 145, "y": 316, "text": "Gold Member", "fontSize": 12, "strokeColor": "#92400e"}, {"type": "rectangle", "id": "edit_btn", "x": 130, "y": 348, "width": 110, "height": 32, "backgroundColor": "#2563eb", "strokeColor": "#1d4ed8"}, {"type": "text", "id": "edit_btn_text", "x": 153, "y": 355, "text": "Edit Profile", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "certs_panel", "x": 350, "y": 125, "width": 530, "height": 140, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "certs_title", "x": 370, "y": 140, "text": "Certifications", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "cert_1", "x": 370, "y": 175, "text": "Wilderness First Aid       Expires: 2027-06-15     VALID", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "cert_2", "x": 370, "y": 200, "text": "Rock Climbing Level 2      Expires: 2026-12-01     VALID", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "cert_3", "x": 370, "y": 225, "text": "Water Safety               Expires: 2025-09-30     EXPIRED", "fontSize": 12, "strokeColor": "#ef4444"}, {"type": "rectangle", "id": "history_panel", "x": 350, "y": 280, "width": 530, "height": 200, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "history_title", "x": 370, "y": 295, "text": "Adventure History", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "hist_header", "x": 370, "y": 325, "text": "Adventure               Date         Difficulty    Rating", "fontSize": 12, "strokeColor": "#475569"}, {"type": "text", "id": "hist_1", "x": 370, "y": 350, "text": "Sunrise Ridge Trail      2026-03-10   Moderate      4.5/5", "fontSize": 12, "strokeColor": "#334155"}, {"type": "text", "id": "hist_2", "x": 370, "y": 375, "text": "Coastal Cliff Walk       2026-02-20   Easy          5.0/5", "fontSize": 12, "strokeColor": "#334155"}, {"type": "text", "id": "hist_3", "x": 370, "y": 400, "text": "Forest Canopy Trek       2026-01-15   Moderate      4.0/5", "fontSize": 12, "strokeColor": "#334155"}, {"type": "text", "id": "hist_4", "x": 370, "y": 425, "text": "Canyon Explorer          2025-11-30   Challenging   4.8/5", "fontSize": 12, "strokeColor": "#334155"}, {"type": "text", "id": "hist_more", "x": 370, "y": 455, "text": "View all 12 adventures >", "fontSize": 12, "strokeColor": "#2563eb"}, {"type": "rectangle", "id": "upcoming_panel", "x": 50, "y": 395, "width": 280, "height": 180, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "upcoming_title", "x": 70, "y": 410, "text": "Upcoming Bookings", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "upcoming_1", "x": 70, "y": 445, "text": "Desert Canyon Expedition", "fontSize": 13, "strokeColor": "#334155"}, {"type": "text", "id": "upcoming_1_date", "x": 70, "y": 465, "text": "March 25, 2026  |  2 guests", "fontSize": 11, "strokeColor": "#64748b"}, {"type": "text", "id": "upcoming_2", "x": 70, "y": 500, "text": "Mountain Summit Challenge", "fontSize": 13, "strokeColor": "#334155"}, {"type": "text", "id": "upcoming_2_date", "x": 70, "y": 520, "text": "April 10, 2026  |  1 guest", "fontSize": 11, "strokeColor": "#64748b"}, {"type": "text", "id": "loyalty_points", "x": 70, "y": 555, "text": "Loyalty Points: 2,450", "fontSize": 14, "strokeColor": "#2563eb"}], "appState": {"viewBackgroundColor": "#f1f5f9"}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
+            }
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "guest-profile.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+    </script>
+</body>
+</html>

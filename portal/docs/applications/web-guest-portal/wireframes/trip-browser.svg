@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 940 740" width="100%">
+<rect x="-20" y="-20" width="940" height="740" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
+<rect x="0" y="0" width="900" height="56" fill="#2563eb" stroke="#2563eb" stroke-width="2" rx="4"/>
+<text x="20" y="34" font-size="20" fill="#FFFFFF" font-family="sans-serif">NovaTrek Adventures</text>
+<text x="500" y="32" font-size="14" fill="#FFFFFF" font-family="sans-serif">Trips    My Bookings    Profile    Loyalty</text>
+<text x="30" y="108" font-size="28" fill="#1e293b" font-family="sans-serif">Explore Adventures</text>
+<rect x="30" y="130" width="620" height="44" fill="#FFFFFF" stroke="#cbd5e1" stroke-width="2" rx="4"/>
+<text x="50" y="156" font-size="14" fill="#94a3b8" font-family="sans-serif">Search trails, locations, difficulty...</text>
+<rect x="660" y="130" width="100" height="44" fill="#2563eb" stroke="#2563eb" stroke-width="2" rx="4"/>
+<text x="685" y="156" font-size="14" fill="#FFFFFF" font-family="sans-serif">Search</text>
+<rect x="30" y="194" width="200" height="500" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" rx="4"/>
+<text x="50" y="226" font-size="16" fill="#1e293b" font-family="sans-serif">Filters</text>
+<text x="50" y="258" font-size="13" fill="#475569" font-family="sans-serif">Difficulty</text>
+<text x="50" y="280" font-size="12" fill="#64748b" font-family="sans-serif">[ ] Easy
+[x] Moderate
+[ ] Challenging
+[ ] Expert</text>
+<text x="50" y="363" font-size="13" fill="#475569" font-family="sans-serif">Duration</text>
+<text x="50" y="385" font-size="12" fill="#64748b" font-family="sans-serif">[x] Half Day
+[x] Full Day
+[ ] Multi-Day</text>
+<text x="50" y="453" font-size="13" fill="#475569" font-family="sans-serif">Region</text>
+<text x="50" y="475" font-size="12" fill="#64748b" font-family="sans-serif">[x] Mountain Ridge
+[ ] Coastal Trail
+[ ] Forest Valley
+[ ] Desert Canyon</text>
+<rect x="250" y="194" width="300" height="230" fill="#FFFFFF" stroke="#e2e8f0" stroke-width="2" rx="4"/>
+<rect x="250" y="194" width="300" height="120" fill="#dbeafe" stroke="#bfdbfe" stroke-width="2" rx="4"/>
+<text x="340" y="254" font-size="14" fill="#64748b" font-family="sans-serif">[ Trail Photo ]</text>
+<text x="265" y="340" font-size="16" fill="#1e293b" font-family="sans-serif">Sunrise Ridge Trail</text>
+<text x="265" y="362" font-size="12" fill="#64748b" font-family="sans-serif">Moderate  |  6 hrs  |  Mountain Ridge</text>
+<text x="265" y="386" font-size="11" fill="#22c55e" font-family="sans-serif">Weather: Sunny 72F  |  Trail: Good</text>
+<text x="460" y="413" font-size="18" fill="#2563eb" font-family="sans-serif">$129</text>
+<rect x="570" y="194" width="300" height="230" fill="#FFFFFF" stroke="#e2e8f0" stroke-width="2" rx="4"/>
+<rect x="570" y="194" width="300" height="120" fill="#dcfce7" stroke="#bbf7d0" stroke-width="2" rx="4"/>
+<text x="660" y="254" font-size="14" fill="#64748b" font-family="sans-serif">[ Trail Photo ]</text>
+<text x="585" y="340" font-size="16" fill="#1e293b" font-family="sans-serif">Coastal Cliff Walk</text>
+<text x="585" y="362" font-size="12" fill="#64748b" font-family="sans-serif">Easy  |  3 hrs  |  Coastal Trail</text>
+<text x="585" y="386" font-size="11" fill="#f59e0b" font-family="sans-serif">Weather: Cloudy 65F  |  Trail: Fair</text>
+<text x="780" y="413" font-size="18" fill="#2563eb" font-family="sans-serif">$79</text>
+<rect x="250" y="444" width="300" height="230" fill="#FFFFFF" stroke="#e2e8f0" stroke-width="2" rx="4"/>
+<rect x="250" y="444" width="300" height="120" fill="#fef3c7" stroke="#fde68a" stroke-width="2" rx="4"/>
+<text x="340" y="504" font-size="14" fill="#64748b" font-family="sans-serif">[ Trail Photo ]</text>
+<text x="265" y="590" font-size="16" fill="#1e293b" font-family="sans-serif">Canyon Explorer</text>
+<text x="265" y="612" font-size="12" fill="#64748b" font-family="sans-serif">Challenging  |  8 hrs  |  Desert Canyon</text>
+<text x="265" y="636" font-size="11" fill="#ef4444" font-family="sans-serif">Weather: Hot 95F  |  Trail: Caution</text>
+<text x="460" y="663" font-size="18" fill="#2563eb" font-family="sans-serif">$199</text>
+<rect x="570" y="444" width="300" height="230" fill="#FFFFFF" stroke="#e2e8f0" stroke-width="2" rx="4"/>
+<rect x="570" y="444" width="300" height="120" fill="#e0e7ff" stroke="#c7d2fe" stroke-width="2" rx="4"/>
+<text x="660" y="504" font-size="14" fill="#64748b" font-family="sans-serif">[ Trail Photo ]</text>
+<text x="585" y="590" font-size="16" fill="#1e293b" font-family="sans-serif">Forest Canopy Trek</text>
+<text x="585" y="612" font-size="12" fill="#64748b" font-family="sans-serif">Moderate  |  5 hrs  |  Forest Valley</text>
+<text x="585" y="636" font-size="11" fill="#22c55e" font-family="sans-serif">Weather: Partly Cloudy 68F  |  Trail: Good</text>
+<text x="780" y="663" font-size="18" fill="#2563eb" font-family="sans-serif">$149</text>
+<text x="250" y="713" font-size="13" fill="#64748b" font-family="sans-serif">Showing 4 of 23 results    &lt; 1 2 3 4 5 &gt;</text>
+</svg>

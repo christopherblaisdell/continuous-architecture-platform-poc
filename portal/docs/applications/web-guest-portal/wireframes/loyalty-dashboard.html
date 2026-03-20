@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyalty Dashboard — Excalidraw Editor</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
+        <h1>Loyalty Dashboard</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
+    <script>
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "nav_bar", "x": 0, "y": 0, "width": 900, "height": 56, "backgroundColor": "#2563eb", "strokeColor": "#2563eb"}, {"type": "text", "id": "nav_logo", "x": 20, "y": 14, "text": "NovaTrek Adventures", "fontSize": 20, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "nav_links", "x": 500, "y": 18, "text": "Trips    My Bookings    Profile    Loyalty", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "page_title", "x": 50, "y": 80, "text": "Loyalty Rewards", "fontSize": 24, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "tier_card", "x": 50, "y": 125, "width": 400, "height": 160, "backgroundColor": "#fef3c7", "strokeColor": "#fbbf24"}, {"type": "text", "id": "tier_label", "x": 75, "y": 142, "text": "Gold Member", "fontSize": 22, "strokeColor": "#92400e"}, {"type": "text", "id": "tier_name", "x": 75, "y": 175, "text": "Alex Thompson", "fontSize": 14, "strokeColor": "#78350f"}, {"type": "text", "id": "points_balance", "x": 75, "y": 210, "text": "2,450 Points", "fontSize": 28, "strokeColor": "#92400e"}, {"type": "text", "id": "next_tier", "x": 75, "y": 252, "text": "550 points to Platinum tier", "fontSize": 12, "strokeColor": "#78350f"}, {"type": "rectangle", "id": "progress_bg", "x": 280, "y": 252, "width": 150, "height": 10, "backgroundColor": "#fde68a", "strokeColor": "#fbbf24"}, {"type": "rectangle", "id": "progress_fill", "x": 280, "y": 252, "width": 110, "height": 10, "backgroundColor": "#f59e0b", "strokeColor": "#d97706"}, {"type": "rectangle", "id": "stat_1", "x": 480, "y": 125, "width": 130, "height": 75, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "stat_1_value", "x": 515, "y": 140, "text": "12", "fontSize": 24, "strokeColor": "#2563eb"}, {"type": "text", "id": "stat_1_label", "x": 495, "y": 175, "text": "Adventures", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "stat_2", "x": 625, "y": 125, "width": 130, "height": 75, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "stat_2_value", "x": 655, "y": 140, "text": "$127", "fontSize": 24, "strokeColor": "#22c55e"}, {"type": "text", "id": "stat_2_label", "x": 653, "y": 175, "text": "Total Saved", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "stat_3", "x": 770, "y": 125, "width": 110, "height": 75, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "stat_3_value", "x": 800, "y": 140, "text": "3", "fontSize": 24, "strokeColor": "#f59e0b"}, {"type": "text", "id": "stat_3_label", "x": 787, "y": 175, "text": "Rewards", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "history_panel", "x": 50, "y": 305, "width": 520, "height": 320, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "history_title", "x": 75, "y": 320, "text": "Transaction History", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "hist_header", "x": 75, "y": 355, "text": "Date          Description                     Points", "fontSize": 12, "strokeColor": "#475569"}, {"type": "text", "id": "hist_1", "x": 75, "y": 382, "text": "2026-03-10    Sunrise Ridge Trail             +251", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "hist_2", "x": 75, "y": 407, "text": "2026-03-10    Loyalty Discount Redeemed        -200", "fontSize": 12, "strokeColor": "#ef4444"}, {"type": "text", "id": "hist_3", "x": 75, "y": 432, "text": "2026-02-20    Coastal Cliff Walk              +158", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "hist_4", "x": 75, "y": 457, "text": "2026-02-14    Referral Bonus                  +500", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "hist_5", "x": 75, "y": 482, "text": "2026-01-15    Forest Canopy Trek              +189", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "hist_6", "x": 75, "y": 507, "text": "2025-12-25    Holiday Bonus                   +100", "fontSize": 12, "strokeColor": "#22c55e"}, {"type": "text", "id": "hist_more", "x": 75, "y": 545, "text": "View all transactions >", "fontSize": 12, "strokeColor": "#2563eb"}, {"type": "rectangle", "id": "rewards_panel", "x": 590, "y": 220, "width": 290, "height": 405, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "rewards_title", "x": 615, "y": 235, "text": "Available Rewards", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "reward_1", "x": 610, "y": 270, "width": 250, "height": 95, "backgroundColor": "#f8fafc", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "reward_1_name", "x": 625, "y": 280, "text": "10% Off Any Adventure", "fontSize": 13, "strokeColor": "#1e293b"}, {"type": "text", "id": "reward_1_cost", "x": 625, "y": 305, "text": "200 points", "fontSize": 12, "strokeColor": "#f59e0b"}, {"type": "rectangle", "id": "reward_1_btn", "x": 625, "y": 328, "width": 80, "height": 26, "backgroundColor": "#2563eb", "strokeColor": "#1d4ed8"}, {"type": "text", "id": "reward_1_btn_text", "x": 641, "y": 333, "text": "Redeem", "fontSize": 11, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "reward_2", "x": 610, "y": 380, "width": 250, "height": 95, "backgroundColor": "#f8fafc", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "reward_2_name", "x": 625, "y": 390, "text": "Free Gear Rental", "fontSize": 13, "strokeColor": "#1e293b"}, {"type": "text", "id": "reward_2_cost", "x": 625, "y": 415, "text": "500 points", "fontSize": 12, "strokeColor": "#f59e0b"}, {"type": "rectangle", "id": "reward_2_btn", "x": 625, "y": 438, "width": 80, "height": 26, "backgroundColor": "#2563eb", "strokeColor": "#1d4ed8"}, {"type": "text", "id": "reward_2_btn_text", "x": 641, "y": 443, "text": "Redeem", "fontSize": 11, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "reward_3", "x": 610, "y": 490, "width": 250, "height": 95, "backgroundColor": "#f8fafc", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "reward_3_name", "x": 625, "y": 500, "text": "VIP Guide Experience", "fontSize": 13, "strokeColor": "#1e293b"}, {"type": "text", "id": "reward_3_cost", "x": 625, "y": 525, "text": "1,500 points", "fontSize": 12, "strokeColor": "#f59e0b"}, {"type": "rectangle", "id": "reward_3_btn", "x": 625, "y": 548, "width": 80, "height": 26, "backgroundColor": "#2563eb", "strokeColor": "#1d4ed8"}, {"type": "text", "id": "reward_3_btn_text", "x": 641, "y": 553, "text": "Redeem", "fontSize": 11, "strokeColor": "#FFFFFF"}], "appState": {"viewBackgroundColor": "#f1f5f9"}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
+            }
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "loyalty-dashboard.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+    </script>
+</body>
+</html>

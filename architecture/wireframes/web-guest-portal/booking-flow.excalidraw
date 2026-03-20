@@ -1,0 +1,410 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "nav_bar",
+      "x": 0,
+      "y": 0,
+      "width": 900,
+      "height": 56,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "nav_logo",
+      "x": 20,
+      "y": 14,
+      "text": "NovaTrek Adventures",
+      "fontSize": 20,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "nav_links",
+      "x": 500,
+      "y": 18,
+      "text": "Trips    My Bookings    Profile    Loyalty",
+      "fontSize": 14,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "progress_bar",
+      "x": 150,
+      "y": 76,
+      "width": 600,
+      "height": 40,
+      "backgroundColor": "#f1f5f9",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "step_1",
+      "x": 180,
+      "y": 86,
+      "text": "1. Select Trip",
+      "fontSize": 13,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "step_2",
+      "x": 330,
+      "y": 86,
+      "text": "2. Guest Info",
+      "fontSize": 13,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "step_3",
+      "x": 470,
+      "y": 86,
+      "text": "3. Payment",
+      "fontSize": 13,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "step_4",
+      "x": 610,
+      "y": 86,
+      "text": "4. Confirm",
+      "fontSize": 13,
+      "strokeColor": "#94a3b8"
+    },
+    {
+      "type": "text",
+      "id": "page_title",
+      "x": 50,
+      "y": 140,
+      "text": "Complete Your Booking",
+      "fontSize": 24,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "rectangle",
+      "id": "main_form",
+      "x": 50,
+      "y": 185,
+      "width": 520,
+      "height": 480,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "payment_title",
+      "x": 75,
+      "y": 200,
+      "text": "Payment Details",
+      "fontSize": 18,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "card_label",
+      "x": 75,
+      "y": 240,
+      "text": "Card Number",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "rectangle",
+      "id": "card_input",
+      "x": 75,
+      "y": 258,
+      "width": 460,
+      "height": 38,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "card_value",
+      "x": 90,
+      "y": 268,
+      "text": "**** **** **** 4242",
+      "fontSize": 14,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "expiry_label",
+      "x": 75,
+      "y": 310,
+      "text": "Expiry Date",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "rectangle",
+      "id": "expiry_input",
+      "x": 75,
+      "y": 328,
+      "width": 200,
+      "height": 38,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "expiry_value",
+      "x": 90,
+      "y": 338,
+      "text": "12 / 27",
+      "fontSize": 14,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "cvv_label",
+      "x": 310,
+      "y": 310,
+      "text": "CVV",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "rectangle",
+      "id": "cvv_input",
+      "x": 310,
+      "y": 328,
+      "width": 120,
+      "height": 38,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "cvv_value",
+      "x": 325,
+      "y": 338,
+      "text": "***",
+      "fontSize": 14,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "x": 75,
+      "y": 385,
+      "text": "Cardholder Name",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "rectangle",
+      "id": "name_input",
+      "x": 75,
+      "y": 403,
+      "width": 460,
+      "height": 38,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "name_value",
+      "x": 90,
+      "y": 413,
+      "text": "Alex Thompson",
+      "fontSize": 14,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "billing_label",
+      "x": 75,
+      "y": 460,
+      "text": "Billing Address",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "rectangle",
+      "id": "billing_input",
+      "x": 75,
+      "y": 478,
+      "width": 460,
+      "height": 38,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "billing_value",
+      "x": 90,
+      "y": 488,
+      "text": "123 Adventure Lane, Boulder, CO 80302",
+      "fontSize": 14,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "rectangle",
+      "id": "stripe_badge",
+      "x": 75,
+      "y": 540,
+      "width": 180,
+      "height": 30,
+      "backgroundColor": "#f1f5f9",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "stripe_text",
+      "x": 90,
+      "y": 546,
+      "text": "Secured by Stripe",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "rectangle",
+      "id": "pay_btn",
+      "x": 75,
+      "y": 590,
+      "width": 460,
+      "height": 48,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#1d4ed8"
+    },
+    {
+      "type": "text",
+      "id": "pay_btn_text",
+      "x": 230,
+      "y": 602,
+      "text": "Pay $129.00",
+      "fontSize": 16,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "summary_panel",
+      "x": 600,
+      "y": 185,
+      "width": 280,
+      "height": 350,
+      "backgroundColor": "#f8fafc",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "summary_title",
+      "x": 625,
+      "y": 200,
+      "text": "Booking Summary",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "trip_name",
+      "x": 625,
+      "y": 235,
+      "text": "Sunrise Ridge Trail",
+      "fontSize": 14,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "trip_date",
+      "x": 625,
+      "y": 260,
+      "text": "Date: March 25, 2026",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "trip_guests",
+      "x": 625,
+      "y": 282,
+      "text": "Guests: 2 adults",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "trip_difficulty",
+      "x": 625,
+      "y": 304,
+      "text": "Difficulty: Moderate",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "line",
+      "id": "summary_divider",
+      "x": 625,
+      "y": 340,
+      "width": 230,
+      "height": 0,
+      "points": [[0, 0], [230, 0]],
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "subtotal",
+      "x": 625,
+      "y": 355,
+      "text": "Subtotal:              $258.00",
+      "fontSize": 13,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "discount",
+      "x": 625,
+      "y": 378,
+      "text": "Loyalty Discount:     -$25.80",
+      "fontSize": 13,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "tax",
+      "x": 625,
+      "y": 401,
+      "text": "Tax:                    $18.57",
+      "fontSize": 13,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "line",
+      "id": "total_divider",
+      "x": 625,
+      "y": 430,
+      "width": 230,
+      "height": 0,
+      "points": [[0, 0], [230, 0]],
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "total",
+      "x": 625,
+      "y": 445,
+      "text": "Total:                 $250.77",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "loyalty_badge",
+      "x": 625,
+      "y": 485,
+      "text": "Earning 251 loyalty points",
+      "fontSize": 12,
+      "strokeColor": "#2563eb"
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#f1f5f9"
+  }
+}

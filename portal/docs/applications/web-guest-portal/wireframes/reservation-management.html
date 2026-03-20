@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Management — Excalidraw Editor</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
+        <h1>Reservation Management</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
+    <script>
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "nav_bar", "x": 0, "y": 0, "width": 900, "height": 56, "backgroundColor": "#2563eb", "strokeColor": "#2563eb"}, {"type": "text", "id": "nav_logo", "x": 20, "y": 14, "text": "NovaTrek Adventures", "fontSize": 20, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "nav_links", "x": 500, "y": 18, "text": "Trips    My Bookings    Profile    Loyalty", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "page_title", "x": 50, "y": 80, "text": "My Reservations", "fontSize": 24, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "tabs_bar", "x": 50, "y": 125, "width": 830, "height": 40, "backgroundColor": "#f8fafc", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "tab_upcoming", "x": 80, "y": 135, "text": "Upcoming (2)", "fontSize": 14, "strokeColor": "#2563eb"}, {"type": "text", "id": "tab_past", "x": 230, "y": 135, "text": "Past (8)", "fontSize": 14, "strokeColor": "#64748b"}, {"type": "text", "id": "tab_cancelled", "x": 350, "y": 135, "text": "Cancelled (1)", "fontSize": 14, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "res_1", "x": 50, "y": 185, "width": 830, "height": 160, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "rectangle", "id": "res_1_img", "x": 70, "y": 200, "width": 130, "height": 120, "backgroundColor": "#dbeafe", "strokeColor": "#bfdbfe"}, {"type": "text", "id": "res_1_photo", "x": 100, "y": 250, "text": "[ Photo ]", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "res_1_title", "x": 220, "y": 205, "text": "Desert Canyon Expedition", "fontSize": 18, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "res_1_status", "x": 220, "y": 233, "width": 90, "height": 22, "backgroundColor": "#dcfce7", "strokeColor": "#86efac"}, {"type": "text", "id": "res_1_status_text", "x": 233, "y": 237, "text": "Confirmed", "fontSize": 11, "strokeColor": "#166534"}, {"type": "text", "id": "res_1_details", "x": 220, "y": 268, "text": "Date: March 25, 2026\nGuests: 2 adults\nDifficulty: Challenging\nConfirmation: RES-2026-0042", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "res_1_modify", "x": 650, "y": 210, "width": 100, "height": 32, "backgroundColor": "#FFFFFF", "strokeColor": "#2563eb"}, {"type": "text", "id": "res_1_modify_text", "x": 670, "y": 218, "text": "Modify", "fontSize": 12, "strokeColor": "#2563eb"}, {"type": "rectangle", "id": "res_1_cancel", "x": 770, "y": 210, "width": 90, "height": 32, "backgroundColor": "#FFFFFF", "strokeColor": "#ef4444"}, {"type": "text", "id": "res_1_cancel_text", "x": 790, "y": 218, "text": "Cancel", "fontSize": 12, "strokeColor": "#ef4444"}, {"type": "text", "id": "res_1_payment", "x": 650, "y": 280, "text": "Total: $398.00\nPaid: $398.00", "fontSize": 12, "strokeColor": "#475569"}, {"type": "text", "id": "res_1_refund", "x": 650, "y": 315, "text": "Free cancellation until Mar 23", "fontSize": 11, "strokeColor": "#22c55e"}, {"type": "rectangle", "id": "res_2", "x": 50, "y": 365, "width": 830, "height": 160, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "rectangle", "id": "res_2_img", "x": 70, "y": 380, "width": 130, "height": 120, "backgroundColor": "#fef3c7", "strokeColor": "#fde68a"}, {"type": "text", "id": "res_2_photo", "x": 100, "y": 430, "text": "[ Photo ]", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "res_2_title", "x": 220, "y": 385, "text": "Mountain Summit Challenge", "fontSize": 18, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "res_2_status", "x": 220, "y": 413, "width": 120, "height": 22, "backgroundColor": "#fef3c7", "strokeColor": "#fbbf24"}, {"type": "text", "id": "res_2_status_text", "x": 233, "y": 417, "text": "Pending Waiver", "fontSize": 11, "strokeColor": "#92400e"}, {"type": "text", "id": "res_2_details", "x": 220, "y": 448, "text": "Date: April 10, 2026\nGuests: 1 adult\nDifficulty: Expert\nConfirmation: RES-2026-0058", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "res_2_sign", "x": 650, "y": 390, "width": 130, "height": 32, "backgroundColor": "#f59e0b", "strokeColor": "#d97706"}, {"type": "text", "id": "res_2_sign_text", "x": 670, "y": 398, "text": "Sign Waiver", "fontSize": 12, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "res_2_cancel", "x": 800, "y": 390, "width": 60, "height": 32, "backgroundColor": "#FFFFFF", "strokeColor": "#ef4444"}, {"type": "text", "id": "res_2_cancel_text", "x": 810, "y": 398, "text": "Cancel", "fontSize": 12, "strokeColor": "#ef4444"}, {"type": "text", "id": "res_2_payment", "x": 650, "y": 460, "text": "Total: $299.00\nDeposit: $75.00", "fontSize": 12, "strokeColor": "#475569"}], "appState": {"viewBackgroundColor": "#f1f5f9"}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
+            }
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "reservation-management.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+    </script>
+</body>
+</html>

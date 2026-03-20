@@ -1,0 +1,324 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "nav_bar",
+      "x": 0,
+      "y": 0,
+      "width": 900,
+      "height": 56,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "nav_logo",
+      "x": 20,
+      "y": 14,
+      "text": "NovaTrek Adventures",
+      "fontSize": 20,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "nav_links",
+      "x": 500,
+      "y": 18,
+      "text": "Trips    My Bookings    Profile    Loyalty",
+      "fontSize": 14,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "page_title",
+      "x": 50,
+      "y": 80,
+      "text": "My Profile",
+      "fontSize": 24,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "rectangle",
+      "id": "profile_card",
+      "x": 50,
+      "y": 125,
+      "width": 280,
+      "height": 250,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "ellipse",
+      "id": "avatar",
+      "x": 145,
+      "y": 140,
+      "width": 80,
+      "height": 80,
+      "backgroundColor": "#dbeafe",
+      "strokeColor": "#93c5fd"
+    },
+    {
+      "type": "text",
+      "id": "avatar_text",
+      "x": 168,
+      "y": 170,
+      "text": "AT",
+      "fontSize": 20,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "x": 130,
+      "y": 230,
+      "text": "Alex Thompson",
+      "fontSize": 18,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "x": 105,
+      "y": 258,
+      "text": "alex.t@novatrek.example.com",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "member_since",
+      "x": 130,
+      "y": 280,
+      "text": "Member since 2024",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "rectangle",
+      "id": "loyalty_badge",
+      "x": 130,
+      "y": 310,
+      "width": 110,
+      "height": 28,
+      "backgroundColor": "#fef3c7",
+      "strokeColor": "#fbbf24"
+    },
+    {
+      "type": "text",
+      "id": "loyalty_tier",
+      "x": 145,
+      "y": 316,
+      "text": "Gold Member",
+      "fontSize": 12,
+      "strokeColor": "#92400e"
+    },
+    {
+      "type": "rectangle",
+      "id": "edit_btn",
+      "x": 130,
+      "y": 348,
+      "width": 110,
+      "height": 32,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#1d4ed8"
+    },
+    {
+      "type": "text",
+      "id": "edit_btn_text",
+      "x": 153,
+      "y": 355,
+      "text": "Edit Profile",
+      "fontSize": 12,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "certs_panel",
+      "x": 350,
+      "y": 125,
+      "width": 530,
+      "height": 140,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "certs_title",
+      "x": 370,
+      "y": 140,
+      "text": "Certifications",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "cert_1",
+      "x": 370,
+      "y": 175,
+      "text": "Wilderness First Aid       Expires: 2027-06-15     VALID",
+      "fontSize": 12,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "cert_2",
+      "x": 370,
+      "y": 200,
+      "text": "Rock Climbing Level 2      Expires: 2026-12-01     VALID",
+      "fontSize": 12,
+      "strokeColor": "#22c55e"
+    },
+    {
+      "type": "text",
+      "id": "cert_3",
+      "x": 370,
+      "y": 225,
+      "text": "Water Safety               Expires: 2025-09-30     EXPIRED",
+      "fontSize": 12,
+      "strokeColor": "#ef4444"
+    },
+    {
+      "type": "rectangle",
+      "id": "history_panel",
+      "x": 350,
+      "y": 280,
+      "width": 530,
+      "height": 200,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "history_title",
+      "x": 370,
+      "y": 295,
+      "text": "Adventure History",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "hist_header",
+      "x": 370,
+      "y": 325,
+      "text": "Adventure               Date         Difficulty    Rating",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "hist_1",
+      "x": 370,
+      "y": 350,
+      "text": "Sunrise Ridge Trail      2026-03-10   Moderate      4.5/5",
+      "fontSize": 12,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "hist_2",
+      "x": 370,
+      "y": 375,
+      "text": "Coastal Cliff Walk       2026-02-20   Easy          5.0/5",
+      "fontSize": 12,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "hist_3",
+      "x": 370,
+      "y": 400,
+      "text": "Forest Canopy Trek       2026-01-15   Moderate      4.0/5",
+      "fontSize": 12,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "hist_4",
+      "x": 370,
+      "y": 425,
+      "text": "Canyon Explorer          2025-11-30   Challenging   4.8/5",
+      "fontSize": 12,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "hist_more",
+      "x": 370,
+      "y": 455,
+      "text": "View all 12 adventures >",
+      "fontSize": 12,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "rectangle",
+      "id": "upcoming_panel",
+      "x": 50,
+      "y": 395,
+      "width": 280,
+      "height": 180,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_title",
+      "x": 70,
+      "y": 410,
+      "text": "Upcoming Bookings",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_1",
+      "x": 70,
+      "y": 445,
+      "text": "Desert Canyon Expedition",
+      "fontSize": 13,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_1_date",
+      "x": 70,
+      "y": 465,
+      "text": "March 25, 2026  |  2 guests",
+      "fontSize": 11,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_2",
+      "x": 70,
+      "y": 500,
+      "text": "Mountain Summit Challenge",
+      "fontSize": 13,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_2_date",
+      "x": 70,
+      "y": 520,
+      "text": "April 10, 2026  |  1 guest",
+      "fontSize": 11,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "loyalty_points",
+      "x": 70,
+      "y": 555,
+      "text": "Loyalty Points: 2,450",
+      "fontSize": 14,
+      "strokeColor": "#2563eb"
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#f1f5f9"
+  }
+}

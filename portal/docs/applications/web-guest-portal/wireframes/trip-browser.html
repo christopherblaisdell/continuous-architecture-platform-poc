@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Browser — Excalidraw Editor</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
+        <h1>Trip Browser</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
+    <script>
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "nav_bar", "x": 0, "y": 0, "width": 900, "height": 56, "backgroundColor": "#2563eb", "strokeColor": "#2563eb"}, {"type": "text", "id": "nav_logo", "x": 20, "y": 14, "text": "NovaTrek Adventures", "fontSize": 20, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "nav_links", "x": 500, "y": 18, "text": "Trips    My Bookings    Profile    Loyalty", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "page_title", "x": 30, "y": 80, "text": "Explore Adventures", "fontSize": 28, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "search_bar", "x": 30, "y": 130, "width": 620, "height": 44, "backgroundColor": "#FFFFFF", "strokeColor": "#cbd5e1"}, {"type": "text", "id": "search_placeholder", "x": 50, "y": 142, "text": "Search trails, locations, difficulty...", "fontSize": 14, "strokeColor": "#94a3b8"}, {"type": "rectangle", "id": "search_btn", "x": 660, "y": 130, "width": 100, "height": 44, "backgroundColor": "#2563eb", "strokeColor": "#2563eb"}, {"type": "text", "id": "search_btn_text", "x": 685, "y": 142, "text": "Search", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "filter_panel", "x": 30, "y": 194, "width": 200, "height": 500, "backgroundColor": "#f8fafc", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "filter_title", "x": 50, "y": 210, "text": "Filters", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "filter_diff", "x": 50, "y": 245, "text": "Difficulty", "fontSize": 13, "strokeColor": "#475569"}, {"type": "text", "id": "filter_diff_opts", "x": 50, "y": 268, "text": "[ ] Easy\n[x] Moderate\n[ ] Challenging\n[ ] Expert", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "filter_duration", "x": 50, "y": 350, "text": "Duration", "fontSize": 13, "strokeColor": "#475569"}, {"type": "text", "id": "filter_dur_opts", "x": 50, "y": 373, "text": "[x] Half Day\n[x] Full Day\n[ ] Multi-Day", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "filter_region", "x": 50, "y": 440, "text": "Region", "fontSize": 13, "strokeColor": "#475569"}, {"type": "text", "id": "filter_region_opts", "x": 50, "y": 463, "text": "[x] Mountain Ridge\n[ ] Coastal Trail\n[ ] Forest Valley\n[ ] Desert Canyon", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "card_1", "x": 250, "y": 194, "width": 300, "height": 230, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "rectangle", "id": "card_1_img", "x": 250, "y": 194, "width": 300, "height": 120, "backgroundColor": "#dbeafe", "strokeColor": "#bfdbfe"}, {"type": "text", "id": "card_1_photo", "x": 340, "y": 240, "text": "[ Trail Photo ]", "fontSize": 14, "strokeColor": "#64748b"}, {"type": "text", "id": "card_1_title", "x": 265, "y": 324, "text": "Sunrise Ridge Trail", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "card_1_meta", "x": 265, "y": 350, "text": "Moderate  |  6 hrs  |  Mountain Ridge", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "card_1_weather", "x": 265, "y": 375, "text": "Weather: Sunny 72F  |  Trail: Good", "fontSize": 11, "strokeColor": "#22c55e"}, {"type": "text", "id": "card_1_price", "x": 460, "y": 395, "text": "$129", "fontSize": 18, "strokeColor": "#2563eb"}, {"type": "rectangle", "id": "card_2", "x": 570, "y": 194, "width": 300, "height": 230, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "rectangle", "id": "card_2_img", "x": 570, "y": 194, "width": 300, "height": 120, "backgroundColor": "#dcfce7", "strokeColor": "#bbf7d0"}, {"type": "text", "id": "card_2_photo", "x": 660, "y": 240, "text": "[ Trail Photo ]", "fontSize": 14, "strokeColor": "#64748b"}, {"type": "text", "id": "card_2_title", "x": 585, "y": 324, "text": "Coastal Cliff Walk", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "card_2_meta", "x": 585, "y": 350, "text": "Easy  |  3 hrs  |  Coastal Trail", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "card_2_weather", "x": 585, "y": 375, "text": "Weather: Cloudy 65F  |  Trail: Fair", "fontSize": 11, "strokeColor": "#f59e0b"}, {"type": "text", "id": "card_2_price", "x": 780, "y": 395, "text": "$79", "fontSize": 18, "strokeColor": "#2563eb"}, {"type": "rectangle", "id": "card_3", "x": 250, "y": 444, "width": 300, "height": 230, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "rectangle", "id": "card_3_img", "x": 250, "y": 444, "width": 300, "height": 120, "backgroundColor": "#fef3c7", "strokeColor": "#fde68a"}, {"type": "text", "id": "card_3_photo", "x": 340, "y": 490, "text": "[ Trail Photo ]", "fontSize": 14, "strokeColor": "#64748b"}, {"type": "text", "id": "card_3_title", "x": 265, "y": 574, "text": "Canyon Explorer", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "card_3_meta", "x": 265, "y": 600, "text": "Challenging  |  8 hrs  |  Desert Canyon", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "card_3_weather", "x": 265, "y": 625, "text": "Weather: Hot 95F  |  Trail: Caution", "fontSize": 11, "strokeColor": "#ef4444"}, {"type": "text", "id": "card_3_price", "x": 460, "y": 645, "text": "$199", "fontSize": 18, "strokeColor": "#2563eb"}, {"type": "rectangle", "id": "card_4", "x": 570, "y": 444, "width": 300, "height": 230, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "rectangle", "id": "card_4_img", "x": 570, "y": 444, "width": 300, "height": 120, "backgroundColor": "#e0e7ff", "strokeColor": "#c7d2fe"}, {"type": "text", "id": "card_4_photo", "x": 660, "y": 490, "text": "[ Trail Photo ]", "fontSize": 14, "strokeColor": "#64748b"}, {"type": "text", "id": "card_4_title", "x": 585, "y": 574, "text": "Forest Canopy Trek", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "card_4_meta", "x": 585, "y": 600, "text": "Moderate  |  5 hrs  |  Forest Valley", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "card_4_weather", "x": 585, "y": 625, "text": "Weather: Partly Cloudy 68F  |  Trail: Good", "fontSize": 11, "strokeColor": "#22c55e"}, {"type": "text", "id": "card_4_price", "x": 780, "y": 645, "text": "$149", "fontSize": 18, "strokeColor": "#2563eb"}, {"type": "text", "id": "results_count", "x": 250, "y": 700, "text": "Showing 4 of 23 results    < 1 2 3 4 5 >", "fontSize": 13, "strokeColor": "#64748b"}], "appState": {"viewBackgroundColor": "#f1f5f9"}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
+            }
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "trip-browser.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+    </script>
+</body>
+</html>

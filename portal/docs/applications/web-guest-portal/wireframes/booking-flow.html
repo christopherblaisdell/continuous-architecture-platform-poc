@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Flow — Excalidraw Editor</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #fafafa; }
+        .toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0;
+        }
+        .toolbar h1 { font-size: 16px; color: #333; flex: 1; }
+        .toolbar button {
+            padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px;
+            font-weight: 600; cursor: pointer;
+        }
+        .btn-save { background: #4CAF50; color: white; }
+        .btn-save:hover { background: #388E3C; }
+        .btn-back { background: #f5f5f5; color: #333; border: 1px solid #ddd !important; }
+        .btn-back:hover { background: #eee; }
+        .canvas-wrap {
+            position: absolute; top: 49px; left: 0; right: 0; bottom: 0;
+            overflow: hidden; background: #fff;
+        }
+        svg { display: block; width: 100%; height: 100%; }
+        .pan-zoom {
+            transform-origin: 0 0; cursor: grab;
+        }
+        .pan-zoom:active { cursor: grabbing; }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button class="btn-back" onclick="history.back()">&larr; Back</button>
+        <h1>Booking Flow</h1>
+        <button class="btn-save" id="saveBtn">&#x2B07; Save .excalidraw</button>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+        <div class="pan-zoom" id="panZoom"></div>
+    </div>
+    <script>
+        // Render Excalidraw elements as interactive SVG with zoom/pan
+        const data = {"type": "excalidraw", "version": 2, "source": "https://excalidraw.com", "elements": [{"type": "rectangle", "id": "nav_bar", "x": 0, "y": 0, "width": 900, "height": 56, "backgroundColor": "#2563eb", "strokeColor": "#2563eb"}, {"type": "text", "id": "nav_logo", "x": 20, "y": 14, "text": "NovaTrek Adventures", "fontSize": 20, "strokeColor": "#FFFFFF"}, {"type": "text", "id": "nav_links", "x": 500, "y": 18, "text": "Trips    My Bookings    Profile    Loyalty", "fontSize": 14, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "progress_bar", "x": 150, "y": 76, "width": 600, "height": 40, "backgroundColor": "#f1f5f9", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "step_1", "x": 180, "y": 86, "text": "1. Select Trip", "fontSize": 13, "strokeColor": "#22c55e"}, {"type": "text", "id": "step_2", "x": 330, "y": 86, "text": "2. Guest Info", "fontSize": 13, "strokeColor": "#22c55e"}, {"type": "text", "id": "step_3", "x": 470, "y": 86, "text": "3. Payment", "fontSize": 13, "strokeColor": "#2563eb"}, {"type": "text", "id": "step_4", "x": 610, "y": 86, "text": "4. Confirm", "fontSize": 13, "strokeColor": "#94a3b8"}, {"type": "text", "id": "page_title", "x": 50, "y": 140, "text": "Complete Your Booking", "fontSize": 24, "strokeColor": "#1e293b"}, {"type": "rectangle", "id": "main_form", "x": 50, "y": 185, "width": 520, "height": 480, "backgroundColor": "#FFFFFF", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "payment_title", "x": 75, "y": 200, "text": "Payment Details", "fontSize": 18, "strokeColor": "#1e293b"}, {"type": "text", "id": "card_label", "x": 75, "y": 240, "text": "Card Number", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "card_input", "x": 75, "y": 258, "width": 460, "height": 38, "backgroundColor": "#FFFFFF", "strokeColor": "#cbd5e1"}, {"type": "text", "id": "card_value", "x": 90, "y": 268, "text": "**** **** **** 4242", "fontSize": 14, "strokeColor": "#334155"}, {"type": "text", "id": "expiry_label", "x": 75, "y": 310, "text": "Expiry Date", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "expiry_input", "x": 75, "y": 328, "width": 200, "height": 38, "backgroundColor": "#FFFFFF", "strokeColor": "#cbd5e1"}, {"type": "text", "id": "expiry_value", "x": 90, "y": 338, "text": "12 / 27", "fontSize": 14, "strokeColor": "#334155"}, {"type": "text", "id": "cvv_label", "x": 310, "y": 310, "text": "CVV", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "cvv_input", "x": 310, "y": 328, "width": 120, "height": 38, "backgroundColor": "#FFFFFF", "strokeColor": "#cbd5e1"}, {"type": "text", "id": "cvv_value", "x": 325, "y": 338, "text": "***", "fontSize": 14, "strokeColor": "#334155"}, {"type": "text", "id": "name_label", "x": 75, "y": 385, "text": "Cardholder Name", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "name_input", "x": 75, "y": 403, "width": 460, "height": 38, "backgroundColor": "#FFFFFF", "strokeColor": "#cbd5e1"}, {"type": "text", "id": "name_value", "x": 90, "y": 413, "text": "Alex Thompson", "fontSize": 14, "strokeColor": "#334155"}, {"type": "text", "id": "billing_label", "x": 75, "y": 460, "text": "Billing Address", "fontSize": 12, "strokeColor": "#475569"}, {"type": "rectangle", "id": "billing_input", "x": 75, "y": 478, "width": 460, "height": 38, "backgroundColor": "#FFFFFF", "strokeColor": "#cbd5e1"}, {"type": "text", "id": "billing_value", "x": 90, "y": 488, "text": "123 Adventure Lane, Boulder, CO 80302", "fontSize": 14, "strokeColor": "#334155"}, {"type": "rectangle", "id": "stripe_badge", "x": 75, "y": 540, "width": 180, "height": 30, "backgroundColor": "#f1f5f9", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "stripe_text", "x": 90, "y": 546, "text": "Secured by Stripe", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "rectangle", "id": "pay_btn", "x": 75, "y": 590, "width": 460, "height": 48, "backgroundColor": "#2563eb", "strokeColor": "#1d4ed8"}, {"type": "text", "id": "pay_btn_text", "x": 230, "y": 602, "text": "Pay $129.00", "fontSize": 16, "strokeColor": "#FFFFFF"}, {"type": "rectangle", "id": "summary_panel", "x": 600, "y": 185, "width": 280, "height": 350, "backgroundColor": "#f8fafc", "strokeColor": "#e2e8f0"}, {"type": "text", "id": "summary_title", "x": 625, "y": 200, "text": "Booking Summary", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "trip_name", "x": 625, "y": 235, "text": "Sunrise Ridge Trail", "fontSize": 14, "strokeColor": "#334155"}, {"type": "text", "id": "trip_date", "x": 625, "y": 260, "text": "Date: March 25, 2026", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "trip_guests", "x": 625, "y": 282, "text": "Guests: 2 adults", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "text", "id": "trip_difficulty", "x": 625, "y": 304, "text": "Difficulty: Moderate", "fontSize": 12, "strokeColor": "#64748b"}, {"type": "line", "id": "summary_divider", "x": 625, "y": 340, "width": 230, "height": 0, "points": [[0, 0], [230, 0]], "strokeColor": "#e2e8f0"}, {"type": "text", "id": "subtotal", "x": 625, "y": 355, "text": "Subtotal:              $258.00", "fontSize": 13, "strokeColor": "#475569"}, {"type": "text", "id": "discount", "x": 625, "y": 378, "text": "Loyalty Discount:     -$25.80", "fontSize": 13, "strokeColor": "#22c55e"}, {"type": "text", "id": "tax", "x": 625, "y": 401, "text": "Tax:                    $18.57", "fontSize": 13, "strokeColor": "#475569"}, {"type": "line", "id": "total_divider", "x": 625, "y": 430, "width": 230, "height": 0, "points": [[0, 0], [230, 0]], "strokeColor": "#1e293b"}, {"type": "text", "id": "total", "x": 625, "y": 445, "text": "Total:                 $250.77", "fontSize": 16, "strokeColor": "#1e293b"}, {"type": "text", "id": "loyalty_badge", "x": 625, "y": 485, "text": "Earning 251 loyalty points", "fontSize": 12, "strokeColor": "#2563eb"}], "appState": {"viewBackgroundColor": "#f1f5f9"}};
+        const elements = data.elements || [];
+
+        // Bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        elements.forEach(e => {
+            const x = e.x || 0, y = e.y || 0, w = e.width || 0, h = e.height || 0;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x + w > maxX) maxX = x + w;
+            if (y + h > maxY) maxY = y + h;
+        });
+        if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 800; maxY = 600; }
+        const pad = 40;
+        const vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+        function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+        let svgParts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + (minX-pad) + ' ' + (minY-pad) + ' ' + vw + ' ' + vh + '">'];
+        svgParts.push('<rect x="'+(minX-pad)+'" y="'+(minY-pad)+'" width="'+vw+'" height="'+vh+'" fill="#fafafa"/>');
+
+        elements.forEach(e => {
+            const t = e.type, x = e.x||0, y = e.y||0, w = e.width||100, h = e.height||50;
+            const sc = e.strokeColor||"#000", bg = e.backgroundColor||"#fff";
+            if (t === "rectangle") {
+                svgParts.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2" rx="4"/>');
+            } else if (t === "ellipse") {
+                svgParts.push('<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+(w/2)+'" ry="'+(h/2)+'" fill="'+bg+'" stroke="'+sc+'" stroke-width="2"/>');
+            } else if (t === "text") {
+                const fs = e.fontSize||16;
+                const lines = (e.text||"").split("\n");
+                lines.forEach((line, i) => {
+                    svgParts.push('<text x="'+x+'" y="'+(y+fs+i*(fs*1.2))+'" font-size="'+fs+'" fill="'+sc+'" font-family="sans-serif">'+esc(line)+'</text>');
+                });
+            } else if (t === "line") {
+                const pts = e.points || [[0,0],[w,h]];
+                if (pts.length >= 2) {
+                    svgParts.push('<line x1="'+(x+pts[0][0])+'" y1="'+(y+pts[0][1])+'" x2="'+(x+pts[pts.length-1][0])+'" y2="'+(y+pts[pts.length-1][1])+'" stroke="'+sc+'" stroke-width="2"/>');
+                }
+            }
+        });
+        svgParts.push('</svg>');
+
+        const pz = document.getElementById("panZoom");
+        pz.innerHTML = svgParts.join("");
+
+        // Pan & zoom
+        let scale = 1, tx = 0, ty = 0, dragging = false, lastX, lastY;
+        function applyTransform() { pz.style.transform = "translate("+tx+"px,"+ty+"px) scale("+scale+")"; }
+
+        const wrap = document.getElementById("canvasWrap");
+        wrap.addEventListener("wheel", e => {
+            e.preventDefault();
+            const r = wrap.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            const oldScale = scale;
+            scale *= e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(10, scale));
+            tx = mx - (mx - tx) * scale / oldScale;
+            ty = my - (my - ty) * scale / oldScale;
+            applyTransform();
+        }, { passive: false });
+
+        wrap.addEventListener("mousedown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+        window.addEventListener("mousemove", e => {
+            if (!dragging) return;
+            tx += e.clientX - lastX; ty += e.clientY - lastY;
+            lastX = e.clientX; lastY = e.clientY;
+            applyTransform();
+        });
+        window.addEventListener("mouseup", () => { dragging = false; });
+
+        // Save button — downloads original .excalidraw JSON
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "booking-flow.excalidraw";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+    </script>
+</body>
+</html>

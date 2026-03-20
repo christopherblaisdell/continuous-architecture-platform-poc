@@ -1,0 +1,271 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "nav_bar",
+      "x": 0,
+      "y": 0,
+      "width": 900,
+      "height": 56,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "nav_logo",
+      "x": 20,
+      "y": 14,
+      "text": "NovaTrek Adventures",
+      "fontSize": 20,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "nav_links",
+      "x": 500,
+      "y": 18,
+      "text": "Trips    My Bookings    Profile    Loyalty",
+      "fontSize": 14,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "page_title",
+      "x": 50,
+      "y": 80,
+      "text": "Safety Waiver Signing",
+      "fontSize": 24,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "rectangle",
+      "id": "trip_banner",
+      "x": 50,
+      "y": 125,
+      "width": 800,
+      "height": 50,
+      "backgroundColor": "#dbeafe",
+      "strokeColor": "#bfdbfe"
+    },
+    {
+      "type": "text",
+      "id": "trip_banner_text",
+      "x": 75,
+      "y": 138,
+      "text": "Trip: Desert Canyon Expedition  |  March 25, 2026  |  Confirmation: RES-2026-0042",
+      "fontSize": 13,
+      "strokeColor": "#1e40af"
+    },
+    {
+      "type": "rectangle",
+      "id": "waiver_panel",
+      "x": 50,
+      "y": 195,
+      "width": 560,
+      "height": 480,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "waiver_num",
+      "x": 75,
+      "y": 210,
+      "text": "Waiver 1 of 2: General Activity Waiver",
+      "fontSize": 16,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "rectangle",
+      "id": "waiver_text_area",
+      "x": 75,
+      "y": 245,
+      "width": 500,
+      "height": 200,
+      "backgroundColor": "#f8fafc",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "waiver_body",
+      "x": 90,
+      "y": 260,
+      "text": "RELEASE OF LIABILITY AND ASSUMPTION OF RISK\n\nBy signing this waiver, I acknowledge that I am voluntarily\nparticipating in outdoor adventure activities organized by\nNovaTrek Adventures. I understand and accept that these\nactivities involve inherent risks including but not limited\nto: falls, physical exhaustion, weather conditions, and\nwildlife encounters.\n\nI agree to follow all safety instructions provided by\nNovaTrek guides and staff...",
+      "fontSize": 11,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "scroll_hint",
+      "x": 530,
+      "y": 435,
+      "text": "scroll v",
+      "fontSize": 11,
+      "strokeColor": "#94a3b8"
+    },
+    {
+      "type": "text",
+      "id": "read_confirm",
+      "x": 75,
+      "y": 465,
+      "text": "[x] I have read and understand the full waiver",
+      "fontSize": 13,
+      "strokeColor": "#334155"
+    },
+    {
+      "type": "text",
+      "id": "sig_label",
+      "x": 75,
+      "y": 500,
+      "text": "Digital Signature",
+      "fontSize": 13,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "rectangle",
+      "id": "sig_box",
+      "x": 75,
+      "y": 520,
+      "width": 400,
+      "height": 80,
+      "backgroundColor": "#f8fafc",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "type": "text",
+      "id": "sig_hint",
+      "x": 185,
+      "y": 545,
+      "text": "[ Sign here using your mouse or touch ]",
+      "fontSize": 12,
+      "strokeColor": "#94a3b8"
+    },
+    {
+      "type": "rectangle",
+      "id": "clear_btn",
+      "x": 490,
+      "y": 520,
+      "width": 80,
+      "height": 32,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "clear_btn_text",
+      "x": 510,
+      "y": 528,
+      "text": "Clear",
+      "fontSize": 12,
+      "strokeColor": "#475569"
+    },
+    {
+      "type": "text",
+      "id": "date_label",
+      "x": 75,
+      "y": 618,
+      "text": "Date: March 20, 2026 (auto-filled)",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "rectangle",
+      "id": "next_btn",
+      "x": 75,
+      "y": 645,
+      "width": 200,
+      "height": 44,
+      "backgroundColor": "#2563eb",
+      "strokeColor": "#1d4ed8"
+    },
+    {
+      "type": "text",
+      "id": "next_btn_text",
+      "x": 105,
+      "y": 659,
+      "text": "Sign and Continue",
+      "fontSize": 14,
+      "strokeColor": "#FFFFFF"
+    },
+    {
+      "type": "rectangle",
+      "id": "sidebar",
+      "x": 630,
+      "y": 195,
+      "width": 250,
+      "height": 300,
+      "backgroundColor": "#f8fafc",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "x": 650,
+      "y": 210,
+      "text": "Required Waivers",
+      "fontSize": 15,
+      "strokeColor": "#1e293b"
+    },
+    {
+      "type": "text",
+      "id": "waiver_1_status",
+      "x": 650,
+      "y": 248,
+      "text": "General Activity Waiver",
+      "fontSize": 13,
+      "strokeColor": "#2563eb"
+    },
+    {
+      "type": "text",
+      "id": "waiver_1_sub",
+      "x": 650,
+      "y": 268,
+      "text": "In progress...",
+      "fontSize": 11,
+      "strokeColor": "#64748b"
+    },
+    {
+      "type": "text",
+      "id": "waiver_2_status",
+      "x": 650,
+      "y": 305,
+      "text": "High-Risk Activity Addendum",
+      "fontSize": 13,
+      "strokeColor": "#94a3b8"
+    },
+    {
+      "type": "text",
+      "id": "waiver_2_sub",
+      "x": 650,
+      "y": 325,
+      "text": "Pending",
+      "fontSize": 11,
+      "strokeColor": "#94a3b8"
+    },
+    {
+      "type": "rectangle",
+      "id": "docusign_badge",
+      "x": 650,
+      "y": 455,
+      "width": 180,
+      "height": 28,
+      "backgroundColor": "#FFFFFF",
+      "strokeColor": "#e2e8f0"
+    },
+    {
+      "type": "text",
+      "id": "docusign_text",
+      "x": 665,
+      "y": 461,
+      "text": "Verified by DocuSign",
+      "fontSize": 12,
+      "strokeColor": "#64748b"
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#f1f5f9"
+  }
+}

@@ -30,13 +30,13 @@ This application interacts with **10 microservices** across 7 screens.
 
 | Screen | Services | Wireframe | Description |
 |--------|----------|-----------|-------------|
-| [Trip Browser](#trip-browser) | `svc-media-gallery`, `svc-trail-management`, `svc-trip-catalog`, `svc-weather` | -- | Search and explore available adventures with trail info, weather forecasts, and ... |
-| [Booking Flow](#booking-flow) | `svc-guest-profiles`, `svc-payments`, `svc-reservations`, `svc-trip-catalog` + Stripe API | -- | End-to-end reservation flow from trip selection through payment confirmation.... |
-| [Guest Profile](#guest-profile) | `svc-guest-profiles`, `svc-loyalty-rewards`, `svc-reservations` | -- | View and edit guest profile, certifications, past adventures, and loyalty tier.... |
-| [Reservation Management](#reservation-management) | `svc-notifications`, `svc-payments`, `svc-reservations` | -- | View, modify, or cancel existing reservations and process refunds.... |
-| [Loyalty Dashboard](#loyalty-dashboard) | `svc-guest-profiles`, `svc-loyalty-rewards` | -- | View loyalty points balance, tier status, transaction history, and available rew... |
-| [Waiver Signing](#waiver-signing) | `svc-guest-profiles`, `svc-notifications`, `svc-safety-compliance` + DocuSign API | -- | Review and digitally sign safety waivers before trip departure.... |
-| [Trip Gallery](#trip-gallery) | `svc-media-gallery`, `svc-notifications`, `svc-reservations` | -- | Browse and share photos and videos from past adventures.... |
+| [Trip Browser](#trip-browser) | `svc-media-gallery`, `svc-trail-management`, `svc-trip-catalog`, `svc-weather` | [:material-pencil-ruler: View](wireframes/trip-browser/) | Search and explore available adventures with trail info, weather forecasts, and ... |
+| [Booking Flow](#booking-flow) | `svc-guest-profiles`, `svc-payments`, `svc-reservations`, `svc-trip-catalog` + Stripe API | [:material-pencil-ruler: View](wireframes/booking-flow/) | End-to-end reservation flow from trip selection through payment confirmation.... |
+| [Guest Profile](#guest-profile) | `svc-guest-profiles`, `svc-loyalty-rewards`, `svc-reservations` | [:material-pencil-ruler: View](wireframes/guest-profile/) | View and edit guest profile, certifications, past adventures, and loyalty tier.... |
+| [Reservation Management](#reservation-management) | `svc-notifications`, `svc-payments`, `svc-reservations` | [:material-pencil-ruler: View](wireframes/reservation-management/) | View, modify, or cancel existing reservations and process refunds.... |
+| [Loyalty Dashboard](#loyalty-dashboard) | `svc-guest-profiles`, `svc-loyalty-rewards` | [:material-pencil-ruler: View](wireframes/loyalty-dashboard/) | View loyalty points balance, tier status, transaction history, and available rew... |
+| [Waiver Signing](#waiver-signing) | `svc-guest-profiles`, `svc-notifications`, `svc-safety-compliance` + DocuSign API | [:material-pencil-ruler: View](wireframes/waiver-signing/) | Review and digitally sign safety waivers before trip departure.... |
+| [Trip Gallery](#trip-gallery) | `svc-media-gallery`, `svc-notifications`, `svc-reservations` | [:material-pencil-ruler: View](wireframes/trip-gallery/) | Browse and share photos and videos from past adventures.... |
 
 ---
 
@@ -45,6 +45,8 @@ This application interacts with **10 microservices** across 7 screens.
 ### Trip Browser
 
 > Search and explore available adventures with trail info, weather forecasts, and photo galleries.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/trip-browser/)**
 
 **API Dependencies:**
 
@@ -65,6 +67,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 > End-to-end reservation flow from trip selection through payment confirmation.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/booking-flow/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -84,6 +88,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 > View and edit guest profile, certifications, past adventures, and loyalty tier.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/guest-profile/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -101,6 +107,8 @@ This application interacts with **10 microservices** across 7 screens.
 ### Reservation Management
 
 > View, modify, or cancel existing reservations and process refunds.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/reservation-management/)**
 
 **API Dependencies:**
 
@@ -121,6 +129,8 @@ This application interacts with **10 microservices** across 7 screens.
 
 > View loyalty points balance, tier status, transaction history, and available rewards.
 
+:material-pencil-ruler: **[View Wireframe](wireframes/loyalty-dashboard/)**
+
 **API Dependencies:**
 
 | Method | Endpoint | Service | Purpose |
@@ -137,6 +147,8 @@ This application interacts with **10 microservices** across 7 screens.
 ### Waiver Signing
 
 > Review and digitally sign safety waivers before trip departure.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/waiver-signing/)**
 
 **API Dependencies:**
 
@@ -156,6 +168,8 @@ This application interacts with **10 microservices** across 7 screens.
 ### Trip Gallery
 
 > Browse and share photos and videos from past adventures.
+
+:material-pencil-ruler: **[View Wireframe](wireframes/trip-gallery/)**
 
 **API Dependencies:**
 
