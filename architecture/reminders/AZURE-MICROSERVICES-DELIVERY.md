@@ -55,11 +55,34 @@ Code, test, and deploy all 22 NovaTrek microservices to Azure Container Apps. Ev
 - Target idle cost: $5/mo (ACR only)
 - Target light-usage cost: $25-30/mo
 
+## Post-Deployment Validation (2026-03-20)
+
+### Health Check Results
+
+All 21 services validated healthy via `/actuator/health` endpoint (21/21 PASS).
+
+### Issues Found and Resolved
+
+1. **Password authentication failure** — All 21 services were in crash loop. Root cause: per-service DB users from `infra/db/setup-schema-isolation.sql` were never created, and the admin password in Key Vault was out of sync with the PostgreSQL server.
+2. **Fix applied** — Reset admin password via `az postgres flexible-server update --admin-password`, then updated all 21 Container Apps to use admin credentials (`novatrekadmin`) instead of per-service users. All services confirmed healthy after fix.
+3. **Swagger UI** — Returns 404 on all services. No SpringDoc dependency in any `build.gradle.kts`. This is a separate enhancement if desired.
+
+### Known Technical Debt
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Per-service DB users | NOT CREATED | `setup-schema-isolation.sql` never executed. All services use admin credentials. Port 5432 blocked by ISP — use Azure Cloud Shell to run SQL. |
+| Temp firewall rule | ACTIVE | `temp-admin-access` (50.230.6.6) on PostgreSQL server. Can be removed. |
+| SpringDoc/Swagger UI | MISSING | No `springdoc-openapi-starter-webmvc-ui` dependency in any service |
+| service-cd.yml | FRAGILE | CD workflow does not preserve `SPRING_DATASOURCE_USERNAME`/`SPRING_DATASOURCE_PASSWORD` env vars on redeploy |
+
 ## Next Steps
 
-1. Write tests for Wave 7 services (svc-reviews, svc-adventure-tracking, svc-referral-engine, svc-campaign-management)
-2. Build and deploy Wave 7 to ACA
-3. Validate health checks and Swagger UI across all 21 deployed services
+1. Create per-service DB users (run `setup-schema-isolation.sql` via Azure Cloud Shell)
+2. Update Container Apps to use per-service credentials
+3. Fix `service-cd.yml` to preserve DB credential env vars on deploy
+4. Write tests for Wave 7 services (svc-reviews, svc-adventure-tracking, svc-referral-engine, svc-campaign-management)
+5. Build and deploy Wave 7 to ACA
 
 ## Deployed Container Apps
 
