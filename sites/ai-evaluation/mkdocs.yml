@@ -62,8 +62,6 @@ nav:
   - Decision Log: decision-log.md
 
 extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/christopherblaisdell/continuous-architecture-platform-poc
+  social: []
 
 copyright: NovaTrek Adventures -- AI Toolchain Evaluation

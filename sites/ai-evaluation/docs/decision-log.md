@@ -1,34 +1,33 @@
 # Decision Log
 
-## ADR-001: AI Toolchain Selection for Architecture Practice
+## ADR-001: AI Toolchain Selection for Architecture Workflows
 
 | | |
 |-----------|-------|
 | **Status** | ACCEPTED |
 | **Date** | 2026-03-01 |
 | **Last Updated** | 2026-03-22 |
-| **Decision Makers** | Christopher Blaisdell, Architecture Practice |
 | **Phase** | Phase 1 -- AI Tool Cost Comparison |
 
 ---
 
 ## Context and Problem Statement
 
-The Architecture Practice needs AI-assisted tooling to accelerate solution architecture workflows -- from ticket triage and investigation through solution design, review, and publishing. Three viable options exist. We need to select one as the standard toolchain for the practice, balancing cost, quality, standards compliance, and operational fit.
+Architecture teams evaluating AI-assisted tooling for solution architecture workflows -- from ticket triage and investigation through solution design, review, and publishing -- face a choice among several viable options. The selection must balance cost, quality, standards compliance, and operational fit.
 
-**Which AI toolchain should the Architecture Practice adopt for AI-assisted solution architecture work?**
+**Which AI toolchain best supports AI-assisted solution architecture work?**
 
 ---
 
 ## Decision Drivers
 
-- **Monthly cost per architect seat**: The practice has multiple architects; per-seat cost must be defensible to leadership
+- **Monthly cost per architect seat**: Per-seat cost must be justifiable for a multi-architect team
 - **Architecture output quality**: AI-generated artifacts must meet arc42, C4, and MADR standards without excessive manual correction
-- **Standards compliance**: The toolchain must be configurable to enforce organizational architecture standards automatically
-- **Workflow integration**: The toolchain must integrate with the existing VS Code-based architecture workflow
+- **Standards compliance**: The toolchain must be configurable to enforce architecture standards automatically
+- **Workflow integration**: The toolchain must integrate with a VS Code-based architecture workflow
 - **Extensibility**: The toolchain must support future pipeline integration (Phase 3) and custom tooling
 - **Model flexibility**: The ability to select and switch between LLM models as pricing and capabilities evolve
-- **Corporate governance**: The toolchain must operate within corporate security, procurement, and data handling policies
+- **Corporate governance**: The toolchain must operate within typical enterprise security, procurement, and data handling policies
 - **Architecture reliability**: The toolchain must handle complex tool calls, error responses, and long sessions without cascading failures
 
 ---
@@ -153,7 +152,7 @@ The Architecture Practice needs AI-assisted tooling to accelerate solution archi
 
 **Selected option: Option B -- GitHub Copilot Pro+**
 
-GitHub Copilot is selected as the standard AI toolchain for the Architecture Practice based on:
+GitHub Copilot is recommended as the primary AI toolchain for architecture workflows based on:
 
 1. **Cost:** 208x cheaper per run than Roo Code + OpenRouter ($0.48 vs ~$100), using the same underlying model
 2. **Quality:** 96.1% quality score across all 5 evaluation scenarios (149/155)
@@ -174,7 +173,7 @@ Claude Code remains under evaluation as a potential **complement** for specific 
 ### Positive
 
 - 96.1% quality across all scenarios with minimal manual correction
-- $39/month predictable budget per architect seat
+- $39/month predictable budget per seat
 - Zero infrastructure maintenance (no gateway, no vector database)
 - Autonomous multi-step execution reduces architect time per scenario
 - Deep GitHub ecosystem integration for PR reviews and repository context
