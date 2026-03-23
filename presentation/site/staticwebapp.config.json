@@ -1,0 +1,15 @@
+{
+  "routes": [
+    {
+      "route": "/*",
+      "redirect": "https://architecture.novatrek.cc/",
+      "statusCode": 302
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "redirect": "https://architecture.novatrek.cc/",
+      "statusCode": 302
+    }
+  }
+}
