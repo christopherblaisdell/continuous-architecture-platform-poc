@@ -20,15 +20,35 @@ The Roo Code + Kong stack is a three-layer architecture: VS Code extension (clie
 
 ### No Built-In Workspace Indexing
 
-Roo Code does not index the workspace. To get codebase search capabilities, the architect must:
+Roo Code does not index the workspace. The settings UI displays a "Codebase Indexing" checkbox, but it is **greyed out by default** because it depends on external infrastructure that must be provisioned separately:
 
-1. Choose and configure an external embedding provider (OpenAI, Google Gemini, or Ollama)
-2. Provision a Qdrant vector database (Docker container or Qdrant Cloud)
-3. Maintain real-time synchronization between workspace files and the vector index
+1. Choose and configure an **external embedding provider** (OpenAI, Google Gemini, or Ollama) — requires an API key and endpoint
+2. Provision a **Qdrant vector database** (Docker container or Qdrant Cloud instance)
+3. Maintain **real-time synchronization** between workspace files and the vector index
+
+Until both the embedding provider and Qdrant are configured and reachable, the checkbox remains disabled. This is not a bug — it is a design constraint of the BYOI (Bring Your Own Infrastructure) model.
 
 Without this infrastructure, the AI has no awareness of the workspace beyond what the user explicitly tells it to read. In practice, this means manually specifying files in the Roo Code window every time a task starts.
 
-Even with Qdrant configured, Roo Code does not automatically synthesize backend context. The LLM must recognize its own knowledge deficit and explicitly invoke a `codebase_search` tool call. If it does not realize it needs context, it proceeds without it -- and fabricates.
+### Why Roo Code Indexing Is Not Equivalent to Copilot's Context Awareness
+
+Even with Qdrant fully configured, Roo Code's workspace indexing is architecturally weaker than Copilot's server-side indexing in several critical ways:
+
+| Aspect | GitHub Copilot | Roo Code + Qdrant |
+|--------|----------------|--------------------|
+| **Setup** | Zero — automatic on workspace open | Manual — provision Qdrant, configure embedding provider, maintain sync |
+| **Index location** | GitHub servers (fully managed) | Local Docker or Qdrant Cloud (user maintains) |
+| **Index trigger** | Automatic on workspace open and file changes | Manual configuration; sync must be maintained |
+| **Retrieval trigger** | Proactive — Copilot injects relevant context before the model starts reasoning | Reactive — the LLM must issue an explicit `codebase_search` tool call |
+| **Context curation** | Server-side — sends curated snippets, not full files | Raw search results returned to client, counted against token budget |
+| **Cost of retrieval** | Free — tool calls (including search) are not billed | Billed — every search result adds tokens to the context window, increasing per-turn cost |
+| **Failure mode** | Graceful — model has context even if it does not explicitly request it | Silent fabrication — if the model does not realize it needs context, it proceeds without it and hallucinates |
+
+The critical gap is the **proactive vs. reactive** distinction. Copilot's server-side index automatically injects relevant workspace context into the model's prompt window before reasoning begins. The model does not need to know it is missing something — the infrastructure ensures it has what it needs.
+
+Roo Code's indexing, even when fully operational, requires the LLM to **recognize its own knowledge deficit** and explicitly invoke a `codebase_search` tool call. If it does not realize it needs context, it proceeds without it — and fabricates. This is a fundamental architectural limitation: the model must be self-aware about what it does not know, which is precisely the scenario where LLMs perform worst.
+
+Additionally, every search result returned by Qdrant is injected into the client-side context window and **billed at full token rates** on every subsequent turn. Copilot's server-side retrieval is free — it never enters the billing pipeline.
 
 ### Client-Side Context Accumulation
 
