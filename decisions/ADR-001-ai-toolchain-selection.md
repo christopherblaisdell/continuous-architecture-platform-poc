@@ -2,9 +2,9 @@
 
 | | |
 |-----------|-------|
-| **Status** | PROPOSED |
+| **Status** | ACCEPTED |
 | **Date** | 2026-03-01 |
-| **Last Updated** | 2026-03-04 |
+| **Last Updated** | 2026-07-24 |
 | **Decision Makers** | Christopher Blaisdell, Architecture Practice |
 | **Phase** | Phase 1 - AI Tool Cost Comparison |
 
@@ -53,6 +53,39 @@ Monthly Cost Per Seat =
 - Requires internal Kong AI team to maintain the gateway
 - No built-in ecosystem (no GitHub integration, no PR review, no code suggestions outside of chat)
 - Configuration complexity — custom instructions require ongoing maintenance
+
+### Option C: Claude Code (Direct API)
+
+**Description:** Claude Code is Anthropic's first-party CLI and VS Code extension for AI-assisted development. It connects directly to the Anthropic API (or AWS Bedrock) without any translation gateway. It supports autonomous multi-step execution, MCP tool integration, and custom instruction files (CLAUDE.md).
+
+**Pricing model:** Usage-based via Anthropic API or AWS Bedrock. Alternatively available through a Max subscription ($100/month or $200/month) with included usage allowances.
+
+**Cost formula:**
+```
+Monthly Cost Per Seat =
+  Max subscription ($100 or $200)
+  — OR —
+  (Monthly Input Tokens x API Input Price)
+  + (Monthly Output Tokens x API Output Price)
+```
+
+**Strengths:**
+- Direct API connection — no translation layer means zero gateway-induced failures
+- Full autonomous execution with tool use, file editing, and terminal commands
+- CLAUDE.md instruction system at project and user levels — similar to Copilot's copilot-instructions.md
+- MCP support enables the same mock tool integration tested with Roo Code
+- Extended thinking mode provides transparent reasoning chains
+- Sub-agent spawning for parallel research tasks
+- Model quality benefits from using Claude directly without intermediary prompt transformations
+- Max subscription provides predictable cost ceiling ($100-200/month)
+
+**Weaknesses:**
+- No built-in GitHub integration (no PR reviews, no repository-level context indexing)
+- CLI-first design — VS Code extension is newer and less mature than Copilot's
+- No inline code suggestions (chat/agent only)
+- Anthropic is a smaller company than Microsoft/GitHub — enterprise support and compliance commitments are less established
+- Max subscription tiers may not include sufficient usage for heavy architecture workloads
+- No workspace-wide semantic indexing — relies on explicit file reads and search
 
 ### Option B: GitHub Copilot (Business or Enterprise)
 
@@ -108,7 +141,11 @@ See [phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md](../phase-1
 
 ## Decision Outcome
 
-**Selected option:** TBD — pending Roo Code quality scoring for final comparison
+**Selected option: Option B — GitHub Copilot Pro+**
+
+GitHub Copilot Pro+ is the primary AI toolchain for the Architecture Practice. It delivered 96.1% quality (149/155) across all 5 evaluation scenarios at $0.48 per run — 208x cheaper than Roo Code + OpenRouter. The flat-rate pricing ($39/month) provides budget predictability, and the deep GitHub integration supports the existing VS Code-based workflow.
+
+**Claude Code disposition:** Claude Code is recognized as a potential complement to Copilot for specific use cases (deep research, complex multi-step reasoning). A limited spike (SC-02 + SC-03) is planned to validate this hypothesis. If the spike confirms complementary value, Claude Code may be adopted alongside Copilot in a hybrid configuration — not as a replacement.
 
 GitHub Copilot (Claude Opus 4.6, Agent Mode) and Roo Code (Claude Opus 4.6, OpenRouter) Phase 1 executions are complete. Actual billing data has been collected. The table below is populated with actual costs and run 001 Copilot quality scores.
 
@@ -215,7 +252,7 @@ A toolchain switch after Phase 2 would require significant rework. This makes Ph
 
 ### Hybrid Approach
 
-It is possible that the evaluation reveals complementary strengths (e.g., Copilot for code-level suggestions, Roo Code + Kong AI for architecture-level generation). If the data supports it, a hybrid recommendation may be appropriate, though this increases operational complexity.
+Claude Code (Option C) is identified as a potential complement to Copilot for architecture workflows requiring deep multi-step reasoning or extended context. A limited spike covering SC-02 (Current State Investigation) and SC-03 (Solution Design) will validate whether Claude Code provides additional value beyond what Copilot delivers. If confirmed, the practice may adopt a hybrid configuration: Copilot as the primary toolchain with Claude Code for targeted deep-analysis tasks.
 
 ## Links
 
