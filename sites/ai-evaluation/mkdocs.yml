@@ -4,6 +4,7 @@ site_description: Comparative evaluation of AI toolchains for enterprise archite
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
