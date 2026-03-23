@@ -36,6 +36,7 @@ This means a 4-prompt session triggering 50+ autonomous tool calls costs:
 | Model | Multiplier | Cost per Prompt | Notes |
 |-------|-----------|-----------------|-------|
 | GPT-4.1, GPT-4o | 0x | $0 | Unlimited, included |
+| Claude Sonnet 4, o4-mini, Gemini 2.5 Pro | 1x | $0.04 | Standard premium models |
 | Claude Opus 4.6 | 3x | $0.12 | Standard inference speed |
 | Claude Opus 4.6 fast (preview) | 30x | $1.20 | 2.5x faster inference; 9x promotional rate expired Feb 16, 2026 |
 

@@ -166,6 +166,7 @@ GitHub Copilot bills per **user prompt**, not per model invocation. In Agent Mod
 | Model | Multiplier | Cost per User Prompt |
 |-------|-----------|----------------------|
 | GPT-4.1, GPT-4o | 0x | $0 (included, unlimited) |
+| Claude Sonnet 4, o4-mini, Gemini 2.5 Pro | 1x | $0.04 |
 | Claude Opus 4.6 | 3x | $0.12 |
 | Claude Opus 4.6 fast (preview) | 30x | $1.20 |
 
