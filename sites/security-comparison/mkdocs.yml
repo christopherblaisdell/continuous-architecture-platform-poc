@@ -1,0 +1,63 @@
+site_name: Security Comparison -- Docs-as-Code vs. Confluence
+site_url: https://security.novatrek.cc
+site_description: Evidence-based security comparison demonstrating that a docs-as-code pipeline (Git + MkDocs + CI/CD + Azure Static Web Apps) provides stronger security controls than Confluence Cloud
+
+theme:
+  name: material
+  custom_dir: overrides
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: red
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: red
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - footnotes
+
+nav:
+  - Home: index.md
+  - Security Comparison: security-comparison.md
+  - Pipeline Security Gates: pipeline-security-gates.md
+  - Headers and Attack Surface: headers-and-attack-surface.md
+  - Access Control and Audit: access-control-and-audit.md
+  - Data Protection: data-protection.md
+  - Research:
+    - Research Prompt: research-prompt.md
+    - Research Results: research-prompt-response.md
+
+extra:
+  social: []
+
+copyright: NovaTrek Adventures -- Security Comparison

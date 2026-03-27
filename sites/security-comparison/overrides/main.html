@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="disclaimer-banner" class="disclaimer-banner">
+  <div class="disclaimer-banner__inner">
+    <strong>DISCLAIMER -- Synthetic Environment</strong> &mdash;
+    This security comparison was produced within a proof-of-concept workspace using entirely synthetic data.
+    The &ldquo;NovaTrek Adventures&rdquo; domain is fictional. All JIRA, Elasticsearch, and GitLab references are
+    local mock scripts &mdash; no real corporate systems were accessed. The security analysis, citations, and
+    framework references (NIST, CISA, OWASP, SLSA) are real and independently verifiable, but the platform
+    implementation described is a demonstration, not a production deployment.
+    <button class="disclaimer-banner__close" onclick="dismissBanner()" aria-label="Dismiss banner">&times;</button>
+  </div>
+</div>
+{{ super() }}
+{% endblock %}
+
+{% block extrahead %}
+<style>
+.disclaimer-banner {
+  background: #b71c1c;
+  color: #fff;
+  padding: .75rem 1rem;
+  font-size: .85rem;
+  line-height: 1.6;
+  position: relative;
+  z-index: 10;
+  border-bottom: 3px solid #ff5252;
+}
+[data-md-color-scheme="slate"] .disclaimer-banner {
+  background: #c62828;
+  border-bottom-color: #ff8a80;
+}
+.disclaimer-banner__inner {
+  max-width: 61rem;
+  margin: 0 auto;
+  padding-right: 2rem;
+}
+.disclaimer-banner a {
+  color: #ffb74d;
+  text-decoration: underline;
+}
+.disclaimer-banner__close {
+  position: absolute;
+  top: .4rem;
+  right: .8rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: .2rem .4rem;
+  opacity: .7;
+}
+.disclaimer-banner__close:hover {
+  opacity: 1;
+}
+</style>
+<script>
+(function() {
+  var KEY = "disclaimer-banner-dismissed";
+  var HOURS = 24;
+  var ts = localStorage.getItem(KEY);
+  if (ts && (Date.now() - parseInt(ts, 10)) < HOURS * 3600000) return;
+  document.addEventListener("DOMContentLoaded", function() {
+    var el = document.getElementById("disclaimer-banner");
+    if (el) el.style.display = "block";
+  });
+})();
+function dismissBanner() {
+  localStorage.setItem("disclaimer-banner-dismissed", Date.now().toString());
+  var el = document.getElementById("disclaimer-banner");
+  if (el) el.style.display = "none";
+}
+</script>
+{% endblock %}
