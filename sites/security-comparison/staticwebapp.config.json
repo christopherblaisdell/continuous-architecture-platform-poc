@@ -26,6 +26,7 @@
     ".json": "application/json"
     // Authentication configured for email-based access control
     // Trigger deployment after adding GitHub secret
+    // Final deployment trigger
   },
   "routes": [
     {
