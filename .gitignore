@@ -12,6 +12,9 @@ build/
 # PowerPoint temp files
 ~$*.pptx
 
+# Cloudflare credentials
+#CLOUDFLARE-API-KEY.md
+
 # Reference repos (cloned for skill adaptation, not our code)
 everything-claude-code/
 claude-skills/
