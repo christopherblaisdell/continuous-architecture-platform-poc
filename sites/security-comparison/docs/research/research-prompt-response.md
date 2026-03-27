@@ -1,6 +1,6 @@
 # Authoritative Security Assessment: Docs-as-Code vs. Dynamic Wiki Platforms
 
-This page contains the full output from an AI deep research prompt (see [Security Research Prompt](research-prompt.md)), enriched with authoritative citations from NIST, CISA, OWASP, SLSA, Gartner, and vendor security advisories. The key findings are integrated into the other security documentation pages with direct source links.
+This page contains the full output from an AI deep research prompt, enriched with authoritative citations from NIST, CISA, OWASP, SLSA, Gartner, and vendor security advisories. The key findings are integrated into the other security documentation pages with direct source links.
 
 ---
 

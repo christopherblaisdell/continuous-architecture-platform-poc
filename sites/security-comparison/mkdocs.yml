@@ -54,8 +54,7 @@ nav:
   - Access Control and Audit: access-control-and-audit.md
   - Data Protection: data-protection.md
   - Research:
-    - Research Prompt: research-prompt.md
-    - Research Results: research-prompt-response.md
+    - Research Results: research/research-prompt-response.md
 
 extra:
   social: []
