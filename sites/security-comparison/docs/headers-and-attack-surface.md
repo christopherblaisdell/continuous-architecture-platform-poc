@@ -4,7 +4,7 @@ The NovaTrek Architecture Portal is a static site — pre-rendered HTML, CSS, an
 
 [NIST SP 800-123](https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-123.pdf) (Guide to General Server Security) and [SP 800-95](https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-95.pdf) (Guide to Secure Web Services) strongly emphasize minimizing server-side execution and reducing the footprint of web-hosted content. The static delivery model aligns directly with this federal guidance, transitioning the threat model from defending a persistently running application to serving immutable files via a CDN.
 
-For the complete evidence base, see [Research Results](research-prompt-response.md).
+For the complete evidence base, see [Research Results](research/research-prompt-response.md).
 
 ---
 

@@ -2,7 +2,7 @@
 
 This page compares how access control and audit trails work in Confluence vs. the docs-as-code model. The core argument: Git's cryptographic commit chain and GitHub's branch protection rules provide stronger, more granular, and more tamper-resistant controls than Confluence's page-level permissions and page history.
 
-For the complete evidence base with NIST SP 800-53 control mappings and forensic analysis, see [Research Results](research-prompt-response.md), Sections 4 and 6.
+For the complete evidence base with NIST SP 800-53 control mappings and forensic analysis, see [Research Results](research/research-prompt-response.md), Sections 4 and 6.
 
 ---
 

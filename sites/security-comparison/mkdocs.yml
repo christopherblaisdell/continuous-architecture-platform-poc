@@ -1,5 +1,5 @@
 site_name: Security Comparison -- Docs-as-Code vs. Confluence
-site_url: https://security.novatrek.cc
+site_url: https://docsascode-security.novatrek.cc
 site_description: Evidence-based security comparison demonstrating that a docs-as-code pipeline (Git + MkDocs + CI/CD + Azure Static Web Apps) provides stronger security controls than Confluence Cloud
 
 theme:

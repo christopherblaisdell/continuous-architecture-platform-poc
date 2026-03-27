@@ -2,7 +2,7 @@
 
 A side-by-side evaluation of security controls across 12 dimensions. For each dimension, we assess whether Confluence or the docs-as-code model (Git + MkDocs + CI/CD + Azure Static Web Apps) provides stronger guarantees.
 
-For the complete evidence base with 78 authoritative citations, see [Research Results](research-prompt-response.md).
+For the complete evidence base with 78 authoritative citations, see [Research Results](research/research-prompt-response.md).
 
 ---
 
@@ -237,7 +237,7 @@ A failure to apply a Confluence patch within 24 hours of release has historicall
 
 ## Architectural Component Comparison
 
-This table maps each architectural layer to its security implications. Source: [Research Results](research-prompt-response.md), Section 2.3.
+This table maps each architectural layer to its security implications. Source: [Research Results](research/research-prompt-response.md), Section 2.3.
 
 | Component | Confluence (Dynamic Wiki) | Docs-as-Code (MkDocs + Azure SWA) | Security Implication |
 |-----------|--------------------------|-----------------------------------|---------------------|

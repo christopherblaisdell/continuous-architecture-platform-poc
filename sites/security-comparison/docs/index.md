@@ -61,4 +61,4 @@ This assessment was produced using AI-assisted deep research (GitHub Copilot wit
 - **Microsoft** -- Azure Static Web Apps security documentation
 - **Gartner, Forrester** -- industry analyst recommendations
 
-The full evidence base with all citations is available in [Research Results](research-prompt-response.md).
+The full evidence base with all citations is available in [Research Results](research/research-prompt-response.md).

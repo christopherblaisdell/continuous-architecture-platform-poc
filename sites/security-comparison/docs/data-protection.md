@@ -2,7 +2,7 @@
 
 This page documents the data protection controls in the NovaTrek docs-as-code pipeline — how sensitive data is prevented from reaching the published site, how secrets are detected and blocked, and how data sovereignty is maintained.
 
-For the complete evidence base including GitGuardian statistics and data residency analysis, see [Research Results](research-prompt-response.md), Sections 5 and 10.
+For the complete evidence base including GitGuardian statistics and data residency analysis, see [Research Results](research/research-prompt-response.md), Sections 5 and 10.
 
 ---
 

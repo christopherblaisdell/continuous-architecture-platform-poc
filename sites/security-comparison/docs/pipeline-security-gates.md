@@ -2,7 +2,7 @@
 
 Every piece of content published to the NovaTrek Architecture Portal passes through a series of automated security gates in the CI/CD pipeline. No content can reach production without passing all gates. This is fundamentally different from wiki-based platforms where content is published the moment an author clicks "Save."
 
-For the complete evidence base including NIST, SLSA, and OWASP citations, see [Research Results](research-prompt-response.md).
+For the complete evidence base including NIST, SLSA, and OWASP citations, see [Research Results](research/research-prompt-response.md).
 
 ---
 
