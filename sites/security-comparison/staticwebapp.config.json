@@ -37,30 +37,11 @@
       "headers": {
         "Cache-Control": "public, max-age=3600"
       }
-    },
-    {
-      "route": "/*",
-      "allowedRoles": ["authenticated"]
     }
   ],
   "responseOverrides": {
-    "401": {
-      "redirect": "/.auth/login/aad?post_login_redirect_uri=/",
-      "statusCode": 302
-    },
     "404": {
       "rewrite": "/404.html"
-    }
-  },
-  "auth": {
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "registration": {
-          "openIdIssuer": "https://login.microsoftonline.com/ffe15359-1529-485f-9ba2-f339d1ec58da/v2.0",
-          "clientIdSettingName": "AUTH_AAD_CLIENT_ID",
-          "clientSecretSettingName": "AUTH_AAD_CLIENT_SECRET"
-        }
-      }
     }
   }
 }
