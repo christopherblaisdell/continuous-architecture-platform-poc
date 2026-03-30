@@ -40,7 +40,7 @@
     },
     {
       "route": "/*",
-      "allowedRoles": ["security-whitelist"]
+      "allowedRoles": ["authenticated"]
     }
   ],
   "responseOverrides": {
