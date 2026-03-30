@@ -17,10 +17,12 @@ When providing GitHub URLs in responses:
 - Verify the URL structure matches GitHub's official documentation
 - Do not include anchor links (#section) unless the user specifically requests a section
 - Test URLs mentally before providing them
+- Always use the exact repository name as it appears in the URL
 
 ## Common Mistakes to Avoid
 - Adding `#2` or other fragments to settings URLs
 - Using incorrect paths like `/settings/secrets` instead of `/settings/secrets/actions`
 - Providing links to non-existent pages
+- Truncating or modifying the repository name in URLs
 
 This instruction ensures all GitHub URLs provided are accurate and functional.
