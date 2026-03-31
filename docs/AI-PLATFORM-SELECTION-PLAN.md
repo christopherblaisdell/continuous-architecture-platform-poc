@@ -354,6 +354,18 @@ Weights are distributed across 100 points. The allocation below is the **startin
 | F-12 | Scalability across teams | **2%** | Matters when the practice grows beyond the current team |
 | | **TOTAL** | **100%** | |
 
+### Stakeholder Weight Review (REQUIRED)
+
+NOTE: These weights are the **architect's starting proposal only**. They have NOT been reviewed or ratified by the broader decision-making stakeholders. Before final scoring, all stakeholders who will be affected by this decision must have the opportunity to adjust the weight allocation. Different roles may have materially different priorities (e.g., engineering leadership may weight cost and operational burden higher; security may weight governance higher; individual architects may weight workflow integration higher).
+
+**Process for stakeholder input:**
+
+1. Circulate this factor/weight table to all stakeholders
+2. Each stakeholder independently distributes 100 points across the 12 factors
+3. Average the distributions (or discuss divergences to reach consensus)
+4. Lock the consensus weights before any scoring begins
+5. Document who participated and the final agreed weights
+
 ### Weight Adjustment Process
 
 Before scoring, the decision-making stakeholders should:
