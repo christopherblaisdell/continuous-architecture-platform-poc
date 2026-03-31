@@ -8,9 +8,9 @@
 
 ## Purpose
 
-This document catalogs every significant decision point an architecture practice faces when incorporating AI into its workflows. Each decision is classified by status (decided, open, or emerging) and cross-referenced to the evidence or ADR that informed it.
+This document catalogs every significant decision point an architecture practice faces when incorporating AI into its workflows. Each decision is classified by status (recommendation draft, under evaluation, or open) and cross-referenced to the evidence or ADR that informed it.
 
-This is not an ADR — it is a **decision map** that shows the full landscape of choices, which ones have been made, which are still open, and which the practice has not yet confronted.
+This is not an ADR — it is a **decision map** that shows the full landscape of choices, which ones currently have recommendation drafts, which are under evaluation, and which remain open.
 
 ---
 
@@ -18,24 +18,24 @@ This is not an ADR — it is a **decision map** that shows the full landscape of
 
 | # | Decision Point | Category | Status |
 |---|---------------|----------|--------|
-| DP-01 | [Buy vs Build](#dp-01-buy-vs-build) | Strategy | Decided (Hybrid) |
-| DP-02 | [Billing Model: Intent-Based vs Raw Token](#dp-02-billing-model-intent-based-vs-raw-token) | Cost | Decided |
-| DP-03 | [AI Toolchain Selection](#dp-03-ai-toolchain-selection) | Tooling | Decided |
-| DP-04 | [Single Tool vs Multi-Tool Strategy](#dp-04-single-tool-vs-multi-tool-strategy) | Tooling | Partially Decided |
-| DP-05 | [Standards Enforcement: Advisory vs Deterministic](#dp-05-standards-enforcement-advisory-vs-deterministic) | Governance | Partially Decided |
+| DP-01 | [Buy vs Build](#dp-01-buy-vs-build) | Strategy | Recommendation Draft (Hybrid) |
+| DP-02 | [Billing Model: Intent-Based vs Raw Token](#dp-02-billing-model-intent-based-vs-raw-token) | Cost | Recommendation Draft |
+| DP-03 | [AI Toolchain Selection](#dp-03-ai-toolchain-selection) | Tooling | Recommendation Draft |
+| DP-04 | [Single Tool vs Multi-Tool Strategy](#dp-04-single-tool-vs-multi-tool-strategy) | Tooling | Under Evaluation |
+| DP-05 | [Standards Enforcement: Advisory vs Deterministic](#dp-05-standards-enforcement-advisory-vs-deterministic) | Governance | Under Evaluation |
 | DP-06 | [AI Autonomy Level: Human-in-the-Loop vs Autonomous](#dp-06-ai-autonomy-level-human-in-the-loop-vs-autonomous) | Governance | Open |
-| DP-07 | [Knowledge Curation: Monolith vs Modular Instructions](#dp-07-knowledge-curation-monolith-vs-modular-instructions) | Knowledge | Partially Decided |
-| DP-08 | [AI Skill Library: Build vs Adapt Community](#dp-08-ai-skill-library-build-vs-adapt-community) | Knowledge | In Progress |
-| DP-09 | [Context Enrichment Strategy](#dp-09-context-enrichment-strategy) | Architecture | Decided |
-| DP-10 | [Vendor Lock-In vs Portability](#dp-10-vendor-lock-in-vs-portability) | Strategy | Partially Decided |
+| DP-07 | [Knowledge Curation: Monolith vs Modular Instructions](#dp-07-knowledge-curation-monolith-vs-modular-instructions) | Knowledge | Under Evaluation |
+| DP-08 | [AI Skill Library: Build vs Adapt Community](#dp-08-ai-skill-library-build-vs-adapt-community) | Knowledge | Under Evaluation |
+| DP-09 | [Context Enrichment Strategy](#dp-09-context-enrichment-strategy) | Architecture | Recommendation Draft |
+| DP-10 | [Vendor Lock-In vs Portability](#dp-10-vendor-lock-in-vs-portability) | Strategy | Under Evaluation |
 | DP-11 | [Organizational Adoption Model](#dp-11-organizational-adoption-model) | Organizational | Open |
-| DP-12 | [AI Output Review and Trust Model](#dp-12-ai-output-review-and-trust-model) | Governance | Partially Decided |
-| DP-13 | [Data Isolation and Security Posture](#dp-13-data-isolation-and-security-posture) | Security | Decided |
-| DP-14 | [Publishing Pipeline: Manual vs Automated](#dp-14-publishing-pipeline-manual-vs-automated) | Workflow | Decided |
+| DP-12 | [AI Output Review and Trust Model](#dp-12-ai-output-review-and-trust-model) | Governance | Under Evaluation |
+| DP-13 | [Data Isolation and Security Posture](#dp-13-data-isolation-and-security-posture) | Security | Recommendation Draft |
+| DP-14 | [Publishing Pipeline: Manual vs Automated](#dp-14-publishing-pipeline-manual-vs-automated) | Workflow | Recommendation Draft |
 | DP-15 | [Multi-Model Strategy: Single vs Best-of-Breed](#dp-15-multi-model-strategy-single-vs-best-of-breed) | Tooling | Open |
-| DP-16 | [Ticketing Integration Pattern](#dp-16-ticketing-integration-pattern) | Integration | Decided |
-| DP-17 | [Architecture-as-Code Framework](#dp-17-architecture-as-code-framework) | Standards | In Progress |
-| DP-18 | [Measuring AI Value: Cost vs Quality vs Speed](#dp-18-measuring-ai-value-cost-vs-quality-vs-speed) | Measurement | Partially Decided |
+| DP-16 | [Ticketing Integration Pattern](#dp-16-ticketing-integration-pattern) | Integration | Recommendation Draft |
+| DP-17 | [Architecture-as-Code Framework](#dp-17-architecture-as-code-framework) | Standards | Under Evaluation |
+| DP-18 | [Measuring AI Value: Cost vs Quality vs Speed](#dp-18-measuring-ai-value-cost-vs-quality-vs-speed) | Measurement | Under Evaluation |
 | DP-19 | [Hybrid Copilot + Azure AI Foundry via MCP](#dp-19-hybrid-copilot--azure-ai-foundry-via-mcp) | Integration | Open |
 
 ---
@@ -43,7 +43,7 @@ This is not an ADR — it is a **decision map** that shows the full landscape of
 ## DP-01: Buy vs Build
 
 **Category**: Strategy
-**Status**: Decided (Hybrid)
+**Status**: Recommendation Draft (Hybrid, Unratified)
 
 ### The Question
 
@@ -57,7 +57,7 @@ Should the architecture practice buy a commercial AI platform purpose-built for 
 | **B. Pure Build** | Build a custom AI agent from scratch using raw LLM APIs, custom RAG, bespoke UX | Maximum flexibility; high build cost; ongoing maintenance burden; slow to first value |
 | **C. Hybrid — Commercial AI + Custom Instructions** | Use a commercial AI coding assistant (Copilot, Claude Code) and customize it with domain-specific instructions, skills, and metadata | Fast to first value; low cost; high customization; dependent on vendor for base capabilities |
 
-### Decision
+### Working Recommendation
 
 **Option C — Hybrid.** The practice uses GitHub Copilot Pro+ as the commercial foundation and layers domain-specific customization on top: `copilot-instructions.md` (700+ lines of domain knowledge), custom skills, solution design templates, and metadata YAML files that the AI reads at runtime. No custom LLM infrastructure was built.
 
@@ -76,7 +76,7 @@ The practice does not own the AI model, the embedding infrastructure, or the cha
 ## DP-02: Billing Model — Intent-Based vs Raw Token
 
 **Category**: Cost
-**Status**: Decided
+**Status**: Recommendation Draft (Unratified)
 
 ### The Question
 
@@ -90,7 +90,7 @@ How should the practice pay for AI usage — per token consumed (metered), or pe
 | **B. Intent-Based Billing** | Pay per user prompt (intent). Autonomous agent work — tool calls, file reads, sub-agents, context management — is absorbed by the platform. Provider: GitHub Copilot | Predictable cost; encourages AI use; no visibility into token consumption; vendor subsidizes heavy usage today but may change terms |
 | **C. Subscription with Ceiling** | Flat monthly fee with a usage cap. Provider: Anthropic Max ($100-200/month) | Budget predictable; cap may throttle heavy days; per-seat cost higher than intent-based |
 
-### Decision
+### Working Recommendation
 
 **Option B — Intent-Based Billing** via GitHub Copilot Pro+.
 
@@ -113,7 +113,7 @@ GitHub controls the pricing model. The current 3x multiplier for Claude Opus 4.6
 ## DP-03: AI Toolchain Selection
 
 **Category**: Tooling
-**Status**: Decided
+**Status**: Recommendation Draft (Unratified)
 
 ### The Question
 
@@ -128,7 +128,7 @@ Which AI coding assistant should the architecture practice standardize on?
 | C. GitHub Copilot Pro+ | $39 (flat) | Intent-based | 96.1% (149/155) |
 | D. Claude Code (API) | $100-200 or variable | Per-token or subscription | Spike planned |
 
-### Decision
+### Working Recommendation
 
 **Option C — GitHub Copilot Pro+.** See ADR-001 for full analysis.
 
@@ -143,7 +143,7 @@ Which AI coding assistant should the architecture practice standardize on?
 ## DP-04: Single Tool vs Multi-Tool Strategy
 
 **Category**: Tooling
-**Status**: Partially Decided
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -172,7 +172,7 @@ Should the practice standardize on one AI tool for all work, or use different to
 ## DP-05: Standards Enforcement — Advisory vs Deterministic
 
 **Category**: Governance
-**Status**: Partially Decided
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -232,7 +232,7 @@ Currently operating between **Option B and C** depending on the task. Solution d
 ## DP-07: Knowledge Curation — Monolith vs Modular Instructions
 
 **Category**: Knowledge
-**Status**: Partially Decided
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -262,7 +262,7 @@ Currently using **Option A** trending toward **Option D**. The `copilot-instruct
 ## DP-08: AI Skill Library — Build vs Adapt Community
 
 **Category**: Knowledge
-**Status**: In Progress
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -291,7 +291,7 @@ Should the practice build its AI skill library from scratch (based on its own ex
 ## DP-09: Context Enrichment Strategy
 
 **Category**: Architecture
-**Status**: Decided
+**Status**: Recommendation Draft (Unratified)
 
 ### The Question
 
@@ -306,7 +306,7 @@ How should the practice provide the AI with the architectural context it needs �
 | **C. Indexed (Semantic Retrieval)** | Workspace pre-indexed in a vector database. AI queries the index for relevant context per question | Fast retrieval; relevant context only; requires indexing infrastructure; may miss context not in the index |
 | **D. Hybrid (Instructions + Indexing)** | Always-on instructions provide core knowledge + semantic indexing provides on-demand file retrieval | Best of active and indexed; Copilot implements this natively |
 
-### Decision
+### Working Recommendation
 
 **Option D — Hybrid** via GitHub Copilot's native architecture. Copilot always loads `copilot-instructions.md` (active core knowledge) and uses workspace semantic indexing for on-demand retrieval (indexed). No custom infrastructure required.
 
@@ -321,7 +321,7 @@ How should the practice provide the AI with the architectural context it needs �
 ## DP-10: Vendor Lock-In vs Portability
 
 **Category**: Strategy
-**Status**: Partially Decided
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -381,7 +381,7 @@ Currently at **pre-decision** — the POC demonstrates feasibility with a single
 ## DP-12: AI Output Review and Trust Model
 
 **Category**: Governance
-**Status**: Partially Decided
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -411,13 +411,13 @@ Currently using **Option B implicitly** — the Phase 1 evaluation scored output
 ## DP-13: Data Isolation and Security Posture
 
 **Category**: Security
-**Status**: Decided
+**Status**: Recommendation Draft (Unratified)
 
 ### The Question
 
 How should the practice ensure AI tools do not ingest, leak, or hallucinate real corporate data?
 
-### Decision
+### Working Recommendation
 
 **Synthetic workspace with strict isolation rules.** The entire NovaTrek Adventures domain is fictional. All mock tools are local Python scripts reading JSON files — no network calls, no credentials, no corporate system access. An audit script (`audit-data-isolation.sh`) validates data isolation before every commit.
 
@@ -438,13 +438,13 @@ How should the practice ensure AI tools do not ingest, leak, or hallucinate real
 ## DP-14: Publishing Pipeline — Manual vs Automated
 
 **Category**: Workflow
-**Status**: Decided
+**Status**: Recommendation Draft (Unratified)
 
 ### The Question
 
 How should architecture documentation get from the architect's workspace to a browsable, shareable portal?
 
-### Decision
+### Working Recommendation
 
 **Automated on `git push`.** MkDocs Material builds the portal. GitHub Actions deploys to Azure Static Web Apps. Confluence receives an automated read-only mirror. No manual wiki editing step exists.
 
@@ -488,13 +488,13 @@ Currently using **Option A** — Claude Opus 4.6 for all work via Copilot Pro+. 
 ## DP-16: Ticketing Integration Pattern
 
 **Category**: Integration
-**Status**: Decided
+**Status**: Recommendation Draft (Unratified)
 
 ### The Question
 
 How should AI access architecture tickets — via file, CLI, or live integration?
 
-### Decision
+### Working Recommendation
 
 **Progressive: YAML to CLI to MCP.** Started with `tickets.yaml` (Phase 1), added `ticket-client.py` CLI (Phase 3), then built a Vikunja MCP server for real-time access (Phase 5). The MCP server exposes 6 tools over stdio.
 
@@ -509,7 +509,7 @@ How should AI access architecture tickets — via file, CLI, or live integration
 ## DP-17: Architecture-as-Code Framework
 
 **Category**: Standards
-**Status**: In Progress
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -537,7 +537,7 @@ Should the practice adopt a formal architecture-as-code specification (e.g., CAL
 ## DP-18: Measuring AI Value — Cost vs Quality vs Speed
 
 **Category**: Measurement
-**Status**: Partially Decided
+**Status**: Under Evaluation
 
 ### The Question
 
@@ -635,9 +635,9 @@ DP-16 (Ticketing Integration Pattern)
 
 ---
 
-## Summary: What Is Decided, What Is Not
+## Summary: Recommendation and Evaluation State
 
-### Decided (7)
+### Recommendation Drafts (7)
 
 | # | Decision | Outcome |
 |---|----------|---------|
@@ -649,14 +649,14 @@ DP-16 (Ticketing Integration Pattern)
 | DP-14 | Publishing | Automated on git push (MkDocs + Azure + Confluence mirror) |
 | DP-16 | Ticketing Integration | Progressive: YAML to CLI to MCP |
 
-### In Progress (2)
+### Under Evaluation - Active Work (2)
 
 | # | Decision | Current State |
 |---|----------|---------------|
 | DP-08 | Skill Library | ECC Tier 1 adaptation underway |
 | DP-17 | Architecture-as-Code | CALM Phase 0+1 complete |
 
-### Partially Decided (6)
+### Under Evaluation - Recommendation Exists (6)
 
 | # | Decision | What Remains |
 |---|----------|-------------|
