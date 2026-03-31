@@ -16,6 +16,7 @@ All content is authored in Markdown, stored in Git, and published automatically 
 | **[Phase 1](phase-1-ai-tool-cost-comparison/AI-TOOL-COST-COMPARISON-PLAN.md)** | AI toolchain cost and quality comparison (Copilot vs Roo Code) |
 | **[Roadmap](roadmap/ROADMAP.md)** | Phased delivery plan from Phase 1 through Phase 6 |
 | **[Research](research/CONTEXT-WINDOW-UTILIZATION-ANALYSIS.md)** | Deep research findings on AI tooling and billing |
+| **[Home RDP Plan](CLOUDFLARE-GUACAMOLE-HOME-RDP-IMPLEMENTATION-PLAN.md)** | Cloudflare Tunnel + Access + Guacamole plan for secure home remote desktop |
 
 ## Architecture at a Glance
 
