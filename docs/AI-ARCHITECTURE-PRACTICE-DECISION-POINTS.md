@@ -22,12 +22,12 @@ This is not an ADR — it is a **decision map** that shows the full landscape of
 | DP-02 | [Billing Model: Intent-Based vs Raw Token](#dp-02-billing-model-intent-based-vs-raw-token) | Cost | Decided |
 | DP-03 | [AI Toolchain Selection](#dp-03-ai-toolchain-selection) | Tooling | Decided |
 | DP-04 | [Single Tool vs Multi-Tool Strategy](#dp-04-single-tool-vs-multi-tool-strategy) | Tooling | Partially Decided |
-| DP-05 | [Standards Enforcement: Advisory vs Deterministic](#dp-05-standards-enforcement-advisory-vs-deterministic) | Governance | Open |
+| DP-05 | [Standards Enforcement: Advisory vs Deterministic](#dp-05-standards-enforcement-advisory-vs-deterministic) | Governance | Partially Decided |
 | DP-06 | [AI Autonomy Level: Human-in-the-Loop vs Autonomous](#dp-06-ai-autonomy-level-human-in-the-loop-vs-autonomous) | Governance | Open |
 | DP-07 | [Knowledge Curation: Monolith vs Modular Instructions](#dp-07-knowledge-curation-monolith-vs-modular-instructions) | Knowledge | Partially Decided |
 | DP-08 | [AI Skill Library: Build vs Adapt Community](#dp-08-ai-skill-library-build-vs-adapt-community) | Knowledge | In Progress |
 | DP-09 | [Context Enrichment Strategy](#dp-09-context-enrichment-strategy) | Architecture | Decided |
-| DP-10 | [Vendor Lock-In vs Portability](#dp-10-vendor-lock-in-vs-portability) | Strategy | Open |
+| DP-10 | [Vendor Lock-In vs Portability](#dp-10-vendor-lock-in-vs-portability) | Strategy | Partially Decided |
 | DP-11 | [Organizational Adoption Model](#dp-11-organizational-adoption-model) | Organizational | Open |
 | DP-12 | [AI Output Review and Trust Model](#dp-12-ai-output-review-and-trust-model) | Governance | Partially Decided |
 | DP-13 | [Data Isolation and Security Posture](#dp-13-data-isolation-and-security-posture) | Security | Decided |
@@ -36,6 +36,7 @@ This is not an ADR — it is a **decision map** that shows the full landscape of
 | DP-16 | [Ticketing Integration Pattern](#dp-16-ticketing-integration-pattern) | Integration | Decided |
 | DP-17 | [Architecture-as-Code Framework](#dp-17-architecture-as-code-framework) | Standards | In Progress |
 | DP-18 | [Measuring AI Value: Cost vs Quality vs Speed](#dp-18-measuring-ai-value-cost-vs-quality-vs-speed) | Measurement | Partially Decided |
+| DP-19 | [Hybrid Copilot + Azure AI Foundry via MCP](#dp-19-hybrid-copilot--azure-ai-foundry-via-mcp) | Integration | Open |
 
 ---
 
@@ -171,7 +172,7 @@ Should the practice standardize on one AI tool for all work, or use different to
 ## DP-05: Standards Enforcement — Advisory vs Deterministic
 
 **Category**: Governance
-**Status**: Open
+**Status**: Partially Decided
 
 ### The Question
 
@@ -188,7 +189,7 @@ How should the practice enforce architecture standards in AI-generated outputs �
 
 ### Current Position
 
-Currently using **Option A** — all standards are in `copilot-instructions.md` prose. The 96.1% quality score suggests advisory works well, but the remaining 3.9% represents edge cases where deterministic enforcement would help. No hooks have been implemented yet.
+Current evidence supports **Option D (Layered)** as the target model, with **Option A + C already in place**. Standards are encoded in `copilot-instructions.md` prose, and deterministic CI/docs pipeline validation already gates merges. The missing piece is selective local/runtime enforcement (hooks or equivalent) for high-risk rules.
 
 ### Decision Drivers
 
@@ -320,7 +321,7 @@ How should the practice provide the AI with the architectural context it needs �
 ## DP-10: Vendor Lock-In vs Portability
 
 **Category**: Strategy
-**Status**: Open
+**Status**: Partially Decided
 
 ### The Question
 
@@ -336,7 +337,7 @@ How much should the practice invest in tool-specific customization (deep Copilot
 
 ### Current Position
 
-Implicitly operating at **Option C** without a deliberate decision. The knowledge assets (OpenAPI specs, YAML metadata, solution designs, ADRs) are tool-agnostic Markdown/YAML. The enforcement layer (`copilot-instructions.md` format, hooks, agent files) is Copilot-specific. The Copilot vs OpenSpec comparison explored this topic but no ADR was produced.
+Now explicitly operating at **Option C**. The knowledge assets (OpenAPI specs, YAML metadata, solution designs, ADRs) are tool-agnostic Markdown/YAML, while execution/enforcement features remain tool-specific. The strategic realignment research reinforces this split as the practical balance between portability and capability.
 
 ### Decision Drivers
 
@@ -561,6 +562,42 @@ Phase 1 measured **cost and quality** (155-point rubric, actual billing data). S
 - Is architect satisfaction being tracked?
 - How frequently should quality scoring be repeated as the AI instructions evolve?
 
+### Added Metric Candidate from New Research
+
+- CI remediation efficiency: mean time from failed validation to AI-proposed fix and successful pipeline pass
+
+---
+
+## DP-19: Hybrid Copilot + Azure AI Foundry via MCP
+
+**Category**: Integration
+**Status**: Open
+
+### The Question
+
+Should the practice formally adopt a hybrid architecture where GitHub Copilot remains the local execution engine and Azure AI Foundry hosts enterprise MCP services for proprietary tools and governed data access?
+
+### Options
+
+| Option | Description | Trade-off |
+|--------|-------------|-----------|
+| **A. Copilot-Only** | Keep all AI operations in Copilot with existing integrations | Lowest complexity; limited access to bespoke enterprise backends |
+| **B. Foundry-Centric Custom App** | Build custom centralized AI app on Azure for end-to-end workflow | High control; highest engineering cost; duplicates local execution capabilities |
+| **C. Hybrid MCP Pattern** | Keep Copilot as client; add Azure-hosted MCP services for enterprise-specific tools/data | Best capability mix; moderate complexity; requires MCP service engineering and security controls |
+
+### Current Position
+
+The practice has adopted MCP patterns for ticketing and local mock tools. The remaining decision is whether to extend this pattern with Azure AI Foundry-hosted MCP servers for enterprise data sources and specialized governance tools.
+
+### Decision Drivers
+
+- Enterprise data access requirements beyond current local workspace scope
+- Security and identity controls for governed backend tool execution
+- Engineering capacity to build and operate MCP services in Azure
+- Latency and reliability requirements for local agent workflows
+
+---
+
 ---
 
 ## Decision Dependency Map
@@ -574,7 +611,8 @@ DP-01 (Buy vs Build)
         ├─> DP-04 (Single vs Multi-Tool)
         │     └─> DP-15 (Multi-Model Strategy)
         ├─> DP-09 (Context Enrichment)
-        └─> DP-10 (Vendor Lock-In vs Portability)
+  ├─> DP-10 (Vendor Lock-In vs Portability)
+  └─> DP-19 (Hybrid Copilot + Azure Foundry via MCP)
 
 DP-06 (AI Autonomy Level)
   ├─> DP-05 (Standards Enforcement)
@@ -590,6 +628,9 @@ DP-11 (Org Adoption Model)
 
 DP-13 (Data Isolation)
   └─> Precondition for all other decisions
+
+DP-16 (Ticketing Integration Pattern)
+  └─> DP-19 (Hybrid Copilot + Azure Foundry via MCP)
 ```
 
 ---
@@ -615,12 +656,14 @@ DP-13 (Data Isolation)
 | DP-08 | Skill Library | ECC Tier 1 adaptation underway |
 | DP-17 | Architecture-as-Code | CALM Phase 0+1 complete |
 
-### Partially Decided (3)
+### Partially Decided (6)
 
 | # | Decision | What Remains |
 |---|----------|-------------|
 | DP-04 | Single vs Multi-Tool | Claude Code spike not yet executed |
+| DP-05 | Standards Enforcement | Layered model selected in principle; high-risk runtime checks not implemented |
 | DP-07 | Knowledge Curation | No formal strategy for monolith vs modular split |
+| DP-10 | Vendor Lock-In | Portable-core strategy chosen; no ADR yet for long-term portability policy |
 | DP-12 | Trust Model | Rubric exists but progressive trust framework not formalized |
 | DP-18 | Measuring AI Value | Cost and quality measured; speed and satisfaction not baselined |
 
@@ -628,8 +671,7 @@ DP-13 (Data Isolation)
 
 | # | Decision | Why It Matters |
 |---|----------|---------------|
-| DP-05 | Standards Enforcement | 3.9% non-compliance has no automated catch |
 | DP-06 | AI Autonomy Level | Current approach is ad-hoc, not policy |
-| DP-10 | Vendor Lock-In | No deliberate portability strategy |
 | DP-11 | Org Adoption Model | Scaling beyond one practitioner is unplanned |
 | DP-15 | Multi-Model Strategy | Potential cost savings from model tiering unexplored |
+| DP-19 | Hybrid Copilot + Azure Foundry via MCP | Determines whether enterprise-grade backend intelligence is added without rebuilding local execution |
