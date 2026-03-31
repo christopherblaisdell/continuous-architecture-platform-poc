@@ -12,6 +12,8 @@ This document catalogs every significant decision point an architecture practice
 
 This is not an ADR — it is a **decision map** that shows the full landscape of choices, which ones currently have recommendation drafts, which are under evaluation, and which remain open.
 
+This document is the **operating-model layer** of the overall AI decision structure. It is not the weighted platform-selection scorecard. Platform comparison should be performed separately using weighted factors such as cost, quality, workflow fit, governance, extensibility, portability, and operational complexity.
+
 ---
 
 ## Decision Point Index

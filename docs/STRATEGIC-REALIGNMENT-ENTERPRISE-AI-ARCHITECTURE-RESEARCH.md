@@ -16,8 +16,9 @@
 6. Confluence Integration and Enterprise Knowledge Retrieval
 7. Advanced Vectorization and Chunking of PlantUML Artifacts
 8. Hybrid Architecture: GitHub Copilot + Azure AI Foundry via MCP
-9. Conclusions
-10. Decision Point Influence Assessment
+9. Two-Layer Decision Model
+10. Conclusions
+11. Decision Point Influence Assessment
 
 ---
 
@@ -45,6 +46,8 @@ Confluence and related enterprise context should be retrieved live through authe
 For architecture-heavy practices, diagram handling is pivotal. Naive chunking often degrades PlantUML integrity; structural and agentic chunking strategies preserve semantic boundaries and reduce diagram hallucination risk.
 
 Overall, the strongest strategy is to buy the execution client, build proprietary backend tools, and connect them through MCP.
+
+The selection method should therefore also be split in two. Platform choice should be handled as a weighted option evaluation using factors similar to system quality attributes. The broader architecture-practice design should be handled separately as an operating-model decision map covering governance, trust, autonomy, knowledge curation, and integration patterns.
 
 ### Macro Summary (Three Page Equivalent)
 
@@ -228,7 +231,66 @@ Better diagram reasoning fidelity and lower hallucination risk for architecture 
 
 ---
 
-## 9. Conclusions
+## 9. Two-Layer Decision Model
+
+The architecture practice should use a two-layer decision structure rather than collapsing every question into a single list.
+
+### Layer 1 - Platform Selection Scorecard
+
+This layer answers: Which platform or platform combination should the practice adopt?
+
+The method should be a weighted scorecard. Each option is scored against a fixed set of factors, and each factor carries a weight based on practice priorities.
+
+Suggested factor types:
+
+| Factor Category | Example Factors |
+|----------------|-----------------|
+| Cost | Seat cost, usage variability, overage risk |
+| Quality | Architecture output quality, standards compliance, diagram handling |
+| Workflow Fit | VS Code integration, GitHub/PR integration, CI/CD fit |
+| Governance | Policy controls, auditability, instruction governance, permissions |
+| Extensibility | MCP support, custom tools, enterprise integration capability |
+| Portability | Vendor lock-in risk, portability of knowledge/configuration |
+| Operations | Supportability, setup complexity, reliability, latency |
+
+This is similar to system quality attribute trade-off analysis, but applied to AI platform options.
+
+### Layer 2 - Operating Model Decision Map
+
+This layer answers: Once a platform direction is selected, how should the practice actually operate it?
+
+This includes questions such as:
+
+- Buy vs build posture
+- Billing model preference
+- Single-tool vs multi-tool strategy
+- Human review and trust model
+- Standards enforcement model
+- Knowledge curation model
+- Ticketing and Confluence integration patterns
+- Hybrid MCP architecture choices
+
+These are not all platform-scoring criteria. Many are policy, governance, and operating-model questions that remain relevant after a platform is selected.
+
+### Why The Layers Must Stay Separate
+
+If everything is forced into one weighted scorecard, the practice will mix two different kinds of questions:
+
+- Selection questions: Which option scores best against weighted criteria?
+- Governance questions: How should the chosen option be used, constrained, and evolved?
+
+Keeping them separate makes the decision process clearer:
+
+1. Use Layer 1 to compare options objectively.
+2. Use Layer 2 to define the rules of use and the long-term operating model.
+
+### Practical Recommendation
+
+Use the existing ADR-001 style criteria as the seed for Layer 1, but broaden them into a reusable platform scorecard. Keep the AI decision-point document as Layer 2 and explicitly treat it as the operating-model map, not the selection scorecard.
+
+---
+
+## 10. Conclusions
 
 1. The enterprise should reject the false binary of buy versus build.
 2. Deterministic CI/docs pipelines should remain source of truth for validation.
@@ -237,10 +299,11 @@ Better diagram reasoning fidelity and lower hallucination risk for architecture 
 5. Confluence and other enterprise context should be integrated through secure MCP retrieval.
 6. Diagram-aware chunking strategy is required for architecture-grade PlantUML workflows.
 7. A hybrid model (Copilot local + Azure MCP backend) is the strongest strategic architecture.
+8. Platform selection should use a weighted scorecard, while operating-model design should remain a separate decision map.
 
 ---
 
-## 10. Decision Point Influence Assessment
+## 11. Decision Point Influence Assessment
 
 This research influences existing decision points as follows:
 
