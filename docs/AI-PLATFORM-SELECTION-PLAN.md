@@ -567,22 +567,159 @@ Every score must be defensible. This section provides the detailed justification
 | **Step 1** | Review the 12 evaluation factors. Add, remove, or combine factors as needed. Confirm that every factor discriminates between options | Decision stakeholders | Finalized factor list | Same session |
 | **Step 2** | Assign weights. Distribute 100 points across the finalized factors. Validate with trade-off test: would you trade a high score on a low-weight factor for a lower score on a high-weight factor? | Decision stakeholders | Locked weight allocation | Same session |
 | **Step 3** | Score each option on each factor. Use 1-5 scale. Every score must have a written justification citing evidence or reasoned projection. Use the preliminary scores as a starting point | Decision stakeholders + architect | Completed scorecard with justifications | 1-2 sessions |
-| **Step 4** | Compute weighted scores. Identify the winning option. Perform sensitivity analysis: do the rankings change if the top 2-3 weight allocations shift by +/-5%? | Architect | Final ranking + sensitivity analysis | 1 session |
-| **Step 5** | Document the decision as a formal ADR (amend ADR-001 or create ADR-015). Reference this scorecard as evidence | Architect | Published ADR | After decision |
-| **Step 6** | Translate the platform decision into Layer 2 operating model decisions. Update the AI Decision Points document to reflect any operating-model choices that are now constrained by the platform selection | Architect | Updated decision-point document | After ADR |
+| **Step 4** | **Validation POC** — Convert projected scores to measured scores by running 5 targeted proof-of-concept activities (see details below). This step is essential because the sensitivity analysis shows the Option 1 vs Option 2 ranking is fragile (0.20-point gap, flips in 4/5 scenarios). Decisions based on projections alone carry unacceptable risk | Architect + engineering | POC results report with measured scores | 4-6 weeks |
+| **Step 5** | Rescore affected factors using POC measurements. Recompute weighted scores and repeat sensitivity analysis with updated data | Decision stakeholders + architect | Updated scorecard with measured evidence | 1 session |
+| **Step 6** | Document the decision as a formal ADR (amend ADR-001 or create ADR-015). Reference this scorecard and POC results as evidence | Architect | Published ADR | After decision |
+| **Step 7** | Translate the platform decision into Layer 2 operating model decisions. Update the AI Decision Points document to reflect any operating-model choices that are now constrained by the platform selection | Architect | Updated decision-point document | After ADR |
 
-### Sensitivity Analysis Guidance
+### Step 4: Validation POC — Details
 
-After scoring, test the following scenarios to verify the result is robust:
+The sensitivity analysis reveals that the Option 1 vs Option 2 gap (0.20 points) is too narrow to decide on projections alone. Five targeted POC activities convert the highest-risk projected scores into measured data before the final decision.
 
-1. **"What if enterprise data access matters more?"** — Move F-04 weight from 8% to 18% (take 10% from F-01 and F-02). Does Option 2 overtake Option 1?
-2. **"What if cost matters less?"** — Move F-01 weight from 15% to 5% (redistribute to F-07 and F-09). Does Option 3 become competitive?
-3. **"What if quality evidence changes?"** — If Option 3 quality score improves to 4 (parity with Option 1), does the ranking change?
-4. **"What if GitHub changes pricing?"** — If Copilot moves to token-based billing (F-01 score drops to 3), does the ranking change?
+#### POC-1: Cost Testing
+
+| Attribute | Detail |
+|-----------|--------|
+| **Objective** | Measure real Azure consumption for one MCP service over ~1 month |
+| **Method** | Provision one Azure-hosted MCP service (e.g., a Confluence indexer or architecture standards validator). Run it alongside Copilot for daily architecture work. Record Azure costs (App Service, networking, storage) and Copilot billing |
+| **Factors affected** | F-01 (Cost Efficiency), F-11 (Operational Burden) |
+| **Success criteria** | Monthly Azure cost per service falls within the $30-90/seat/month estimate in Option 2's cost model. If it exceeds $90, Option 2's F-01 score drops |
+| **Duration** | 4 weeks of production-like usage |
+
+#### POC-2: Hallucination Testing
+
+| Attribute | Detail |
+|-----------|--------|
+| **Objective** | Measure architecture output quality across platforms using the NovaTrek synthetic workspace as a controlled test bench |
+| **Method** | Give each platform configuration (Option 1 standalone, Option 2 with MCP) the same NovaTrek ticket (e.g., NTK-10005 or NTK-10006). Score each output against the known-correct solution design already in the workspace. Evaluate: factual accuracy (did it fabricate data?), spec compliance (did it match OpenAPI contracts?), safety rule adherence (did it default to Pattern 3?), and completeness (did it cover all affected services?) |
+| **Factors affected** | F-03 (Architecture Output Quality), F-04 (Enterprise Data Access) |
+| **Success criteria** | Define a pass/fail rubric with minimum thresholds. If Option 2's MCP-augmented output is measurably more accurate on enterprise data questions, F-04 scores are validated. If hallucination rates are comparable, Option 1's quality score holds |
+| **Duration** | 1-2 weeks (5-10 test scenarios) |
+
+#### POC-3: Enterprise Data Integration
+
+| Attribute | Detail |
+|-----------|--------|
+| **Objective** | Validate that the Option 2 architecture actually works — build one Azure MCP service and connect it to Copilot |
+| **Method** | Implement the highest-priority MCP service candidate (enterprise Confluence indexer or CMDB integration). Deploy to Azure. Configure Copilot to use it. Test with real architecture queries that require enterprise data |
+| **Factors affected** | F-04 (Enterprise Data Access), F-09 (Extensibility), F-06 (Agent Execution Capability) |
+| **Success criteria** | The MCP service responds to Copilot tool calls with accurate enterprise data. Latency is acceptable (< 5s for typical queries). The service can be deployed and maintained by the architecture team without dedicated DevOps support |
+| **Duration** | 2-4 weeks for initial build + 1-2 weeks for integration testing |
+
+#### POC-4: Latency and Reliability Testing
+
+| Attribute | Detail |
+|-----------|--------|
+| **Objective** | Measure the impact of remote MCP calls on the agent workflow experience |
+| **Method** | During POC-3, instrument MCP call latency (p50, p95, p99). Test timeout behavior — what happens when an MCP service is slow or unavailable? Does the agent degrade gracefully or block? Test concurrent usage (2+ architects using the same MCP service) |
+| **Factors affected** | F-05 (Workflow Integration), F-06 (Agent Execution Capability), F-11 (Operational Burden) |
+| **Success criteria** | p95 latency < 5 seconds. Agent degrades gracefully on timeout (continues without MCP data rather than failing). No observable impact on Copilot's autonomous loop performance |
+| **Duration** | Measured during POC-3 (no additional calendar time) |
+
+#### POC-5: Security and Compliance Review
+
+| Attribute | Detail |
+|-----------|--------|
+| **Objective** | Obtain corporate security sign-off for enterprise data flowing through Azure MCP services to Copilot |
+| **Method** | Document the data flow: enterprise source → Azure MCP service → GitHub Copilot agent → architect. Identify what data leaves the corporate boundary. Submit for security review. Address any findings |
+| **Factors affected** | F-07 (Governance and Compliance), F-04 (Enterprise Data Access) |
+| **Success criteria** | Security team approves the data flow with acceptable controls. If security requires changes that materially alter the architecture (e.g., on-premises only, no cloud MCP), Option 2's feasibility is impacted |
+| **Duration** | 2-4 weeks (dependent on security team availability) |
+
+#### POC Timeline
+
+All 5 POCs can run in parallel. The critical path is POC-3 (enterprise data integration build), which takes 3-6 weeks. POC-1 (cost testing) and POC-4 (latency) piggyback on POC-3's infrastructure. POC-2 (hallucination testing) and POC-5 (security review) are independent.
+
+```
+Week  1  2  3  4  5  6
+POC-1 ■■■■■■■■■■■■■■■■    (cost measurement — runs for full duration)
+POC-2 ■■■■■■■■              (hallucination testing — independent)
+POC-3 ■■■■■■■■■■■■■■■■■■  (enterprise data build — critical path)
+POC-4       ■■■■■■■■■■■■  (latency — starts when POC-3 is testable)
+POC-5 ■■■■■■■■■■■■          (security review — independent, long lead)
+```
+
+**Total POC phase duration**: 4-6 weeks (parallel execution). This is the minimum investment required to convert the 7 most impactful "Projected" scores to "Measured" scores and make a defensible decision.
+
+### Sensitivity Analysis Results
+
+The preliminary gap between Option 1 (4.20) and Option 2 (4.00) is only **0.20 points** — well below the 0.5-point "clear recommendation" threshold. Sensitivity analysis reveals the ranking is **fragile**: Option 2 overtakes Option 1 in 4 out of 5 scenarios tested.
+
+| # | Scenario | Weight/Score Change | Opt 1 | Opt 2 | Opt 3 | Gap (1 vs 2) | Ranking Flips? |
+|---|----------|-------------------|-------|-------|-------|-------------|----------------|
+| Base | (no change) | — | **4.20** | 4.00 | 2.63 | +0.20 | — |
+| S1 | Enterprise data matters more | F-04: 8% to 18%, F-01: 15% to 10%, F-02: 10% to 5% | 3.90 | **4.10** | 3.03 | **-0.20** | YES — Option 2 wins |
+| S2 | Cost matters less | F-01: 15% to 5%, F-07: 8% to 13%, F-09: 5% to 10% | 4.00 | **4.15** | 3.03 | **-0.15** | YES — Option 2 wins |
+| S3 | Option 3 quality improves | Option 3 F-03: 3 to 4 | **4.20** | 4.00 | 2.83 | +0.20 | NO — but Option 3 gains only 0.20 |
+| S4 | GitHub changes pricing | Option 1 F-01: 5 to 3 | 3.90 | **4.00** | 2.63 | **-0.10** | YES — Option 2 wins |
+| S5 | Combined (S1 + S4) | Enterprise data up + Copilot pricing change | 3.70 | **4.10** | 3.03 | **-0.40** | YES — Option 2 wins decisively |
+
+#### Key Findings
+
+1. **Option 1 vs Option 2 is a knife-edge decision.** The 0.20-point base gap is so small that modest shifts in either weights or scores flip the ranking. This is not a clear-cut recommendation — it is a trade-off between immediate cost efficiency (Option 1) and future capability (Option 2).
+
+2. **Enterprise data access is the swing factor.** If stakeholders weight enterprise data access even moderately higher than 8%, Option 2 overtakes Option 1. This is the single most important weight for stakeholders to debate.
+
+3. **Option 3 is never competitive.** Even in the most favorable scenario (quality improves to parity), Option 3 only reaches 2.83. The engineering cost, time-to-value, and workflow disruption are too severe. Option 3 can be confidently eliminated.
+
+4. **GitHub pricing risk is real but small.** If Copilot moves to token-based billing, the gap narrows to -0.10 (Option 2 leads). This is a mild flip — not catastrophic — and the practice would have time to respond.
+
+5. **The combined worst case (S5) is the strongest signal.** If enterprise data becomes important AND Copilot pricing changes, Option 2 leads by 0.40 — approaching the clear recommendation threshold in the opposite direction.
 
 ### Decision Threshold
 
-The winning option should score at least **0.5 points higher** than the second-place option to justify a clear recommendation. If the gap is smaller, the decision is close enough to warrant deeper investigation of the differentiating factors or a hybrid approach (e.g., start with Option 1, plan migration path to Option 2).
+The winning option should score at least **0.5 points higher** than the second-place option to justify a clear recommendation. The base gap of 0.20 **does not meet this threshold**.
+
+**Implication:** The data does not support an unconditional pick of either Option 1 or Option 2. Instead, it supports a **staged approach** — see the Staged Recommendation below.
+
+---
+
+## Staged Recommendation
+
+Given that the sensitivity analysis shows the Option 1 vs Option 2 ranking is fragile and depends on stakeholder weight preferences, the recommendation is **staged rather than singular**.
+
+### Stage 1: Continue with Option 1 (Now)
+
+**Action**: Keep Copilot Pro+ Standalone as the production platform. No new infrastructure investment.
+
+**Rationale**: Option 1 is already live, delivering 96.1% quality at $39/seat. There is no reason to pause or rebuild. The 4.20 score reflects real, measured performance — not projections.
+
+**Duration**: Until a concrete enterprise data access need emerges that cannot be met by local workspace context + local MCP servers.
+
+**Exit criteria for Stage 1** (any one triggers evaluation of Stage 2):
+- A ticket or solution design is blocked because the AI cannot access an enterprise data source
+- Stakeholders formally weight F-04 (enterprise data access) at 15% or higher
+- GitHub changes Copilot pricing model away from intent-based billing
+- The practice scales beyond 5 architects and repo-based governance proves insufficient
+
+### Stage 2: Evolve to Option 2 (When Triggered)
+
+**Action**: Add the first Azure-hosted MCP service to extend Copilot's reach into enterprise data.
+
+**Rationale**: Option 2 is Option 1 + enterprise backend capability. The evolution is incremental — it does not disrupt the existing workflow. The architect never leaves VS Code. Each MCP service adds one capability without requiring a platform rebuild.
+
+**First MCP service candidates** (prioritized by likely enterprise need):
+1. Enterprise Confluence indexer — broad enterprise knowledge retrieval
+2. CMDB/ServiceNow integration — service inventory and dependency data
+3. Architecture standards validator — automated compliance checking beyond CI
+
+**Investment**: 2-4 developer-months for the first MCP service + Azure infrastructure setup.
+
+### Stage 3: NOT Recommended — Custom Platform
+
+**Action**: Do not pursue Option 3.
+
+**Rationale**: Option 3 scored 2.63 in every scenario tested and never exceeded 3.03 even under favorable assumptions. The engineering cost (6-12 dev-months + 1-2 FTE ongoing), time-to-value delay (6-18 months), workflow disruption (separate web app), and need to rebuild autonomous agent execution from scratch are not justified by the governance and enterprise data access gains — which Option 2 achieves at a fraction of the cost.
+
+### Summary
+
+| Stage | Trigger | Platform State | Investment |
+|-------|---------|---------------|------------|
+| **Stage 1** (now) | — | Copilot Pro+ standalone | $39/seat/month |
+| **Stage 2** (when triggered) | Enterprise data need, pricing change, or scale pressure | Copilot Pro+ + Azure MCP services | ~$70-130/seat + 2-4 dev-months |
+| **Stage 3** | NOT recommended | — | — |
+
+This staged approach means the practice does not need to make a binary decision today. It confirms Option 1 as the correct current state, identifies the specific conditions under which Option 2 becomes necessary, and definitively eliminates Option 3.
 
 ---
 
@@ -598,7 +735,9 @@ The winning option should score at least **0.5 points higher** than the second-p
 
 ## Open Questions
 
-1. **Are three options sufficient, or should a fourth be added?** (e.g., Claude Code standalone, or a multi-vendor option)
-2. **Should the Claude Code spike (planned in ADR-001) be completed before scoring?** The spike could inform the Single vs Multi-Tool decision (DP-04) and may affect quality scores
-3. **Who are the decision-making stakeholders?** This plan assumes the architecture practice lead + engineering leadership. If other stakeholders are involved, their priorities may shift the weight allocation
-4. **Should this scoring be done in a single workshop or across multiple sessions?** A single workshop maintains momentum; multiple sessions allow for research between steps
+1. **Are three options sufficient, or should a fourth be added?** (e.g., Claude Code standalone, or a multi-vendor option) — RESOLVED: Three options accepted by stakeholders at Step 0. Can be revisited if POC results suggest a hybrid not currently modeled
+2. **Should the Claude Code spike (planned in ADR-001) be completed before scoring?** The spike could inform the Single vs Multi-Tool decision (DP-04) and may affect quality scores — OPEN: Could run concurrently with POC phase
+3. **Who are the decision-making stakeholders?** This plan assumes the architecture practice lead + engineering leadership. If other stakeholders are involved, their priorities may shift the weight allocation — PARTIALLY RESOLVED: Stakeholder review processes added for both weights (Part 2) and scores (Part 3). Specific participants still need to be identified
+4. **Should this scoring be done in a single workshop or across multiple sessions?** — RESOLVED: Multi-session approach adopted. Steps 0-3 completed in preliminary review; POC phase (Step 4) runs 4-6 weeks; final scoring and decision in subsequent session
+5. **Which MCP service should be the POC-3 target?** Enterprise Confluence indexer is the top candidate by likely enterprise need, but a CMDB/ServiceNow integration may be more demonstrable in a short POC. Decision needed before POC kickoff
+6. **What is the hallucination testing rubric?** POC-2 requires a pass/fail scoring rubric for architecture output quality. The rubric should be defined collaboratively before testing begins to avoid post-hoc justification
