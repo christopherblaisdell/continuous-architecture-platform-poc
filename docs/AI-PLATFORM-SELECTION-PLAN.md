@@ -399,6 +399,17 @@ Each option is scored on each factor using a **1-5 scale**:
 4. **Uncertainty is penalized**: if a capability is projected but unproven, it scores lower than a proven capability of equal potential
 5. **Each factor scored independently**: do not let a high score on one factor inflate scores on others
 
+### Stakeholder Score Review (REQUIRED)
+
+NOTE: These scores are the **architect's preliminary estimates only**. Every score must be defensible to stakeholders who may challenge it. Before the scorecard is finalized:
+
+1. Circulate the scored scorecard (below) to all stakeholders
+2. Each score includes a written justification — stakeholders should challenge any justification they find insufficient
+3. Stakeholders may propose alternative scores with their own justifications
+4. Disputed scores are resolved through discussion, not averaging — the goal is consensus on the evidence, not compromise on numbers
+5. Lock scores only after all stakeholders have had the opportunity to review and challenge
+6. Document dissenting views — if a stakeholder disagrees with a final score, record their position and reasoning
+
 ### Preliminary Score Estimates
 
 These are **draft estimates** based on available evidence. They should be validated and adjusted during the formal scoring session.
@@ -435,6 +446,106 @@ These are **draft estimates** based on available evidence. They should be valida
 | F-11 Operational burden | 2% | 5 | 0.10 | 3 | 0.06 | 1 | 0.02 |
 | F-12 Scalability | 2% | 4 | 0.08 | 4 | 0.08 | 3 | 0.06 |
 | **TOTAL** | **100%** | | **4.20** | | **4.00** | | **2.63** |
+
+### Score Justification Details
+
+Every score must be defensible. This section provides the detailed justification for each preliminary score.
+
+#### F-01: Total Cost of Ownership (15%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **5** | **Measured.** $39/seat/month. 3-year TCO per seat: ~$1,400. No infrastructure cost. No engineering build cost. Billing data from ADR-001: $0.48/run actual (verified March 4, 2026). Zero overage within 1,500 included requests |
+| 2: Copilot + Azure MCP | **3** | **Projected.** $39/seat + Azure compute (~$50-150/month shared) + Azure AI Search (~$75-250/month shared) + 2-4 dev-months build + 0.5 FTE ongoing. 3-year TCO per seat (5-person team): ~$20K-40K. Moderate cost increase for enterprise capability gain |
+| 3: Custom Platform | **1** | **Projected.** $39/seat (optional Copilot) + Azure AI Foundry (~$200-500/month) + App Service + Cosmos DB + AI Search + 6-12 dev-months + 1-2 FTE ongoing. 3-year TCO per seat: ~$80K-150K. Order-of-magnitude more expensive than Option 1 |
+
+#### F-02: Time to First Production Value (10%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **5** | **Measured.** Already in production. Delivering 96.1% quality across 5 architecture scenarios since March 2026. Zero additional ramp-up |
+| 2: Copilot + Azure MCP | **3** | **Projected.** Existing Copilot workflow continues immediately. First Azure MCP service estimated 3-6 months (Azure provisioning + MCP server development + security review + testing). Incremental — each subsequent MCP service adds value faster |
+| 3: Custom Platform | **1** | **Projected.** 6-12 months to MVP (web app + agent + RAG pipeline + auth). 12-18 months for feature parity with current Copilot workflow. No architecture value delivered during build phase. Significant opportunity cost |
+
+#### F-03: Architecture Output Quality (20%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **4** | **Measured.** 96.1% quality (149/155) across 5 scenarios in Phase 1. Not 5 because quality is bounded by local workspace context — the AI cannot access enterprise data it has never seen. Proven, not projected |
+| 2: Copilot + Azure MCP | **4** | **Projected.** Same Copilot quality engine + enterprise context via MCP should maintain or improve quality. Score not higher than Option 1 because: (a) Azure MCP services are unbuilt and unproven, (b) quality improvement from enterprise data access is hypothetical, (c) uncertainty penalized per scoring rules |
+| 3: Custom Platform | **3** | **Projected.** Custom agent quality depends entirely on engineering execution. No benchmark data. Custom RAG could theoretically outperform Copilot's built-in indexing for enterprise data, but agent execution quality (multi-step reasoning, file editing, tool use) is extremely hard to replicate. Scored adequate — could be higher or lower depending on build quality |
+
+#### F-04: Enterprise Data Access Breadth (8%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **2** | **Measured.** Access limited to local workspace files + local MCP servers (Vikunja, mock tools). Cannot reach enterprise CMDB, ServiceNow, Confluence at scale, or internal APIs beyond what's checked into the repo. Scored 2 (not 1) because local MCP integration exists and works |
+| 2: Copilot + Azure MCP | **4** | **Projected.** Azure-hosted MCP services can reach any enterprise data source with proper auth (Entra ID). Scored 4 (not 5) because: services are unbuilt, latency over HTTPS/SSE is unknown, and MCP remote transport is still maturing |
+| 3: Custom Platform | **5** | **Projected.** Full custom RAG pipeline with Azure AI Search can index enterprise-wide data. Custom tool integrations can reach any API. Maximum possible data access breadth. Scored 5 despite being unbuilt because the architectural ceiling is highest here |
+
+#### F-05: Workflow Integration Depth (12%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **5** | **Measured.** Native VS Code integration: inline suggestions, agent mode, PR review, terminal access, file editing. Zero context switching. GitHub ecosystem (PRs, Actions, branches) fully integrated. CI/CD pipeline integration proven |
+| 2: Copilot + Azure MCP | **5** | **Projected.** Same VS Code integration. Azure MCP services are called transparently by the Copilot agent — the architect never leaves VS Code. MCP calls are invisible to the user experience. Same score as Option 1 because the UX is identical |
+| 3: Custom Platform | **2** | **Projected.** Custom web app runs in a browser, separate from VS Code. Architect must switch between IDE (for code) and browser (for AI). No inline code suggestions. No PR review integration unless rebuilt. Fundamental workflow disruption |
+
+#### F-06: Agent Execution Autonomy (10%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **5** | **Measured.** GitHub-managed autonomous execution: file reading/writing, terminal commands, sub-agent spawning, MCP tool calls — all in a single agent loop. Autonomous work is free (intent-based billing). Proven across 5 scenarios with multi-step solution designs |
+| 2: Copilot + Azure MCP | **5** | **Projected.** Same Copilot execution engine. Azure MCP services add tools to the agent's toolkit without changing the execution model. Each Azure tool call is just another tool in the autonomous loop |
+| 3: Custom Platform | **2** | **Projected.** Autonomous multi-step execution with file editing and terminal access must be built from scratch. This is the hardest engineering challenge in custom AI agent development. State management across long agent sessions is a known unsolved problem. Azure AI Foundry Agents provide some primitives but not VS Code-level file system and terminal access. Scored 2 (not 1) because basic tool calling is available in Foundry |
+
+#### F-07: Governance and Auditability (8%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **3** | **Measured.** Governance is repository-based: instruction changes go through PR review, git history provides version control, CI/CD validates outputs. No centralized audit dashboard. No usage analytics beyond GitHub's built-in metrics. Adequate for current scale but may not satisfy enterprise audit requirements |
+| 2: Copilot + Azure MCP | **4** | **Projected.** Same repo-based governance for instructions + Azure RBAC for backend tool access + Azure Monitor for audit logging + Key Vault for secrets. Dual-layer governance model provides both developer-facing and enterprise-facing controls |
+| 3: Custom Platform | **5** | **Projected.** Fully centralized governance: custom RBAC, audit logging, usage dashboards, model governance, access controls. Maximum control. Every interaction logged and auditable. Highest governance ceiling — but must be built entirely |
+
+#### F-08: Instruction Management Model (5%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **4** | **Measured.** GitOps model: instructions in repo, changes via PR, version-controlled, peer-reviewed. 700+ line copilot-instructions.md + modular .instructions.md + SKILL.md files. Proven effective. Scored 4 (not 5) because the monolith/modular balance is not yet formalized (DP-07) |
+| 2: Copilot + Azure MCP | **4** | **Projected.** Same GitOps model for Copilot instructions. Azure-hosted tools governed separately via Azure policies. No conflict between the two governance models |
+| 3: Custom Platform | **3** | **Projected.** Custom admin UI must be built for prompt management. Version control and peer review of prompts is possible but not automatic — must be designed into the platform. Risk of prompt drift if governance is an afterthought |
+
+#### F-09: Extensibility and Custom Tooling (5%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **3** | **Measured.** Extensible via local MCP servers only. Each new tool requires a local Python/Node script. Cannot integrate with enterprise backends that require server-side auth or network access. Adequate for current needs but limited ceiling |
+| 2: Copilot + Azure MCP | **5** | **Projected.** Azure MCP servers can integrate with any enterprise backend. MCP is an open standard — services are reusable with any MCP client. Each new capability is a new MCP server deployment, not a platform rebuild |
+| 3: Custom Platform | **5** | **Projected.** Full custom integration capability. Can build any tool, any integration, any workflow. Same ceiling as Option 2 for enterprise integrations, plus custom UX integrations that MCP cannot provide |
+
+#### F-10: Portability and Exit Cost (3%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **4** | **Measured.** Knowledge layer is entirely Markdown/YAML — portable to any AI tool. OpenAPI specs, MADR ADRs, YAML metadata are standard formats. Only the execution configuration (copilot-instructions.md, hooks) is Copilot-specific. Scored 4 (not 5) because switching execution tools requires instruction translation |
+| 2: Copilot + Azure MCP | **4** | **Projected.** Same knowledge portability. MCP backend services are protocol-standard — reusable with any MCP-compatible client (Claude Code, Roo Code, etc.). Azure infrastructure is relocatable. Same exit cost as Option 1 |
+| 3: Custom Platform | **2** | **Projected.** Custom web UX, RAG pipeline, agent logic, and state management are proprietary to the build. Knowledge in the vector store may be portable, but the orchestration layer is not. Highest switching cost — exit means abandoning the custom build |
+
+#### F-11: Operational Burden (2%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **5** | **Measured.** GitHub manages the platform: model hosting, indexing, billing, uptime. Architect's operational burden is zero beyond VS Code extension updates. Portal hosting (Azure Static Web Apps) is the only infrastructure |
+| 2: Copilot + Azure MCP | **3** | **Projected.** Azure infrastructure needs provisioning (IaC), monitoring (Azure Monitor), cost management, security patching, and incident response. Each MCP server is a deployed service. Moderate ops overhead — manageable with IaC but not zero |
+| 3: Custom Platform | **1** | **Projected.** Full-stack application: web frontend, API backend, database, vector store, search service, agent orchestrator, model endpoint, networking, monitoring, security. Each component needs provisioning, patching, scaling, and incident response. Significant DevOps investment |
+
+#### F-12: Scalability Across Teams (2%)
+
+| Option | Score | Justification |
+|--------|-------|---------------|
+| 1: Copilot Standalone | **4** | **Measured.** Add a Copilot seat, share the repo. Instructions propagate automatically. Training is the main bottleneck — new architects need to learn the instruction model and workflow. Scored 4 (not 5) because no formal onboarding process exists yet |
+| 2: Copilot + Azure MCP | **4** | **Projected.** Same seat-based scaling. Azure services handle additional load. Per-user cost increase is modest (Copilot seat only — Azure services are shared). Same training bottleneck as Option 1 |
+| 3: Custom Platform | **3** | **Projected.** Custom app must be load-tested, scaled, and supported. Training is more extensive — users must learn a new UX in addition to architecture workflows. But the web-based UX is accessible to non-VS-Code users, which is a scaling advantage for non-developer stakeholders |
 
 ### Preliminary Ranking
 
