@@ -47,6 +47,13 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Decisions:
+    - Decision Framework: decisions/index.md
+    - DD-01 Content Injection: decisions/dd-01-content-injection.md
+    - DD-02 Injection Location: decisions/dd-02-injection-location.md
+    - DD-03 Billing Model: decisions/dd-03-billing-model.md
+    - DD-04 AI Provider: decisions/dd-04-ai-provider.md
+  - Platform Options: platform-options.md
   - Evaluation Framework: evaluation-framework.md
   - Tools:
     - GitHub Copilot: tools/github-copilot.md

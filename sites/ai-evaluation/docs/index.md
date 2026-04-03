@@ -2,7 +2,24 @@
 
 ## Comparative Evaluation for Enterprise Architecture Work
 
-This site documents the NovaTrek Adventures Continuous Architecture Platform's evaluation of AI toolchains for solution architecture workflows. Three toolchains were assessed using the same AI model (Claude Opus 4.6), the same synthetic workspace, and the same 5 architecture scenarios.
+This site documents the NovaTrek Adventures Continuous Architecture Platform's evaluation of AI toolchains for solution architecture workflows. Rather than treating toolchain selection as a single monolithic decision, this evaluation decomposes the problem into four independent architectural decisions that compose into evaluated platform options.
+
+---
+
+## Decision Framework
+
+Selecting an AI platform is not one decision — it is four:
+
+| Decision | Question | Status |
+|----------|----------|--------|
+| [DD-01: Content Injection](decisions/dd-01-content-injection.md) | Do we need custom MCP servers, or does native toolchain context management suffice? | Under Evaluation |
+| [DD-02: Injection Location](decisions/dd-02-injection-location.md) | Should content injection happen on the developer workstation or on a server? | Under Evaluation |
+| [DD-03: Billing Model](decisions/dd-03-billing-model.md) | Intent-based billing vs token-based billing — what economic model fits? | Under Evaluation |
+| [DD-04: AI Provider](decisions/dd-04-ai-provider.md) | GitHub, Anthropic, Azure AI Foundry, or Kong/OpenRouter — who do we buy AI from? | Under Evaluation |
+
+These decisions compose into three [Platform Options](platform-options.md) — Lean, Hybrid, and Full Build — each scored against 12 evaluation factors.
+
+[Decision Framework](decisions/index.md){ .md-button .md-button--primary } [Platform Options](platform-options.md){ .md-button }
 
 ---
 
@@ -40,6 +57,8 @@ Both Copilot and Roo Code completed all 5 scenarios, producing 37 files each wit
 
 ## Three Toolchains Compared
 
+The original Phase 1 evaluation compared three toolchains using controlled variables (same model, same workspace, same scenarios). These profiles remain as reference material — but the decision framework above supersedes the monolithic tool comparison.
+
 ### GitHub Copilot Pro+ (Selected)
 
 VS Code-integrated AI assistant with agent mode, workspace indexing, and flat-rate subscription billing. Deep GitHub ecosystem integration. Intent-based billing charges per user prompt only -- autonomous tool calls are free.
@@ -64,12 +83,14 @@ Anthropic's official CLI-based coding agent. Terminal-native with direct Anthrop
 
 | Section | What You Will Find |
 |---------|-------------------|
-| [Evaluation Framework](evaluation-framework.md) | Methodology, scoring rubrics, scenario definitions |
+| [Decision Framework](decisions/index.md) | Four decomposed decisions: content injection, location, billing, provider |
+| [Platform Options](platform-options.md) | Composed side-by-side comparison of Lean, Hybrid, and Full Build options |
+| [Evaluation Framework](evaluation-framework.md) | Phase 1 methodology, scoring rubrics, scenario definitions |
 | [Tools](tools/github-copilot.md) | Per-tool profiles with architecture, pricing, strengths, and limitations |
 | [Comparisons](comparisons/copilot-vs-roocode.md) | Head-to-head results with evidence from actual runs |
 | [Research](research/copilot-billing.md) | Deep research findings on billing mechanics, gateway failures, context management |
 | [Data Isolation](data-isolation.md) | How this evaluation uses zero corporate data |
-| [Decision Log](decision-log.md) | ADR-001: the formal architecture decision record |
+| [Decision Log](decision-log.md) | ADR-001: the original architecture decision record |
 
 ---
 
