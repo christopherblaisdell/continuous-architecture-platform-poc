@@ -32,11 +32,11 @@ tickets:
     priority: High
     assignee: maya.rodriguez
     reporter: jordan.blake
-    labels: [api-enhancement, svc-check-in, svc-adventure-catalog]
+    labels: [api-enhancement, svc-check-in, svc-trip-catalog]
     created: 2025-01-20
     updated: 2025-02-10
     sprint: Sprint 24-4
-    components: [svc-check-in, svc-adventure-catalog]
+    components: [svc-check-in, svc-trip-catalog]
     solution: _NTK-10002-adventure-category-classification
     user_story: |
       As an operations manager,

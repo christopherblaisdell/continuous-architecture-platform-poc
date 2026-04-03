@@ -11,7 +11,7 @@ description: "Solution design for NTK-10009"
 | **Version** | Date |
 | **Author** | Solution Architect (AI-Assisted) |
 | **Date** | 2026-03-06 |
-| **Ticket** | NTK-10009 |
+| **Ticket** | [NTK-10009](../tickets/NTK-10009.md) |
 
 ## Affected Capabilities
 
@@ -35,13 +35,13 @@ description: "Solution design for NTK-10009"
 
 ## Solution Contents
 
-- Requirements
+- [Requirements](#problem-statement)
 - Analysis
-- Decisions
+- [Decisions](#architecture-decisions)
 - Impact Assessments (2)
 - User Stories
 - Risk Assessment
-- Capability Mapping
+- [Capability Mapping](#affected-capabilities)
 
 ## Related Solutions
 

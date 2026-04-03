@@ -11,7 +11,7 @@ description: "Solution design for NTK-10005"
 | **Version** | 1.0 |
 | **Author** | Solution Architecture (AI-Assisted) |
 | **Date** | 2026-03-03 |
-| **Ticket** | NTK-10005 |
+| **Ticket** | [NTK-10005](../tickets/NTK-10005.md) |
 
 ## Affected Capabilities
 
@@ -25,12 +25,12 @@ description: "Solution design for NTK-10005"
 
 ## Solution Contents
 
-- Requirements
+- [Requirements](#problem-statement)
 - Analysis
-- Decisions
+- [Decisions](#architecture-decisions)
 - Impact Assessments (0)
-- Implementation Guidance
-- Capability Mapping
+- [Implementation Guidance](#deployment-notes)
+- [Capability Mapping](#affected-capabilities)
 
 ## Related Solutions
 
@@ -154,11 +154,11 @@ Include `rfid_tag` as a top-level field in the check-in event. Downstream consum
 
 ## Related Artifacts
 
-- [Ticket Report](1.requirements/NTK-10005.ticket.report.md)
-- [Simple Explanation](2.analysis/simple.explanation.md)
-- [Assumptions](3.solution/a.assumptions/assumptions.md)
-- [Current State Investigation](3.solution/c.current.state/investigations.md)
-- [Decisions](3.solution/d.decisions/decisions.md)
-- [Guidance](3.solution/g.guidance/guidance.md)
-- [Impacts](3.solution/i.impacts/impacts.md)
-- [User Stories](3.solution/s.user.stories/user-stories.md)
+- *Ticket Report*
+- *Simple Explanation*
+- *Assumptions*
+- *Current State Investigation*
+- *Decisions*
+- *Guidance*
+- *Impacts*
+- *User Stories*

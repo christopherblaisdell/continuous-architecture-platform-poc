@@ -40,52 +40,52 @@ a capability is modified by solutions.
 
 | Capability | Status | Solutions | Last Touched | Staleness | Churn | L3s | ADRs |
 |-----------|--------|-----------|-------------|-----------|-------|-----|------|
-| CAP-1.1 Guest Identity and Profile Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-1.2 Adventure Discovery and Browsing | IMPLEMENTED | 2 | 2026-03-06 | ACTIVE | MODERATE | 2 | 5 |
-| CAP-1.3 Reservation Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-1.4 Loyalty and Rewards | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-1.5 Guest Communications | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-1.6 Trip Media and Memories | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-1.7 Reviews and Feedback | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 5 | 3 |
-| CAP-1.8 Personalized Recommendations | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-2.1 Day-of-Adventure Check-In | IMPLEMENTED | 3 | 2026-03-20 | ACTIVE | MODERATE | 5 | 3 |
-| CAP-2.2 Schedule Planning and Optimization | IMPLEMENTED | 1 | 2025-02-05 | STALE | LOW | 2 | 2 |
-| CAP-2.3 Guide Assignment and Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-2.4 Trail Operations | IMPLEMENTED | 1 | 2025-02-01 | STALE | LOW | 1 | 0 |
-| CAP-2.5 Transport Coordination | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-3.1 Waiver and Compliance Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-3.2 Incident Reporting and Response | IMPLEMENTED | 1 | 2026-03-20 | ACTIVE | LOW | 2 | 1 |
-| CAP-3.3 Emergency Response Coordination | IMPLEMENTED | 1 | 2026-03-20 | ACTIVE | LOW | 2 | 1 |
-| CAP-3.4 Wildlife and Environmental Monitoring | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-3.5 Weather Monitoring and Alerting | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-4.1 Gear Inventory and Tracking | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-4.2 Procurement and Vendor Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-4.3 Location and Capacity Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-4.4 Vehicle Fleet Management | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-4.5 Facility and Venue Management | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-5.1 Payment Processing | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-5.2 Trip Pricing and Yield Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-5.3 Analytics and Business Intelligence | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-5.4 Financial Reporting and Reconciliation | PARTIAL | 1 | 2026-03-06 | ACTIVE | LOW | 1 | 3 |
-| CAP-5.5 Refund and Dispute Management | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 4 | 3 |
-| CAP-6.1 Third-Party Booking Channels | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-6.2 Affiliate and Commission Management | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-6.3 Channel Rate Parity Management | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-7.1 Notification Delivery (Multi-Channel) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-7.2 Geospatial and Location Services | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
-| CAP-7.3 Search and Discovery Engine | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-1.1 Guest Identity and Profile Management](#cap-11-guest-identity-and-profile-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-1.2 Adventure Discovery and Browsing](#cap-12-adventure-discovery-and-browsing) | IMPLEMENTED | 2 | 2026-03-06 | ACTIVE | MODERATE | 2 | 5 |
+| [CAP-1.3 Reservation Management](#cap-13-reservation-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-1.4 Loyalty and Rewards](#cap-14-loyalty-and-rewards) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-1.5 Guest Communications](#cap-15-guest-communications) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-1.6 Trip Media and Memories](#cap-16-trip-media-and-memories) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-1.7 Reviews and Feedback](#cap-17-reviews-and-feedback) | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 5 | 3 |
+| [CAP-1.8 Personalized Recommendations](#cap-18-personalized-recommendations) | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-2.1 Day-of-Adventure Check-In](#cap-21-day-of-adventure-check-in) | IMPLEMENTED | 3 | 2026-03-20 | ACTIVE | MODERATE | 5 | 3 |
+| [CAP-2.2 Schedule Planning and Optimization](#cap-22-schedule-planning-and-optimization) | IMPLEMENTED | 1 | 2025-02-05 | STALE | LOW | 2 | 2 |
+| [CAP-2.3 Guide Assignment and Management](#cap-23-guide-assignment-and-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-2.4 Trail Operations](#cap-24-trail-operations) | IMPLEMENTED | 1 | 2025-02-01 | STALE | LOW | 1 | 0 |
+| [CAP-2.5 Transport Coordination](#cap-25-transport-coordination) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-3.1 Waiver and Compliance Management](#cap-31-waiver-and-compliance-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-3.2 Incident Reporting and Response](#cap-32-incident-reporting-and-response) | IMPLEMENTED | 1 | 2026-03-20 | ACTIVE | LOW | 2 | 1 |
+| [CAP-3.3 Emergency Response Coordination](#cap-33-emergency-response-coordination) | IMPLEMENTED | 1 | 2026-03-20 | ACTIVE | LOW | 2 | 1 |
+| [CAP-3.4 Wildlife and Environmental Monitoring](#cap-34-wildlife-and-environmental-monitoring) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-3.5 Weather Monitoring and Alerting](#cap-35-weather-monitoring-and-alerting) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-4.1 Gear Inventory and Tracking](#cap-41-gear-inventory-and-tracking) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-4.2 Procurement and Vendor Management](#cap-42-procurement-and-vendor-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-4.3 Location and Capacity Management](#cap-43-location-and-capacity-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-4.4 Vehicle Fleet Management](#cap-44-vehicle-fleet-management) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-4.5 Facility and Venue Management](#cap-45-facility-and-venue-management) | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-5.1 Payment Processing](#cap-51-payment-processing) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-5.2 Trip Pricing and Yield Management](#cap-52-trip-pricing-and-yield-management) | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-5.3 Analytics and Business Intelligence](#cap-53-analytics-and-business-intelligence) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-5.4 Financial Reporting and Reconciliation](#cap-54-financial-reporting-and-reconciliation) | PARTIAL | 1 | 2026-03-06 | ACTIVE | LOW | 1 | 3 |
+| [CAP-5.5 Refund and Dispute Management](#cap-55-refund-and-dispute-management) | IMPLEMENTED | 1 | 2026-03-06 | ACTIVE | LOW | 4 | 3 |
+| [CAP-6.1 Third-Party Booking Channels](#cap-61-third-party-booking-channels) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-6.2 Affiliate and Commission Management](#cap-62-affiliate-and-commission-management) | PARTIAL | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-6.3 Channel Rate Parity Management](#cap-63-channel-rate-parity-management) | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-7.1 Notification Delivery (Multi-Channel)](#cap-71-notification-delivery-multi-channel) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-7.2 Geospatial and Location Services](#cap-72-geospatial-and-location-services) | IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
+| [CAP-7.3 Search and Discovery Engine](#cap-73-search-and-discovery-engine) | NOT IMPLEMENTED | 0 | — | UNTOUCHED | NONE | 0 | 0 |
 
 ## Domain Overview
 
 | Domain | L2 Capabilities | Implemented | Partial | Gaps |
 |--------|----------------|-------------|---------|------|
-| CAP-1 Guest Experience | 8 | 7 | 0 | 1 (Personalized Recommendations) |
-| CAP-2 Adventure Operations | 5 | 5 | 0 | 0 |
-| CAP-3 Safety and Risk | 5 | 5 | 0 | 0 |
-| CAP-4 Resource Management | 5 | 4 | 0 | 1 (Facility and Venue Management) |
-| CAP-5 Revenue and Finance | 5 | 3 | 2 | 0 |
-| CAP-6 Partner Ecosystem | 3 | 1 | 1 | 1 (Channel Rate Parity Management) |
-| CAP-7 Platform Services | 3 | 2 | 0 | 1 (Search and Discovery Engine) |
+| [CAP-1 Guest Experience](#cap-1-guest-experience) | 8 | 7 | 0 | 1 (Personalized Recommendations) |
+| [CAP-2 Adventure Operations](#cap-2-adventure-operations) | 5 | 5 | 0 | 0 |
+| [CAP-3 Safety and Risk](#cap-3-safety-and-risk) | 5 | 5 | 0 | 0 |
+| [CAP-4 Resource Management](#cap-4-resource-management) | 5 | 4 | 0 | 1 (Facility and Venue Management) |
+| [CAP-5 Revenue and Finance](#cap-5-revenue-and-finance) | 5 | 3 | 2 | 0 |
+| [CAP-6 Partner Ecosystem](#cap-6-partner-ecosystem) | 3 | 1 | 1 | 1 (Channel Rate Parity Management) |
+| [CAP-7 Platform Services](#cap-7-platform-services) | 3 | 2 | 0 | 1 (Search and Discovery Engine) |
 
 ## CAP-1 Guest Experience
 

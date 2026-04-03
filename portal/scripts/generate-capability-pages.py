@@ -10,6 +10,7 @@ Usage:
 """
 
 import os
+import re
 import yaml
 
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -20,6 +21,15 @@ OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "capabilities")
 def load_yaml(path):
     with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def heading_slug(text):
+    """Reproduce MkDocs heading anchor generation."""
+    slug = text.lower()
+    slug = re.sub(r"[^a-z0-9 -]", "", slug)
+    slug = slug.replace(" ", "-")
+    slug = re.sub(r"-+", "-", slug)
+    return slug.strip("-")
 
 
 def status_badge(status):
@@ -221,7 +231,9 @@ def main():
             churn_lbl = m.get("churn", "none").upper()
             l3 = m.get("l3_count", 0)
             adrs = m.get("decision_count", 0)
-            lines.append(f"| {c_id} {c_name} | {status} | {sol_count} | {last} | {stale_lbl} | {churn_lbl} | {l3} | {adrs} |")
+            cap_anchor = heading_slug(f"{c_id} {c_name}")
+            cap_link = f"[{c_id} {c_name}](#{cap_anchor})"
+            lines.append(f"| {cap_link} | {status} | {sol_count} | {last} | {stale_lbl} | {churn_lbl} | {l3} | {adrs} |")
     lines.append("")
 
     # Domain overview table
@@ -238,8 +250,10 @@ def main():
         d_gaps = sum(1 for c in caps if c.get("status") == "not-implemented")
         gap_names = [c["name"] for c in caps if c.get("status") == "not-implemented"]
         gap_str = ", ".join(gap_names) if gap_names else "—"
-        lines.append(f"| {d_id} {d_name} | {len(caps)} | {d_impl} | {d_part} | {d_gaps} ({gap_str}) |" if d_gaps else
-                      f"| {d_id} {d_name} | {len(caps)} | {d_impl} | {d_part} | 0 |")
+        domain_anchor = heading_slug(f"{d_id} {d_name}")
+        domain_link = f"[{d_id} {d_name}](#{domain_anchor})"
+        lines.append(f"| {domain_link} | {len(caps)} | {d_impl} | {d_part} | {d_gaps} ({gap_str}) |" if d_gaps else
+                      f"| {domain_link} | {len(caps)} | {d_impl} | {d_part} | 0 |")
     lines.append("")
 
     # Per-domain detail

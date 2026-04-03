@@ -11,7 +11,7 @@ description: "Solution design for NTK-10001"
 | **Version** | 1.0 |
 | **Author** | Morgan Rivera |
 | **Date** | 2024-04-15 |
-| **Ticket** | NTK-10001 |
+| **Ticket** | [NTK-10001](../tickets/NTK-10001.md) |
 
 ## Affected Capabilities
 
@@ -26,12 +26,12 @@ description: "Solution design for NTK-10001"
 
 ## Solution Contents
 
-- Requirements
+- [Requirements](#problem-statement)
 - Analysis
-- Decisions
+- [Decisions](#architecture-decisions)
 - Impact Assessments (1)
 - User Stories
-- Capability Mapping
+- [Capability Mapping](#affected-capabilities)
 
 ---
 

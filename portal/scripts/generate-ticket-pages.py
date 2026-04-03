@@ -20,6 +20,7 @@ import re
 
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 METADATA_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "metadata")
+DECISIONS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "decisions")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "tickets")
 
 
@@ -88,13 +89,27 @@ def get_ticket_decisions(ticket, decisions_by_ticket):
     return decisions_by_ticket.get(ticket["key"], [])
 
 
+def build_adr_file_lookup():
+    """Build a lookup dict: 'ADR-010' -> 'ADR-010-patch-semantics-schedule-updates.md'."""
+    lookup = {}
+    if os.path.isdir(DECISIONS_DIR):
+        for f in os.listdir(DECISIONS_DIR):
+            if f.startswith("ADR-") and f.endswith(".md"):
+                m = re.match(r"(ADR-\d+)", f)
+                if m:
+                    lookup[m.group(1)] = f
+    return lookup
+
+
 def priority_sort_key(priority):
     order = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}
     return order.get(priority, 9)
 
 
-def generate_ticket_page(ticket, caps_by_ticket, decisions_by_ticket, cap_names):
+def generate_ticket_page(ticket, caps_by_ticket, decisions_by_ticket, cap_names, adr_lookup=None):
     """Generate a per-ticket Markdown page."""
+    if adr_lookup is None:
+        adr_lookup = {}
     key = ticket["key"]
     summary = ticket.get("summary", "")
     status = ticket.get("status", "")
@@ -188,7 +203,12 @@ def generate_ticket_page(ticket, caps_by_ticket, decisions_by_ticket, cap_names)
         lines.append("## Architecture Decisions")
         lines.append("")
         for dec in decisions:
-            lines.append(f"- {dec}")
+            global_match = re.match(r"^(ADR-\d+)$", dec)
+            if global_match and global_match.group(1) in adr_lookup:
+                adr_file = adr_lookup[global_match.group(1)]
+                lines.append(f"- [{dec}](../decisions/{adr_file})")
+            else:
+                lines.append(f"- {dec}")
         lines.append("")
 
     # Labels
@@ -201,7 +221,7 @@ def generate_ticket_page(ticket, caps_by_ticket, decisions_by_ticket, cap_names)
     return "\n".join(lines)
 
 
-def generate_index_page(tickets, caps_by_ticket):
+def generate_index_page(tickets, caps_by_ticket, cap_names):
     """Generate the tickets index page."""
     lines = []
     lines.append("---")
@@ -238,7 +258,13 @@ def generate_index_page(tickets, caps_by_ticket):
             summary = t.get("summary", "")[:55]
             status = t.get("status", "")
             t_caps = get_ticket_capabilities(t, caps_by_ticket)
-            caps = ", ".join(c["id"] for c in t_caps)
+            cap_links = []
+            for c in t_caps:
+                cid = c["id"]
+                cname = cap_names.get(cid, "")
+                canchor = heading_slug(f"{cid} {cname}")
+                cap_links.append(f"[{cid}](../capabilities/index.md#{canchor})")
+            caps = ", ".join(cap_links) if cap_links else ""
             sol = "[View](../solutions/{}.md)".format(t["solution"]) if t.get("solution") else "—"
             lines.append(f"| [{key}]({key}.md) | {summary} | {status} | {caps} | {sol} |")
         lines.append("")
@@ -262,14 +288,17 @@ def main():
     caps_data = load_yaml(caps_path) if os.path.exists(caps_path) else {}
     cap_names = build_cap_names(caps_data)
 
+    # Build ADR file lookup for decision links
+    adr_lookup = build_adr_file_lookup()
+
     # Generate index
-    index_content = generate_index_page(tickets, caps_by_ticket)
+    index_content = generate_index_page(tickets, caps_by_ticket, cap_names)
     with open(os.path.join(OUTPUT_DIR, "index.md"), "w", encoding="utf-8") as f:
         f.write(index_content)
 
     # Generate per-ticket pages
     for ticket in tickets:
-        page_content = generate_ticket_page(ticket, caps_by_ticket, decisions_by_ticket, cap_names)
+        page_content = generate_ticket_page(ticket, caps_by_ticket, decisions_by_ticket, cap_names, adr_lookup)
         page_path = os.path.join(OUTPUT_DIR, f"{ticket['key']}.md")
         with open(page_path, "w", encoding="utf-8") as f:
             f.write(page_content)

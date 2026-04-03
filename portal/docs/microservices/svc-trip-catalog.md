@@ -147,6 +147,7 @@ tags:
 | Ticket | Solution | Capabilities | Date |
 |--------|----------|-------------|------|
 | NTK-10008 | [Guest Reviews and Ratings Platform](../solutions/_NTK-10008-guest-reviews-and-ratings.md) | `CAP-1.7`, `CAP-1.2` | 2026-03-06 |
+| NTK-10002 | [Adventure Category Classification for Check-In UI Patterns](../solutions/_NTK-10002-adventure-category-classification.md) | `CAP-2.1`, `CAP-1.2` | 2025-02-10 |
 
 ---
 

@@ -19,6 +19,7 @@ import yaml
 WORKSPACE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SOLUTIONS_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "solutions")
 METADATA_DIR = os.path.join(WORKSPACE_ROOT, "architecture", "metadata")
+DECISIONS_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "decisions")
 OUTPUT_DIR = os.path.join(WORKSPACE_ROOT, "portal", "docs", "solutions")
 
 
@@ -43,6 +44,19 @@ def build_cap_names(caps_data):
         for cap in domain.get("capabilities", []):
             names[cap["id"]] = cap.get("name", "")
     return names
+
+
+def build_adr_file_lookup():
+    """Build a lookup dict: 'ADR-010' -> 'ADR-010-patch-semantics-schedule-updates.md'."""
+    lookup = {}
+    if os.path.isdir(DECISIONS_DIR):
+        for f in os.listdir(DECISIONS_DIR):
+            if f.startswith("ADR-") and f.endswith(".md"):
+                # Extract short ID: ADR-010 from ADR-010-patch-semantics-schedule-updates.md
+                m = re.match(r"(ADR-\d+)", f)
+                if m:
+                    lookup[m.group(1)] = f
+    return lookup
 
 
 def build_changelog_index(changelog_data):
@@ -197,10 +211,12 @@ def find_related_solutions(meta, all_solutions, tickets_data):
     return related
 
 
-def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, all_solutions=None):
+def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, all_solutions=None, adr_lookup=None):
     """Generate a per-solution Markdown page."""
     services = find_related_services(meta, tickets_data)
     decisions = find_related_decisions(meta, changelog_decisions)
+    if adr_lookup is None:
+        adr_lookup = {}
 
     lines = []
     lines.append("---")
@@ -222,7 +238,7 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
         lines.append(f"| **Author** | {meta['author']} |")
     if meta["date"]:
         lines.append(f"| **Date** | {meta['date']} |")
-    lines.append(f"| **Ticket** | {meta['ticket_id']} |")
+    lines.append(f"| **Ticket** | [{meta['ticket_id']}](../tickets/{meta['ticket_id']}.md) |")
     lines.append("")
 
     # Capabilities (from capability-changelog.yaml)
@@ -256,7 +272,14 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
         lines.append("## Architecture Decisions")
         lines.append("")
         for dec in decisions:
-            lines.append(f"- {dec}")
+            # Global ADRs (ADR-NNN) link to decision pages
+            global_match = re.match(r"^(ADR-\d+)$", dec)
+            if global_match and global_match.group(1) in adr_lookup:
+                adr_file = adr_lookup[global_match.group(1)]
+                lines.append(f"- [{dec}](../decisions/{adr_file})")
+            else:
+                # Ticket-level ADRs (ADR-NTK10008-001) — no standalone page
+                lines.append(f"- {dec}")
         lines.append("")
 
     # Solution contents inventory
@@ -280,8 +303,44 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
     if meta["capabilities"]:
         sections.append("Capability Mapping")
 
+    # Build heading anchors from the master doc to link Solution Contents items
+    master_headings = re.findall(r"^##\s+(.+)$", meta["master_content"], re.MULTILINE)
+    master_anchors = {heading_slug(h): h for h in master_headings}
+
+    # Map section labels to search keywords for finding matching headings
+    section_keywords = {
+        "Requirements": ["problem statement", "requirements"],
+        "Analysis": ["root cause", "analysis", "investigation"],
+        "Decisions": ["decision", "architecture decision"],
+        "Implementation Guidance": ["implementation guidance", "guidance", "deployment"],
+        "Risk Assessment": ["risk"],
+        "Capability Mapping": ["affected capabilities", "capability"],
+        "User Stories": ["user stor"],
+    }
+
+    def find_anchor(section_label):
+        """Find the best matching heading anchor for a section label."""
+        base = re.sub(r" \(\d+\)", "", section_label)
+        # Special case: these are headings we generate ourselves, not in master doc
+        generated_anchors = {
+            "Capability Mapping": "affected-capabilities",
+            "Decisions": "architecture-decisions",
+        }
+        if base in generated_anchors:
+            return generated_anchors[base]
+        keywords = section_keywords.get(base, [base.lower()])
+        for kw in keywords:
+            for anchor, heading_text in master_anchors.items():
+                if kw in heading_text.lower():
+                    return anchor
+        return None
+
     for s in sections:
-        lines.append(f"- {s}")
+        anchor = find_anchor(s)
+        if anchor:
+            lines.append(f"- [{s}](#{anchor})")
+        else:
+            lines.append(f"- {s}")
     lines.append("")
 
     # Related Solutions (auto-detected by service or capability overlap)
@@ -309,6 +368,15 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
     section_start = content.find("\n## ")
     if section_start > 0:
         content = content[section_start:]
+
+    # Fix broken relative links from solution source directory structure.
+    # These reference sub-folders that don't exist in the portal output.
+    # Convert to italic labels since the sub-documents aren't published.
+    content = re.sub(
+        r"\[([^\]]+)\]\([^)]*(?:investigations|decisions|impacts|risks|assumptions|guidance|user-stories|simple\.explanation|ticket\.report)\.md\)",
+        r"*\1*",
+        content,
+    )
 
     lines.append("---")
     lines.append("")
@@ -349,7 +417,27 @@ def generate_index_page(solutions, tickets_data, cap_names):
         svc_str = ", ".join(services[:3])
         if len(services) > 3:
             svc_str += f" (+{len(services) - 3})"
-        lines.append(f"| {s['ticket_id']} | [{title_short}]({slug}.md) | {status} | {caps} | {svc_str} |")
+        # Link ticket IDs
+        ticket_link = f"[{s['ticket_id']}](../tickets/{s['ticket_id']}.md)"
+        # Link capabilities
+        cap_links = []
+        for c in s.get("capabilities", []):
+            cid = c["id"]
+            cname = cap_names.get(cid, "")
+            canchor = heading_slug(f"{cid} {cname}")
+            cap_links.append(f"[{cid}](../capabilities/index.md#{canchor})")
+        caps_linked = ", ".join(cap_links) if cap_links else caps
+        # Link services
+        svc_links = []
+        for svc in services[:3]:
+            if svc.startswith("svc-"):
+                svc_links.append(f"[{svc}](../microservices/{svc}.md)")
+            else:
+                svc_links.append(svc)
+        svc_linked = ", ".join(svc_links)
+        if len(services) > 3:
+            svc_linked += f" (+{len(services) - 3})"
+        lines.append(f"| {ticket_link} | [{title_short}]({slug}.md) | {status} | {caps_linked} | {svc_linked} |")
     lines.append("")
 
     # Capability coverage
@@ -368,7 +456,7 @@ def generate_index_page(solutions, tickets_data, cap_names):
         lines.append("Capabilities shaped by solution designs:")
         lines.append("")
         lines.append("| Capability | Solutions |")
-        lines.append("|-----------|----------")
+        lines.append("|-----------|----------|")
         for cap_id in sorted(all_caps.keys()):
             cap_name = cap_names.get(cap_id, "")
             cap_anchor = heading_slug(f"{cap_id} {cap_name}")
@@ -404,6 +492,9 @@ def main():
     caps_data = load_yaml(caps_path) if os.path.exists(caps_path) else {}
     cap_names = build_cap_names(caps_data)
 
+    # Build ADR file lookup for decision links
+    adr_lookup = build_adr_file_lookup()
+
     # Discover and parse solutions
     solutions = []
     if os.path.isdir(SOLUTIONS_DIR):
@@ -421,7 +512,7 @@ def main():
 
     # Generate per-solution pages
     for meta in solutions:
-        page_content = generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, all_solutions=solutions)
+        page_content = generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, all_solutions=solutions, adr_lookup=adr_lookup)
         page_path = os.path.join(OUTPUT_DIR, f"{meta['folder']}.md")
         with open(page_path, "w", encoding="utf-8") as f:
             f.write(page_content)

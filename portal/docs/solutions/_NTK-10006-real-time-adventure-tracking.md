@@ -7,7 +7,7 @@ description: "Solution design for NTK-10006"
 
 | Field | Value |
 |-------|-------|
-| **Ticket** | NTK-10006 |
+| **Ticket** | [NTK-10006](../tickets/NTK-10006.md) |
 
 ## Affected Capabilities
 
@@ -27,18 +27,18 @@ description: "Solution design for NTK-10006"
 
 ## Architecture Decisions
 
-- ADR-014
+- [ADR-014](../decisions/ADR-014-event-driven-tracking-session-initiation.md)
 
 ## Solution Contents
 
-- Requirements
+- [Requirements](#1-problem-statement)
 - Analysis
-- Decisions
+- [Decisions](#architecture-decisions)
 - Impact Assessments (5)
-- User Stories
+- [User Stories](#8-user-stories)
 - Implementation Guidance
-- Risk Assessment
-- Capability Mapping
+- [Risk Assessment](#6-risks)
+- [Capability Mapping](#affected-capabilities)
 
 ## Related Solutions
 
@@ -202,7 +202,7 @@ Per ADR-005 (Pattern 3 Default Fallback), the tracking system applies safety-fir
 
 ## 5. Decisions
 
-See [3.solution/d.decisions/decisions.md](3.solution/d.decisions/decisions.md) for full MADR-format ADR.
+See *3.solution/d.decisions/decisions.md* for full MADR-format ADR.
 
 | Decision | Summary |
 |----------|---------|
@@ -210,7 +210,7 @@ See [3.solution/d.decisions/decisions.md](3.solution/d.decisions/decisions.md) f
 
 ## 6. Risks
 
-See [3.solution/r.risks/risks.md](3.solution/r.risks/risks.md) for detailed risk register.
+See *3.solution/r.risks/risks.md* for detailed risk register.
 
 | Risk | Severity | Mitigation |
 |------|----------|-----------|
@@ -234,4 +234,4 @@ See impact assessments in [3.solution/i.impacts/](3.solution/i.impacts/):
 
 ## 8. User Stories
 
-See [3.solution/u.user.stories/user-stories.md](3.solution/u.user.stories/user-stories.md) for full user story set.
+See *3.solution/u.user.stories/user-stories.md* for full user story set.

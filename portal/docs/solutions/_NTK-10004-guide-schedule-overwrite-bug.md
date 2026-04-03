@@ -8,7 +8,7 @@ description: "Solution design for NTK-10004"
 | Field | Value |
 |-------|-------|
 | **Status** | Assumption |
-| **Ticket** | NTK-10004 |
+| **Ticket** | [NTK-10004](../tickets/NTK-10004.md) |
 
 ## Affected Capabilities
 
@@ -22,18 +22,18 @@ description: "Solution design for NTK-10004"
 
 ## Architecture Decisions
 
-- ADR-010
-- ADR-011
+- [ADR-010](../decisions/ADR-010-patch-semantics-schedule-updates.md)
+- [ADR-011](../decisions/ADR-011-optimistic-locking-daily-schedule.md)
 
 ## Solution Contents
 
-- Requirements
-- Analysis
-- Decisions
+- [Requirements](#1-problem-statement)
+- [Analysis](#2-root-cause-summary)
+- [Decisions](#architecture-decisions)
 - Impact Assessments (0)
-- Implementation Guidance
-- Risk Assessment
-- Capability Mapping
+- [Implementation Guidance](#9-implementation-guidance)
+- [Risk Assessment](#7-risks)
+- [Capability Mapping](#affected-capabilities)
 
 ---
 
@@ -68,7 +68,7 @@ The svc-scheduling-orchestrator's nightly and on-demand optimization pipeline ov
 | 3 | No `@Version` or ETag concurrency control; last-write-wins on concurrent updates | Secondary — Architecture | High |
 | 4 | `PUT /api/v1/schedules/{id}` endpoint undocumented in OpenAPI spec | Contributing — Governance | Medium |
 
-See: [investigations.md](../c.current.state/investigations.md) for full evidence chain.
+See: *investigations.md* for full evidence chain.
 
 ---
 
@@ -87,7 +87,7 @@ See: [investigations.md](../c.current.state/investigations.md) for full evidence
 - **ADR-NTK10004-001**: Switch from PUT to PATCH semantics (PROPOSED)
 - **ADR-NTK10004-002**: Add optimistic locking to DailySchedule (PROPOSED)
 
-See: [decisions.md](../d.decisions/decisions.md)
+See: *decisions.md*
 
 ---
 
@@ -99,7 +99,7 @@ See: [decisions.md](../d.decisions/decisions.md)
 | **svc-guide-management** | LOW | Monitoring only — detect enrichment field nullification |
 | **API Gateway / OpenAPI** | MEDIUM | Contract update — add PATCH, deprecate PUT |
 
-See: [impacts.md](../i.impacts/impacts.md)
+See: *impacts.md*
 
 ---
 
@@ -154,7 +154,7 @@ The `PatchScheduleDto` enforces this boundary structurally: it contains only orc
 | Undiscovered PUT callers | Medium | Medium | Observation period with structured logging |
 | Historical data unrecoverable | High | Medium | Guide notification campaign post-deploy |
 
-See: [risks.md](../r.risks/risks.md)
+See: *risks.md*
 
 ---
 
@@ -167,13 +167,13 @@ See: [risks.md](../r.risks/risks.md)
 | A3 | Concurrent regional optimization creates race conditions | CONFIRMED | Elastic logs: 47ms race window for G-4821 |
 | A4 | No revision or concurrency control exists | CONFIRMED | No @Version annotation in DailySchedule entity |
 
-See: [assumptions.md](../a.assumptions/assumptions.md)
+See: *assumptions.md*
 
 ---
 
 ## 9. Implementation Guidance
 
-Detailed implementation steps with code samples are provided in [guidance.md](../g.guidance/guidance.md), including:
+Detailed implementation steps with code samples are provided in *guidance.md*, including:
 - `PatchScheduleDto` class definition
 - `patchSchedule()` service method
 - PATCH controller endpoint

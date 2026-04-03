@@ -8,7 +8,7 @@ description: "Solution design for NTK-10002"
 | Field | Value |
 |-------|-------|
 | **Version** | Date |
-| **Ticket** | NTK-10002 |
+| **Ticket** | [NTK-10002](../tickets/NTK-10002.md) |
 
 ## Affected Capabilities
 
@@ -20,23 +20,23 @@ description: "Solution design for NTK-10002"
 ## Affected Services
 
 - [svc-check-in](../microservices/svc-check-in.md)
-- [svc-adventure-catalog](../microservices/svc-adventure-catalog.md)
+- [svc-trip-catalog](../microservices/svc-trip-catalog.md)
 
 ## Architecture Decisions
 
-- ADR-004
-- ADR-005
+- [ADR-004](../decisions/ADR-004-configuration-driven-classification.md)
+- [ADR-005](../decisions/ADR-005-pattern3-default-fallback.md)
 
 ## Solution Contents
 
-- Requirements
-- Analysis
-- Decisions
+- [Requirements](#1-problem-statement)
+- [Analysis](#11-source-code-analysis)
+- [Decisions](#architecture-decisions)
 - Impact Assessments (2)
 - User Stories
-- Implementation Guidance
+- [Implementation Guidance](#9-deployment-notes)
 - Risk Assessment
-- Capability Mapping
+- [Capability Mapping](#affected-capabilities)
 
 ## Related Solutions
 
@@ -46,7 +46,7 @@ Solutions that share services or capabilities with this design:
 |----------|-------------------|-----------------|
 | [NTK-10005 — Add Wristband RFID Field to Check-In Rec](_NTK-10005-wristband-rfid-field.md) | CAP-2.1 | svc-check-in |
 | [NTK-10006 — NTK-10006 Solution Design — Real-Time Ad](_NTK-10006-real-time-adventure-tracking.md) | CAP-2.1 | svc-check-in |
-| [NTK-10008 — NTK-10008 Solution Design — Guest Review](_NTK-10008-guest-reviews-and-ratings.md) | CAP-1.2 | — |
+| [NTK-10008 — NTK-10008 Solution Design — Guest Review](_NTK-10008-guest-reviews-and-ratings.md) | CAP-1.2 | svc-trip-catalog |
 
 ---
 

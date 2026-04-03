@@ -11,7 +11,7 @@ description: "Solution design for NTK-10008"
 | **Version** | Date |
 | **Author** | Solution Architect (AI-Assisted) |
 | **Date** | 2026-03-06 |
-| **Ticket** | NTK-10008 |
+| **Ticket** | [NTK-10008](../tickets/NTK-10008.md) |
 
 ## Affected Capabilities
 
@@ -35,13 +35,13 @@ description: "Solution design for NTK-10008"
 
 ## Solution Contents
 
-- Requirements
+- [Requirements](#problem-statement)
 - Analysis
-- Decisions
+- [Decisions](#architecture-decisions)
 - Impact Assessments (2)
 - User Stories
 - Risk Assessment
-- Capability Mapping
+- [Capability Mapping](#affected-capabilities)
 
 ## Related Solutions
 
@@ -49,7 +49,7 @@ Solutions that share services or capabilities with this design:
 
 | Solution | Shared Capabilities | Shared Services |
 |----------|-------------------|-----------------|
-| [NTK-10002 — NTK-10002: Adventure Category Classifica](_NTK-10002-adventure-category-classification.md) | CAP-1.2 | — |
+| [NTK-10002 — NTK-10002: Adventure Category Classifica](_NTK-10002-adventure-category-classification.md) | CAP-1.2 | svc-trip-catalog |
 | [NTK-10009 — NTK-10009 Solution Design — Refund and D](_NTK-10009-refund-dispute-management.md) | — | svc-reservations |
 
 ---
