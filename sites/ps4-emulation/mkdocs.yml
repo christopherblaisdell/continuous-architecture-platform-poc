@@ -1,0 +1,78 @@
+site_name: PS4 Emulation Guide
+site_url: ""
+site_description: Comprehensive guide to PlayStation 4 emulation on PC and Steam Deck -- emulator comparisons, compatibility lists, and setup guides
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Emulators:
+    - Comparison Overview: emulators/overview.md
+    - shadPS4: emulators/shadps4.md
+    - fpPS4: emulators/fpps4.md
+    - RPCSX: emulators/rpcsx.md
+    - Other Projects: emulators/others.md
+  - Compatibility:
+    - Playable Games: compatibility/playable-games.md
+    - Notable In-Game Titles: compatibility/ingame-titles.md
+    - Status Definitions: compatibility/status-definitions.md
+  - Setup Guides:
+    - PC Setup (Windows & Linux): guides/pc-setup.md
+    - Steam Deck Setup: guides/steam-deck-setup.md
+    - Dumping Firmware & Trophies: guides/firmware-dumping.md
+    - Performance Optimization: guides/performance-optimization.md
+  - Reference:
+    - System Requirements: reference/system-requirements.md
+    - Controls & Key Bindings: reference/keyboard-controls.md
+    - FAQ: reference/faq.md
+
+extra:
+  social: []
+
+copyright: PS4 Emulation Guide -- Last updated April 2026
