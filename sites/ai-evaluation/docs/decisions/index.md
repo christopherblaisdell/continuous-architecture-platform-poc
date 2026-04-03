@@ -21,9 +21,11 @@ A stakeholder who says "we should use Roo Code + Kong with custom MCP servers" i
 
 ---
 
-## The Reinventing-the-Wheel Concern
+## The Reinventing-the-Wheel Question
 
-A camp of stakeholders advocates building custom MCP servers on Roo Code + Kong AI to inject enterprise context into AI workflows. The counter-argument is that this re-invents capabilities that native toolchains already provide:
+One approach to enterprise context injection is building custom MCP servers to inject proprietary context (Confluence knowledge bases, CMDB data, ServiceNow tickets, internal APIs) into AI workflows.
+
+The critical question is whether this **reinvents capabilities that native toolchains already provide**:
 
 | Capability | Custom MCP Approach | Native Copilot Approach |
 |-----------|-------------------|----------------------|

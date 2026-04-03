@@ -8,7 +8,7 @@
 | **Date** | 2026-04-03 |
 | **Category** | Architecture |
 | **Maps to** | DP-09 (Context Enrichment Strategy), DP-19 (Hybrid MCP) |
-| **Stakeholder Input Required** | Yes — opposing camps exist |
+| **Stakeholder Input Required** | Yes |
 
 ---
 
@@ -16,9 +16,9 @@
 
 The architecture practice needs AI to reason about enterprise context — architecture standards, domain models, OpenAPI specs, ticket history, production logs, code patterns, and organizational knowledge. The question is not whether to inject context, but **how**.
 
-A camp of stakeholders advocates building **custom MCP (Model Context Protocol) servers** integrated with Roo Code + Kong AI Gateway. They argue that custom MCP pipelines are needed to inject proprietary enterprise context (Confluence knowledge bases, CMDB data, ServiceNow tickets, internal APIs) into AI workflows.
+One approach is to build **custom MCP (Model Context Protocol) servers** to inject proprietary enterprise context (Confluence knowledge bases, CMDB data, ServiceNow tickets, internal APIs) into AI workflows.
 
-The counter-argument is that this **reinvents the wheel**. Native toolchain capabilities — Copilot's workspace semantic indexing, the `copilot-instructions.md` instruction system, and lightweight local MCP servers — already achieve context injection without custom infrastructure.
+An alternative approach is to leverage **native toolchain capabilities** — Copilot's workspace semantic indexing, the `copilot-instructions.md` instruction system, and lightweight local MCP servers — which already achieve context injection without custom infrastructure. For content sources like Confluence, the architecture practice can **migrate content to markdown files in the repository**, published to both MkDocs portals and Confluence via CI — eliminating the need for a Confluence MCP server entirely.
 
 **This decision must be made independently of toolchain selection.** Regardless of which tool wins, the practice needs a principled framework for when custom content injection is justified vs when native capabilities are sufficient.
 
@@ -39,7 +39,7 @@ Before evaluating options, classify all content types the AI consumes and assess
 | C5 | Production evidence (logs, metrics, traces) | Real-time | Variable | Mock scripts (synthetic) | PARTIAL — synthetic only | Real production data not accessible |
 | C6 | Source code and OpenAPI specs | Semi-static | ~200K tokens (full workspace) | Workspace files | FULL — Copilot indexes natively | None |
 | C7 | Prior solution designs (completed work) | Static post-completion | ~50K tokens total | `architecture/solutions/` directory | FULL — workspace indexed | None |
-| C8 | Enterprise Confluence knowledge base | Semi-static, large corpus | Millions of tokens | Not connected | NONE | Requires integration |
+| C8 | Enterprise Confluence knowledge base | Semi-static, large corpus | Millions of tokens | Not connected | NONE | Migrate to repository markdown; publish to Confluence + MkDocs via CI |
 | C9 | CMDB / ServiceNow service registry | Dynamic | ~50K tokens | Not connected | NONE | Requires integration |
 | C10 | Cross-team architecture decisions (other teams) | Semi-static | ~100K+ tokens | Not connected | NONE | Requires integration |
 
@@ -49,9 +49,10 @@ Before evaluating options, classify all content types the AI consumes and assess
 |---------------|--------------|----------------------|
 | FULL — native capabilities sufficient | C1, C2, C3, C4, C6, C7 | No — already working |
 | PARTIAL — synthetic gap | C5 | Maybe — depends on production data access strategy |
-| NONE — enterprise data not accessible | C8, C9, C10 | Possibly — but only if the use case justifies the cost |
+| NONE — enterprise data not accessible | C9, C10 | Possibly — but only if the use case justifies the cost |
+| NONE — but solvable by content migration | C8 | No — migrate Confluence content to repository markdown published via CI |
 
-**Key finding:** 7 of 10 content types are already fully served by native capabilities. The 3 gaps (C8, C9, C10) are enterprise data sources that no toolchain accesses today — they require integration regardless of which AI tool is selected.
+**Key finding:** 7 of 10 content types are already fully served by native capabilities. C8 (Confluence) is solvable by migrating content to markdown files in the repository, published to Confluence and MkDocs portals via CI — bringing it into the workspace where native indexing covers it. The remaining 2 gaps (C9, C10) are enterprise data sources that require integration regardless of which AI tool is selected.
 
 ---
 
@@ -59,7 +60,7 @@ Before evaluating options, classify all content types the AI consumes and assess
 
 ### Option A: Native Only — No Custom MCP Servers
 
-**Description:** Rely entirely on the toolchain's native context management. Copilot's workspace semantic indexing handles code and specs. The `copilot-instructions.md` provides architecture standards. Local MCP servers handle ticketing. Enterprise data sources (C8-C10) are accessed manually when needed.
+**Description:** Rely entirely on the toolchain's native context management. Copilot's workspace semantic indexing handles code and specs. The `copilot-instructions.md` provides architecture standards. Local MCP servers handle ticketing. Confluence content (C8) is migrated to markdown files in the repository and published to Confluence via CI, making it natively indexable. Remaining enterprise data sources (C9-C10) are accessed manually when needed.
 
 **Architecture:**
 
@@ -109,7 +110,7 @@ Before evaluating options, classify all content types the AI consumes and assess
 
 ### Option B: Native + Targeted MCP — Selective Integration
 
-**Description:** Keep native capabilities for all currently-served content types (C1-C7). Build targeted MCP servers only for the 2-3 enterprise data sources that represent genuine gaps (Confluence knowledge base, CMDB service registry). No RAG pipeline, no vector database — each MCP server is a thin API adapter.
+**Description:** Keep native capabilities for all currently-served content types (C1-C7). Migrate Confluence content (C8) to repository markdown published via CI. Build targeted MCP servers only for the 1-2 enterprise data sources that represent genuine gaps (CMDB service registry, cross-team ADR index). No RAG pipeline, no vector database — each MCP server is a thin API adapter.
 
 **Architecture:**
 
@@ -130,8 +131,7 @@ Before evaluating options, classify all content types the AI consumes and assess
                          │  MCP (HTTPS)
                          │
 ┌────────────────────────▼─────────────┐
-│  Targeted MCP Servers (2-3 only)     │
-│  - Confluence reader (read-only)     │
+│  Targeted MCP Servers (1-2 only)     │
 │  - CMDB/ServiceNow lookup            │
 │  - (Optional: cross-team ADR index)  │
 │  Auth: Entra ID / API tokens         │
@@ -231,12 +231,12 @@ For each capability that custom MCP would provide, does a native equivalent alre
 | Ticket access | Custom JIRA MCP server | Vikunja MCP server (already built) | REINVENTION — already solved |
 | Source code analysis | Custom code indexer | Native file reads + search | REINVENTION — native is adequate |
 | Solution design templates | Custom template server | `.instructions.md` + SKILL.md | REINVENTION — native mechanism exists |
-| Confluence knowledge base | Confluence MCP + RAG | No native equivalent | GENUINE GAP — custom server justified |
+| Confluence knowledge base | Confluence MCP + RAG | Migrate to repository markdown; CI publishes to Confluence + MkDocs | SOLVABLE — migrate content to repo, no MCP needed |
 | CMDB / service registry | CMDB API MCP server | No native equivalent | GENUINE GAP — custom server justified |
 | Cross-team ADR repository | Federated ADR MCP server | No native equivalent | GENUINE GAP — custom server justified |
 | Production logs (real) | Log aggregator MCP server | Mock scripts (synthetic only) | GENUINE GAP — but dependency on production access |
 
-**Result:** 6 of 10 capabilities are reinventions of native features. Only 4 represent genuine gaps — and of those, 3 are enterprise data sources (C8-C10) that could be addressed by targeted MCP servers (Option B) without a full pipeline.
+**Result:** 6 of 10 capabilities are reinventions of native features. Only 4 represent genuine gaps — and of those, C8 (Confluence) is solvable by migrating content to repository markdown. The remaining 2 enterprise data sources (C9-C10) could be addressed by targeted MCP servers (Option B) without a full pipeline.
 
 ---
 
@@ -251,7 +251,7 @@ For each capability that custom MCP would provide, does a native equivalent alre
 | C5: Production logs | 1 month build + log access | $0 (synthetic mock) | Positive IF real data access is approved | EVALUATE when real data available |
 | C6: Source code / specs | 2 months build + Qdrant | $0 (native indexing) | Negative — native is better | USE NATIVE |
 | C7: Prior solutions | 0.5 months build | $0 (workspace indexed) | Negative | USE NATIVE |
-| C8: Confluence KB | 2 months build + embedding | Not available natively | Positive — genuine gap | BUILD if justified by use frequency |
+| C8: Confluence KB | 2 months build + embedding | Migrate to repo markdown; CI publishes to Confluence | Positive — but migration is simpler and cheaper than MCP | MIGRATE content to repository markdown |
 | C9: CMDB | 1 month build | Not available natively | Positive — genuine gap | BUILD if justified by use frequency |
 | C10: Cross-team ADRs | 1 month build | Not available natively | Positive — genuine gap | BUILD if other teams adopt |
 
@@ -261,7 +261,7 @@ For each capability that custom MCP would provide, does a native equivalent alre
 
 1. **Engineering cost vs marginal value**: Each custom MCP server costs 1-2 months of engineering. Is the marginal context improvement worth diverting engineering from architecture work?
 2. **Native coverage**: 7 of 10 content types are fully covered. Building custom infrastructure for them adds cost and complexity with zero benefit.
-3. **Genuine gaps**: Enterprise data sources (C8-C10) are the only areas where custom MCP adds new capability beyond native tooling.
+3. **Genuine gaps**: C8 (Confluence) is solvable by content migration to repository markdown. C9-C10 are the only areas where custom MCP adds new capability beyond native tooling.
 4. **Operational sustainability**: Every custom MCP server requires monitoring, auth management, and maintenance — ongoing cost disproportionate to benefit if native alternatives exist.
 5. **Reinvention risk**: Building a custom workspace indexer when Copilot already provides one is engineering waste — it will always be inferior to the vendor's first-party implementation.
 
@@ -270,12 +270,13 @@ For each capability that custom MCP would provide, does a native equivalent alre
 ## Preliminary Recommendation
 
 !!! tip "Working Recommendation: Option B — Native + Targeted MCP"
-    Rely on native toolchain capabilities for all currently-served content types (C1-C7). Build targeted MCP servers only for validated enterprise data gaps (C8-C10), and only when the specific use case has been demonstrated to justify the per-server engineering investment. Do not build a full custom pipeline that replicates native capabilities.
+    Rely on native toolchain capabilities for all currently-served content types (C1-C7). Migrate Confluence content (C8) to markdown files in the repository, published to Confluence and MkDocs portals via CI — this eliminates the Confluence MCP gap entirely. Build targeted MCP servers only for validated enterprise data gaps (C9-C10), and only when the specific use case has been demonstrated to justify the per-server engineering investment. Do not build a full custom pipeline that replicates native capabilities.
 
 ### Rationale
 
 - 7 of 10 content types are fully served by native capabilities — no MCP needed
-- The 3 genuine gaps (Confluence, CMDB, cross-team ADRs) can be addressed incrementally with thin MCP adapters
+- Confluence (C8) is solvable by migrating content to repository markdown published via CI — no MCP needed
+- The 2 remaining gaps (CMDB, cross-team ADRs) can be addressed incrementally with thin MCP adapters if validated
 - The full pipeline approach (Option C) reinvents 6 native capabilities at a cost of 4-8 developer-months
 - The 96.1% quality score was achieved entirely with native context — the baseline is already high
 
@@ -303,8 +304,7 @@ Before building any MCP server, require:
 
 **Negative:**
 
-- Enterprise data (C8-C10) remains inaccessible until targeted MCP servers are built
-- Stakeholders advocating full custom MCP may perceive this as conservative
+- Enterprise data (C9-C10) remains inaccessible until targeted MCP servers are built (Confluence is addressed by content migration)
 - The practice remains dependent on the toolchain vendor for workspace indexing quality
 
 **Neutral:**
@@ -315,10 +315,9 @@ Before building any MCP server, require:
 
 ## Open Questions
 
-1. How frequently do architects currently need Confluence knowledge base content during AI sessions? (Usage data needed to justify C8 MCP)
+1. What Confluence content should be prioritized for migration to repository markdown? (Determines the migration backlog for C8)
 2. Does the CMDB contain data that is not already captured in `architecture/metadata/` YAML files? (Deduplication check for C9)
 3. Are other architecture teams willing to share their ADR repositories via a federated index? (Prerequisite for C10)
-4. Is the 96.1% quality score considered sufficient, or do stakeholders require higher? (Calibrates the urgency of gap-filling)
 
 ---
 

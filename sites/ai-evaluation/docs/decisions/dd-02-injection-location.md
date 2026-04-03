@@ -91,7 +91,7 @@ The one exception is Copilot's workspace indexing, which processes files server-
 
 ### Option B: Workstation + Selective Server (Hybrid)
 
-**Description:** Workstation handles all workspace-scoped content (specs, code, metadata, tickets) using native capabilities. A small number of server-hosted MCP services provide access to enterprise data sources that cannot be replicated locally (Confluence, CMDB, cross-team ADRs).
+**Description:** Workstation handles all workspace-scoped content (specs, code, metadata, tickets) using native capabilities. Confluence content is migrated to repository markdown and published via CI, making it natively indexable. A small number of server-hosted MCP services provide access to remaining enterprise data sources that cannot be replicated locally (CMDB, cross-team ADRs).
 
 **Architecture:**
 
@@ -116,7 +116,6 @@ The one exception is Copilot's workspace indexing, which processes files server-
 ┌────────────────────────▼─────────────────┐
 │  Azure (Selective MCP Services)          │
 │  ┌─────────────────────────────────────┐ │
-│  │  Confluence Reader MCP              │ │
 │  │  CMDB Lookup MCP                    │ │
 │  │  Cross-Team ADR Index MCP           │ │
 │  └─────────────────────────────────────┘ │
@@ -225,7 +224,7 @@ The one exception is Copilot's workspace indexing, which processes files server-
 ## Decision Drivers
 
 1. **Current team size**: For a practice with 1-5 architects, workstation-only or hybrid is sufficient. Server-first is over-engineered.
-2. **Enterprise data urgency**: If architects rarely need Confluence or CMDB during AI sessions, server infrastructure is premature.
+2. **Enterprise data urgency**: If architects rarely need CMDB or cross-team ADR data during AI sessions, server infrastructure is premature. Confluence content should be migrated to repository markdown rather than accessed via MCP.
 3. **Security posture**: Server-side centralizes governance but adds attack surface. Workstation-side reduces data exposure but limits sharing.
 4. **Engineering capacity**: Server options divert engineering effort from architecture work to platform engineering.
 5. **Offline requirement**: Field architects or those on unreliable networks need local-first operation.
@@ -268,7 +267,7 @@ Phase N (if ever): Option C — only if 20+ architects across multiple teams nee
 
 **Negative:**
 
-- Enterprise data (Confluence, CMDB) requires manual access until MCP servers are built
+- Enterprise data (CMDB) requires manual access until MCP servers are built; Confluence content is addressable by migrating to repository markdown
 - No shared context layer across teams
 - Depends on the toolchain vendor for workspace indexing quality
 

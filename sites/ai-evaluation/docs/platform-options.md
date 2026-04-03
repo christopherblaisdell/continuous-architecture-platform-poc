@@ -89,7 +89,7 @@ GitHub Copilot Pro+ is the sole AI platform. All architectural work happens insi
 
 ### Description
 
-GitHub Copilot Pro+ remains the local execution engine and primary UX. Azure AI Foundry hosts targeted MCP servers that expose 2-3 enterprise-specific tools — Confluence knowledge base, CMDB lookup, and cross-team ADR index. The local agent calls Azure services on demand via MCP.
+GitHub Copilot Pro+ remains the local execution engine and primary UX. Azure AI Foundry hosts targeted MCP servers that expose 1-2 enterprise-specific tools — CMDB lookup and cross-team ADR index. Confluence content is migrated to repository markdown and published via CI, eliminating the need for a Confluence MCP server. The local agent calls Azure services on demand via MCP.
 
 ### Architecture
 
@@ -111,7 +111,6 @@ GitHub Copilot Pro+ remains the local execution engine and primary UX. Azure AI 
 ┌───────────────────────────────▼──────────────────┐
 │  Azure (Targeted MCP Services)                   │
 │  ┌────────────────────────────────────────────┐  │
-│  │  Confluence Reader MCP                     │  │
 │  │  CMDB / ServiceNow Lookup MCP              │  │
 │  │  Cross-Team ADR Index MCP                  │  │
 │  └────────────────────────────────────────────┘  │
@@ -134,7 +133,7 @@ GitHub Copilot Pro+ remains the local execution engine and primary UX. Azure AI 
 ### What You Get
 
 - Everything in Option A, plus:
-- Secure, governed access to enterprise Confluence knowledge base
+- Confluence content accessible natively via migrated markdown in the repository
 - CMDB/ServiceNow service metadata at AI query time
 - Cross-team architecture decisions accessible without manual lookup
 - Enterprise identity (Entra ID) for access control on all backend tools
@@ -152,7 +151,7 @@ GitHub Copilot Pro+ remains the local execution engine and primary UX. Azure AI 
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| DD-01 | Native + targeted MCP | Native for workspace (C1-C7); targeted MCP for enterprise gaps (C8-C10) |
+| DD-01 | Native + targeted MCP | Native for workspace (C1-C7); Confluence migrated to repo markdown (C8); targeted MCP for enterprise gaps (C9-C10) |
 | DD-02 | Workstation + selective server | Local for workspace context; server for enterprise data only |
 | DD-03 | Intent-based + consumption | Copilot billing unchanged; Azure infrastructure is incremental |
 | DD-04 | GitHub + Azure | Copilot remains primary; Azure provides enterprise backend |
@@ -327,8 +326,8 @@ Before committing beyond Option A, a 4-6 week validation POC is recommended:
 
 | Week | Activity |
 |------|----------|
-| 1-2 | Instrument current workflow to measure enterprise data access frequency (how often do architects need Confluence / CMDB during AI sessions?) |
-| 3-4 | Build one targeted MCP server (Confluence reader) as a prototype; measure latency, reliability, and value-add |
+| 1-2 | Instrument current workflow to measure enterprise data access frequency (how often do architects need CMDB / cross-team ADR data during AI sessions?) |
+| 3-4 | Build one targeted MCP server (CMDB lookup) as a prototype; measure latency, reliability, and value-add |
 | 5-6 | Score 3 architecture sessions with vs without the MCP server; compare quality scores |
 | Final | Decision: proceed to Option B or remain at Option A based on measured impact |
 
