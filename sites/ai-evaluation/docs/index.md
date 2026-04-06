@@ -16,9 +16,7 @@ This evaluation separates two questions that are often conflated:
 1. **How should our practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
 2. **What technology implements that?** — the toolchain, billing model, and infrastructure (Layer 2)
 
-<figure markdown="span">
-  ![Two-Layer Decision Hierarchy](img/two-layer-hierarchy.svg){ width="100%" }
-</figure>
+![Two-Layer Decision Hierarchy](img/two-layer-hierarchy.svg)
 
 ### Layer 1: Practice Strategy — How Do We Work with AI?
 
