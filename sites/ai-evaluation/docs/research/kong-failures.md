@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Kong AI Translation Failures
 
 ## Deep Research Results: Kong ai-proxy Tool Call Translation

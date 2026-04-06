@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Decision Log
 
 ## ADR-001: AI Toolchain Selection for Architecture Workflows

@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Roo Code + Kong AI Gateway
 
 ## Tool Profile

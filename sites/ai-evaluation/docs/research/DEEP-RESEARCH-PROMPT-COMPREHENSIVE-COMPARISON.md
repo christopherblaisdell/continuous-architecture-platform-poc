@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Deep Research Prompt: Comprehensive AI Toolchain Comparison for Enterprise Architecture
 
 > Paste this entire document into AI deep research (e.g., ChatGPT Deep Research, Perplexity, Gemini Deep Research). The prompt is structured to produce a single comprehensive report covering all open questions in our AI toolchain evaluation.

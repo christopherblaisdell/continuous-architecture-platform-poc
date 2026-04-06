@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Copilot Billing Mechanics
 
 ## Deep Research Results: GitHub Copilot Premium Request Billing

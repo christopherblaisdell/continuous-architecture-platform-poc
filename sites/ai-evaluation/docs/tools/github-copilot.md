@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # GitHub Copilot Pro+
 
 ## Tool Profile

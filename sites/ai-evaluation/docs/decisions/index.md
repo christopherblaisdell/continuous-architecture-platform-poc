@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Decision Framework
 
 ## Decomposed Architecture Decisions for AI Platform Selection

@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # DD-02: Content Injection Location
 
 ## Workstation vs Server

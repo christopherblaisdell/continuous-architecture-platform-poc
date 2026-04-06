@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Copilot vs Roo Code
 
 ## Head-to-Head Comparison

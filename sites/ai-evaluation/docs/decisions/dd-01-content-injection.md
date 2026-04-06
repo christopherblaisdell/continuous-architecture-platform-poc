@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # DD-01: Content Injection Strategy
 
 ## Do We Need Custom MCP Servers?

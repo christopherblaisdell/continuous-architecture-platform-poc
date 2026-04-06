@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # DD-03: Billing Model Selection
 
 ## Intent-Based vs Token-Based Billing

@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Platform Options
 
 ## Composed Side-by-Side Comparison

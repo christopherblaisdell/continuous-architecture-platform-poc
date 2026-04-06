@@ -1,3 +1,5 @@
+<!-- CONFLUENCE-PUBLISH -->
+
 # Deep Research Results: Comprehensive AI Toolchain Comparison
 
 > **Date:** [DATE]
