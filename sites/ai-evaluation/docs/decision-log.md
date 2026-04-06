@@ -1,4 +1,3 @@
-<!-- CONFLUENCE-PUBLISH -->
 
 # Decision Log
 
