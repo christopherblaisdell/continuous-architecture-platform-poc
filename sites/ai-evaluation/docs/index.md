@@ -3,14 +3,16 @@
 
 # Solution Architecture Practice — Comparative Evaluation of Agentic AI
 
-## The Evaluation
+## Overview
 
-Incorporating agentic AI into our architecture practice requires answering two questions that are often conflated:
+This site evaluates three agentic AI toolchains for incorporation into our solution architecture practice. The goal: select the platform that adheres to our patterns, practices, and standards while remaining context-aware of our architecture and systems.
+
+The evaluation separates two questions that are often conflated:
 
 1. **How should our practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
 2. **What technology implements that?** — the toolchain, billing model, and infrastructure (Layer 2)
 
-This site presents a controlled evaluation of three AI toolchains across five architecture scenarios — using the same model (Claude Opus 4.6), the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools), and the same scoring rubrics — to answer both.
+Five controlled architecture scenarios were executed against a synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools) using the same model (Claude Opus 4.6) and the same scoring rubrics across all three toolchains.
 
 ---
 
