@@ -47,27 +47,27 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Practice Strategy: ai-evaluation/practice-strategy.md
   - Decisions:
-    - Decision Framework: decisions/decision-framework.md
-    - DD-01 Content Injection: decisions/dd-01-content-injection.md
-    - DD-02 Injection Location: decisions/dd-02-injection-location.md
-    - DD-03 Billing Model: decisions/dd-03-billing-model.md
-    - DD-04 AI Provider: decisions/dd-04-ai-provider.md
-  - Platform Options: platform-options.md
-  - Evaluation Framework: evaluation-framework.md
+    - Decision Framework: ai-evaluation/decisions/decision-framework.md
+    - DD-01 Content Injection: ai-evaluation/decisions/dd-01-content-injection.md
+    - DD-02 Injection Location: ai-evaluation/decisions/dd-02-injection-location.md
+    - DD-03 Billing Model: ai-evaluation/decisions/dd-03-billing-model.md
+    - DD-04 AI Provider: ai-evaluation/decisions/dd-04-ai-provider.md
+  - Platform Options: ai-evaluation/platform-options.md
+  - Evaluation Framework: ai-evaluation/evaluation-framework.md
   - Tools:
-    - GitHub Copilot: tools/github-copilot.md
-    - Roo Code + Kong AI: tools/roo-code-kong.md
-    - Claude Code: tools/claude-code.md
+    - GitHub Copilot: ai-evaluation/tools/github-copilot.md
+    - Roo Code + Kong AI: ai-evaluation/tools/roo-code-kong.md
+    - Claude Code: ai-evaluation/tools/claude-code.md
   - Comparisons:
-    - Copilot vs Roo Code: comparisons/copilot-vs-roocode.md
-    - Run Analysis: comparisons/run-analysis.md
+    - Copilot vs Roo Code: ai-evaluation/comparisons/copilot-vs-roocode.md
+    - Run Analysis: ai-evaluation/comparisons/run-analysis.md
   - Research:
-    - Copilot Billing Mechanics: research/copilot-billing.md
-    - Kong AI Translation Failures: research/kong-failures.md
-    - Context Management: research/context-management.md
-  - Data Isolation: data-isolation.md
-  - Decision Log: decision-log.md
+    - Copilot Billing Mechanics: ai-evaluation/research/copilot-billing.md
+    - Kong AI Translation Failures: ai-evaluation/research/kong-failures.md
+    - Context Management: ai-evaluation/research/context-management.md
+  - Decision Log: ai-evaluation/decision-log.md
 
 extra:
   social: []

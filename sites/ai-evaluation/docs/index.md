@@ -3,26 +3,51 @@
 
 # Solution Architecture Practice — Comparative Evaluation of Agentic AI
 
-## Comparative Evaluation for Enterprise Architecture Work
+## Bringing Agentic AI into the Solution Architecture Practice
 
-This site documents the NovaTrek Adventures Continuous Architecture Platform's evaluation of AI toolchains for solution architecture workflows. Rather than treating toolchain selection as a single monolithic decision, this evaluation decomposes the problem into four independent architectural decisions that compose into evaluated platform options.
+This site evaluates how agentic AI can transform solution architecture workflows — not just which tool to buy, but how the practice itself changes when an AI agent becomes a core capability. The evaluation is structured as a **two-layer decision hierarchy** that separates the practice-level question ("how do we work?") from the toolchain-level question ("what do we buy?").
 
 ---
 
-## Decision Framework
+## Two-Layer Decision Hierarchy
 
-Selecting an AI platform is not one decision — it is four:
+### Layer 1: Practice Strategy — How Do We Work with AI?
+
+The practice strategy defines the operating model for AI-augmented architecture: how architects interact with agents, where AI output enters governance, how we measure quality, and the adoption path from pilot to organization.
+
+[Practice Strategy (PSD-01)](ai-evaluation/practice-strategy.md){ .md-button .md-button--primary }
+
+| Aspect | What It Covers |
+|--------|---------------|
+| Interaction model | Architect directs, agent executes research and drafting autonomously |
+| Governance | Human sign-off on all decisions; automated standards validation |
+| Quality accountability | AI-generated artifacts are the architect's responsibility |
+| Adoption roadmap | Phase 1 (pilot, 1 architect) → Phase 2 (team, 3-5) → Phase 3 (org, 10+) |
+| Success metrics | Quality >90%, cost <$2/run, time-to-draft <45 min |
+
+### Layer 2: Toolchain Decisions — What Do We Buy?
+
+Four independent architectural decisions determine the technology substrate. Each can be evaluated on its own merits, then composed into platform options.
 
 | Decision | Question | Status |
 |----------|----------|--------|
-| [DD-01: Content Injection](decisions/dd-01-content-injection.md) | Do we need custom MCP servers, or does native toolchain context management suffice? | Under Evaluation |
-| [DD-02: Injection Location](decisions/dd-02-injection-location.md) | Should content injection happen on the developer workstation or on a server? | Under Evaluation |
-| [DD-03: Billing Model](decisions/dd-03-billing-model.md) | Intent-based billing vs token-based billing — what economic model fits? | Under Evaluation |
-| [DD-04: AI Provider](decisions/dd-04-ai-provider.md) | GitHub, Anthropic, Azure AI Foundry, or Kong/OpenRouter — who do we buy AI from? | Under Evaluation |
+| [DD-01: Content Injection](ai-evaluation/decisions/dd-01-content-injection.md) | Do we need custom MCP servers, or does native toolchain context management suffice? | Under Evaluation |
+| [DD-02: Injection Location](ai-evaluation/decisions/dd-02-injection-location.md) | Should content injection happen on the developer workstation or on a server? | Under Evaluation |
+| [DD-03: Billing Model](ai-evaluation/decisions/dd-03-billing-model.md) | Intent-based billing vs token-based billing — what economic model fits? | Under Evaluation |
+| [DD-04: AI Provider](ai-evaluation/decisions/dd-04-ai-provider.md) | GitHub, Anthropic, Azure AI Foundry, or Kong/OpenRouter — who do we buy AI from? | Under Evaluation |
 
-These decisions compose into three [Platform Options](platform-options.md) — Lean, Hybrid, and Full Build — each scored against 12 evaluation factors.
+These decisions compose into three [Platform Options](ai-evaluation/platform-options.md) — Lean, Hybrid, and Full Build — each scored against 12 evaluation factors.
 
-[Decision Framework](decisions/decision-framework.md){ .md-button .md-button--primary } [Platform Options](platform-options.md){ .md-button }
+[Decision Framework](ai-evaluation/decisions/decision-framework.md){ .md-button .md-button--primary } [Platform Options](ai-evaluation/platform-options.md){ .md-button }
+
+### How the Layers Relate
+
+| Aspect | Layer 1 (Practice Strategy) | Layer 2 (Toolchain Decisions) |
+|--------|---------------------------|-------------------------------|
+| Question | How does our team work with AI? | What technology implements that? |
+| Audience | Practice leads, architects, leadership | Platform engineers, procurement |
+| Changes when | Team structure, new use cases | Vendor pricing, new tools emerge |
+| Reversibility | Methodology changes take months | Swap tools in weeks |
 
 ---
 
@@ -66,19 +91,19 @@ The original Phase 1 evaluation compared three toolchains using controlled varia
 
 VS Code-integrated AI assistant with agent mode, workspace indexing, and flat-rate subscription billing. Deep GitHub ecosystem integration. Intent-based billing charges per user prompt only -- autonomous tool calls are free.
 
-[GitHub Copilot Profile](tools/github-copilot.md){ .md-button }
+[GitHub Copilot Profile](ai-evaluation/tools/github-copilot.md){ .md-button }
 
 ### Roo Code + Kong AI Gateway
 
 Open-source VS Code extension routing through Kong API Gateway to OpenRouter/AWS Bedrock. Pay-per-token billing with full cost transparency but exponential context accumulation costs. Three architectural limitations identified during evaluation.
 
-[Roo Code + Kong Profile](tools/roo-code-kong.md){ .md-button }
+[Roo Code + Kong Profile](ai-evaluation/tools/roo-code-kong.md){ .md-button }
 
 ### Claude Code (Spike Pending)
 
 Anthropic's official CLI-based coding agent. Terminal-native with direct Anthropic API access. Evaluated as a potential complement or alternative based on the Everything Claude Code (ECC) community harness. A limited 1-2 scenario spike is planned to gather real cost and quality data.
 
-[Claude Code Profile](tools/claude-code.md){ .md-button }
+[Claude Code Profile](ai-evaluation/tools/claude-code.md){ .md-button }
 
 ---
 
@@ -86,17 +111,17 @@ Anthropic's official CLI-based coding agent. Terminal-native with direct Anthrop
 
 | Section | What You Will Find |
 |---------|-------------------|
-| [Decision Framework](decisions/decision-framework.md) | Four decomposed decisions: content injection, location, billing, provider |
-| [Platform Options](platform-options.md) | Composed side-by-side comparison of Lean, Hybrid, and Full Build options |
-| [Evaluation Framework](evaluation-framework.md) | Phase 1 methodology, scoring rubrics, scenario definitions |
-| [Tools](tools/github-copilot.md) | Per-tool profiles with architecture, pricing, strengths, and limitations |
-| [Comparisons](comparisons/copilot-vs-roocode.md) | Head-to-head results with evidence from actual runs |
-| [Research](research/copilot-billing.md) | Deep research findings on billing mechanics, gateway failures, context management |
-| [Data Isolation](data-isolation.md) | How this evaluation uses zero corporate data |
-| [Decision Log](decision-log.md) | ADR-001: the original architecture decision record |
+| [Practice Strategy](ai-evaluation/practice-strategy.md) | Layer 1: Operating model for AI-augmented architecture practice |
+| [Decision Framework](ai-evaluation/decisions/decision-framework.md) | Layer 2: Four decomposed toolchain decisions |
+| [Platform Options](ai-evaluation/platform-options.md) | Composed side-by-side comparison of Lean, Hybrid, and Full Build options |
+| [Evaluation Framework](ai-evaluation/evaluation-framework.md) | Phase 1 methodology, scoring rubrics, scenario definitions |
+| [Tools](ai-evaluation/tools/github-copilot.md) | Per-tool profiles with architecture, pricing, strengths, and limitations |
+| [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) | Head-to-head results with evidence from actual runs |
+| [Research](ai-evaluation/research/copilot-billing.md) | Deep research findings on billing mechanics, gateway failures, context management |
+| [Decision Log](ai-evaluation/decision-log.md) | ADR-001: the original architecture decision record |
 
 ---
 
 ## Data Isolation Statement
 
-This evaluation contains **zero corporate data**. The entire NovaTrek Adventures domain is fictional. All JIRA, Elasticsearch, and GitLab integrations are local mock Python scripts reading JSON files from disk -- no network calls, no credentials, no corporate system access. See [Data Isolation](data-isolation.md) for the full policy.
+This evaluation contains **zero corporate data**. The entire NovaTrek Adventures domain is fictional. All JIRA, Elasticsearch, and GitLab integrations are local mock Python scripts reading JSON files from disk -- no network calls, no credentials, no corporate system access.
