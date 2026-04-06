@@ -1,5 +1,10 @@
+<!-- CONFLUENCE-PUBLISH -->
 
 # Decision Log
+
+> **You are reading:** Decision Log | [Home](../index.md)
+>
+> ADR-001 was the original monolithic toolchain decision. It has since been superseded by the [two-layer decision hierarchy](../index.md#two-layer-decision-hierarchy) — [Practice Strategy](practice-strategy.md) (Layer 1) and [Decision Framework](decisions/decision-framework.md) (Layer 2). This log is preserved as historical record.
 
 ## ADR-001: AI Toolchain Selection for Architecture Workflows
 

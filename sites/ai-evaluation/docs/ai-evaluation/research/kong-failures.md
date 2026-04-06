@@ -2,6 +2,10 @@
 
 # Kong AI Translation Failures
 
+> **You are reading:** Research — Deep Dive | [Home](../../index.md)
+>
+> This deep research supports [DD-04: AI Provider](../decisions/dd-04-ai-provider.md) (Layer 2) by documenting structural deficiencies in the Kong/OpenRouter gateway approach.
+
 ## Deep Research Results: Kong ai-proxy Tool Call Translation
 
 This page summarizes the findings of a deep research analysis conducted on March 17, 2026, investigating the structural deficiencies in Kong AI Gateway's translation layer when proxying Anthropic Claude API requests through an OpenAI-compatible interface.

@@ -2,6 +2,10 @@
 
 # Copilot Billing Mechanics
 
+> **You are reading:** Research — Deep Dive | [Home](../../index.md)
+>
+> This deep research supports [DD-03: Billing Model](../decisions/dd-03-billing-model.md) (Layer 2). For the practice-level implications of billing, see [Practice Strategy](../practice-strategy.md) (Layer 1).
+
 ## Deep Research Results: GitHub Copilot Premium Request Billing
 
 This page summarizes the findings of a deep research analysis conducted on March 4, 2026, investigating the exact billing mechanics of GitHub Copilot Pro+ Agent Mode. The research resolved a critical methodological error that overstated Copilot's cost by 96x -- from an estimated $46.20/session to the actual $0.48/session.

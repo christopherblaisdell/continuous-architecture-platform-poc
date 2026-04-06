@@ -2,6 +2,10 @@
 
 # Practice Strategy — AI-Augmented Solution Architecture
 
+> **You are reading:** Layer 1 — Practice Strategy | [Back to Home](../index.md)
+>
+> This document defines *how the architecture practice works with AI*. For the toolchain selection decisions (what to buy), see [Decision Framework](decisions/decision-framework.md) (Layer 2).
+
 ## PSD-01: Adopting Agentic AI into the Solution Architecture Practice
 
 **Status:** Proposed

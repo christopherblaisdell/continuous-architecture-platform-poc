@@ -2,6 +2,10 @@
 
 # Evaluation Framework
 
+> **You are reading:** Evaluation Methodology | [Home](../index.md)
+>
+> This document describes how the evaluation was conducted — controlled variables, scenarios, and scoring rubrics. For results, see [Key Findings](../index.md#key-findings). For what the results mean for the practice, see [Practice Strategy](practice-strategy.md) (Layer 1).
+
 ## Methodology for AI Toolchain Comparison
 
 This evaluation compares AI toolchains for enterprise solution architecture workflows. The framework is designed to produce defensible, evidence-based recommendations by controlling for model, workspace, and scenario variables.

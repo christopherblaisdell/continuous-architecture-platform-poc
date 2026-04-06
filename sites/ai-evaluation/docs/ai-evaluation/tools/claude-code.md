@@ -2,6 +2,10 @@
 
 # Claude Code
 
+> **You are reading:** Tool Profile | [Home](../../index.md)
+>
+> This is a detailed profile of one evaluated toolchain. See [Platform Options](../platform-options.md) for how this tool fits into composed options.
+
 ## Tool Profile
 
 | | |

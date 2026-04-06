@@ -3,9 +3,27 @@
 
 # Solution Architecture Practice — Comparative Evaluation of Agentic AI
 
-## Bringing Agentic AI into the Solution Architecture Practice
+## The Question
 
-This site evaluates how agentic AI can transform solution architecture workflows — not just which tool to buy, but how the practice itself changes when an AI agent becomes a core capability. The evaluation is structured as a **two-layer decision hierarchy** that separates the practice-level question ("how do we work?") from the toolchain-level question ("what do we buy?").
+Can an agentic AI assistant reliably produce solution architecture artifacts — impact assessments, architecture decision records, sequence diagrams, OpenAPI spec updates — at production quality, with predictable cost, and under the architect's governance?
+
+This site presents the evidence. A single architect ran five controlled architecture scenarios through three AI toolchains using the same model (Claude Opus 4.6) and the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools). The results were decisive: one toolchain scored 96.1% quality at $0.48 per run. Another cost 208x more for comparable output. The third is pending evaluation.
+
+But toolchain selection alone does not transform a practice. This evaluation separates two questions that are often conflated:
+
+1. **How should our architecture practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
+2. **What technology should we buy?** — the toolchain, billing model, and infrastructure (Layer 2)
+
+---
+
+## Start Here — By Role
+
+| If you are a... | Start with | Then read |
+|----------------|-----------|-----------|
+| **Practice lead or director** | [Practice Strategy (PSD-01)](ai-evaluation/practice-strategy.md) — the operating model, governance, and adoption roadmap | [Key Findings](#key-findings) below for the cost and quality headline |
+| **Solution architect** | [Key Findings](#key-findings) — cost, quality, and capability comparison | [Platform Options](ai-evaluation/platform-options.md) — the three composed platform choices |
+| **Platform engineer** | [Decision Framework](ai-evaluation/decisions/decision-framework.md) — four decomposed toolchain decisions | Individual DDs ([DD-01](ai-evaluation/decisions/dd-01-content-injection.md), [DD-02](ai-evaluation/decisions/dd-02-injection-location.md), [DD-03](ai-evaluation/decisions/dd-03-billing-model.md), [DD-04](ai-evaluation/decisions/dd-04-ai-provider.md)) |
+| **Skeptic or reviewer** | [Evaluation Framework](ai-evaluation/evaluation-framework.md) — methodology, controlled variables, scoring rubrics | [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) and [Research](ai-evaluation/research/copilot-billing.md) for raw evidence |
 
 ---
 

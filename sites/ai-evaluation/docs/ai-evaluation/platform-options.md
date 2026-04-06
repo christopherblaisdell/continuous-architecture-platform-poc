@@ -2,6 +2,10 @@
 
 # Platform Options
 
+> **You are reading:** Layer 2 — Platform Options | [Decision Framework](decisions/decision-framework.md) | [Home](../index.md)
+>
+> These options compose Layer 2 toolchain decisions into coherent packages. For the practice-level operating model, see [Practice Strategy](practice-strategy.md) (Layer 1).
+
 ## Composed Side-by-Side Comparison
 
 This page presents three platform options composed from the four independent decision documents. Each option represents a coherent combination of choices across content injection strategy, injection location, billing model, and AI processing provider.

@@ -2,6 +2,10 @@
 
 # DD-04: AI Processing Provider
 
+> **You are reading:** Layer 2 — Toolchain Decision 4 of 4 | [Decision Framework](decision-framework.md) | [Home](../../index.md)
+>
+> This is a toolchain decision (what to buy/build). For the practice-level operating model, see [Practice Strategy](../practice-strategy.md) (Layer 1).
+
 ## Who Do We Buy AI From?
 
 | | |

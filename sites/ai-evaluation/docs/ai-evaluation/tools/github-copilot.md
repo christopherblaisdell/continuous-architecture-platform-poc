@@ -2,6 +2,10 @@
 
 # GitHub Copilot Pro+
 
+> **You are reading:** Tool Profile | [Home](../../index.md)
+>
+> This is a detailed profile of one evaluated toolchain. See [Copilot vs Roo Code](../comparisons/copilot-vs-roocode.md) for the head-to-head comparison, or [Platform Options](../platform-options.md) for how this tool fits into composed options.
+
 ## Tool Profile
 
 | | |

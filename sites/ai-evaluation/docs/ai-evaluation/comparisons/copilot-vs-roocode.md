@@ -2,6 +2,10 @@
 
 # Copilot vs Roo Code
 
+> **You are reading:** Evidence — Head-to-Head Comparison | [Home](../../index.md)
+>
+> This page presents the raw comparison data. For what it means for the practice, see [Practice Strategy](../practice-strategy.md) (Layer 1). For how it informs toolchain selection, see [Platform Options](../platform-options.md) (Layer 2).
+
 ## Head-to-Head Comparison
 
 Both toolchains used the same AI model (Claude Opus 4.6), the same synthetic workspace (NovaTrek Adventures), and the same 5 architecture scenarios. The differences in cost and reliability come down to **architecture** -- how each platform handles billing, context, and API translation.

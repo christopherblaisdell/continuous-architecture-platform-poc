@@ -2,6 +2,10 @@
 
 # Context Management
 
+> **You are reading:** Research — Deep Dive | [Home](../../index.md)
+>
+> This research explains the architectural root cause of the 208x cost difference. It supports [DD-01: Content Injection](../decisions/dd-01-content-injection.md) and [DD-03: Billing Model](../decisions/dd-03-billing-model.md) (Layer 2).
+
 ## How Context Handling Drives the 208x Cost Difference
 
 The single largest factor in the cost difference between GitHub Copilot and Roo Code + OpenRouter is **how each platform handles context** -- the accumulated conversational state that the AI model needs to understand what it has already done and what it should do next.

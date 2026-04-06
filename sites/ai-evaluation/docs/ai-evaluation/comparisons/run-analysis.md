@@ -2,6 +2,10 @@
 
 # Run Analysis
 
+> **You are reading:** Evidence — Run Execution Data | [Home](../../index.md)
+>
+> This page provides the raw execution data behind the comparison. See [Copilot vs Roo Code](copilot-vs-roocode.md) for the synthesized comparison.
+
 ## Cross-Platform Run Comparison Details
 
 This page summarizes the detailed execution data from individual runs, providing the evidence base for the [Copilot vs Roo Code](copilot-vs-roocode.md) comparison.

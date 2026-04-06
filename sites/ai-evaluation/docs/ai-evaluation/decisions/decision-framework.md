@@ -2,10 +2,11 @@
 
 # Decision Framework
 
-## Layer 2: Toolchain Decisions for AI Platform Selection
+> **You are reading:** Layer 2 — Toolchain Decision Framework | [Home](../../index.md)
+>
+> This document structures the four toolchain decisions (what to buy/build). For the practice-level operating model (how the team works with AI), see [Practice Strategy](../practice-strategy.md) (Layer 1).
 
-!!! info "Part of the Two-Layer Decision Hierarchy"
-    This document covers **Layer 2 (Toolchain Decisions)** — what technology to buy or build. For the practice-level question of how the architecture team works with AI, see [Practice Strategy (PSD-01)](../practice-strategy.md) (Layer 1).
+## Toolchain Decisions for AI Platform Selection
 
 Selecting an AI platform for architecture practice is not a single decision — it is four interconnected but independently analyzable decisions. This framework decomposes the monolithic "which toolchain?" question into its constituent architectural concerns, analyzes each on its own merits, and then composes the results into evaluated platform options.
 
