@@ -7,27 +7,14 @@
 
 This site evaluates three agentic AI toolchains for incorporation into our solution architecture practice. The goal: select the platform that adheres to our patterns, practices, and standards while remaining context-aware of our architecture and systems.
 
-The evaluation separates two questions that are often conflated:
-
-1. **How should our practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
-2. **What technology implements that?** — the toolchain, billing model, and infrastructure (Layer 2)
-
-Five controlled architecture scenarios were executed against a synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools) using the same model (Claude Opus 4.6) and the same scoring rubrics across all three toolchains.
-
----
-
-## Start Here — By Role
-
-| If you are a... | Start with | Then read |
-|----------------|-----------|-----------|
-| **Practice lead or director** | [Practice Strategy (PSD-01)](ai-evaluation/practice-strategy.md) — the operating model, governance, and adoption roadmap | [Key Findings](#key-findings) below for the cost and quality headline |
-| **Solution architect** | [Key Findings](#key-findings) — cost, quality, and capability comparison | [Platform Options](ai-evaluation/platform-options.md) — the three composed platform choices |
-| **Platform engineer** | [Decision Framework](ai-evaluation/decisions/decision-framework.md) — four decomposed toolchain decisions | Individual DDs ([DD-01](ai-evaluation/decisions/dd-01-content-injection.md), [DD-02](ai-evaluation/decisions/dd-02-injection-location.md), [DD-03](ai-evaluation/decisions/dd-03-billing-model.md), [DD-04](ai-evaluation/decisions/dd-04-ai-provider.md)) |
-| **Skeptic or reviewer** | [Evaluation Framework](ai-evaluation/evaluation-framework.md) — methodology, controlled variables, scoring rubrics | [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) and [Research](ai-evaluation/research/copilot-billing.md) for raw evidence |
-
 ---
 
 ## Two-Layer Decision Hierarchy
+
+This evaluation separates two questions that are often conflated:
+
+1. **How should our practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
+2. **What technology implements that?** — the toolchain, billing model, and infrastructure (Layer 2)
 
 ### Layer 1: Practice Strategy — How Do We Work with AI?
 
@@ -69,6 +56,17 @@ These decisions compose into three [Platform Options](ai-evaluation/platform-opt
 
 ---
 
+## Start Here — By Role
+
+| If you are a... | Start with | Then read |
+|----------------|-----------|-----------|
+| **Practice lead or director** | [Practice Strategy (PSD-01)](ai-evaluation/practice-strategy.md) — the operating model, governance, and adoption roadmap | [Key Findings](#key-findings) below for the cost and quality headline |
+| **Solution architect** | [Key Findings](#key-findings) — cost, quality, and capability comparison | [Platform Options](ai-evaluation/platform-options.md) — the three composed platform choices |
+| **Platform engineer** | [Decision Framework](ai-evaluation/decisions/decision-framework.md) — four decomposed toolchain decisions | Individual DDs ([DD-01](ai-evaluation/decisions/dd-01-content-injection.md), [DD-02](ai-evaluation/decisions/dd-02-injection-location.md), [DD-03](ai-evaluation/decisions/dd-03-billing-model.md), [DD-04](ai-evaluation/decisions/dd-04-ai-provider.md)) |
+| **Skeptic or reviewer** | [Evaluation Framework](ai-evaluation/evaluation-framework.md) — methodology, controlled variables, scoring rubrics | [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) and [Research](ai-evaluation/research/copilot-billing.md) for raw evidence |
+
+---
+
 ## Key Findings
 
 | | GitHub Copilot Pro+ | Roo Code + OpenRouter | Claude Code |
@@ -85,9 +83,9 @@ These decisions compose into three [Platform Options](ai-evaluation/platform-opt
 
 ---
 
-## What Was Evaluated
+## Evaluation Approach
 
-Five representative architecture scenarios were executed against a fully synthetic workspace containing 19 microservice OpenAPI specs, Java source code, architecture decision records, and mock tool integrations:
+Three toolchains were evaluated using controlled variables: the same model (Claude Opus 4.6), the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools), and the same scoring rubrics. Five representative architecture scenarios tested progressively complex tasks:
 
 | Scenario | What It Tests |
 |----------|---------------|
@@ -99,15 +97,9 @@ Five representative architecture scenarios were executed against a fully synthet
 
 Both Copilot and Roo Code completed all 5 scenarios, producing 37 files each with comparable structure. The critical differences emerged in cost, quality, and architectural reliability.
 
----
+### GitHub Copilot Pro+
 
-## Three Toolchains Compared
-
-The original Phase 1 evaluation compared three toolchains using controlled variables (same model, same workspace, same scenarios). These profiles remain as reference material — but the decision framework above supersedes the monolithic tool comparison.
-
-### GitHub Copilot Pro+ (Selected)
-
-VS Code-integrated AI assistant with agent mode, workspace indexing, and flat-rate subscription billing. Deep GitHub ecosystem integration. Intent-based billing charges per user prompt only -- autonomous tool calls are free.
+VS Code-integrated AI assistant with agent mode, workspace indexing, and flat-rate subscription billing. Deep GitHub ecosystem integration. Intent-based billing charges per user prompt only — autonomous tool calls are free.
 
 [GitHub Copilot Profile](ai-evaluation/tools/github-copilot.md){ .md-button }
 
@@ -125,14 +117,14 @@ Anthropic's official CLI-based coding agent. Terminal-native with direct Anthrop
 
 ---
 
-## How to Navigate This Site
+## Site Map
 
 | Section | What You Will Find |
 |---------|-------------------|
 | [Practice Strategy](ai-evaluation/practice-strategy.md) | Layer 1: Operating model for AI-augmented architecture practice |
 | [Decision Framework](ai-evaluation/decisions/decision-framework.md) | Layer 2: Four decomposed toolchain decisions |
 | [Platform Options](ai-evaluation/platform-options.md) | Composed side-by-side comparison of Lean, Hybrid, and Full Build options |
-| [Evaluation Framework](ai-evaluation/evaluation-framework.md) | Phase 1 methodology, scoring rubrics, scenario definitions |
+| [Evaluation Framework](ai-evaluation/evaluation-framework.md) | Methodology, scoring rubrics, scenario definitions |
 | [Tools](ai-evaluation/tools/github-copilot.md) | Per-tool profiles with architecture, pricing, strengths, and limitations |
 | [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) | Head-to-head results with evidence from actual runs |
 | [Research](ai-evaluation/research/copilot-billing.md) | Deep research findings on billing mechanics, gateway failures, context management |
