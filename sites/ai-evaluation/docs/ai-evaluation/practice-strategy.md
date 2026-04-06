@@ -15,7 +15,7 @@
 
 ## Context and Problem Statement
 
-The solution architecture practice is evaluating whether and how to adopt agentic AI as a core capability. This is not a toolchain selection decision — it is a practice transformation decision. The question is not "which AI tool?" but "how does our team work differently with AI, and what operating model supports that change?"
+The solution architecture practice is adopting agentic AI as a core capability. This is not a toolchain selection decision — it is a practice transformation decision. The question is not "which AI tool?" but "how does our team work differently with AI, and what operating model supports that change?"
 
 Toolchain selection (DD-01 through DD-04) determines the technology substrate. This practice strategy decision determines how architects interact with that substrate — the workflows, governance, quality gates, roles, and adoption path that make AI a productive member of the architecture practice rather than a novelty.
 

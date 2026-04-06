@@ -14,7 +14,7 @@ Selecting an AI platform for architecture practice is not a single decision — 
 
 ## Why Decompose?
 
-The original evaluation compared three toolchains as monolithic options: GitHub Copilot, Roo Code + Kong AI, and Claude Code. But this conflated several independent architectural questions:
+The initial evaluation compared three toolchains as monolithic options: GitHub Copilot, Roo Code + Kong AI, and Claude Code. But this conflated several independent architectural questions:
 
 | Conflated Question | Independent Decision |
 |-------------------|---------------------|

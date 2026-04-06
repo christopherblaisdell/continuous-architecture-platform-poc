@@ -346,4 +346,4 @@ Before committing beyond Option A, a 4-6 week validation POC is recommended:
 - [DD-02: Injection Location](decisions/dd-02-injection-location.md)
 - [DD-03: Billing Model](decisions/dd-03-billing-model.md)
 - [DD-04: AI Provider](decisions/dd-04-ai-provider.md)
-- [Evaluation Framework](evaluation-framework.md) — Original Phase 1 methodology
+- [Evaluation Framework](evaluation-framework.md) — Phase 1 methodology
