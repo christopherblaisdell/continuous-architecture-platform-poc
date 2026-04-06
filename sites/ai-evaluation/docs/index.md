@@ -3,16 +3,14 @@
 
 # Solution Architecture Practice — Comparative Evaluation of Agentic AI
 
-## The Question
+## The Evaluation
 
-Agentic AI can produce solution architecture artifacts — impact assessments, architecture decision records, sequence diagrams, OpenAPI spec updates — at production quality. That is no longer in question. A single architect ran five controlled scenarios through three toolchains using the same model (Claude Opus 4.6) and the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools). One toolchain scored 96.1% quality at $0.48 per run.
+Incorporating agentic AI into our architecture practice requires answering two questions that are often conflated:
 
-The real question is: **how do we incorporate agentic AI into our architecture practice in a way that adheres to our patterns, practices, and standards — and is context-aware of our architecture and systems?**
+1. **How should our practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
+2. **What technology implements that?** — the toolchain, billing model, and infrastructure (Layer 2)
 
-This site presents the evaluation. The answer separates two questions that are often conflated:
-
-1. **How should our architecture practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
-2. **What technology should we buy?** — the toolchain, billing model, and infrastructure (Layer 2)
+This site presents a controlled evaluation of three AI toolchains across five architecture scenarios — using the same model (Claude Opus 4.6), the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools), and the same scoring rubrics — to answer both.
 
 ---
 
