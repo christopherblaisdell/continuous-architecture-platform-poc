@@ -16,6 +16,10 @@ This evaluation separates two questions that are often conflated:
 1. **How should our practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
 2. **What technology implements that?** — the toolchain, billing model, and infrastructure (Layer 2)
 
+<figure markdown="span">
+  ![Two-Layer Decision Hierarchy](img/two-layer-hierarchy.svg){ width="100%" }
+</figure>
+
 ### Layer 1: Practice Strategy — How Do We Work with AI?
 
 The practice strategy defines the operating model for AI-augmented architecture: how architects interact with agents, where AI output enters governance, how we measure quality, and the adoption path from pilot to organization.
