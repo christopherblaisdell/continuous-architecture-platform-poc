@@ -22,7 +22,7 @@ Selecting an AI platform is not one decision — it is four:
 
 These decisions compose into three [Platform Options](platform-options.md) — Lean, Hybrid, and Full Build — each scored against 12 evaluation factors.
 
-[Decision Framework](decisions/index.md){ .md-button .md-button--primary } [Platform Options](platform-options.md){ .md-button }
+[Decision Framework](decisions/decision-framework.md){ .md-button .md-button--primary } [Platform Options](platform-options.md){ .md-button }
 
 ---
 
@@ -86,7 +86,7 @@ Anthropic's official CLI-based coding agent. Terminal-native with direct Anthrop
 
 | Section | What You Will Find |
 |---------|-------------------|
-| [Decision Framework](decisions/index.md) | Four decomposed decisions: content injection, location, billing, provider |
+| [Decision Framework](decisions/decision-framework.md) | Four decomposed decisions: content injection, location, billing, provider |
 | [Platform Options](platform-options.md) | Composed side-by-side comparison of Lean, Hybrid, and Full Build options |
 | [Evaluation Framework](evaluation-framework.md) | Phase 1 methodology, scoring rubrics, scenario definitions |
 | [Tools](tools/github-copilot.md) | Per-tool profiles with architecture, pricing, strengths, and limitations |

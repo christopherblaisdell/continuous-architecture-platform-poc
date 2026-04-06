@@ -337,7 +337,7 @@ Before committing beyond Option A, a 4-6 week validation POC is recommended:
 
 ## Links
 
-- [Decision Framework](decisions/index.md) — How these options were composed from four independent decisions
+- [Decision Framework](decisions/decision-framework.md) — How these options were composed from four independent decisions
 - [DD-01: Content Injection](decisions/dd-01-content-injection.md)
 - [DD-02: Injection Location](decisions/dd-02-injection-location.md)
 - [DD-03: Billing Model](decisions/dd-03-billing-model.md)
