@@ -55,21 +55,15 @@
   <text x="380" y="348" fill="#757575" font-size="11" font-style="italic">compose into</text>
 
   <!-- Platform Options -->
-  <!-- Option A: Lean -->
-  <rect x="80" y="375" width="160" height="72" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="160" y="400" text-anchor="middle" fill="#e65100" font-size="12" font-weight="700">Option A</text>
-  <text x="160" y="418" text-anchor="middle" fill="#37474f" font-size="12">Lean</text>
-  <text x="160" y="434" text-anchor="middle" fill="#757575" font-size="10">Copilot standalone</text>
+  <!-- Option A: Copilot -->
+  <rect x="120" y="375" width="220" height="72" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="230" y="400" text-anchor="middle" fill="#e65100" font-size="12" font-weight="700">Option A</text>
+  <text x="230" y="418" text-anchor="middle" fill="#37474f" font-size="12">GitHub Copilot</text>
+  <text x="230" y="434" text-anchor="middle" fill="#757575" font-size="10">SaaS · intent-based billing</text>
 
-  <!-- Option B: Hybrid -->
-  <rect x="280" y="375" width="160" height="72" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="360" y="400" text-anchor="middle" fill="#e65100" font-size="12" font-weight="700">Option B</text>
-  <text x="360" y="418" text-anchor="middle" fill="#37474f" font-size="12">Hybrid</text>
-  <text x="360" y="434" text-anchor="middle" fill="#757575" font-size="10">Copilot + targeted MCP</text>
-
-  <!-- Option C: Full Build -->
-  <rect x="480" y="375" width="160" height="72" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="560" y="400" text-anchor="middle" fill="#e65100" font-size="12" font-weight="700">Option C</text>
-  <text x="560" y="418" text-anchor="middle" fill="#37474f" font-size="12">Full Build</text>
-  <text x="560" y="434" text-anchor="middle" fill="#757575" font-size="10">Custom AI pipeline</text>
+  <!-- Option B: Roo Code + Kong + RAG -->
+  <rect x="380" y="375" width="220" height="72" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="490" y="400" text-anchor="middle" fill="#e65100" font-size="12" font-weight="700">Option B</text>
+  <text x="490" y="418" text-anchor="middle" fill="#37474f" font-size="12">Roo Code + Kong AI</text>
+  <text x="490" y="434" text-anchor="middle" fill="#757575" font-size="10">Custom RAG · token-based billing</text>
 </svg>

@@ -45,7 +45,7 @@ Four independent architectural decisions determine the technology substrate. Eac
 | [DD-03: Billing Model](ai-evaluation/decisions/dd-03-billing-model.md) | Intent-based billing vs token-based billing — what economic model fits? | Under Evaluation |
 | [DD-04: AI Provider](ai-evaluation/decisions/dd-04-ai-provider.md) | GitHub, Anthropic, Azure AI Foundry, or Kong/OpenRouter — who do we buy AI from? | Under Evaluation |
 
-These decisions compose into three [Platform Options](ai-evaluation/platform-options.md) — Lean, Hybrid, and Full Build — each scored against 12 evaluation factors.
+These decisions compose into two [Platform Options](ai-evaluation/platform-options.md) — GitHub Copilot (SaaS) and Roo Code + Kong AI + Custom RAG — each scored against 12 evaluation factors.
 
 [Decision Framework](ai-evaluation/decisions/decision-framework.md){ .md-button .md-button--primary } [Platform Options](ai-evaluation/platform-options.md){ .md-button }
 
@@ -65,7 +65,7 @@ These decisions compose into three [Platform Options](ai-evaluation/platform-opt
 | If you are a... | Start with | Then read |
 |----------------|-----------|-----------|
 | **Practice lead or director** | [Practice Strategy (PSD-01)](ai-evaluation/practice-strategy.md) — the operating model, governance, and adoption roadmap | [Key Findings](#key-findings) below for the cost and quality headline |
-| **Solution architect** | [Key Findings](#key-findings) — cost, quality, and capability comparison | [Platform Options](ai-evaluation/platform-options.md) — the three composed platform choices |
+| **Solution architect** | [Key Findings](#key-findings) — cost, quality, and capability comparison | [Platform Options](ai-evaluation/platform-options.md) — the two composed platform choices |
 | **Platform engineer** | [Decision Framework](ai-evaluation/decisions/decision-framework.md) — four decomposed toolchain decisions | Individual DDs ([DD-01](ai-evaluation/decisions/dd-01-content-injection.md), [DD-02](ai-evaluation/decisions/dd-02-injection-location.md), [DD-03](ai-evaluation/decisions/dd-03-billing-model.md), [DD-04](ai-evaluation/decisions/dd-04-ai-provider.md)) |
 | **Skeptic or reviewer** | [Evaluation Framework](ai-evaluation/evaluation-framework.md) — methodology, controlled variables, scoring rubrics | [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) and [Research](ai-evaluation/research/copilot-billing.md) for raw evidence |
 
@@ -127,7 +127,7 @@ Anthropic's official CLI-based coding agent. Terminal-native with direct Anthrop
 |---------|-------------------|
 | [Practice Strategy](ai-evaluation/practice-strategy.md) | Layer 1: Operating model for AI-augmented architecture practice |
 | [Decision Framework](ai-evaluation/decisions/decision-framework.md) | Layer 2: Four decomposed toolchain decisions |
-| [Platform Options](ai-evaluation/platform-options.md) | Composed side-by-side comparison of Lean, Hybrid, and Full Build options |
+| [Platform Options](ai-evaluation/platform-options.md) | Composed side-by-side comparison of Copilot vs Roo Code + Kong AI + Custom RAG |
 | [Evaluation Framework](ai-evaluation/evaluation-framework.md) | Methodology, scoring rubrics, scenario definitions |
 | [Tools](ai-evaluation/tools/github-copilot.md) | Per-tool profiles with architecture, pricing, strengths, and limitations |
 | [Comparisons](ai-evaluation/comparisons/copilot-vs-roocode.md) | Head-to-head results with evidence from actual runs |
