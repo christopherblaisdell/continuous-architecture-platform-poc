@@ -5,11 +5,11 @@
 
 ## The Question
 
-Can an agentic AI assistant reliably produce solution architecture artifacts — impact assessments, architecture decision records, sequence diagrams, OpenAPI spec updates — at production quality, with predictable cost, and under the architect's governance?
+Agentic AI can produce solution architecture artifacts — impact assessments, architecture decision records, sequence diagrams, OpenAPI spec updates — at production quality. That is no longer in question. A single architect ran five controlled scenarios through three toolchains using the same model (Claude Opus 4.6) and the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools). One toolchain scored 96.1% quality at $0.48 per run.
 
-This site presents the evidence. A single architect ran five controlled architecture scenarios through three AI toolchains using the same model (Claude Opus 4.6) and the same synthetic workspace (19 microservices, OpenAPI specs, Java source, mock tools). The results were decisive: one toolchain scored 96.1% quality at $0.48 per run. Another cost 208x more for comparable output. The third is pending evaluation.
+The real question is: **how do we incorporate agentic AI into our architecture practice in a way that adheres to our patterns, practices, and standards — and is context-aware of our architecture and systems?**
 
-But toolchain selection alone does not transform a practice. This evaluation separates two questions that are often conflated:
+This site presents the evaluation. The answer separates two questions that are often conflated:
 
 1. **How should our architecture practice work with AI?** — the operating model, governance, and adoption path (Layer 1)
 2. **What technology should we buy?** — the toolchain, billing model, and infrastructure (Layer 2)
