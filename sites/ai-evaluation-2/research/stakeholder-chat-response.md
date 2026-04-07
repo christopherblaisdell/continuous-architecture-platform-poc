@@ -14,9 +14,9 @@ As I mentioned, I used GitHub Copilot to do real architecture work against a ful
 
 - **Cross-tool accessibility** — platform-native indexes are primarily optimized for the IDE and CLI experience. While Microsoft 365 connectors now offer a bridge for surfacing this knowledge in Teams or SharePoint, the underlying vector data remains inaccessible for custom external application development. The evaluation documents this as an acceptable trade-off for our current tool-centric strategy and explores MCP as a bridge for future cross-tool use cases. See the cross-tool section in [Build vs Leverage](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context)
 
-- **Versioning and A/B testing** — this turns out to be a strength of the platform-native approach, not a limitation. Since all customizations are checked-in files (instructions, agents, skills), they version with git like everything else. You can branch your instructions, run the same task on both branches, and compare output. The customizations co-locate with the artifacts they govern — so when you branch your architecture work, the AI behavior branches with it. That's arguably better than versioning a separate embedding pipeline where config and content are decoupled.
-
 **Where I see it differently:**
+
+- **Versioning and A/B testing** — this turns out to be a strength of the platform-native approach, not a limitation. Since all customizations are checked-in files (instructions, agents, skills), they version with git like everything else. You can branch your instructions, run the same task on both branches, and compare output. The customizations co-locate with the artifacts they govern — so when you branch your architecture work, the AI behavior branches with it. That's arguably better than versioning a separate embedding pipeline where config and content are decoupled.
 
 - **Pipeline integration (lint → RAG → synthesize)** — the pilot gets quality gates at *authoring time* instead of *retrieval time* — the agent runs Spectral, puml-lint, etc. agentically during generation. Both approaches can produce compliant output; the difference is where the check happens. The [Build vs Leverage](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context) page walks through this.
 
