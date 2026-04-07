@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="data-isolation-banner" class="isolation-banner" style="display:none;">
+  <div class="isolation-banner__inner">
+    <strong>Data Isolation Statement</strong> &mdash;
+    This evaluation contains zero corporate data. The entire NovaTrek Adventures domain is fictional.
+    All JIRA, Elasticsearch, and GitLab integrations are local mock Python scripts reading JSON files
+    from disk &mdash; no network calls, no credentials, no corporate system access.
+    <a href="{{ 'data-isolation/' | url }}">See Data Isolation for the full policy.</a>
+    <button class="isolation-banner__close" onclick="dismissBanner()" aria-label="Dismiss banner">&times;</button>
+  </div>
+</div>
+{{ super() }}
+{% endblock %}
+
+{% block extrahead %}
+<style>
+.isolation-banner {
+  background: #1a237e;
+  color: #fff;
+  padding: .6rem 1rem;
+  font-size: .82rem;
+  line-height: 1.5;
+  position: relative;
+  z-index: 10;
+}
+[data-md-color-scheme="slate"] .isolation-banner {
+  background: #283593;
+}
+.isolation-banner__inner {
+  max-width: 61rem;
+  margin: 0 auto;
+  padding-right: 2rem;
+}
+.isolation-banner a {
+  color: #ffb74d;
+  text-decoration: underline;
+}
+.isolation-banner__close {
+  position: absolute;
+  top: .4rem;
+  right: .8rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: .2rem .4rem;
+  opacity: .7;
+}
+.isolation-banner__close:hover {
+  opacity: 1;
+}
+</style>
+<script>
+(function() {
+  var KEY = "isolation-banner-dismissed";
+  var HOURS = 24;
+  var ts = localStorage.getItem(KEY);
+  if (ts && (Date.now() - parseInt(ts, 10)) < HOURS * 3600000) return;
+  document.addEventListener("DOMContentLoaded", function() {
+    var el = document.getElementById("data-isolation-banner");
+    if (el) el.style.display = "block";
+  });
+})();
+function dismissBanner() {
+  localStorage.setItem("isolation-banner-dismissed", Date.now().toString());
+  var el = document.getElementById("data-isolation-banner");
+  if (el) el.style.display = "none";
+}
+</script>
+{% endblock %}
