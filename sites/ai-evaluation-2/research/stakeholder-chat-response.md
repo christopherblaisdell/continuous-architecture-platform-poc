@@ -14,7 +14,7 @@ As I mentioned, I used GitHub Copilot to do real architecture work against a ful
 
 - **Cross-tool accessibility** — platform-native indexes live inside the IDE, and that's a real limitation. The evaluation documents it honestly and explores MCP as a bridge. See the cross-tool section in [Build vs Leverage](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context)
 
-- **Versioning and A/B testing** — genuinely unavailable with platform-native indexing. I accept that trade-off for zero-infrastructure simplicity, and the evaluation says so explicitly.
+- **Versioning and A/B testing** — actually, I was wrong on this one. Since all customizations are checked-in files (instructions, agents, skills), they version with git like everything else. You can branch your instructions, run the same task on both branches, and compare output. In fact, the customizations co-locate with the artifacts they govern — so when you branch your architecture work, the AI behavior branches with it. That's arguably better than versioning a separate embedding pipeline where config and content are decoupled.
 
 **Where I see it differently:**
 

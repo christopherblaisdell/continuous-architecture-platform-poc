@@ -77,12 +77,13 @@ For **each numbered claim below**, provide:
 - Is MCP mature enough in mid-2026 to be presented as a credible bridge? What is the actual adoption status?
 - Could a skeptic argue MCP provides file access but NOT the semantic retrieval that a vector database provides?
 
-### Claim 5: Versioning and A/B Testing Genuinely Unavailable
-"genuinely unavailable with platform-native indexing"
+### Claim 5: Git-Branched A/B Testing of Customizations
+"Since all customizations are checked-in files (instructions, agents, skills), they version with git like everything else. You can branch your instructions, run the same task on both branches, and compare output."
 
-- Is this absolutely true? Can you version or compare retrieval strategies in ANY platform-native tool?
-- Could Copilot's model selection (switching between models) be argued as a form of A/B testing?
-- Is the concession appropriately scoped or does it concede too much?
+- Is it accurate that declarative customization files (`.instructions.md`, custom agents, skills) can be branched and A/B tested via git?
+- Is there any limitation to this approach (e.g., does the IDE cache customizations, does switching branches require a reload)?
+- Is the claim that this is "arguably better than versioning a separate embedding pipeline" defensible?
+- Could a stakeholder argue that A/B testing *retrieval quality* (embedding models, chunking strategies) is fundamentally different from A/B testing *agent behavior* (instructions, prompts)?
 
 ### Claim 6: Authoring-Time vs Retrieval-Time Quality Gates
 "the pilot achieves quality gates at authoring time (the model invokes Spectral, puml-lint agentically in VS Code) rather than at retrieval time"
