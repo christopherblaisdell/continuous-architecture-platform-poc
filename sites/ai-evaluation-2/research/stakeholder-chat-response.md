@@ -6,7 +6,7 @@
 
 Thanks for the thorough feedback on self-managed embeddings. Several of these points identify genuine capabilities that platform-native indexing does not offer — and the evaluation site now addresses each one directly with a nuanced response rather than dismissing them.
 
-For context: **"the pilot"** refers to a hands-on evaluation where a solution architect used GitHub Copilot (Option A) to perform real architecture work against a synthetic microservices workspace — producing 4 full solution designs, 14 architecture decision records, and 139 PlantUML sequence diagrams over multiple sessions. This was not a theoretical comparison; the evaluation is grounded in measured output from actual architecture tasks.
+For context: **"the pilot"** refers to a hands-on evaluation where I used GitHub Copilot (Option A) to perform real architecture work against a fully synthetic microservices workspace — producing 4 full solution designs, 14 architecture decision records, and 139 PlantUML sequence diagrams over multiple sessions. This was not a theoretical comparison; the evaluation is grounded in measured output from actual architecture tasks.
 
 Here's the summary, with links to the detailed analysis on each point:
 
