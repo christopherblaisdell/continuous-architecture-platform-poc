@@ -14,9 +14,9 @@ As I mentioned, I used GitHub Copilot to do real architecture work against a ful
 
 - **Cross-tool accessibility** — platform-native indexes live inside the IDE, and that's a real limitation. The evaluation documents it honestly and explores MCP as a bridge. See the cross-tool section in [Build vs Leverage](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context)
 
-- **Versioning and A/B testing** — genuinely unavailable with platform-native indexing. We accept that trade-off for zero-infrastructure simplicity, and the evaluation says so explicitly.
+- **Versioning and A/B testing** — genuinely unavailable with platform-native indexing. I accept that trade-off for zero-infrastructure simplicity, and the evaluation says so explicitly.
 
-**Where we see it differently:**
+**Where I see it differently:**
 
 - **Pipeline integration (lint → RAG → synthesize)** — the pilot gets quality gates at *authoring time* instead of *retrieval time* — the agent runs Spectral, puml-lint, etc. agentically during generation. Both approaches can produce compliant output; the difference is where the check happens. The [Build vs Leverage](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context) page walks through this.
 
@@ -26,7 +26,7 @@ As I mentioned, I used GitHub Copilot to do real architecture work against a ful
 
 **The thread that runs through all 12 points:**
 
-We're not saying self-managed embeddings have no value — we're saying the *marginal value over platform-native indexing doesn't justify the engineering cost* for this use case: a solution architecture practice using AI as a tool, not building an AI product. That distinction is the heart of [Architecture Is Not Just Coding](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2614624526/Architecture+Is+Not+Just+Coding+But+the+Tools+Are+the+Same)
+I'm not saying self-managed embeddings have no value — I'm saying the *marginal value over platform-native indexing doesn't justify the engineering cost* for this use case: a solution architecture practice using AI as a tool, not building an AI product. That distinction is the heart of [Architecture Is Not Just Coding](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2614624526/Architecture+Is+Not+Just+Coding+But+the+Tools+Are+the+Same)
 
 **If you want to dig deeper:**
 
