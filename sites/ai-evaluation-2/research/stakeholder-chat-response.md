@@ -4,13 +4,11 @@
 
 ---
 
-Really appreciate the thorough feedback on self-managed embeddings. A lot of these are fair points — several identify real capabilities that platform-native indexing genuinely doesn't offer. The evaluation site now addresses each one individually rather than hand-waving them away.
+Thanks everyone.  I really appreciate the thorough feedback on self-managed embeddings. A lot of these are fair points — several identify real capabilities that platform-native indexing genuinely doesn't offer. The evaluation site now addresses each one individually rather than hand-waving them away.
 
-Quick context on **"the pilot"**: I used GitHub Copilot to do real architecture work against a fully synthetic microservices workspace — 4 solution designs, 14 ADRs, 139 PlantUML sequence diagrams across multiple sessions. Not a theoretical comparison; the evaluation is based on actual measured output.
+As I mentioned, I used GitHub Copilot to do real architecture work against a fully synthetic microservices workspace — 4 solution designs, 14 ADRs, 139 PlantUML sequence diagrams across multiple sessions. Not a theoretical comparison; but actual measured output between a Platform-native AI assistant (GitHub Copilot) and Roo Code with token based billing, and here is what I found.
 
-Here's the short version, with links to the deeper analysis on each point:
-
-**Where the advantage is real — and we say so:**
+**Where self-managed embeddings have a real advantage over platform-native indexing:**
 
 - **Chunking control, embedding model selection, hybrid search, re-ranking** — all genuine capabilities of a self-managed pipeline. The question the evaluation asks is whether the retrieval quality improvement justifies the engineering investment when the pilot already hit 96%+ quality scores without any of it. More detail in [Build vs Leverage: Custom RAG in Context](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context)
 
