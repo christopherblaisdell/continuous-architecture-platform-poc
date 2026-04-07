@@ -56,6 +56,25 @@ It is the wrong choice when:
 3. **The team's expertise is architecture, not ML infrastructure** — time spent maintaining embedding pipelines is time not spent on architecture work
 4. **The cost model penalizes complexity** — every additional component (vector DB, embedding service, orchestration layer) adds to TCO with no proportional quality gain over native capabilities
 
+## The PlantUML Chunking Argument
+
+A recurring skeptic's objection is that a bespoke agent is required to control how specific file types — particularly PlantUML diagrams — are chunked for retrieval. The argument assumes that general-purpose workspace indexing will misparse `.puml` files, producing semantically broken chunks that degrade retrieval quality.
+
+This concern is valid **in the abstract** but irrelevant to the architecture practice's actual workflow:
+
+**The architect already works with PlantUML files inside VS Code.** Every `.puml` source file lives in the workspace alongside the OpenAPI specs, metadata YAML, and markdown documentation that reference them. The AI agent does not need to "retrieve" PlantUML through an embedding pipeline — it reads the files directly from the workspace, exactly as it reads any other source file.
+
+The architecture practice pilot proved this empirically. Using GitHub Copilot (Option A) with zero custom chunking infrastructure:
+
+- **139 PlantUML sequence diagrams** were generated from OpenAPI specs by the AI agent
+- The agent **reads, modifies, and creates** `.puml` files using standard file operations — no embedding or retrieval step is involved
+- Cross-references between PlantUML diagrams and service documentation are maintained through workspace-relative paths that the agent navigates directly
+- The generator script (`portal/scripts/generate-microservice-pages.py`) produces PUML, renders SVGs, and writes markdown pages — all orchestrated by the AI agent operating on workspace files
+
+**Why this matters:** The chunking concern assumes a retrieval-first architecture where PlantUML content must be embedded, stored in a vector database, and retrieved via similarity search before the model can reason about it. In an IDE-native workflow, the model has **direct file access** — it reads the `.puml` file, understands its structure, and operates on it. No chunking. No embeddings. No retrieval pipeline.
+
+This is a concrete example of the broader pattern: concerns about custom RAG pipeline control often assume a retrieval architecture that IDE-native platforms bypass entirely. The files are already there. The agent reads them directly.
+
 ## Implications for This Evaluation
 
 This analysis directly informs two evaluation factors:
