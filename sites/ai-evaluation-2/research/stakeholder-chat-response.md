@@ -28,7 +28,7 @@ Quick recap for context: I used GitHub Copilot to do real architecture work agai
 
 I'm not saying self-managed embeddings have no value — 2026 RAG benchmarks show hybrid search strategies typically offer a 15-30% improvement in retrieval precision. But for a well-structured solution architecture repository, we found the agentic "file-access-first" approach effectively closed that gap. The *marginal gain of a custom pipeline just doesn't justify the ML engineering and ongoing operational overhead* when you're a solution architecture practice using AI as a tool, not building an AI product. That distinction is the heart of [Architecture Is Not Just Coding](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2614624526/Architecture+Is+Not+Just+Coding+But+the+Tools+Are+the+Same)
 
-**If you want to dig deeper, it's all on the site:**
+**If you want to dig deeper, I put up some more detail here:**
 
 - An independent fact-check of the full evaluation (63 citations) is in the Addendum section
 - Deep research specifically on self-managed embeddings vs platform-native indexing is also in the Addendum
