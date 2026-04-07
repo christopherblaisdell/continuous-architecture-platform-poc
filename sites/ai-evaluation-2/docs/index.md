@@ -27,6 +27,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 
 | Page | Purpose | Key Question Answered |
 |------|---------|----------------------|
+| [Scoring Results](scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
 | [Evaluation Approach](evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
 | [Evaluation Methodology](evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
 | [DD-01: Context and Configuration](dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |

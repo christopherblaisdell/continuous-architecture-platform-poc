@@ -47,6 +47,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Scoring Results: scoring-results.md
   - Evaluation Approach: evaluation-approach.md
   - Evaluation Methodology: evaluation-methodology.md
   - DD-01 Context and Configuration: dd-01-context-configuration.md
