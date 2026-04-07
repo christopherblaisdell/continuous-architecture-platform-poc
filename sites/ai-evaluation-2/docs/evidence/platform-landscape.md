@@ -17,7 +17,7 @@ This page compares the five platforms across dimensions that matter for this eva
 | Platform | Individual Plan | Team/Enterprise Plan | Billing Model | Frontier Model Access |
 |----------|----------------|---------------------|---------------|----------------------|
 | **GitHub Copilot** | $39/mo (Pro+) | $19-39/user/mo (Business/Enterprise) | Fixed per-seat, intent-based (per user prompt, not per token) | Claude Opus 4.6 included at 3x multiplier; GPT-4o/4.1 unlimited (0x) |
-| **Cursor** | $20/mo (Pro), $60/mo (Pro+) | $40/user/mo (Teams) | Usage-based with quotas; overages at API pricing | Claude, GPT, Gemini frontier models; 3x usage at Pro+ ($60) |
+| **Cursor** | $20/mo (Pro), $60/mo (Pro+) | $40/user/mo (Teams) | Usage-based with quotas; overages at API pricing | Claude, GPT, Gemini frontier models; Pro+ ($60) provides a $60 monthly credit pool for premium model usage |
 | **Windsurf** (Cognition Inc.) | $20/mo (Pro), $200/mo (Max) | $40/user/mo (Teams) | Usage-based with daily/weekly refresh; overages at API pricing | OpenAI, Claude, Gemini; premium models consume quota faster |
 | **Cline** | Free (open source) | N/A (self-managed) | Pay-per-token directly to model providers (OpenRouter, API keys) | Any model via API key; user pays full per-token cost |
 | **Claude Code** | Part of Anthropic subscription | Via Anthropic API | Token-based billing through Anthropic | Claude models only; no multi-provider |

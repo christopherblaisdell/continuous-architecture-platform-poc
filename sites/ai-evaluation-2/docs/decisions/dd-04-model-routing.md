@@ -39,7 +39,7 @@ This means:
 
 - **You select the frontier model**, but Microsoft determines how much of the agentic loop actually runs on it
 - **You cannot verify** which model handled which part of your session — Copilot provides no per-request model attribution
-- **Microsoft has a financial incentive** to route non-critical inferences to cheaper models — this is how fixed-price bundling works economically
+- **Microsoft has a financial incentive** to route non-critical inferences to cheaper models — this is standard practice across all AI platforms offering bundled pricing, not unique to Microsoft
 
 ### Why This Is a Real Trade-Off, Not a Flaw
 
@@ -64,7 +64,7 @@ Each option occupies a different position on the visibility-vs-convenience spect
 | Per-inference visibility | None — opaque | Full — every API call logged with model, tokens, cost | Full — custom code, full control |
 | Cost attribution | Per user prompt (3x multiplier for Opus) | Per token, per request | Per token, per request |
 | Routing control | Microsoft's orchestration | Operator-configured rules | Engineer-written logic |
-| Financial incentive alignment | Microsoft absorbs cost overruns (good for user); Microsoft optimizes routing to manage cost (opaque to user) | Operator pays exactly what they use (full alignment) | Engineer controls everything (full alignment) |
+| Financial incentive alignment | Microsoft absorbs cost overruns (good for user); Microsoft optimizes routing to manage cost (industry-standard practice for bundled pricing, opaque to user) | Operator pays exactly what they use (full alignment) | Engineer controls everything (full alignment) |
 
 ### Why the Trade-Off Is Acceptable for This Practice
 

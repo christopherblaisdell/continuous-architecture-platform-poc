@@ -127,6 +127,9 @@ For each factor, test: "If this weight increased by 5 percentage points (taken e
 
 **Result: The outcome is robust.** No single factor weight shift of 5 percentage points changes the winner. Option A leads by 1.84 points over Option B — an enormous margin in a 1-5 scale. Even doubling the weight of EF-07 (where B scores highest) does not close the gap.
 
+!!! note "OAT Sensitivity Limitation"
+    This analysis uses one-at-a-time (OAT) sensitivity testing — varying each weight independently while holding others fixed. OAT does not capture interaction effects (e.g., simultaneously increasing EF-07 and EF-11 while decreasing EF-01). Given the 1.84-point margin, interaction effects would need to produce an implausibly large swing to change the outcome, but the limitation should be noted for methodological transparency.
+
 ---
 
 ## Conclusion

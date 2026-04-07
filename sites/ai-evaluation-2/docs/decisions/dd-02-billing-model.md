@@ -23,13 +23,14 @@ The three options under evaluation use three different billing models. The quest
 
 ### Option A: Per-Seat Fixed (Copilot Pro+)
 
-$39/month per architect. Unlimited routine model usage (GPT-4o, GPT-4.1 at 0x multiplier). Frontier model usage (Claude Opus 4.6 at 3x multiplier) draws from 1,500 included premium requests per month — approximately 500 Opus-tier sessions.
+$39/month per architect. Routine model usage (GPT-4o, GPT-4.1 at 0x multiplier) is included without consuming premium requests, though subject to GitHub's fair-use rate limits. Frontier model usage (Claude Opus 4.6 at 3x multiplier) draws from 1,500 included premium requests per month — approximately 500 Opus-tier sessions.
 
 - **Predictable** — cost is known before the month starts
 - **No usage anxiety** — architects use the tool freely without watching a meter
 - **Frontier model included** — no budget pressure to downgrade to a cheaper model
 - **Billing unit is intent, not consumption** — each user prompt costs one request regardless of how many files the agent reads or how many tool calls it makes
-- **Limitation:** If an architect exceeds 1,500 premium requests, overages cost $0.04 per request ($0.12 per Opus prompt). At 20 sessions/month with 4 prompts each, usage is ~240 premium requests — well within the allowance.
+- **Agentic loop caveat:** In Agent Mode, each autonomous loop iteration (tool call, file read, sub-agent dispatch) may consume additional premium requests beyond the initial user prompt. A single user prompt that triggers a long agentic chain can consume more than 1 premium request. The 0x multiplier for routine models and 3x multiplier for frontier models apply per billable request, not strictly per user prompt. Actual consumption depends on session complexity.
+- **Limitation:** If an architect exceeds 1,500 premium requests, overages cost $0.04 per request ($0.12 per Opus prompt). At 20 sessions/month with 4 prompts each, usage is ~240 premium requests — well within the allowance, though complex agentic sessions with many tool calls may consume more.
 
 ### Option B: Per-Token Variable (Roo Code + Kong)
 
