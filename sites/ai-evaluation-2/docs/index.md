@@ -29,6 +29,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 |------|---------|----------------------|
 | [Evaluation Approach](evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
 | [Evaluation Methodology](evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
+| [DD-01: Context and Configuration](dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
 | [Platform Landscape](platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
 | [Model Quality at Budget](model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
 | [Build vs Leverage](build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |

@@ -49,6 +49,7 @@ nav:
   - Home: index.md
   - Evaluation Approach: evaluation-approach.md
   - Evaluation Methodology: evaluation-methodology.md
+  - DD-01 Context and Configuration: dd-01-context-configuration.md
   - Platform Landscape: platform-landscape.md
   - Model Quality at Budget: model-quality-at-budget.md
   - Build vs Leverage: build-vs-leverage.md
