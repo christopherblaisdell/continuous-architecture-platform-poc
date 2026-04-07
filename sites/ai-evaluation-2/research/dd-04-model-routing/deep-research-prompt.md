@@ -2,40 +2,71 @@
 
 ## Objective
 
-DD-04 is a brief stub page that declares the model routing decision "Resolved by DD-03." Investigate the specific claims about model multipliers and the assertion that model routing is subsumed by the provider decision.
+DD-04 now contains the evaluation's most important honest caveat: that Copilot's model routing is opaque and Microsoft controls which model handles each inference in the agentic loop. Every claim about this opacity — and every argument for why the trade-off is acceptable — must be verified.
 
 ---
 
 ## Claims to Investigate
 
-### 1. "Model routing matters only under Option B or C — Copilot handles it natively"
+### 1. "Selecting Claude Opus 4.6 governs the primary reasoning model, but Microsoft's orchestration layer routes internal agentic steps to models of its choosing"
 
 **Research questions:**
-- Does Copilot allow users to select models, or is model selection automatic? What models are currently available in Copilot?
-- Does Copilot's model selection constitute "model routing" in the same sense as OpenRouter or Azure AI Foundry routing?
-- Is it accurate that model routing is a non-decision under Option A, or are there routing choices even within Copilot (e.g., choosing Claude vs GPT-4o)?
+- What is publicly documented about Copilot's internal model routing? Does Microsoft disclose which models handle tool dispatch, summarization, or context assembly?
+- Has Microsoft published any architecture diagrams or blog posts describing Copilot's multi-model orchestration?
+- Are there any third-party investigations (blog posts, research papers, reverse engineering) that reveal Copilot's internal model routing?
+- Is "primary reasoning model" an accurate characterization of what the user's model selection controls?
 
-### 2. Model Multiplier Table — "GPT-4o: 1x, Claude Sonnet: 1x, Claude Opus: 3x"
-
-**Research questions:**
-- What are the current Copilot model multipliers as of mid-2026? Cite the official GitHub documentation page.
-- Has GitHub changed multipliers since the page was written? Are there newer models with different multipliers?
-- What is the 0x multiplier claim for GPT-4.1 and GPT-4o? When was this introduced? Cite the announcement.
-- Is "no per-token cost visibility" accurate for Copilot? Are there any usage dashboards or reporting tools?
-
-### 3. "Under Option B, model routing is a procurement and governance exercise"
+### 2. "Copilot provides no per-request model attribution"
 
 **Research questions:**
-- How does OpenRouter handle model routing? Can organizations restrict which models are available?
-- Does Kong AI Gateway provide model routing capabilities? Cite documentation.
-- What governance controls does OpenRouter offer (rate limiting, model restrictions, usage auditing)?
+- Does Copilot expose any telemetry, logs, or dashboards showing which model handled a request?
+- Does Copilot Enterprise or Business offer any model attribution features not available in Pro+?
+- Are there VS Code developer tools, network inspection, or extension APIs that reveal model routing information?
+- Has GitHub indicated any plans to add model attribution or transparency features?
 
-### 4. "Under Option C, routing is a full engineering concern"
+### 3. "Microsoft has a financial incentive to route non-critical inferences to cheaper models — this is how fixed-price bundling works economically"
 
 **Research questions:**
-- Does Azure AI Foundry provide built-in model routing, or must it be custom-built?
-- What is Azure AI Foundry's model catalog and deployment model? Can routing be configured without custom code?
-- Is "full engineering concern" an overstatement given Azure's managed services?
+- Is this characterization of the economic incentive accurate? Cite any industry analysis of how AI SaaS providers manage model costs under fixed-price subscriptions.
+- Has Microsoft discussed its cost management strategy for Copilot? (Investor calls, blog posts, interviews)
+- Are there analogous examples in other industries of fixed-price bundling where the provider optimizes internal resource allocation? (e.g., cell phone unlimited plans, cloud compute reservations)
+
+### 4. "If Microsoft were routing the primary reasoning to a budget model, these outputs would not be achievable"
+
+**Research questions:**
+- Is this inference valid? Could a mid-tier model (e.g., Claude Sonnet, GPT-4o) produce the claimed outputs (multi-file reasoning, domain rule enforcement, structured document generation)?
+- What are the documented capability differences between frontier models (Opus) and mid-tier models (Sonnet) for complex reasoning tasks?
+- Are there benchmarks comparing Opus vs Sonnet on multi-file synthesis, instruction following, or structured document generation?
+
+### 5. Model Multiplier Table — "GPT-4o: 0x, Claude Sonnet: 1x, Claude Opus: 3x"
+
+**Research questions:**
+- What are the current Copilot model multipliers as of mid-2026? Cite the official GitHub documentation.
+- Has GitHub changed multipliers since the page was written?
+- What is the 0x multiplier for GPT-4o and GPT-4.1? When was this introduced?
+- Is "no per-token cost visibility" accurate for Copilot?
+
+### 6. "The risk is self-correcting — if Microsoft degrades Copilot's model routing, the architect observes this directly"
+
+**Research questions:**
+- Is this argument sound? Can an architect reliably detect gradual model quality degradation in their own work?
+- Is there research on human ability to detect AI output quality changes? (Studies on "boiling frog" effects in AI-assisted work)
+- Are there documented cases of AI service providers quietly downgrading model quality? How were they detected?
+- Could Microsoft gradually shift routing without users noticing a discrete quality drop?
+
+### 7. Option B and C Transparency Claims
+
+**Research questions:**
+- Does OpenRouter provide full per-request model attribution and token-level cost visibility? Cite documentation.
+- Does Kong AI Gateway provide per-request logging with model attribution? Cite documentation.
+- Is "full control" accurate for Option C, or are there Azure AI Foundry abstractions that also obscure routing?
+
+### 8. "What Would Change This Assessment" — per-request model attribution
+
+**Research questions:**
+- Has any AI coding platform introduced per-request model attribution?
+- Is there an industry trend toward model transparency in AI SaaS products?
+- Are there regulatory pressures (EU AI Act, etc.) that might force model attribution?
 
 ---
 

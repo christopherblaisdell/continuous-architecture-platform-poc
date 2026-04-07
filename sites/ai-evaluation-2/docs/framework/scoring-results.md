@@ -6,9 +6,9 @@
 
 | Option | Weighted Score | Rank |
 |--------|---------------|------|
-| **Option A — GitHub Copilot** | **4.43** | **1st** |
-| Option B — Roo Code + Kong AI Gateway | 2.96 | 2nd |
-| Option C — Bespoke Architecture Agent | 1.86 | 3rd |
+| **Option A — GitHub Copilot** | **4.86** | **1st** |
+| Option B — Roo Code + Kong AI Gateway | 3.02 | 2nd |
+| Option C — Bespoke Architecture Agent | 1.99 | 3rd |
 
 Option A scores highest across all four categories. Option C scores lowest, with critical failures (score of 1) on three factors. The result is robust under sensitivity analysis — no reasonable weight shift changes the winner.
 
