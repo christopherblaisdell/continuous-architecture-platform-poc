@@ -28,6 +28,9 @@ Copilot bundles a frontier model at a fixed price. Intent-based billing (per use
 
 **The key insight:** If you paid for Claude Opus 4.6 at market per-token rates for the same volume of architecture work, the monthly token bill would be $100-200+ per architect. Copilot's fixed pricing makes frontier models accessible at a fraction of their raw cost.
 
+!!! info "Model Transparency Caveat"
+    Selecting Claude Opus 4.6 in Copilot governs the primary reasoning model, but Microsoft's orchestration layer routes internal agentic steps (tool dispatch, summarization, context assembly) to models of its choosing — with no per-inference visibility. This is a real trade-off: you get frontier-model access at fixed cost, but you trade away per-request model attribution. The architecture practice pilot's output quality demonstrates that frontier reasoning is applied where it matters. See [DD-04: Model Routing](../decisions/dd-04-model-routing.md) for the full analysis of this trade-off.
+
 ### Option B: Roo Code + Kong AI Gateway — Pay-Per-Token, Operator Chooses
 
 | Parameter | Value |
