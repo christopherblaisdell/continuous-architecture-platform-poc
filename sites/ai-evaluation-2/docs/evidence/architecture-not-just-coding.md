@@ -3,7 +3,7 @@
 
 # Architecture Is Not Just Coding — But the Tools Are the Same
 
-## The Skeptic's Argument
+## A Common Concern
 
 > "AI coding assistants are designed for writing code. Architecture work is different — it requires reasoning about systems, trade-offs, standards, and organizational context. You need a bespoke solution, not a vibe coding tool."
 

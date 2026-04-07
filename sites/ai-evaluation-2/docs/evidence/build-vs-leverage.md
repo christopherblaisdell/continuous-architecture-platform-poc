@@ -58,7 +58,7 @@ It is the wrong choice when:
 
 ## The PlantUML Chunking Argument
 
-A recurring skeptic's objection is that a bespoke agent is required to control how specific file types — particularly PlantUML diagrams — are chunked for retrieval. The argument assumes that general-purpose workspace indexing will misparse `.puml` files, producing semantically broken chunks that degrade retrieval quality.
+A common concern is that a bespoke agent is required to control how specific file types — particularly PlantUML diagrams — are chunked for retrieval. The argument assumes that general-purpose workspace indexing will misparse `.puml` files, producing semantically broken chunks that degrade retrieval quality.
 
 This concern is valid **in the abstract** but irrelevant to the architecture practice's actual workflow:
 
@@ -120,7 +120,7 @@ The custom pipeline is not free. Building the retrieval → validation → synth
 This is a multi-month engineering project requiring ML infrastructure expertise. It produces a retrieval backend that solves a problem the pilot has not demonstrated exists — the 96%+ architecture output quality scores were achieved without any custom retrieval layer.
 
 !!! note "When This Investment Becomes Justified"
-    If the architecture practice grows to consume content from multiple repositories, external knowledge bases (Confluence, SharePoint), or unstructured sources where platform-native indexing demonstrably fails, a custom retrieval pipeline becomes justified. The recommendation is to adopt platform-native indexing now — and build custom retrieval infrastructure only when a concrete retrieval quality problem is observed, not speculatively.
+    If the architecture practice grows to consume content from multiple repositories, external knowledge bases (Confluence, SharePoint), or unstructured sources where platform-native indexing demonstrably fails, a custom retrieval pipeline becomes justified. Similarly, if retrieval quality becomes a measurable bottleneck, the ability to maintain versioned vector collections and A/B test different chunking strategies, embedding models, or metadata schemas becomes valuable — but this is search system R&D, not architecture work, and requires ML infrastructure expertise. The recommendation is to adopt platform-native indexing now — and build custom retrieval infrastructure only when a concrete retrieval quality problem is observed, not speculatively.
 
 ## Cross-Tool Accessibility
 
