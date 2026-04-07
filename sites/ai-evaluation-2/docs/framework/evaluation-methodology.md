@@ -94,7 +94,7 @@ The highest weighted score wins, subject to:
 
 **Definition:** The quality of AI-generated architecture artifacts (solution designs, ADRs, impact assessments, diagrams) as measured by the scoring rubric applied to controlled scenarios — **using the model tier that each option will actually deploy at its operating budget, not the theoretical best model available.**
 
-This factor explicitly accounts for budget-constrained model selection. An option that offers access to a frontier model but whose budget forces the use of a cheaper model is scored on the cheaper model's actual output quality. See [Model Quality at Budget](model-quality-at-budget.md) for the detailed analysis.
+This factor explicitly accounts for budget-constrained model selection. An option that offers access to a frontier model but whose budget forces the use of a cheaper model is scored on the cheaper model's actual output quality. See [Model Quality at Budget](../evidence/model-quality-at-budget.md) for the detailed analysis.
 
 | Score | Criteria |
 |-------|----------|

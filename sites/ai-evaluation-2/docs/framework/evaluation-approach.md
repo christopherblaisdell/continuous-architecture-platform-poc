@@ -92,4 +92,4 @@ Option C is not dismissed. It is **sequenced correctly**. If Options A and B gen
 
 But investing in Option C before testing Options A and B is building a custom house before checking whether an existing one meets your needs. The evaluation approach ensures that the organization only pays for bespoke engineering when it has empirical proof that off-the-shelf solutions are insufficient.
 
-See also: [Build vs Leverage](build-vs-leverage.md) for a detailed analysis of when custom RAG pipelines are justified versus when they reinvent capabilities that already exist natively.
+See also: [Build vs Leverage](../evidence/build-vs-leverage.md) for a detailed analysis of when custom RAG pipelines are justified versus when they reinvent capabilities that already exist natively.

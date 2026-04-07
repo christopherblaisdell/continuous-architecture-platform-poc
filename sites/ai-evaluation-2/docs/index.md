@@ -11,11 +11,11 @@ The Solution Architecture practice is adopting AI-assisted workflows for archite
 
 - **Option A — GitHub Copilot**: SaaS platform with intent-based billing, native workspace indexing, and declarative customization via instruction files. Testable immediately with zero infrastructure.
 - **Option B — Roo Code + Kong AI Gateway**: Open-source IDE extension with token-based billing through a self-managed API gateway. Testable with moderate setup, requires API key provisioning and gateway configuration.
-- **Option C — Bespoke Architecture Agent**: Custom-built agent on Azure AI Foundry with a purpose-built VS Code extension. Requires weeks of engineering investment before testing can begin.
+- **Option C — Bespoke Architecture Agent**: Custom-built agent on Azure AI Foundry. Requires weeks of engineering investment before testing can begin.
 
 ### Evaluation Principles
 
-This evaluation follows a phased approach: test reversible, low-cost options empirically before committing to irreversible, high-cost alternatives. Options A and B can be compared head-to-head using real architecture scenarios. Option C requires significant engineering investment before it can be tested — see [Evaluation Approach](evaluation-approach.md) for why this shapes the evaluation sequence.
+This evaluation follows a phased approach: test reversible, low-cost options empirically before committing to irreversible, high-cost alternatives. Options A and B can be compared head-to-head using real architecture scenarios. Option C requires significant engineering investment before it can be tested — see [Evaluation Approach](framework/evaluation-approach.md) for why this shapes the evaluation sequence.
 
 ## Two-Layer Decision Hierarchy
 
@@ -27,11 +27,11 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 
 | Page | Purpose | Key Question Answered |
 |------|---------|----------------------|
-| [Scoring Results](scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
-| [Evaluation Approach](evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
-| [Evaluation Methodology](evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
-| [DD-01: Context and Configuration](dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
-| [Platform Landscape](platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
-| [Model Quality at Budget](model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
-| [Build vs Leverage](build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |
-| [Architecture Is Not Just Coding](architecture-not-just-coding.md) | Evidence that AI coding platforms handle architecture work | Can general-purpose AI coding platforms do architecture, or do we need something bespoke? |
+| [Scoring Results](framework/scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
+| [Evaluation Approach](framework/evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
+| [Evaluation Methodology](framework/evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
+| [DD-01: Context and Configuration](decisions/dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
+| [Platform Landscape](evidence/platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
+| [Model Quality at Budget](evidence/model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
+| [Build vs Leverage](evidence/build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |
+| [Architecture Is Not Just Coding](evidence/architecture-not-just-coding.md) | Evidence that AI coding platforms handle architecture work | Can general-purpose AI coding platforms do architecture, or do we need something bespoke? |

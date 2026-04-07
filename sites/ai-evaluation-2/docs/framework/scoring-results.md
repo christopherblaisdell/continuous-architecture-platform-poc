@@ -32,7 +32,7 @@ Option A scores highest across all four categories. Option C scores lowest, with
 
 | Factor | Weight | Option A | Option B | Option C | Evidence |
 |--------|--------|----------|----------|----------|----------|
-| EF-04: Output Quality at Operating Budget | 20% | **5** | 3 | 2 | A: Claude Opus 4.6 included at $39 flat — frontier model, proven 96%+ quality. B: Operator chooses model; Opus affordable but budget pressure pushes to cheaper. C: Microsoft quote selected cheapest models; frontier model costs 3-5x more than A. See [Model Quality at Budget](model-quality-at-budget.md). |
+| EF-04: Output Quality at Operating Budget | 20% | **5** | 3 | 2 | A: Claude Opus 4.6 included at $39 flat — frontier model, proven 96%+ quality. B: Operator chooses model; Opus affordable but budget pressure pushes to cheaper. C: Microsoft quote selected cheapest models; frontier model costs 3-5x more than A. See [Model Quality at Budget](../evidence/model-quality-at-budget.md). |
 | EF-05: Domain Context Awareness | 10% | **5** | 4 | 3 | A: 500+ line instructions, scoped rules, workspace indexing — proven with 4 solution designs. B: Same native capabilities via Roo Code rules; slight friction from different instruction format. C: Domain knowledge must be embedded in agent; every change = engineering update, not file edit. |
 | EF-06: Tool Integration Breadth | 3% | **4** | 4 | 3 | A: Native MCP, built-in tools, workspace indexing. B: MCP support, Kong gateway for routing. C: Custom tool integration required per tool. No standard protocol. |
 | EF-07: Multi-Model Flexibility | 3% | **4** | 5 | 3 | A: Multiple models (Claude, GPT, Gemini) with multiplier pricing. B: Full model selection via OpenRouter/Kong — any model, any provider. C: Limited to Azure-hosted models; adding providers requires engineering. |
@@ -57,7 +57,7 @@ Option A scores highest across all four categories. Option C scores lowest, with
 
 | Factor | Weight | Option A | Option B | Option C | Evidence |
 |--------|--------|----------|----------|----------|----------|
-| EF-11: Vendor Lock-in Risk | 8% | 4 | **4** | 1 | A: Instruction content portable; format is Copilot-specific but AGENTS.md emerging as standard. B: Roo Code is open-source; Kong config is portable; content transfers. C: Deep lock-in — custom agent, custom extension, custom knowledge pipeline. Migration = rebuild. See [Platform Landscape](platform-landscape.md). |
+| EF-11: Vendor Lock-in Risk | 8% | 4 | **4** | 1 | A: Instruction content portable; format is Copilot-specific but AGENTS.md emerging as standard. B: Roo Code is open-source; Kong config is portable; content transfers. C: Deep lock-in — custom agent, custom extension, custom knowledge pipeline. Migration = rebuild. See [Platform Landscape](../evidence/platform-landscape.md). |
 | EF-12: Governance and Compliance | 7% | **5** | 3 | 4 | A: SOC 2 via GitHub/Microsoft; SSO, audit trail, data residency (Enterprise). B: Roo Code is OSS (no vendor governance); Kong has enterprise tier but separate. C: Azure governance (SOC 2, data residency) but custom code = custom security surface. |
 
 **Category subtotals:** A = 4.47, B = 3.53, C = 2.33
@@ -140,13 +140,13 @@ Option A (GitHub Copilot) wins decisively:
 
 The 1.84-point margin between Option A and Option B is not a close call. It reflects a fundamental structural advantage: fixed-price frontier model access, zero infrastructure, same-day deployment, and native integration with the organization's existing GitHub toolchain.
 
-Option C is not competitive. Its 4 critical failures, combined with the [sunk cost trap](evaluation-approach.md) and [budget-constrained model quality](model-quality-at-budget.md), make it the highest-risk, lowest-value choice.
+Option C is not competitive. Its 4 critical failures, combined with the [sunk cost trap](evaluation-approach.md) and [budget-constrained model quality](../evidence/model-quality-at-budget.md), make it the highest-risk, lowest-value choice.
 
 ---
 
 **See also:**
 
 - [Evaluation Methodology](evaluation-methodology.md) — Factor definitions, scoring rubrics, and weight rationale
-- [Model Quality at Budget](model-quality-at-budget.md) — Why Option C's cost structure forces inferior model selection
-- [Platform Landscape](platform-landscape.md) — Head-to-head comparison of all five AI coding platforms
+- [Model Quality at Budget](../evidence/model-quality-at-budget.md) — Why Option C's cost structure forces inferior model selection
+- [Platform Landscape](../evidence/platform-landscape.md) — Head-to-head comparison of all five AI coding platforms
 - [Evaluation Approach](evaluation-approach.md) — Why testing reversible options before committing matters
