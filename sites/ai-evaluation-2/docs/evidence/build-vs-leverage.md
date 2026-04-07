@@ -75,6 +75,53 @@ The architecture practice pilot proved this empirically. Using GitHub Copilot (O
 
 This is a concrete example of the broader pattern: concerns about custom RAG pipeline control often assume a retrieval architecture that IDE-native platforms bypass entirely. The files are already there. The agent reads them directly.
 
+## The Pipeline Composition Argument
+
+A related argument holds that a self-managed embedding pipeline enables programmatic composition: retrieved chunks flow through compliance checks, metadata filters, and custom modes before reaching the model. The architect still works in VS Code — the difference is in *where the AI gets its context from* and *what processing happens between retrieval and reasoning*.
+
+The envisioned pipeline looks like:
+
+1. **Retrieve** — query a custom vector DB with metadata filters (service name, document type, recency)
+2. **Lint/Validate** — run compliance checks against retrieved chunks before feeding them to the model
+3. **Synthesize** — the model reasons over precisely curated, pre-validated context
+
+This is a genuine architectural vision. The question is whether the incremental retrieval quality justifies the engineering investment to build it — and whether platform-native mechanisms already achieve the same outcome through different means.
+
+### What Platform-Native Workflows Already Provide
+
+| Pipeline Step | Custom Embedding Pipeline | Platform-Native Equivalent |
+|---------------|---------------------------|---------------------------|
+| Scoped retrieval | Metadata-filtered vector query | Directory structure as implicit metadata + scoped `.instructions.md` files that activate context by file path |
+| Compliance checks on context | Pre-retrieval validation scripts | Agentic linting at authoring time — the model invokes Spectral, puml-lint, and other validators directly in VS Code, getting immediate feedback before any output is produced |
+| Custom modes | Roo Code modes selecting different retrieval strategies | Copilot custom agents with tool restrictions, scoped instructions, and skill definitions — all declarative, all version-controlled |
+| Multi-step composition | Programmatic orchestration code (LangChain, custom framework) | Native MCP servers feeding data + sub-agents delegating tasks + skills defining workflows — composable without custom code |
+
+### The Critical Distinction: Retrieval-Time vs Authoring-Time Quality
+
+The custom pipeline model places quality gates **between retrieval and reasoning** — filtering and validating what the model sees. The platform-native model places quality gates **at the point of authoring** — the model invokes linters, reads specs, and validates its own output against workspace artifacts.
+
+Both approaches aim for the same outcome: high-quality, compliant architecture output. The difference is where the quality check happens:
+
+- **Custom pipeline:** Quality is enforced in the retrieval layer (before the model reasons)
+- **Platform-native:** Quality is enforced in the agentic loop (while the model reasons)
+
+The pilot evidence suggests the platform-native approach works: 4 solution designs, 14 ADRs, and 139 diagrams were produced with the model reading files directly, invoking linters agentically, and validating output against OpenAPI specs and metadata — no retrieval-layer compliance pipeline required.
+
+### The Engineering Cost
+
+The custom pipeline is not free. Building the retrieval → validation → synthesis chain requires:
+
+- Vector database provisioning and schema design
+- Custom chunking and metadata tagging scripts
+- Compliance validation logic running against retrieved chunks
+- Orchestration framework to chain the steps
+- Ongoing maintenance as document schemas, compliance rules, and retrieval requirements evolve
+
+This is a multi-month engineering project requiring ML infrastructure expertise. It produces a retrieval backend that solves a problem the pilot has not demonstrated exists — the 96%+ architecture output quality scores were achieved without any custom retrieval layer.
+
+!!! note "When This Investment Becomes Justified"
+    If the architecture practice grows to consume content from multiple repositories, external knowledge bases (Confluence, SharePoint), or unstructured sources where platform-native indexing demonstrably fails, a custom retrieval pipeline becomes justified. The recommendation is to adopt platform-native indexing now — and build custom retrieval infrastructure only when a concrete retrieval quality problem is observed, not speculatively.
+
 ## Implications for This Evaluation
 
 This analysis directly informs two evaluation factors:
