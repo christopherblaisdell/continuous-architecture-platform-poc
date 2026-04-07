@@ -122,6 +122,38 @@ This is a multi-month engineering project requiring ML infrastructure expertise.
 !!! note "When This Investment Becomes Justified"
     If the architecture practice grows to consume content from multiple repositories, external knowledge bases (Confluence, SharePoint), or unstructured sources where platform-native indexing demonstrably fails, a custom retrieval pipeline becomes justified. The recommendation is to adopt platform-native indexing now — and build custom retrieval infrastructure only when a concrete retrieval quality problem is observed, not speculatively.
 
+## Cross-Tool Accessibility
+
+A self-managed vector database is accessible from any tool: CLI scripts, web applications, CI/CD pipelines, Slack bots, custom dashboards. Platform-native indexes are locked inside the IDE — you cannot query Copilot's workspace index from a terminal command, a web app, or an automated compliance check running in CI.
+
+**This is a genuine limitation of platform-native indexing.** It is not a theoretical concern or a misunderstanding — it is a real architectural constraint that should be acknowledged directly.
+
+### Relevance to the Architecture Practice Today
+
+The architecture practice pilot workflow is entirely IDE-based. Every activity — ticket analysis, solution design, impact assessment, ADR authoring, diagram generation, portal publishing — happens inside VS Code with the AI agent operating on workspace files. No step in the current workflow requires querying the semantic index from outside the IDE.
+
+Cross-tool access becomes relevant when the practice needs:
+
+| Use Case | Requires Index Access From | Status |
+|----------|---------------------------|--------|
+| Standards compliance checker in CI | CI/CD pipeline | Not yet needed — agentic linting runs in IDE at authoring time |
+| Web-based architecture knowledge base | Web application | Not yet needed — the MkDocs portal serves this role with static content |
+| Slack bot answering architecture questions | Chat platform API | Not yet needed — architects use VS Code directly |
+| Automated cross-repo dependency analysis | Batch processing job | Not yet needed — the practice operates on a single repository |
+
+None of these use cases exist in the current workflow. Building a cross-tool-accessible vector store to serve speculative future needs is premature infrastructure investment.
+
+### MCP as a Partial Bridge
+
+The Model Context Protocol (MCP) partially addresses this limitation. MCP servers can expose workspace data — file contents, search results, structured metadata — to any MCP-compatible client. If a future use case requires non-IDE access to architecture content:
+
+1. An MCP server exposing the workspace's file contents and metadata already makes that content queryable by external tools
+2. If semantic search (not just file access) is needed externally, a lightweight local vector database exposed via MCP provides cross-tool semantic search without a full custom embedding pipeline
+3. This hybrid approach — platform-native indexing for IDE workflows plus a targeted MCP-exposed vector store for specific external needs — captures the cross-tool benefit without replacing the entire retrieval layer
+
+!!! tip "The Pragmatic Path"
+    Accept the IDE lock-in for now — it costs nothing and the workflow is IDE-native. If a concrete cross-tool use case emerges (e.g., a CI-based compliance checker needs semantic search), build a lightweight MCP-exposed vector store for that specific need. Do not build cross-tool infrastructure speculatively.
+
 ## Implications for This Evaluation
 
 This analysis directly informs two evaluation factors:
