@@ -119,6 +119,76 @@ The architect selects the model per session from the platform's curated set. No 
 
 ---
 
+## Beyond Model Selection: Declarative Agent Customization
+
+Model selection autonomy — choosing which model runs a task — is the first dimension of architect control. But a second, equally important dimension is emerging: **behavioral customization** — controlling *how* the model works, not just *which* model works.
+
+GitHub Copilot supports declarative agent customization through Markdown files checked into the repository. This is not prompt engineering in the traditional sense (crafting one-off system prompts). It is a **version-controlled, peer-reviewed, composable configuration system** that shapes AI behavior without writing code.
+
+### What Declarative Agent Customization Provides
+
+| Mechanism | File Convention | What It Controls |
+|-----------|----------------|-----------------|
+| **Custom agents** | `.github/agents/*.md` | Define specialized AI personas with scoped instructions, tool restrictions, and domain knowledge. An architect invokes a specific agent for a specific task type. |
+| **Instruction files** | `.github/instructions/*.md` with `applyTo` glob patterns | Inject context rules that activate automatically based on which files the architect is working with. No manual invocation required. |
+| **Skills** | `SKILL.md` files | Package domain-specific workflows as reusable capabilities that agents can invoke. A skill defines *how* to perform a multi-step task. |
+| **Global instructions** | `.github/copilot-instructions.md` | Establish baseline behavior for every interaction — domain model, data ownership rules, coding standards, safety constraints. |
+
+### Why This Matters for the Autonomy Decision
+
+Declarative agent customization is the **middle ground** between two extremes that stakeholders often debate:
+
+| Extreme | Problem | Middle Ground |
+|---------|---------|---------------|
+| "Every architect uses the AI differently" | Inconsistent outputs, no shared standards, no institutional knowledge capture | Custom agents encode best practices into versioned, shared configuration. Every architect gets the same starting point. |
+| "We need a bespoke agent platform to control AI behavior" | Multi-month engineering, ML infrastructure expertise, ongoing maintenance | Markdown files checked into Git achieve behavioral control with zero infrastructure. The configuration IS the customization. |
+
+This is **behavioral autonomy via declarative configuration**:
+
+- The organization defines the agents, instructions, and skills (governance)
+- The architect selects which agent to use for each task (autonomy)
+- Everything is version-controlled in Git (auditability)
+- Changes go through pull requests (peer review)
+- No infrastructure to provision, no pipelines to maintain (zero operational cost)
+
+### Concrete Example: The Architecture Practice Pilot
+
+The pilot that produced this evaluation uses declarative agent customization extensively:
+
+| Configuration | Purpose | Effect |
+|---------------|---------|--------|
+| `copilot-instructions.md` (500+ lines) | Domain model, service ownership boundaries, data isolation rules, mock tool commands, solution design workflow | Every AI interaction understands the NovaTrek domain, respects service boundaries, and follows the established workflow — without the architect repeating context |
+| `.github/instructions/prompt-me.instructions.md` | Interactive decision-loop workflow | When an architect says "prompt me," the agent presents each issue with lettered options, a recommendation, and waits for a decision before proceeding |
+| `.github/agents/Novatrek Solution Architect.md` | Specialized architecture agent | Scoped to architecture work — solution design, ticket triage, API contract review, impact assessments, ADR authoring. Tool restrictions prevent it from performing unrelated tasks |
+
+These files are checked into Git. Every architect who clones the repository gets identical AI behavior customization. Changes are reviewed via pull request. No platform team ticket required.
+
+### The Build-vs-Configure Spectrum
+
+The stakeholder argument for self-managed embeddings often assumes that behavioral customization requires engineering a bespoke platform. Declarative agent customization demonstrates a third path:
+
+| Approach | Effort | Control | Maintenance |
+|----------|--------|---------|-------------|
+| **No customization** (use platform defaults) | Zero | None | None |
+| **Declarative configuration** (instruction files, custom agents, skills) | Hours to days | Behavioral control over domain knowledge, workflows, tool usage, output format | Git-managed Markdown files — same workflow as any other code artifact |
+| **Bespoke agent platform** (custom RAG, embedding pipelines, orchestration framework) | Months | Full control over retrieval, ranking, model routing, embedding strategy | ML infrastructure team, vector DB operations, pipeline monitoring |
+
+The middle row — declarative configuration — captures the majority of the behavioral control benefits at a fraction of the cost and complexity. It is the recommended path for scaling the architecture practice.
+
+### Recommendation
+
+Declarative agent customization should be adopted as a core capability alongside model selection autonomy. Specifically:
+
+1. **Pilot phase (current):** The `copilot-instructions.md` and custom agent definitions already in use should be treated as first-class architecture artifacts — reviewed, versioned, and maintained with the same rigor as ADRs and OpenAPI specs.
+
+2. **Team adoption phase:** As additional architects join the practice, shared agent definitions become the primary mechanism for ensuring consistent AI behavior across the team. New architects receive the same behavioral customization by cloning the repository — no onboarding configuration required.
+
+3. **Scaled adoption phase:** Teams develop domain-specific agents and skills for their service domains. An instruction file governance process (code review for `.instructions.md` and agent definitions) ensures quality without central bottleneck.
+
+This is not a future aspiration — it is a working capability demonstrated in the pilot. The 4 solution designs, 14 ADRs, and 139 diagrams produced during the evaluation were all generated under declarative behavioral configuration that any architect on the team can inherit, modify, and extend through standard Git workflows.
+
+---
+
 ## Governance Roadmap
 
 As the architecture AI practice scales from pilot to team-wide adoption, governance decisions should be resolved in sequence — each triggered by an observable need, not a speculative concern:
@@ -126,10 +196,12 @@ As the architecture AI practice scales from pilot to team-wide adoption, governa
 | Phase | Governance Decision | Trigger | Resolution Approach |
 |-------|--------------------|---------|---------------------|
 | **Pilot (current)** | Model selection autonomy (this decision) | Initial rollout | Guided freedom — architect selects per session |
+| **Pilot (current)** | Declarative agent customization | Demonstrated in pilot | Custom agents, instruction files, and skills checked into Git — behavioral control with zero infrastructure |
 | **Team adoption** | Cost monitoring and alerting | Monthly spend exceeds expected range | Usage dashboard review; spending limits if needed |
 | **Team adoption** | Quality baselines | Multiple architects using the tool | Define minimum output quality expectations; peer review of AI-assisted deliverables |
 | **Scaled adoption** | Model standardization for shared workflows | Team needs reproducible outputs across architects | Recommend (not mandate) specific models for specific workflow types |
 | **Scaled adoption** | Instruction file governance | Multiple teams contributing to shared instruction files | Code review process for `.instructions.md` and agent definitions |
+| **Scaled adoption** | Domain-specific agents and skills | Teams need task-specific AI behavior for their service domains | Teams develop and maintain their own agents and skills within shared governance framework |
 | **Enterprise rollout** | Compliance and audit | Regulatory or security requirement | Enterprise Copilot tier with data residency, SSO, audit logs |
 
 !!! note "Governance Principle"
