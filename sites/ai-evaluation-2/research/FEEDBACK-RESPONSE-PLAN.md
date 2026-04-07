@@ -340,8 +340,98 @@ Primary page to modify: `evidence/build-vs-leverage.md` — needs a new section 
 
 Secondary changes may touch: `decisions/dd-01-context-configuration.md`, `evidence/platform-landscape.md`, `framework/scoring-results.md`
 
+### Phase 2B: Stakeholder Pushback Round 2 (Workstream 3)
+
+A second round of stakeholder feedback introduced three new arguments that go beyond the original 12 embedding elements. These require dedicated treatment because they challenge specific claims made in the evaluation site and in the evaluator's own responses.
+
+---
+
+#### Element 13: CI/CD Pipeline vs Embedding Pipeline (Distinct Problem Spaces)
+
+> "The pipeline does important work: linting, validating, and publishing our solutions through MkDocs and, I believe, into Confluence at some point (read-only). But that pipeline is about document quality and distribution — making sure content is correct and accessible. The embedding pipeline solves a different problem: how that content gets chunked, tagged, and ranked when an architect searches for it."
+
+**Assessment:** VALID DISTINCTION — the stakeholder correctly separates two concerns. The CI/CD pipeline (lint → validate → publish) and the embedding pipeline (chunk → embed → index → retrieve) solve different problems. However, the conclusion that a custom embedding pipeline is therefore necessary does not follow automatically.
+
+**Proposed response:**
+- Concede the distinction: CI/CD and retrieval indexing are indeed separate concerns
+- Note that platform-native indexing (Copilot, Cursor) handles the retrieval concern automatically — the architect does not need to build a second pipeline
+- Note that local linting (Spectral for API specs, puml-lint for PlantUML) runs agentically in the IDE, providing immediate feedback before the CI/CD pipeline even runs
+- Frame the trade-off: the question is whether the retrieval concern justifies building and maintaining a second pipeline when platform-native indexing produces architecture outputs at 96%+ quality
+- Acknowledge that if retrieval quality were demonstrably poor, a custom embedding pipeline would be justified — but the pilot evidence does not show retrieval failures
+
+**Pages affected:** `evidence/build-vs-leverage.md`
+**Deep research needed:** YES — does Copilot's native indexing produce measurably worse retrieval than a tuned custom pipeline for structured architecture content?
+
+---
+
+#### Element 14: Confluence Indexing
+
+> "I don't think Copilot indexes Confluence into its workspace context. I believe there's an extension that lets you query Confluence in chat, but that's a live lookup — I don't think documents would be embedded alongside our repo for retrieval. With a self-managed pipeline, we control how those pages are chunked, what metadata they carry, and how they rank against repo content."
+
+**Assessment:** PARTIALLY CORRECT — Copilot does not natively index Confluence. However, the premise assumes Confluence content needs to be in the retrieval index, which depends on the architecture workflow.
+
+**Proposed response:**
+- Concede: Copilot does not embed Confluence pages into workspace context. The Confluence extension provides live lookup, not embedded retrieval
+- Challenge the premise: in the architecture practice workflow, the source of truth is the workspace repository (OpenAPI specs, ADRs, metadata YAML). Confluence receives a **read-only mirror** via CI/CD. The architect never needs to retrieve from Confluence — they retrieve from the repo, which IS indexed
+- Note that if Confluence contained unique content not in the repo (e.g., other teams' architecture docs), cross-repo search would be valuable. But the practice's Confluence is a generated mirror — searching it duplicates what's already in the workspace
+- Acknowledge the broader point: if the practice grows to consume architecture artifacts from other teams' Confluence spaces, a cross-system search capability becomes relevant. This is a future scaling concern, not a current gap
+- Research: does GitHub Copilot support any form of cross-repository or external knowledge base indexing? Does Copilot's Knowledge Bases feature (for Enterprise) address this?
+
+**Pages affected:** `evidence/build-vs-leverage.md`, `decisions/dd-01-context-configuration.md`
+**Deep research needed:** YES — Copilot Knowledge Bases, Copilot extensions for Confluence, and whether any platform supports cross-system retrieval natively
+
+---
+
+#### Element 15: Deeper PlantUML Chunking Argument
+
+> "Copilot applies the same generic 100–250 token chunking it uses for any file, so a sequence diagram can get split mid-interaction or a C4 container definition can end up in a different chunk than its relationships. With our own pipeline, we chunk on @startuml/@enduml boundaries, keep whole diagrams together, and tag each one with its type, the services involved, and the parent solution doc."
+
+**Assessment:** CLAIMS SPECIFIC COPILOT BEHAVIOR (100-250 token chunking) — needs verification. The existing PlantUML rebuttal section addresses the "chunking is needed" argument but does not address the specific claim about token-window chunking.
+
+**Proposed response:**
+- The existing rebuttal in `build-vs-leverage.md` ("The PlantUML Chunking Argument") already addresses why chunking is irrelevant for IDE-native workflows: the agent reads `.puml` files directly, not through an embedding pipeline
+- The new argument adds a specific claim: "100-250 token chunking" — this needs verification. Does Copilot actually use fixed 100-250 token windows? Or does it use AST-aware / structural chunking?
+- If Copilot uses structural chunking (Tree-sitter, heading-aware): the 100-250 token claim is incorrect and should be rebutted with evidence
+- If Copilot does use fixed-window chunking: concede the point for retrieval scenarios, but reiterate that the architecture workflow uses direct file access, not retrieval
+- Strengthen the existing rebuttal with the deep research findings on Copilot's actual chunking strategy (Tree-sitter AST-aware parsing from the embeddings analysis)
+- Add the specific counter: the embeddings deep research found that Copilot uses AST-aware parsing via Tree-sitter, not generic 100-250 token windows
+
+**Pages affected:** `evidence/build-vs-leverage.md` (strengthen existing PlantUML section)
+**Deep research needed:** YES — verify the specific "100-250 token" claim. What is Copilot's actual chunk size? Is it fixed-window or structural?
+
+---
+
+#### Supporting Evidence: Local Agentic Linting
+
+The evaluator's own reply in the stakeholder thread noted:
+
+> "Linting and validation in our setup also runs locally on the architect's workstation — Spectral for API specs, puml-lint for PlantUML — and that is done agentically by the model. You get immediate feedback while you're writing, not after pushing and waiting for the CI/CD pipeline."
+
+This is supporting evidence for Option A's workflow and should be referenced in the site content. The local agentic linting demonstrates that quality checks happen at the point of authoring, inside the IDE, without a separate pipeline — strengthening the argument that platform-native workflows are sufficient.
+
+**Pages affected:** `evidence/architecture-not-just-coding.md` or `evidence/build-vs-leverage.md`
+**Deep research needed:** No — this is first-party evidence from the pilot
+
+---
+
+## Updated Deep Research Needs
+
+| Topic | Priority | Elements Affected |
+|-------|----------|-------------------|
+| Copilot workspace indexing internals (chunking, embedding model, search type) | HIGH | 1, 2, 4, 5, 15 |
+| Copilot re-indexing behavior (incremental vs periodic, latency) | MEDIUM | 7 |
+| Copilot Enterprise data residency specifics | MEDIUM | 12 |
+| Embedding pipeline cost benchmarks (vector DB + compute for ~1000-file repo) | LOW | 10 |
+| Hybrid search in platform-native indexing (BM25 + dense) | MEDIUM | 4 |
+| RAG-as-a-Service middle ground (Azure AI Search, etc.) | LOW | General |
+| CI/CD vs embedding pipeline separation of concerns | MEDIUM | 13 |
+| Copilot Knowledge Bases / Confluence integration | MEDIUM | 14 |
+| Copilot actual chunk size verification (100-250 token claim) | HIGH | 15 |
+
+A comprehensive deep research prompt covering all 15 elements plus the new pushback has been created at `research/deep-research-prompt-comprehensive.md`.
+
 ### Phase 3: Rebuild and Deploy
 
 1. Run `mkdocs build` and verify locally
-2. Deploy to `ai.evaluation.novatrek.cc`
+2. Deploy to Azure Static Web Apps
 3. Commit and push
