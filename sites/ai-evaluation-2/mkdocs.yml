@@ -62,6 +62,10 @@ nav:
     - Model Quality at Budget: evidence/model-quality-at-budget.md
     - Build vs Leverage: evidence/build-vs-leverage.md
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
+  - Addendum:
+    - Deep Research Reports: addendum/index.md
+    - Fact-Check Report: addendum/fact-check-report.md
+    - Embeddings Analysis: addendum/embeddings-analysis.md
 
 extra:
   social: []
