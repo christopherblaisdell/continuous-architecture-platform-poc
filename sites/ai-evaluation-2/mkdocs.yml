@@ -47,6 +47,8 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Evaluation Methodology: evaluation-methodology.md
+  - Build vs Leverage: build-vs-leverage.md
 
 extra:
   social: []
