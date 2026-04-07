@@ -116,6 +116,6 @@ Option A eliminates this risk entirely:
 
 **See also:**
 
-- [Evaluation Methodology](evaluation-methodology.md) — EF-04 (Architecture Output Quality) scores each option based on the model tier it will actually use at its operating budget
-- [Evaluation Approach](evaluation-approach.md) — Why testing reversible options before committing to irreversible ones matters
+- [Evaluation Methodology](../framework/evaluation-methodology.md) — EF-04 (Architecture Output Quality) scores each option based on the model tier it will actually use at its operating budget
+- [Evaluation Approach](../framework/evaluation-approach.md) — Why testing reversible options before committing to irreversible ones matters
 - [Build vs Leverage](build-vs-leverage.md) — The cost of building infrastructure that platforms already provide

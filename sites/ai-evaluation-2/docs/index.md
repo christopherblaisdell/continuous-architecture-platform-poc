@@ -17,6 +17,10 @@ The Solution Architecture practice is adopting AI-assisted workflows for archite
 
 This evaluation follows a phased approach: test reversible, low-cost options empirically before committing to irreversible, high-cost alternatives. Options A and B can be compared head-to-head using real architecture scenarios. Option C requires significant engineering investment before it can be tested — see [Evaluation Approach](framework/evaluation-approach.md) for why this shapes the evaluation sequence.
 
+### The Architecture Practice Pilot
+
+Rather than evaluating options theoretically, this evaluation is grounded in a working pilot. A solution architect configured GitHub Copilot (Option A) with declarative instruction files, scoped rules, and mock enterprise tool integrations — then executed real architecture scenarios against a synthetic 19-microservice domain. The pilot produced 4 complete solution designs, 14 architecture decision records, 139 generated sequence diagrams, and a live documentation portal. All configuration is version-controlled markdown — zero custom engineering, zero infrastructure. The pilot's outputs and configuration serve as the primary evidence base for this evaluation.
+
 ## Two-Layer Decision Hierarchy
 
 The diagram below shows the evaluation structure. Layer 1 defines how the architecture practice works with AI. Layer 2 decomposes the toolchain selection into four independent decisions that compose into the three platform options.

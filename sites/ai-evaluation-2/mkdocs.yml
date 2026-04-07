@@ -47,14 +47,17 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Scoring Results: scoring-results.md
-  - Evaluation Approach: evaluation-approach.md
-  - Evaluation Methodology: evaluation-methodology.md
-  - DD-01 Context and Configuration: dd-01-context-configuration.md
-  - Platform Landscape: platform-landscape.md
-  - Model Quality at Budget: model-quality-at-budget.md
-  - Build vs Leverage: build-vs-leverage.md
-  - Architecture Is Not Just Coding: architecture-not-just-coding.md
+  - Framework:
+    - Scoring Results: framework/scoring-results.md
+    - Evaluation Approach: framework/evaluation-approach.md
+    - Evaluation Methodology: framework/evaluation-methodology.md
+  - Decisions:
+    - DD-01 Context and Configuration: decisions/dd-01-context-configuration.md
+  - Evidence:
+    - Platform Landscape: evidence/platform-landscape.md
+    - Model Quality at Budget: evidence/model-quality-at-budget.md
+    - Build vs Leverage: evidence/build-vs-leverage.md
+    - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
 
 extra:
   social: []

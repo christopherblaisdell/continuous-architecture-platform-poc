@@ -116,13 +116,13 @@ No evaluation is complete without acknowledging where alternatives have advantag
 | **Claude Code's reasoning depth** | Claude Code running Claude Opus 4.6 natively may produce deeper reasoning than Copilot's integration. Terminal-based workflow is a poor fit for VS Code-centric architecture work, but the reasoning quality is worth benchmarking. |
 | **Platform lock-in** | Copilot's advanced customization features (skills, hooks, agent modes) are proprietary. The `AGENTS.md` standard and instruction file content are portable, but the activation mechanisms are not. |
 
-These risks inform the [Evaluation Approach](evaluation-approach.md): test Option A (Copilot) and Option B (alternative platform) empirically before committing. If a competitor produces measurably better architecture output, the evidence will show it.
+These risks inform the [Evaluation Approach](../framework/evaluation-approach.md): test Option A (Copilot) and Option B (alternative platform) empirically before committing. If a competitor produces measurably better architecture output, the evidence will show it.
 
 ---
 
 ## Implications for DD-03 (AI Provider)
 
-This landscape analysis provides the evidence base for DD-03 (AI Provider Selection). The formal decision will reference this comparison and apply the [Evaluation Methodology](evaluation-methodology.md) scoring to reach a defensible recommendation.
+This landscape analysis provides the evidence base for DD-03 (AI Provider Selection). The formal decision will reference this comparison and apply the [Evaluation Methodology](../framework/evaluation-methodology.md) scoring to reach a defensible recommendation.
 
 The five platforms map to the three evaluation options as follows:
 
@@ -139,4 +139,4 @@ The five platforms map to the three evaluation options as follows:
 - [Build vs Leverage](build-vs-leverage.md) — Why all five platforms eliminate the need for custom RAG
 - [Architecture Is Not Just Coding](architecture-not-just-coding.md) — Evidence that these platforms handle architecture work, not just code
 - [Model Quality at Budget](model-quality-at-budget.md) — Why Copilot's fixed pricing delivers better model quality than per-token alternatives
-- [Evaluation Approach](evaluation-approach.md) — How to test these claims empirically
+- [Evaluation Approach](../framework/evaluation-approach.md) — How to test these claims empirically

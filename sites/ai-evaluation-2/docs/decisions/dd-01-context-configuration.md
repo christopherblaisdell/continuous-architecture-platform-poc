@@ -15,13 +15,13 @@
 
 The architecture practice requires AI to reason about a complex enterprise domain: 19 microservices, cross-service data ownership rules, safety constraints, MADR/C4/arc42 standards, and solution design workflows. The AI must apply this knowledge consistently — not just when prompted, but as always-on context that shapes every response.
 
-The question is not whether to inject domain knowledge — all three options require it. The question is **how**: through declarative configuration files in the workspace, through programmatic RAG pipelines, or through a custom-built agent with embedded knowledge.
+The question is not whether to inject domain knowledge — all three options require it. The question is **how**: through declarative configuration files in the repository, through programmatic RAG pipelines, or through a custom-built agent with embedded knowledge.
 
 ---
 
-## What This Workspace Already Demonstrates
+## What the Pilot Already Demonstrates
 
-This repository is a working proof of concept. The architecture practice has already built a comprehensive context injection system using native platform capabilities:
+The architecture practice pilot is a working demonstration. The practice has already built a comprehensive context injection system using native platform capabilities:
 
 | Content Layer | Mechanism | Size | Evidence |
 |---------------|-----------|------|----------|
@@ -45,13 +45,13 @@ Use the platform's built-in instruction hierarchy — global instructions, scope
 - **Already proven** with 96%+ quality scores on architecture scenarios
 - **Zero engineering cost** — configuration is markdown, maintained by architects
 - **Portable content** — instruction file content (not format) transfers to any platform
-- **Gap:** Enterprise data sources outside the workspace (CMDB, ServiceNow) require manual lookup or future MCP server development
+- **Gap:** Enterprise data sources outside the repository (CMDB, ServiceNow) require manual lookup or future MCP server development
 
 ### Option B: Custom RAG Pipeline (Roo Code + Kong)
 
 Build a retrieval-augmented generation pipeline — vector database, embedding pipeline, prompt orchestration — to inject workspace and enterprise content into AI context.
 
-- **Reconstructs native capabilities** — see [Build vs Leverage](build-vs-leverage.md) for the 8-component comparison
+- **Reconstructs native capabilities** — see [Build vs Leverage](../evidence/build-vs-leverage.md) for the 8-component comparison
 - **Engineering investment** — months of development before productive use
 - **Ongoing operational burden** — embedding jobs, vector DB maintenance, prompt engineering
 - **Advantage:** Full control over retrieval quality and content ranking
@@ -60,7 +60,7 @@ Build a retrieval-augmented generation pipeline — vector database, embedding p
 
 Build a custom agent with domain knowledge embedded in the system prompt, fine-tuned model, or retrieval backend. The agent "knows" the architecture domain by construction.
 
-- **Budget-constrained model selection** — see [Model Quality at Budget](model-quality-at-budget.md) for why this degrades output
+- **Budget-constrained model selection** — see [Model Quality at Budget](../evidence/model-quality-at-budget.md) for why this degrades output
 - **Heaviest engineering investment** — custom agent framework, embedded knowledge maintenance
 - **Knowledge maintenance burden** — every domain change requires agent update, not just a file edit
 - **Advantage:** Maximum customization, purpose-built for exact workflow
@@ -69,7 +69,7 @@ Build a custom agent with domain knowledge embedded in the system prompt, fine-t
 
 ## Assessment
 
-The content taxonomy from this workspace tells the story:
+The content taxonomy from the pilot tells the story:
 
 | Content Type | Native Coverage | Custom Pipeline Needed? |
 |-------------|----------------|------------------------|
@@ -82,13 +82,13 @@ The content taxonomy from this workspace tells the story:
 | Enterprise knowledge base (Confluence) | Solvable — migrate to repo markdown, publish via CI | No |
 | CMDB / cross-team data | GAP — requires integration | Possibly, regardless of platform |
 
-**7 of 8 content categories are fully served by native capabilities.** The remaining gap (enterprise data sources outside the workspace) exists for all three options — it is a content availability problem, not a platform capability problem.
+**7 of 8 content categories are fully served by native capabilities.** The remaining gap (enterprise data sources outside the repository) exists for all three options — it is a content availability problem, not a platform capability problem.
 
 ---
 
 ## Recommendation
 
-**Option A (Native Declarative Configuration)** is the clear winner for DD-01. The evidence is not theoretical — it is running in production in this workspace. Building a custom RAG pipeline or embedded agent to inject domain knowledge solves a problem that is already solved.
+**Option A (Native Declarative Configuration)** is the clear winner for DD-01. The evidence is not theoretical — it is running in production in the architecture practice pilot. Building a custom RAG pipeline or embedded agent to inject domain knowledge solves a problem that is already solved.
 
 The decision to invest in custom infrastructure should be driven by a **demonstrated gap that native capabilities cannot fill**, not by an assumption that custom is better. No such gap has been identified.
 
@@ -96,6 +96,6 @@ The decision to invest in custom infrastructure should be driven by a **demonstr
 
 **See also:**
 
-- [Build vs Leverage](build-vs-leverage.md) — Why custom RAG reconstructs native platform capabilities
-- [Platform Landscape](platform-landscape.md) — How all five major platforms handle context injection
-- [Architecture Is Not Just Coding](architecture-not-just-coding.md) — Evidence that declarative configuration works for architecture, not just coding
+- [Build vs Leverage](../evidence/build-vs-leverage.md) — Why custom RAG reconstructs native platform capabilities
+- [Platform Landscape](../evidence/platform-landscape.md) — How all five major platforms handle context injection
+- [Architecture Is Not Just Coding](../evidence/architecture-not-just-coding.md) — Evidence that declarative configuration works for architecture, not just coding

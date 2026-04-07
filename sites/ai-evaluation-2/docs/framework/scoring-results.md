@@ -136,7 +136,7 @@ Option A (GitHub Copilot) wins decisively:
 - **Highest weighted score** (4.86 vs 3.02 vs 1.99)
 - **Zero critical failures** (Option C has 4)
 - **Robust under sensitivity analysis** (no weight shift changes the winner)
-- **Already proven in production** (this workspace is the evidence)
+- **Already proven in production** (the architecture practice pilot is the evidence)
 
 The 1.84-point margin between Option A and Option B is not a close call. It reflects a fundamental structural advantage: fixed-price frontier model access, zero infrastructure, same-day deployment, and native integration with the organization's existing GitHub toolchain.
 

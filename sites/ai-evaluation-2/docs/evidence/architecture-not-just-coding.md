@@ -40,9 +40,9 @@ The objection assumes that "coding assistant" means the tool only understands co
 
 The platform vendors already recognize this. Cline's documentation uses `architecture.md` as an [example rule file](https://docs.cline.bot/customization/cline-rules) for "structural decisions." Windsurf's Skills examples include `code-review/` bundles with style guides and security checklists — not just code generation templates.
 
-## Evidence from This Workspace
+## Evidence from the Architecture Practice Pilot
 
-This repository is itself the strongest evidence. The `.github/copilot-instructions.md` file (500+ lines) defines:
+The pilot itself is the strongest evidence. The `.github/copilot-instructions.md` file (500+ lines) defines:
 
 - A **Solution Architect role** with explicit responsibilities and boundaries
 - A **19-service microservice domain model** with bounded context rules and data ownership boundaries
@@ -83,8 +83,8 @@ Building these as a bespoke agent would take weeks of engineering. Configuring t
 
 ## The Real Question
 
-The question is not "can AI coding platforms do architecture work?" — they demonstrably can, and this workspace proves it daily.
+The question is not "can AI coding platforms do architecture work?" — they demonstrably can, and the architecture practice pilot proves it daily.
 
-The real question is "which AI coding platform does architecture work best?" — which is exactly what this evaluation answers. See the [Evaluation Methodology](evaluation-methodology.md) for the scoring framework that compares platform capabilities across 12 factors.
+The real question is "which AI coding platform does architecture work best?" — which is exactly what this evaluation answers. See the [Evaluation Methodology](../framework/evaluation-methodology.md) for the scoring framework that compares platform capabilities across 12 factors.
 
 See also: [Build vs Leverage](build-vs-leverage.md) for the broader argument about when custom RAG pipelines are justified.

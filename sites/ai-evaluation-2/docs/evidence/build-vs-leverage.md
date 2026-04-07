@@ -63,6 +63,6 @@ This analysis directly informs two evaluation factors:
 - **EF-08 Time to Value**: Option A delivers context-aware AI assistance from day one with declarative configuration. Option B requires building and validating the RAG pipeline before productive use begins.
 - **EF-09 Operational Complexity**: Option A adds zero infrastructure. Option B adds vector storage, embedding pipelines, and prompt orchestration as ongoing operational responsibilities.
 
-The dedicated decision page [DD-01 Context and Configuration](dd-01-context-configuration.md) evaluates how each option handles knowledge injection and behavior customization.
+The dedicated decision page [DD-01 Context and Configuration](../decisions/dd-01-context-configuration.md) evaluates how each option handles knowledge injection and behavior customization.
 
 For the argument that these platforms only work for coding and that architecture requires a bespoke solution, see [Architecture Is Not Just Coding](architecture-not-just-coding.md).
