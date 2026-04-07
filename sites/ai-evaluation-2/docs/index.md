@@ -35,6 +35,9 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | [Evaluation Approach](framework/evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
 | [Evaluation Methodology](framework/evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
 | [DD-01: Context and Configuration](decisions/dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
+| [DD-02: Billing Model](decisions/dd-02-billing-model.md) | Per-seat vs per-token vs hybrid billing | Which billing model supports sustained architecture work without perverse incentives? |
+| [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across three options | Which vendor best combines output quality, workflow integration, and governance? |
+| [DD-04: Model Routing](decisions/dd-04-model-routing.md) | Model selection and routing strategy | Does model routing require custom infrastructure or is it built into the platform? |
 | [Platform Landscape](evidence/platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
 | [Model Quality at Budget](evidence/model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
 | [Build vs Leverage](evidence/build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |

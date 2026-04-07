@@ -53,6 +53,9 @@ nav:
     - Evaluation Methodology: framework/evaluation-methodology.md
   - Decisions:
     - DD-01 Context and Configuration: decisions/dd-01-context-configuration.md
+    - DD-02 Billing Model: decisions/dd-02-billing-model.md
+    - DD-03 AI Provider: decisions/dd-03-ai-provider.md
+    - DD-04 Model Routing: decisions/dd-04-model-routing.md
   - Evidence:
     - Platform Landscape: evidence/platform-landscape.md
     - Model Quality at Budget: evidence/model-quality-at-budget.md
