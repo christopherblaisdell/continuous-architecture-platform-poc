@@ -45,9 +45,9 @@ Option A scores highest across all four categories. Option C scores lowest, with
 
 | Factor | Weight | Option A | Option B | Option C | Evidence |
 |--------|--------|----------|----------|----------|----------|
-| EF-08: Time to Value | 8% | **5** | 3 | 1 | A: Same-day — install extension, configure instructions, start working (already done). B: 1-3 months — gateway provisioning, API key management, rule migration. C: 6+ months — agent framework, VS Code extension, knowledge embedding, testing. See [Evaluation Approach](evaluation-approach.md). |
+| EF-08: Time to Value | 8% | **5** | 3 | 1 | A: Same-day — install extension, configure instructions, start working (already done). B: 1-3 months — gateway provisioning, API key management, rule migration. C: 6+ months — agent framework, knowledge embedding, testing. See [Evaluation Approach](evaluation-approach.md). |
 | EF-09: Operational Complexity | 7% | **5** | 2 | 1 | A: Zero infrastructure; vendor-managed SaaS; automatic updates. B: Kong gateway, API key rotation, usage monitoring, model routing config. C: Cognitive Services, App Service, vector DB, embedding pipeline, custom extension updates. |
-| EF-10: Workflow Integration | 5% | **5** | 4 | 2 | A: Native VS Code + GitHub integration; no context switching; git-native. B: VS Code extension but separate gateway dashboard for config/monitoring. C: Custom VS Code extension; parallel debugging/monitoring surfaces. |
+| EF-10: Workflow Integration | 5% | **5** | 4 | 2 | A: Native VS Code + GitHub integration; no context switching; git-native. B: VS Code extension but separate gateway dashboard for config/monitoring. C: Separate agent interface; parallel debugging/monitoring surfaces. |
 
 **Category subtotals:** A = 5.00, B = 2.95, C = 1.25
 

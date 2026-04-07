@@ -61,7 +61,7 @@ Build a retrieval-augmented generation pipeline — vector database, embedding p
 Build a custom agent with domain knowledge embedded in the system prompt, fine-tuned model, or retrieval backend. The agent "knows" the architecture domain by construction.
 
 - **Budget-constrained model selection** — see [Model Quality at Budget](model-quality-at-budget.md) for why this degrades output
-- **Heaviest engineering investment** — custom agent framework, embedded knowledge maintenance, VS Code extension
+- **Heaviest engineering investment** — custom agent framework, embedded knowledge maintenance
 - **Knowledge maintenance burden** — every domain change requires agent update, not just a file edit
 - **Advantage:** Maximum customization, purpose-built for exact workflow
 

@@ -11,7 +11,7 @@ This evaluation compares three platform options for AI-assisted architecture wor
 |--------|----------------------|------------------------|----------------------------|-------------|
 | A — GitHub Copilot | Install extension, add instruction files, run scenario | Minutes | $0.48 per scenario (subscription covers it) | Yes — cancel subscription |
 | B — Roo Code + Kong | Install extension, configure Kong gateway, provision API keys, run scenario | Hours | $25–100 in API tokens per scenario | Yes — stop paying for tokens |
-| C — Bespoke Agent | Design agent architecture, provision Azure AI Foundry, build VS Code extension or integrate Continue/Cline, develop prompt orchestration, build context pipeline | Weeks to months | Engineering team time + Azure infrastructure | No — sunk cost |
+| C — Bespoke Agent | Design agent architecture, provision Azure AI Foundry, develop prompt orchestration, build context pipeline | Weeks to months | Engineering team time + Azure infrastructure | No — sunk cost |
 
 Options A and B can be evaluated empirically: install, configure, run a real architecture scenario, measure quality and cost, compare. Option C requires **building the product before you can test it**.
 
