@@ -48,7 +48,7 @@ The highest weighted score wins, subject to:
 
 ## Evaluation Factors
 
-### Category 1: Economics (Weight: 30%)
+### Category 1: Economics (Weight: 29%)
 
 #### EF-01: Total Cost of Ownership (15%)
 
@@ -74,7 +74,7 @@ The highest weighted score wins, subject to:
 | 2 | Highly variable, dependent on usage patterns |
 | 1 | Unbounded variable cost with no ceiling mechanism |
 
-#### EF-03: Cost Scaling (7%)
+#### EF-03: Cost Scaling (6%)
 
 **Definition:** How cost behaves as the team grows from 1 architect to 5 to 20. Linear per-seat scaling scores highest. Economies of scale (shared infrastructure amortized) improve the score.
 
@@ -88,19 +88,21 @@ The highest weighted score wins, subject to:
 
 ---
 
-### Category 2: Quality and Capability (Weight: 35%)
+### Category 2: Quality and Capability (Weight: 36%)
 
-#### EF-04: Architecture Output Quality (15%)
+#### EF-04: Architecture Output Quality at Operating Budget (20%)
 
-**Definition:** The quality of AI-generated architecture artifacts (solution designs, ADRs, impact assessments, diagrams) as measured by the scoring rubric applied to controlled scenarios.
+**Definition:** The quality of AI-generated architecture artifacts (solution designs, ADRs, impact assessments, diagrams) as measured by the scoring rubric applied to controlled scenarios — **using the model tier that each option will actually deploy at its operating budget, not the theoretical best model available.**
+
+This factor explicitly accounts for budget-constrained model selection. An option that offers access to a frontier model but whose budget forces the use of a cheaper model is scored on the cheaper model's actual output quality. See [Model Quality at Budget](model-quality-at-budget.md) for the detailed analysis.
 
 | Score | Criteria |
 |-------|----------|
-| 5 | Greater than 95% rubric score, minimal corrections needed |
-| 4 | 85-95% rubric score, minor corrections needed |
-| 3 | 70-85% rubric score, moderate corrections needed |
-| 2 | 50-70% rubric score, significant rework required |
-| 1 | Below 50% or produces architecturally unsound output |
+| 5 | Frontier model included at operating budget; greater than 95% rubric score, minimal corrections |
+| 4 | Strong model affordable at budget; 85-95% rubric score, minor corrections |
+| 3 | Mid-tier model at budget; 70-85% rubric score, moderate corrections |
+| 2 | Budget model forced by cost constraints; 50-70% rubric score, significant rework required |
+| 1 | Cheapest model only affordable; below 50% or architecturally unsound output |
 
 #### EF-05: Domain Context Awareness (10%)
 
@@ -114,7 +116,7 @@ The highest weighted score wins, subject to:
 | 2 | Frequently ignores domain rules; produces generic output |
 | 1 | No domain awareness; output is indistinguishable from generic AI |
 
-#### EF-06: Tool Integration Breadth (5%)
+#### EF-06: Tool Integration Breadth (3%)
 
 **Definition:** The range of enterprise tools the platform can access — ticketing, logs, source control, specs, diagrams, documentation portals.
 
@@ -126,7 +128,7 @@ The highest weighted score wins, subject to:
 | 2 | Limited to workspace files; enterprise tool access requires extensive custom work |
 | 1 | No tool integration beyond basic file read/write |
 
-#### EF-07: Multi-Model Flexibility (5%)
+#### EF-07: Multi-Model Flexibility (3%)
 
 **Definition:** The platform's ability to use different AI models for different tasks (e.g., faster/cheaper model for triage, stronger model for design) and to adopt new models as they become available.
 
@@ -212,17 +214,17 @@ The highest weighted score wins, subject to:
 
 | Category | Factor | Weight |
 |----------|--------|--------|
-| **Economics** | EF-01: Total Cost of Ownership | 15% |
+| **Economics (29%)** | EF-01: Total Cost of Ownership | 15% |
 | | EF-02: Cost Predictability | 8% |
-| | EF-03: Cost Scaling | 7% |
-| **Quality and Capability** | EF-04: Architecture Output Quality | 15% |
+| | EF-03: Cost Scaling | 6% |
+| **Quality and Capability (36%)** | EF-04: Architecture Output Quality at Operating Budget | 20% |
 | | EF-05: Domain Context Awareness | 10% |
-| | EF-06: Tool Integration Breadth | 5% |
-| | EF-07: Multi-Model Flexibility | 5% |
-| **Operational Fitness** | EF-08: Time to Value | 8% |
+| | EF-06: Tool Integration Breadth | 3% |
+| | EF-07: Multi-Model Flexibility | 3% |
+| **Operational Fitness (20%)** | EF-08: Time to Value | 8% |
 | | EF-09: Operational Complexity | 7% |
 | | EF-10: Workflow Integration | 5% |
-| **Strategic and Risk** | EF-11: Vendor Lock-in Risk | 8% |
+| **Strategic and Risk (15%)** | EF-11: Vendor Lock-in Risk | 8% |
 | | EF-12: Governance and Compliance | 7% |
 | | **Total** | **100%** |
 
