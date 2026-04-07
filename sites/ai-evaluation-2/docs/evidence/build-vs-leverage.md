@@ -24,15 +24,15 @@ For IDE-integrated architecture and coding workflows, the custom RAG approach re
 | RAG Pipeline Component | What You Build | Native Platform Equivalent | Platforms That Offer This |
 |------------------------|----------------|---------------------------|---------------------------|
 | Document ingestion | Chunking scripts, embedding jobs, scheduled re-indexing | Workspace indexing — automatic, incremental, zero-config | Copilot, Cursor, Windsurf, Claude Code |
-| Vector store | Pinecone/Weaviate cluster, schema design, capacity planning | Built-in semantic search index (local + cloud) | Copilot, Cursor, Windsurf |
+| Vector store | Pinecone/Weaviate cluster, schema design, capacity planning | Built-in semantic search index (local + cloud) | Copilot, Cursor, Windsurf, Claude Code |
 | Retrieval | Similarity search queries, re-ranking, context window assembly | `@workspace` / `@codebase` — single command retrieves relevant files and symbols | Copilot, Cursor, Windsurf, Cline |
 | Context injection | Custom prompt templates stitching retrieved chunks into system prompts | Declarative instruction files — no code required | All five (1) |
 | Behavior configuration | Prompt engineering, agent routing logic, mode switching | Rules, custom agents, tool restrictions — all workspace-as-code | Copilot, Cursor, Windsurf, Cline |
 | Tool integration | MCP server development, function-calling schemas, tool dispatch | Native MCP support, built-in tools, extensible via MCP | All five |
-| Multi-agent orchestration | Agent framework (CrewAI, AutoGen), coordination logic, state management | Native sub-agents, automatic tool delegation | Copilot, Windsurf, Cline |
+| Multi-agent orchestration | Agent framework (CrewAI, AutoGen), coordination logic, state management | Native sub-agents, automatic tool delegation | Copilot, Windsurf, Cline, Claude Code |
 | Evaluation | Custom benchmarks, A/B testing infrastructure | Direct observation — same IDE, same workflow, immediate feedback | All platforms |
 
-(1) Each platform uses its own file convention — Copilot: `.instructions.md`, `SKILL.md`; Cursor: `.cursor/rules/*.md`; Windsurf: `.windsurf/rules/*.md`, `.windsurf/skills/`; Cline: `.clinerules/*.md` — but a cross-platform standard is emerging via `AGENTS.md` (supported by Cursor, Windsurf, and Cline) and the open [Agent Skills](https://agentskills.io) specification.
+(1) Each platform uses its own file convention — Copilot: `.instructions.md`, `SKILL.md`; Cursor: `.cursor/rules/*.md`; Windsurf: `.windsurf/rules/*.md`, `.windsurf/skills/`; Cline: `.clinerules/*.md`; Claude Code: `CLAUDE.md` with Skills and Subagents — but a cross-platform standard is emerging via `AGENTS.md` (supported by Copilot, Cursor, Windsurf, and Cline) and the open [Agent Skills](https://agentskills.io) specification (originally developed by Anthropic, now under open governance).
 
 ### The Infrastructure Tax
 

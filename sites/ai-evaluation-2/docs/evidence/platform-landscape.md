@@ -18,9 +18,12 @@ This page compares the five platforms across dimensions that matter for this eva
 |----------|----------------|---------------------|---------------|----------------------|
 | **GitHub Copilot** | $39/mo (Pro+) | $19-39/user/mo (Business/Enterprise) | Fixed per-seat, intent-based (per user prompt, not per token) | Claude Opus 4.6 included at 3x multiplier; GPT-4o/4.1 unlimited (0x) |
 | **Cursor** | $20/mo (Pro), $60/mo (Pro+) | $40/user/mo (Teams) | Usage-based with quotas; overages at API pricing | Claude, GPT, Gemini frontier models; 3x usage at Pro+ ($60) |
-| **Windsurf** | $20/mo (Pro), $200/mo (Max) | $40/user/mo (Teams) | Usage-based with daily/weekly refresh; overages at API pricing | OpenAI, Claude, Gemini; premium models consume quota faster |
+| **Windsurf** (Cognition Inc.) | $20/mo (Pro), $200/mo (Max) | $40/user/mo (Teams) | Usage-based with daily/weekly refresh; overages at API pricing | OpenAI, Claude, Gemini; premium models consume quota faster |
 | **Cline** | Free (open source) | N/A (self-managed) | Pay-per-token directly to model providers (OpenRouter, API keys) | Any model via API key; user pays full per-token cost |
 | **Claude Code** | Part of Anthropic subscription | Via Anthropic API | Token-based billing through Anthropic | Claude models only; no multi-provider |
+
+!!! note "Windsurf Corporate Status (Mid-2026)"
+    Windsurf underwent a significant corporate transition in 2026. OpenAI's reported $3B acquisition bid collapsed. Google executed a $2.4B acqui-hire, licensing core technology and hiring Windsurf's CEO and top research scientists. Cognition Inc. (the company behind the Devin autonomous coding agent) subsequently acquired Windsurf's IDE, intellectual property, brand, and enterprise customer contracts. Windsurf is now operated by Cognition Inc. Pricing and feature set remain stable post-acquisition, but the long-term product roadmap is uncertain under new ownership.
 
 **Key insight:** Copilot is the only platform where frontier model usage is absorbed into a fixed monthly price. Every other platform either charges per-token (making frontier models expensive) or uses quota systems where heavy architecture sessions burn through allowances quickly.
 
@@ -30,13 +33,16 @@ This page compares the five platforms across dimensions that matter for this eva
 |-----------|---------|--------|----------|-------|-------------|
 | Always-on instructions | `copilot-instructions.md` | `.cursor/rules/*.md` (Always Apply) | `.windsurf/rules/*.md` (always_on) | `.clinerules/*.md` | `CLAUDE.md` |
 | Scoped instructions | `.instructions.md` with `applyTo` globs | Rules with glob activation | Rules with glob triggers | Conditional rules (path globs) | Subdirectory `CLAUDE.md` |
-| Skills / reusable workflows | `SKILL.md` with progressive disclosure | Skills (marketplace) | `.windsurf/skills/` with `SKILL.md` | N/A | N/A |
-| Custom agent modes | `.agent.md` with tool restrictions | N/A | Workflows (`.windsurf/workflows/`) | Custom modes in settings | N/A |
+| Skills / reusable workflows | `SKILL.md` with progressive disclosure | Skills (marketplace) | `.windsurf/skills/` with `SKILL.md` | N/A | Skills via `CLAUDE.md` |
+| Custom agent modes | `.agent.md` with tool restrictions | N/A | Workflows (`.windsurf/workflows/`) | Custom modes in settings | Subagents (isolated contexts) |
 | `AGENTS.md` support | Yes | Yes | Yes | Yes | N/A |
 | MCP support | Native | Native | Native | Native | Native |
 | Workspace indexing | Server-side, automatic, incremental | Server-side, automatic | Server-side (Fast Context) | Via API (no built-in) | Local, file reads |
 
-**Key insight:** Copilot has the most sophisticated customization hierarchy — instructions, skills, agents, and hooks — all declarative, all version-controlled, all scoped to exactly the right context. Cursor and Windsurf are close behind. Cline is capable but lacks structured abstractions. Claude Code is the most limited in customization.
+!!! note "Claude Code Capabilities Update"
+    Claude Code has expanded significantly beyond its initial terminal-only interface. As of mid-2026, Claude Code offers a dedicated VS Code extension, native support for Subagents (isolated execution contexts for parallel research tasks), and a Skills system (reusable workflows and knowledge stores invoked via `CLAUDE.md`). These capabilities bring Claude Code closer to parity with Copilot and Cursor on customization, though its ecosystem remains Anthropic-only.
+
+**Key insight:** Copilot has the most sophisticated customization hierarchy — instructions, skills, agents, and hooks — all declarative, all version-controlled, all scoped to exactly the right context. Cursor and Windsurf are close behind. Cline uses a structured plan-and-act framework with policy-governed behavior — a different philosophy than Copilot's layered hierarchy but not lacking in capability. Claude Code now offers Skills and Subagents via its VS Code extension, bringing it closer to parity than its initial terminal-only release suggested.
 
 ### Enterprise Governance
 
@@ -56,7 +62,7 @@ This page compares the five platforms across dimensions that matter for this eva
 
 | Dimension | Copilot | Cursor | Windsurf | Cline | Claude Code |
 |-----------|---------|--------|----------|-------|-------------|
-| IDE | VS Code (native extension) | Cursor editor (VS Code fork) + JetBrains | Windsurf editor (VS Code fork) + JetBrains | VS Code extension | Terminal-based |
+| IDE | VS Code (native extension) | Cursor editor (VS Code fork) + JetBrains | Windsurf editor (Cognition Inc.; VS Code fork) + JetBrains | VS Code extension | VS Code extension + Terminal |
 | Source control integration | Native GitHub integration (PRs, issues, code review) | Git support, no native GitHub integration | Git support, no native GitHub integration | Git support via terminal | Git support via terminal |
 | Existing organizational investment | GitHub is already the source control platform | Separate product, separate vendor | Separate product, separate vendor | Free, but self-supported | Separate vendor |
 | Procurement complexity | Add seats to existing GitHub contract | New vendor, new contract | New vendor, new contract | No procurement (OSS) | New vendor, new contract |
@@ -111,9 +117,9 @@ No evaluation is complete without acknowledging where alternatives have advantag
 | Risk | Assessment |
 |------|-----------|
 | **Cursor's agent quality** | Cursor invests heavily in custom models (Tab, agent-specific fine-tunes). If Cursor's agent produces meaningfully better architecture output, that could outweigh cost and governance advantages. This is testable. |
-| **Windsurf's SWE-1.5 model** | Windsurf's proprietary SWE-1.5 agent model is purpose-built for software engineering tasks. If it excels at architecture work specifically, it deserves consideration. |
+| **Windsurf's SWE-1.5 model (Cognition Inc.)** | Following Cognition Inc.'s acquisition of Windsurf, the proprietary SWE-1.5 agent model continues to be developed. If it excels at architecture work specifically, it deserves consideration — though the uncertain post-acquisition roadmap and potential Devin integration add strategic risk. |
 | **Cline's full transparency** | Cline's open-source model gives complete visibility into agent behavior — every prompt, every decision, every token. For governance-sensitive environments, this transparency has real value. |
-| **Claude Code's reasoning depth** | Claude Code running Claude Opus 4.6 natively may produce deeper reasoning than Copilot's integration. Terminal-based workflow is a poor fit for VS Code-centric architecture work, but the reasoning quality is worth benchmarking. |
+| **Claude Code's reasoning depth** | Claude Code running Claude Opus 4.6 natively may produce deeper reasoning than Copilot's integration. With its new VS Code extension, the workflow fit concern is largely resolved — the reasoning quality and native Subagent architecture are worth benchmarking. |
 | **Platform lock-in** | Copilot's advanced customization features (skills, hooks, agent modes) are proprietary. The `AGENTS.md` standard and instruction file content are portable, but the activation mechanisms are not. |
 
 These risks inform the [Evaluation Approach](../framework/evaluation-approach.md): test Option A (Copilot) and Option B (alternative platform) empirically before committing. If a competitor produces measurably better architecture output, the evidence will show it.

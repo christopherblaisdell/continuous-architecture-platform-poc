@@ -84,6 +84,9 @@ The content taxonomy from the pilot tells the story:
 
 **7 of 8 content categories are fully served by native capabilities.** The remaining gap (enterprise data sources outside the repository) exists for all three options — it is a content availability problem, not a platform capability problem.
 
+!!! note "Native Configuration Is Not Unique to Copilot"
+    While this evaluation focuses on Copilot's declarative configuration as the Option A implementation, native context injection is not a Copilot-exclusive capability. As of mid-2026, Claude Code offers Skills (reusable workflows via `CLAUDE.md`), Subagents (isolated execution contexts), and a VS Code extension — bringing it closer to Copilot and Cursor on customization maturity than earlier assessments suggested. The argument for Option A is not that only Copilot can do this — it is that native declarative configuration on *any* platform eliminates the need for custom RAG infrastructure. Copilot wins on cost structure and organizational fit (see [DD-03](dd-03-ai-provider.md)), not on exclusive capability.
+
 ---
 
 ## Recommendation
