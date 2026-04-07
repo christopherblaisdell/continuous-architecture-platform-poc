@@ -19,18 +19,20 @@ This investment is justified because the RAG pipeline *is* the product. The engi
 
 The calculus changes entirely when **AI is a tool** — when the goal is to augment developers and architects working inside an IDE, not to ship an AI product to customers.
 
-For IDE-integrated architecture and coding workflows, the custom RAG approach reconstructs capabilities that already exist natively in modern AI coding platforms:
+For IDE-integrated architecture and coding workflows, the custom RAG approach reconstructs capabilities that already exist natively across multiple modern AI coding platforms:
 
-| RAG Pipeline Component | What You Build | Copilot Native Equivalent |
-|------------------------|----------------|---------------------------|
-| Document ingestion | Chunking scripts, embedding jobs, scheduled re-indexing | Workspace indexing — automatic, incremental, zero-config |
-| Vector store | Pinecone/Weaviate cluster, schema design, capacity planning | Built-in semantic search index (local + cloud) |
-| Retrieval | Similarity search queries, re-ranking, context window assembly | `@workspace` — single command retrieves relevant files, symbols, and definitions |
-| Context injection | Custom prompt templates stitching retrieved chunks into system prompts | `.github/copilot-instructions.md`, `.instructions.md`, `SKILL.md` — declarative files, no code |
-| Behavior configuration | Prompt engineering, agent routing logic, mode switching | `.agent.md` files, custom agent modes, tool restrictions — all workspace-as-code |
-| Tool integration | MCP server development, function-calling schemas, tool dispatch | Native MCP support, built-in tools (terminal, file ops, search), extensible via MCP |
-| Multi-agent orchestration | Agent framework (CrewAI, AutoGen), coordination logic, state management | Native sub-agents, `Explore` agent, automatic tool delegation |
-| Evaluation | Custom benchmarks, A/B testing infrastructure | Direct observation — same IDE, same workflow, immediate feedback |
+| RAG Pipeline Component | What You Build | Native Platform Equivalent | Platforms That Offer This |
+|------------------------|----------------|---------------------------|---------------------------|
+| Document ingestion | Chunking scripts, embedding jobs, scheduled re-indexing | Workspace indexing — automatic, incremental, zero-config | Copilot, Cursor, Windsurf, Claude Code |
+| Vector store | Pinecone/Weaviate cluster, schema design, capacity planning | Built-in semantic search index (local + cloud) | Copilot, Cursor, Windsurf |
+| Retrieval | Similarity search queries, re-ranking, context window assembly | `@workspace` / `@codebase` — single command retrieves relevant files and symbols | Copilot, Cursor, Windsurf, Cline |
+| Context injection | Custom prompt templates stitching retrieved chunks into system prompts | Declarative instruction files — no code required | All five (1) |
+| Behavior configuration | Prompt engineering, agent routing logic, mode switching | Rules, custom agents, tool restrictions — all workspace-as-code | Copilot, Cursor, Windsurf, Cline |
+| Tool integration | MCP server development, function-calling schemas, tool dispatch | Native MCP support, built-in tools, extensible via MCP | All five |
+| Multi-agent orchestration | Agent framework (CrewAI, AutoGen), coordination logic, state management | Native sub-agents, automatic tool delegation | Copilot, Windsurf, Cline |
+| Evaluation | Custom benchmarks, A/B testing infrastructure | Direct observation — same IDE, same workflow, immediate feedback | All platforms |
+
+(1) Each platform uses its own file convention — Copilot: `.instructions.md`, `SKILL.md`; Cursor: `.cursor/rules/*.md`; Windsurf: `.windsurf/rules/*.md`, `.windsurf/skills/`; Cline: `.clinerules/*.md` — but a cross-platform standard is emerging via `AGENTS.md` (supported by Cursor, Windsurf, and Cline) and the open [Agent Skills](https://agentskills.io) specification.
 
 ### The Infrastructure Tax
 
@@ -41,7 +43,7 @@ Every component in the left column requires:
 - **Ongoing cost** for compute, storage, and API calls
 - **Expertise** in ML infrastructure that may not exist on the architecture team
 
-Option A (GitHub Copilot) delivers all of these capabilities as platform features included in the subscription. No infrastructure to provision, no pipelines to maintain, no embedding jobs to schedule.
+Every major AI coding platform — GitHub Copilot, Cursor, Windsurf, Cline, Claude Code — delivers these capabilities as native features. No infrastructure to provision, no pipelines to maintain, no embedding jobs to schedule. The choice between platforms is a selection decision, not a build decision.
 
 ## The Core Argument
 
@@ -49,8 +51,8 @@ Custom RAG is the right choice when your organization's competitive advantage de
 
 It is the wrong choice when:
 
-1. **The AI platform already indexes your workspace** — Copilot's workspace indexing performs the same function as a RAG retrieval pipeline, automatically and incrementally
-2. **Context injection is solved by convention** — instruction files (`.instructions.md`, `copilot-instructions.md`) inject domain knowledge without writing code
+1. **The AI platform already indexes your workspace** — all major platforms (Copilot, Cursor, Windsurf, Claude Code) perform workspace indexing automatically and incrementally
+2. **Context injection is solved by convention** — every platform supports declarative instruction files that inject domain knowledge without writing code
 3. **The team's expertise is architecture, not ML infrastructure** — time spent maintaining embedding pipelines is time not spent on architecture work
 4. **The cost model penalizes complexity** — every additional component (vector DB, embedding service, orchestration layer) adds to TCO with no proportional quality gain over native capabilities
 
@@ -62,3 +64,5 @@ This analysis directly informs two evaluation factors:
 - **EF-09 Operational Complexity**: Option A adds zero infrastructure. Option B adds vector storage, embedding pipelines, and prompt orchestration as ongoing operational responsibilities.
 
 The dedicated decision page [DD-01 Context and Configuration](dd-01-context-configuration.md) evaluates how each option handles knowledge injection and behavior customization.
+
+For the argument that these platforms only work for coding and that architecture requires a bespoke solution, see [Architecture Is Not Just Coding](architecture-not-just-coding.md).
