@@ -49,6 +49,7 @@ nav:
   - Home: index.md
   - Evaluation Approach: evaluation-approach.md
   - Evaluation Methodology: evaluation-methodology.md
+  - Platform Landscape: platform-landscape.md
   - Model Quality at Budget: model-quality-at-budget.md
   - Build vs Leverage: build-vs-leverage.md
   - Architecture Is Not Just Coding: architecture-not-just-coding.md
