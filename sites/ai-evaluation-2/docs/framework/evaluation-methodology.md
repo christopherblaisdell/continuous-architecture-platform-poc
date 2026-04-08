@@ -91,7 +91,7 @@ The highest weighted score wins, subject to:
 
 ### Category 2: Quality and Capability (Weight: 36%)
 
-#### EF-04: Architecture Output Quality at Operating Budget (20%)
+#### EF-04: Architecture Output Quality at Operating Budget (18%)
 
 **Definition:** The quality of AI-generated architecture artifacts (solution designs, ADRs, impact assessments, diagrams) as measured by the scoring rubric applied to controlled scenarios — **using the model tier that each option will actually deploy at its operating budget, not the theoretical best model available.**
 
@@ -105,7 +105,7 @@ This factor explicitly accounts for budget-constrained model selection. An optio
 | 2 | Budget model forced by cost constraints; 50-70% rubric score, significant rework required |
 | 1 | Cheapest model only affordable; below 50% or architecturally unsound output |
 
-#### EF-05: Domain Context Awareness (10%)
+#### EF-05: Domain Context Awareness (8%)
 
 **Definition:** The platform's ability to understand and apply domain-specific knowledge — service boundaries, data ownership rules, safety requirements, naming conventions, and architectural standards.
 
@@ -140,6 +140,20 @@ This factor explicitly accounts for budget-constrained model selection. An optio
 | 3 | 2-3 model options; new models take weeks to months |
 | 2 | Single model or very limited selection |
 | 1 | Locked to one model with no alternative |
+
+#### EF-13: Architecture Content Retrieval Quality (5%)
+
+**Definition:** How well the platform chunks, indexes, and retrieves the specific file types used in architecture work — OpenAPI/AsyncAPI YAML, PlantUML diagrams, Markdown ADRs, source code, YAML metadata, and Figma design tokens. This factor measures retrieval fidelity for architecture artifacts specifically, not general text search quality. Platforms with direct file access (bypassing chunking entirely) score higher because the architect's primary workflow reads whole files in context.
+
+See [File-Type Handling: A vs C](../evidence/filetype-handling-a-vs-c.md) for the evidence base and [File-Type Chunking Strategy](filetype-chunking-strategy.md) for the per-file-type analysis.
+
+| Score | Criteria |
+|-------|----------|
+| 5 | Structure-aware chunking for all architecture file types; direct file access; no workarounds needed |
+| 4 | Structure-aware chunking for most file types (code, Markdown); low-effort workarounds for the rest; direct file access available |
+| 3 | Structure-aware chunking for some file types; moderate-effort workarounds for others; retrieval-only (no direct file access) |
+| 2 | Plain text chunking for most file types; custom engineering required for structure-aware retrieval; retrieval-only |
+| 1 | No indexing capability; files must be manually copied into prompts |
 
 ---
 
@@ -197,7 +211,7 @@ This factor explicitly accounts for budget-constrained model selection. An optio
 | 2 | Significant lock-in; custom integrations not portable; 3-6 month migration |
 | 1 | Deep lock-in; proprietary formats; migration would be a rebuild |
 
-#### EF-12: Governance and Compliance (7%)
+#### EF-12: Governance and Compliance (6%)
 
 **Definition:** The platform's ability to meet enterprise governance requirements — audit trails, data residency, access control, and compliance with corporate security policies.
 
@@ -218,15 +232,16 @@ This factor explicitly accounts for budget-constrained model selection. An optio
 | **Economics (29%)** | EF-01: Total Cost of Ownership | 15% |
 | | EF-02: Cost Predictability | 8% |
 | | EF-03: Cost Scaling | 6% |
-| **Quality and Capability (36%)** | EF-04: Architecture Output Quality at Operating Budget | 20% |
-| | EF-05: Domain Context Awareness | 10% |
+| **Quality and Capability (37%)** | EF-04: Architecture Output Quality at Operating Budget | 18% |
+| | EF-05: Domain Context Awareness | 8% |
 | | EF-06: Tool Integration Breadth | 3% |
 | | EF-07: Multi-Model Flexibility | 3% |
+| | EF-13: Architecture Content Retrieval Quality | 5% |
 | **Operational Fitness (20%)** | EF-08: Time to Value | 8% |
 | | EF-09: Operational Complexity | 7% |
 | | EF-10: Workflow Integration | 5% |
-| **Strategic and Risk (15%)** | EF-11: Vendor Lock-in Risk | 8% |
-| | EF-12: Governance and Compliance | 7% |
+| **Strategic and Risk (14%)** | EF-11: Vendor Lock-in Risk | 8% |
+| | EF-12: Governance and Compliance | 6% |
 | | **Total** | **100%** |
 
 ---
