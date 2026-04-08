@@ -34,6 +34,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | [Scoring Results](framework/scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
 | [Evaluation Approach](framework/evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
 | [Evaluation Methodology](framework/evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
+| [Copilot Rollout Roadmap](framework/copilot-rollout-roadmap.md) | Practical deployment plan for the architecture team | How do we actually roll out Copilot and get architecture content into AI? |
 | [DD-01: Context and Configuration](decisions/dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
 | [DD-02: Billing Model](decisions/dd-02-billing-model.md) | Per-seat vs per-token vs hybrid billing | Which billing model supports sustained architecture work without perverse incentives? |
 | [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across three options | Which vendor best combines output quality, workflow integration, and governance? |

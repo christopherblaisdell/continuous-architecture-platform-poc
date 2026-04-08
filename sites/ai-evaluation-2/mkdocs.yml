@@ -51,6 +51,7 @@ nav:
     - Scoring Results: framework/scoring-results.md
     - Evaluation Approach: framework/evaluation-approach.md
     - Evaluation Methodology: framework/evaluation-methodology.md
+    - Copilot Rollout Roadmap: framework/copilot-rollout-roadmap.md
   - Decisions:
     - DD-01 Context and Configuration: decisions/dd-01-context-configuration.md
     - DD-02 Billing Model: decisions/dd-02-billing-model.md
