@@ -45,6 +45,8 @@ The roadmap is sequenced by dependency and value: each phase delivers usable cap
 
 ### 1.1 Determine Licensing Path
 
+The pilot ran on **GitHub Copilot Pro+** ($39/month, individual plan), which provides full agent mode capability including Claude Opus 4.6 access. For team rollout, GitHub Copilot Business or Enterprise is required — Pro+ does not support organization-level policy controls, centralized seat management, or content exclusion rules. The table below compares the team-appropriate tiers.
+
 | Path | When to Use | Action |
 |------|-------------|--------|
 | **Extend existing GitHub Enterprise agreement** | Organization already has GitHub Enterprise Cloud with Copilot Business or Enterprise | Request additional Copilot Enterprise seats through existing MSA. Fastest path — no new vendor onboarding. |
