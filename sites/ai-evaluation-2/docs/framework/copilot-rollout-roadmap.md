@@ -21,8 +21,8 @@ The roadmap is sequenced by dependency and value: each phase delivers usable cap
 | Deliverable | Status |
 |-------------|--------|
 | Single-architect Copilot Pro+ seat | Active |
-| 1,172-line `copilot-instructions.md` with full NovaTrek domain model | Complete |
-| Custom agent definition (`Novatrek Solution Architect`) | Complete |
+| 1,172-line `copilot-instructions.md` with full domain model | Complete |
+| Custom agent definition (Solution Architect persona) | Complete |
 | 5 prompt workflows (investigation, deep-research, architecture-review, security-review, solution-verification) | Complete |
 | 5 scoped instruction files (GitHub URLs, prompt-me workflow, architecture security, specs, solutions) | Complete |
 | 22 OpenAPI service specs indexed in workspace | Complete |
@@ -72,9 +72,9 @@ Each architect needs:
 
 After cloning, Copilot automatically indexes all workspace files. Verify by asking in Copilot Chat:
 
-- "What services does NovaTrek have?" (should list services from specs)
-- "What does ADR-005 say?" (should return Pattern 3 safety default)
-- "Show me the OpenAPI spec for svc-check-in" (should find and reference the spec file)
+- "What services do we have?" (should list services from specs)
+- "What does ADR-003 say?" (should return the relevant decision content)
+- "Show me the OpenAPI spec for [service-name]" (should find and reference the spec file)
 
 If Copilot returns accurate answers, indexing is working. No configuration needed.
 
@@ -111,10 +111,10 @@ This content is in the architecture repository today. Copilot indexes it automat
 | Solution designs | Complete solution packages (requirements, analysis, impacts, guidance, user stories) | 6 | `architecture/solutions/` |
 | Service metadata | Domain classifications, data stores, cross-service calls, actors, capabilities, tickets | 15 | `architecture/metadata/` |
 | Architecture diagrams | C4 container/component diagrams, sequence diagrams, event flows | 37 | `architecture/diagrams/` |
-| UI wireframes | Excalidraw designs for guest portal, ops dashboard, mobile app | 18 | `architecture/wireframes/` |
+| UI wireframes | Excalidraw designs for web portals, dashboards, mobile apps | 18 | `architecture/wireframes/` |
 | Copilot customizations | Instructions, agent definitions, prompt workflows, scoped rules | 9 | `.github/` |
 | Portal source | MkDocs pages, generators, deployment configs | ~50 | `portal/` |
-| Configuration schemas | Adventure classification rules, test standards | 2 | `config/` |
+| Configuration schemas | Business classification rules, test standards | 2 | `config/` |
 
 **Total: ~180 files providing architecture context on clone.**
 
@@ -134,7 +134,7 @@ This content exists but is not in the right location for Copilot to index it, or
 
 This data lives in corporate systems that change in real time. It should NOT be copied into git — it would go stale immediately. Instead, an MCP server provides live query access when Copilot needs it.
 
-The pilot demonstrated this pattern using local mock scripts (`mock-jira-client.py`, `mock-elastic-searcher.py`, `mock-gitlab-client.py`) that simulate what MCP servers would do in production.
+The pilot demonstrated this pattern using local mock scripts that simulate what MCP servers would do in production — proving the tool-call interface works before investing in real integrations.
 
 | Data Category | Corporate System | What the Architect Needs | MCP Server Approach | Priority |
 |--------------|-----------------|-------------------------|---------------------|----------|
@@ -198,12 +198,12 @@ The pilot produced a complete customization layer. New architects inherit all of
 
 | Customization | File | What It Does |
 |---------------|------|-------------|
-| **Global instructions** | `.github/copilot-instructions.md` (1,172 lines) | Domain model, service ownership, data isolation rules, solution design workflow, architecture standards, document formatting, mock tool commands, portal generation |
-| **Solution Architect agent** | `.github/agents/novatrek-solution-architect.agent.md` | Specialized persona scoped to architecture work — triage, design, review, ADR authoring. Tool restrictions prevent non-architecture tasks |
+| **Global instructions** | `.github/copilot-instructions.md` (1,172 lines) | Domain model, service ownership, solution design workflow, architecture standards, document formatting, portal generation |
+| **Solution Architect agent** | `.github/agents/solution-architect.agent.md` | Specialized persona scoped to architecture work — triage, design, review, ADR authoring. Tool restrictions prevent non-architecture tasks |
 | **Investigation prompt** | `.github/prompts/investigation.prompt.md` | Structured workflow: JIRA context, Elastic logs, GitLab MRs, architecture analysis |
 | **Deep research prompt** | `.github/prompts/deep-research.prompt.md` | Multi-source evidence synthesis with cross-referencing |
 | **Architecture review prompt** | `.github/prompts/architecture-review.prompt.md` | Anti-pattern detection, ISO 25010 quality assessment |
-| **Security review prompt** | `.github/prompts/security-review.prompt.md` | OWASP Top 10 + NovaTrek-specific safety rules |
+| **Security review prompt** | `.github/prompts/security-review.prompt.md` | OWASP Top 10 + domain-specific safety rules |
 | **Solution verification prompt** | `.github/prompts/solution-verification.prompt.md` | 8-gate quality check before merge |
 | **GitHub URL rules** | `.github/instructions/github-urls.instructions.md` | Prevents malformed GitHub links (applies to all files) |
 | **Prompt-me workflow** | `.github/instructions/prompt-me.instructions.md` | Interactive decision loop — step through plans one item at a time |
@@ -227,14 +227,14 @@ For architects unfamiliar with how this works:
 Architect opens VS Code with architecture repository
     │
     ├── Copilot reads copilot-instructions.md (always-on context)
-    │     → Agent now knows the NovaTrek domain, service boundaries,
+    │     → Agent now knows the domain model, service boundaries,
     │       safety rules, workflow patterns
     │
     ├── Copilot indexes all workspace files (automatic, background)
-    │     → 22 OpenAPI specs, 14 ADRs, 15 metadata YAML files,
-    │       6 solution designs — all searchable via @workspace
+    │     → OpenAPI specs, ADRs, metadata YAML files,
+    │       solution designs — all searchable via @workspace
     │
-    ├── Architect selects "Novatrek Solution Architect" agent
+    ├── Architect selects "Solution Architect" agent
     │     → Scoped to architecture tasks, inherits global instructions
     │
     ├── Architect types a prompt or invokes #investigation
@@ -260,7 +260,7 @@ No infrastructure. No API keys. No pipeline. Every architect who clones the repo
 | When | Action |
 |------|--------|
 | 2-5 architects | Shared repo with current customization layer. Peer review of instruction changes via PR. |
-| 5-10 architects | Consider splitting instructions by domain (operations, booking, safety) using scoped `.instructions.md` with `applyTo` patterns. Monitor for conflicting conventions. |
+| 5-10 architects | Consider splitting instructions by domain using scoped `.instructions.md` with `applyTo` patterns. Monitor for conflicting conventions. |
 | 10+ architects | Evaluate Copilot Enterprise for org-level policy controls, knowledge bases, and admin dashboards. |
 
 ### 4.2 Adding External Context via MCP
