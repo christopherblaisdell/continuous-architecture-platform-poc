@@ -273,18 +273,23 @@ def create_radar():
     fig, ax = plt.subplots(figsize=(FIGURE_WIDTH, 9), dpi=DPI,
                             subplot_kw=dict(polar=True))
 
+    # Radar-specific colors — higher contrast than shared palette
+    RADAR_A = '#1565c0'  # blue
+    RADAR_B = '#e65100'  # deep orange
+    RADAR_C = '#6a1b9a'  # deep purple
+
     # Draw the polygons
-    ax.fill(angles, sa, alpha=0.15, color=OPT_A_COLOR)
-    ax.plot(angles, sa, color=OPT_A_COLOR, linewidth=2.5, label=f'Option A — GitHub Copilot ({weighted_a:.2f})')
-    ax.scatter(angles[:-1], scores_a, color=OPT_A_COLOR, s=50, zorder=5)
+    ax.fill(angles, sa, alpha=0.15, color=RADAR_A)
+    ax.plot(angles, sa, color=RADAR_A, linewidth=2.5, label=f'Option A — GitHub Copilot ({weighted_a:.2f})')
+    ax.scatter(angles[:-1], scores_a, color=RADAR_A, s=50, zorder=5)
 
-    ax.fill(angles, sb, alpha=0.10, color=OPT_B_COLOR)
-    ax.plot(angles, sb, color=OPT_B_COLOR, linewidth=2.0, linestyle='--', label=f'Option B — Roo Code + Kong ({weighted_b:.2f})')
-    ax.scatter(angles[:-1], scores_b, color=OPT_B_COLOR, s=40, zorder=5)
+    ax.fill(angles, sb, alpha=0.10, color=RADAR_B)
+    ax.plot(angles, sb, color=RADAR_B, linewidth=2.0, linestyle='--', label=f'Option B — Roo Code + Kong ({weighted_b:.2f})')
+    ax.scatter(angles[:-1], scores_b, color=RADAR_B, s=40, zorder=5)
 
-    ax.fill(angles, sc, alpha=0.10, color=OPT_C_COLOR)
-    ax.plot(angles, sc, color=OPT_C_COLOR, linewidth=2.0, linestyle=':', label=f'Option C — Bespoke Agent ({weighted_c:.2f})')
-    ax.scatter(angles[:-1], scores_c, color=OPT_C_COLOR, s=40, zorder=5)
+    ax.fill(angles, sc, alpha=0.10, color=RADAR_C)
+    ax.plot(angles, sc, color=RADAR_C, linewidth=2.0, linestyle=':', label=f'Option C — Bespoke Agent ({weighted_c:.2f})')
+    ax.scatter(angles[:-1], scores_c, color=RADAR_C, s=40, zorder=5)
 
     ax.set_xticks(angles[:-1])
     # Build rich labels with factor name
