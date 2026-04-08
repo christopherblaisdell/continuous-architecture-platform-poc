@@ -60,13 +60,12 @@ Each architect needs:
 | Component | Action | Time |
 |-----------|--------|------|
 | VS Code | Install or update to latest stable | 5 min |
-| GitHub Copilot extension | Install from VS Code marketplace | 2 min |
-| GitHub Copilot Chat extension | Install from VS Code marketplace | 2 min |
+| GitHub Copilot extension | Install from VS Code marketplace (includes code completions, chat, and agent mode in a single extension) | 2 min |
 | Sign in to GitHub | Authenticate with organizational or personal GitHub account | 2 min |
 | Clone architecture repository | `git clone` the workspace repository | 5 min |
 | Verify Copilot is active | Open a file, confirm Copilot icon in status bar, test with a chat prompt | 2 min |
 
-**Total setup time per architect: ~20 minutes.** No infrastructure provisioning, no API keys, no gateway configuration.
+**Total setup time per architect: ~18 minutes.** No infrastructure provisioning, no API keys, no gateway configuration.
 
 ### 1.3 Verify Workspace Indexing
 
@@ -351,7 +350,7 @@ Each MCP server is additive — it extends Copilot's reach without replacing any
 | Phase | What You Get | Effort | Dependencies |
 |-------|-------------|--------|-------------|
 | **Phase 0** (DONE) | Proven single-architect setup with full customization layer | Complete | None |
-| **Phase 1** | Copilot seats for the team, verified workspace indexing | ~20 min per architect + procurement | GitHub Enterprise agreement or individual seats |
+| **Phase 1** | Copilot seats for the team, verified workspace indexing | ~18 min per architect + procurement | GitHub Enterprise agreement or individual seats |
 | **Phase 2** | Complete data inventory: what's in git, what moves to git, what needs MCP, what needs Foundry IQ. Tier 1-2 content fully indexed. | Hours for Tier 2 file moves; Tier 3-4 are future-phase planning | Phase 1 |
 | **Phase 3** | Team inherits domain-aware AI behavior by cloning the repo | Already done — new architects get it for free | Phase 1 |
 | **Phase 4** | MCP servers for live corporate data (Tier 3), Foundry IQ bridge for enterprise knowledge (Tier 4), team scaling, value measurement | Weeks to months, as needed | Concrete retrieval use cases |
