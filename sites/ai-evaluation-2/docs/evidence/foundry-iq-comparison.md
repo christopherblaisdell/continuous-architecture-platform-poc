@@ -10,7 +10,7 @@ This is a fair reframe that deserves a substantive response. Rather than dismiss
 
 ## What Is Foundry IQ?
 
-Foundry IQ is a managed knowledge layer built on Azure AI Search's agentic retrieval engine. It lets agents access enterprise content through knowledge bases that orchestrate chunking, vectorization, retrieval, and permission enforcement.
+Foundry IQ is what Microsoft calls a "managed knowledge layer" — their term for managed retrieval and indexing infrastructure — built on Azure AI Search's agentic retrieval engine. It lets agents access enterprise content through knowledge bases that orchestrate chunking, vectorization, retrieval, and permission enforcement.
 
 Key capabilities (from [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq)):
 

@@ -116,7 +116,7 @@ SaaS AI coding assistant with built-in workspace indexing, intent-based billing 
 
 ### Foundry IQ
 
-A managed knowledge layer (public preview as of April 2026) built on Azure AI Search. Provides knowledge base orchestration, agentic retrieval, custom chunking via skillsets, access control synchronization, and MCP endpoint exposure. Requires provisioning Azure AI Search, a Foundry project, and an LLM deployment.
+What Microsoft calls a "managed knowledge layer" (their term for managed retrieval and indexing infrastructure). Public preview as of April 2026, built on Azure AI Search. Provides knowledge base orchestration, agentic retrieval, custom chunking via skillsets, access control synchronization, and MCP endpoint exposure. Requires provisioning Azure AI Search, a Foundry project, and an LLM deployment.
 
 ### Azure AI Search
 

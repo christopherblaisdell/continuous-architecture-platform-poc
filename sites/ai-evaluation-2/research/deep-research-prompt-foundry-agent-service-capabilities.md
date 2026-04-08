@@ -1,4 +1,4 @@
-# Deep Research Prompt: Can Foundry Agent Service Replace IDE-Based Agents for Architecture Work?
+te# Deep Research Prompt: Can Foundry Agent Service Replace IDE-Based Agents for Architecture Work?
 
 ## Research Question
 
