@@ -124,6 +124,8 @@ Troy's proposal emphasizes that Foundry IQ exposes an MCP endpoint — and since
 
 **Bottom line:** The MCP bridge is architecturally sound but not turnkey. Making Foundry IQ knowledge available inside Copilot's chat would require writing and maintaining a custom MCP server adapter. This is a solvable problem, but it is engineering work — not configuration.
 
+NOTE: This auth gap is not Copilot-specific. The `ProjectManagedIdentity` credential type is a Foundry-internal authentication mechanism — no IDE-based agent (Copilot, Cursor, Roo Code, Windsurf, Claude Code) natively supports it. The only turnkey client for Foundry IQ is Microsoft's own Foundry Agent Service, which runs in the cloud, not in an IDE. Any IDE client would require the same custom MCP adapter to bridge the auth gap.
+
 ## The Undefined Workload Problem
 
 Troy's distinction between generation and retrieval workloads is valid — but it surfaces a more fundamental gap: **the team has not defined what retrieval workload it actually needs.**
