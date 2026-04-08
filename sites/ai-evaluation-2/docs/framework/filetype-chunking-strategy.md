@@ -492,6 +492,10 @@ Steps 4, 6, 7, and 8 require meaningful effort but address the most severe chunk
 
 Steps 9 and 10 are triggered by specific organizational events — team scaling and Figma wireframe integration, respectively. The Figma research (Step 10) has a [deep research prompt ready](../research/deep-research-prompt-figma-chunking.md) and should be executed before committing to an implementation approach.
 
+### Total Effort
+
+Across all 10 steps: approximately 2-3 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6 (the quick wins and medium-term items) can be completed in a single sprint.
+
 ---
 
 **See also:**
