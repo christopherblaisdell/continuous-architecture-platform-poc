@@ -275,7 +275,7 @@ def create_radar():
 
     # Radar-specific colors — higher contrast than shared palette
     RADAR_A = '#1565c0'  # blue
-    RADAR_B = '#e65100'  # deep orange
+    RADAR_B = '#f57c00'  # warm orange (complementary to blue)
     RADAR_C = '#6a1b9a'  # deep purple
 
     # Draw the polygons
