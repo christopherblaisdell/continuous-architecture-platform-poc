@@ -28,7 +28,7 @@ The roadmap is sequenced by dependency and value: each phase delivers usable cap
 | 22 OpenAPI service specs indexed in workspace | Complete |
 | 14 ADRs, 6 solution designs, 37 PlantUML diagrams, 8 AsyncAPI event specs | Complete |
 | 15 metadata YAML files (capabilities, tickets, domains, cross-service calls, events, data stores) | Complete |
-| 18 Excalidraw wireframes across 3 applications | Complete |
+| 18 wireframes across 3 applications (Excalidraw in pilot; team uses Figma) | Complete |
 | Live architecture portal (MkDocs Material on Azure Static Web Apps) | Complete |
 | Confluence publishing pipeline (automated mirror) | Complete |
 | MCP server stub configured (Vikunja integration, not yet active) | Configured |

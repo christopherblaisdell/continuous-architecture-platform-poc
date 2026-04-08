@@ -4,7 +4,7 @@
 
 ## The Problem
 
-GitHub Copilot does not index all file types equally. Programming languages (Java, Python, TypeScript) receive AST-aware chunking via Tree-sitter — methods, classes, and functions are parsed into semantically whole units. But the architecture practice works primarily with **declarative and documentation formats** — OpenAPI YAML, Markdown ADRs, AsyncAPI event specs, PlantUML diagrams, Excalidraw wireframes — which receive generic, structure-unaware chunking.
+GitHub Copilot does not index all file types equally. Programming languages (Java, Python, TypeScript) receive AST-aware chunking via Tree-sitter — methods, classes, and functions are parsed into semantically whole units. But the architecture practice works primarily with **declarative and documentation formats** — OpenAPI YAML, Markdown ADRs, AsyncAPI event specs, PlantUML diagrams, Figma wireframes — which receive generic, structure-unaware chunking.
 
 This means the files that matter most for architecture work are the files that Copilot handles worst.
 
@@ -35,8 +35,7 @@ This is the primary reference artifact. For any architecture file type, look up 
 | **AsyncAPI event specs** | LOW — same generic chunking as OpenAPI | File decomposition + scoped instruction | MCP server (future) | Keep each event spec under 150 lines; instruct LLM to retrieve channel + schema together |
 | **YAML metadata files (capabilities, tickets, domains)** | LOW — 60-line windows break key hierarchies | File decomposition (keep under 150 lines) | Descriptive file naming | Already small and focused; validate line counts |
 | **PlantUML diagrams (.puml)** | LOW — raw text tokenization, no structural parsing | Scoped instruction + native lexical search | Descriptive file naming | No Tree-sitter grammar available; lexical search on diagram text is adequate |
-| **Figma wireframes** | NONE — binary `.fig` format is not indexable; exported SVG/PNG lacks semantic structure | MCP server (Figma MCP) + companion Markdown descriptions | Design token export to git | Deep research pending — see [research prompt](../research/deep-research-prompt-figma-chunking.md) |
-| **Excalidraw wireframes (.excalidraw)** | NONE — raw JSON tokenization destroys spatial relationships | MCP server (excalidraw-studio) or exclude from index | — | JSON chunking is meaningless for visual structure; requires semantic parser |
+| **Figma wireframes** | NONE — binary `.fig` format is not indexable; exported SVG/PNG lacks semantic structure; Figma designs are stored on figma.com, not in git | MCP server (Figma MCP) + companion Markdown descriptions | Design token export to git | Deep research pending — see [research prompt](../research/deep-research-prompt-figma-chunking.md) |
 | **Configuration YAML (adventure-classification, test-standards)** | LOW — 60-line windows | File decomposition if >150 lines | Scoped instruction | Most config files are already small |
 | **Confluence-migrated Markdown** | MEDIUM — heading-aware if properly structured | Post-migration heading cleanup | Scoped instruction for migrated content conventions | Ensure Pandoc output has clean heading hierarchy |
 
@@ -239,7 +238,7 @@ The Model Context Protocol allows an external server to **replace Copilot's nati
 
 ### When to Apply
 
-File types where native chunking is destructive **and** the content has well-defined semantic units that a parser can extract. The strongest candidates are structured data formats with established parsers: OpenAPI, AsyncAPI, Excalidraw JSON.
+File types where native chunking is destructive **and** the content has well-defined semantic units that a parser can extract. The strongest candidates are structured data formats with established parsers (OpenAPI, AsyncAPI) and design tools with REST APIs (Figma).
 
 ### Architecture Pattern
 
@@ -265,7 +264,7 @@ Architect asks: "What does POST /check-in expect?"
 | **openapi-mcp** | OpenAPI YAML | Exposes each endpoint as a tool; returns complete path + schema | Active open-source project |
 | **mcp-openapi-schema-explorer** | OpenAPI YAML | Browse and search OpenAPI specs as interactive tools | Active open-source project |
 | **Stainless MCP** | OpenAPI YAML | Automatically converts any OpenAPI spec into an MCP server | Commercial; active development |
-| **excalidraw-studio** | Excalidraw JSON | Understands spatial relationships, grouping, element types | Community project |
+| **Figma MCP servers** | Figma designs | Access Figma frames, components, and design tokens via Figma REST API | Multiple community implementations; deep research pending |
 | **mcp-vector-search** | Any file type | Independent AST-aware chunking with its own vector store | Experimental |
 | **Custom FastMCP** | AsyncAPI, YAML metadata | Purpose-built server for architecture metadata queries | Would need to be built |
 
@@ -355,7 +354,7 @@ and managing architecture artifacts for a microservice ecosystem.
 | `architecture/events/` | AsyncAPI event specs (8 services) | Read individual event spec files; cross-reference with metadata/events.yaml |
 | `architecture/metadata/` | Domain classifications, capabilities, cross-service calls, data stores | Read individual YAML files; these are the source of truth for service topology |
 | `architecture/solutions/` | Solution designs organized by ticket | Read the master document first, then drill into subdirectories |
-| `architecture/wireframes/` | Excalidraw JSON wireframes | Use excalidraw-studio MCP if available; otherwise reference by filename only |
+| Figma (external) | Wireframes and UI designs hosted on figma.com | Use Figma MCP server if available; otherwise reference companion Markdown descriptions in `docs/wireframes/` |
 | `decisions/` | MADR-format architecture decision records | Read the full ADR — never rely on just the title or decision section |
 | `config/` | Configuration YAML (adventure classification, test standards) | Small files; read directly |
 | `portal/docs/` | MkDocs documentation portal source | Reference for published documentation; not primary architecture artifacts |
@@ -366,7 +365,7 @@ and managing architecture artifacts for a microservice ecosystem.
 | Server | Purpose | When to Use |
 |--------|---------|-------------|
 | OpenAPI MCP | Query endpoint definitions with complete schemas | When analyzing API contracts, checking backward compatibility, or designing cross-service integrations |
-| Excalidraw Studio | Query wireframe structure and element relationships | When referencing UI designs in solution proposals |
+| Figma MCP | Query wireframe structure, component properties, and design tokens | When referencing UI designs in solution proposals or identifying data requirements from screens |
 
 ## Conventions
 - One OpenAPI spec per service (never combine specs)
@@ -465,7 +464,6 @@ These strategies are not independent — they build on each other and align with
 | 8 | **Deploy OpenAPI MCP server** — configure or build, add to `.vscode/mcp.json`, update AGENTS.md | Phase 4.2 | MEDIUM-HIGH (3-8 days) | Step 7 evaluation |
 | 9 | **Evaluate Copilot Spaces** — assess cross-repository architecture content needs | Phase 4.1 | MEDIUM (1-2 days) | Team scaling triggers this |
 | 10 | **Deep research: Figma wireframe chunking** — investigate Figma MCP servers, export formats, and design token extraction for architecture-relevant context injection. [Research prompt ready](../research/deep-research-prompt-figma-chunking.md). | Phase 4.2 | MEDIUM (research + evaluation) | Figma is the team's wireframing tool |
-| 11 | **Evaluate Excalidraw MCP server** — test excalidraw-studio against workspace wireframes | Phase 4.2 | LOW (1 day) | Concrete wireframe query use case emerges |
 
 ### Quick Wins (This Week)
 
@@ -477,7 +475,7 @@ Steps 4, 6, 7, and 8 require meaningful effort but address the most severe chunk
 
 ### As Needed (Triggered by Use Cases)
 
-Steps 9, 10, and 11 are triggered by specific organizational events — team scaling, Figma wireframe integration, and Excalidraw evaluation, respectively. The Figma research (Step 10) has a [deep research prompt ready](../research/deep-research-prompt-figma-chunking.md) and should be executed before committing to an implementation approach.
+Steps 9 and 10 are triggered by specific organizational events — team scaling and Figma wireframe integration, respectively. The Figma research (Step 10) has a [deep research prompt ready](../research/deep-research-prompt-figma-chunking.md) and should be executed before committing to an implementation approach.
 
 ---
 

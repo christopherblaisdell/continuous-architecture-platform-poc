@@ -94,7 +94,7 @@ This creates a severe blind spot for architecture workspaces:
 | **OpenAPI YAML** | Chunks by 60-line windows or token count | Endpoint definitions severed from their `$ref` component schemas. Response schemas orphaned from parent path definitions. |
 | **Markdown ADRs** | Sequential token chunking | A `## Decision` section retrieved without its preceding `## Context` or following `## Consequences`. The LLM generates suggestions that ignore documented constraints. |
 | **AsyncAPI YAML** | Same generic chunking | Event schemas separated from their channel definitions and message examples. |
-| **Excalidraw JSON** | Raw text tokenization | Geometric and grouping logic destroyed. The LLM cannot reason about visual structure from fragmented JSON arrays. |
+| **Figma designs** | Not in git — hosted on figma.com | Copilot cannot index external content. Requires MCP server or exported companion docs. |
 | **PlantUML** | Raw text tokenization | No community Tree-sitter grammar in use. Diagram relationships are lexically searched, not structurally understood. |
 
 !!! warning "No Custom Chunking Configuration Exists"
@@ -135,7 +135,7 @@ Existing implementations:
 
 - **openapi-mcp** and **mcp-openapi-schema-explorer** — parse OpenAPI specs and expose endpoints as tools
 - **Stainless MCP** — converts OpenAPI specs into MCP servers automatically
-- **excalidraw-studio** — MCP server that understands Excalidraw JSON structure (coordinates, grouping, element types)
+- **Figma MCP servers** — community MCP servers that access Figma designs via the Figma REST API, exposing frames, components, and design tokens as tools
 - **mcp-vector-search** — provides independent AST-aware chunking with its own vector store, bypassing the IDE's native limitations
 
 ### MCP vs Native Retrieval
@@ -152,7 +152,7 @@ However, MCP responses are subject to the **10KB truncation limit** documented b
 | Markdown ADRs and docs | Native indexing + heading structure | Heading-aware chunking is adequate if documents are well-structured |
 | Small YAML metadata files | Native indexing | Files under ~150 lines fit in a single chunk |
 | Large OpenAPI specs | MCP server | Native chunker destroys endpoint-schema relationships |
-| Excalidraw wireframes | MCP server or exclude from index | Raw JSON chunking is meaningless for visual structure |
+| Figma wireframes | MCP server (Figma API) + companion Markdown | Designs hosted on figma.com, not in git — requires external access layer |
 | PlantUML diagrams | Scoped instruction + native indexing | Lexical search on diagram text is adequate; no structural parsing available |
 
 ## Retrieval Ranking Signals
