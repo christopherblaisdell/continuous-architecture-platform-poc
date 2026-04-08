@@ -94,7 +94,7 @@ This creates a severe blind spot for architecture workspaces:
 | **OpenAPI YAML** | Chunks by 60-line windows or token count | Endpoint definitions severed from their `$ref` component schemas. Response schemas orphaned from parent path definitions. |
 | **Markdown ADRs** | Sequential token chunking | A `## Decision` section retrieved without its preceding `## Context` or following `## Consequences`. The LLM generates suggestions that ignore documented constraints. |
 | **AsyncAPI YAML** | Same generic chunking | Event schemas separated from their channel definitions and message examples. |
-| **Figma designs** | Not in git — hosted on figma.com | Copilot cannot index external content. Requires MCP server or exported companion docs. |
+| **Figma designs** | Not in git — hosted on figma.com. Binary `.fig` bypassed by indexer. SVGs explicitly excluded (`**/*.svg` pattern). Screenshots usable only via manual multimodal attachment but suffer from "state obfuscation" (cannot reveal interactive states, permissions, or async loading). | Copilot cannot index external content. Requires tripartite hybrid: (1) CI/CD design token export to git for ambient awareness, (2) Figma MCP server for real-time frame queries, (3) Figma Code Connect to map design components to repository code. |
 | **PlantUML** | Raw text tokenization | No community Tree-sitter grammar in use. Diagram relationships are lexically searched, not structurally understood. |
 
 !!! warning "No Custom Chunking Configuration Exists"
@@ -135,7 +135,9 @@ Existing implementations:
 
 - **openapi-mcp** and **mcp-openapi-schema-explorer** — parse OpenAPI specs and expose endpoints as tools
 - **Stainless MCP** — converts OpenAPI specs into MCP servers automatically
-- **Figma MCP servers** — community MCP servers that access Figma designs via the Figma REST API, exposing frames, components, and design tokens as tools
+- **@figma/mcp-server (official)** — maintained by Figma; exposes `get_design_context`, `search_design_system`, `get_variable_defs`, and bidirectional write tools; leverages Code Connect when configured; requires paid Dev/Full seat on Organization/Enterprise plan
+- **@yhy2001/figma-mcp-server** — community server optimized for AI coding assistants with Smart Layout Detection (translates absolute coordinates to Flexbox/Grid CSS) and L1/L2 caching to reduce API rate limiting
+- **antonytm/figma-mcp-server** — WebSocket bridge to Figma desktop plugin; bypasses REST API read-only limits but requires running Figma desktop during session
 - **mcp-vector-search** — provides independent AST-aware chunking with its own vector store, bypassing the IDE's native limitations
 
 ### MCP vs Native Retrieval
@@ -152,7 +154,7 @@ However, MCP responses are subject to the **10KB truncation limit** documented b
 | Markdown ADRs and docs | Native indexing + heading structure | Heading-aware chunking is adequate if documents are well-structured |
 | Small YAML metadata files | Native indexing | Files under ~150 lines fit in a single chunk |
 | Large OpenAPI specs | MCP server | Native chunker destroys endpoint-schema relationships |
-| Figma wireframes | MCP server (Figma API) + companion Markdown | Designs hosted on figma.com, not in git — requires external access layer |
+| Figma wireframes | MCP server (Figma API) + design token export + Code Connect | Designs hosted on figma.com, not in git. Tripartite hybrid recommended: (1) export design tokens as JSON/YAML to git via CI/CD for ambient indexing, (2) deploy Figma MCP server for targeted frame queries, (3) configure Code Connect to map design components to code. SVGs are explicitly excluded from Copilot's workspace indexing. Raw REST API JSON exceeds token budgets and uses absolute coordinates that drain LLM reasoning capacity. |
 | PlantUML diagrams | Scoped instruction + native indexing | Lexical search on diagram text is adequate; no structural parsing available |
 
 ## Retrieval Ranking Signals
@@ -269,6 +271,7 @@ Based on two rounds of deep research (context injection pipeline and chunking co
 
 - [Deep Research — Context Injection Pipeline](../research/deep-research-results-context-injection.md) (April 2026, 55 authoritative sources)
 - [Deep Research — Chunking Control by File Type](../research/deep-research-results-chunking-control.md) (April 2026, 57 authoritative sources)
+- [Deep Research — Figma Wireframe Chunking](../research/deep-research-results-figma-chunking.md) (April 2026, 51 sources)
 
 **See also:**
 

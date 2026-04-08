@@ -50,7 +50,7 @@ This is the primary reference artifact. For any architecture file type, look up 
 | **AsyncAPI event specs** | LOW — same generic chunking as OpenAPI | File decomposition + scoped instruction | MCP server (future) | Keep each event spec under 150 lines; instruct LLM to retrieve channel + schema together |
 | **YAML metadata files (capabilities, tickets, domains)** | LOW — 60-line windows break key hierarchies | File decomposition (keep under 150 lines) | Descriptive file naming | Already small and focused; validate line counts |
 | **PlantUML diagrams (.puml)** | LOW — raw text tokenization, no structural parsing | Scoped instruction + native lexical search | Descriptive file naming | No Tree-sitter grammar available; lexical search on diagram text is adequate |
-| **Figma wireframes** | NONE — binary `.fig` format is not indexable; exported SVG/PNG lacks semantic structure; Figma designs are stored on figma.com, not in git | MCP server (Figma MCP) + companion Markdown descriptions | Design token export to git | Deep research pending — see [research prompt](../research/deep-research-prompt-figma-chunking.md) |
+| **Figma wireframes** | NONE — binary `.fig` format is not indexable; SVGs are explicitly excluded from Copilot indexing (`**/*.svg` pattern); screenshots require manual attachment and suffer from state obfuscation; Figma designs are stored on figma.com, not in git | **Tripartite hybrid**: (1) CI/CD design token export to git (ambient awareness), (2) Figma Code Connect (maps components to code), (3) Figma MCP server (real-time frame queries via URL) | Companion Markdown descriptions as interim fallback | Deploy design token export first (Tier 2), then MCP server (Tier 3), then Code Connect — see [deep research results](../research/deep-research-results-figma-chunking.md) |
 | **Configuration YAML (adventure-classification, test-standards)** | LOW — 60-line windows | File decomposition if >150 lines | Scoped instruction | Most config files are already small |
 | **Confluence-migrated Markdown** | MEDIUM — heading-aware if properly structured | Post-migration heading cleanup | Scoped instruction for migrated content conventions | Ensure Pandoc output has clean heading hierarchy |
 
@@ -279,7 +279,9 @@ Architect asks: "What does POST /check-in expect?"
 | **openapi-mcp** | OpenAPI YAML | Exposes each endpoint as a tool; returns complete path + schema | Active open-source project |
 | **mcp-openapi-schema-explorer** | OpenAPI YAML | Browse and search OpenAPI specs as interactive tools | Active open-source project |
 | **Stainless MCP** | OpenAPI YAML | Automatically converts any OpenAPI spec into an MCP server | Commercial; active development |
-| **Figma MCP servers** | Figma designs | Access Figma frames, components, and design tokens via Figma REST API | Multiple community implementations; deep research pending |
+| **@figma/mcp-server (official)** | Figma designs | Exposes `get_design_context`, `search_design_system`, `get_variable_defs`, and bidirectional write tools. Leverages Code Connect if configured. Requires paid Dev or Full seat on Organization/Enterprise plan. | Production-ready; maintained by Figma |
+| **@yhy2001/figma-mcp-server** | Figma designs | Community server optimized for AI coding assistants. Smart Layout Detection translates absolute coordinates into Flexbox/Grid CSS before returning payload. L1 memory + L2 disk caching reduces API calls. | Active open-source project |
+| **antonytm/figma-mcp-server** | Figma designs | WebSocket bridge to Figma desktop plugin — bypasses REST API read-only limits for free-tier users. Requires Figma desktop app running during session. | Active but higher operational friction |
 | **mcp-vector-search** | Any file type | Independent AST-aware chunking with its own vector store | Experimental |
 | **Custom FastMCP** | AsyncAPI, YAML metadata | Purpose-built server for architecture metadata queries | Would need to be built |
 
@@ -478,7 +480,7 @@ These strategies are not independent — they build on each other and align with
 | 7 | **Evaluate OpenAPI MCP server** — test existing implementations against workspace specs | Phase 4.2 | MEDIUM (1-2 days) | None (but Steps 1-3 should be done first) |
 | 8 | **Deploy OpenAPI MCP server** — configure or build, add to `.vscode/mcp.json`, update AGENTS.md | Phase 4.2 | MEDIUM-HIGH (3-8 days) | Step 7 evaluation |
 | 9 | **Evaluate Copilot Spaces** — assess cross-repository architecture content needs | Phase 4.1 | MEDIUM (1-2 days) | Team scaling triggers this |
-| 10 | **Deep research: Figma wireframe chunking** — investigate Figma MCP servers, export formats, and design token extraction for architecture-relevant context injection. [Research prompt ready](../research/deep-research-prompt-figma-chunking.md). | Phase 4.2 | MEDIUM (research + evaluation) | Figma is the team's wireframing tool |
+| 10 | **Figma integration** — deploy design token CI/CD export (Phase 1), evaluate and configure Figma MCP server (Phase 2), set up Code Connect for high-impact components (Phase 3). [Deep research complete](../research/deep-research-results-figma-chunking.md) — recommends tripartite hybrid pattern. | Phase 4.2 | MEDIUM-HIGH (phased rollout) | Figma is the team's wireframing tool |
 | 11 | **Deep research: PlantUML + OpenAPI chunking alternatives** — investigate whether MCP is the only viable approach for these file types, or whether non-MCP workarounds (file decomposition patterns, companion Markdown, JSON conversion, VS Code extensions, Tree-sitter grammars) can close the gap. [Research prompt ready](../research/deep-research-prompt-puml-openapi-chunking.md). | Phase 3-4 | LOW (research only) | Steps 1-2 inform what gaps remain |
 
 ### Quick Wins (This Week)
