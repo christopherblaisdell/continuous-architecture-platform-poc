@@ -16,7 +16,7 @@ The roadmap is sequenced by dependency and value: each phase delivers usable cap
 
 ## Phase 0: Pilot (COMPLETE)
 
-**Status:** Done. This is where we are today.
+**Status:** Done. This is where we are today. Demonstrated using a realistic proof-of-concept workspace with synthetic services, architecture artifacts, and mock tool integrations.
 
 | Deliverable | Status |
 |-------------|--------|
