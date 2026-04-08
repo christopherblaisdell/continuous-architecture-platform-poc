@@ -29,21 +29,51 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 
 ## Page Index
 
+### Evaluation Methodology
+
 | Page | Purpose | Key Question Answered |
 |------|---------|----------------------|
 | [Scoring Results](framework/scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
 | [Evaluation Approach](framework/evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
-| [Evaluation Methodology](framework/evaluation-methodology.md) | 12-factor weighted scoring framework | How do we score and compare the three options objectively? |
-| [Copilot Rollout Roadmap](framework/copilot-rollout-roadmap.md) | Practical deployment plan for the architecture team | How do we actually roll out Copilot and get architecture content into AI? |
-| [File-Type Chunking Strategy](framework/filetype-chunking-strategy.md) | Per-file-type optimization plan for Copilot context delivery | How do we ensure each architecture artifact type is chunked and retrieved correctly? |
+| [Evaluation Methodology](framework/evaluation-methodology.md) | 13-factor weighted scoring framework | How do we score and compare the three options objectively? |
+
+### Toolchain Decisions
+
+| Page | Purpose | Key Question Answered |
+|------|---------|----------------------|
 | [DD-01: Context and Configuration](decisions/dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
 | [DD-02: Billing Model](decisions/dd-02-billing-model.md) | Per-seat vs per-token vs hybrid billing | Which billing model supports sustained architecture work without perverse incentives? |
 | [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across three options | Which vendor best combines output quality, workflow integration, and governance? |
 | [DD-04: Model Routing](decisions/dd-04-model-routing.md) | Model selection and routing strategy | Does model routing require custom infrastructure or is it built into the platform? |
 | [DD-05: Model Selection Autonomy](decisions/dd-05-model-selection-autonomy.md) | Architect control over model choice | Should architects choose their model, or should it be locked down by a central team? |
-| [Platform Landscape](evidence/platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
-| [Model Quality at Budget](evidence/model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
-| [Build vs Leverage](evidence/build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |
-| [Controlling What Copilot Sees](evidence/context-injection-controls.md) | Context injection pipeline — what controls exist and how to optimize | How does Copilot decide what enters the LLM's context window, and what can we control? |
+
+### Comparative Analysis (A, B, C)
+
+| Page | Purpose | Key Question Answered |
+|------|---------|----------------------|
 | [File-Type Handling: A vs C](evidence/filetype-handling-a-vs-c.md) | Side-by-side comparison of how Options A and C handle each architecture file type | Does Azure AI Search chunk architecture files better than Copilot? |
+| [Build vs Leverage](evidence/build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |
+| [Model Quality at Budget](evidence/model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
+| [Platform Landscape](evidence/platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
+
+### Option A (GitHub Copilot)
+
+| Page | Purpose | Key Question Answered |
+|------|---------|----------------------|
+| [File-Type Chunking Strategy](framework/filetype-chunking-strategy.md) | Per-file-type optimization plan for Copilot context delivery | How do we ensure each architecture artifact type is chunked and retrieved correctly? |
+| [Copilot Rollout Roadmap](framework/copilot-rollout-roadmap.md) | Practical deployment plan for the architecture team | How do we actually roll out Copilot and get architecture content into AI? |
 | [Architecture Is Not Just Coding](evidence/architecture-not-just-coding.md) | Evidence that AI coding platforms handle architecture work | Can general-purpose AI coding platforms do architecture, or do we need something bespoke? |
+| [Controlling What Copilot Sees](evidence/context-injection-controls.md) | Context injection pipeline — what controls exist and how to optimize | How does Copilot decide what enters the LLM's context window, and what can we control? |
+
+### Option C (Foundry IQ Integration)
+
+| Page | Purpose | Key Question Answered |
+|------|---------|----------------------|
+| [What Does Foundry IQ Actually Require?](evidence/foundry-iq-comparison.md) | Operational requirements for a Foundry IQ-based agent | Is Foundry IQ a turnkey product or a build-it-yourself platform? |
+
+### Appendix
+
+| Page | Purpose | Key Question Answered |
+|------|---------|----------------------|
+| [Deep Research Reports](research/index.md) | Raw deep research results across 8 research rounds | What did the AI find when researching specific technical questions? |
+| [AI Glossary](reference/glossary.md) | Terminology definitions for the evaluation | What do terms like "agentic retrieval" and "integrated vectorization" mean? |
