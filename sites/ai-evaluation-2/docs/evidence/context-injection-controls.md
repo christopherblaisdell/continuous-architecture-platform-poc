@@ -84,7 +84,7 @@ Copilot's Tree-sitter AST parsing provides excellent structural chunking for **p
 
 However, **YAML, Markdown, and JSON files receive significantly worse treatment**. While Tree-sitter grammars exist for these formats in the open-source ecosystem, Copilot's deployment does not use them for semantic chunking. Tree-sitter's YAML grammar parses at the key-value structural level — it recognizes document boundaries and top-level keys like `paths`, `components`, `schemas` — but provides purely syntactic, not semantic, comprehension. It does not understand that an `openapi: 3.0.0` root key means the file is an API contract, and it does not follow `$ref` pointers to resolve referenced schemas across files. These files fall back to two generic mechanisms:
 
-- **Local (IDE)**: A 60-line sliding window scored by Jaccard similarity (token overlap) against the currently active code. No structural awareness.
+- **Local (IDE)**: A `FixedWindowJaccardMatcher` — a 60-line eager mode sliding window scored by Jaccard similarity (intersection over union of lexical tokens) against the currently active code. No structural awareness. This is actively destructive for PlantUML: participant declarations on lines 1-20 are physically isolated from their interactions on lines 70-150.
 - **Remote (cloud RAG)**: Standard embedding token windows (512-1,024 tokens). No respect for YAML key hierarchy, `$ref` pointers, or Markdown heading boundaries.
 
 This creates a severe blind spot for architecture workspaces:
@@ -95,7 +95,7 @@ This creates a severe blind spot for architecture workspaces:
 | **Markdown ADRs** | Sequential token chunking | A `## Decision` section retrieved without its preceding `## Context` or following `## Consequences`. The LLM generates suggestions that ignore documented constraints. |
 | **AsyncAPI YAML** | Same generic chunking | Event schemas separated from their channel definitions and message examples. |
 | **Figma designs** | Not in git — hosted on figma.com. Binary `.fig` bypassed by indexer. SVGs explicitly excluded (`**/*.svg` pattern). Screenshots usable only via manual multimodal attachment but suffer from "state obfuscation" (cannot reveal interactive states, permissions, or async loading). | Copilot cannot index external content. Requires tripartite hybrid: (1) CI/CD design token export to git for ambient awareness, (2) Figma MCP server for real-time frame queries, (3) Figma Code Connect to map design components to repository code. |
-| **PlantUML** | No Tree-sitter grammar in Copilot's bundled set (community grammar `lyndsysimon/tree-sitter-plantuml` exists but is not integrated). `!include` directives and C4 macros (`Container`, `Rel`) are treated as opaque strings. Falls back to generic text embedding. | Diagram relationships are lexically searched, not structurally understood. C4 model macros are not resolved. The LLM cannot reliably reconstruct graph topology from raw PlantUML syntax. **CI-generated companion Markdown** summaries bypass this entirely. |
+| **PlantUML** | No Tree-sitter grammar in Copilot's bundled set (community grammars `lyndsysimon/tree-sitter-plantuml`, `Decodetalkers/tree_sitter_plantuml` exist but are abandoned/experimental and not integrated; Tree-sitter grammar org is not accepting new contributions). `!include` directives and C4 macros (`Container`, `Rel`) are treated as opaque strings. Falls back to `FixedWindowJaccardMatcher`. The **jebbs.plantuml** VS Code extension provides `DocumentSymbolProvider` enrichment for the active editor file only (not `@workspace`). | Diagram relationships are lexically searched, not structurally understood. C4 model macros are not resolved. Dense symbolic operators (`-->`, `->>`,-`[#red]>o`) confuse embedding models trained on natural language. The LLM cannot reliably reconstruct graph topology from raw PlantUML syntax. **CI-generated companion Markdown** summaries bypass this entirely. Alternatively, embedding `@startjson` adjacency lists inside `.puml` files gives the LLM unambiguous relationship data in localized chunks. |
 
 !!! warning "No Custom Chunking Configuration Exists"
     GitHub Copilot (Individual, Business, and Enterprise) does not expose any configuration for chunking strategy. There are no VS Code settings, `.copilot/` directory conventions, or Enterprise admin controls that modify how the indexer slices files. The `applyTo` frontmatter in instruction files controls **when instructions are injected**, not how files are **parsed or chunked**. No competitor platform (Cursor, Windsurf, Claude Code) offers this either — it is a universal limitation of the current generation of AI coding assistants.
@@ -134,10 +134,16 @@ An OpenAPI MCP server parses YAML specifications and exposes each endpoint as a 
 Existing implementations:
 
 - **openapi-mcp** and **mcp-openapi-schema-explorer** — parse OpenAPI specs and expose endpoints as tools
+- **AWS Labs OpenAPI MCP** — dynamically generates MCP tools from OpenAPI specs; handles `$ref` dereferencing natively
 - **Stainless MCP** — converts OpenAPI specs into MCP servers automatically
+- **Specbridge** — converts complex OpenAPI specs into callable MCP tools
 - **@figma/mcp-server (official)** — maintained by Figma; exposes `get_design_context`, `search_design_system`, `get_variable_defs`, and bidirectional write tools; leverages Code Connect when configured; requires paid Dev/Full seat on Organization/Enterprise plan
 - **@yhy2001/figma-mcp-server** — community server optimized for AI coding assistants with Smart Layout Detection (translates absolute coordinates to Flexbox/Grid CSS) and L1/L2 caching to reduce API rate limiting
 - **antonytm/figma-mcp-server** — WebSocket bridge to Figma desktop plugin; bypasses REST API read-only limits but requires running Figma desktop during session
+- **Infobip PlantUML MCP** — exposes `generate_plantuml_diagram`, `encode_plantuml`, `decode_plantuml`; supports `!include` directives and C4 macros natively; provides structured syntax validation errors for LLM self-correction via `plantuml_error_handling` prompt
+- **@brainstack/plantuml-mcp** — npm-based server for diagram generation with custom corporate branding and multiple output formats
+- **junqing258/plantuml-mcp** — validates syntax, extracts source from PNG/SVG metadata, generates diagrams
+- **kwhrkzk/plantuml-validator-mcp-server** — dedicated syntax validation for PlantUML; MCPHub certified
 - **mcp-vector-search** — provides independent AST-aware chunking with its own vector store, bypassing the IDE's native limitations
 
 ### MCP vs Native Retrieval
@@ -155,7 +161,7 @@ However, MCP responses are subject to the **10KB truncation limit** documented b
 | Small YAML metadata files | Native indexing | Files under ~150 lines fit in a single chunk |
 | Large OpenAPI specs | **CLI bundling first** (`swagger-cli bundle --dereference`), then MCP server for dynamic queries | CLI bundling entirely eliminates `$ref` hallucination with zero infrastructure (CI hook). MCP server adds dynamic query power but is supplementary, not primary. |
 | Figma wireframes | MCP server (Figma API) + design token export + Code Connect | Designs hosted on figma.com, not in git. Tripartite hybrid recommended: (1) export design tokens as JSON/YAML to git via CI/CD for ambient indexing, (2) deploy Figma MCP server for targeted frame queries, (3) configure Code Connect to map design components to code. SVGs are explicitly excluded from Copilot's workspace indexing. Raw REST API JSON exceeds token budgets and uses absolute coordinates that drain LLM reasoning capacity. |
-| PlantUML diagrams | CI-generated companion Markdown + structured embedded comments + scoped instruction | CI script parses `.puml` files and generates structured Markdown summaries. Embedded comments (`' @participants:`) improve lexical retrieval. Scoped instructions teach cross-referencing. PlantUML MCP server (Infobip) adds diagram generation/validation for interactive use. |
+| PlantUML diagrams | CI-generated companion Markdown + `@startjson` embedded adjacency lists + structured comments + scoped instruction | CI script parses `.puml` files and generates structured Markdown summaries. `@startjson` blocks embed service adjacency data natively. Structured comments (`' @participants:`) boost lexical retrieval. Scoped instructions teach cross-referencing. PlantUML MCP server (Infobip, @brainstack) adds diagram generation/validation for interactive use. For deep ad-hoc analysis, render PNG and use multimodal attachment (Opus 4.6 visual reasoning). |
 
 ## Retrieval Ranking Signals
 
@@ -249,7 +255,7 @@ When MCP servers return data to Copilot, the results are subject to severe const
 
 ## Actionable Recommendations
 
-Based on four rounds of deep research (context injection pipeline, chunking control, Figma wireframes, and PlantUML/OpenAPI), the architecture team should consider these optimizations:
+Based on five rounds of deep research (context injection pipeline, chunking control, Figma wireframes, PlantUML/OpenAPI combined, and dedicated PlantUML), the architecture team should consider these optimizations:
 
 | # | Action | Effort | Impact |
 |---|--------|--------|--------|
@@ -267,6 +273,9 @@ Based on four rounds of deep research (context injection pipeline, chunking cont
 | 12 | **Add CLI bundling to OpenAPI CI pipeline** — run `swagger-cli bundle --dereference` to produce flattened single-file specs alongside the source YAML. Copilot indexes the bundled output with all schemas physically adjacent to endpoints. | LOW | Highest-impact single action for OpenAPI — entirely eliminates `$ref` hallucination with zero infrastructure |
 | 13 | **Generate companion Markdown for PlantUML diagrams** — CI script parses `.puml` files and emits structured summaries listing participants, relationships, message sequences, and C4 component inventories in natural language | MEDIUM | Bypasses absent Tree-sitter grammar; Copilot's Markdown chunker handles the output natively |
 | 14 | **Add structured embedded comments to PlantUML files** — use `' @participants:`, `' @relationships:`, `' @purpose:` comment blocks at the top of every `.puml` file | LOW | Improves lexical retrieval quality at zero infrastructure cost |
+| 15 | **Embed `@startjson` adjacency lists in high-value PlantUML diagrams** — append native `@startjson` blocks with service relationship data. The localized JSON density gives the LLM unambiguous relationship data even when the surrounding DSL syntax confuses embeddings. | LOW | Exploits PlantUML's native JSON rendering syntax to inject structured data into chunks |
+| 16 | **Install jebbs.plantuml VS Code extension** — the extension's `DocumentSymbolProvider` enriches Copilot's context for the active editor file with parsed participant and actor declarations. Does not improve `@workspace` retrieval, but provides a zero-cost boost for the file currently open. | LOW | Free LSP-mediated context enrichment for the active file |
+| 17 | **Multimodal image attachment for deep diagram analysis** — for complex ad-hoc analysis of a specific diagram, render the `.puml` to PNG and drag-and-drop it into Copilot Chat. Claude Opus 4.6 achieves 77.3% on MMMU Pro visual reasoning. The visual representation resolves ambiguities in raw DSL syntax (arrow directions, activation scope, parallel blocks). | LOW | Supplementary deep-analysis technique; does not solve repository search |
 
 ---
 
@@ -276,6 +285,7 @@ Based on four rounds of deep research (context injection pipeline, chunking cont
 - [Deep Research — Chunking Control by File Type](../research/deep-research-results-chunking-control.md) (April 2026, 57 authoritative sources)
 - [Deep Research — Figma Wireframe Chunking](../research/deep-research-results-figma-chunking.md) (April 2026, 51 sources)
 - [Deep Research — PlantUML and OpenAPI Chunking](../research/deep-research-results-puml-openapi-chunking.md) (April 2026, 62 sources)
+- [Deep Research — PlantUML Diagram Chunking (dedicated)](../research/deep-research-results-plantuml-chunking.md) (April 2026, 67 sources)
 
 **See also:**
 

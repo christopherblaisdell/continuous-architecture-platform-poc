@@ -49,7 +49,7 @@ This is the primary reference artifact. For any architecture file type, look up 
 | **OpenAPI YAML specs (large, >150 lines)** | VERY LOW — endpoint definitions severed from `$ref` schemas; Tree-sitter YAML grammar is purely syntactic, not semantic | **CLI bundling** (`swagger-cli bundle --dereference`) to produce a flattened artifact for Copilot ingestion | Scoped instruction + MCP server for dynamic queries | Run `swagger-cli bundle` in CI/pre-commit to generate flattened spec alongside modular source files — see [deep research results](../research/deep-research-results-puml-openapi-chunking.md) |
 | **AsyncAPI event specs** | LOW — same generic chunking as OpenAPI | File decomposition + scoped instruction | MCP server (future) | Keep each event spec under 150 lines; instruct LLM to retrieve channel + schema together |
 | **YAML metadata files (capabilities, tickets, domains)** | LOW — 60-line windows break key hierarchies | File decomposition (keep under 150 lines) | Descriptive file naming | Already small and focused; validate line counts |
-| **PlantUML diagrams (.puml)** | LOW — no Tree-sitter grammar in Copilot (community grammar `lyndsysimon/tree-sitter-plantuml` exists but is not integrated); `!include` directives and C4 macros are opaque; falls back to generic text embedding | **CI/CD companion Markdown generation** — parse `.puml` files and generate structured summaries (participants, relationships, call flows) that Copilot indexes with near-perfect accuracy | Structured embedded comments + scoped instruction + PlantUML MCP server (Infobip) for diagram generation/validation | Deploy companion generation script in CI; add structured comment conventions; evaluate Infobip MCP for interactive use — see [deep research results](../research/deep-research-results-puml-openapi-chunking.md) |
+| **PlantUML diagrams (.puml)** | LOW — no Tree-sitter grammar in Copilot (community grammars `lyndsysimon/tree-sitter-plantuml`, `Decodetalkers/tree_sitter_plantuml` exist but are abandoned/experimental and not integrated; Tree-sitter grammar org is not accepting new submissions); `!include` directives and C4 macros are opaque; falls back to `FixedWindowJaccardMatcher` 60-line sliding window with Jaccard similarity scoring | **CI/CD companion Markdown generation** — parse `.puml` files and generate structured summaries (participants, relationships, call flows) that Copilot indexes with near-perfect accuracy | Structured embedded comments (`' @participants:`) + `@startjson` embedded adjacency lists + scoped instruction + jebbs.plantuml LSP enrichment (active file only) + PlantUML MCP server (Infobip) for diagram generation/validation | Deploy companion generation script in CI; add structured comment conventions; embed `@startjson` service adjacency data; evaluate Infobip MCP for interactive use — see deep research results ([combined](../research/deep-research-results-puml-openapi-chunking.md), [dedicated](../research/deep-research-results-plantuml-chunking.md)) |
 | **Figma wireframes** | NONE — binary `.fig` format is not indexable; SVGs are explicitly excluded from Copilot indexing (`**/*.svg` pattern); screenshots require manual attachment and suffer from state obfuscation; Figma designs are stored on figma.com, not in git | **Tripartite hybrid**: (1) CI/CD design token export to git (ambient awareness), (2) Figma Code Connect (maps components to code), (3) Figma MCP server (real-time frame queries via URL) | Companion Markdown descriptions as interim fallback | Deploy design token export first (Tier 2), then MCP server (Tier 3), then Code Connect — see [deep research results](../research/deep-research-results-figma-chunking.md) |
 | **Configuration YAML (adventure-classification, test-standards)** | LOW — 60-line windows | File decomposition if >150 lines | Scoped instruction | Most config files are already small |
 | **Confluence-migrated Markdown** | MEDIUM — heading-aware if properly structured | Post-migration heading cleanup | Scoped instruction for migrated content conventions | Ensure Pandoc output has clean heading hierarchy |
@@ -297,9 +297,11 @@ Architect asks: "What does POST /check-in expect?"
 | **antonytm/figma-mcp-server** | Figma designs | WebSocket bridge to Figma desktop plugin — bypasses REST API read-only limits for free-tier users. Requires Figma desktop app running during session. | Active but higher operational friction |
 | **AWS Labs OpenAPI MCP** | OpenAPI YAML | Dynamically generates MCP tools from OpenAPI specs; handles `$ref` dereferencing natively before transmitting to LLM | Active open-source (AWS Labs) |
 | **Specbridge** | OpenAPI YAML | Converts complex OpenAPI specs into callable MCP tools | Active open-source project |
-| **Infobip PlantUML MCP** | PlantUML diagrams | Exposes `generate_plantuml_diagram`, `encode_plantuml`, `decode_plantuml`. Supports `!include` directives and C4 macros natively. Structured syntax validation errors enable LLM self-correction. | Active open-source; [Infobip developers blog](https://www.infobip.com/developers/blog/how-i-built-an-open-source-plantuml-mcp-server-without-writing-a-single-line-of-code) |
+| **Infobip PlantUML MCP** | PlantUML diagrams | Exposes `generate_plantuml_diagram`, `encode_plantuml`, `decode_plantuml`. Supports `!include` directives and C4 macros natively. Structured syntax validation errors enable LLM self-correction via `plantuml_error_handling` prompt. | Active open-source; [Infobip developers blog](https://www.infobip.com/developers/blog/how-i-built-an-open-source-plantuml-mcp-server-without-writing-a-single-line-of-code) |
+| **@brainstack/plantuml-mcp** | PlantUML diagrams | npm-based MCP server for diagram generation with custom corporate branding and multiple output formats | Active npm package |
 | **junqing258/plantuml-mcp** | PlantUML diagrams | Validates syntax, extracts source from PNG/SVG metadata, generates diagrams | Active open-source project |
 | **kwhrkzk/plantuml-validator-mcp-server** | PlantUML diagrams | Dedicated syntax validation for PlantUML code; MCPHub certified | Active open-source project |
+| **Custom FastMCP (read-only)** | PlantUML diagrams | Purpose-built Python server exposing `list_diagrams(domain)`, `get_diagram_source(file_path)` (resolves `!include` directives), `get_service_dependencies(service_name)`. Fills the retrieval gap that rendering-focused MCP servers do not address. | Would need to be built (est. 3-5 days) |
 | **mcp-vector-search** | Any file type | Independent AST-aware chunking with its own vector store | Experimental |
 | **Custom FastMCP** | AsyncAPI, YAML metadata | Purpose-built server for architecture metadata queries | Would need to be built |
 
@@ -501,23 +503,42 @@ These strategies are not independent — they build on each other and align with
 | 10 | **Figma integration** — deploy design token CI/CD export (Phase 1), evaluate and configure Figma MCP server (Phase 2), set up Code Connect for high-impact components (Phase 3). [Deep research complete](../research/deep-research-results-figma-chunking.md) — recommends tripartite hybrid pattern. | Phase 4.2 | MEDIUM-HIGH (phased rollout) | Figma is the team's wireframing tool |
 | 11 | **OpenAPI CLI bundling** — add `swagger-cli bundle --dereference` to CI pipeline to generate flattened specs alongside modular source files. [Deep research complete](../research/deep-research-results-puml-openapi-chunking.md) — ranked #1 non-MCP approach. | Phase 3 | LOW (hours) | Step 1 audit results |
 | 12 | **PlantUML companion Markdown generation** — build CI script to parse `.puml` files and generate structured Markdown summaries (participants, relationships, call flows). [Deep research complete](../research/deep-research-results-puml-openapi-chunking.md) — ranked #1 for PlantUML. | Phase 3 | MEDIUM (1-3 days) | None |
-| 13 | **Evaluate PlantUML MCP server** — test Infobip PlantUML MCP server for diagram generation, syntax validation, and `!include` resolution. | Phase 4.2 | MEDIUM (1-2 days) | Step 12 informs what gaps remain |
+| 13 | **Add `@startjson` embedded metadata to PlantUML files** — append native `@startjson` blocks with service adjacency lists to high-value diagrams. Even without a Tree-sitter `.puml` grammar, the localized JSON density gives the LLM unambiguous relationship data when the chunk is retrieved. | Phase 3 | LOW (hours) | None |
+| 14 | **Evaluate PlantUML MCP servers** — test Infobip, @brainstack, and junqing258 PlantUML MCP servers for diagram generation, syntax validation, and `!include` resolution. Assess whether a custom read-only FastMCP server is needed for architectural querying (`list_diagrams`, `get_service_dependencies`). | Phase 4.2 | MEDIUM (1-2 days) | Step 12 informs what gaps remain |
 
 ### Quick Wins (This Week)
 
-Steps 1, 2, 3, 5, and 11 can be completed immediately with no infrastructure and no risk. CLI bundling (Step 11) is the single highest-impact quick win for OpenAPI — it entirely eliminates `$ref` hallucination with a one-line CI hook.
+Steps 1, 2, 3, 5, 11, and 13 can be completed immediately with no infrastructure and no risk. CLI bundling (Step 11) is the single highest-impact quick win for OpenAPI — it entirely eliminates `$ref` hallucination with a one-line CI hook. Embedded `@startjson` metadata (Step 13) is the equivalent quick win for PlantUML.
 
 ### Medium-Term (Phase 3-4)
 
 Steps 4, 6, 7, 8, and 12 require meaningful effort but address the most severe chunking blind spots. PlantUML companion Markdown generation (Step 12) is the highest-impact item for diagram retrieval quality. The OpenAPI MCP server (Steps 7-8) provides dynamic query power beyond what CLI bundling alone delivers.
 
+!!! note "jebbs.plantuml Extension (Zero-Cost Boost)"
+    The **jebbs.plantuml** VS Code extension (3M+ installs) implements a `DocumentSymbolProvider` that parses `.puml` files and exposes participant/actor declarations to Copilot via the Language Server Protocol. This enriches the context window for the **active editor file only** — it does not improve `@workspace` retrieval. The team should ensure this extension is installed. Limitation: the symbol parser uses regex, not AST, so it fails on deeply nested C4 macros.
+
 ### As Needed (Triggered by Use Cases)
 
-Steps 9, 10, and 13 are triggered by specific organizational events or evolving requirements. The Figma research (Step 10) has [deep research results](../research/deep-research-results-figma-chunking.md) recommending a tripartite hybrid pattern. PlantUML + OpenAPI research (Steps 11-13) has [deep research results](../research/deep-research-results-puml-openapi-chunking.md) — CLI bundling and companion Markdown generation are recommended before evaluating MCP servers.
+Steps 9, 10, and 14 are triggered by specific organizational events or evolving requirements. The Figma research (Step 10) has [deep research results](../research/deep-research-results-figma-chunking.md) recommending a tripartite hybrid pattern. PlantUML + OpenAPI research (Steps 11-14) has deep research results ([combined](../research/deep-research-results-puml-openapi-chunking.md), [dedicated PlantUML](../research/deep-research-results-plantuml-chunking.md)) — CLI bundling and companion Markdown generation are recommended before evaluating MCP servers.
 
 ### Total Effort
 
-Across all 13 steps: approximately 3-4 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6 and 11 (the quick wins) can be completed in a single sprint.
+Across all 14 steps: approximately 3-4 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6, 11, and 13 (the quick wins) can be completed in a single sprint.
+
+### Long-Term Alternative: Structurizr DSL
+
+The [dedicated PlantUML research](../research/deep-research-results-plantuml-chunking.md) identifies **Structurizr DSL** as a potential long-term paradigm shift. Unlike PlantUML (presentation-based — describes how a diagram looks), Structurizr is model-based — elements are defined once in a central model, and diagram views are generated from it. LLMs excel at generating and reading Structurizr DSL because it is highly structured text with strict C4 rules, lacking the noisy presentation directives that confuse vector embeddings. Structurizr can export views to PlantUML or Mermaid automatically.
+
+This is not recommended for the immediate term (migrating 140+ diagrams is months of effort), but for teams starting fresh with C4 architecture, Structurizr DSL would eliminate the PlantUML chunking problem entirely. **D2** is another modern alternative with actively maintained Tree-sitter grammars (`pleshevskiy/tree-sitter-d2`, `ravsii/tree-sitter-d2`), which would provide vastly superior semantic chunking if integrated.
+
+### Open Questions for Empirical Testing
+
+The dedicated PlantUML research identifies four experiments that would validate assumptions:
+
+1. **Remote RAG chunk size for `.puml` files** — The local 60-line Jaccard window is documented, but the remote semantic indexer's exact token boundary and overlap for unknown file types needs empirical measurement.
+2. **LSP symbol weighting** — Does Copilot weight the `DocumentSymbol` data from jebbs.plantuml higher than raw text chunks? Does it persist after the file is closed?
+3. **JSON vs Markdown shadow files** — A/B testing to determine whether companion `.json` adjacency lists or `.summary.md` prose yield higher retrieval accuracy.
+4. **SVG exclusion override** — Testing whether removing `**/*.svg` from exclusion patterns allows Copilot to index the XML `<text>` nodes inside rendered PlantUML SVGs.
 
 ---
 
