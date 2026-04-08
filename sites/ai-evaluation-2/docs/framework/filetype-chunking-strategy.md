@@ -20,6 +20,21 @@ This strategy is grounded in two rounds of deep research (112 authoritative sour
 - [Deep Research — Chunking Control by File Type](../research/deep-research-results-chunking-control.md) (April 2026, 57 sources)
 - [Controlling What Copilot Sees](../evidence/context-injection-controls.md) — distilled evidence page
 
+## Executive Summary
+
+Copilot's native indexer chunks programming languages well but handles YAML, Markdown, and design files poorly — exactly the file types architecture teams rely on most. No configuration exists to change this behavior in any AI coding platform. This strategy defines four workaround mechanisms that together produce file-type-aware context delivery:
+
+| Strategy | What It Does | Effort | Impact | When |
+|----------|-------------|--------|--------|------|
+| **1. File Decomposition** | Use physical file boundaries as chunk boundaries — keep YAML files under ~150 lines so each file fits in a single embedding chunk | LOW-MEDIUM | HIGH for YAML | Now |
+| **2. Scoped Instructions** | Tell the LLM to actively retrieve missing context (e.g., "always fetch both endpoint and schema") — compensates for fragmented chunking at the reasoning layer | LOW | MEDIUM-HIGH | Now |
+| **3. MCP Servers** | Replace native chunking entirely for specific file types — an OpenAPI MCP server returns complete endpoint definitions instead of raw YAML fragments | MEDIUM-HIGH | HIGH | Phase 4 |
+| **4. AGENTS.md Routing** | Provide an explicit workspace map so the agent navigates to the right directories and tools instead of relying on blind vector search | LOW | MEDIUM | Now |
+
+Three of the four strategies are deployable immediately with zero infrastructure. The MCP server strategy (highest impact for OpenAPI specs and Figma wireframes) requires evaluation and configuration but builds on existing open-source implementations.
+
+The [Implementation Sequencing](#implementation-sequencing) section at the end provides a 10-step ordered plan aligned with the [Copilot Rollout Roadmap](copilot-rollout-roadmap.md).
+
 ---
 
 ## File-Type Decision Matrix
