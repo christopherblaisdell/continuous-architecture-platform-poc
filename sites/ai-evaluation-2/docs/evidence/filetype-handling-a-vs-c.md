@@ -3,7 +3,7 @@
 # File-Type Handling: Option A vs Option C
 
 !!! abstract "TL;DR"
-    Azure AI Search (Option C) does not provide meaningfully better chunking than GitHub Copilot (Option A) for most architecture file types out of the box. For the two file types where Option C *can* deliver better results — Markdown and OpenAPI YAML — one requires only a configuration toggle (Markdown) and the other requires a custom Azure Functions skillset (OpenAPI). For source code, Copilot is strictly superior. The engineering investment to bring Option C up to parity with Option A's workarounds exceeds the benefit for a team of this size.
+    Azure AI Search (Option C) wins on two file types — Markdown (heading-aware `oneToMany` parsing) and Figma JSON exports (`jsonArray` mode) — both achievable with configuration changes alone. But it loses on all five file types where architecture teams actually struggle: OpenAPI, AsyncAPI, PlantUML, and source code. For source code, Copilot is strictly superior (Tree-sitter AST vs plain text). For structured YAML and PlantUML, both platforms need custom workarounds — but Option A's workarounds cost hours while Option C's cost weeks plus ~$250/month in infrastructure.
 
 ## Why This Comparison Matters
 
@@ -13,7 +13,7 @@ The [File-Type Chunking Strategy](../framework/filetype-chunking-strategy.md) th
 
 This page answers that question with evidence. For each architecture file type, it compares what both platforms deliver by default, what workarounds each requires, and whether the engineering investment for Option C produces a meaningfully better outcome.
 
-**Research basis:** [Deep research on Azure AI Search chunking mechanics](../research/deep-research-results-azure-ai-search-chunking-fast.md) — covering document cracking, Text Split cognitive skill, integrated vectorization, custom skillsets, Foundry IQ agentic retrieval, and file-type-specific analysis across 49 sources including Microsoft Learn documentation.
+**Research basis:** Two independent deep research rounds on Azure AI Search chunking mechanics — [fast mode](../research/deep-research-results-azure-ai-search-chunking-fast.md) (49 sources) and [pro mode](../research/deep-research-results-azure-ai-search-chunking-pro.md) (39 sources) — covering document cracking, Text Split cognitive skill, integrated vectorization, custom skillsets, Foundry IQ agentic retrieval, and file-type-specific analysis against Microsoft Learn documentation.
 
 ---
 
@@ -29,8 +29,8 @@ This matrix mirrors the structure of the [existing Copilot matrix](../framework/
 | **OpenAPI YAML specs (large, >150 lines)** | Plain text, token-window split. A 500-line spec is split into ~3-4 chunks with no regard for endpoint boundaries. `$ref` pointers severed. | VERY LOW — endpoint definitions separated from their schemas; worse than Copilot because no Jaccard overlap scoring | Custom skillset to dereference `$ref` pointers and produce per-endpoint chunks | Yes — full OpenAPI spec resolution logic | HIGH (weeks) | Fully dereferenced endpoint chunks with complete schemas |
 | **AsyncAPI event specs** | Plain text. Same limitations as OpenAPI — channel definitions separated from message schemas. | LOW — no event-specific awareness | Custom skillset for channel-aware chunking | Yes — AsyncAPI parser in Azure Functions | HIGH (days-weeks) | Per-channel chunks linking event schema to producer |
 | **YAML metadata files (capabilities, tickets, domains)** | Single chunk if file is under the token limit (~5,000 characters default). YAML key hierarchy is ignored. | MEDIUM — small files indexed as single units (adequate); large files split without structure awareness | Custom skillset for hierarchy-aware chunking (only needed for large files) | No (small files) / Yes (large files) | LOW (small) / MEDIUM (large) | Adequate for small files; large files need custom parsing |
-| **PlantUML diagrams (.puml)** | Not recognized as structured content. Treated as unknown text. `!include` directives ignored — external components invisible. | VERY LOW — participant declarations severed from message flows; raw syntax is poor for vector embedding | Custom skillset to parse PlantUML syntax and "verbalize" diagrams into structured text (participants, relationships, message flows) | Yes — PlantUML parser or LLM-based verbalization in Azure Functions | HIGH (weeks) | Verbalized diagram descriptions that are retrievable by architectural concept |
-| **Figma wireframes** | Not indexable — hosted on figma.com. No direct connector for external URLs (Bing indexing is public web only). Design token JSON exports treated as flat text. | NONE (external) / LOW (JSON exports) | Custom skillset to parse design token JSON hierarchy | Yes — JSON structure parser for design tokens | MEDIUM (days) | Design token values linked to their component categories |
+| **PlantUML diagrams (.puml)** | Not recognized as structured content. Treated as unknown text. `!include` directives ignored — the blob indexer operates on isolated blobs with no file system context, so it cannot follow file references at all. | VERY LOW — participant declarations severed from message flows; raw syntax is poor for vector embedding; `!include` dependencies completely invisible | Custom skillset to parse PlantUML syntax, programmatically resolve `!include` directives from storage, and "verbalize" diagrams into structured text | Yes — PlantUML parser with cross-blob resolution in Azure Functions | HIGH (weeks) | Verbalized diagram descriptions that are retrievable by architectural concept |
+| **Figma wireframes** | Not indexable directly — hosted on figma.com. However, design token JSON exports benefit from native `jsonArray` parsing mode, which creates one search document per design token object. | NONE (external) / MEDIUM-HIGH (JSON exports with `jsonArray` mode) | `jsonArray` parsing with `documentRoot` targeting for design token arrays. MCP server for live Figma queries via Foundry IQ. | No (for JSON exports) | LOW (JSON config) / MEDIUM (MCP) | Per-design-token chunks preserving discrete UI objects |
 | **Configuration YAML (small files)** | Single chunk for files under ~100 lines. Structure ignored but content is complete. | MEDIUM — adequate for small files; entire file fits in one chunk | None needed for small files | No | NONE | Already adequate |
 | **Confluence-migrated Markdown** | Header-aware parsing (same as regular Markdown if properly structured). | MEDIUM-HIGH — heading-aware if Pandoc output has clean hierarchy | Built-in Markdown parsing. May need post-migration heading cleanup. | No | LOW | Clean heading hierarchy enables section-level retrieval |
 
@@ -53,13 +53,13 @@ For each file type, this table puts Options A and C side by side — comparing d
 | File Type | Option A Default | Option A Workaround | Option A Effort | Option C Default | Option C Workaround | Option C Effort | Net Advantage | Verdict |
 |-----------|-----------------|--------------------|-----------------|-----------------|--------------------|-----------------|--------------|---------|
 | **Source code (Java/TS/Python)** | HIGH — Tree-sitter AST-aware, function-level chunks | None needed | None | LOW — plain text, token-window split | Custom AST skillset in Azure Functions | HIGH (weeks) | Option A is categorically better | **A wins** |
-| **Markdown (ADRs, solutions)** | MEDIUM — heading-aware chunking but no semantic anchoring for nested sections | Heading structure discipline + scoped instructions | LOW (hours) | HIGH — `parsingMode: markdown` splits by H1/H2/H3 into separate documents | Config change only | LOW (hours) | Option C has a slight edge in section isolation; Option A compensates with direct file access | **Draw** |
+| **Markdown (ADRs, solutions)** | MEDIUM — heading-aware chunking but no semantic anchoring for nested sections | Heading structure discipline + scoped instructions | LOW (hours) | HIGH — `parsingMode: markdown` with `oneToMany` mode splits by H1-H6 into separate documents, each with structural metadata (header level, ordinal position) | Config change only | LOW (hours) | Option C produces discretely indexed MADR sections with structural metadata; Option A compensates with direct file access | **C wins** |
 | **OpenAPI YAML (<150 lines)** | LOW — generic YAML chunking, no schema awareness | File decomposition + scoped instructions | LOW (hours) | LOW — plain text extraction, no YAML structure | Custom OpenAPI parser skillset | HIGH (days-weeks) | Both start equally bad; A's workaround is cheaper | **A wins** |
 | **OpenAPI YAML (>150 lines)** | VERY LOW — `$ref` severed, 60-line Jaccard windows | CLI bundling (`swagger-cli bundle --dereference`) + MCP server | LOW-MEDIUM (hours for CLI; days for MCP) | VERY LOW — token-window split, `$ref` severed, no overlap scoring | Custom skillset with full `$ref` resolution | HIGH (weeks) | Both need external tooling; A's CLI bundling is a one-line CI hook vs weeks of Azure Functions development | **A wins** |
 | **AsyncAPI event specs** | LOW — generic YAML chunking | File decomposition + scoped instructions | LOW (hours) | LOW — plain text, no channel awareness | Custom AsyncAPI parser skillset | HIGH (days-weeks) | Same pattern as OpenAPI — A's workarounds are simpler | **A wins** |
 | **YAML metadata (small)** | LOW — 60-line windows break key hierarchies | File decomposition (keep under 150 lines) | LOW (hours) | MEDIUM — fits in single chunk if under token limit | None needed for small files | None | Option C slightly better for small files (single chunk vs sliding window) | **Draw** |
 | **PlantUML (.puml)** | LOW — no Tree-sitter grammar, 60-line Jaccard fallback, `!include` opaque | Companion Markdown generation + structured comments + MCP server | MEDIUM (1-3 days) | VERY LOW — unknown text format, `!include` ignored, raw syntax poorly embedded | Custom skillset to verbalize diagrams into structured text | HIGH (weeks) | Both require custom tooling; A's companion Markdown is simpler than C's verbalization skillset | **A wins** |
-| **Figma wireframes** | NONE — external, not in git | Figma MCP server + design token CI export | MEDIUM-HIGH (phased) | NONE — no external URL indexing; JSON exports are flat text | Custom JSON structure skillset for design tokens | MEDIUM (days) | Both need external bridges; A's MCP approach is more direct | **Draw** |
+| **Figma wireframes** | NONE — external, not in git | Figma MCP server + design token CI export | MEDIUM-HIGH (phased) | NONE (external) / MEDIUM-HIGH (JSON exports via native `jsonArray` mode) | `jsonArray` parsing with `documentRoot` — no custom skillset needed for JSON exports | LOW (JSON config) | Option C's native JSON parsing flawlessly preserves discrete design token objects; Option A requires MCP bridge | **C wins** |
 | **Config YAML (small)** | LOW — 60-line windows | File decomposition if >150 lines | LOW | MEDIUM — single chunk for small files | None needed | None | Negligible difference for small files | **Draw** |
 | **Confluence-migrated Markdown** | MEDIUM — heading-aware if structured | Post-migration heading cleanup | LOW | MEDIUM-HIGH — built-in Markdown parsing | Post-migration heading cleanup | LOW | Nearly identical outcomes | **Draw** |
 
@@ -68,10 +68,10 @@ For each file type, this table puts Options A and C side by side — comparing d
 | Verdict | Count | File Types |
 |---------|-------|-----------|
 | **A wins** | 5 | Source code, OpenAPI (small), OpenAPI (large), AsyncAPI, PlantUML |
-| **Draw** | 5 | Markdown, YAML metadata (small), Figma, Config YAML, Confluence-migrated Markdown |
-| **C wins** | 0 | — |
+| **Draw** | 3 | YAML metadata (small), Config YAML, Confluence-migrated Markdown |
+| **C wins** | 2 | Markdown (ADRs), Figma (JSON exports) |
 
-**Option C does not win on any file type.** It draws on five file types (mostly because both platforms handle them similarly) and loses on five — including the three most problematic file types for architecture teams (OpenAPI specs, PlantUML diagrams, and source code).
+**Option C wins on two file types** — Markdown (native heading-aware `oneToMany` parsing with structural metadata) and Figma JSON exports (native `jsonArray` parsing preserving discrete design objects). It draws on three file types and loses on five — including the three most problematic file types for architecture teams (OpenAPI specs, PlantUML diagrams, and source code). The two C wins are both low-effort configuration changes, not custom engineering — but they address file types where Copilot's workarounds are also low-effort.
 
 ---
 
@@ -113,13 +113,13 @@ For the architecture practice's 200-file workspace:
 
 | What you get for free | Option A (Copilot) | Option C (Azure AI Search) |
 |----------------------|--------------------|-----------------------------|
-| Workspace indexing | Automatic, zero config | Requires provisioning Azure AI Search service ($74+/month), configuring data source, defining index schema, creating skillset, scheduling indexer |
+| Workspace indexing | Automatic, zero config | Requires provisioning Azure AI Search S1 instance (~$250/month), configuring data source, defining index schema, creating skillset, scheduling indexer |
 | Source code awareness | Tree-sitter AST chunking (10+ languages) | Plain text token windows |
 | Markdown awareness | Heading-level chunking | Heading-level chunking (comparable) |
 | YAML awareness | Generic (poor) | Generic (poor) |
 | PlantUML awareness | Generic (poor) | Generic (poor) |
 | Direct file access | Yes — agent reads files from workspace | No — retrieval only |
-| Cost | $39/seat/month (included) | $74/month base + embedding costs + custom skillset development |
+| Cost | $39/seat/month (included) | ~$250/month S1 tier (required for production vectorization) + embedding costs + custom skillset development |
 
 ### The cost-effort equation
 
@@ -131,7 +131,7 @@ Even if Option C delivered marginally better retrieval for some file types, the 
 | **OpenAPI specs** | `swagger-cli bundle` CI hook (hours) | Custom Azure Functions parser (weeks) |
 | **PlantUML** | Companion Markdown CI script (1-3 days) | Custom verbalization skillset (weeks) |
 | **Source code** | Nothing (already optimal) | Custom AST skillset (weeks) |
-| **Infrastructure** | None | Azure AI Search Basic tier ($74/month) + Azure Functions + Azure OpenAI embeddings |
+| **Infrastructure** | None | Azure AI Search S1 tier (~$250/month) + Azure Functions + Azure OpenAI embeddings |
 | **Maintenance** | Markdown files in git | Azure services requiring monitoring, scaling, cost management |
 | **Total effort** | ~1 sprint, zero infrastructure | Multi-sprint, ongoing Azure operations |
 
@@ -143,13 +143,13 @@ The evaluation's core question was: *does Option C's chunking advantage (if any)
 
 The answer is **no**, for three reasons:
 
-1. **There is no chunking advantage.** Azure AI Search's default chunking is no better than Copilot's for the architecture file types that matter most (OpenAPI, PlantUML, AsyncAPI, source code). For Markdown, both platforms offer heading-aware chunking.
+1. **The chunking advantages are minor.** Azure AI Search wins on two file types — Markdown (heading-aware `oneToMany` parsing with structural metadata) and Figma JSON exports (`jsonArray` mode). Both are low-effort configuration changes. But Option C loses on five file types including the three most architecturally critical: OpenAPI specs, PlantUML diagrams, and source code.
 
 2. **Option C's workarounds are more expensive than Option A's.** Where both platforms need help (OpenAPI `$ref` resolution, PlantUML parsing), Option A's workarounds (CI hooks, companion files, MCP servers) are simpler, cheaper, and maintainable as Markdown files in git — while Option C requires Azure Functions, index management, and ongoing operational overhead.
 
 3. **Direct file access bypasses chunking entirely.** The architect's most common workflow — reading specific files in context — does not involve retrieval at all. Copilot reads files directly from the workspace. Azure AI Search cannot do this; it only returns search results.
 
-The "maybe Option C is better at chunking" hypothesis does not survive contact with the evidence. Both platforms handle architecture files poorly by default. The difference is in the cost of the workaround — and Option A's workarounds are categorically cheaper.
+The "maybe Option C is better at chunking" hypothesis partially survives — Option C genuinely handles Markdown and Figma JSON better. But for every file type where architecture teams actually struggle (OpenAPI, PlantUML, AsyncAPI, source code), Option C is equal or worse. The difference is in the cost of the workaround — and Option A's workarounds are categorically cheaper, while costing $39/seat/month versus ~$250/month for the S1 tier alone.
 
 ---
 

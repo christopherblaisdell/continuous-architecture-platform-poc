@@ -77,6 +77,8 @@ nav:
     - PlantUML and OpenAPI Chunking: research/deep-research-results-puml-openapi-chunking.md
     - PlantUML Diagram Chunking: research/deep-research-results-plantuml-chunking.md
     - Self-Managed Embeddings vs Native Indexing: research/deep-research-results-self-managed-embedding-vs-platform-native-indexing.md
+    - "Azure AI Search Chunking (Fast)": research/deep-research-results-azure-ai-search-chunking-fast.md
+    - "Azure AI Search Chunking (Pro)": research/deep-research-results-azure-ai-search-chunking-pro.md
     - Embeddings Deep Research: research/deep-research-results-embeddings.md
     - Fact-Check Deep Research: research/deep-research-results.md
   - Addendum:
