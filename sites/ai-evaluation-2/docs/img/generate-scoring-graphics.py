@@ -205,8 +205,10 @@ def create_heatmap():
     plt.tight_layout(rect=[0, 0.06, 1, 1])
     fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-heatmap.svg'),
                 format='svg', bbox_inches='tight', dpi=DPI)
+    fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-heatmap.png'),
+                format='png', bbox_inches='tight', dpi=200, facecolor='white')
     plt.close(fig)
-    print('Created: scoring-heatmap.svg')
+    print('Created: scoring-heatmap.svg + .png')
 
 
 # ============================================================================
@@ -252,8 +254,10 @@ def create_bar_chart():
     plt.tight_layout()
     fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-bar-chart.svg'),
                 format='svg', bbox_inches='tight', dpi=DPI)
+    fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-bar-chart.png'),
+                format='png', bbox_inches='tight', dpi=200, facecolor='white')
     plt.close(fig)
-    print('Created: scoring-bar-chart.svg')
+    print('Created: scoring-bar-chart.svg + .png')
 
 
 # ============================================================================
@@ -314,8 +318,10 @@ def create_radar():
     plt.tight_layout(rect=[0, 0.05, 1, 0.98])
     fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-radar.svg'),
                 format='svg', bbox_inches='tight', dpi=DPI)
+    fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-radar.png'),
+                format='png', bbox_inches='tight', dpi=200, facecolor='white')
     plt.close(fig)
-    print('Created: scoring-radar.svg')
+    print('Created: scoring-radar.svg + .png')
 
 
 # ============================================================================
@@ -383,8 +389,10 @@ def create_stacked_bars():
     plt.tight_layout(rect=[0, 0.08, 1, 1])
     fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-stacked-bars.svg'),
                 format='svg', bbox_inches='tight', dpi=DPI)
+    fig.savefig(os.path.join(os.path.dirname(__file__), 'scoring-stacked-bars.png'),
+                format='png', bbox_inches='tight', dpi=200, facecolor='white')
     plt.close(fig)
-    print('Created: scoring-stacked-bars.svg')
+    print('Created: scoring-stacked-bars.svg + .png')
 
 
 if __name__ == '__main__':
