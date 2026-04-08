@@ -8,6 +8,7 @@ This section publishes the full AI-generated deep research reports that informed
 |--------|-------|-------|------|
 | [Fact-Check and Verification Report](fact-check-report.md) | Systematic audit of all factual claims, pricing matrices, competitive comparisons, and architectural assumptions across the evaluation site | 13 parts + addendum | April 2026 |
 | [Self-Managed Embeddings vs Platform-Native Indexing](embeddings-analysis.md) | Technical deep dive comparing custom RAG pipelines against IDE-native workspace indexing for enterprise architecture repositories | 6 parts | April 2026 |
+| [Azure AI Foundry Agent Service vs IDE-Based Agents](azure-ai-foundry-vs-ide-agents.md) | Architectural evaluation of whether Foundry Agent Service can replace IDE-local agents for synchronous solution architecture workflows | 7 dimensions + summary | April 2026 |
 
 ## How These Reports Were Used
 
