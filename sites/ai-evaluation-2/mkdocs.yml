@@ -52,6 +52,7 @@ nav:
     - Evaluation Approach: framework/evaluation-approach.md
     - Evaluation Methodology: framework/evaluation-methodology.md
     - Copilot Rollout Roadmap: framework/copilot-rollout-roadmap.md
+    - File-Type Chunking Strategy: framework/filetype-chunking-strategy.md
   - Decisions:
     - DD-01 Context and Configuration: decisions/dd-01-context-configuration.md
     - DD-02 Billing Model: decisions/dd-02-billing-model.md
