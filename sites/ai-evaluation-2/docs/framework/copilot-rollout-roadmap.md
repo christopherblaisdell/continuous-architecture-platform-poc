@@ -129,6 +129,64 @@ This content exists in a corporate system that is not indexed by Copilot. It nee
 - **Cross-links:** Confluence pages link to each other extensively. When migrating to Markdown in git, internal links need to be rewritten to relative paths.
 - **Ongoing sync:** After migration, decide whether Confluence continues to exist as a read-only mirror (generated from git) or is decommissioned entirely for architecture content. The pilot already demonstrated the git-to-Confluence publishing pipeline — the same approach scales to all architecture pages.
 
+**Recommended migration workflow — Confluence HTML export + Pandoc:**
+
+There is no dedicated "Confluence-to-Markdown" tool in active maintenance. The most reliable approach combines Confluence's native HTML export with Pandoc for format conversion. This produces clean, Git-friendly Markdown with minimal manual cleanup.
+
+**Step 1 — Export from Confluence:**
+
+1. Open the Confluence space to migrate
+2. Navigate to Space Settings → General → Export Space
+3. Select **HTML** as the export format
+4. Choose content scope — select all pages, or filter to architecture-relevant pages only
+5. Click Export — Confluence produces a zip archive containing HTML files and an `attachments/` directory organized by page ID
+
+**Step 2 — Convert HTML to Markdown with Pandoc:**
+
+```bash
+# Unzip the Confluence export
+unzip confluence-export.zip -d ./confluence-html
+
+# Convert each HTML file to GitHub-Flavored Markdown
+find ./confluence-html -name "*.html" | while read f; do
+  # Preserve directory structure
+  outdir="./docs/confluence/$(dirname "${f#./confluence-html/}")"
+  mkdir -p "$outdir"
+
+  # Convert with Pandoc
+  #   -f html           → read Confluence's HTML output
+  #   -t gfm            → write GitHub-Flavored Markdown (best for git rendering)
+  #   --wrap=none        → do not hard-wrap lines (let git/editors handle wrapping)
+  #   --extract-media    → pull inline images into a local directory
+  pandoc -f html -t gfm --wrap=none \
+    --extract-media="$outdir/media" \
+    "$f" -o "$outdir/$(basename "${f%.html}.md")"
+done
+```
+
+**Step 3 — Post-processing:**
+
+| Task | What to Fix | Approach |
+|------|-------------|----------|
+| **Rewrite internal links** | Confluence `pageId`-based links become broken | Script to replace `/pages/viewpage.action?pageId=12345` with relative Markdown paths based on page title mapping |
+| **Move attachments** | Confluence stores attachments in `download/attachments/<pageId>/` | Copy to a predictable `attachments/` directory alongside each page, update image references |
+| **Clean up Confluence macros** | `{code}`, `{info}`, `{warning}`, `{toc}` blocks may render as raw HTML | Pandoc handles most macro HTML correctly; remaining artifacts are typically `<div>` wrappers that can be stripped with `sed` or a simple Python script |
+| **Mark stale pages** | Pages not updated in 12+ months | Add a `> NOTE: This page was last updated in Confluence on [date]. Review for accuracy.` banner at the top |
+| **Remove boilerplate** | Confluence export includes navigation chrome, breadcrumbs, footer | Pandoc's `-f html` parser mostly ignores these, but spot-check output for leftover navigation markup |
+
+**Step 4 — Commit and verify:**
+
+```bash
+# Add the converted Markdown to the architecture repository
+git add docs/confluence/
+git commit -m "docs: migrate Confluence architecture pages to Markdown"
+git push
+```
+
+After pushing, Copilot indexes the new Markdown files automatically. Verify by asking Copilot: "What do we have in the Confluence migration docs?" — it should reference the newly committed content.
+
+**Estimated effort:** 2-4 hours for a space with 50-200 pages. The export and conversion steps are fully automated; post-processing (link rewriting, attachment cleanup) is the manual work. A Python script to automate link rewriting based on a title-to-path mapping table can reduce this to under an hour for subsequent spaces.
+
 ### 2.4 Tier 3 — Access via MCP Server (Live Queries)
 
 This data lives in corporate systems that change in real time. It should NOT be copied into git — it would go stale immediately. Instead, an MCP server provides live query access when Copilot needs it.
