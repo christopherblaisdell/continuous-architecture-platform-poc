@@ -63,6 +63,7 @@ nav:
     - Model Quality at Budget: evidence/model-quality-at-budget.md
     - Build vs Leverage: evidence/build-vs-leverage.md
     - What Does Foundry IQ Actually Require?: evidence/foundry-iq-comparison.md
+    - Controlling What Copilot Sees: evidence/context-injection-controls.md
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
   - Reference:
     - Glossary: reference/glossary.md

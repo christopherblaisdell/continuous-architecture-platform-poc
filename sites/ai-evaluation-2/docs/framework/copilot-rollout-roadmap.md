@@ -257,7 +257,7 @@ The pilot produced a complete customization layer. New architects inherit all of
 
 | Customization | File | What It Does |
 |---------------|------|-------------|
-| **Global instructions** | `.github/copilot-instructions.md` (1,172 lines) | Domain model, service ownership, solution design workflow, architecture standards, document formatting, portal generation |
+| **Global instructions** | `.github/copilot-instructions.md` (1,172 lines) | Domain model, service ownership, solution design workflow, architecture standards, document formatting, portal generation. **NOTE:** Research indicates files exceeding ~1,000 lines suffer non-deterministic attention degradation ([see context injection analysis](../evidence/context-injection-controls.md#size-limits-and-degradation)). Decomposition into scoped files is recommended before team rollout. |
 | **Solution Architect agent** | `.github/agents/solution-architect.agent.md` | Specialized persona scoped to architecture work — triage, design, review, ADR authoring. Tool restrictions prevent non-architecture tasks |
 | **Investigation prompt** | `.github/prompts/investigation.prompt.md` | Structured workflow: JIRA context, Elastic logs, GitLab MRs, architecture analysis |
 | **Deep research prompt** | `.github/prompts/deep-research.prompt.md` | Multi-source evidence synthesis with cross-referencing |
@@ -273,6 +273,7 @@ The pilot produced a complete customization layer. New architects inherit all of
 | Customization | Type | Purpose | Priority |
 |---------------|------|---------|----------|
 | **Onboarding guide** | `.github/instructions/onboarding.instructions.md` | Quick-start instructions for new architects: how to use the agent, available prompts, workspace structure | HIGH |
+| **Decompose global instructions** | Split `copilot-instructions.md` into scoped files | Move domain-specific rules (OpenAPI conventions, solution design workflow, diagram standards) into `applyTo`-scoped files. Keep global file under ~500 lines with core domain model and safety rules only. Scoped files are injected only when matching files are active, preventing token waste. | HIGH — mitigates attention degradation risk |
 | **Team conventions** | Update `copilot-instructions.md` | Add team-specific conventions as the team grows (naming standards, review expectations, communication patterns) | MEDIUM — as team forms |
 | **Additional agent personas** | `.agent.md` files | Specialized agents for specific roles (e.g., security architect, integration architect) — only if the team needs differentiated workflows | LOW — only when needed |
 | **SKILL.md files** | `SKILL.md` | Package complex multi-step workflows as reusable skills (e.g., "create a solution design from scratch") — currently handled by prompt files | LOW — prompts are sufficient for now |
@@ -319,13 +320,22 @@ No infrastructure. No API keys. No pipeline. Every architect who clones the repo
 |------|--------|
 | 2-5 architects | Shared repo with current customization layer. Peer review of instruction changes via PR. |
 | 5-10 architects | Consider splitting instructions by domain using scoped `.instructions.md` with `applyTo` patterns. Monitor for conflicting conventions. |
-| 10+ architects | Evaluate Copilot Enterprise for org-level policy controls, knowledge bases, and admin dashboards. |
+| 10+ architects | Evaluate Copilot Enterprise for org-level policy controls and admin dashboards. Evaluate **Copilot Spaces** for cross-repository context sharing (replaced Knowledge Bases in Nov 2025). Note: Spaces are limited to GitHub-hosted content — external systems still require MCP. |
 
 ### 4.2 Adding External Context via MCP
 
 When a concrete retrieval use case emerges — "I need to search across content that is NOT in this git repository" — MCP is the extension mechanism. See Section 2.4 (Tier 3) for the prioritized MCP integration list with effort estimates. Add MCP servers incrementally as concrete retrieval use cases emerge.
 
 Each MCP server is additive — it extends Copilot's reach without replacing anything. The workspace indexing, instructions, and agent definitions continue working exactly as before.
+
+**Critical design constraint:** Research reveals that Copilot enforces a **hard 10KB truncation limit** on MCP tool responses. Responses exceeding this threshold are silently corrupted — the LLM receives broken JSON with no warning. Extended sessions with large MCP payloads can trigger HTTP 413 errors that create unrecoverable retry loops. All MCP servers built for this team must:
+
+- Return paginated results (10-25 items per call with cursor tokens)
+- Strip non-essential metadata (internal IDs, stack traces, raw telemetry)
+- Provide summary views first, with detail available on follow-up calls
+- Target responses under 5KB to maintain a safety margin
+
+See [Controlling What Copilot Sees](../evidence/context-injection-controls.md#mcp-server-design-constraints) for the full analysis.
 
 ### 4.3 Measuring Value
 
