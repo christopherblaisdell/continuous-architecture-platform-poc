@@ -13,6 +13,8 @@
 
 Option A scores highest across all four categories. Option C scores lowest, with critical failures (score of 1) on four factors. The result is robust under sensitivity analysis — no reasonable weight shift changes the winner.
 
+![Scoring Heat Map — 13 factors scored across all three options](../img/scoring-heatmap.svg)
+
 ---
 
 ## Detailed Scoring Matrix
@@ -87,6 +89,8 @@ Option A scores highest across all four categories. Option C scores lowest, with
 
 !!! note "Score Correction"
     Weighted totals are computed from the full-precision calculation above. Summary scores may differ slightly from category subtotals due to rounding in the per-category view.
+
+![Factor Profile Comparison — radar chart showing each option's score across all 13 evaluation factors](../img/scoring-radar.svg)
 
 ---
 
