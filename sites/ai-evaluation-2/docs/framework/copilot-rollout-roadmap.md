@@ -273,7 +273,6 @@ The pilot produced a complete customization layer. New architects inherit all of
 | **Onboarding guide** | `.github/instructions/onboarding.instructions.md` | Quick-start instructions for new architects: how to use the agent, available prompts, workspace structure | HIGH |
 | **Team conventions** | Update `copilot-instructions.md` | Add team-specific conventions as the team grows (naming standards, review expectations, communication patterns) | MEDIUM — as team forms |
 | **Additional agent personas** | `.agent.md` files | Specialized agents for specific roles (e.g., security architect, integration architect) — only if the team needs differentiated workflows | LOW — only when needed |
-| **MCP server for external data** | `.vscode/mcp.json` + server implementation | Connect Copilot to external data sources (ticket systems, monitoring, document stores) when a concrete retrieval use case emerges | LOW — defer until retrieval workload is defined |
 | **SKILL.md files** | `SKILL.md` | Package complex multi-step workflows as reusable skills (e.g., "create a solution design from scratch") — currently handled by prompt files | LOW — prompts are sufficient for now |
 
 ### 3.3 How Context Injection Works
