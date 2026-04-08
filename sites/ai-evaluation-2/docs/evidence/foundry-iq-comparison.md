@@ -63,15 +63,88 @@ But "managed" does not mean "turnkey." The table above shows that Foundry IQ req
 
 This is a real reduction in complexity compared to building from scratch. But it is not comparable to "install an extension and start working."
 
-## Interoperability Gap
+## What Are We Actually Comparing?
 
-A critical finding from [Microsoft's FAQ](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/foundry-iq-faq):
+The conversation around Foundry IQ vs Copilot has conflated three separate things. Getting precise about what each platform provides — and what investment is at risk — requires separating them. (See the [Glossary](../reference/glossary.md) for full definitions of each term.)
 
-> "You can't use Foundry IQ knowledge sources in Copilot, and you can't use Copilot knowledge sources in Foundry IQ."
+### Three Layers, Three Portability Questions
 
-This means Foundry IQ does not replace Copilot's workspace indexing — it runs alongside it. For IDE-based architecture work, architects would still use Copilot's native indexing (which works today, in GA, with zero configuration). Foundry IQ would serve a separate use case: cross-repository, cross-format knowledge retrieval from outside the IDE.
+| Layer | What it is | Copilot | Foundry IQ | Portable? |
+|-------|-----------|---------|------------|-----------|
+| **Content** | The architecture artifacts themselves (ADRs, specs, diagrams, YAML) | Files in git repositories | Files in SharePoint, Azure Blob, OneLake, or git | Always portable — these are just files |
+| **Customizations** | Behavioral configuration that shapes how the AI agent works (instructions, skills, agent definitions) | Markdown files checked into the repo (`.instructions.md`, `SKILL.md`, `.agent.md`) | Not applicable — Foundry IQ does not provide agent customization | Content is portable (plain Markdown); format is converging on open standards ([SKILL.md](https://agentskills.io), AGENTS.md, MCP) |
+| **Retrieval** | The search infrastructure that finds relevant content and feeds it to the LLM | Automatic workspace indexing (zero config, per-workspace, per-client) | Knowledge bases with custom chunking, scoring profiles, agentic retrieval, MCP endpoint | Not portable between platforms — but indexes are derived from content, so switching means rebuilding the index, not losing data |
 
-This raises the question: is the team asking for **a replacement** for Copilot's indexing, or **an addition** to it? If it's an addition, both the cost and complexity are additive — the $39/seat for Copilot plus the Azure AI Search infrastructure for Foundry IQ.
+### What Copilot Investment Could Become a Dead End?
+
+This is Troy's core concern, stated precisely: if the team invests in Copilot customizations and later needs to move, what is lost?
+
+| Investment | Dead-end risk | Why |
+|------------|--------------|-----|
+| **Architecture content** (ADRs, specs, designs) | None | Files in git. Any platform can read them. |
+| **Instruction files** (`.instructions.md`, `copilot-instructions.md`) | Low and shrinking | The *content* is plain Markdown — transferable to any platform. The *file naming convention* varies by platform, but Roo Code, Cursor, and Claude Code already read Copilot's format. The AGENTS.md / SKILL.md standards are converging across vendors. |
+| **Skills** (`SKILL.md`) | Low | Follows an emerging open standard from agentskills.io. Multiple clients already support it. Even if the format diverges, the procedural knowledge inside (templates, checklists, workflow steps) is plain text. |
+| **Agent definitions** (`.agent.md`) | Moderate | Currently Copilot-specific format. But the *content* (behavioral rules, tool restrictions) can be expressed in any agent framework. Migration would require reformatting, not rewriting. |
+| **MCP server configurations** | None | MCP is an open standard (Anthropic). MCP servers work with Copilot, Cursor, Windsurf, Claude Desktop, and Foundry IQ. |
+| **Workspace index** | None — there is no investment | Workspace indexing is automatic and zero-config. There is nothing to lose because there is nothing to build. Each platform rebuilds its own index from the source files. |
+
+The total dead-end risk is a **reformatting cost** — not a data loss or rebuild. The architecture content, the procedural knowledge inside skills, and the behavioral rules in agent definitions all survive a platform switch. What changes is the file naming and activation syntax, which is converging toward open standards.
+
+### Foundry IQ Is Additive, Not a Replacement
+
+[Microsoft's FAQ](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/foundry-iq-faq) confirms that Foundry IQ and Copilot serve different layers:
+
+> "The supported data sources differ by platform and aren't interoperable. In other words, you can't use Foundry IQ knowledge sources in Copilot, and you can't use Copilot knowledge sources in Foundry IQ."
+
+This is not a trivial limitation. It means:
+
+- **Architects would have a split workflow.** Copilot handles workspace-scoped generation (writing ADRs, analyzing specs, producing diagrams). Foundry IQ handles cross-repository retrieval ("which solutions touch step-up auth and PCI?"). These are separate systems with separate query experiences.
+- **Troy's "invest in knowledge once" promise has a gap.** Content indexed in Foundry IQ does not enhance Copilot's workspace context. Content indexed by Copilot is not searchable by Foundry IQ. Each system maintains its own retrieval layer over the same content.
+
+### Can MCP Bridge the Gap?
+
+Troy's proposal emphasizes that Foundry IQ exposes an MCP endpoint — and since Copilot consumes MCP servers, this should bridge the interoperability gap. The research shows this is partially true:
+
+**What works:**
+
+- Foundry IQ exposes each knowledge base at `{endpoint}/knowledgebases/{kb}/mcp?api-version=2025-11-01-preview`
+- VS Code Copilot supports HTTP MCP servers via `.vscode/mcp.json` with `"type": "http"`
+- The [Foundry IQ FAQ confirms](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/foundry-iq-faq) that knowledge bases can be called from *"any application that supports the knowledge base APIs from Azure AI Search"*
+
+**What doesn't bridge today:**
+
+- The MCP connection uses `ProjectManagedIdentity` authentication — a Foundry-specific auth type. [Microsoft's docs note](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect): *"The RemoteTool category and ProjectManagedIdentity authentication type are specific to Microsoft Foundry project connections."*
+- VS Code's MCP server configuration does not natively support Foundry's managed identity auth flow
+- Microsoft explicitly states the two systems are "not interoperable"
+
+**What could work with additional development:**
+
+- A thin MCP wrapper server that authenticates to the Foundry IQ knowledge base API using Azure credentials and re-exposes the results as a standard MCP tool for VS Code
+- This is viable but is custom integration development — exactly the kind of "build" work the evaluation is assessing
+
+**Bottom line:** The MCP bridge is architecturally sound but not turnkey. Making Foundry IQ knowledge available inside Copilot's chat would require writing and maintaining a custom MCP server adapter. This is a solvable problem, but it is engineering work — not configuration.
+
+## The Undefined Workload Problem
+
+Troy's distinction between generation and retrieval workloads is valid — but it surfaces a more fundamental gap: **the team has not defined what retrieval workload it actually needs.**
+
+The number "4,100+ docs" appears in the conversation as the scale of the cross-repository retrieval problem. But before investing in infrastructure to search 4,100 documents, three questions need answers:
+
+### 1. What content actually requires cross-repository retrieval?
+
+Not all 4,100 documents are equally relevant to architecture work. A content audit would likely reveal that the daily retrieval need is concentrated in a much smaller set: active ADRs, recent solution designs, current OpenAPI specs, and a handful of reference standards. If 80% of the value comes from 500 documents, the infrastructure requirements change dramatically.
+
+### 2. Can the relevant content be rationalized into the workspace?
+
+Content that lives in SharePoint, Confluence, or vendor portals today may be there for historical reasons — not because those are the right locations. A git-based workflow where architecture content is consolidated into repositories has a compounding advantage: every tool (Copilot, Cursor, Roo Code, Claude Code) can index it automatically, with zero infrastructure. Migrating content to git is a one-time effort that pays off across every future tool.
+
+This is not an argument to move everything to git — vendor docs and regulatory materials have legitimate reasons to stay where they are. But architecture-owned content (ADRs, specs, solution designs, capability maps) can and should live where the tools natively ingest it.
+
+### 3. Is the retrieval problem daily or occasional?
+
+If "which solutions touch step-up auth?" is asked weekly, that is a search problem worth solving with infrastructure. If it is asked during quarterly architecture reviews, a manual search or a curated index may be sufficient. The frequency determines whether the infrastructure investment is justified.
+
+Until these questions are answered, the debate between Copilot and Foundry IQ for retrieval is premature. The evaluation recommends **defining the retrieval workload concretely** before selecting a tool to serve it.
 
 ## Where Foundry IQ Has Genuine Advantages
 
@@ -83,7 +156,7 @@ This analysis should not be read as a dismissal. Foundry IQ offers real capabili
 | **Custom chunking per format** | Skillsets can preserve semantic coherence for formats like PlantUML that generic chunking breaks |
 | **Scoring profiles with freshness** | Recency-weighted search prevents outdated solutions from ranking equally with current ones |
 | **Document-level access control** | Entra identity enforcement means architects only see content they're authorized to access |
-| **MCP endpoint exposure** | Any MCP-compatible client can query the knowledge base — not locked to one IDE |
+| **MCP endpoint exposure** | Knowledge bases are exposed as MCP endpoints — any MCP-compatible client can query them, though bridging to Copilot requires a custom adapter (see [Can MCP Bridge the Gap?](#can-mcp-bridge-the-gap) above) |
 | **Agentic retrieval** | LLM-assisted query planning with 36% higher response quality than single-shot RAG ([Microsoft benchmark](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-boost-response-relevance-by-36-with-agentic-retrieval/4470720)) |
 
 These capabilities become valuable when the architecture practice's needs outgrow what a single workspace can provide — when retrieval across thousands of documents in multiple formats and repositories is a daily requirement, not a speculative one.
@@ -92,7 +165,7 @@ These capabilities become valuable when the architecture practice's needs outgro
 
 The evaluation's position is not "Foundry IQ is bad." It is:
 
-1. **For IDE-based architecture generation** (the pilot's primary use case today) — platform-native indexing works, is GA, costs $39/month, and requires zero infrastructure. Foundry IQ does not replace this capability and is not interoperable with it.
+1. **For IDE-based architecture generation** (the pilot's primary use case today) — platform-native indexing works, is GA, costs $39/month, and requires zero infrastructure. Foundry IQ does not natively enhance Copilot's workspace context. Bridging them via MCP is architecturally possible but requires custom development.
 
 2. **For cross-repository knowledge retrieval** (a future need that may emerge) — Foundry IQ is a credible option worth evaluating when that need is concrete and when the service exits preview. Investing in preview infrastructure to solve a problem that hasn't been demonstrated yet compounds two risks.
 
@@ -103,5 +176,6 @@ The evaluation's position is not "Foundry IQ is bad." It is:
 - [What is Foundry IQ?](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq) — Microsoft Learn, updated Feb 2026
 - [Foundry IQ FAQ](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/foundry-iq-faq) — Microsoft Learn
 - [Connect a Foundry IQ Knowledge Base to Foundry Agent Service](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect) — Microsoft Learn, updated Apr 2026
+- [Add and manage MCP servers in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) — VS Code Docs, updated Apr 2026
 - [What is Azure AI Search?](https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search) — Microsoft Learn
 - [Foundry IQ: Boost Response Relevance by 36% with Agentic Retrieval](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-boost-response-relevance-by-36-with-agentic-retrieval/4470720) — Microsoft Tech Community

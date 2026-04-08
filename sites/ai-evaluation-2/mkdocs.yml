@@ -63,6 +63,8 @@ nav:
     - Build vs Leverage: evidence/build-vs-leverage.md
     - What Does Foundry IQ Actually Require?: evidence/foundry-iq-comparison.md
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
+  - Reference:
+    - Glossary: reference/glossary.md
   - Addendum:
     - Deep Research Reports: addendum/index.md
     - Fact-Check Report: addendum/fact-check-report.md
