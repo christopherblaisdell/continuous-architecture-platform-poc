@@ -1,6 +1,6 @@
 <!-- CONFLUENCE-PUBLISH -->
 
-# Glossary
+# AI Glossary
 
 This evaluation uses terminology that overlaps across vendors, open-source projects, and marketing materials. This page defines each term precisely as used on this site so that comparisons are grounded in shared definitions.
 
