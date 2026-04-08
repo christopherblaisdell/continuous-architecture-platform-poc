@@ -45,11 +45,11 @@ This is the primary reference artifact. For any architecture file type, look up 
 |-----------|------------------------|-----------------|-------------------|-------------|
 | **Java / TypeScript / Python source code** | HIGH — AST-aware, method-level boundaries | Native indexing (no action needed) | — | Already optimal |
 | **Markdown ADRs and solution designs** | MEDIUM — heading-aware chunking, but no semantic anchoring for deeply nested sections | Heading structure discipline | Scoped instruction for ADR conventions | Enforce H1/H2/H3 hierarchy; ensure each H2 section is self-contained |
-| **OpenAPI YAML specs (small, <150 lines)** | LOW — 60-line sliding window, no YAML key awareness | File decomposition (keep under 150 lines) | Scoped instruction to retrieve endpoint + schema together | Already at one-spec-per-service; validate line counts |
-| **OpenAPI YAML specs (large, >150 lines)** | VERY LOW — endpoint definitions severed from `$ref` schemas | MCP server (semantic endpoint-as-tool) | File decomposition as interim step | Deploy OpenAPI MCP server; decompose specs as stopgap |
+| **OpenAPI YAML specs (small, <150 lines)** | LOW — Tree-sitter parses YAML at key-value level but has no OpenAPI-specific awareness; no `$ref` resolution | File decomposition (keep under 150 lines) + scoped instruction | CLI bundling as validation layer | Already at one-spec-per-service; validate line counts |
+| **OpenAPI YAML specs (large, >150 lines)** | VERY LOW — endpoint definitions severed from `$ref` schemas; Tree-sitter YAML grammar is purely syntactic, not semantic | **CLI bundling** (`swagger-cli bundle --dereference`) to produce a flattened artifact for Copilot ingestion | Scoped instruction + MCP server for dynamic queries | Run `swagger-cli bundle` in CI/pre-commit to generate flattened spec alongside modular source files — see [deep research results](../research/deep-research-results-puml-openapi-chunking.md) |
 | **AsyncAPI event specs** | LOW — same generic chunking as OpenAPI | File decomposition + scoped instruction | MCP server (future) | Keep each event spec under 150 lines; instruct LLM to retrieve channel + schema together |
 | **YAML metadata files (capabilities, tickets, domains)** | LOW — 60-line windows break key hierarchies | File decomposition (keep under 150 lines) | Descriptive file naming | Already small and focused; validate line counts |
-| **PlantUML diagrams (.puml)** | LOW — raw text tokenization, no structural parsing | Scoped instruction + native lexical search | Descriptive file naming | No Tree-sitter grammar available; lexical search on diagram text is adequate |
+| **PlantUML diagrams (.puml)** | LOW — no Tree-sitter grammar in Copilot (community grammar `lyndsysimon/tree-sitter-plantuml` exists but is not integrated); `!include` directives and C4 macros are opaque; falls back to generic text embedding | **CI/CD companion Markdown generation** — parse `.puml` files and generate structured summaries (participants, relationships, call flows) that Copilot indexes with near-perfect accuracy | Structured embedded comments + scoped instruction + PlantUML MCP server (Infobip) for diagram generation/validation | Deploy companion generation script in CI; add structured comment conventions; evaluate Infobip MCP for interactive use — see [deep research results](../research/deep-research-results-puml-openapi-chunking.md) |
 | **Figma wireframes** | NONE — binary `.fig` format is not indexable; SVGs are explicitly excluded from Copilot indexing (`**/*.svg` pattern); screenshots require manual attachment and suffer from state obfuscation; Figma designs are stored on figma.com, not in git | **Tripartite hybrid**: (1) CI/CD design token export to git (ambient awareness), (2) Figma Code Connect (maps components to code), (3) Figma MCP server (real-time frame queries via URL) | Companion Markdown descriptions as interim fallback | Deploy design token export first (Tier 2), then MCP server (Tier 3), then Code Connect — see [deep research results](../research/deep-research-results-figma-chunking.md) |
 | **Configuration YAML (adventure-classification, test-standards)** | LOW — 60-line windows | File decomposition if >150 lines | Scoped instruction | Most config files are already small |
 | **Confluence-migrated Markdown** | MEDIUM — heading-aware if properly structured | Post-migration heading cleanup | Scoped instruction for migrated content conventions | Ensure Pandoc output has clean heading hierarchy |
@@ -94,6 +94,19 @@ architecture/specs/svc-reservations/
 ```
 
 The master `openapi.yaml` uses `$ref: "./paths/reservations.yaml"` to link path definitions, and each path file uses `$ref: "./components/schemas/reservation.yaml"` for schema references. Each file stays under 150 lines. The complete spec is reconstructible by any OpenAPI tool, and Copilot retrieves each file as a coherent unit.
+
+#### OpenAPI CLI Bundling (Complementary to Decomposition)
+
+File decomposition is ideal for human authoring, but it is **actively detrimental to LLM retrieval** because Copilot's native indexer cannot follow `$ref` pointers across files. The solution is to decouple the authoring format from the ingestion format by generating a flattened artifact:
+
+```bash
+# In CI or pre-commit hook — generate a fully dereferenced spec
+swagger-cli bundle -o api-bundled.yaml --dereference -t yaml api-main.yaml
+```
+
+The bundled file replaces every `$ref` with the literal YAML object it references, producing a single monolithic document where endpoints and their schemas are physically adjacent. Copilot indexes this flattened artifact, eliminating `$ref` hallucination entirely. The modular source files remain for human engineering and Git conflict mitigation.
+
+**Key insight from [deep research](../research/deep-research-results-puml-openapi-chunking.md):** CLI bundling is the #1 ranked non-MCP approach for OpenAPI — higher impact than scoped instructions, AGENTS.md, or companion Markdown, and requires zero infrastructure (just a CI hook).
 
 #### Markdown Documents
 
@@ -282,6 +295,11 @@ Architect asks: "What does POST /check-in expect?"
 | **@figma/mcp-server (official)** | Figma designs | Exposes `get_design_context`, `search_design_system`, `get_variable_defs`, and bidirectional write tools. Leverages Code Connect if configured. Requires paid Dev or Full seat on Organization/Enterprise plan. | Production-ready; maintained by Figma |
 | **@yhy2001/figma-mcp-server** | Figma designs | Community server optimized for AI coding assistants. Smart Layout Detection translates absolute coordinates into Flexbox/Grid CSS before returning payload. L1 memory + L2 disk caching reduces API calls. | Active open-source project |
 | **antonytm/figma-mcp-server** | Figma designs | WebSocket bridge to Figma desktop plugin — bypasses REST API read-only limits for free-tier users. Requires Figma desktop app running during session. | Active but higher operational friction |
+| **AWS Labs OpenAPI MCP** | OpenAPI YAML | Dynamically generates MCP tools from OpenAPI specs; handles `$ref` dereferencing natively before transmitting to LLM | Active open-source (AWS Labs) |
+| **Specbridge** | OpenAPI YAML | Converts complex OpenAPI specs into callable MCP tools | Active open-source project |
+| **Infobip PlantUML MCP** | PlantUML diagrams | Exposes `generate_plantuml_diagram`, `encode_plantuml`, `decode_plantuml`. Supports `!include` directives and C4 macros natively. Structured syntax validation errors enable LLM self-correction. | Active open-source; [Infobip developers blog](https://www.infobip.com/developers/blog/how-i-built-an-open-source-plantuml-mcp-server-without-writing-a-single-line-of-code) |
+| **junqing258/plantuml-mcp** | PlantUML diagrams | Validates syntax, extracts source from PNG/SVG metadata, generates diagrams | Active open-source project |
+| **kwhrkzk/plantuml-validator-mcp-server** | PlantUML diagrams | Dedicated syntax validation for PlantUML code; MCPHub certified | Active open-source project |
 | **mcp-vector-search** | Any file type | Independent AST-aware chunking with its own vector store | Experimental |
 | **Custom FastMCP** | AsyncAPI, YAML metadata | Purpose-built server for architecture metadata queries | Would need to be built |
 
@@ -481,23 +499,25 @@ These strategies are not independent — they build on each other and align with
 | 8 | **Deploy OpenAPI MCP server** — configure or build, add to `.vscode/mcp.json`, update AGENTS.md | Phase 4.2 | MEDIUM-HIGH (3-8 days) | Step 7 evaluation |
 | 9 | **Evaluate Copilot Spaces** — assess cross-repository architecture content needs | Phase 4.1 | MEDIUM (1-2 days) | Team scaling triggers this |
 | 10 | **Figma integration** — deploy design token CI/CD export (Phase 1), evaluate and configure Figma MCP server (Phase 2), set up Code Connect for high-impact components (Phase 3). [Deep research complete](../research/deep-research-results-figma-chunking.md) — recommends tripartite hybrid pattern. | Phase 4.2 | MEDIUM-HIGH (phased rollout) | Figma is the team's wireframing tool |
-| 11 | **Deep research: PlantUML + OpenAPI chunking alternatives** — investigate whether MCP is the only viable approach for these file types, or whether non-MCP workarounds (file decomposition patterns, companion Markdown, JSON conversion, VS Code extensions, Tree-sitter grammars) can close the gap. [Research prompt ready](../research/deep-research-prompt-puml-openapi-chunking.md). | Phase 3-4 | LOW (research only) | Steps 1-2 inform what gaps remain |
+| 11 | **OpenAPI CLI bundling** — add `swagger-cli bundle --dereference` to CI pipeline to generate flattened specs alongside modular source files. [Deep research complete](../research/deep-research-results-puml-openapi-chunking.md) — ranked #1 non-MCP approach. | Phase 3 | LOW (hours) | Step 1 audit results |
+| 12 | **PlantUML companion Markdown generation** — build CI script to parse `.puml` files and generate structured Markdown summaries (participants, relationships, call flows). [Deep research complete](../research/deep-research-results-puml-openapi-chunking.md) — ranked #1 for PlantUML. | Phase 3 | MEDIUM (1-3 days) | None |
+| 13 | **Evaluate PlantUML MCP server** — test Infobip PlantUML MCP server for diagram generation, syntax validation, and `!include` resolution. | Phase 4.2 | MEDIUM (1-2 days) | Step 12 informs what gaps remain |
 
 ### Quick Wins (This Week)
 
-Steps 1, 2, 3, and 5 can be completed immediately with no infrastructure and no risk. Together they represent the highest impact-to-effort ratio of any optimization available.
+Steps 1, 2, 3, 5, and 11 can be completed immediately with no infrastructure and no risk. CLI bundling (Step 11) is the single highest-impact quick win for OpenAPI — it entirely eliminates `$ref` hallucination with a one-line CI hook.
 
 ### Medium-Term (Phase 3-4)
 
-Steps 4, 6, 7, and 8 require meaningful effort but address the most severe chunking blind spots. The OpenAPI MCP server (Steps 7-8) is the single highest-impact item for architecture work quality.
+Steps 4, 6, 7, 8, and 12 require meaningful effort but address the most severe chunking blind spots. PlantUML companion Markdown generation (Step 12) is the highest-impact item for diagram retrieval quality. The OpenAPI MCP server (Steps 7-8) provides dynamic query power beyond what CLI bundling alone delivers.
 
 ### As Needed (Triggered by Use Cases)
 
-Steps 9, 10, and 11 are triggered by specific organizational events or knowledge gaps. The Figma research (Step 10) has a [deep research prompt ready](../research/deep-research-prompt-figma-chunking.md) and the PlantUML + OpenAPI research (Step 11) has a [deep research prompt ready](../research/deep-research-prompt-puml-openapi-chunking.md) — both should be executed before committing to an implementation approach.
+Steps 9, 10, and 13 are triggered by specific organizational events or evolving requirements. The Figma research (Step 10) has [deep research results](../research/deep-research-results-figma-chunking.md) recommending a tripartite hybrid pattern. PlantUML + OpenAPI research (Steps 11-13) has [deep research results](../research/deep-research-results-puml-openapi-chunking.md) — CLI bundling and companion Markdown generation are recommended before evaluating MCP servers.
 
 ### Total Effort
 
-Across all 11 steps: approximately 2-3 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6 (the quick wins and medium-term items) can be completed in a single sprint.
+Across all 13 steps: approximately 3-4 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6 and 11 (the quick wins) can be completed in a single sprint.
 
 ---
 
