@@ -1,5 +1,5 @@
 <!-- CONFLUENCE-PUBLISH -->
-<!-- CONFLUENCE-URL: https://christopherblaisdell.atlassian.net/wiki/spaces/ARCH/pages/build-vs-leverage -->
+<!-- CONFLUENCE-URL: https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2615148826/Build+vs+Leverage+Custom+RAG+in+Context -->
 
 # Build vs Leverage: Custom RAG in Context
 

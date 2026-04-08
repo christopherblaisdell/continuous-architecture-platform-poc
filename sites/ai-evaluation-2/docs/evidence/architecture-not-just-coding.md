@@ -1,5 +1,5 @@
 <!-- CONFLUENCE-PUBLISH -->
-<!-- CONFLUENCE-URL: https://christopherblaisdell.atlassian.net/wiki/spaces/ARCH/pages/architecture-not-just-coding -->
+<!-- CONFLUENCE-URL: https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2614624526/Architecture+Is+Not+Just+Coding+But+the+Tools+Are+the+Same -->
 
 # Architecture Is Not Just Coding — But the Tools Are the Same
 
