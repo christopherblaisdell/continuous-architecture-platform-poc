@@ -1,4 +1,4 @@
-site_name: AI Toolchain Evaluation -- NovaTrek
+site_name: AI Toolchain Evaluation
 site_url: https://ai.evaluation.novatrek.cc
 site_description: Comparative evaluation of AI toolchains for enterprise architecture work
 
@@ -76,4 +76,4 @@ nav:
 extra:
   social: []
 
-copyright: NovaTrek Adventures -- AI Toolchain Evaluation
+copyright: AI Toolchain Evaluation

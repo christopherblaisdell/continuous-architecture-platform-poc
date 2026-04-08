@@ -479,6 +479,7 @@ These strategies are not independent — they build on each other and align with
 | 8 | **Deploy OpenAPI MCP server** — configure or build, add to `.vscode/mcp.json`, update AGENTS.md | Phase 4.2 | MEDIUM-HIGH (3-8 days) | Step 7 evaluation |
 | 9 | **Evaluate Copilot Spaces** — assess cross-repository architecture content needs | Phase 4.1 | MEDIUM (1-2 days) | Team scaling triggers this |
 | 10 | **Deep research: Figma wireframe chunking** — investigate Figma MCP servers, export formats, and design token extraction for architecture-relevant context injection. [Research prompt ready](../research/deep-research-prompt-figma-chunking.md). | Phase 4.2 | MEDIUM (research + evaluation) | Figma is the team's wireframing tool |
+| 11 | **Deep research: PlantUML + OpenAPI chunking alternatives** — investigate whether MCP is the only viable approach for these file types, or whether non-MCP workarounds (file decomposition patterns, companion Markdown, JSON conversion, VS Code extensions, Tree-sitter grammars) can close the gap. [Research prompt ready](../research/deep-research-prompt-puml-openapi-chunking.md). | Phase 3-4 | LOW (research only) | Steps 1-2 inform what gaps remain |
 
 ### Quick Wins (This Week)
 
@@ -490,11 +491,11 @@ Steps 4, 6, 7, and 8 require meaningful effort but address the most severe chunk
 
 ### As Needed (Triggered by Use Cases)
 
-Steps 9 and 10 are triggered by specific organizational events — team scaling and Figma wireframe integration, respectively. The Figma research (Step 10) has a [deep research prompt ready](../research/deep-research-prompt-figma-chunking.md) and should be executed before committing to an implementation approach.
+Steps 9, 10, and 11 are triggered by specific organizational events or knowledge gaps. The Figma research (Step 10) has a [deep research prompt ready](../research/deep-research-prompt-figma-chunking.md) and the PlantUML + OpenAPI research (Step 11) has a [deep research prompt ready](../research/deep-research-prompt-puml-openapi-chunking.md) — both should be executed before committing to an implementation approach.
 
 ### Total Effort
 
-Across all 10 steps: approximately 2-3 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6 (the quick wins and medium-term items) can be completed in a single sprint.
+Across all 11 steps: approximately 2-3 weeks of architecture team time, spread across Phases 3 and 4 of the rollout roadmap. Steps 1-6 (the quick wins and medium-term items) can be completed in a single sprint.
 
 ---
 
