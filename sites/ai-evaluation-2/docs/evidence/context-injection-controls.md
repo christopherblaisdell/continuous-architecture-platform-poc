@@ -78,11 +78,27 @@ Copilot's indexing pipeline uses format-aware chunking for Markdown files. Inste
 - Long documents without headings are arbitrarily sliced, often breaking the connection between a concept and its explanation
 - Deeply nested, well-structured heading hierarchies produce the highest retrieval precision
 
-### YAML and Code: AST-Aware Chunking
+### YAML and Code: Divergent Chunking Quality
 
-For structured files (Java, YAML, JSON), Copilot uses Tree-sitter AST parsing. This preserves parent-child relationships — an OpenAPI endpoint definition stays connected to its security schema, and Java methods are chunked along class and method boundaries.
+Copilot's Tree-sitter AST parsing provides excellent structural chunking for **programming languages** — Java, TypeScript, Python, Go, Rust. Methods are chunked at class and function boundaries, preserving parent-child relationships. The target chunk size is approximately 50-1,000 characters, with recursive decomposition for oversized AST nodes.
 
-When AST parsing is unavailable, Copilot falls back to **~250-token semantic chunks** (~10-30 lines). This fallback applies to file types without a Tree-sitter grammar.
+However, **YAML, Markdown, and JSON files receive significantly worse treatment**. While Tree-sitter grammars exist for these formats in the open-source ecosystem, Copilot's deployment does not use them for semantic chunking. Instead, these files fall back to two generic mechanisms:
+
+- **Local (IDE)**: A 60-line sliding window scored by Jaccard similarity (token overlap) against the currently active code. No structural awareness.
+- **Remote (cloud RAG)**: Standard embedding token windows (512-1,024 tokens). No respect for YAML key hierarchy, `$ref` pointers, or Markdown heading boundaries.
+
+This creates a severe blind spot for architecture workspaces:
+
+| File Type | What Copilot Does | What Gets Broken |
+|-----------|-------------------|-------------------|
+| **OpenAPI YAML** | Chunks by 60-line windows or token count | Endpoint definitions severed from their `$ref` component schemas. Response schemas orphaned from parent path definitions. |
+| **Markdown ADRs** | Sequential token chunking | A `## Decision` section retrieved without its preceding `## Context` or following `## Consequences`. The LLM generates suggestions that ignore documented constraints. |
+| **AsyncAPI YAML** | Same generic chunking | Event schemas separated from their channel definitions and message examples. |
+| **Excalidraw JSON** | Raw text tokenization | Geometric and grouping logic destroyed. The LLM cannot reason about visual structure from fragmented JSON arrays. |
+| **PlantUML** | Raw text tokenization | No community Tree-sitter grammar in use. Diagram relationships are lexically searched, not structurally understood. |
+
+!!! warning "No Custom Chunking Configuration Exists"
+    GitHub Copilot (Individual, Business, and Enterprise) does not expose any configuration for chunking strategy. There are no VS Code settings, `.copilot/` directory conventions, or Enterprise admin controls that modify how the indexer slices files. The `applyTo` frontmatter in instruction files controls **when instructions are injected**, not how files are **parsed or chunked**. No competitor platform (Cursor, Windsurf, Claude Code) offers this either — it is a universal limitation of the current generation of AI coding assistants.
 
 ### File Size Matters
 
@@ -92,6 +108,52 @@ When AST parsing is unavailable, Copilot falls back to **~250-token semantic chu
 | Large monolithic files | Vector embedding density diluted — harder to match specific queries | Severe performance bottleneck — agent defaults to whole-file rewriting, causing timeouts and context exhaustion |
 
 **Recommendation:** Favor many small, focused files over few large ones. An architecture workspace with one spec per service (19 files) outperforms a single combined spec file.
+
+### File Naming for Retrieval
+
+Descriptive file names significantly improve retrieval via Copilot's lexical (grep/glob) search layer, which augments the semantic vector search. `svc-check-in-openapi.yaml` is instantly matchable by keyword queries; `spec.yaml` is not. Research confirms that hybrid retrieval (lexical + semantic) outperforms either approach alone. Naming conventions are essentially free metadata that improves both search layers.
+
+### File Decomposition for YAML
+
+Because Copilot's chunker does not understand YAML hierarchy, **physical file boundaries are the only reliable chunk boundaries** for declarative files. For large OpenAPI specs:
+
+- Split paths into separate files, linked by `$ref` from a master `openapi.yaml`
+- Keep component schemas in dedicated files under `components/schemas/`
+- Target: no single YAML file should exceed ~150 lines, ensuring the entire file fits within a single embedding chunk
+
+The architecture workspace already follows one-spec-per-service (good). Review whether individual spec files exceed the 150-line threshold and consider further decomposition if so.
+
+## MCP as a Custom Chunking Layer
+
+The chunking limitations above are **entirely bypassed by the Model Context Protocol**. Instead of relying on Copilot's generic indexer to understand OpenAPI structure, an MCP server can parse the spec semantically and return exactly the data requested.
+
+### How It Works
+
+An OpenAPI MCP server parses YAML specifications and exposes each endpoint as a discrete tool. When the LLM needs to understand `POST /check-in`, it calls the MCP tool rather than searching the raw YAML. The server returns the complete endpoint definition — path, parameters, request body, response schemas, security requirements — as a single, semantically whole unit.
+
+Existing implementations:
+
+- **openapi-mcp** and **mcp-openapi-schema-explorer** — parse OpenAPI specs and expose endpoints as tools
+- **Stainless MCP** — converts OpenAPI specs into MCP servers automatically
+- **excalidraw-studio** — MCP server that understands Excalidraw JSON structure (coordinates, grouping, element types)
+- **mcp-vector-search** — provides independent AST-aware chunking with its own vector store, bypassing the IDE's native limitations
+
+### MCP vs Native Retrieval
+
+MCP tool responses and native workspace retrieval are **additive**, not competing. When both are available, the agent's orchestration layer decides which source to query based on the prompt. MCP responses are more token-efficient because they return only the exact data requested, rather than adjacent chunks of irrelevant content.
+
+However, MCP responses are subject to the **10KB truncation limit** documented below. MCP servers for architecture data must be designed with this constraint from the start.
+
+### When to Use MCP vs Native Indexing
+
+| Data Type | Recommended Approach | Rationale |
+|-----------|---------------------|----------|
+| Java source code | Native indexing | AST-aware chunking works well for code |
+| Markdown ADRs and docs | Native indexing + heading structure | Heading-aware chunking is adequate if documents are well-structured |
+| Small YAML metadata files | Native indexing | Files under ~150 lines fit in a single chunk |
+| Large OpenAPI specs | MCP server | Native chunker destroys endpoint-schema relationships |
+| Excalidraw wireframes | MCP server or exclude from index | Raw JSON chunking is meaningless for visual structure |
+| PlantUML diagrams | Scoped instruction + native indexing | Lexical search on diagram text is adequate; no structural parsing available |
 
 ## Retrieval Ranking Signals
 
@@ -185,21 +247,28 @@ When MCP servers return data to Copilot, the results are subject to severe const
 
 ## Actionable Recommendations
 
-Based on this research, the architecture team should consider these optimizations:
+Based on two rounds of deep research (context injection pipeline and chunking control), the architecture team should consider these optimizations:
 
 | # | Action | Effort | Impact |
 |---|--------|--------|--------|
 | 1 | **Decompose `copilot-instructions.md`** into scoped files with `applyTo` globs — keep global file under 500 lines, move domain-specific rules to path-scoped files | MEDIUM | Prevents instruction truncation and attention degradation |
 | 2 | **Structure all Markdown with consistent headings** — H1 for document title, H2 for major sections, H3 for subsections | LOW | Improves chunking boundaries and semantic anchoring |
-| 3 | **Keep specs as separate files per service** (already done) — never combine into monolithic files | LOW | Already optimal — validate this remains the convention |
-| 4 | **Design MCP servers with 10KB response limit** — paginate, summarize, strip metadata | HIGH (at MCP build time) | Prevents silent data corruption and session death loops |
-| 5 | **Prime context before prompting** — open relevant files and scroll to relevant sections before typing a query | LOW | Leverages editor signal boosting at zero cost |
-| 6 | **Use `#file` sparingly** — prefer `@workspace` or `#codebase` for discovery; use `#file` only when you know exactly which file the LLM needs | LOW | Prevents budget cannibalization |
-| 7 | **Evaluate Copilot Spaces** for cross-repository architecture standards that multiple teams need | MEDIUM | Provides strict grounding without requiring every consumer to clone the architecture repo |
+| 3 | **Keep specs as separate files per service** (already done) — never combine into monolithic files. Review for 150-line threshold. | LOW | Already optimal — validate no spec exceeds the threshold |
+| 4 | **Add scoped instruction for OpenAPI directory** — instruct the LLM to always retrieve both endpoint and `$ref` component schemas when analyzing specs | LOW | Mitigates hallucination from fragmented YAML chunking |
+| 5 | **Design MCP servers with 10KB response limit** — paginate, summarize, strip metadata | HIGH (at MCP build time) | Prevents silent data corruption and session death loops |
+| 6 | **Evaluate OpenAPI MCP server** for the 19-service spec collection — exposes endpoints as discrete tools, bypassing YAML chunking entirely | MEDIUM | Eliminates the worst chunking blind spot |
+| 7 | **Prime context before prompting** — open relevant files and scroll to relevant sections before typing a query | LOW | Leverages editor signal boosting at zero cost |
+| 8 | **Use `#file` sparingly** — prefer `@workspace` or `#codebase` for discovery; use `#file` only when you know exactly which file the LLM needs | LOW | Prevents budget cannibalization |
+| 9 | **Evaluate Copilot Spaces** for cross-repository architecture standards that multiple teams need | MEDIUM | Provides strict grounding without requiring every consumer to clone the architecture repo |
+| 10 | **Adopt AGENTS.md** as the repository routing standard — explicit map of workspace topology directing the AI to the correct directories and MCP tools for each file type | LOW | Reduces blind vector search; 60,000+ repos already use this standard |
+| 11 | **Enforce descriptive file naming** — include domain, service, and asset type in filenames (e.g., `adr-004-payment-gateway-retry-logic.md` not `adr-004.md`) | LOW | Improves lexical search layer that augments semantic retrieval |
 
 ---
 
-**Research source:** [Deep Research — Context Injection Pipeline](../research/deep-research-results-context-injection.md) (April 2026, 55 authoritative sources)
+**Research sources:**
+
+- [Deep Research — Context Injection Pipeline](../research/deep-research-results-context-injection.md) (April 2026, 55 authoritative sources)
+- [Deep Research — Chunking Control by File Type](../research/deep-research-results-chunking-control.md) (April 2026, 57 authoritative sources)
 
 **See also:**
 

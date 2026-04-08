@@ -277,6 +277,8 @@ The pilot produced a complete customization layer. New architects inherit all of
 | **Team conventions** | Update `copilot-instructions.md` | Add team-specific conventions as the team grows (naming standards, review expectations, communication patterns) | MEDIUM — as team forms |
 | **Additional agent personas** | `.agent.md` files | Specialized agents for specific roles (e.g., security architect, integration architect) — only if the team needs differentiated workflows | LOW — only when needed |
 | **SKILL.md files** | `SKILL.md` | Package complex multi-step workflows as reusable skills (e.g., "create a solution design from scratch") — currently handled by prompt files | LOW — prompts are sufficient for now |
+| **Scoped instruction for OpenAPI specs** | `.github/instructions/openapi-specs.instructions.md` | Instruct the LLM: "When analyzing OpenAPI specs, the file may be retrieved in fragments. Always retrieve both the endpoint and its `$ref` component schemas before generating analysis." Mitigates YAML chunking fragmentation. | HIGH — zero-cost mitigation for a known blind spot |
+| **AGENTS.md repository map** | `AGENTS.md` at repo root | Explicit topology map for the AI agent: which directories contain specs, source code, ADRs, wireframes, and which MCP tools to use for each. Adopted by 60,000+ repositories as the standard for AI agent navigation. | MEDIUM — improves retrieval routing |
 
 ### 3.3 How Context Injection Works
 
@@ -308,6 +310,9 @@ Architect opens VS Code with architecture repository
 
 No infrastructure. No API keys. No pipeline. Every architect who clones the repo gets identical AI behavior, because the customizations are files in git.
 
+!!! info "Deep dive: How chunking and retrieval actually work"
+    Copilot's context injection pipeline is more nuanced than the diagram above suggests. YAML and Markdown files receive *worse* chunking treatment than source code — they fall back to generic 60-line sliding windows instead of AST-aware parsing. This affects how OpenAPI specs and ADRs are retrieved. See [Controlling What Copilot Sees](../evidence/context-injection-controls.md) for the full analysis, including the priority hierarchy, file structure optimization, and MCP as a custom chunking bypass.
+
 ---
 
 ## Phase 4: Scale and Enhance
@@ -336,6 +341,10 @@ Each MCP server is additive — it extends Copilot's reach without replacing any
 - Target responses under 5KB to maintain a safety margin
 
 See [Controlling What Copilot Sees](../evidence/context-injection-controls.md#mcp-server-design-constraints) for the full analysis.
+
+An additional MCP use case emerged from chunking research: **OpenAPI specs receive generic token-window chunking** (not AST-aware YAML parsing), which fragments endpoint-schema relationships. An OpenAPI MCP server (e.g., `openapi-mcp` or a custom FastMCP implementation) would expose each endpoint as a discrete tool, entirely bypassing Copilot's native indexing limitation. This is a higher-value MCP use case than external system integration because it fixes a known retrieval quality problem for content already in the workspace.
+
+See [Controlling What Copilot Sees — MCP as a Custom Chunking Layer](../evidence/context-injection-controls.md#mcp-as-a-custom-chunking-layer) for the architecture pattern.
 
 ### 4.3 Measuring Value
 
