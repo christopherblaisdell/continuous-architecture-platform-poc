@@ -186,16 +186,17 @@ After publishing, update existing pages:
 
 | Step | What | Effort | Dependency |
 |------|------|--------|------------|
-| 1 | Deep Research Round 1: Azure AI Search chunking mechanics | 1 session | None |
-| 2 | Deep Research Round 2: Foundry IQ knowledge base configuration | 1 session | None (can run in parallel with Step 1) |
-| 3 | Incorporate research findings into evidence notes | 1-2 hours | Steps 1-2 |
-| 4 | Write Option C File-Type Decision Matrix | 2-3 hours | Step 3 |
-| 5 | Write A-vs-C Comparison Matrix | 2-3 hours | Step 4 |
-| 6 | Write analysis sections and page framing | 1-2 hours | Step 5 |
-| 7 | Add to site nav, homepage, cross-references | 30 min | Step 6 |
-| 8 | Publish to Confluence | 15 min | Step 7 |
+| 1 | Deep Research: Azure AI Search chunking + Foundry IQ (combined) | 1 session | None |
+| 2 | Incorporate research findings into evidence notes | 1-2 hours | Step 1 |
+| 3 | Write Option C File-Type Decision Matrix | 2-3 hours | Step 2 |
+| 4 | Write A-vs-C Comparison Matrix | 2-3 hours | Step 3 |
+| 5 | Write analysis sections and page framing | 1-2 hours | Step 4 |
+| 6 | Add to site nav, homepage, cross-references | 30 min | Step 5 |
+| 7 | Publish to Confluence | 15 min | Step 6 |
 
-**Total estimated effort:** 2 deep research sessions + 1 day of writing and integration.
+**Total estimated effort:** 1 deep research session + 1 day of writing and integration.
+
+**Note:** Research Rounds 1 and 2 were merged into a single prompt (`deep-research-prompt-azure-ai-search-chunking.md`) because Section 6 of that prompt already covers the Foundry IQ knowledge base layer.
 
 ---
 
