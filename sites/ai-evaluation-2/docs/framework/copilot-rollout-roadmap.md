@@ -345,7 +345,7 @@ Each MCP server is additive — it extends Copilot's reach without replacing any
 |-------|-------------|--------|-------------|
 | **Phase 0** (DONE) | Proven single-architect setup with full customization layer | Complete | None |
 | **Phase 1** | Copilot seats for the team, verified workspace indexing | ~18 min per architect + procurement | GitHub Enterprise agreement or individual seats |
-| **Phase 2** | Complete data inventory: what's in git, what moves to git, what needs MCP, what needs Foundry IQ. Tier 1-2 content fully indexed. | Hours for Tier 2 file moves; Tier 3-4 are future-phase planning | Phase 1 |
+| **Phase 2** | Complete data inventory: what's in git, what moves to git, what needs MCP, what needs Foundry IQ. Tier 1-2 content fully indexed. | 2-4 hours (Tier 2 file moves) + ongoing (Tier 3-4 integrations planned here, built in Phase 4) | Phase 1 |
 | **Phase 3** | Team inherits domain-aware AI behavior by cloning the repo | Already done — new architects get it for free | Phase 1 |
 | **Phase 4** | MCP servers for live corporate data (Tier 3), Foundry IQ bridge for enterprise knowledge (Tier 4), team scaling, value measurement | Weeks to months, as needed | Concrete retrieval use cases |
 
