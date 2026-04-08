@@ -68,11 +68,8 @@ nav:
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
   - Reference:
     - Glossary: reference/glossary.md
-  - Addendum:
-    - Deep Research Reports: addendum/index.md
-    - Fact-Check Report: addendum/fact-check-report.md
-    - Embeddings Analysis: addendum/embeddings-analysis.md
-  - Deep Research:
+  - Research:
+    - Overview: research/index.md
     - Context Injection Pipeline: research/deep-research-results-context-injection.md
     - Chunking Control by File Type: research/deep-research-results-chunking-control.md
     - Figma Wireframe Chunking: research/deep-research-results-figma-chunking.md
@@ -81,6 +78,9 @@ nav:
     - Self-Managed Embeddings vs Native Indexing: research/deep-research-results-self-managed-embedding-vs-platform-native-indexing.md
     - Embeddings Deep Research: research/deep-research-results-embeddings.md
     - Fact-Check Deep Research: research/deep-research-results.md
+  - Addendum:
+    - Fact-Check Report: addendum/fact-check-report.md
+    - Embeddings Analysis: addendum/embeddings-analysis.md
 
 extra:
   social: []
