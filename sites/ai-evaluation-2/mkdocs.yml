@@ -72,6 +72,15 @@ nav:
     - Deep Research Reports: addendum/index.md
     - Fact-Check Report: addendum/fact-check-report.md
     - Embeddings Analysis: addendum/embeddings-analysis.md
+  - Deep Research:
+    - Context Injection Pipeline: research/deep-research-results-context-injection.md
+    - Chunking Control by File Type: research/deep-research-results-chunking-control.md
+    - Figma Wireframe Chunking: research/deep-research-results-figma-chunking.md
+    - PlantUML and OpenAPI Chunking: research/deep-research-results-puml-openapi-chunking.md
+    - PlantUML Diagram Chunking: research/deep-research-results-plantuml-chunking.md
+    - Self-Managed Embeddings vs Native Indexing: research/deep-research-results-self-managed-embedding-vs-platform-native-indexing.md
+    - Embeddings Deep Research: research/deep-research-results-embeddings.md
+    - Fact-Check Deep Research: research/deep-research-results.md
 
 extra:
   social: []
