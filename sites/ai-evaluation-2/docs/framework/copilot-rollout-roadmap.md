@@ -322,14 +322,7 @@ No infrastructure. No API keys. No pipeline. Every architect who clones the repo
 
 ### 4.2 Adding External Context via MCP
 
-When a concrete retrieval use case emerges — "I need to search across content that is NOT in this git repository" — MCP is the extension mechanism:
-
-| Use Case | MCP Server | Effort |
-|----------|-----------|--------|
-| Search JIRA/Azure DevOps tickets | MCP server calling JIRA REST API | Days (standard HTTP integration) |
-| Search Confluence/SharePoint docs | MCP server with document search | Days to weeks (depending on auth) |
-| Search other git repos | MCP server with multi-repo index | Weeks (requires indexing infrastructure) |
-| Search via Foundry IQ knowledge base | MCP server calling Foundry IQ API | Weeks (requires Foundry IQ setup + auth bridge — see [MCP Bridge Analysis](../evidence/foundry-iq-comparison.md#can-mcp-bridge-the-gap)) |
+When a concrete retrieval use case emerges — "I need to search across content that is NOT in this git repository" — MCP is the extension mechanism. See Section 2.4 (Tier 3) for the prioritized MCP integration list with effort estimates. Add MCP servers incrementally as concrete retrieval use cases emerge.
 
 Each MCP server is additive — it extends Copilot's reach without replacing anything. The workspace indexing, instructions, and agent definitions continue working exactly as before.
 
