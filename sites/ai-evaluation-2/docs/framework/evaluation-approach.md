@@ -94,3 +94,46 @@ Option C is not dismissed. It is **sequenced correctly**. If Options A and B gen
 But investing in Option C before testing Options A and B is building a custom house before checking whether an existing one meets your needs. The evaluation approach ensures that the organization only pays for bespoke engineering when it has empirical proof that off-the-shelf solutions are insufficient.
 
 See also: [Build vs Leverage](../evidence/build-vs-leverage.md) for a detailed analysis of when custom RAG pipelines are justified versus when they reinvent capabilities that already exist natively.
+
+---
+
+## Quick Baby Steps: Start Now, Enhance Later
+
+Leadership has directed the team to deliver **multiplier improvements, not incremental ones** — and to do it through **quick baby steps** rather than waiting for a perfect solution. This framing directly favors starting with what is testable today.
+
+### What "Start Now" Looks Like
+
+| Step | What Happens | Elapsed Time | Multiplier Delivered |
+|------|-------------|-------------|---------------------|
+| **Day 1** | Install Copilot, load existing instruction files and workspace context | Minutes | Architect produces first AI-assisted solution design |
+| **Week 1** | Refine instructions based on real scenario feedback; validate quality | Days | Team has empirical evidence of output quality and cost |
+| **Week 2-4** | Scale to additional architects; build shared instruction library | Weeks | Multiple architects producing AI-assisted work products |
+| **Month 2+** | Add MCP servers for cross-repository retrieval (including Foundry IQ if needed) | Ongoing | Retrieval capabilities layered onto proven generation workflow |
+
+The key insight: **Option A is already working**. This evaluation was conducted using Option A. The solution designs, ADRs, capability analyses, and PlantUML diagrams produced during the pilot are real deliverables — not prototypes. The multiplier is already being demonstrated.
+
+### MCP Injection Is an Enhancement, Not a Prerequisite
+
+The [Foundry IQ analysis](../evidence/foundry-iq-comparison.md) identifies cross-repository retrieval as a separate workload from generation. These two capabilities have different timelines:
+
+- **Generation** (writing ADRs, analyzing specs, producing diagrams) — works today with workspace-local context. No infrastructure required.
+- **Retrieval** (searching across 4,100+ documents, vendor docs, regulatory materials) — requires indexing infrastructure regardless of which platform is chosen.
+
+Starting with Option A does not close the door on Foundry IQ or any other retrieval infrastructure. MCP is a protocol — it can be connected to any backend, including Azure AI Search, Foundry IQ, or a custom index. The architecture is additive:
+
+1. **Start generating value with Option A** — immediate, proven, zero infrastructure
+2. **Define the retrieval workload** — what content actually needs cross-repo search? (See [The Undefined Workload Problem](../evidence/foundry-iq-comparison.md#the-undefined-workload-problem))
+3. **Add MCP-based retrieval when the workload is defined** — connect to Foundry IQ, Azure AI Search, or any backend that serves the need
+4. **Measure whether retrieval adds value** — A/B test with and without, using the same generation platform
+
+This is the "baby steps" approach: each step delivers measurable value, each step is reversible, and no step requires months of engineering before the first result.
+
+### The Alternative: Wait and Build First
+
+The alternative is to pause generation work while Foundry infrastructure is built, tested, and integrated. This means:
+
+- **Weeks to months** before the first AI-assisted architecture deliverable
+- Engineering effort spent on infrastructure instead of architecture outcomes
+- No empirical baseline to compare against — the team will not know whether Foundry retrieval actually improves output quality because there is no "without retrieval" baseline to measure against
+
+Starting with Option A provides that baseline. If Foundry IQ retrieval later proves to improve quality measurably, the case for the investment is empirical, not theoretical.
