@@ -82,40 +82,109 @@ If Copilot returns accurate answers, indexing is working. No configuration neede
 
 ## Phase 2: Content Preparation
 
-**Goal:** Ensure all architecture content is in the workspace so Copilot can index it. Content that lives in the workspace is automatically available as context.
+**Goal:** Identify every category of data an architecture practice needs for AI-assisted work, determine where it lives today, decide whether it belongs in git or requires a different access mechanism, and execute the moves.
 
-### 2.1 Content Already in Workspace (No Action Needed)
+Copilot can only use what it can see. Content in the workspace is indexed automatically. Content outside the workspace requires an integration (MCP server) or an enterprise knowledge layer (Foundry IQ). This section inventories all data categories, classifies their delivery mechanism, and sequences the work.
 
-| Content Type | Count | Location | Indexed? |
-|-------------|-------|----------|----------|
-| OpenAPI service specs | 22 | `architecture/specs/` | Yes, automatically |
-| Architecture Decision Records | 14 | `decisions/` | Yes, automatically |
-| Solution designs | 6 | `architecture/solutions/` | Yes, automatically |
-| PlantUML diagrams | 37 | `architecture/diagrams/` | Yes, automatically |
-| AsyncAPI event specs | 8 | `architecture/events/` | Yes, automatically |
-| Metadata YAML | 15 | `architecture/metadata/` | Yes, automatically |
-| Wireframes (Excalidraw) | 18 | `architecture/wireframes/` | Yes, automatically |
+### 2.1 Data Inventory — Master View
 
-### 2.2 Content to Bring into the Workspace
+Every data source an architecture practice needs falls into one of four tiers:
 
-| Content | Current Location | Target Location | Action | Priority |
-|---------|-----------------|-----------------|--------|----------|
-| Architecture standards (MADR template, C4 guide, arc42 template, ISO 25010 quality tree) | `phases/phase-1-ai-tool-cost-comparison/workspace/architecture-standards/` | `architecture-standards/` | Copy to workspace root | HIGH — referenced by copilot-instructions.md but currently only in Phase 1 isolated workspace |
-| Source code examples | Not present (referenced in instructions) | `source-code/` or remove references | Either add representative Java service implementations, or remove source code analysis guidelines from instructions | MEDIUM — instructions reference analysis patterns that have no content to analyze |
-| Mock tool scripts | `phases/phase-1-ai-tool-cost-comparison/workspace/scripts/` and `scripts/` | Already in `scripts/` at root | Verify `scripts/mock-jira-client.py` etc. are accessible from workspace root | LOW — already partially addressed |
+| Tier | Delivery Mechanism | When Copilot Sees It | Effort to Enable |
+|------|-------------------|---------------------|-----------------|
+| **Tier 1** | Already in git | Immediately on clone | None — already done |
+| **Tier 2** | Move into git | After copy + commit | Hours (file moves) |
+| **Tier 3** | MCP server (live queries) | When MCP server is running | Days to weeks per integration |
+| **Tier 4** | Foundry IQ / knowledge base | When index is built + MCP bridge configured | Weeks to months |
 
-### 2.3 Content That Should NOT Be in the Workspace
+The following sections detail what falls into each tier and why.
 
-Not all content needs to be in the git repository. Content that belongs elsewhere:
+### 2.2 Tier 1 — Already in Git (No Action Needed)
 
-| Content Type | Why Not in Workspace | How to Access |
-|-------------|---------------------|---------------|
-| Vendor documentation | Licensing restrictions, frequent updates | Future: MCP server pointing at vendor doc index |
-| Regulatory/compliance docs | Controlled distribution, access restrictions | Future: MCP server with access control |
-| SharePoint content from other teams | Cross-team ownership, not architecture-owned | Future: Foundry IQ knowledge base via MCP |
-| Other team's git repositories | Separate ownership, separate change cadence | Future: Copilot multi-repo support or MCP |
+This content is in the architecture repository today. Copilot indexes it automatically when an architect clones the repo.
 
-These are retrieval workloads (see [Glossary: Retrieval Workload](../reference/glossary.md#retrieval-workload)). They require indexing infrastructure beyond workspace indexing. MCP is the bridge — when a concrete cross-repo use case emerges, an MCP server can expose external content to Copilot without moving it into the workspace.
+| Data Category | Examples | Count | Location |
+|--------------|----------|-------|----------|
+| API contracts | OpenAPI YAML specs for all 19+ services | 22 | `architecture/specs/` |
+| Event schemas | AsyncAPI YAML specs for event-driven integrations | 8 | `architecture/events/` |
+| Architecture decisions | MADR-formatted ADRs (ADR-001 through ADR-014) | 14 | `decisions/` |
+| Solution designs | Complete solution packages (requirements, analysis, impacts, guidance, user stories) | 6 | `architecture/solutions/` |
+| Service metadata | Domain classifications, data stores, cross-service calls, actors, capabilities, tickets | 15 | `architecture/metadata/` |
+| Architecture diagrams | C4 container/component diagrams, sequence diagrams, event flows | 37 | `architecture/diagrams/` |
+| UI wireframes | Excalidraw designs for guest portal, ops dashboard, mobile app | 18 | `architecture/wireframes/` |
+| Copilot customizations | Instructions, agent definitions, prompt workflows, scoped rules | 9 | `.github/` |
+| Portal source | MkDocs pages, generators, deployment configs | ~50 | `portal/` |
+| Configuration schemas | Adventure classification rules, test standards | 2 | `config/` |
+
+**Total: ~180 files providing architecture context on clone.**
+
+### 2.3 Tier 2 — Move into Git
+
+This content exists but is not in the right location for Copilot to index it, or it exists outside the repository and should be brought in.
+
+| Data Category | What It Contains | Where It Lives Today | Where It Should Go | Priority | Rationale |
+|--------------|-----------------|---------------------|-------------------|----------|-----------|
+| Architecture standards | MADR template, C4 model guide, arc42 template structure, ISO 25010 quality tree, quality model reference | `phases/phase-1-ai-tool-cost-comparison/workspace/architecture-standards/` (58 files) | `architecture-standards/` at workspace root | HIGH | `copilot-instructions.md` references these templates by path. Copilot currently cannot find them because they are buried in the Phase 1 evaluation workspace. |
+| Source code examples | Representative Java service implementations showing patterns (controller/service/repository, entity models, event handlers) | Not present — `copilot-instructions.md` references `source-code/` analysis patterns | `source-code/` with 2-3 representative services, OR remove source code analysis section from instructions | MEDIUM | Instructions teach Copilot how to analyze Java code, but there is no code to analyze. Either provide examples or remove the dead reference. |
+| Team runbooks | How to run generators, deploy the portal, execute mock tools, perform architecture reviews | Scattered across README files and copilot-instructions.md | `docs/runbooks/` or consolidate into a single operations guide | MEDIUM | An architect joining the team needs a single place to learn operational procedures, and Copilot needs this to answer "how do I..." questions. |
+| Reference architectures | Canonical patterns the team has adopted (saga, CQRS, event sourcing, API gateway) with rationale | Implicit in ADRs and solution designs — no standalone reference | `architecture/patterns/` as short pattern cards (1 page each) | LOW | Gives Copilot explicit pattern vocabulary to draw from when recommending designs. Currently it infers patterns from ADRs, which works but is indirect. |
+| Environment topology | Which services run where, what databases back them, network topology between environments | Partially in `architecture/metadata/data-stores.yaml` | Expand metadata YAML or add `architecture/metadata/environments.yaml` | LOW | Useful for impact assessments that need to reference deployment boundaries, but not blocking current work. |
+
+### 2.4 Tier 3 — Access via MCP Server (Live Queries)
+
+This data lives in corporate systems that change in real time. It should NOT be copied into git — it would go stale immediately. Instead, an MCP server provides live query access when Copilot needs it.
+
+The pilot demonstrated this pattern using local mock scripts (`mock-jira-client.py`, `mock-elastic-searcher.py`, `mock-gitlab-client.py`) that simulate what MCP servers would do in production.
+
+| Data Category | Corporate System | What the Architect Needs | MCP Server Approach | Priority |
+|--------------|-----------------|-------------------------|---------------------|----------|
+| Work items and tickets | JIRA or Azure DevOps | Ticket details, status, comments, linked issues — to understand requirements before designing | MCP server calling JIRA/ADO REST API with read-only access. Query by ticket ID, filter by status/component/label. | HIGH — this is the most frequent external data need during architecture work |
+| Production logs and metrics | Elasticsearch, Datadog, or Application Insights | Error logs, latency metrics, traffic patterns — to ground architecture analysis in production evidence | MCP server querying observability APIs. Filter by service, severity, time range, keyword. | HIGH — essential for investigation scenarios |
+| Source control activity | GitHub or GitLab | Recent PRs/MRs, code diffs, branch status — to understand what changed and when | MCP server calling GitHub/GitLab API. List PRs by repo, get diff for specific PR, search commits. | MEDIUM — useful during investigations but architects can also browse the UI |
+| CI/CD pipeline status | GitHub Actions, Azure DevOps Pipelines, or Jenkins | Build results, test failures, deployment history — to assess whether a service is stable before proposing changes | MCP server querying pipeline APIs. Get latest build status, test results for a service. | MEDIUM — valuable but not blocking architecture decisions |
+| Service registry / CMDB | ServiceNow, Backstage, or internal CMDB | Service ownership, SLA targets, deployment tier, dependency graph — to validate service metadata is current | MCP server querying CMDB API. Lookup service by name, get owner/tier/dependencies. | LOW — metadata YAML in git covers this for now; MCP adds live validation |
+| Incident history | PagerDuty, ServiceNow, or Opsgenie | Past incidents, root cause analysis, affected services — to identify recurring architectural weaknesses | MCP server querying incident management API. Search by service, severity, date range. | LOW — useful for pattern detection but not a daily need |
+
+**Key principle:** Each MCP server is a thin adapter — it translates Copilot's tool calls into the corporate system's API. The architecture team does not need to build indexing infrastructure. MCP servers are additive: each one extends Copilot's reach without changing anything about the workspace, instructions, or agent definitions.
+
+### 2.5 Tier 4 — Access via Foundry IQ or Enterprise Knowledge Base
+
+This data is large, unstructured, and owned by other teams. It cannot be moved into git (too large, wrong ownership) and is not well-suited to real-time MCP queries (requires full-text search over large corpora, not point lookups).
+
+This is the retrieval workload that enterprise knowledge layers like Foundry IQ are designed for. See [Foundry IQ Comparison](../evidence/foundry-iq-comparison.md) for detailed analysis.
+
+| Data Category | Where It Lives | Why It Cannot Be in Git or MCP | How Foundry IQ / Knowledge Base Addresses It |
+|--------------|---------------|-------------------------------|---------------------------------------------|
+| Cross-team documentation | SharePoint, Confluence, Google Docs | Owned by other teams, updated independently, too large to clone. An MCP point-lookup requires knowing which document to fetch — but the architect often does not know what exists. | Foundry IQ indexes SharePoint/Confluence sites and enables semantic search. Copilot asks "what has the payments team documented about PCI compliance?" and gets relevant passages. |
+| Compliance and regulatory frameworks | SharePoint, internal wiki, or document management system | Large corpus, controlled distribution, subject to legal review. Not appropriate for a git repository accessible to all developers. | Foundry IQ can index approved compliance documents with access controls preserved. Architects search for applicable regulations during security reviews. |
+| Vendor reference documentation | Vendor portals, licensed PDF/HTML documentation | Licensing restrictions prevent redistribution. Content updates on vendor's schedule. | Foundry IQ can index vendor docs (where licensing permits) to answer "what does the Azure Service Bus SLA guarantee?" without the architect browsing vendor portals. |
+| Enterprise reference architectures from other teams | Other teams' git repos, architecture wikis, Confluence spaces | Different ownership, different change cadence. Copying creates stale forks. | Foundry IQ provides cross-repo semantic search. An architect designing an event-driven integration can find how other teams solved similar problems. |
+| Historical decision records from other domains | Confluence, SharePoint, email threads, meeting recordings | Scattered across systems, often not in structured format. | Foundry IQ indexes unstructured content and surfaces relevant prior decisions during new design work. |
+| Onboarding and training materials | LMS, SharePoint, internal wiki | Owned by HR/L&D, updated on their schedule. | Foundry IQ makes institutional knowledge searchable. New architects can ask Copilot questions that draw from training materials they have not read yet. |
+
+**Key principle:** Foundry IQ solves the "I don't know what I don't know" problem. Git and MCP work when the architect knows what to look for. Foundry IQ works when the architect needs to discover relevant content across a broad corpus.
+
+**Bridge to Copilot:** Foundry IQ does not natively integrate with VS Code / Copilot today. An MCP server calling the Foundry IQ retrieval API would bridge the gap — the architect's tool call flows through MCP to Foundry IQ's search index and returns relevant passages as context. See the [MCP Bridge Analysis](../evidence/foundry-iq-comparison.md#can-mcp-bridge-the-gap) for feasibility assessment.
+
+### 2.6 Decision Framework: Git vs. MCP vs. Foundry IQ
+
+When new data sources are identified, use this framework to classify them:
+
+| Question | If Yes → | If No → |
+|----------|----------|---------|
+| Does the architecture team own this content? | Consider git | Move to next question |
+| Is the content small enough for git (< 100 MB, < 1,000 files)? | Git | Move to next question |
+| Does the content change with architecture decisions (not independently)? | Git | Move to next question |
+| Is the content in a system with a REST API? | MCP server | Move to next question |
+| Does the architect know exactly what to query (point lookup)? | MCP server | Move to next question |
+| Is the content a large unstructured corpus requiring semantic search? | Foundry IQ | Evaluate case-by-case |
+
+**Rules of thumb:**
+
+- **If you wrote it, git it.** Architecture artifacts, standards, templates, decisions — these belong in the repository.
+- **If you query it, MCP it.** Live systems (tickets, logs, pipelines) that change in real time need an API adapter, not a static copy.
+- **If you search it, index it.** Large knowledge bases where the architect does not know which specific document to fetch need an indexing layer.
+- **When in doubt, start with git.** Moving a document into the repository is the simplest possible action. Only reach for MCP or Foundry IQ when git genuinely cannot serve the need.
 
 ---
 
@@ -225,8 +294,8 @@ Each MCP server is additive — it extends Copilot's reach without replacing any
 |-------|-------------|--------|-------------|
 | **Phase 0** (DONE) | Proven single-architect setup with full customization layer | Complete | None |
 | **Phase 1** | Copilot seats for the team, verified workspace indexing | ~20 min per architect + procurement | GitHub Enterprise agreement or individual seats |
-| **Phase 2** | All architecture content indexed and accessible to Copilot | Hours (file moves + verification) | Phase 1 |
+| **Phase 2** | Complete data inventory: what's in git, what moves to git, what needs MCP, what needs Foundry IQ. Tier 1-2 content fully indexed. | Hours for Tier 2 file moves; Tier 3-4 are future-phase planning | Phase 1 |
 | **Phase 3** | Team inherits domain-aware AI behavior by cloning the repo | Already done — new architects get it for free | Phase 1 |
-| **Phase 4** | External data via MCP, team scaling, value measurement | Weeks to months, as needed | Concrete retrieval use cases |
+| **Phase 4** | MCP servers for live corporate data (Tier 3), Foundry IQ bridge for enterprise knowledge (Tier 4), team scaling, value measurement | Weeks to months, as needed | Concrete retrieval use cases |
 
-The critical insight: **Phases 1-3 can be completed in a single day per architect.** The customization layer already exists. The content is already in the workspace. The hardest work — teaching Copilot the architecture domain — is already done.
+The critical insight: **Phases 1-3 can be completed in a single day per architect.** The customization layer already exists. Most content is already in the workspace (Tier 1). Tier 2 content moves take hours. The hardest work — teaching Copilot the architecture domain — is already done. Tiers 3 and 4 (MCP and Foundry IQ) are additive enhancements that extend reach without changing the foundation.
