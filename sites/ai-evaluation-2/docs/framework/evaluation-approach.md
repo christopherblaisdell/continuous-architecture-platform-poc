@@ -119,11 +119,13 @@ The [Foundry IQ analysis](../evidence/foundry-iq-comparison.md) identifies cross
 - **Generation** (writing ADRs, analyzing specs, producing diagrams) — works today with workspace-local context. No infrastructure required.
 - **Retrieval** (searching across 4,100+ documents, vendor docs, regulatory materials) — requires indexing infrastructure regardless of which platform is chosen.
 
+An important architectural distinction: **GitHub Copilot cannot use Azure AI Foundry as its AI provider** — Copilot's generation engine is GitHub's own infrastructure, not something that can be swapped for a Foundry-hosted agent. However, Copilot **can** consume Foundry IQ as a context source via MCP. This means Foundry IQ's value to Copilot is specifically in the **retrieval layer** — injecting additional context from a cross-repository knowledge base into Copilot's generation workflow. The generation and retrieval layers are independent, and choosing one platform for generation does not prevent using the other for retrieval.
+
 Starting with Option A does not close the door on Foundry IQ or any other retrieval infrastructure. MCP is a protocol — it can be connected to any backend, including Azure AI Search, Foundry IQ, or a custom index. The architecture is additive:
 
 1. **Start generating value with Option A** — immediate, proven, zero infrastructure
 2. **Define the retrieval workload** — what content actually needs cross-repo search? (See [The Undefined Workload Problem](../evidence/foundry-iq-comparison.md#the-undefined-workload-problem))
-3. **Add MCP-based retrieval when the workload is defined** — connect to Foundry IQ, Azure AI Search, or any backend that serves the need
+3. **Add Foundry IQ as a context source via MCP when the workload is defined** — Copilot consumes retrieval results as additional context, while continuing to use its own generation engine
 4. **Measure whether retrieval adds value** — A/B test with and without, using the same generation platform
 
 This is the "baby steps" approach: each step delivers measurable value, each step is reversible, and no step requires months of engineering before the first result.
