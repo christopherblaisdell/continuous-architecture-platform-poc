@@ -141,7 +141,7 @@ Declarative agent customization is the **middle ground** between two extremes th
 | Extreme | Problem | Middle Ground |
 |---------|---------|---------------|
 | "Every architect uses the AI differently" | Inconsistent outputs, no shared standards, no institutional knowledge capture | Custom agents encode best practices into versioned, shared configuration. Every architect gets the same starting point. |
-| "We need a bespoke agent platform to control AI behavior" | Multi-month engineering, ML infrastructure expertise, ongoing maintenance | Markdown files checked into Git achieve behavioral control with zero infrastructure. The configuration IS the customization. |
+| "We need a bespoke agent platform to control AI behavior" | Multi-month engineering, ML infrastructure expertise, ongoing maintenance | Markdown files checked into Git achieve behavioral control with zero infrastructure — the customization files ARE the control mechanism. |
 
 This is **behavioral autonomy via declarative configuration**:
 
