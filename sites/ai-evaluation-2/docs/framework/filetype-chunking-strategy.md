@@ -548,4 +548,5 @@ The dedicated PlantUML research identifies four experiments that would validate 
 - [Controlling What Copilot Sees](../evidence/context-injection-controls.md) — Evidence page with full technical analysis of Copilot's context injection pipeline
 - [Copilot Rollout Roadmap](copilot-rollout-roadmap.md) — Practical deployment plan that references this strategy
 - [Build vs Leverage](../evidence/build-vs-leverage.md) — Why native capabilities replace custom RAG for most use cases
+- [File-Type Handling: A vs C](../evidence/filetype-handling-a-vs-c.md) — Side-by-side comparison of Option A and Option C for each architecture file type
 - [DD-01: Context and Configuration](../decisions/dd-01-context-configuration.md) — How the three options handle domain knowledge injection

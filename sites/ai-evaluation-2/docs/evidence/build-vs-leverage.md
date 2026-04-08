@@ -164,3 +164,5 @@ This analysis directly informs two evaluation factors:
 The dedicated decision page [DD-01 Context and Configuration](../decisions/dd-01-context-configuration.md) evaluates how each option handles knowledge injection and behavior customization.
 
 For the argument that these platforms only work for coding and that architecture requires a bespoke solution, see [Architecture Is Not Just Coding](architecture-not-just-coding.md).
+
+For evidence that Azure AI Search does not actually chunk architecture files better than Copilot, see [File-Type Handling: A vs C](filetype-handling-a-vs-c.md).

@@ -182,3 +182,5 @@ The evaluation's position is not "Foundry IQ is bad." It is:
 - [Add and manage MCP servers in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) — VS Code Docs, updated Apr 2026
 - [What is Azure AI Search?](https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search) — Microsoft Learn
 - [Foundry IQ: Boost Response Relevance by 36% with Agentic Retrieval](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-boost-response-relevance-by-36-with-agentic-retrieval/4470720) — Microsoft Tech Community
+
+For a file-type-by-file-type comparison of how Azure AI Search's chunking stacks up against Copilot's, see [File-Type Handling: A vs C](filetype-handling-a-vs-c.md).

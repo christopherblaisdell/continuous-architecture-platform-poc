@@ -65,6 +65,7 @@ nav:
     - Build vs Leverage: evidence/build-vs-leverage.md
     - What Does Foundry IQ Actually Require?: evidence/foundry-iq-comparison.md
     - Controlling What Copilot Sees: evidence/context-injection-controls.md
+    - "File-Type Handling: A vs C": evidence/filetype-handling-a-vs-c.md
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
   - Reference:
     - Glossary: reference/glossary.md

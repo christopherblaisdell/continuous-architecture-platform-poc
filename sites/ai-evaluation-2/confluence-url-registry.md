@@ -27,6 +27,7 @@ All published pages for the AI Evaluation site in the UPA Confluence space.
 | Evidence | Architecture Is Not Just Coding But the Tools Are the Same | `docs/evidence/architecture-not-just-coding.md` | [Link](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2614624526/Architecture+Is+Not+Just+Coding+But+the+Tools+Are+the+Same) |
 | Evidence | Controlling What Copilot Sees: The Context Injection Pipeline | `docs/evidence/context-injection-controls.md` | [Link](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2619607536/Controlling+What+Copilot+Sees+The+Context+Injection+Pipeline) |
 | Evidence | What Does Foundry IQ Actually Require | `docs/evidence/foundry-iq-comparison.md` | [Link](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2619932980/What+Does+Foundry+IQ+Actually+Require) |
+| Evidence | File-Type Handling: Option A vs Option C | `docs/evidence/filetype-handling-a-vs-c.md` | *Not yet published* |
 | Reference | AI Glossary | `docs/reference/glossary.md` | [Link](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2620260790/AI+Glossary) |
 | Research | Deep Research Reports | `docs/research/index.md` | [Link](https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2623471642/Deep+Research+Reports) |
 
