@@ -139,7 +139,7 @@ Regardless of which architecture is selected, the content needs to be indexed.
 
 | Step | Action | Detail |
 |------|--------|--------|
-| 2.1 | **Provision Azure AI Search** | Deploy Basic tier ($73/mo) or Free tier (50MB, 3 indexes) for POC. Deploy via Bicep alongside existing `ai-poc.bicep` |
+| 2.1 | **Provision Azure AI Search** | Deploy Basic tier ($73/mo) with semantic ranker. Deploy via Bicep in `rg-novatrek-ai-poc`. Decision: Basic tier approved 2026-04-09 (current subscription burn rate ~$18/mo → ~$91/mo). |
 | 2.2 | **Sync GitHub repo content to indexable storage** | Options: (a) GitHub Actions pushes to Azure Blob Storage on commit, (b) Azure DevOps pipeline, (c) manual sync script. Content: OpenAPI specs, ADRs, metadata YAML, solution designs, Markdown docs |
 | 2.3 | **Configure integrated vectorization** | Set up text splitting + embedding pipeline. Custom chunking profiles: heading-aware for Markdown, dereference-then-chunk for OpenAPI YAML, AST-aware for Java |
 | 2.4 | **Build custom skillset for OpenAPI specs** | Azure AI Search custom skill (Azure Function) that runs `$ref` dereferencing before chunking — solves the dead-pointer problem |
