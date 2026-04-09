@@ -1,6 +1,6 @@
 # Foundry Context Injection Plan — Making the NovaTrek Custom Model Knowledge-Aware
 
-**Status:** Draft (Research Phase Complete)
+**Status:** Draft (Architecture Selected: B — Foundry Agent Service)
 **Date:** 2026-04-09
 **Last Updated:** 2026-04-09
 **Related:** [Option D — Hybrid Architecture](../sites/ai-evaluation-2/docs/evidence/option-d-hybrid-architecture.md), [Foundry IQ Comparison](../sites/ai-evaluation-2/docs/evidence/foundry-iq-comparison.md), [Context Injection Controls](../sites/ai-evaluation-2/docs/evidence/context-injection-controls.md), [BYOK POC Validation](../sites/ai-evaluation-2/docs/evidence/option-d-poc-validation.md)
@@ -115,9 +115,9 @@ Foundry IQ knowledge bases expose a native MCP endpoint: `{search_endpoint}/know
 | C: RAG Proxy | **Viable** | YES (for POC) | Simplest server-side path, standard APIs, no preview dependencies | Custom code to maintain, no built-in citation support |
 | D: MCP Bridge | **Viable** | YES (recommended) | No proxy needed, leverages Copilot's native MCP, can use Foundry IQ MCP endpoint | Client-side injection (depends on Copilot MCP behavior), Foundry IQ in preview |
 
-**Recommended path: Architecture D (MCP Bridge) with Phase 4 upgrade to Architecture B (Foundry Agent) when it reaches GA.**
+**SELECTED: Architecture B (Foundry Agent Service + Foundry IQ)** — Decision made 2026-04-09.
 
-Architecture D is the lowest-friction option for POC: no proxy, no translation layer, uses Copilot's existing MCP infrastructure, and can optionally connect to Foundry IQ's MCP endpoint for agentic retrieval. Architecture C (RAG Proxy) is the fallback if MCP injection proves insufficient for the use case.
+The company is committed to Microsoft's strategic direction. Despite preview status, Architecture B provides the highest-quality retrieval (agentic retrieval with query planning, decomposition, and semantic reranking), built-in citations, and best long-term alignment with the Azure platform. The translation layer for BYOK compatibility is accepted as necessary engineering cost. Architecture C (RAG Proxy) is the fallback if Foundry Agent Service has blocking preview limitations.
 
 ---
 
@@ -131,7 +131,7 @@ Architecture D is the lowest-friction option for POC: no proxy, no translation l
 | 1.2 | **Research Azure OpenAI "On Your Data" with BYOK** | COMPLETE | **DEPRECATED.** Approaching retirement. Architecture A eliminated. |
 | 1.3 | **Research Azure AI Search GitHub connector** | COMPLETE | No built-in connector. Blob indexer supports Markdown, JSON, XML, plain text. Must sync repo content to Blob Storage. |
 | 1.4 | **Research Foundry Agent as Chat Completions proxy** | COMPLETE | Uses Conversations API (not Chat Completions). Translation layer needed. Preview only. |
-| 1.5 | **Evaluate architecture options (A-D)** | PENDING | Architecture A eliminated. Recommended: D (MCP Bridge) for POC, with C (RAG Proxy) as fallback. |
+| 1.5 | **Evaluate architecture options (A-D)** | COMPLETE | Architecture A eliminated. **Architecture B (Foundry Agent) selected** — aligns with Microsoft's strategic direction. Architecture C as fallback. |
 
 ### Phase 2: Index Architecture Content in Azure AI Search
 
@@ -147,15 +147,24 @@ Regardless of which architecture is selected, the content needs to be indexed.
 | 2.6 | **Configure index refresh pipeline** | GitHub Actions workflow: on push to main → sync changed files → trigger re-indexing. Target: under 5 minutes from commit to searchable |
 | 2.7 | **Validate index quality** | Run test queries against the index: "What is the check-in orchestration pattern?", "What does ADR-005 say about default fallback?", "What events does svc-check-in produce?" — verify relevant chunks are returned |
 
-### Phase 3: Build the Context Injection Layer
+### Phase 3: Build Foundry Agent Service Integration (Architecture B — SELECTED)
 
-Based on the architecture selected in Phase 1, build the middleware that connects the indexed content to the BYOK model.
+#### Phase 3B: Foundry Agent + Translation Proxy
 
-#### ~~Architecture A (On Your Data)~~ — ELIMINATED
+| Step | Action | Detail |
+|------|--------|--------|
+| 3B.1 | **Create Microsoft Foundry project** | Provision a Foundry resource and project in Azure. Deploy GPT-4.1-mini (cost-effective query planning) or GPT-4o (current BYOK model). Deploy via Azure CLI or portal. |
+| 3B.2 | **Create Foundry IQ knowledge base** | Create a knowledge base on Azure AI Search (from Phase 2 index). Wire it to the Foundry project. Configure retrieval reasoning effort (`low` for POC, `medium` for higher accuracy). |
+| 3B.3 | **Create RemoteTool connection** | Connect the Foundry project to the knowledge base MCP endpoint (`{search_endpoint}/knowledgebases/{kb_name}/mcp?api-version=2025-11-01-preview`) using `ProjectManagedIdentity` auth. |
+| 3B.4 | **Create Foundry Agent** | Deploy an agent with `MCPTool` configuration. Set `allowed_tools = ["knowledge_base_retrieve"]`. Write architecture-optimized instructions: "Use the knowledge base tool to answer architecture questions. Include citations to source documents. If the knowledge base doesn't contain the answer, respond with 'I don't know'." |
+| 3B.5 | **Build Chat Completions → Conversations API translation proxy** | Deploy an Azure Function that receives standard Chat Completions requests from Copilot BYOK, translates them to the Conversations API format (`openai_client.conversations.create()` + `openai_client.responses.create()`), invokes the Foundry Agent, and returns the response in Chat Completions format. |
+| 3B.6 | **Update BYOK baseUrl** | Point Copilot's BYOK config (`.vscode/settings.json`) to the Azure Function proxy URL instead of directly to Azure OpenAI. |
+| 3B.7 | **Configure agent instructions** | Tune the agent's system prompt for architecture retrieval quality. Optimize for: high MCP tool invocation rate, clear source attribution, NovaTrek domain terminology. |
+| 3B.8 | **Test end-to-end** | Verify full pipeline: Copilot (BYOK) → translation proxy → Foundry Agent → knowledge_base_retrieve MCP tool → Foundry IQ agentic retrieval → Azure AI Search → grounded response with citations. |
+| 3B.9 | **Latency measurement** | Measure end-to-end latency: Copilot → proxy → agent → search → response. Target: < 5 seconds added latency. If unacceptable, optimize: pre-warmed function, co-located resources, reduced retrieval depth. |
+| 3B.10 | **Add observability** | Log queries, retrieval results, citation content, and response quality to Application Insights. Monitor agent tool invocation rates and search hit quality. |
 
-Azure OpenAI "On Your Data" is deprecated and approaching retirement. Do not build on this path. See Research Findings Block B above.
-
-#### If Architecture C (Proxy with RAG Middleware):
+#### Fallback: Architecture C (RAG Proxy) — If Foundry Agent has blocking issues
 
 | Step | Action | Detail |
 |------|--------|--------|
@@ -166,29 +175,17 @@ Azure OpenAI "On Your Data" is deprecated and approaching retirement. Do not bui
 | 3C.5 | **Implement context budget management** | Track token usage: system prompt + injected context + user messages must not exceed the model's context window. Truncate lowest-relevance chunks if needed |
 | 3C.6 | **Add observability** | Log queries, retrieved chunks, and response quality metrics to Application Insights for monitoring and tuning |
 
-#### If Architecture D (MCP Bridge to Foundry IQ) — RECOMMENDED:
+### Phase 4: ~~Foundry Agent Service Integration~~ — MERGED INTO PHASE 3B
+
+Phase 4 was originally planned as a future upgrade to Foundry Agent Service. With Architecture B selected, this work has been pulled forward into Phase 3B above.
+
+Remaining Phase 4 activities (if needed):
 
 | Step | Action | Detail |
 |------|--------|--------|
-| 3D.1 | **Build MCP server for Azure AI Search / Foundry IQ** | Python stdio MCP server that exposes tools: `search_architecture(query)`, `get_service_specs(svc_name)`, `search_adrs(query)`, `get_domain_context()`. Can call Azure AI Search directly OR the Foundry IQ MCP endpoint (`{search_endpoint}/knowledgebases/{kb_name}/mcp?api-version=2025-11-01-preview`) |
-| 3D.2 | **Implement retrieval client** | Option 1: Use `azure-search-documents` Python SDK to query the search index directly. Option 2: Use HTTP calls to the Foundry IQ MCP endpoint to leverage agentic retrieval (query planning, decomposition, semantic reranking). Start with Option 1 (simpler), upgrade to Option 2 when Foundry IQ knowledge base is provisioned |
-| 3D.3 | **Configure MCP server in VS Code** | Add to `.vscode/mcp.json` so it's available alongside the existing Vikunja MCP server. Authenticate via API key (local dev) or `DefaultAzureCredential` (production) |
-| 3D.4 | **Respect MCP response limits** | Implement smart truncation: return summaries with file paths, not full documents. Include relevance scores and source citations. Paginate if result set is large |
-| 3D.5 | **Test with BYOK model** | Verify that when using the NovaTrek BYOK model in Copilot Agent Mode, MCP tool results are injected into the context correctly. The BYOK model receives both Copilot's workspace context AND MCP retrieval results |
-| 3D.6 | **Add Foundry IQ agentic retrieval** | Once Phase 2 index is working with direct search, create a Foundry IQ knowledge base and switch the MCP server to call the Foundry IQ MCP endpoint. This adds LLM-powered query planning and answer synthesis on top of the search index |
-
-### Phase 4: Foundry Agent Service Integration (When GA)
-
-If Foundry Agent Service reaches GA and the preview limitations (no per-request headers, no Chat Completions compatibility) are resolved, upgrade to the full Architecture B path.
-
-| Step | Action | Detail |
-|------|--------|--------|
-| 4.1 | **Create Foundry project** | Deploy a Microsoft Foundry project with LLM deployment (GPT-4.1-mini recommended for cost-effective query planning) |
-| 4.2 | **Create RemoteTool connection** | Connect the Foundry project to the Foundry IQ knowledge base MCP endpoint using `ProjectManagedIdentity` authentication |
-| 4.3 | **Create Foundry Agent** | Deploy an agent with `MCPTool` pointing to the knowledge base. Set `allowed_tools = ["knowledge_base_retrieve"]`. Configure instructions optimized for architecture knowledge retrieval |
-| 4.4 | **Evaluate Conversations API path** | Test if VS Code Copilot can interact with the Foundry Agent via the Conversations API, or if a Chat Completions translation proxy is still needed |
-| 4.5 | **A/B test against MCP Bridge** | Compare Architecture D (MCP Bridge) vs Architecture B (Foundry Agent) on grounding accuracy, citation quality, and latency |
-| 4.6 | **Cost analysis** | Track Foundry Agent compute costs (query planning LLM calls, agent hosting) vs the quality improvement over direct MCP Bridge |
+| 4.1 | **Multi-repo knowledge base** | Add knowledge sources from additional repos (infrastructure, operations, vendor docs) if the single-repo POC proves valuable |
+| 4.2 | **SharePoint/OneLake integration** | Connect corporate SharePoint sites or OneLake as additional knowledge sources for the same knowledge base |
+| 4.3 | **Tune retrieval reasoning effort** | Upgrade from `low` to `medium` if query planning quality needs improvement. Monitor cost impact. |
 
 ### Phase 5: Fine-Tuning (Optional, High Investment)
 
@@ -259,19 +256,18 @@ Research findings are compiled in the "Phase 1 Research Findings" section above.
 | Microsoft strategic alignment | Deprecated | **Highest** (official replacement for On Your Data) | Neutral (custom solution) | Good (uses AI Search + MCP standard) |
 | Upgrade path | None | Already the target | Can migrate to B or D | Can add Foundry IQ agentic retrieval (step 3D.6) |
 
-**RECOMMENDATION: Architecture D (MCP Bridge) for POC, with upgrade path to Architecture B (Foundry Agent) when GA.**
+**SELECTED: Architecture B (Foundry Agent Service + Foundry IQ).** Accepted preview status and complexity trade-off for strongest Microsoft strategic alignment and highest retrieval quality.
 
 ---
 
 ## Implementation Sequence
 
 ```
-COMPLETE:   Phase 1 (1.1 - 1.4)     — Deep research (Architecture A eliminated, D recommended)
-NEXT:       Phase 1.5               — Architecture selection decision (prompt-me)
-Week 1:     Phase 2 (2.1 - 2.7)     — Index content in Azure AI Search
-Week 2:     Phase 3D (3D.1 - 3D.6)  — Build MCP Bridge + optional Foundry IQ agentic retrieval
+COMPLETE:   Phase 1 (1.1 - 1.5)     — Deep research + architecture selection (B: Foundry Agent)
+NEXT:       Phase 2 (2.1 - 2.7)     — Index content in Azure AI Search
+Week 1:     Phase 3B (new)           — Deploy Foundry project + Agent Service + translation proxy
+Week 2:     Phase 3B (cont)          — Connect knowledge base, configure agent, test retrieval
 Week 2:     Validate                 — Test queries, measure grounding, tune
-Week 3+:    Phase 4 (if Foundry GA)  — Foundry Agent Service integration
 Later:      Phase 5 (if needed)      — Fine-tuning
 ```
 
