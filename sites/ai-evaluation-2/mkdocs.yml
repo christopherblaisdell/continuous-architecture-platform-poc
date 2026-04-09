@@ -59,6 +59,7 @@ nav:
     - DD-03 AI Provider: decisions/dd-03-ai-provider.md
     - DD-04 Model Routing: decisions/dd-04-model-routing.md
     - DD-05 Model Selection Autonomy: decisions/dd-05-model-selection-autonomy.md
+    - DD-06 IDE Client Selection: decisions/dd-06-ide-client-selection.md
   - Evidence:
     - Platform Landscape: evidence/platform-landscape.md
     - Model Quality at Budget: evidence/model-quality-at-budget.md
@@ -67,8 +68,12 @@ nav:
     - Controlling What Copilot Sees: evidence/context-injection-controls.md
     - "File-Type Handling: A vs C": evidence/filetype-handling-a-vs-c.md
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
+    - "Option D — Hybrid Architecture": evidence/option-d-hybrid-architecture.md
+    - Option D POC Validation: evidence/option-d-poc-validation.md
+    - "Cost Offset — Free Tier Subsidy": evidence/cost-offset-hybrid-subsidy.md
   - Reference:
     - Glossary: reference/glossary.md
+    - Adversarial Validation: reference/adversarial-validation-copilot-vs-rag.md
   - Research:
     - Overview: research/index.md
     - Context Injection Pipeline: research/deep-research-results-context-injection.md
@@ -84,6 +89,7 @@ nav:
   - Addendum:
     - Fact-Check Report: addendum/fact-check-report.md
     - Embeddings Analysis: addendum/embeddings-analysis.md
+    - "Foundry vs IDE Agents": addendum/azure-ai-foundry-vs-ide-agents.md
 
 extra:
   social: []
