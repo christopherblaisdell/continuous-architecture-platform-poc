@@ -23,8 +23,9 @@ Architecture work spans a range of task complexity — from quick triage and for
 | **Option A (Copilot)** | Architect selects model per session. GPT-4o/4.1 (0x — free, unlimited) for routine tasks; Claude Opus 4.6 (3x) for architecture work. Built-in. | None |
 | **Option B (Roo Code + Kong)** | Kong gateway routes requests to configured model providers. Operator configures routing rules. Full per-request model attribution and token-level cost visibility. | Kong gateway provisioning and maintenance |
 | **Option C (Bespoke Agent)** | Custom routing logic in the agent framework. Engineering team configures model tiers. Complete control over which model handles every inference. | Custom development and ongoing maintenance |
+| **Option D (Hybrid — BYOK)** | All of Option A, plus: organization registers a custom Azure AI Foundry endpoint via BYOK. Architect selects the custom model alongside built-in models in the same model picker. BYOK requests bypass premium quotas and bill at Azure consumption rates. | Foundry endpoint provisioning + admin registration (one-time). No IDE infrastructure. |
 
-With Option A, the architect chooses the model when starting a session — frontier model for design work, routine model for everyday tasks. With Options B and C, the operator or engineer controls routing at a finer granularity.
+With Option A, the architect chooses the model when starting a session — frontier model for design work, routine model for everyday tasks. With Option D, the architect gains an additional choice: a domain-specialized custom model trained on enterprise architecture patterns. With Options B and C, the operator or engineer controls routing at a finer granularity.
 
 ---
 
@@ -59,13 +60,13 @@ If Microsoft were routing the primary reasoning to a budget model, these outputs
 
 Each option occupies a different position on the visibility-vs-convenience spectrum:
 
-| Dimension | Option A (Copilot) | Option B (Roo Code + Kong) | Option C (Bespoke Agent) |
-|-----------|-------------------|---------------------------|--------------------------|
-| Model selection | Per-session | Per-request | Per-request |
-| Per-inference visibility | None — opaque | Full — every API call logged with model, tokens, cost | Full — custom code, full control |
-| Cost attribution | Per user prompt (3x multiplier for Opus) | Per token, per request | Per token, per request |
-| Routing control | Microsoft's orchestration | Operator-configured rules | Engineer-written logic |
-| Financial incentive alignment | Microsoft absorbs cost overruns (good for user); Microsoft optimizes routing to manage cost (industry-standard practice for bundled pricing, opaque to user) | Operator pays exactly what they use (full alignment) | Engineer controls everything (full alignment) |
+| Dimension | Option A (Copilot) | Option B (Roo Code + Kong) | Option C (Bespoke Agent) | Option D (Hybrid — BYOK) |
+|-----------|-------------------|---------------------------|--------------------------|--------------------------|
+| Model selection | Per-session | Per-request | Per-request | Per-session (built-in) + per-session (custom BYOK) |
+| Per-inference visibility | None — opaque | Full — every API call logged with model, tokens, cost | Full — custom code, full control | Opaque for built-in models; full visibility for BYOK requests (Azure logs token usage, cost, latency) |
+| Cost attribution | Per user prompt (3x multiplier for Opus) | Per token, per request | Per token, per request | Per user prompt for built-in; per token for BYOK (Azure consumption) |
+| Routing control | Microsoft's orchestration | Operator-configured rules | Engineer-written logic | Microsoft's orchestration for built-in; organization controls BYOK endpoint and model version |
+| Financial incentive alignment | Microsoft absorbs cost overruns (good for user); Microsoft optimizes routing to manage cost (industry-standard practice for bundled pricing, opaque to user) | Operator pays exactly what they use (full alignment) | Engineer controls everything (full alignment) | Built-in models: same as A. BYOK: organization pays Azure consumption directly (full alignment on custom model) |
 
 ### Why the Trade-Off Is Acceptable for This Practice
 
@@ -85,5 +86,7 @@ Three factors make Copilot's opacity an acceptable trade-off rather than a disqu
 **See also:**
 
 - [DD-03: AI Provider](dd-03-ai-provider.md) — Provider selection that determines model routing
+- [DD-05: Model Selection Autonomy](dd-05-model-selection-autonomy.md) — How guided freedom extends to BYOK models
+- [Option D — Hybrid Architecture](../evidence/option-d-hybrid-architecture.md) — Full BYOK analysis including feature compatibility and risk assessment
 - [Model Quality at Budget](../evidence/model-quality-at-budget.md) — Why the model tier matters more than the routing mechanism
 - [Platform Landscape](../evidence/platform-landscape.md) — Multi-model flexibility comparison (EF-07) across five platforms

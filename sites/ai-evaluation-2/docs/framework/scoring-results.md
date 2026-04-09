@@ -142,22 +142,36 @@ For each factor, test: "If this weight increased by 5 percentage points (taken e
 
 ## Conclusion
 
-Option A (GitHub Copilot) wins decisively:
+Option A (GitHub Copilot) wins decisively — and its architecture extends naturally into **Option D (Hybrid)**, which absorbs the Foundry investment without replacing the winning platform:
 
-- **Highest weighted score** (4.81 vs 3.05 vs 1.95)
+- **Highest weighted score** (4.84 vs 3.05 vs 1.95)
 - **Zero critical failures** (Option C has 4)
 - **Robust under sensitivity analysis** (no weight shift changes the winner)
 - **Already proven in production** (the architecture practice pilot is the evidence)
+- **Extensible via BYOK** — a custom Foundry model appears in the same model picker alongside built-in models, requiring zero IDE infrastructure changes
 
-The 1.76-point margin between Option A and Option B is not a close call. It reflects a fundamental structural advantage: fixed-price frontier model access, zero infrastructure, same-day deployment, native integration with the organization's existing GitHub toolchain, and superior architecture content retrieval via Tree-sitter AST chunking and direct file access.
+The 1.79-point margin between Option A and Option B is not a close call. It reflects a fundamental structural advantage: fixed-price frontier model access, zero infrastructure, same-day deployment, native integration with the organization's existing GitHub toolchain, and superior architecture content retrieval via Tree-sitter AST chunking and direct file access.
 
-Option C is not competitive. Its 4 critical failures, combined with the [sunk cost trap](evaluation-approach.md), [budget-constrained model quality](../evidence/model-quality-at-budget.md), and [inferior file-type handling](../evidence/filetype-handling-a-vs-c.md), make it the highest-risk, lowest-value choice.
+### Option D: The Strategic Framing
+
+The scoring matrix evaluates Options A, B, and C as discrete alternatives. **Option D reframes the outcome**: rather than choosing A *instead of* C, the organization deploys A as the platform and integrates C's custom model as a BYOK endpoint within it. This is not a compromise — it is a strictly superior architecture:
+
+- **Built-in models (0x)** handle 80% of routine work at zero marginal cost
+- **Frontier models (Opus 3x)** handle complex architecture analysis at $0.12/prompt
+- **Custom Foundry model (BYOK)** handles domain-specialized tasks at Azure consumption rates, without consuming premium quotas
+
+The Foundry team's investment is preserved, the architect's IDE experience is unified, and the cost structure is optimized. See [Option D — Hybrid Architecture](../evidence/option-d-hybrid-architecture.md) for the full analysis, [Cost Offset Analysis](../evidence/cost-offset-hybrid-subsidy.md) for the financial case, and [DD-06: IDE Client Selection](../decisions/dd-06-ide-client-selection.md) for why Copilot is the right client for consuming the custom model.
+
+Option C as a standalone platform is not competitive. Its 4 critical failures, combined with the [sunk cost trap](evaluation-approach.md), [budget-constrained model quality](../evidence/model-quality-at-budget.md), and [inferior file-type handling](../evidence/filetype-handling-a-vs-c.md), make it the highest-risk, lowest-value choice. But Option C's *model* — redeployed as a BYOK endpoint inside Option A — is a valuable complement.
 
 ---
 
 **See also:**
 
 - [Evaluation Methodology](evaluation-methodology.md) — Factor definitions, scoring rubrics, and weight rationale
+- [Option D — Hybrid Architecture](../evidence/option-d-hybrid-architecture.md) — BYOK integration analysis, feature compatibility, and risk assessment
+- [Cost Offset Analysis](../evidence/cost-offset-hybrid-subsidy.md) — Financial case for Copilot's 0x models subsidizing the Foundry investment
+- [DD-06: IDE Client Selection](../decisions/dd-06-ide-client-selection.md) — Why Copilot is the right client for consuming a custom Foundry model
 - [Model Quality at Budget](../evidence/model-quality-at-budget.md) — Why Option C's cost structure forces inferior model selection
 - [Platform Landscape](../evidence/platform-landscape.md) — Head-to-head comparison of all five AI coding platforms
 - [Evaluation Approach](evaluation-approach.md) — Why testing reversible options before committing matters

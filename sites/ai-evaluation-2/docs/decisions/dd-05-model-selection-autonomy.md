@@ -55,6 +55,10 @@ The platform offers a curated set of models. Architects choose the appropriate m
 | Routine tasks (formatting, boilerplate, simple queries) | GPT-4o / GPT-4.1 | 0x | $0 (unlimited) |
 | Architecture analysis, solution design, ADR generation | Claude Opus 4.6 | 3x | $0.12 |
 | Quick exploration, brainstorming | GPT-4.1 | 0x | $0 (unlimited) |
+| Domain-specialized analysis (custom enterprise model) | Custom Foundry Model (BYOK) | Per-token (enterprise rate) | Azure consumption-based |
+
+!!! note "Option D — Hybrid Architecture"
+    The guided freedom model extends naturally to BYOK (Bring Your Own Key) models. GitHub Copilot allows organizations to register custom Azure AI Foundry endpoints alongside the built-in model set. This means an architect can switch between a free 0x model for routine work, a frontier model (Opus) for complex design, and a domain-specialized Foundry model for enterprise-specific analysis — all within the same IDE session, with no infrastructure changes. See [Option D — Hybrid Architecture](../evidence/option-d-hybrid-architecture.md) for the full BYOK analysis.
 
 **Why this works:**
 

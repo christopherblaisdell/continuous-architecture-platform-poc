@@ -12,6 +12,7 @@ The Solution Architecture practice is adopting AI-assisted workflows for archite
 - **Option A — GitHub Copilot**: SaaS platform with intent-based billing, native workspace indexing, and declarative customization via instruction files. Testable immediately with zero infrastructure.
 - **Option B — Roo Code + Kong AI Gateway**: Open-source IDE extension with token-based billing through a self-managed API gateway. Testable with moderate setup, requires API key provisioning and gateway configuration.
 - **Option C — Bespoke Architecture Agent**: Custom-built agent on Azure AI Foundry. Requires weeks of engineering investment before testing can begin.
+- **Option D — Hybrid (A absorbs C)**: Deploy Copilot (Option A) as the platform, then integrate Option C's custom Foundry model as a BYOK endpoint within it. Architects get built-in models for routine work, frontier models for complex design, and the domain-specialized model for enterprise analysis — all in the same model picker, with no custom IDE infrastructure.
 
 ### Evaluation Principles
 
@@ -25,7 +26,7 @@ Rather than evaluating options theoretically, this evaluation is grounded in a w
 
 ![Factor Profile Comparison — radar chart showing each option's score across all 13 evaluation factors](img/scoring-radar.svg)
 
-Option A (blue) dominates the outer ring across nearly every factor. Option C (purple) collapses inward with four critical failures. See [Scoring Results](framework/scoring-results.md) for the full breakdown.
+Option A (blue) dominates the outer ring across nearly every factor. Option C (purple) collapses inward with four critical failures. The evaluation recommends **Option D (Hybrid)** — deploy Copilot as the platform and integrate the Foundry model via BYOK, preserving both investments. See [Scoring Results](framework/scoring-results.md) for the full breakdown and [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) for the BYOK integration analysis.
 
 ## Two-Layer Decision Hierarchy
 
@@ -52,6 +53,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across three options | Which vendor best combines output quality, workflow integration, and governance? |
 | [DD-04: Model Routing](decisions/dd-04-model-routing.md) | Model selection and routing strategy | Does model routing require custom infrastructure or is it built into the platform? |
 | [DD-05: Model Selection Autonomy](decisions/dd-05-model-selection-autonomy.md) | Architect control over model choice | Should architects choose their model, or should it be locked down by a central team? |
+| [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | Which IDE client consumes the custom Foundry model | If we build a custom model, which IDE client should consume it — and does that client preserve architect autonomy? |
 
 ### Comparative Analysis (A, B, C)
 
@@ -70,6 +72,14 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | [Copilot Rollout Roadmap](framework/copilot-rollout-roadmap.md) | Practical deployment plan for the architecture team | How do we actually roll out Copilot and get architecture content into AI? |
 | [Architecture Is Not Just Coding](evidence/architecture-not-just-coding.md) | Evidence that AI coding platforms handle architecture work | Can general-purpose AI coding platforms do architecture, or do we need something bespoke? |
 | [Controlling What Copilot Sees](evidence/context-injection-controls.md) | Context injection pipeline — what controls exist and how to optimize | How does Copilot decide what enters the LLM's context window, and what can we control? |
+
+### Option D (Hybrid Architecture)
+
+| Page | Purpose | Key Question Answered |
+|------|---------|----------------------|
+| [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) | BYOK integration analysis with feature compatibility and risk assessment | Can the Foundry model run inside Copilot via BYOK, and what are the limitations? |
+| [Cost Offset Analysis](evidence/cost-offset-hybrid-subsidy.md) | Financial case for 0x models subsidizing the Foundry investment | How much does Copilot's free model tier reduce the net cost of maintaining a custom model? |
+| [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | IDE client comparison for consuming a custom Foundry model | Which IDE client should consume the custom model — and what are the frozen customization risks? |
 
 ### Option C (Foundry IQ Integration)
 

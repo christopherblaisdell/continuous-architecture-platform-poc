@@ -349,7 +349,30 @@ An additional MCP use case emerged from chunking research: **OpenAPI specs recei
 
 See [Controlling What Copilot Sees — MCP as a Custom Chunking Layer](../evidence/context-injection-controls.md#mcp-as-a-custom-chunking-layer) for the architecture pattern.
 
-### 4.3 Measuring Value
+### 4.3 BYOK Model Integration (Option D — Hybrid)
+
+When the Foundry team has a domain-specialized model ready for architecture work, Copilot's BYOK (Bring Your Own Key) mechanism allows it to appear alongside built-in models in every architect's model picker — no IDE changes, no custom extensions.
+
+| Step | Action | Owner | Effort |
+|------|--------|-------|--------|
+| 1 | Deploy fine-tuned model to Azure AI Foundry endpoint | Foundry team (Troy/Gabriel) | Already in progress |
+| 2 | Register Foundry endpoint in GitHub Copilot admin settings (Enterprise/Business) | GitHub admin | ~15 minutes (one-time) |
+| 3 | Architects select custom model from model picker for domain-specialized tasks | Each architect | Zero — appears automatically |
+| 4 | Establish usage guidance: when to use custom model vs built-in Opus vs 0x models | Architecture practice lead | 1-2 hours (document norms) |
+| 5 | Monitor BYOK usage via Azure consumption metrics (token counts, latency, cost) | Foundry team | Ongoing |
+
+**Key properties of BYOK integration:**
+
+- BYOK requests do NOT consume Copilot premium request quotas — they bill at Azure consumption rates
+- The custom model coexists with all built-in models (GPT-4o, GPT-4.1, Opus) — architects switch freely
+- All existing Copilot customizations (instruction files, agents, prompt workflows) work identically with the BYOK model
+- BYOK is GA via CLI (Feb 2026) and Public Preview in admin UI — see [Option D — Hybrid Architecture](../evidence/option-d-hybrid-architecture.md) for maturity details
+- No Entra ID / managed identity support yet — static API keys only (rotate on schedule)
+
+!!! warning "BYOK Limitations to Track"
+    Three gaps require monitoring before full production reliance: (1) No Entra ID support — static API keys lack auto-refresh and managed identity integration. (2) Audit logging is provider-side (Azure), not GitHub-side — requires separate log aggregation. (3) Fine-tuned model quality is bounded by training data — a model fine-tuned on outdated architecture patterns will confidently produce outdated guidance. See [DD-06: IDE Client Selection](../decisions/dd-06-ide-client-selection.md) for the frozen customization risk.
+
+### 4.4 Measuring Value
 
 | Metric | How to Measure | Baseline (Pilot) |
 |--------|---------------|-------------------|
@@ -369,6 +392,6 @@ See [Controlling What Copilot Sees — MCP as a Custom Chunking Layer](../eviden
 | **Phase 1** | Copilot seats for the team, verified workspace indexing | ~18 min per architect + procurement | GitHub Enterprise agreement or individual seats |
 | **Phase 2** | Complete data inventory: what's in git, what moves to git, what needs MCP, what needs Foundry IQ. Tier 1-2 content fully indexed. | 2-4 hours (Tier 2 file moves) + ongoing (Tier 3-4 integrations planned here, built in Phase 4) | Phase 1 |
 | **Phase 3** | Team inherits domain-aware AI behavior by cloning the repo | Already done — new architects get it for free | Phase 1 |
-| **Phase 4** | MCP servers for live corporate data (Tier 3), Foundry IQ bridge for enterprise knowledge (Tier 4), team scaling, value measurement | Weeks to months, as needed | Concrete retrieval use cases |
+| **Phase 4** | MCP servers for live corporate data (Tier 3), Foundry IQ bridge for enterprise knowledge (Tier 4), BYOK custom model integration (Option D Hybrid), team scaling, value measurement | Weeks to months, as needed | Concrete retrieval use cases; Foundry model readiness for BYOK |
 
 The critical insight: **Phases 1-3 can be completed in a single day per architect.** The customization layer already exists. Most content is already in the workspace (Tier 1). Tier 2 content moves take hours. The hardest work — teaching Copilot the architecture domain — is already done. Tiers 3 and 4 (MCP and Foundry IQ) are additive enhancements that extend reach without changing the foundation.
