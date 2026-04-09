@@ -78,6 +78,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | Page | Purpose | Key Question Answered |
 |------|---------|----------------------|
 | [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) | BYOK integration analysis with feature compatibility and risk assessment | Can the Foundry model run inside Copilot via BYOK, and what are the limitations? |
+| [Option D POC: BYOK Endpoint Validation](evidence/option-d-poc-validation.md) | Live proof that Azure OpenAI deploys in minutes via Bicep IaC, scales to zero, and matches BYOK API format | Does the Azure-side infrastructure actually work, and how hard is it to set up? |
 | [Cost Offset Analysis](evidence/cost-offset-hybrid-subsidy.md) | Financial case for 0x models subsidizing the Foundry investment | How much does Copilot's free model tier reduce the net cost of maintaining a custom model? |
 | [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | IDE client comparison for consuming a custom Foundry model | Which IDE client should consume the custom model — and what are the frozen customization risks? |
 
