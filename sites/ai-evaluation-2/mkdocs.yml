@@ -86,6 +86,8 @@ nav:
     - "Azure AI Search Chunking (Pro)": research/deep-research-results-azure-ai-search-chunking-pro.md
     - Embeddings Deep Research: research/deep-research-results-embeddings.md
     - Fact-Check Deep Research: research/deep-research-results.md
+    - Foundry Agent Service Capabilities: research/deep-research-results-foundry-agent-service-capabilities.md
+    - Chat Response Validation: research/deep-research-results-validate-chat-response.md
   - Addendum:
     - Fact-Check Report: addendum/fact-check-report.md
     - Embeddings Analysis: addendum/embeddings-analysis.md

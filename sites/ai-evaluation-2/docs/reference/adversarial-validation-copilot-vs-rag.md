@@ -1,3 +1,6 @@
+<!-- CONFLUENCE-PUBLISH -->
+<!-- CONFLUENCE-URL: -->
+
 # Adversarial Validation Report: Copilot Platform-Native Indexing vs. Self-Managed RAG
 
 ## Executive Summary

@@ -1,3 +1,6 @@
+<!-- CONFLUENCE-PUBLISH -->
+<!-- CONFLUENCE-URL: -->
+
 # Architectural Evaluation: Azure AI Foundry Agent Service vs. IDE-Based Agents for Solution Architecture
 
 ## Executive Summary
