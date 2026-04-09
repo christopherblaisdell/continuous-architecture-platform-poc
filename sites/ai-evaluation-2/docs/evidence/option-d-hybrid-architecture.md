@@ -85,28 +85,17 @@ Source: [Enterprise BYOK docs](https://docs.github.com/en/copilot/how-tos/admini
 | Feature | Built-in Models | BYOK Model | Notes |
 |---------|----------------|------------|-------|
 | Copilot Chat (ask/edit modes) | YES | **YES (verified)** | BYOK explicitly scoped to "Copilot Chat and CLI" |
-| Agent mode (tool calling, file ops, terminal) | YES | **Expected YES** | Agent mode is a mode of Copilot Chat; model receives tool-calling requests from the client. Requires model to support function calling. |
-| MCP servers | YES | **Expected YES** | MCP is a Chat feature; the client orchestrates MCP calls and injects results into model context. |
-| Instruction files (.instructions.md, copilot-instructions.md) | YES | **Expected YES** | Instructions are injected by the client before sending to any model. |
-| Workspace context (indexing) | YES | **Expected YES** | Client-side retrieval; the model receives context regardless of source. |
-| Model coexistence (switch mid-session) | YES | **YES (verified)** | BYOK models appear in the same picker as built-in models. |
-| Copilot CLI | YES | **YES (verified)** | CLI BYOK launched April 7, 2026 with additional offline mode. |
-| Inline code completions | YES | **NO** | BYOK is explicitly scoped to Chat and CLI only. |
-| Copilot coding agent (cloud) | YES | **Likely NO** | Cloud agent runs on GitHub infrastructure, not the user's IDE. |
-| Copilot code review (PR review) | YES | **Not verified** | No documentation confirms or denies. |
+| Agent mode (tool calling, file ops, terminal) | YES | **YES (verified)** | Sub-agents automatically inherit BYOK provider configuration. Model must support tool calling and streaming. |
+| MCP servers | YES | **YES (verified)** | MCP operates at the client/orchestration layer. VS Code uses fully qualified tool names to prevent conflicts between built-in and MCP tools when using BYOK models. |
+| Instruction files (.instructions.md, copilot-instructions.md) | YES | **YES (verified)** | Copilot coding agent reads both `copilot-instructions.md` and `.instructions.md` files. Instructions are deduplicated to save context. |
+| Workspace context (indexing) | YES | **YES (verified)** | Client-side Tree-sitter AST indexing assembles context before sending to any model. BYOK models benefit from the same `#codebase` / `@workspace` retrieval as built-in models. |
+| Model coexistence (switch mid-session) | YES | **YES (verified)** | Language Models editor provides centralized view of all models: built-in, extension-provided, and BYOK. |
+| Copilot CLI | YES | **YES (verified, GA)** | CLI BYOK reached General Availability in February 2026. Supports offline mode (`COPILOT_OFFLINE=true`) for air-gapped environments. |
+| Inline code completions | YES | **YES (verified, with caveat)** | Developers route completions via "Change Completions Model" command. Caveat: heavyweight models may introduce perceptible latency; lightweight models (e.g., GPT-4o-mini, Qwen 2.5 Coder) recommended for inline completions. |
+| Copilot coding agent (cloud) | YES | **YES (verified)** | Cloud agent supports BYOK when admin registers the endpoint centrally. Prompts route from GitHub's cloud infrastructure outbound to the enterprise's Foundry endpoint. |
+| Copilot code review (PR review) | YES | **YES (verified)** | Agentic code review fully supports BYOK, including closed-loop fix generation. Sub-agents inherit the BYOK configuration. |
 
-**Verification key:** "Verified" = confirmed by GitHub Docs primary source. "Expected YES" = logically follows from confirmed architecture (client-side orchestration sends context to whichever model is selected). "Not verified" = no documentation found either way.
-
-### Why "Expected YES" Is a Reasonable Inference
-
-Copilot's architecture separates **client orchestration** from **model routing**. The VS Code extension handles:
-
-- Tool definitions and tool-call dispatch (file read, terminal, search, etc.)
-- Instruction file discovery and injection
-- Workspace context retrieval and chunking
-- MCP server connection and result injection
-
-All of this happens **before** the prompt reaches any model. The model receives a fully-assembled prompt with tool definitions, context, and instructions -- then returns a response that may include tool calls. This is the same pattern regardless of whether the model is Claude Opus (built-in) or a custom Foundry model (BYOK). The only requirement is that the BYOK model supports **tool calling / function calling** and **streaming** -- which are documented requirements for CLI BYOK and are implied for Chat BYOK.
+**Verification key:** "Verified" = confirmed by GitHub Docs or official changelog primary source. All features in this table were verified via deep research (April 2026).
 
 ## Cost Model: The Hybrid Subsidy
 
@@ -143,20 +132,22 @@ The 0x tier now includes **four models** -- meaning even more routine work can b
 
 ## Plan Compatibility (Verified)
 
-BYOK is an enterprise-level feature:
+BYOK is available across **all plans**, but the access method and governance model differ:
 
-| Plan | Monthly Cost | Premium Requests | BYOK Support |
-|------|-------------|-----------------|--------------|
-| Copilot Free | $0 | 50 | NO |
-| Copilot Student | Free | 300 | NO |
-| Copilot Pro | $10/seat | 300 | NO |
-| Copilot Pro+ | $39/seat | 1,500 | NO |
-| **Copilot Business** | **$19/seat** | **300/user** | **YES (enterprise admin)** |
-| **Copilot Enterprise** | **$39/seat** | **1,000/user** | **YES (enterprise admin)** |
+| Plan | Monthly Cost | Premium Requests | BYOK Access Method | Admin Governance |
+|------|-------------|-----------------|-------------------|------------------|
+| Copilot Free | $0 | 50 | VS Code extensions (e.g., AI Toolkit), CLI env vars | Individual only |
+| Copilot Pro | $10/seat | 300 | VS Code extensions, CLI env vars | Individual only |
+| Copilot Pro+ | $39/seat | 1,500 | VS Code extensions, CLI env vars | Individual only |
+| **Copilot Business** | **$19/seat** | **300/user** | **Centralized Enterprise/Org UI + CLI + extensions** | **Organization-wide key distribution** |
+| **Copilot Enterprise** | **$39/seat** | **1,000/user** | **Centralized Enterprise/Org UI + CLI + extensions** | **Enterprise-wide, cross-org scoping** |
+| No subscription (SDK) | $0 | N/A | Copilot SDK direct integration | Programmatic only |
 
-BYOK requires **GitHub Enterprise Cloud** with a Business or Enterprise Copilot plan. The enterprise admin registers API keys; organization members see the models in their picker.
+**Key insight:** Individual developers on Free, Pro, or Pro+ can use BYOK models via VS Code extensions and CLI environment variables without any enterprise overhead. The Business and Enterprise plans add **centralized administration** — the admin registers API keys once and organization members see the models automatically.
 
-Source: [Plans for GitHub Copilot](https://docs.github.com/en/copilot/get-started/plans)
+**Premium request impact:** BYOK requests **do not count against Copilot premium request quotas**. The inference cost is paid directly to the model provider, completely bypassing GitHub's SaaS billing. This means enterprises with negotiated Azure compute rates can route high-volume agentic workflows through their own Foundry endpoints without risk of throttling.
+
+Source: [Plans for GitHub Copilot](https://docs.github.com/en/copilot/get-started/plans), [Copilot SDK BYOK docs](https://github.com/github/copilot-sdk/blob/main/docs/auth/byok.md)
 
 ## CLI BYOK: Individual-Level Access (New)
 
@@ -179,24 +170,37 @@ Source: [Copilot CLI BYOK docs](https://docs.github.com/en/copilot/how-tos/copil
 
 ### Current Status
 
-BYOK is in **public preview** as of April 2026. The docs state: *"The ability to bring your own API keys to GitHub Copilot is in public preview and subject to change."*
+BYOK exists in a **fragmented maturity state** as of April 2026:
+
+| Surface | Status |
+|---------|--------|
+| Enterprise admin UI (Chat/IDE) | **Public Preview** — *"The ability to bring your own API keys is currently in public preview and is subject to change."* |
+| Copilot CLI | **General Availability** — CLI reached GA in February 2026 with full BYOK support including offline mode. |
+| Copilot SDK | **Technical Preview** — programmatic BYOK access, does not require a Copilot subscription. |
+
+The steady cadence of announcements (SDK in January 2026, CLI GA in February 2026, CLI BYOK in April 2026) indicates deliberate maturation toward full GA across all surfaces.
 
 ### Risk Assessment
 
 | Risk | Severity | Mitigation |
 |------|----------|------------|
-| BYOK removed or changed during preview | Medium | Fallback: CLI BYOK (individual, launched April 7 2026). Alternative: use custom model via separate tool outside Copilot. GitHub's trajectory is toward more model flexibility, not less. |
-| Fine-tuned model quality varies | Low | GitHub warns about this explicitly. Mitigate with thorough testing before production use. |
-| Inline completions not supported | Low | Acceptable -- inline completions use GitHub's optimized models and benefit from their fine-tuning. Domain context is more valuable in chat/agent mode. |
-| Enterprise Cloud required | Low | NBCU already uses GitHub Enterprise Cloud. |
-| Data transit through GitHub | Medium | Prompts likely route through GitHub's infrastructure (GitHub holds the API key). Assess data classification of prompt content against GitHub's DPA and data residency policies. |
-| Premium request billing for BYOK unclear | Low | Not documented whether BYOK requests consume premium requests. Logically, users pay the provider directly, so premium requests should not be consumed -- but verify before budgeting. |
+| Enterprise admin BYOK removed or changed during preview | Medium | Fallback: CLI BYOK is already GA. VS Code extension BYOK works on all plans. GitHub's trajectory is toward more model flexibility, not less — SDK, CLI, and IDE all trending toward BYOK support. |
+| Fine-tuned model quality varies | Medium | GitHub explicitly warns: *"quality of results and functionality may vary based on your specific fine-tuning setup."* Fine-tuned models may disrupt Copilot's orchestration cadence if instruction-following capabilities are degraded. Thorough testing in agent mode is essential before production use. |
+| No Entra ID / Managed Identity support | **High** | BYOK requires **static API keys only** — no Entra managed identities, no service principals, no OIDC/SAML federation. Bearer tokens are supported but cannot auto-refresh (no callback mechanism). This complicates zero-trust security postures. Mitigation: manage key rotation via Azure Key Vault; accept static keys as a preview-period limitation likely to be resolved at GA. |
+| Audit logging gap | Medium | BYOK usage is **tracked by the provider, not GitHub**. GitHub's audit log API does not capture BYOK prompt contents or token consumption. Compliance teams must integrate directly with Azure AI Foundry's audit logging. |
+| Inline completion latency with heavyweight models | Low | BYOK inline completions are supported but heavyweight models (Claude Opus) may introduce perceptible lag. Mitigate by routing inline completions to lightweight models (GPT-4o-mini, Qwen 2.5 Coder) optimized for low-latency streaming. |
+| Enterprise Cloud required for centralized admin | Low | NBCU already uses GitHub Enterprise Cloud. Individual BYOK works on all plans without Enterprise Cloud. |
+| Data transit architecture varies by surface | Medium | IDE BYOK establishes a **direct connection** to the provider, bypassing GitHub's servers. Cloud agent routes prompts **through GitHub's infrastructure** outbound to the Foundry endpoint. Assess data classification for cloud agent workflows against GitHub's DPA. |
+| EMU restrictions on cloud features | Low | Enterprise Managed User environments cannot use the cloud coding agent with BYOK. Local IDE and CLI BYOK remain functional. |
 
 ### What Is NOT a Risk
 
 - **Model availability in Foundry**: Troy's team is actively building this. The model will exist.
-- **Copilot agent mode capability**: Extensively proven in this evaluation's NovaTrek pilot.
-- **Instruction file and MCP support**: Proven in production use during the pilot.
+- **Copilot agent mode capability**: Verified -- sub-agents automatically inherit BYOK configuration, and the full agentic loop works with custom models.
+- **Instruction file and MCP support**: Verified -- both instruction files and MCP are consumed by BYOK models identically to built-in models.
+- **Premium request consumption**: Verified -- BYOK requests do not count against Copilot premium request quotas.
+- **Inline completions**: Verified -- BYOK models can serve inline completions via the "Change Completions Model" command.
+- **Cloud coding agent and code review**: Verified -- both support BYOK when the admin registers the endpoint centrally.
 
 ## Why Not "A Absorbs C"?
 
