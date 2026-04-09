@@ -171,6 +171,122 @@ What does it cost to use the custom Foundry model through each client?
 
 ---
 
+## The Frozen Customization Problem
+
+The eight-dimension comparison above evaluates client capabilities. But there is a ninth dimension that does not fit neatly into a matrix — and it may be the most consequential: **what happens when a customization is wrong, incomplete, or outdated?**
+
+### Hard-Coded vs. Declarative Customization
+
+A custom fine-tuned model embeds domain knowledge into its weights during training. This is powerful — but it is also **frozen at training time**. When the domain changes (new services, renamed fields, updated data ownership rules, revised safety classifications), the model's embedded knowledge is wrong until it is retrained.
+
+| Customization Type | Change Latency | Who Can Change It | Blocked Architect's Recourse |
+|-------------------|---------------|-------------------|------------------------------|
+| **Fine-tuned model weights** | Weeks to months (data curation → training → validation → deployment) | ML engineering team only | Submit a ticket. Wait. |
+| **Declarative instruction files** (copilot-instructions.md, .instructions.md, custom agents) | Minutes (edit a Markdown file, push to Git) | Any architect with repo access | Fix it yourself in the same session. |
+
+This asymmetry matters because architecture knowledge changes constantly. In the NovaTrek pilot alone, the `copilot-instructions.md` file was updated dozens of times — adding new service boundaries, correcting data ownership rules, refining mock tool commands, adjusting solution design workflows. Each update took minutes and was immediately effective. If those customizations had been embedded in model weights, every correction would have required a retraining cycle.
+
+### The Blocked Architect Scenario
+
+Consider the concrete scenario:
+
+1. An architect is working on a solution design for a new ticket
+2. The custom model confidently applies a data ownership rule that was correct three months ago but has since changed (e.g., a service boundary was redrawn, a new event schema was introduced)
+3. The model produces architecturally incorrect output — wrong service identified as data owner, wrong API contract referenced, wrong event flow described
+4. The architect recognizes the error but **cannot fix the underlying cause**
+
+**With Option C (Custom Extension + fine-tuned model):**
+
+The architect has no recourse in that session. The incorrect knowledge is baked into the model. They must:
+
+- Abandon the AI-assisted workflow and do the analysis manually
+- Submit a ticket to the ML engineering team describing the knowledge gap
+- Wait for the team to curate corrective training data, retrain, validate, and redeploy
+- Resume AI-assisted work weeks or months later — if they have not already abandoned the tool
+
+**With Option D (Copilot + declarative customization):**
+
+The architect fixes the instruction file in the same session:
+
+- Opens `copilot-instructions.md` (or creates a targeted `.instructions.md` file)
+- Corrects the data ownership rule, adds the new service boundary, updates the event schema reference
+- The very next prompt uses the corrected instructions
+- Submits the instruction file change as a PR for peer review
+- Every architect benefits from the correction after merge
+
+!!! warning "This Is Not a Hypothetical"
+    The NovaTrek pilot's `copilot-instructions.md` evolved from ~200 lines to 500+ lines over the course of the evaluation. Every addition was a response to a real gap — the model did not know a convention, violated a boundary, or missed a workflow step. In every case, the architect corrected the instruction file and continued working. If those corrections had required model retraining, the pilot would have stalled repeatedly.
+
+### Model Selection Lock-In Compounds the Problem
+
+The customization problem is amplified when combined with model selection lock-in. If the custom model is the **only** model available to the architect (as in a custom extension that hard-codes its model endpoint), the architect cannot even switch to a general-purpose frontier model as a workaround.
+
+With Copilot's model picker, an architect who encounters a domain knowledge gap in the custom Foundry model can:
+
+1. Switch to Claude Opus 4.6 or GPT-4.1 for that specific task
+2. Provide the correct domain context manually via the conversation
+3. Complete the work without delay
+4. File an instruction file update for the long-term fix
+
+This is the **circuit breaker** that prevents the Help Desk Loop described in DD-05. The architect is never fully blocked because they always have alternative models available in the same picker.
+
+---
+
+## Customization Ownership: Who Grows the Model?
+
+### The Staffing Question
+
+A custom fine-tuned model is not a one-time deliverable. Domain knowledge evolves continuously — new services are added, API contracts change, architectural decisions are made, data ownership boundaries shift, safety classifications are updated. The model must evolve with them or it becomes an increasingly unreliable source of architectural guidance.
+
+This raises an unavoidable question: **who is responsible for the ongoing curation, retraining, validation, and deployment of the custom model?**
+
+| Ownership Model | Staffing Implication | Knowledge Gap Problem |
+|----------------|---------------------|---------------------|
+| **Dedicated ML team** | Must hire or allocate engineers with fine-tuning expertise, MLOps skills, and model evaluation capabilities | The ML team does not practice architecture. They cannot judge whether training data is correct, whether model output quality is acceptable, or whether a domain rule has changed. They depend entirely on architects to tell them what to train — creating a bottleneck. |
+| **Architecture practice (current team)** | Architects maintain the model alongside their architecture work | Architects lack ML engineering skills. Fine-tuning workflows, training data curation, model evaluation, and deployment pipelines are not architecture competencies. |
+| **Hybrid (current approach)** | Troy + Gabriel build the model; architects provide domain knowledge | Knowledge transfer is asynchronous and lossy. Architects describe domain rules in tickets; the ML team interprets and encodes them. Misinterpretations are caught only after retraining and testing. |
+
+None of these models are self-sustaining. Each creates a dependency chain where the people who understand the domain (architects) are separated from the mechanism that encodes it (model weights).
+
+### The Declarative Customization Alternative
+
+Instruction files eliminate this organizational problem entirely.
+
+| Aspect | Fine-Tuned Model | Instruction Files |
+|--------|------------------|-------------------|
+| **Who writes customizations?** | ML engineers (interpreting architect requirements) | Architects directly |
+| **Review process** | Informal — architects may never see training data | Git PR — peer-reviewed Markdown, same as any architecture artifact |
+| **Change velocity** | Weeks (retrain cycle) | Minutes (push to Git) |
+| **Domain accuracy** | Filtered through ML team interpretation | First-hand — the architect who knows the rule writes the rule |
+| **Experimentation** | Expensive — each experiment requires a training run | Free — edit a file, test in the next prompt, revert if wrong |
+| **Institutional knowledge capture** | Opaque — embedded in model weights, not human-readable | Transparent — instruction files are documentation that happens to also configure AI behavior |
+| **Onboarding new architects** | New architect gets model output with no visibility into why | New architect reads the instruction files and understands the practice's conventions immediately |
+
+### The Contribution Model That Scales
+
+With declarative customization, growing the AI practice's domain knowledge follows the same workflow architects already use for every other artifact:
+
+1. **Architect encounters a gap** — the model does not know a convention, misapplies a rule, or lacks context about a service
+2. **Architect writes the fix** — edits `copilot-instructions.md` or creates a targeted `.instructions.md` file
+3. **Architect submits a PR** — the customization change is peer-reviewed by other architects, just like an ADR or solution design
+4. **PR is merged** — every architect in the practice benefits immediately
+5. **The instruction file history is the changelog** — Git log shows exactly when each customization was added, by whom, and why
+
+This is **architecture practice knowledge management** — the instruction files are a living, version-controlled, peer-reviewed codification of how the practice works. They grow organically as architects encounter new scenarios, and they never go stale because the people who use them are the people who maintain them.
+
+### The Decay Risk for Custom Models
+
+Without a sustainable ownership model, a custom fine-tuned model follows a predictable decay curve:
+
+1. **Months 1-3:** Model is current, output quality is high, enthusiasm is strong
+2. **Months 4-6:** Domain knowledge starts drifting — new services added, API contracts updated, architectural decisions made that the model does not reflect. Architects notice increasing inaccuracies.
+3. **Months 7-12:** Retraining happens (if budgeted), but the training data curation process is slow and the ML team is context-switching between projects. The retrained model fixes some gaps but introduces new ones because the training data was curated by someone other than the practicing architects.
+4. **Month 12+:** Architects no longer trust the custom model's domain knowledge. They either abandon it for general-purpose models (making the investment wasted) or work around it (adding manual corrections that negate the productivity benefit).
+
+Instruction files do not decay this way because **there is no separation between the knowledge maintainer and the knowledge consumer**. The architect who discovers a gap is the architect who fixes it, in the same session, with the same tools.
+
+---
+
 ## Decision Outcome
 
 **Selected: GitHub Copilot via BYOK.**
