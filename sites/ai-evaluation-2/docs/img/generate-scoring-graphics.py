@@ -68,7 +68,7 @@ SCORE_LABELS = {
 }
 
 OPT_A_COLOR = '#1565c0'  # blue
-OPT_B_COLOR = '#00897b'  # teal
+OPT_B_COLOR = '#2e7d32'  # green
 OPT_C_COLOR = '#78909c'  # blue-grey
 OPT_D_COLOR = '#ff8f00'  # amber (recommended option)
 
@@ -285,7 +285,7 @@ def create_radar():
 
     # Radar-specific colors — higher contrast than shared palette
     RADAR_A = '#1565c0'  # blue
-    RADAR_B = '#f57c00'  # warm orange (complementary to blue)
+    RADAR_B = '#2e7d32'  # green
     RADAR_C = '#6a1b9a'  # deep purple
     RADAR_D = '#ff8f00'  # amber
 
