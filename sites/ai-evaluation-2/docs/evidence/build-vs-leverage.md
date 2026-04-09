@@ -166,3 +166,5 @@ The dedicated decision page [DD-01 Context and Configuration](../decisions/dd-01
 For the argument that these platforms only work for coding and that architecture requires a bespoke solution, see [Architecture Is Not Just Coding](architecture-not-just-coding.md).
 
 For evidence that Azure AI Search does not actually chunk architecture files better than Copilot, see [File-Type Handling: A vs C](filetype-handling-a-vs-c.md).
+
+For how Option D preserves the Foundry model investment without requiring custom RAG infrastructure, see [Option D — Hybrid Architecture](option-d-hybrid-architecture.md).

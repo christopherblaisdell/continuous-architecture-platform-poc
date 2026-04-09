@@ -147,3 +147,4 @@ The five platforms map to the three evaluation options as follows:
 - [Architecture Is Not Just Coding](architecture-not-just-coding.md) — Evidence that these platforms handle architecture work, not just code
 - [Model Quality at Budget](model-quality-at-budget.md) — Why Copilot's fixed pricing delivers better model quality than per-token alternatives
 - [Evaluation Approach](../framework/evaluation-approach.md) — How to test these claims empirically
+- [Option D — Hybrid Architecture](option-d-hybrid-architecture.md) — How BYOK support enables a hybrid approach that combines Copilot's platform with a custom Foundry model

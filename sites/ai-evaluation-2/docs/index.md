@@ -5,7 +5,7 @@
 
 ## Purpose
 
-The Solution Architecture practice is adopting AI-assisted workflows for architecture analysis, solution design, and documentation. This evaluation compares three platform options to determine which best supports architecture work — balancing output quality, cost, operational complexity, and strategic fit.
+The Solution Architecture practice is adopting AI-assisted workflows for architecture analysis, solution design, and documentation. This evaluation compares four platform options to determine which best supports architecture work — balancing output quality, cost, operational complexity, and strategic fit.
 
 ### Options Under Evaluation
 
@@ -26,11 +26,11 @@ Rather than evaluating options theoretically, this evaluation is grounded in a w
 
 ![Factor Profile Comparison — radar chart showing each option's score across all 13 evaluation factors](img/scoring-radar.svg)
 
-Option A (blue) dominates the outer ring across nearly every factor. Option C (purple) collapses inward with four critical failures. The evaluation recommends **Option D (Hybrid)** — deploy Copilot as the platform and integrate the Foundry model via BYOK, preserving both investments. See [Scoring Results](framework/scoring-results.md) for the full breakdown and [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) for the BYOK integration analysis.
+Option A (blue) dominates the outer ring across nearly every factor. Option D (amber) tracks close behind, inheriting A's strengths with a small cost premium for the BYOK custom model. Option C (purple) collapses inward with four critical failures. The evaluation recommends **Option D (Hybrid)** — deploy Copilot as the platform and integrate the Foundry model via BYOK, preserving both investments. See [Scoring Results](framework/scoring-results.md) for the full breakdown and [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) for the BYOK integration analysis.
 
 ## Two-Layer Decision Hierarchy
 
-The diagram below shows the evaluation structure. Layer 1 defines how the architecture practice works with AI. Layer 2 decomposes the toolchain selection into four independent decisions that compose into the three platform options.
+The diagram below shows the evaluation structure. Layer 1 defines how the architecture practice works with AI. Layer 2 decomposes the toolchain selection into six independent decisions that compose into three discrete platform options — plus Option D, which is a hybrid composition of Options A and C.
 
 ![Two-Layer Decision Hierarchy](img/two-layer-hierarchy.svg)
 
@@ -42,7 +42,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 |------|---------|----------------------|
 | [Scoring Results](framework/scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
 | [Evaluation Approach](framework/evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
-| [Evaluation Methodology](framework/evaluation-methodology.md) | 13-factor weighted scoring framework | How do we score and compare the three options objectively? |
+| [Evaluation Methodology](framework/evaluation-methodology.md) | 13-factor weighted scoring framework | How do we score and compare the options objectively? |
 
 ### Toolchain Decisions
 
@@ -50,7 +50,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 |------|---------|----------------------|
 | [DD-01: Context and Configuration](decisions/dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
 | [DD-02: Billing Model](decisions/dd-02-billing-model.md) | Per-seat vs per-token vs hybrid billing | Which billing model supports sustained architecture work without perverse incentives? |
-| [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across three options | Which vendor best combines output quality, workflow integration, and governance? |
+| [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across all options | Which vendor best combines output quality, workflow integration, and governance? |
 | [DD-04: Model Routing](decisions/dd-04-model-routing.md) | Model selection and routing strategy | Does model routing require custom infrastructure or is it built into the platform? |
 | [DD-05: Model Selection Autonomy](decisions/dd-05-model-selection-autonomy.md) | Architect control over model choice | Should architects choose their model, or should it be locked down by a central team? |
 | [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | Which IDE client consumes the custom Foundry model | If we build a custom model, which IDE client should consume it — and does that client preserve architect autonomy? |

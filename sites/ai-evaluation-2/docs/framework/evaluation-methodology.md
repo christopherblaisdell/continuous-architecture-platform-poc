@@ -5,13 +5,14 @@
 
 ## Purpose
 
-This document defines the systematic methodology for comparing, evaluating, and deciding between three AI platform options for the solution architecture practice:
+This document defines the systematic methodology for comparing, evaluating, and deciding between four AI platform options for the solution architecture practice:
 
 - **Option A:** GitHub Copilot Pro+ (SaaS, lean)
 - **Option B:** Roo Code + Kong AI Gateway (custom RAG, token-based)
 - **Option C:** Bespoke Architecture Agent (Azure AI Foundry, custom build)
+- **Option D:** Hybrid (Copilot platform + Foundry model via BYOK — combines A and C)
 
-The methodology produces a defensible, weighted score that stakeholders can audit, challenge, and ultimately use to make an informed decision.
+The methodology produces a defensible, weighted score that stakeholders can audit, challenge, and ultimately use to make an informed decision. Options A, B, and C are scored independently as discrete alternatives. Option D is scored as a compositional variant that inherits Option A’s platform characteristics with a cost and operational overhead delta for the BYOK custom model integration.
 
 ---
 

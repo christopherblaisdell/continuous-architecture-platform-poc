@@ -5,13 +5,14 @@
 
 ## Principle: Test Reversible Options Before Irreversible Ones
 
-This evaluation compares three platform options for AI-assisted architecture work. A critical — and often overlooked — constraint is that **the three options are not equally testable**.
+This evaluation compares four platform options for AI-assisted architecture work. A critical — and often overlooked — constraint is that **the options are not equally testable**.
 
 | Option | What It Takes to Test | Time to First Scenario | Approximate Evaluation Cost | Reversible? |
 |--------|----------------------|------------------------|----------------------------|-------------|
 | A — GitHub Copilot | Install extension, add instruction files, run scenario | Minutes | $0.48 per scenario (subscription covers it) | Yes — cancel subscription |
 | B — Roo Code + Kong | Install extension, configure Kong gateway, provision API keys, run scenario | Hours | $25–100 in API tokens per scenario | Yes — stop paying for tokens |
 | C — Bespoke Agent | Design agent architecture, provision Azure AI Foundry, develop prompt orchestration, build context pipeline | Weeks to months | Engineering team time + Azure infrastructure | No — sunk cost |
+| D — Hybrid (A + C’s model) | Deploy Foundry model as BYOK endpoint, configure in Copilot settings | Hours | $39 subscription + Azure consumption | Yes — remove BYOK endpoint |
 
 Options A and B can be evaluated empirically: install, configure, run a real architecture scenario, measure quality and cost, compare. Option C requires **building the product before you can test it**.
 
@@ -83,14 +84,14 @@ The phased evaluation strategy also determines the order in which toolchain deci
 | DD-03 AI Provider | Phase 1 | Provider is determined by the platform that wins Phase 1 |
 | DD-04 Model Routing | Phase 1 / Phase 2 | Only relevant if the winning platform supports multiple models |
 | DD-05 Model Selection Autonomy | Phase 1 | Architect control over model choice is a governance decision resolved during initial adoption |
-| DD-06 VS Code AI Plugin | Phase 3 only | Only relevant if Option C is pursued |
+| DD-06 IDE Client Selection | Phase 1 | Resolved by Option D — Copilot is the IDE client; custom Foundry model is consumed via BYOK, not a separate plugin |
 
 **The key insight:** DD-01 through DD-05 can be resolved with empirical evidence from Phase 1. DD-06 only becomes relevant if Phase 1 and Phase 2 fail. Resolving DD-01 through DD-05 first prevents premature commitment to bespoke engineering.
 
 ## What This Means for Option C
 
 Option C is not dismissed. It is **sequenced correctly**. If Options A and B genuinely cannot meet the architecture practice's needs — and Phase 2 gap analysis confirms this with evidence — then a bespoke agent is the right investment.
-
+However, **Option D changes the calculus**: rather than pursuing Option C as a standalone platform (which requires bespoke engineering), the custom Foundry model can be deployed as a BYOK endpoint within Option A. This preserves the Foundry team’s model investment without requiring a separate IDE plugin, agent infrastructure, or prompt orchestration layer. Option D makes Phase 3 unnecessary in most scenarios.
 But investing in Option C before testing Options A and B is building a custom house before checking whether an existing one meets your needs. The evaluation approach ensures that the organization only pays for bespoke engineering when it has empirical proof that off-the-shelf solutions are insufficient.
 
 See also: [Build vs Leverage](../evidence/build-vs-leverage.md) for a detailed analysis of when custom RAG pipelines are justified versus when they reinvent capabilities that already exist natively.

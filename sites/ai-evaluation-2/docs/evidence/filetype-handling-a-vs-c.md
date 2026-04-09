@@ -159,3 +159,4 @@ The "maybe Option C is better at chunking" hypothesis partially survives — Opt
 - [Build vs Leverage](build-vs-leverage.md) — Why native capabilities replace custom RAG for most use cases
 - [What Does Foundry IQ Actually Require?](foundry-iq-comparison.md) — Operational requirements comparison
 - [Controlling What Copilot Sees](context-injection-controls.md) — How Copilot's context pipeline works
+- [Option D — Hybrid Architecture](option-d-hybrid-architecture.md) — How Option D inherits Option A's file-type handling while adding a domain-specialized model

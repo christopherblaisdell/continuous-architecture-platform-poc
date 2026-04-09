@@ -19,11 +19,12 @@ The process by which an IDE platform (Copilot, Cursor, Windsurf, Claude Code) au
 
 The maximum amount of text (measured in tokens) that an AI model can process in a single request. Every model has a fixed context window size — even a model with a 200K-token window cannot process an entire large repository at once. The platform must select which content to include and which to exclude for each request. This is normal behavior, not content loss — the files remain in the workspace and in the index; only the subset sent to the model varies per request.
 
-Context window management differs significantly across the three options evaluated:
+Context window management differs significantly across the four options evaluated:
 
 - **Option A (GitHub Copilot)** — Robust context management. Copilot automatically summarizes conversation history, prunes irrelevant context, and manages the window transparently. Long agent sessions continue functioning because Copilot compacts earlier context as the conversation grows.
 - **Option B (Roo Code + Kong)** — No context window management. When the context window fills, the session errors out and stops functioning. The user must manually start a new session and re-establish context. This was observed repeatedly during the pilot evaluation.
 - **Option C (Bespoke Agent)** — Context window limits are determined by the chosen model and must be managed by the custom agent's own code. The engineering team would need to implement summarization, pruning, or sliding-window strategies — the same problems Copilot already solves natively.
+- **Option D (Hybrid)** — Inherits Option A's context window management for all interactions. When the BYOK custom model is selected, context management is still handled by Copilot's orchestration layer — the custom model receives the same curated context as any built-in model.
 
 NOTE: Context window selection should not be confused with content deletion. No AI platform "drops" or permanently discards workspace files. The files remain on disk and in the index. What changes per request is which subset the model sees.
 

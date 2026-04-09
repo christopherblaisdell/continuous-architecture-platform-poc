@@ -29,10 +29,12 @@ factors = [
 scores_a = [5, 5, 5, 5, 5, 4, 5, 4, 5, 5, 5, 4, 5]
 scores_b = [2, 2, 3, 3, 4, 4, 5, 4, 3, 2, 4, 4, 3]
 scores_c = [2, 1, 2, 2, 3, 3, 3, 2, 1, 1, 2, 1, 4]
+scores_d = [4, 4, 4, 5, 5, 4, 5, 4, 4, 4, 5, 4, 5]
 
 weighted_a = sum(s * f[3] for s, f in zip(scores_a, factors))
 weighted_b = sum(s * f[3] for s, f in zip(scores_b, factors))
 weighted_c = sum(s * f[3] for s, f in zip(scores_c, factors))
+weighted_d = sum(s * f[3] for s, f in zip(scores_d, factors))
 
 categories = ["Economics\n(29%)", "Quality &\nCapability (37%)", "Operational\nFitness (20%)", "Strategic &\nRisk (14%)"]
 cat_indices = [
@@ -68,6 +70,7 @@ SCORE_LABELS = {
 OPT_A_COLOR = '#1565c0'  # blue
 OPT_B_COLOR = '#00897b'  # teal
 OPT_C_COLOR = '#78909c'  # blue-grey
+OPT_D_COLOR = '#ff8f00'  # amber (recommended option)
 
 CAT_BG_COLORS = ['#e3f2fd', '#e8f5e9', '#fff3e0', '#fce4ec']
 
@@ -100,15 +103,17 @@ def add_option_legend(ax, x=0.5, y=-0.10, fontsize=10, include_totals=False):
         f'Option A — GitHub Copilot' + (f'  ({weighted_a:.2f})' if include_totals else ''),
         f'Option B — Roo Code + Kong' + (f'  ({weighted_b:.2f})' if include_totals else ''),
         f'Option C — Bespoke Agent' + (f'  ({weighted_c:.2f})' if include_totals else ''),
+        f'Option D — Hybrid (A+C)' + (f'  ({weighted_d:.2f})' if include_totals else ''),
     ]
     patches = [
         mpatches.Patch(facecolor=OPT_A_COLOR, label=labels[0]),
         mpatches.Patch(facecolor=OPT_B_COLOR, label=labels[1]),
         mpatches.Patch(facecolor=OPT_C_COLOR, label=labels[2]),
+        mpatches.Patch(facecolor=OPT_D_COLOR, label=labels[3]),
     ]
     ax.legend(
         handles=patches, loc='upper center',
-        bbox_to_anchor=(x, y), ncol=3, fontsize=fontsize,
+        bbox_to_anchor=(x, y), ncol=4, fontsize=fontsize,
         frameon=True, fancybox=True, shadow=False,
         edgecolor='#cccccc', facecolor='white',
         handlelength=1.5, handleheight=1.2,
@@ -120,7 +125,7 @@ def add_option_legend(ax, x=0.5, y=-0.10, fontsize=10, include_totals=False):
 # ============================================================================
 def create_heatmap():
     fig, ax = plt.subplots(figsize=(FIGURE_WIDTH, 8.5), dpi=DPI)
-    ax.set_xlim(-0.5, 3.5)
+    ax.set_xlim(-0.5, 4.5)
     ax.set_ylim(-1.5, len(factors) + 2.5)
     ax.axis('off')
 
@@ -131,9 +136,9 @@ def create_heatmap():
             ha='center', va='center', fontsize=11, color='#616161')
 
     # Column headers
-    col_labels = ['Option A\nGitHub Copilot', 'Option B\nRoo Code + Kong', 'Option C\nBespoke Agent']
+    col_labels = ['Option A\nGitHub Copilot', 'Option B\nRoo Code + Kong', 'Option C\nBespoke Agent', 'Option D\nHybrid (A+C)']
     for j, label in enumerate(col_labels):
-        colors = [OPT_A_COLOR, OPT_B_COLOR, OPT_C_COLOR]
+        colors = [OPT_A_COLOR, OPT_B_COLOR, OPT_C_COLOR, OPT_D_COLOR]
         ax.add_patch(plt.Rectangle((j + 0.52, len(factors) + 0.05), 0.96, 0.7,
                                     facecolor=colors[j], edgecolor='white', linewidth=1, zorder=3))
         ax.text(j + 1.0, len(factors) + 0.4, label, ha='center', va='center',
@@ -158,7 +163,7 @@ def create_heatmap():
             if current_cat is not None:
                 # Draw category background
                 h = cat_start - row_y
-                ax.add_patch(plt.Rectangle((-0.48, row_y + 0.98), 4.0, h + 0.04,
+                ax.add_patch(plt.Rectangle((-0.48, row_y + 0.98), 5.0, h + 0.04,
                                             facecolor=CAT_BG_COLORS[cat_idx], edgecolor='none',
                                             alpha=0.3, zorder=0))
                 cat_idx += 1
@@ -171,7 +176,7 @@ def create_heatmap():
                 ha='left', va='center', fontsize=9.5, color='#212121', zorder=5)
 
         # Score cells
-        for j, score in enumerate([scores_a[i], scores_b[i], scores_c[i]]):
+        for j, score in enumerate([scores_a[i], scores_b[i], scores_c[i], scores_d[i]]):
             color = SCORE_COLORS[score]
             text_color = SCORE_TEXT_COLORS[score]
             ax.add_patch(plt.Rectangle((j + 0.52, row_y + 0.02), 0.96, 0.96,
@@ -182,7 +187,7 @@ def create_heatmap():
     # Last category background
     row_y_last = len(factors) - 1 - (len(factors) - 1)
     h = cat_start - row_y_last
-    ax.add_patch(plt.Rectangle((-0.48, row_y_last - 0.02), 4.0, h + 1.04,
+    ax.add_patch(plt.Rectangle((-0.48, row_y_last - 0.02), 5.0, h + 1.04,
                                 facecolor=CAT_BG_COLORS[cat_idx], edgecolor='none',
                                 alpha=0.3, zorder=0))
 
@@ -193,7 +198,7 @@ def create_heatmap():
     ax.text(0.02, total_y + 0.4, 'WEIGHTED TOTAL', ha='center', va='center',
             fontsize=10, fontweight='bold', color='white', zorder=4)
 
-    for j, (total, color) in enumerate([(weighted_a, OPT_A_COLOR), (weighted_b, OPT_B_COLOR), (weighted_c, OPT_C_COLOR)]):
+    for j, (total, color) in enumerate([(weighted_a, OPT_A_COLOR), (weighted_b, OPT_B_COLOR), (weighted_c, OPT_C_COLOR), (weighted_d, OPT_D_COLOR)]):
         ax.add_patch(plt.Rectangle((j + 0.52, total_y + 0.02), 0.96, 0.76,
                                     facecolor=color, edgecolor='white', linewidth=2, zorder=3))
         ax.text(j + 1.0, total_y + 0.4, f'{total:.2f}', ha='center', va='center',
@@ -217,9 +222,9 @@ def create_heatmap():
 def create_bar_chart():
     fig, ax = plt.subplots(figsize=(FIGURE_WIDTH, 4.5), dpi=DPI)
 
-    options = ['Option C\nBespoke Agent', 'Option B\nRoo Code + Kong', 'Option A\nGitHub Copilot']
-    totals = [weighted_c, weighted_b, weighted_a]
-    colors = [OPT_C_COLOR, OPT_B_COLOR, OPT_A_COLOR]
+    options = ['Option C\nBespoke Agent', 'Option B\nRoo Code + Kong', 'Option D\nHybrid (A+C)', 'Option A\nGitHub Copilot']
+    totals = [weighted_c, weighted_b, weighted_d, weighted_a]
+    colors = [OPT_C_COLOR, OPT_B_COLOR, OPT_D_COLOR, OPT_A_COLOR]
 
     bars = ax.barh(options, totals, color=colors, height=0.55, edgecolor='white', linewidth=1.5)
 
@@ -231,7 +236,7 @@ def create_bar_chart():
 
     # Max line
     ax.axvline(x=5.0, color='#bdbdbd', linestyle='--', linewidth=1, alpha=0.7)
-    ax.text(5.0, 2.35, 'Max: 5.00', ha='center', va='bottom', fontsize=9, color='#9e9e9e')
+    ax.text(5.0, 3.35, 'Max: 5.00', ha='center', va='bottom', fontsize=9, color='#9e9e9e')
 
     ax.set_xlim(0, 5.5)
     ax.set_xlabel('Weighted Score (1–5 scale)', fontsize=11, color='#424242')
@@ -242,7 +247,7 @@ def create_bar_chart():
 
     # Margin annotation
     ax.annotate(f'Margin: {weighted_a - weighted_b:.2f} pts',
-                xy=(weighted_a, 2), xytext=(weighted_a + 0.3, 1.5),
+                xy=(weighted_a, 3), xytext=(weighted_a + 0.3, 2.5),
                 fontsize=10, color=OPT_A_COLOR, fontweight='bold',
                 arrowprops=dict(arrowstyle='->', color=OPT_A_COLOR, lw=1.5))
 
@@ -273,6 +278,7 @@ def create_radar():
     sa = scores_a + scores_a[:1]
     sb = scores_b + scores_b[:1]
     sc = scores_c + scores_c[:1]
+    sd = scores_d + scores_d[:1]
 
     fig, ax = plt.subplots(figsize=(FIGURE_WIDTH, 9), dpi=DPI,
                             subplot_kw=dict(polar=True))
@@ -281,11 +287,16 @@ def create_radar():
     RADAR_A = '#1565c0'  # blue
     RADAR_B = '#f57c00'  # warm orange (complementary to blue)
     RADAR_C = '#6a1b9a'  # deep purple
+    RADAR_D = '#ff8f00'  # amber
 
     # Draw the polygons
     ax.fill(angles, sa, alpha=0.15, color=RADAR_A)
     ax.plot(angles, sa, color=RADAR_A, linewidth=2.5, label=f'Option A — GitHub Copilot ({weighted_a:.2f})')
     ax.scatter(angles[:-1], scores_a, color=RADAR_A, s=50, zorder=5)
+
+    ax.fill(angles, sd, alpha=0.10, color=RADAR_D)
+    ax.plot(angles, sd, color=RADAR_D, linewidth=2.0, linestyle='-.', label=f'Option D — Hybrid (A+C) ({weighted_d:.2f})')
+    ax.scatter(angles[:-1], scores_d, color=RADAR_D, s=40, zorder=5)
 
     ax.fill(angles, sb, alpha=0.10, color=RADAR_B)
     ax.plot(angles, sb, color=RADAR_B, linewidth=2.0, linestyle='--', label=f'Option B — Roo Code + Kong ({weighted_b:.2f})')
@@ -312,7 +323,7 @@ def create_radar():
                  fontsize=16, fontweight='bold', color='#212121', pad=30, y=1.05)
 
     ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
-              ncol=3, fontsize=10, frameon=True, fancybox=True,
+              ncol=2, fontsize=10, frameon=True, fancybox=True,
               edgecolor='#cccccc', facecolor='white')
 
     plt.tight_layout(rect=[0, 0.05, 1, 0.98])
@@ -333,24 +344,27 @@ def create_stacked_bars():
     # Calculate category subtotals (weighted contribution to final score)
     cat_names_short = ['Economics\n(29%)', 'Quality &\nCapability (37%)', 'Operational\nFitness (20%)', 'Strategic &\nRisk (14%)']
 
-    cat_weighted = {'A': [], 'B': [], 'C': []}
+    cat_weighted = {'A': [], 'B': [], 'C': [], 'D': []}
     for indices in cat_indices:
         wa = sum(factors[i][3] * scores_a[i] for i in indices)
         wb = sum(factors[i][3] * scores_b[i] for i in indices)
         wc = sum(factors[i][3] * scores_c[i] for i in indices)
+        wd = sum(factors[i][3] * scores_d[i] for i in indices)
         cat_weighted['A'].append(wa)
         cat_weighted['B'].append(wb)
         cat_weighted['C'].append(wc)
+        cat_weighted['D'].append(wd)
 
     x = np.arange(len(cat_names_short))
-    width = 0.25
+    width = 0.20
 
-    bars_a = ax.bar(x - width, cat_weighted['A'], width, color=OPT_A_COLOR, edgecolor='white', linewidth=1.2, label=f'Option A ({weighted_a:.2f})')
-    bars_b = ax.bar(x, cat_weighted['B'], width, color=OPT_B_COLOR, edgecolor='white', linewidth=1.2, label=f'Option B ({weighted_b:.2f})')
-    bars_c = ax.bar(x + width, cat_weighted['C'], width, color=OPT_C_COLOR, edgecolor='white', linewidth=1.2, label=f'Option C ({weighted_c:.2f})')
+    bars_a = ax.bar(x - 1.5*width, cat_weighted['A'], width, color=OPT_A_COLOR, edgecolor='white', linewidth=1.2, label=f'Option A ({weighted_a:.2f})')
+    bars_d = ax.bar(x - 0.5*width, cat_weighted['D'], width, color=OPT_D_COLOR, edgecolor='white', linewidth=1.2, label=f'Option D ({weighted_d:.2f})')
+    bars_b = ax.bar(x + 0.5*width, cat_weighted['B'], width, color=OPT_B_COLOR, edgecolor='white', linewidth=1.2, label=f'Option B ({weighted_b:.2f})')
+    bars_c = ax.bar(x + 1.5*width, cat_weighted['C'], width, color=OPT_C_COLOR, edgecolor='white', linewidth=1.2, label=f'Option C ({weighted_c:.2f})')
 
     # Value labels on bars
-    for bars in [bars_a, bars_b, bars_c]:
+    for bars in [bars_a, bars_d, bars_b, bars_c]:
         for bar in bars:
             height = bar.get_height()
             if height >= 0.15:
@@ -377,12 +391,12 @@ def create_stacked_bars():
         cat_max.append(sum(factors[i][3] * 5 for i in indices))
 
     for i, m in enumerate(cat_max):
-        ax.plot([i - width * 1.5, i + width * 1.5], [m, m],
+        ax.plot([i - width * 2, i + width * 2], [m, m],
                 color='#bdbdbd', linestyle='--', linewidth=1, alpha=0.7)
-        ax.text(i + width * 1.6, m, f'Max: {m:.2f}', fontsize=8, color='#9e9e9e', va='center')
+        ax.text(i + width * 2.1, m, f'Max: {m:.2f}', fontsize=8, color='#9e9e9e', va='center')
 
     ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12),
-              ncol=3, fontsize=11, frameon=True, fancybox=True,
+              ncol=4, fontsize=10, frameon=True, fancybox=True,
               edgecolor='#cccccc', facecolor='white',
               handlelength=1.5, handleheight=1.2)
 
