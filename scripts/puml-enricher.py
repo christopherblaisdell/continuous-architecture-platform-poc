@@ -42,6 +42,7 @@ PUML_SOURCES = [
     "portal/docs/applications/puml",
     "architecture/diagrams",
     "architecture/solutions",
+    "tests/puml-chunking/fixtures",
 ]
 
 DEFAULT_OUTPUT_DIR = WORKSPACE_ROOT / ".enriched-puml"
