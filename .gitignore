@@ -8,6 +8,7 @@ build/
 .idea/
 .vscode/
 *.swp
+.enriched-puml/
 
 # PowerPoint temp files
 ~$*.pptx

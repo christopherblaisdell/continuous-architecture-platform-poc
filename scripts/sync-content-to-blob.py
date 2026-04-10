@@ -60,6 +60,12 @@ CONTENT_TYPES = {
         "description": "Adventure classification and test standards",
         "priority": "MEDIUM",
     },
+    "diagrams": {
+        "patterns": [".enriched-puml/*.md"],
+        "prefix": "diagrams/",
+        "description": "Enriched PlantUML diagrams (sequence, C4, ERD, event-flow)",
+        "priority": "HIGH",
+    },
     # copilot-instructions.md excluded — too large for single-document indexing
     # Content is covered by the individual ADRs, specs, and metadata files
 }
