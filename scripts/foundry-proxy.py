@@ -133,6 +133,41 @@ def to_chat_completion(answer, model="gpt-4o"):
     }
 
 
+def to_streaming_chunks(answer, model="gpt-4o"):
+    """Yield SSE chunks in Chat Completions streaming format."""
+    chunk_id = f"foundry-{int(time.time())}"
+    created = int(time.time())
+
+    # First chunk: role
+    yield {
+        "id": chunk_id,
+        "object": "chat.completion.chunk",
+        "created": created,
+        "model": model,
+        "choices": [{"index": 0, "delta": {"role": "assistant", "content": ""}, "finish_reason": None}],
+    }
+
+    # Content chunks — split into ~80-char pieces for smooth streaming feel
+    chunk_size = 80
+    for i in range(0, len(answer), chunk_size):
+        yield {
+            "id": chunk_id,
+            "object": "chat.completion.chunk",
+            "created": created,
+            "model": model,
+            "choices": [{"index": 0, "delta": {"content": answer[i:i + chunk_size]}, "finish_reason": None}],
+        }
+
+    # Final chunk: finish_reason
+    yield {
+        "id": chunk_id,
+        "object": "chat.completion.chunk",
+        "created": created,
+        "model": model,
+        "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
+    }
+
+
 class FoundryProxyHandler(http.server.BaseHTTPRequestHandler):
     """Translates Chat Completions → Foundry IQ retrieve."""
 
@@ -184,8 +219,29 @@ class FoundryProxyHandler(http.server.BaseHTTPRequestHandler):
             print(f"[Foundry] Citations: {', '.join(citations[:5])}", file=sys.stderr)
 
         model = body.get("model", "gpt-4o")
-        response = to_chat_completion(answer, model)
-        self._send_json(200, response)
+        stream = body.get("stream", False)
+
+        if stream:
+            self._send_streaming(answer, model)
+        else:
+            response = to_chat_completion(answer, model)
+            self._send_json(200, response)
+
+    def _send_streaming(self, answer, model):
+        """Send SSE streaming response."""
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Connection", "keep-alive")
+        self.end_headers()
+
+        for chunk in to_streaming_chunks(answer, model):
+            line = f"data: {json.dumps(chunk)}\n\n"
+            self.wfile.write(line.encode("utf-8"))
+            self.wfile.flush()
+
+        self.wfile.write(b"data: [DONE]\n\n")
+        self.wfile.flush()
 
     def _send_json(self, status, data):
         """Send a JSON response."""
