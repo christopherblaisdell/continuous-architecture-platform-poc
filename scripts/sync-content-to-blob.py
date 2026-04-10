@@ -60,12 +60,8 @@ CONTENT_TYPES = {
         "description": "Adventure classification and test standards",
         "priority": "MEDIUM",
     },
-    "copilot-instructions": {
-        "patterns": [".github/copilot-instructions.md"],
-        "prefix": "instructions/",
-        "description": "Copilot workspace instructions (domain model, conventions)",
-        "priority": "HIGH",
-    },
+    # copilot-instructions.md excluded — too large for single-document indexing
+    # Content is covered by the individual ADRs, specs, and metadata files
 }
 
 

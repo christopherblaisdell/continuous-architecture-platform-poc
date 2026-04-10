@@ -218,6 +218,7 @@ def create_indexer(endpoint, admin_key):
         "dataSourceName": DATA_SOURCE_NAME,
         "targetIndexName": INDEX_NAME,
         "parameters": {
+            "maxFailedItems": 10,
             "configuration": {
                 "parsingMode": "default",
                 "dataToExtract": "contentAndMetadata",
