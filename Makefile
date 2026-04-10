@@ -8,7 +8,7 @@
         what-if-dev what-if-prod portal-build portal-serve lint \
         confluence-prepare confluence-publish-dry-run confluence-publish \
         confluence-verify confluence-lock confluence-drift-check confluence-wipe \
-        confluence-full
+        confluence-full enrich-puml sync-kb foundry-proxy
 
 # Default target
 help: ## Show this help
@@ -150,3 +150,39 @@ confluence-full: ## Full cycle: prepare -> publish -> verify -> lock
 	$(MAKE) confluence-publish
 	$(MAKE) confluence-verify
 	$(MAKE) confluence-lock
+
+# ===========================================================================
+# Foundry IQ Knowledge Base
+# ===========================================================================
+
+enrich-puml: ## Enrich PlantUML diagrams into search-optimized Markdown
+	python3 scripts/puml-enricher.py
+	@echo ""
+	@echo "Output: .enriched-puml/ ($$(ls .enriched-puml/*.md 2>/dev/null | wc -l) files)"
+
+sync-kb: ## Enrich PUMLs + upload all content to blob + trigger indexer
+	python3 scripts/puml-enricher.py
+	python3 scripts/sync-content-to-blob.py
+	@SEARCH_KEY=$$(az search admin-key show \
+		--service-name srch-novatrek-poc \
+		--resource-group rg-novatrek-ai-poc \
+		--query primaryKey -o tsv) && \
+	curl -sf -X POST \
+		"https://srch-novatrek-poc.search.windows.net/indexers/architecture-content-indexer/reset?api-version=2024-07-01" \
+		-H "api-key: $$SEARCH_KEY" \
+		-H "Content-Length: 0" && \
+	echo "Indexer reset" && \
+	curl -sf -X POST \
+		"https://srch-novatrek-poc.search.windows.net/indexers/architecture-content-indexer/run?api-version=2024-07-01" \
+		-H "api-key: $$SEARCH_KEY" \
+		-H "Content-Length: 0" && \
+	echo "Indexer triggered — content will be searchable in ~30 seconds"
+
+foundry-proxy: ## Start Foundry IQ translation proxy (port 8082)
+	@SEARCH_KEY=$$(az search admin-key show \
+		--service-name srch-novatrek-poc \
+		--resource-group rg-novatrek-ai-poc \
+		--query primaryKey -o tsv) && \
+	AZURE_SEARCH_ENDPOINT="https://srch-novatrek-poc.search.windows.net" \
+	AZURE_SEARCH_API_KEY="$$SEARCH_KEY" \
+	python3 scripts/foundry-proxy.py
