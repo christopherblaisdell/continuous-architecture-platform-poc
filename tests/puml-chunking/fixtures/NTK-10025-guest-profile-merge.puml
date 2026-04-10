@@ -1,0 +1,286 @@
+@startuml NTK-10025-guest-profile-merge
+' NovaTrek Adventures - Guest Profile Merge (Identity Deduplication)
+' PUML Chunking Test: 180+ lines, create/destroy keywords, group blocks,
+'   multiple database participants, cross-service fan-out, full saga rollback,
+'   extensive notes, phase structure
+
+!include ../../architecture/diagrams/theme.puml
+skinparam sequence {
+    ArrowColor #7c3aed
+}
+
+title NovaTrek Adventures - Guest Profile\nMerge and Identity Deduplication\n<size:10>NTK-10025 | Create/Destroy + Group Blocks + Full Saga</size>
+
+' ============================================================
+' Participants
+' ============================================================
+actor "Ops Agent" as agent
+participant "Admin API\nGateway" as gw #E0F2FE
+participant "svc-guest-\nprofiles" as profiles [[/microservices/svc-guest-profiles/]]
+participant "svc-reservations" as reservations [[/microservices/svc-reservations/]]
+participant "svc-check-in" as checkin [[/microservices/svc-check-in/]]
+participant "svc-loyalty-\nrewards" as loyalty [[/microservices/svc-loyalty-rewards/]]
+participant "svc-payments" as payments [[/microservices/svc-payments/]]
+participant "svc-media-\ngallery" as media [[/microservices/svc-media-gallery/]]
+participant "svc-notifications" as notify [[/microservices/svc-notifications/]]
+participant "svc-analytics" as analytics [[/microservices/svc-analytics/]]
+queue "Kafka" as kafka
+database "PostgreSQL\n(profiles-db)" as profiledb #FEF9C3
+database "PostgreSQL\n(reservations-db)" as resdb #FEF9C3
+database "PostgreSQL\n(loyalty-db)" as loyaltydb #FEF9C3
+
+' ============================================================
+' == Phase 1: Duplicate Detection ==
+' ============================================================
+
+== Phase 1 - Duplicate Detection and Candidate Selection ==
+
+agent -> gw : POST /admin/profiles/merge-candidates\n(search_criteria: {\n  email: "jane.doe@example.com",\n  phone: "+1-555-0142"\n})
+gw -> profiles : route request
+activate profiles #7c3aed
+
+profiles -> profiledb : SELECT * FROM guests\nWHERE email = 'jane.doe@example.com'\nOR phone = '+1-555-0142'\nORDER BY created_at ASC
+activate profiledb #FEF9C3
+profiledb --> profiles : candidates[\n  {guest_id=G-1001, name="Jane Doe",\n   email="jane.doe@example.com",\n   phone=null, created=2024-01-15,\n   reservations_count=12,\n   loyalty_tier=GOLD},\n  {guest_id=G-3847, name="Jane A Doe",\n   email="jane.doe@example.com",\n   phone="+1-555-0142", created=2025-08-22,\n   reservations_count=3,\n   loyalty_tier=BRONZE}\n]
+deactivate profiledb
+
+note right of profiles
+  Merge Candidate Analysis:
+  - G-1001: Primary candidate (older, more activity)
+  - G-3847: Secondary candidate (newer, duplicate)
+  - Matching: exact email match
+  - Conflict: name variation ("Jane Doe" vs "Jane A Doe")
+  - Conflict: G-1001 missing phone number
+  - Strategy: KEEP G-1001 as primary, merge G-3847 into it
+end note
+
+profiles -> profiles : scoreCandidates(\n  weight_age=0.3,\n  weight_activity=0.4,\n  weight_completeness=0.3)\n  primary=G-1001 (score=0.87)\n  secondary=G-3847 (score=0.42)
+
+profiles --> gw : merge_candidates\n(primary=G-1001,\nsecondary=G-3847,\nconflicts=[name, phone],\nconfidence=0.87)
+gw --> agent : review candidates
+
+deactivate profiles
+
+' ============================================================
+' == Phase 2: Merge Execution ==
+' ============================================================
+
+== Phase 2 - Merge Execution (Saga Orchestration) ==
+
+agent -> gw : POST /admin/profiles/merge\n(primary_id=G-1001,\nsecondary_id=G-3847,\nconflict_resolutions: {\n  name: "Jane A. Doe",\n  phone: "+1-555-0142"\n},\nmerge_id=MERGE-2026-0415-001)
+gw -> profiles : route merge request
+activate profiles #7c3aed
+
+' -- Create merge audit record --
+profiles -> profiledb : INSERT INTO merge_audit_log\n(merge_id=MERGE-2026-0415-001,\nprimary=G-1001, secondary=G-3847,\ninitiated_by=AGENT-ops-jsmith,\nstatus=IN_PROGRESS,\nstarted_at=NOW())
+activate profiledb #FEF9C3
+profiledb --> profiles : audit_logged
+deactivate profiledb
+
+' -- Create rollback snapshot --
+create "Rollback\nSnapshot" as snapshot #FEF3C7
+profiles -> snapshot : captureState(\n  primary_before,\n  secondary_before,\n  all_foreign_references)
+
+note right of snapshot
+  Rollback Snapshot Contents:
+  - Primary profile (G-1001) pre-merge state
+  - Secondary profile (G-3847) full record
+  - All foreign key references to G-3847:
+    * Reservations: [R-5510, R-5511, R-5512]
+    * Check-ins: [CI-8801, CI-8802]
+    * Loyalty ledger: 47 entries
+    * Payment records: [PAY-3301, PAY-3302]
+    * Media uploads: [IMG-2201..IMG-2205]
+  - Snapshot ID: SNAP-MERGE-001
+  - TTL: 30 days (for late dispute resolution)
+end note
+
+' ============================================================
+' == Step 2a: Update Primary Profile ==
+' ============================================================
+
+group Step 2a - Update Primary Profile
+
+    profiles -> profiledb : UPDATE guests\nSET name = 'Jane A. Doe',\n    phone = '+1-555-0142',\n    merged_from = ARRAY_APPEND(merged_from, 'G-3847'),\n    updated_at = NOW()\nWHERE guest_id = 'G-1001'\nAND _rev = 42
+    activate profiledb #FEF9C3
+
+    alt Optimistic lock success
+        profiledb --> profiles : updated (_rev=43)
+    else Concurrent modification
+        profiledb --> profiles : 0 rows affected
+        profiles -> profiles : ABORT merge\n(concurrent edit detected)
+    end
+
+    deactivate profiledb
+
+end
+
+' ============================================================
+' == Step 2b: Migrate Reservations ==
+' ============================================================
+
+group Step 2b - Migrate Foreign References (Reservations)
+
+    profiles -> reservations : PATCH /reservations/migrate-guest\n(from_guest_id=G-3847,\nto_guest_id=G-1001,\nmerge_id=MERGE-2026-0415-001)
+    activate reservations #059669
+
+    reservations -> resdb : UPDATE reservations\nSET guest_id = 'G-1001',\n    migration_note = 'Merged from G-3847'\nWHERE guest_id = 'G-3847'
+    activate resdb #FEF9C3
+    resdb --> reservations : 3 rows updated\n(R-5510, R-5511, R-5512)
+    deactivate resdb
+
+    reservations --> profiles : migration_complete\n(migrated_count=3)
+    deactivate reservations
+
+end
+
+' ============================================================
+' == Step 2c: Migrate Check-in Records ==
+' ============================================================
+
+group Step 2c - Migrate Foreign References (Check-ins)
+
+    profiles -> checkin : PATCH /check-ins/migrate-guest\n(from_guest_id=G-3847,\nto_guest_id=G-1001,\nmerge_id=MERGE-2026-0415-001)
+    activate checkin #0891b2
+
+    checkin --> profiles : migration_complete\n(migrated_count=2,\nrecords=[CI-8801, CI-8802])
+    deactivate checkin
+
+end
+
+' ============================================================
+' == Step 2d: Merge Loyalty Accounts ==
+' ============================================================
+
+group Step 2d - Merge Loyalty Accounts
+
+    profiles -> loyalty : POST /loyalty/merge-accounts\n(primary_guest_id=G-1001,\nsecondary_guest_id=G-3847,\nmerge_id=MERGE-2026-0415-001)
+    activate loyalty #4f46e5
+
+    loyalty -> loyaltydb : SELECT balance, lifetime_earned,\ntier FROM guest_points\nWHERE guest_id IN ('G-1001', 'G-3847')
+    activate loyaltydb #FEF9C3
+    loyaltydb --> loyalty : [\n  {G-1001: balance=33125, tier=GOLD},\n  {G-3847: balance=4200, tier=BRONZE}\n]
+    deactivate loyaltydb
+
+    note right of loyalty
+      Loyalty Merge Rules:
+      - Points: SUM balances (33125 + 4200 = 37325)
+      - Tier: KEEP higher tier (GOLD)
+      - Lifetime earned: SUM totals
+      - Transaction history: merge ledgers
+      - Tier recalculation: defer to next cycle
+    end note
+
+    loyalty -> loyaltydb : BEGIN TRANSACTION\n\nUPDATE guest_points\nSET balance = 37325,\n    lifetime_earned = lifetime_earned + 8400\nWHERE guest_id = 'G-1001';\n\nUPDATE points_ledger\nSET guest_id = 'G-1001'\nWHERE guest_id = 'G-3847';\n\nDELETE FROM guest_points\nWHERE guest_id = 'G-3847';\n\nCOMMIT
+    activate loyaltydb #FEF9C3
+    loyaltydb --> loyalty : committed
+    deactivate loyaltydb
+
+    loyalty --> profiles : merge_complete\n(new_balance=37325,\ntier_retained=GOLD)
+    deactivate loyalty
+
+end
+
+' ============================================================
+' == Step 2e: Migrate Payment Records ==
+' ============================================================
+
+group Step 2e - Migrate Payment Records
+
+    profiles -> payments : PATCH /payments/migrate-guest\n(from_guest_id=G-3847,\nto_guest_id=G-1001,\nmerge_id=MERGE-2026-0415-001)
+    activate payments #dc2626
+
+    payments --> profiles : migration_complete\n(migrated_count=2,\nrecords=[PAY-3301, PAY-3302])
+    deactivate payments
+
+end
+
+' ============================================================
+' == Step 2f: Migrate Media Assets ==
+' ============================================================
+
+group Step 2f - Migrate Media Assets
+
+    profiles -> media : PATCH /media/migrate-owner\n(from_guest_id=G-3847,\nto_guest_id=G-1001,\nmerge_id=MERGE-2026-0415-001)
+    activate media #64748b
+
+    media --> profiles : migration_complete\n(migrated_count=5,\nassets=[IMG-2201..IMG-2205])
+    deactivate media
+
+end
+
+' ============================================================
+' == Step 2g: Deactivate Secondary Profile ==
+' ============================================================
+
+group Step 2g - Deactivate Secondary Profile
+
+    profiles -> profiledb : UPDATE guests\nSET status = 'MERGED',\n    merged_into = 'G-1001',\n    deactivated_at = NOW(),\n    login_disabled = true\nWHERE guest_id = 'G-3847'
+    activate profiledb #FEF9C3
+    profiledb --> profiles : deactivated
+    deactivate profiledb
+
+    note right of profiles
+      IMPORTANT: Secondary profile is NOT deleted.
+      It is soft-deactivated for:
+      - Audit trail (30-day retention)
+      - Dispute resolution
+      - Regulatory compliance (data retention)
+      The redirect ensures any cached G-3847
+      references resolve to G-1001.
+    end note
+
+    ' -- Create redirect entry --
+    profiles -> profiledb : INSERT INTO guest_redirects\n(old_guest_id='G-3847',\nnew_guest_id='G-1001',\ncreated_at=NOW(),\nexpires_at=NOW() + INTERVAL '1 year')
+    activate profiledb #FEF9C3
+    profiledb --> profiles : redirect_created
+    deactivate profiledb
+
+end
+
+' ============================================================
+' == Phase 3: Post-Merge Notifications and Audit ==
+' ============================================================
+
+== Phase 3 - Post-Merge Notifications and Audit ==
+
+' -- Destroy rollback snapshot marker (saga complete) --
+profiles -> snapshot : markSagaComplete()
+destroy snapshot
+
+' -- Publish merge event --
+profiles -> kafka : publish guest.profile.merged\n(merge_id=MERGE-2026-0415-001,\nprimary_id=G-1001,\nsecondary_id=G-3847,\nservices_migrated=[\n  reservations, check-in,\n  loyalty, payments, media\n])
+
+' -- Fan-out notifications --
+kafka ->> analytics : consume guest.profile.merged
+activate analytics #64748b
+analytics -> analytics : updateGuestMetrics(\n  consolidate G-3847 into G-1001)
+deactivate analytics
+
+kafka ->> notify : consume guest.profile.merged
+activate notify #64748b
+
+notify --> agent : ops notification:\n"Merge MERGE-2026-0415-001 complete"
+
+notify ->> profiles : GET /guests/G-1001/contact-preferences
+activate profiles #7c3aed
+profiles --> notify : contact_prefs\n(email=true, sms=true, push=true)
+deactivate profiles
+
+notify --> gw : email to jane.doe@example.com\n"Your NovaTrek accounts have been\nmerged. Your points balance is 37,325."
+gw --> agent : guest notified
+
+deactivate notify
+
+' -- Final audit update --
+profiles -> profiledb : UPDATE merge_audit_log\nSET status = 'COMPLETED',\n    completed_at = NOW(),\n    services_migrated = 6,\n    records_migrated = 59,\n    duration_ms = 4280\nWHERE merge_id = 'MERGE-2026-0415-001'
+activate profiledb #FEF9C3
+profiledb --> profiles : audit_finalized
+deactivate profiledb
+
+profiles --> gw : 200 OK\n(merge_id=MERGE-2026-0415-001,\nstatus=COMPLETED,\nprimary_id=G-1001,\nrecords_migrated=59,\nnew_loyalty_balance=37325)
+gw --> agent : merge complete
+
+deactivate profiles
+
+@enduml

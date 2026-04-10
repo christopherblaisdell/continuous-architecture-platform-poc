@@ -1,0 +1,194 @@
+# Expected Extraction Results for PUML Chunking Test Diagrams
+# These YAML files define what the puml-enricher.py should extract from each
+# test diagram. Used by test_enricher_extraction.py for automated validation.
+
+# NTK-10020: Emergency Evacuation Flow
+NTK-10020-emergency-evacuation:
+  classification: sequence
+  # Note: enricher only counts `participant` keyword, not actor/database/queue
+  # Actual participant declarations: 12 (weather through analytics)
+  # actor (not counted), database (not counted), queue (not counted)
+  min_participants: 12
+  participant_aliases_must_include:
+    - weather
+    - safety
+    - location
+    - guides
+    - transport
+    - notify
+    - profiles
+    - checkin
+    - reservations
+    - payments
+    - kafka
+    - db
+  services_must_include:
+    - svc-weather
+    - svc-safety-compliance
+    - svc-location-services
+    - svc-guide-management
+    - svc-transport-logistics
+    - svc-notifications
+    - svc-guest-profiles
+    - svc-check-in
+    - svc-reservations
+    - svc-payments
+  min_api_calls: 10
+  # API calls as they appear in the PUML (enricher extracts raw call text)
+  api_calls_must_include:
+    - "POST /alerts"
+    - "POST /bulk-locate"
+    - "POST /emergency-recall"
+    - "POST /mass-alert"
+    - "POST /bulk-cancel"
+  has_title: true
+  min_notes: 3
+
+# NTK-10021: Multi-Day Scheduling
+NTK-10021-multiday-scheduling:
+  classification: sequence
+  # Enricher participant regex only matches `participant "..." as ...`
+  # actor and database/queue types are not counted
+  min_participants: 8
+  participant_aliases_must_include:
+    - scheduler
+    - catalog
+    - guides
+    - trails
+    - weather
+    - gear
+    - kafka
+    - db
+  services_must_include:
+    - svc-scheduling-orchestrator
+    - svc-trip-catalog
+    - svc-guide-management
+    - svc-trail-management
+    - svc-weather
+    - svc-gear-inventory
+  min_api_calls: 8
+  has_title: true
+  min_notes: 2
+
+# NTK-10022: Real-Time Tracking Pipeline
+NTK-10022-realtime-tracking-pipeline:
+  classification: sequence
+  # actor (dashboard), database (db, cache) not counted by enricher
+  min_participants: 9
+  participant_aliases_must_include:
+    - ws
+    - tracking
+    - location
+    - weather
+    - trails
+    - guides
+    - safety
+    - kafka
+  services_must_include:
+    - svc-location-services
+    - svc-weather
+    - svc-trail-management
+    - svc-guide-management
+    - svc-safety-compliance
+    - svc-analytics
+  min_api_calls: 6
+  api_calls_must_include:
+    - "GET /positions/active"
+    - "GET /current"
+    - "GET /conditions/summary"
+    - "GET /heartbeats/active"
+    - "GET /incidents/active"
+  has_title: true
+  min_notes: 3
+
+# NTK-10023: Loyalty Saga
+NTK-10023-loyalty-saga:
+  classification: sequence
+  # actor (guest) not counted; gw is participant
+  min_participants: 6
+  participant_aliases_must_include:
+    - loyalty
+    - profiles
+    - payments
+    - reservations
+    - notify
+    - kafka
+  services_must_include:
+    - svc-loyalty-rewards
+    - svc-guest-profiles
+    - svc-payments
+    - svc-reservations
+    - svc-notifications
+  min_api_calls: 5
+  api_calls_must_include:
+    - "GET /guests/G-1042/loyalty-tier"
+    - "PATCH /reservations/R-5501"
+    - "POST /payments"
+    - "POST /notifications"
+  has_title: true
+  min_notes: 3
+
+# NTK-10024: Webhook Reconciliation
+NTK-10024-webhook-reconciliation:
+  classification: sequence
+  # actor (partner) not counted by enricher
+  min_participants: 7
+  participant_aliases_must_include:
+    - ingress
+    - integrations
+    - reservations
+    - catalog
+    - payments
+    - kafka
+    - db
+  services_must_include:
+    - svc-partner-integrations
+    - svc-reservations
+    - svc-trip-catalog
+    - svc-payments
+    - svc-notifications
+    - svc-analytics
+  min_api_calls: 5
+  api_calls_must_include:
+    - "POST /webhooks/partner-availability"
+    - "GET /trips"
+    - "PATCH /trips/TRIP-2201/capacity"
+    - "POST /refunds"
+  has_title: true
+  min_notes: 2
+
+# NTK-10025: Guest Profile Merge
+NTK-10025-guest-profile-merge:
+  classification: sequence
+  # actor (agent) not counted; gw is participant
+  min_participants: 9
+  participant_aliases_must_include:
+    - profiles
+    - reservations
+    - checkin
+    - loyalty
+    - payments
+    - media
+    - notify
+    - kafka
+    - profiledb
+  services_must_include:
+    - svc-guest-profiles
+    - svc-reservations
+    - svc-check-in
+    - svc-loyalty-rewards
+    - svc-payments
+    - svc-media-gallery
+    - svc-notifications
+    - svc-analytics
+  min_api_calls: 6
+  api_calls_must_include:
+    - "POST /admin/profiles/merge-candidates"
+    - "POST /admin/profiles/merge"
+    - "PATCH /reservations/migrate-guest"
+    - "PATCH /check-ins/migrate-guest"
+    - "POST /loyalty/merge-accounts"
+    - "PATCH /payments/migrate-guest"
+    - "PATCH /media/migrate-owner"
+  has_title: true
+  min_notes: 3

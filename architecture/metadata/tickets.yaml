@@ -162,3 +162,144 @@ tickets:
       As a guest services manager,
       I want structured dispute workflows with escalation tiers and automated notifications,
       So that refund requests are resolved consistently and chargebacks are minimized.
+
+  # ── PUML Chunking Test Tickets ──────────────────────────────────
+  # Created for the PUML chunking end-to-end test plan.
+  # Each ticket targets specific diagram complexity dimensions.
+  # See research/PUML-CHUNKING-TEST-PLAN.md for full context.
+
+  - key: NTK-10020
+    summary: Emergency Evacuation Orchestration Flow
+    status: New
+    priority: Critical
+    assignee: null
+    reporter: sam.patel
+    labels: [safety, multi-service, emergency-response, puml-chunking-test]
+    created: 2026-04-10
+    updated: 2026-04-10
+    sprint: null
+    components: [svc-weather, svc-safety-compliance, svc-location-services, svc-guide-management, svc-transport-logistics, svc-notifications, svc-guest-profiles, svc-reservations, svc-payments, svc-analytics, svc-check-in]
+    solution: null
+    planned_capabilities:
+      - id: CAP-3.1
+        impact: enhanced
+      - id: CAP-3.4
+        impact: enhanced
+      - id: CAP-4.3
+        impact: enhanced
+    user_story: |
+      As a park safety officer,
+      I want an automated evacuation orchestration flow triggered by severe weather or safety incidents,
+      So that all active guests are safely extracted with minimal response time.
+
+  - key: NTK-10021
+    summary: Multi-Day Trip Scheduling with Accommodation Handoffs
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [new-capability, svc-scheduling-orchestrator, multi-day, puml-chunking-test]
+    created: 2026-04-10
+    updated: 2026-04-10
+    sprint: null
+    components: [svc-scheduling-orchestrator, svc-guide-management, svc-trail-management, svc-weather, svc-trip-catalog, svc-gear-inventory, svc-partner-integrations]
+    solution: null
+    planned_capabilities:
+      - id: CAP-2.1
+        impact: enhanced
+      - id: CAP-2.3
+        impact: enhanced
+    user_story: |
+      As a scheduling coordinator,
+      I want to plan multi-day expedition packages with per-day guide rotation and accommodation handoffs,
+      So that complex trips are safely staffed and logistically coordinated across multiple days.
+
+  - key: NTK-10022
+    summary: Real-Time Adventure Tracking Dashboard Data Pipeline
+    status: New
+    priority: High
+    assignee: null
+    reporter: sam.patel
+    labels: [new-capability, real-time, ops-dashboard, puml-chunking-test]
+    created: 2026-04-10
+    updated: 2026-04-10
+    sprint: null
+    components: [svc-location-services, svc-weather, svc-trail-management, svc-guide-management, svc-safety-compliance, svc-analytics]
+    solution: null
+    planned_capabilities:
+      - id: CAP-4.1
+        impact: enhanced
+      - id: CAP-4.5
+        impact: enhanced
+      - id: CAP-6.1
+        impact: enhanced
+    user_story: |
+      As an operations manager,
+      I want real-time aggregated data from GPS, weather, trail conditions, and guide heartbeats on a dashboard,
+      So that I can monitor all active adventures and respond to emerging situations immediately.
+
+  - key: NTK-10023
+    summary: Loyalty Points Multi-Source Earning and Redemption Saga
+    status: New
+    priority: High
+    assignee: null
+    reporter: jordan.blake
+    labels: [new-capability, loyalty, saga-pattern, puml-chunking-test]
+    created: 2026-04-10
+    updated: 2026-04-10
+    sprint: null
+    components: [svc-loyalty-rewards, svc-guest-profiles, svc-payments, svc-reservations, svc-notifications]
+    solution: null
+    planned_capabilities:
+      - id: CAP-5.3
+        impact: enhanced
+      - id: CAP-1.4
+        impact: enhanced
+    user_story: |
+      As a loyal NovaTrek guest,
+      I want to earn points from multiple sources and redeem them atomically with payment,
+      So that my loyalty balance is always accurate even if payment fails mid-transaction.
+
+  - key: NTK-10024
+    summary: Partner Integration Webhook Reconciliation Flow
+    status: New
+    priority: High
+    assignee: null
+    reporter: maya.rodriguez
+    labels: [integration, partner-api, reconciliation, puml-chunking-test]
+    created: 2026-04-10
+    updated: 2026-04-10
+    sprint: null
+    components: [svc-partner-integrations, svc-reservations, svc-payments, svc-notifications, svc-analytics]
+    solution: null
+    planned_capabilities:
+      - id: CAP-7.1
+        impact: enhanced
+      - id: CAP-5.4
+        impact: enhanced
+    user_story: |
+      As a partner integration manager,
+      I want out-of-order and failed webhooks to be automatically sequenced and reconciled,
+      So that partner booking data is always consistent with NovaTrek records.
+
+  - key: NTK-10025
+    summary: Guest Profile Merge and Data Migration Flow
+    status: New
+    priority: High
+    assignee: null
+    reporter: maya.rodriguez
+    labels: [data-integrity, identity-resolution, svc-guest-profiles, puml-chunking-test]
+    created: 2026-04-10
+    updated: 2026-04-10
+    sprint: null
+    components: [svc-guest-profiles, svc-reservations, svc-loyalty-rewards, svc-safety-compliance, svc-check-in, svc-payments, svc-notifications, svc-analytics]
+    solution: null
+    planned_capabilities:
+      - id: CAP-1.3
+        impact: enhanced
+      - id: CAP-6.2
+        impact: enhanced
+    user_story: |
+      As a guest identity manager,
+      I want duplicate guest profiles to be merged with full data migration and rollback capability,
+      So that each guest has a single authoritative profile across all NovaTrek services.

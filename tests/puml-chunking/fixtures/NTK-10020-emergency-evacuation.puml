@@ -1,0 +1,269 @@
+@startuml NTK-10020-emergency-evacuation
+' NovaTrek Adventures - Emergency Evacuation Orchestration Flow
+' Triggered by severe weather or safety incident requiring guest evacuation
+' PUML Chunking Test: 200+ lines, 12+ participants, 3-level nested alt,
+'   multi-phase flow, compensating transactions, Kafka fan-out
+
+!include ../../architecture/diagrams/theme.puml
+skinparam sequence {
+    ArrowColor #dc2626
+}
+
+title NovaTrek Adventures - Emergency Evacuation Orchestration Flow\n<size:10>NTK-10020 | Safety-Critical Multi-Service Orchestration</size>
+
+' ============================================================
+' Participants (12+ to stress chunking boundary)
+' ============================================================
+actor "Ops Dashboard" as ops
+participant "svc-weather" as weather [[/microservices/svc-weather/]]
+participant "svc-safety-\ncompliance" as safety [[/microservices/svc-safety-compliance/]]
+participant "svc-location-\nservices" as location [[/microservices/svc-location-services/]]
+participant "svc-guide-\nmanagement" as guides [[/microservices/svc-guide-management/]]
+participant "svc-transport-\nlogistics" as transport [[/microservices/svc-transport-logistics/]]
+participant "svc-notifications" as notify [[/microservices/svc-notifications/]]
+participant "svc-guest-\nprofiles" as profiles [[/microservices/svc-guest-profiles/]]
+participant "svc-check-in" as checkin [[/microservices/svc-check-in/]]
+participant "svc-reservations" as reservations [[/microservices/svc-reservations/]]
+participant "svc-payments" as payments [[/microservices/svc-payments/]]
+participant "svc-loyalty-\nrewards" as loyalty [[/microservices/svc-loyalty-rewards/]]
+participant "svc-analytics" as analytics [[/microservices/svc-analytics/]]
+queue "Kafka" as kafka
+database "PostgreSQL" as db #FEF9C3
+
+' ==============================================================
+' == Phase 1: Detection and Severity Assessment ==
+' ==============================================================
+
+weather -> safety : POST /alerts\n(severity=EMERGENCY,\ntype=SEVERE_THUNDERSTORM,\nregion=rockies-north,\nwind_speed_mph=75,\nlightning_strikes_per_min=12)
+activate safety #dc2626
+
+note right of safety
+  Severity Classification:
+  - WATCH: wind < 40mph, no lightning
+  - WARNING: wind 40-60mph or lightning
+  - EMERGENCY: wind > 60mph AND lightning
+  Alert includes: estimated_duration_hrs,
+  affected_radius_km, confidence_score
+end note
+
+safety -> safety : classifySeverity(alert)
+
+alt Severity = WATCH (Low Risk)
+
+    note right of safety : No evacuation needed\nAdvisory notification only
+    safety ->> notify : [[/microservices/svc-notifications/ Send weather advisory to active guides]]
+    notify -> guides : pushNotification(type=ADVISORY,\nmessage="Weather watch in effect")
+    safety --> weather : 200 OK (action=ADVISORY_SENT)
+
+else Severity = WARNING (Medium Risk)
+
+    note right of safety : Partial evacuation\nHigh-difficulty trails only
+    safety -> db : INSERT INTO incidents\n(type=WEATHER_WARNING,\nregion, severity, timestamp)
+    activate db #FEF9C3
+    db --> safety : incident_id
+    deactivate db
+
+    safety -> checkin : GET /active-adventures\n?region=rockies-north\n&difficulty=HIGH,EXTREME
+    activate checkin #2563eb
+    checkin --> safety : affected_adventures[\n  {adventure_id, trail_id,\n   guest_count, guide_id}\n]
+    deactivate checkin
+
+    safety ->> notify : [[/microservices/svc-notifications/ Notify affected guides to begin orderly descent]]
+    safety --> weather : 200 OK (action=PARTIAL_EVACUATION)
+
+else Severity = EMERGENCY (Critical - Full Evacuation)
+
+    safety -> db : INSERT INTO incidents\n(type=EMERGENCY_EVACUATION,\nregion, severity, timestamp,\nestimated_duration_hrs)
+    activate db #FEF9C3
+    db --> safety : incident_id
+    deactivate db
+
+    ' ============================================================
+    ' == Phase 2: Evacuation Execution ==
+    ' ============================================================
+
+    safety -> kafka : publish incident.declared\n(incident_id, severity=EMERGENCY,\nregion=rockies-north,\naffected_trails, timestamp)
+
+    note over kafka #F5F3FF
+      Kafka Fan-Out: incident.declared
+      Consumed by 5+ services:
+      - svc-analytics (incident tracking)
+      - svc-notifications (mass alert)
+      - svc-check-in (freeze new check-ins)
+      - svc-guide-management (guide recall)
+      - svc-transport-logistics (vehicle staging)
+    end note
+
+    kafka -> analytics : consume incident.declared
+    analytics -> analytics : startIncidentTracking(\n  incident_id, severity)
+
+    kafka -> checkin : consume incident.declared
+    checkin -> checkin : freezeCheckIns(\n  region=rockies-north)
+
+    note right of checkin : All new check-ins blocked\nfor affected region until\nincident is resolved
+
+    ' -- Locate All Active Guests --
+
+    safety -> checkin : GET /active-adventures\n?region=rockies-north
+    activate checkin #2563eb
+    checkin --> safety : all_active_adventures[\n  {adventure_id, trail_id,\n   guest_ids[], guide_id,\n   check_in_time, wristband_ids[]}\n]
+    deactivate checkin
+
+    safety -> location : POST /bulk-locate\n(wristband_ids[])
+    activate location #0891b2
+    location --> safety : guest_positions[\n  {wristband_id, lat, lng,\n   altitude_m, accuracy_m,\n   last_seen_utc, trail_id}\n]
+    deactivate location
+
+    note right of safety
+      GPS Resolution:
+      - Positions older than 5 min marked STALE
+      - Stale positions trigger manual guide contact
+      - Accuracy > 50m triggers secondary triangulation
+    end note
+
+    ' -- Notify All Guides --
+
+    safety -> guides : POST /emergency-recall\n(incident_id, region,\nguide_ids[])
+    activate guides #4f46e5
+    guides -> guides : sendEmergencyPush(\n  all affected guides)
+
+    alt All guides acknowledge within 2 min
+        guides --> safety : all_acknowledged\n(guide_responses[])
+    else Some guides unresponsive
+        guides --> safety : partial_response\n(acknowledged[], unresponsive[])
+
+        note right of safety #FEE2E2
+          ESCALATION: Unresponsive guides
+          - Attempt satellite phone contact
+          - Dispatch ranger to last known position
+          - Mark guests as MANUAL_RESCUE_NEEDED
+        end note
+
+        safety -> transport : POST /ranger-dispatch\n(guide_last_positions[],\nurgency=CRITICAL)
+        activate transport #0891b2
+        transport --> safety : dispatch_confirmed\n(ranger_ids[], eta_min)
+        deactivate transport
+    end
+    deactivate guides
+
+    ' -- Dispatch Transport Vehicles --
+
+    safety -> transport : POST /evacuation-vehicles\n(pickup_points[],\nguest_count, trail_ids[])
+    activate transport #0891b2
+
+    alt Vehicles available at all pickup points
+        transport --> safety : vehicles_dispatched\n(vehicle_ids[], etas[])
+    else Insufficient vehicles
+        transport --> safety : partial_dispatch\n(dispatched[], unavailable_points[])
+
+        note right of safety #FEF3C7
+          FALLBACK: Insufficient vehicles
+          - Prioritize by distance from trailhead
+          - Request partner transport (hotels, etc.)
+          - Activate volunteer SAR network
+        end note
+
+        transport -> transport : requestPartnerVehicles(\n  unavailable_points[])
+        transport --> safety : partner_vehicles_en_route\n(partner_ids[], etas[])
+    end
+    deactivate transport
+
+    ' -- Mass Guest Notification --
+
+    safety -> profiles : GET /guests/bulk\n?guest_ids={affected_guest_ids}
+    activate profiles #7c3aed
+    profiles --> safety : guest_contacts[\n  {guest_id, phone, email,\n   emergency_contact_phone,\n   language_preference}\n]
+    deactivate profiles
+
+    safety -> notify : POST /mass-alert\n(type=EMERGENCY_EVACUATION,\nrecipients=guest_contacts,\nmessage_template=EVAC_001,\nchannels=[SMS, PUSH, EMAIL])
+    activate notify #64748b
+    notify -> notify : renderMultiLingual(\n  templates, language_preferences)
+    notify --> safety : alert_sent\n(delivered=142, failed=3,\npending=7)
+    deactivate notify
+
+    ' ============================================================
+    ' == Phase 3: Post-Incident Compensation ==
+    ' ============================================================
+
+    note over safety #FEE2E2
+      Saga: Compensation Transaction
+      1. Cancel active reservations
+      2. Process refunds
+      3. Restore loyalty points
+      4. If refund fails -> flag for manual resolution
+    end note
+
+    group Compensation Saga (all-or-nothing per guest)
+
+        safety -> reservations : POST /bulk-cancel\n(reservation_ids[],\nreason=EMERGENCY_EVACUATION,\nincident_id)
+        activate reservations #059669
+        reservations -> reservations : cancelAll(\n  status -> CANCELLED_EMERGENCY)
+        reservations -> kafka : publish reservation.cancelled.bulk\n(reservation_ids[], reason)
+        reservations --> safety : cancellations_confirmed\n(cancelled_count=47)
+        deactivate reservations
+
+        safety -> payments : POST /bulk-refund\n(reservation_ids[],\nrefund_type=FULL,\nreason=EMERGENCY_EVACUATION)
+        activate payments #dc2626
+
+        alt All refunds processed successfully
+            payments --> safety : refunds_completed\n(total_refunded=$12,450.00,\ntransaction_ids[])
+            deactivate payments
+
+            safety -> loyalty : POST /bulk-restore\n(guest_ids[],\nreason=EMERGENCY_EVACUATION)
+            activate loyalty #4f46e5
+            loyalty -> loyalty : restoreSpentPoints(\n  for each guest with\n  active redemptions)
+            loyalty --> safety : points_restored\n(guests_affected=12,\ntotal_points=34,500)
+            deactivate loyalty
+
+        else Some refunds failed (gateway error)
+            payments --> safety : partial_refunds\n(succeeded[], failed[])
+            deactivate payments
+
+            note right of safety #FEE2E2
+              SAGA PARTIAL FAILURE:
+              - Refund failures logged to incident
+              - Guest notified of pending refund
+              - Manual resolution queue created
+              - Loyalty points NOT restored for
+                failed-refund guests (consistency)
+            end note
+
+            safety -> db : INSERT INTO refund_failures\n(incident_id, guest_ids[],\namounts[], gateway_errors[])
+            activate db #FEF9C3
+            db --> safety : failure_records_created
+            deactivate db
+
+            safety -> notify : POST /notifications\n(type=REFUND_PENDING,\nrecipients=failed_refund_guests,\nmessage="Your refund is being\nprocessed manually")
+            activate notify #64748b
+            notify --> safety : notifications_sent
+            deactivate notify
+
+            ' Restore points only for successfully refunded guests
+            safety -> loyalty : POST /bulk-restore\n(guest_ids=succeeded_only[],\nreason=EMERGENCY_EVACUATION)
+            activate loyalty #4f46e5
+            loyalty --> safety : points_restored\n(partial)
+            deactivate loyalty
+        end
+
+    end
+
+    ' -- Compliance Reporting --
+
+    safety -> analytics : POST /incident-report\n(incident_id,\ntimeline_events[],\nguest_count_affected,\ntotal_refunded,\nrefund_failures_count,\nevacuation_duration_min,\nguide_response_times[])
+    activate analytics #64748b
+    analytics -> analytics : generateComplianceReport(\n  OSHA format, incident details)
+    analytics --> safety : report_generated\n(report_id, pdf_url)
+    deactivate analytics
+
+    safety -> db : UPDATE incidents\nSET status = RESOLVED,\nresolved_at = NOW(),\nreport_id = report_id
+    activate db #FEF9C3
+    db --> safety : updated
+    deactivate db
+
+    safety --> weather : 200 OK\n(action=FULL_EVACUATION,\nincident_id, report_id)
+
+end
+
+deactivate safety
+
+@enduml

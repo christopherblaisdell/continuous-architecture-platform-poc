@@ -1,0 +1,151 @@
+@startuml guest-identity-erd
+' NovaTrek Adventures - Guest Identity and Profile Merge ERD
+' PUML Chunking Test: Entity diagram companion to NTK-10025
+' Tests erd classification in puml-enricher
+
+!include ../../architecture/diagrams/theme.puml
+
+title Guest Identity Data Model\n(Post-Merge Schema)\n<size:10>NTK-10025 | Entity Relationship Diagram</size>
+
+' ============================================================
+' Entities
+' ============================================================
+
+entity "guests" as guests {
+    * **guest_id** : UUID <<PK>>
+    --
+    * name : VARCHAR(255)
+    * email : VARCHAR(255) <<UNIQUE>>
+    phone : VARCHAR(20)
+    * status : ENUM(ACTIVE, MERGED, DEACTIVATED)
+    merged_from : UUID[] <<FK>>
+    merged_into : UUID <<FK>>
+    deactivated_at : TIMESTAMP
+    login_disabled : BOOLEAN
+    * _rev : INTEGER <<OL>>
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+}
+
+entity "guest_redirects" as redirects {
+    * **redirect_id** : UUID <<PK>>
+    --
+    * old_guest_id : UUID <<FK>>
+    * new_guest_id : UUID <<FK>>
+    * created_at : TIMESTAMP
+    * expires_at : TIMESTAMP
+}
+
+entity "merge_audit_log" as audit {
+    * **merge_id** : VARCHAR(50) <<PK>>
+    --
+    * primary_guest_id : UUID <<FK>>
+    * secondary_guest_id : UUID <<FK>>
+    * initiated_by : VARCHAR(100)
+    * status : ENUM(IN_PROGRESS, COMPLETED, ROLLED_BACK)
+    services_migrated : INTEGER
+    records_migrated : INTEGER
+    duration_ms : INTEGER
+    * started_at : TIMESTAMP
+    completed_at : TIMESTAMP
+}
+
+entity "reservations" as reservations {
+    * **reservation_id** : UUID <<PK>>
+    --
+    * guest_id : UUID <<FK>>
+    * trip_id : UUID <<FK>>
+    * status : ENUM(CONFIRMED, WAITLISTED, CANCELLED)
+    migration_note : TEXT
+    * created_at : TIMESTAMP
+}
+
+entity "check_in_records" as checkins {
+    * **check_in_id** : UUID <<PK>>
+    --
+    * guest_id : UUID <<FK>>
+    * reservation_id : UUID <<FK>>
+    * check_in_time : TIMESTAMP
+    * wristband_id : UUID
+}
+
+entity "guest_points" as points {
+    * **guest_id** : UUID <<PK>> <<FK>>
+    --
+    * balance : INTEGER
+    * lifetime_earned : INTEGER
+    * tier : ENUM(BRONZE, SILVER, GOLD, PLATINUM)
+}
+
+entity "points_ledger" as ledger {
+    * **ledger_entry_id** : UUID <<PK>>
+    --
+    * guest_id : UUID <<FK>>
+    * type : ENUM(CREDIT, DEBIT)
+    * amount : INTEGER
+    * source : VARCHAR(50)
+    reservation_id : UUID <<FK>>
+    reason : TEXT
+    balance_after : INTEGER
+    pruned : BOOLEAN
+    * earned_date : TIMESTAMP
+}
+
+entity "payment_records" as payments {
+    * **payment_id** : UUID <<PK>>
+    --
+    * guest_id : UUID <<FK>>
+    * reservation_id : UUID <<FK>>
+    * amount : DECIMAL(10,2)
+    * status : ENUM(COMPLETED, REFUNDED, PENDING)
+}
+
+entity "media_assets" as media {
+    * **asset_id** : UUID <<PK>>
+    --
+    * owner_guest_id : UUID <<FK>>
+    * file_type : VARCHAR(20)
+    * uploaded_at : TIMESTAMP
+    adventure_id : UUID
+}
+
+' ============================================================
+' Relationships
+' ============================================================
+
+guests ||--o{ redirects : "old_guest_id"
+guests ||--o{ redirects : "new_guest_id"
+guests ||--o{ reservations : "guest_id"
+guests ||--o{ checkins : "guest_id"
+guests ||--|| points : "guest_id"
+guests ||--o{ ledger : "guest_id"
+guests ||--o{ payments : "guest_id"
+guests ||--o{ media : "owner_guest_id"
+guests ||--o{ audit : "primary_guest_id"
+guests ||--o{ audit : "secondary_guest_id"
+reservations ||--o{ checkins : "reservation_id"
+reservations ||--o{ payments : "reservation_id"
+reservations ||--o{ ledger : "reservation_id"
+
+note right of guests
+  Merge Strategy:
+  - MERGED guests are soft-deleted
+  - merged_into field points to primary
+  - Redirect table enables transparent
+    resolution of stale references
+  - 30-day retention before archival
+end note
+
+note bottom of audit
+  Audit log retains full merge history
+  for dispute resolution and compliance.
+  Duration tracked for SLA monitoring.
+end note
+
+note right of points
+  On merge: balances are summed,
+  higher tier is retained,
+  ledger entries remapped to primary.
+end note
+
+@enduml

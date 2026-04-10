@@ -1,0 +1,260 @@
+@startuml NTK-10024-webhook-reconciliation
+' NovaTrek Adventures - External Partner Webhook Reconciliation with Retry
+' PUML Chunking Test: 160+ lines, ref block, critical section, retry with
+'   exponential backoff, mixed sync/async arrows, dead-letter queue, batch reconcile
+
+!include ../../architecture/diagrams/theme.puml
+skinparam sequence {
+    ArrowColor #d97706
+}
+
+title NovaTrek Adventures - Webhook Reconciliation\nand External Partner Integration\n<size:10>NTK-10024 | Ref Block + Critical Section + Retry</size>
+
+' ============================================================
+' Participants
+' ============================================================
+actor "Partner Portal" as partner #F3E8FF
+participant "Webhook\nIngress" as ingress #E0F2FE
+participant "svc-partner-\nintegrations" as integrations [[/microservices/svc-partner-integrations/]]
+participant "svc-reservations" as reservations [[/microservices/svc-reservations/]]
+participant "svc-trip-\ncatalog" as catalog [[/microservices/svc-trip-catalog/]]
+participant "svc-payments" as payments [[/microservices/svc-payments/]]
+participant "svc-notifications" as notify [[/microservices/svc-notifications/]]
+participant "svc-analytics" as analytics [[/microservices/svc-analytics/]]
+queue "Kafka" as kafka
+queue "Dead Letter\nQueue" as dlq #FEE2E2
+database "PostgreSQL\n(partner-db)" as db #FEF9C3
+
+' ============================================================
+' == Webhook Reception ==
+' ============================================================
+
+partner -> ingress : POST /webhooks/partner-availability\n(Content-Type: application/json\nX-Partner-Signature: sha256=abc123\nX-Webhook-ID: WH-9901)
+
+activate ingress #E0F2FE
+
+' -- Signature verification --
+ingress -> ingress : verifyHMACSHA256(\n  payload, secret, signature)
+
+alt Signature valid
+    ingress --> partner : 202 Accepted\n(webhook_id=WH-9901,\nprocessing=async)
+else Signature invalid
+    ingress --> partner : 401 Unauthorized\n(error: invalid_signature)
+    note right of ingress #FEE2E2
+      SECURITY: All webhook payloads must be
+      HMAC-SHA256 signed. Reject unsigned/invalid
+      payloads immediately. Log to security audit.
+    end note
+end
+
+deactivate ingress
+
+' ============================================================
+' == Async Processing Pipeline ==
+' ============================================================
+
+ingress ->> kafka : publish partner.webhook.received\n(webhook_id=WH-9901,\npartner_id=P-ALPINE-TOURS,\nevent_type=AVAILABILITY_CHANGED,\npayload={...})
+
+kafka ->> integrations : consume partner.webhook.received
+activate integrations #d97706
+
+' -- Idempotency check --
+integrations -> db : SELECT FROM processed_webhooks\nWHERE webhook_id = 'WH-9901'
+activate db #FEF9C3
+db --> integrations : null (not yet processed)
+deactivate db
+
+' -- Record webhook for idempotency --
+integrations -> db : INSERT INTO processed_webhooks\n(webhook_id=WH-9901,\npartner_id=P-ALPINE-TOURS,\nreceived_at=NOW(),\nstatus=PROCESSING)
+activate db #FEF9C3
+db --> integrations : recorded
+deactivate db
+
+' ============================================================
+' == Partner Data Transformation ==
+' ============================================================
+
+note right of integrations
+  Webhook Payload (Partner Format):
+  {
+    "event": "availability_changed",
+    "partner_trip_id": "AT-GLACIER-7D",
+    "dates_affected": ["2026-07-15", "..."],
+    "available_slots": 4,
+    "price_per_person_eur": 850,
+    "cancellation_reason": null
+  }
+
+  Transform to NovaTrek canonical format:
+  - partner_trip_id -> catalog_id lookup
+  - EUR -> USD conversion (1.08 rate)
+  - Slot count -> capacity update
+end note
+
+' -- Resolve partner trip to internal catalog --
+integrations -> catalog : GET /trips\n?partner_ref=AT-GLACIER-7D\n&partner_id=P-ALPINE-TOURS
+activate catalog #d97706
+catalog --> integrations : catalog_entry\n(trip_id=TRIP-2201,\ncategory=GLACIER_EXPEDITION,\ncurrent_capacity=8)
+deactivate catalog
+
+' ============================================================
+' == Critical Section: Capacity Update ==
+' ============================================================
+
+critical Capacity Update Transaction
+
+    integrations -> catalog : PATCH /trips/TRIP-2201/capacity\n(available_slots=4,\neffective_dates=["2026-07-15"],\nsource=PARTNER_WEBHOOK,\nwebhook_id=WH-9901)
+    activate catalog #d97706
+
+    alt Capacity update succeeds
+        catalog --> integrations : capacity_updated\n(trip_id=TRIP-2201,\nprevious=8, new=4,\n_rev=17)
+    else Optimistic lock conflict (concurrent update)
+        catalog --> integrations : 409 Conflict\n(_rev mismatch)
+
+        integrations -> catalog : GET /trips/TRIP-2201
+        catalog --> integrations : current_state\n(_rev=18, capacity=6)
+
+        integrations -> catalog : PATCH /trips/TRIP-2201/capacity\n(available_slots=4,\n_rev=18)
+        catalog --> integrations : capacity_updated\n(previous=6, new=4, _rev=19)
+    end
+
+    deactivate catalog
+
+    ' -- Check for reservations affected by capacity reduction --
+    integrations -> reservations : GET /reservations\n?trip_id=TRIP-2201\n&date=2026-07-15\n&status=CONFIRMED
+    activate reservations #059669
+    reservations --> integrations : affected_reservations[\n  {reservation_id=R-5510,\n   guest_count=2},\n  {reservation_id=R-5511,\n   guest_count=3},\n  {reservation_id=R-5512,\n   guest_count=1}\n]
+    deactivate reservations
+
+    note right of integrations
+      Capacity Conflict Analysis:
+      - New capacity: 4 slots
+      - Confirmed guests: 2 + 3 + 1 = 6
+      - Overflow: 2 guests over capacity
+      - Resolution: FIFO by booking_date
+        R-5510 (2 guests): KEEP (4 remaining -> 2)
+        R-5511 (3 guests): WAITLIST (2 < 3 needed)
+        R-5512 (1 guest): WAITLIST
+    end note
+
+end
+
+' ============================================================
+' == Affected Reservation Handling ==
+' ============================================================
+
+' -- Waitlist the overflow reservations --
+loop for each overflowed reservation [R-5511, R-5512]
+
+    integrations -> reservations : PATCH /reservations/{id}\n(status=WAITLISTED,\nreason=PARTNER_CAPACITY_REDUCTION,\nwebhook_ref=WH-9901)
+    activate reservations #059669
+    reservations --> integrations : reservation_waitlisted
+    deactivate reservations
+
+    ' -- Refund pre-payment (with retry) --
+    ref Refund with Exponential Backoff
+
+        integrations -> payments : POST /refunds\n(reservation_id={id},\namount={paid_amount},\nreason=CAPACITY_REDUCTION)
+        activate payments #dc2626
+
+        alt Refund succeeds
+            payments --> integrations : refund_processed\n(refund_id=RF-3301)
+        else Gateway timeout (attempt 1)
+            payments --> integrations : 504 Gateway Timeout
+
+            integrations -> integrations : wait(2 seconds)
+            integrations -> payments : POST /refunds\n(reservation_id={id},\namount={paid_amount},\nidempotency_key=RF-{id}-WH-9901)
+
+            alt Retry succeeds
+                payments --> integrations : refund_processed
+            else Retry fails (attempt 2)
+                payments --> integrations : 504 Gateway Timeout
+
+                integrations -> integrations : wait(4 seconds)
+                integrations -> payments : POST /refunds\n(reservation_id={id},\namount={paid_amount},\nidempotency_key=RF-{id}-WH-9901)
+
+                alt Third attempt succeeds
+                    payments --> integrations : refund_processed
+                else All retries exhausted
+                    payments --> integrations : 504 Gateway Timeout
+
+                    integrations ->> dlq : send to dead letter queue\n(action=REFUND,\nreservation_id={id},\nretry_count=3,\nlast_error=GATEWAY_TIMEOUT)
+
+                    note right of dlq #FEE2E2
+                      Dead Letter Queue Entry:
+                      - Max retries (3) exhausted
+                      - Will be picked up by
+                        reconciliation batch job
+                      - Alert ops team for manual review
+                      - Guest notification deferred
+                    end note
+                end
+            end
+        end
+
+        deactivate payments
+
+    end
+
+    ' -- Notify affected guest --
+    integrations ->> notify : POST /notifications\n(type=RESERVATION_WAITLISTED,\nguest_id={guest_id},\ntrip=TRIP-2201,\ndate=2026-07-15,\nalternatives_offered=true)
+
+end
+
+' ============================================================
+' == Batch Reconciliation (Scheduled Job) ==
+' ============================================================
+
+== Nightly Reconciliation (02:00 UTC) ==
+
+integrations -> db : SELECT FROM processed_webhooks\nWHERE status = 'PROCESSING'\nAND received_at < NOW() - INTERVAL '6 hours'
+activate db #FEF9C3
+db --> integrations : stale_webhooks[]\n(webhooks that never completed)
+deactivate db
+
+loop for each stale webhook
+    integrations -> integrations : reprocessWebhook(\n  webhook_id, max_attempts=1)
+
+    alt Reprocess succeeds
+        integrations -> db : UPDATE processed_webhooks\nSET status = 'COMPLETED'
+        activate db #FEF9C3
+        db --> integrations : updated
+        deactivate db
+    else Reprocess fails
+        integrations -> db : UPDATE processed_webhooks\nSET status = 'FAILED'
+        activate db #FEF9C3
+        db --> integrations : updated
+        deactivate db
+
+        integrations ->> dlq : send to dead letter queue\n(action=RECONCILIATION_FAILED)
+    end
+end
+
+' -- DLQ drain --
+integrations -> dlq : poll dead letter queue\n(batch_size=50)
+
+loop for each DLQ message
+    alt Retryable error
+        integrations -> integrations : reprocessAction(\n  action, payload)
+    else Non-retryable (data corruption, schema mismatch)
+        integrations ->> notify : POST /notifications\n(type=OPS_ALERT,\nrecipient=PARTNER_OPS_TEAM,\nmessage="Manual intervention required")
+    end
+end
+
+' -- Reconciliation report --
+integrations -> analytics : POST /reports/partner-reconciliation\n(date=2026-07-14,\nwebhooks_processed=47,\nwebhooks_failed=2,\nrefunds_issued=5,\ndlq_entries_resolved=3)
+activate analytics #64748b
+analytics --> integrations : report_stored
+deactivate analytics
+
+' -- Update webhook status --
+integrations -> db : UPDATE processed_webhooks\nSET status = 'COMPLETED'\nWHERE webhook_id = 'WH-9901'
+activate db #FEF9C3
+db --> integrations : updated
+deactivate db
+
+integrations -> kafka : publish partner.webhook.completed\n(webhook_id=WH-9901,\npartner_id=P-ALPINE-TOURS,\nreservations_affected=2,\nrefunds_issued=2)
+
+deactivate integrations
+
+@enduml

@@ -1,0 +1,227 @@
+@startuml NTK-10023-loyalty-saga
+' NovaTrek Adventures - Loyalty Points Multi-Source Earning and Redemption Saga
+' PUML Chunking Test: 130+ lines, 8 participants, compensating transaction,
+'   nested opt blocks, cross-service validation, idempotency handling
+
+!include ../../architecture/diagrams/theme.puml
+skinparam sequence {
+    ArrowColor #4f46e5
+}
+
+title NovaTrek Adventures - Loyalty Points\nEarning and Redemption Saga\n<size:10>NTK-10023 | Saga Pattern + Opt Blocks</size>
+
+' ============================================================
+' Participants
+' ============================================================
+actor "Guest App" as guest
+participant "API Gateway" as gw #E0F2FE
+participant "svc-loyalty-\nrewards" as loyalty [[/microservices/svc-loyalty-rewards/]]
+participant "svc-guest-\nprofiles" as profiles [[/microservices/svc-guest-profiles/]]
+participant "svc-payments" as payments [[/microservices/svc-payments/]]
+participant "svc-reservations" as reservations [[/microservices/svc-reservations/]]
+participant "svc-notifications" as notify [[/microservices/svc-notifications/]]
+queue "Kafka" as kafka
+database "PostgreSQL\n(loyalty-db)" as db #FEF9C3
+
+' ============================================================
+' == Idempotency Check ==
+' ============================================================
+
+guest -> gw : POST /loyalty/transactions\n(guest_id=G-1042,\nreservation_id=R-5501,\nearn_source=ADVENTURE_COMPLETED,\nredeem_amount=2500,\nidempotency_key=TXN-2026-04-10-001)
+gw -> loyalty : route request
+activate loyalty #4f46e5
+
+loyalty -> db : SELECT FROM loyalty_transactions\nWHERE idempotency_key = 'TXN-2026-04-10-001'
+activate db #FEF9C3
+db --> loyalty : null (new transaction)
+deactivate db
+
+note right of loyalty
+  Idempotency Gate:
+  - If transaction exists, return cached result
+  - Prevents double-earning from retry storms
+  - Key format: TXN-{date}-{sequence}
+  - TTL: 24 hours in transaction log
+end note
+
+' ============================================================
+' == Guest Tier Validation ==
+' ============================================================
+
+loyalty -> profiles : GET /guests/G-1042/loyalty-tier
+activate profiles #7c3aed
+profiles --> loyalty : tier_info\n(tier=GOLD, multiplier=1.5,\nmember_since=2024-03-15,\nlifetime_points=125000)
+deactivate profiles
+
+note right of loyalty
+  Tier Multipliers:
+  - BRONZE: 1.0x base earn rate
+  - SILVER: 1.25x
+  - GOLD: 1.5x
+  - PLATINUM: 2.0x
+  Points earned = base_points * tier_multiplier
+end note
+
+' ============================================================
+' == Points Earning (Multi-Source) ==
+' ============================================================
+
+loyalty -> loyalty : calculateBasePoints(\n  adventure_difficulty=HIGH,\n  duration_hours=6,\n  base_rate=100pts/hr)\n  = 600 base points
+
+loyalty -> loyalty : applyTierMultiplier(\n  600 * 1.5 = 900 earned points)
+
+' -- Optional: promotional bonus --
+opt Active promotion for adventure category
+    loyalty -> db : SELECT FROM active_promotions\nWHERE category = 'HIGH_DIFFICULTY'\nAND valid_through >= NOW()
+    activate db #FEF9C3
+    db --> loyalty : promo\n(bonus_pct=25, promo_code=SPRING2026)
+    deactivate db
+
+    loyalty -> loyalty : applyPromoBonus(\n  900 * 0.25 = 225 bonus points)
+
+    note right of loyalty
+      Promotional Bonus:
+      - 25% extra on HIGH difficulty adventures
+      - Promo: SPRING2026 (valid through 2026-06-30)
+      - Total earned: 900 + 225 = 1125 points
+    end note
+end
+
+' -- Optional: partner referral credit --
+opt Guest was referred by another member
+    loyalty -> db : SELECT FROM referral_credits\nWHERE referred_guest_id = 'G-1042'\nAND status = 'PENDING'
+    activate db #FEF9C3
+    db --> loyalty : referral\n(referrer_id=G-0887,\nreferral_bonus=500)
+    deactivate db
+
+    loyalty -> loyalty : addReferralBonus(\n  referrer_id=G-0887, bonus=500)
+end
+
+' ============================================================
+' == Points Earning Ledger Entry ==
+' ============================================================
+
+group Earn Transaction (DB transaction boundary)
+    loyalty -> db : INSERT INTO points_ledger\n(guest_id=G-1042, type=CREDIT,\namount=1125, source=ADVENTURE,\nreservation_id=R-5501,\npromo_code=SPRING2026,\nbalance_after=35625)
+    activate db #FEF9C3
+    db --> loyalty : ledger_entry_id=LE-88421
+    deactivate db
+
+    loyalty -> db : UPDATE guest_points\nSET balance = balance + 1125,\nlifetime_earned = lifetime_earned + 1125\nWHERE guest_id = 'G-1042'
+    activate db #FEF9C3
+    db --> loyalty : updated
+    deactivate db
+end
+
+' ============================================================
+' == Points Redemption ==
+' ============================================================
+
+note right of loyalty
+  Redemption Request:
+  - Guest wants to redeem 2500 points
+  - Current balance after earning: 35625
+  - Sufficient balance: YES
+  - Redemption rate: 100 points = $1.00
+  - Discount amount: $25.00
+end note
+
+loyalty -> loyalty : validateRedemption(\n  balance=35625,\n  redeem_amount=2500)\n  = SUFFICIENT
+
+' -- Expired points pruning --
+loyalty -> db : SELECT SUM(amount) FROM points_ledger\nWHERE guest_id = 'G-1042'\nAND type = 'CREDIT'\nAND earned_date < NOW() - INTERVAL '24 months'\nAND NOT pruned
+activate db #FEF9C3
+db --> loyalty : expired_points = 0
+deactivate db
+
+' -- Debit points (pre-payment) --
+group Redemption Transaction (DB transaction boundary)
+    loyalty -> db : INSERT INTO points_ledger\n(guest_id=G-1042, type=DEBIT,\namount=2500, source=REDEMPTION,\nreservation_id=R-5501,\nbalance_after=33125)
+    activate db #FEF9C3
+    db --> loyalty : ledger_entry_id=LE-88422
+    deactivate db
+
+    loyalty -> db : UPDATE guest_points\nSET balance = balance - 2500\nWHERE guest_id = 'G-1042'
+    activate db #FEF9C3
+    db --> loyalty : updated
+    deactivate db
+end
+
+' -- Apply discount to reservation --
+loyalty -> reservations : PATCH /reservations/R-5501\n(discount_amount=$25.00,\ndiscount_source=LOYALTY_REDEMPTION,\nloyalty_txn_id=TXN-2026-04-10-001)
+activate reservations #059669
+reservations --> loyalty : discount_applied\n(new_total=$175.00)
+deactivate reservations
+
+' -- Process adjusted payment --
+loyalty -> payments : POST /payments\n(reservation_id=R-5501,\namount=$175.00,\npayment_method=CARD_ON_FILE,\nloyalty_discount=$25.00)
+activate payments #dc2626
+
+alt Payment successful
+    payments --> loyalty : payment_confirmed\n(txn_id=PAY-7721,\nstatus=COMPLETED)
+    deactivate payments
+
+    ' -- Record successful transaction --
+    loyalty -> db : INSERT INTO loyalty_transactions\n(idempotency_key, guest_id,\npoints_earned=1125,\npoints_redeemed=2500,\nstatus=COMPLETED)
+    activate db #FEF9C3
+    db --> loyalty : transaction_recorded
+    deactivate db
+
+    loyalty -> kafka : publish loyalty.transaction.completed\n(guest_id, earned=1125, redeemed=2500)
+
+    loyalty --> gw : 200 OK\n(earned=1125, redeemed=2500,\nnew_balance=33125,\npayment_txn=PAY-7721)
+    gw --> guest : transaction complete
+
+else Payment failed (gateway error or fraud decline)
+    payments --> loyalty : payment_failed\n(error=GATEWAY_TIMEOUT)
+    deactivate payments
+
+    note right of loyalty #FEE2E2
+      SAGA COMPENSATION:
+      Payment failed after points were deducted.
+      Must restore points atomically:
+      1. Reverse points debit (restore 2500)
+      2. Cancel reservation discount
+      3. Notify guest of failure
+      Earned points (1125) are NOT reversed
+      (adventure was completed successfully)
+    end note
+
+    ' -- Compensating Transaction: Restore Points --
+    group Compensation (DB transaction boundary)
+        loyalty -> db : INSERT INTO points_ledger\n(guest_id=G-1042, type=CREDIT,\namount=2500,\nsource=COMPENSATION_REVERSAL,\nreason=PAYMENT_FAILED,\nbalance_after=35625)
+        activate db #FEF9C3
+        db --> loyalty : reversal_entry_id=LE-88423
+        deactivate db
+
+        loyalty -> db : UPDATE guest_points\nSET balance = balance + 2500\nWHERE guest_id = 'G-1042'
+        activate db #FEF9C3
+        db --> loyalty : restored
+        deactivate db
+    end
+
+    ' -- Cancel reservation discount --
+    loyalty -> reservations : PATCH /reservations/R-5501\n(discount_amount=$0.00,\ndiscount_source=null,\nreason=LOYALTY_PAYMENT_FAILED)
+    activate reservations #059669
+    reservations --> loyalty : discount_removed\n(original_total=$200.00)
+    deactivate reservations
+
+    ' -- Notify guest --
+    loyalty ->> notify : POST /notifications\n(type=LOYALTY_PAYMENT_FAILED,\nguest_id=G-1042,\nmessage="Points restored. Please retry.")
+    activate notify #64748b
+    notify --> guest : push notification
+    deactivate notify
+
+    ' -- Record failed transaction --
+    loyalty -> db : INSERT INTO loyalty_transactions\n(idempotency_key, guest_id,\npoints_earned=1125,\npoints_redeemed=0,\nstatus=PAYMENT_FAILED,\ncompensation_applied=true)
+    activate db #FEF9C3
+    db --> loyalty : transaction_recorded
+    deactivate db
+
+    loyalty --> gw : 402 Payment Required\n(earned=1125, redeemed=0,\nbalance=35625,\nerror=PAYMENT_FAILED)
+    gw --> guest : payment failed, points restored
+end
+
+deactivate loyalty
+
+@enduml

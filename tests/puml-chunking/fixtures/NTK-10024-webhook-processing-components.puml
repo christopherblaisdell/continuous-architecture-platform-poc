@@ -1,0 +1,68 @@
+@startuml webhook-processing-components
+' NovaTrek Adventures - Webhook Processing Component Diagram
+' PUML Chunking Test: C4 Component diagram companion to NTK-10024
+
+!include <c4/C4_Component>
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+AddRelTag("dlq", $lineStyle=DashedLine(), $lineColor="#dc2626", $textColor="#dc2626", $legendText="Dead Letter Queue")
+
+title Webhook Processing\nComponent Architecture\n<size:10>NTK-10024 | C4 Component Level</size>
+
+Container_Boundary(svc_partner, "svc-partner-integrations") {
+    Component(webhook_ingress, "Webhook\nIngress", "Spring MVC", "Receives partner webhooks\nverifies HMAC signatures")
+    Component(idempotency_gate, "Idempotency\nGate", "Java", "Deduplicates webhooks\nby webhook_id")
+    Component(transformer, "Payload\nTransformer", "Java", "Converts partner formats\nto NovaTrek canonical")
+    Component(capacity_updater, "Capacity\nUpdater", "Java", "Updates trip capacity\nwith optimistic locking")
+    Component(reservation_handler, "Reservation\nImpact Handler", "Java", "Identifies overflow\nreservations for waitlisting")
+    Component(refund_processor, "Refund\nProcessor", "Java", "Issues refunds with\nexponential backoff retry")
+    Component(reconciler, "Nightly\nReconciler", "Spring Scheduled", "Batch reconciliation\nof stale webhooks")
+    Component(dlq_drainer, "DLQ\nDrainer", "Java", "Processes dead letter\nqueue entries")
+    Component(webhook_repo, "Webhook\nRepository", "Spring Data JPA", "Persists webhook\nprocessing status")
+}
+
+Container_Boundary(partner_platform, "Partner Systems") {
+    Component(partner_api, "Partner\nPortal", "External", "Sends availability\nchange webhooks")
+}
+
+Container_Boundary(novatrek_services, "NovaTrek Services") {
+    Component(catalog_svc, "svc-trip-catalog", "Spring Boot", "Trip catalog and\ncapacity management")
+    Component(reservations_svc, "svc-reservations", "Spring Boot", "Reservation\nmanagement")
+    Component(payments_svc, "svc-payments", "Spring Boot", "Payment processing\nand refunds")
+    Component(notify_svc, "svc-notifications", "Spring Boot", "Guest and ops\nnotifications")
+    Component(analytics_svc, "svc-analytics", "Spring Boot", "Reconciliation\nreporting")
+}
+
+ContainerDb(postgres, "PostgreSQL", "Relational DB", "Processed webhooks\nidempotency log")
+ContainerQueue(kafka, "Kafka", "Event Streaming", "partner.webhook.*")
+ContainerQueue(dlq, "Dead Letter Queue", "Kafka", "Failed actions after\nmax retries")
+
+' Internal flow
+Rel(partner_api, webhook_ingress, "POST webhook\n(HMAC signed)", "HTTPS")
+Rel(webhook_ingress, idempotency_gate, "Check\nduplicate")
+Rel(idempotency_gate, transformer, "Transform\npayload")
+Rel(transformer, capacity_updater, "Update\ncapacity")
+Rel(capacity_updater, reservation_handler, "Check\noverflow")
+Rel(reservation_handler, refund_processor, "Issue\nrefunds")
+Rel(refund_processor, dlq, "After 3\nfailures", $tags="dlq")
+Rel(reconciler, dlq_drainer, "Drain\nDLQ entries")
+Rel(webhook_repo, postgres, "JDBC")
+
+' External service calls
+Rel(capacity_updater, catalog_svc, "PATCH capacity", "HTTPS")
+Rel(reservation_handler, reservations_svc, "PATCH waitlist", "HTTPS")
+Rel(refund_processor, payments_svc, "POST refund", "HTTPS")
+Rel(reservation_handler, notify_svc, "Send notification", "HTTPS")
+Rel(reconciler, analytics_svc, "POST report", "HTTPS")
+Rel(webhook_ingress, kafka, "Publish\nreceived", "Kafka", $tags="kafka")
+
+Lay_D(webhook_ingress, idempotency_gate)
+Lay_D(idempotency_gate, transformer)
+Lay_D(transformer, capacity_updater)
+Lay_R(capacity_updater, reservation_handler)
+Lay_D(reservation_handler, refund_processor)
+
+@enduml

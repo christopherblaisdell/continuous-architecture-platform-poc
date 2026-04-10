@@ -1,0 +1,216 @@
+@startuml NTK-10021-multiday-scheduling
+' NovaTrek Adventures - Multi-Day Trip Scheduling with Accommodation Handoffs
+' PUML Chunking Test: 150+ lines, 10 participants, loop + alt combination,
+'   cross-service callback, multi-phase flow, database + cache interactions
+
+!include ../../architecture/diagrams/theme.puml
+skinparam sequence {
+    ArrowColor #2563eb
+}
+
+title NovaTrek Adventures - Multi-Day Trip Scheduling\nwith Accommodation Handoffs\n<size:10>NTK-10021 | Loop + Nested Alt Stress Test</size>
+
+' ============================================================
+' Participants (10 to stress chunking)
+' ============================================================
+actor "Scheduling\nCoordinator" as admin
+participant "svc-scheduling-\norchestrator" as scheduler [[/microservices/svc-scheduling-orchestrator/]]
+participant "svc-trip-catalog" as catalog [[/microservices/svc-trip-catalog/]]
+participant "svc-guide-\nmanagement" as guides [[/microservices/svc-guide-management/]]
+participant "svc-trail-\nmanagement" as trails [[/microservices/svc-trail-management/]]
+participant "svc-weather" as weather [[/microservices/svc-weather/]]
+participant "svc-gear-\ninventory" as gear [[/microservices/svc-gear-inventory/]]
+participant "svc-partner-\nintegrations" as partners [[/microservices/svc-partner-integrations/]]
+participant "svc-notifications" as notify [[/microservices/svc-notifications/]]
+queue "Kafka" as kafka
+database "PostgreSQL" as db #FEF9C3
+database "Redis" as cache #FECDD3
+
+' ============================================================
+' == Expedition Initialization ==
+' ============================================================
+
+admin -> scheduler : POST /expedition-schedules\n(expedition_id=EXP-2026-042,\ndays=3, region=rockies,\ndifficulty=HIGH,\nmax_guests=12)
+activate scheduler #2563eb
+
+scheduler -> catalog : GET /expeditions/EXP-2026-042
+activate catalog #d97706
+catalog --> scheduler : expedition_details\n(days=3, trails=[T1,T2,T3],\naccommodations=[HOTEL,CAMP,HOTEL],\ngear_profiles=[ALPINE,GLACIER,ALPINE])
+deactivate catalog
+
+scheduler -> db : INSERT INTO expedition_schedules\n(expedition_id, status=DRAFT,\nversion=1, days=3)
+activate db #FEF9C3
+db --> scheduler : schedule_id=SCH-9042
+deactivate db
+
+' ============================================================
+' == Per-Day Planning Loop ==
+' ============================================================
+
+loop for each day (day=1 to 3) in expedition
+
+    == Day {day} Planning ==
+
+    ' -- Check guide availability from cache --
+    scheduler -> cache : GET guide:availability:{region}:{date+day}
+    activate cache #FECDD3
+    cache --> scheduler : available_guide_ids[]\n(bitmap of qualified guides)
+    deactivate cache
+
+    ' -- Guide rotation policy check --
+    scheduler -> guides : GET /guides/rotation-check\n?guide_ids={available}&date={date+day}\n&difficulty=HIGH
+    activate guides #4f46e5
+
+    note right of guides
+      Guide Rotation Policy:
+      - No guide works >2 consecutive
+        high-difficulty days
+      - Certification must match trail type
+      - Preferred language matching for
+        international guest groups
+    end note
+
+    guides --> scheduler : eligible_guides[\n  {guide_id, consecutive_high_days,\n   certifications[], languages[]}\n]
+    deactivate guides
+
+    ' -- Trail condition check --
+    scheduler -> trails : GET /trails/{trail_id}/conditions\n?date={date+day}
+    activate trails #d97706
+    trails --> scheduler : trail_status\n(status=OPEN|CLOSED|RESTRICTED,\nhazards[], maintenance_windows[])
+    deactivate trails
+
+    ' -- Weather forecast --
+    scheduler -> weather : GET /forecast\n?region=rockies&date={date+day}
+    activate weather #64748b
+    weather --> scheduler : forecast\n(temp_high, temp_low, precip_pct,\nwind_mph, alerts[])
+    deactivate weather
+
+    ' -- Day-over-day dependency check --
+    alt day > 1 AND previous day had weather reroute
+        note right of scheduler
+          Day-over-day dependency:
+          If Day N-1 was rerouted due to
+          weather, Day N trail selection
+          must account for changed
+          starting position of group
+        end note
+        scheduler -> scheduler : adjustTrailForReroute(\n  prev_day_endpoint,\n  original_trail_id)
+    end
+
+    ' -- Weather decision --
+    alt Weather is CLEAR (precip < 30%, wind < 25mph)
+
+        scheduler -> scheduler : assignGuide(\n  bestMatch(eligible_guides,\n  trail_type, guest_languages))
+
+        ' -- Gear swap for terrain type --
+        scheduler -> gear : POST /gear-swap-request\n(expedition_id, day={day},\ngear_profile={day_profile},\nguest_count=12)
+        activate gear #0891b2
+        gear --> scheduler : gear_confirmed\n(items[], pickup_location)
+        deactivate gear
+
+    else Weather is MARGINAL (precip 30-60% OR wind 25-40mph)
+
+        scheduler -> scheduler : selectAlternateTrail(\n  lower_difficulty,\n  same_region)
+        scheduler -> trails : GET /trails/alternates\n?difficulty=MODERATE\n&region=rockies
+        activate trails #d97706
+        trails --> scheduler : alternate_trails[]
+        deactivate trails
+
+        scheduler -> scheduler : assignGuide(\n  preferExperiencedInWeather)
+
+    else Weather is SEVERE (precip > 60% OR wind > 40mph)
+
+        note right of scheduler #FEE2E2
+          Day cancelled — attempt reschedule
+          to extension day or offer refund
+          for this day's portion
+        end note
+
+        scheduler -> scheduler : markDayCancelled(\n  day={day}, reason=WEATHER)
+        scheduler -> notify : POST /notifications\n(type=DAY_CANCELLED,\nexpedition_id, day={day},\nrecipients=guest_list)
+        activate notify #64748b
+        notify --> scheduler : notifications_sent
+        deactivate notify
+
+    end
+
+    ' -- Accommodation handoff --
+    alt Accommodation type = HOTEL
+
+        scheduler -> partners : POST /accommodation-request\n(partner_type=HOTEL,\nregion=rockies,\ndate={date+day},\nguest_count=12,\nrooms_needed=6)
+        activate partners #9333ea
+
+        alt Hotel confirms availability
+            partners --> scheduler : booking_confirmed\n(partner_booking_id,\nhotel_name, room_numbers[])
+        else Hotel overbooked
+            partners --> scheduler : unavailable\n(reason=OVERBOOKED)
+            deactivate partners
+
+            note right of scheduler #FEF3C7
+              Accommodation Fallback:
+              1. Try alternate partner hotels
+              2. Fall back to campsite
+              3. If all fail, flag for manual
+                 coordinator intervention
+            end note
+
+            scheduler -> partners : POST /accommodation-request\n(partner_type=HOTEL,\nfallback=true,\nradius_km=50)
+            activate partners #9333ea
+
+            alt Alternate hotel found
+                partners --> scheduler : backup_confirmed\n(partner_booking_id)
+            else No hotels available
+                partners --> scheduler : no_hotels_available
+                deactivate partners
+                scheduler -> scheduler : fallbackToCampsite(\n  day={day}, region)
+            end
+        end
+
+    else Accommodation type = CAMPSITE
+
+        scheduler -> trails : GET /campsites\n?near_trail={trail_id}\n&capacity>=12
+        activate trails #d97706
+        trails --> scheduler : campsite_options[\n  {site_id, capacity, amenities[],\n   water_source, bear_box}]
+        deactivate trails
+        scheduler -> scheduler : reserveCampsite(\n  best_option)
+
+    end
+
+    ' -- Save day plan with optimistic locking --
+    scheduler -> db : UPDATE expedition_schedules\nSET day_{day}_plan = {plan},\nversion = version + 1\nWHERE schedule_id = SCH-9042\nAND version = {expected_version}
+    activate db #FEF9C3
+    db --> scheduler : rows_updated=1
+    deactivate db
+
+    ' -- Update guide availability cache --
+    scheduler -> cache : SET guide:availability:{region}:{date+day}\n(remove assigned guide from bitmap)
+    activate cache #FECDD3
+    cache --> scheduler : OK
+    deactivate cache
+
+end
+
+' ============================================================
+' == Finalization ==
+' ============================================================
+
+scheduler -> db : UPDATE expedition_schedules\nSET status = PROPOSED,\nversion = version + 1\nWHERE schedule_id = SCH-9042
+activate db #FEF9C3
+db --> scheduler : updated
+deactivate db
+
+scheduler --> admin : 201 Created\n(schedule_id=SCH-9042,\nstatus=PROPOSED,\ndays_planned=3,\ndays_cancelled=0,\naccommodation_fallbacks=0)
+deactivate scheduler
+
+admin -> scheduler : PUT /expedition-schedules/SCH-9042/approve
+activate scheduler #2563eb
+scheduler -> guides : POST /assignments/bulk\n(guide_assignments[])
+activate guides #4f46e5
+guides --> scheduler : assignments_confirmed
+deactivate guides
+
+scheduler -> kafka : publish expedition.schedule.approved\n(schedule_id, expedition_id,\nguide_ids[], dates[])
+scheduler --> admin : 200 OK (status=APPROVED)
+deactivate scheduler
+
+@enduml

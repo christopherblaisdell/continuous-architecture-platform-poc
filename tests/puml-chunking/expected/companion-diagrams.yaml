@@ -1,0 +1,81 @@
+# Expected Extraction Results for Companion C4/Component/ERD Diagrams
+
+# NTK-10020: Emergency Response Components (C4 Component)
+# Note: enricher extract_containers only matches Container/ContainerDb,
+# not Component() — so Component-level names won't appear in the
+# containers list. The names also use \n for line wrapping.
+NTK-10020-emergency-response-components:
+  classification: c4-context
+  # Only ContainerDb and ContainerQueue are matched, not Component()
+  min_containers: 2
+  # Check that the raw PUML source contains these (they'll be in the embedded source)
+  containers_must_include:
+    - "PostgreSQL"
+    - "Kafka"
+  min_relationships: 8
+  relationships_must_include_sources:
+    - evac_controller
+    - evac_engine
+    - evac_coordinator
+    - guest_locator
+  has_title: true
+
+# NTK-10022: Real-Time Pipeline Topology (C4 Container)
+# Container names use \n for line breaks in PUML; enricher captures
+# the raw name string including the newline escape
+NTK-10022-realtime-pipeline-topology:
+  classification: c4-context
+  min_containers: 10
+  # Use partial matches — names contain \n line breaks
+  containers_must_include:
+    - "WebSocket"
+    - "svc-adventure-"
+    - "svc-location-"
+    - "svc-weather"
+    - "svc-trail-"
+    - "svc-guide-"
+    - "svc-safety-"
+  min_relationships: 10
+  has_title: true
+
+# NTK-10024: Webhook Processing Components (C4 Component)
+# Same issue: Component() not matched by extract_containers
+NTK-10024-webhook-processing-components:
+  classification: c4-context
+  # Only ContainerDb/ContainerQueue matched, not Component()
+  min_containers: 3
+  containers_must_include:
+    - "PostgreSQL"
+    - "Kafka"
+    - "Dead Letter Queue"
+  min_relationships: 8
+  has_title: true
+
+# NTK-10025: Guest Identity ERD
+NTK-10025-guest-identity-erd:
+  classification: erd
+  min_entities: 6
+  entities_must_include:
+    - "guests"
+    - "guest_redirects"
+    - "merge_audit_log"
+    - "reservations"
+    - "guest_points"
+    - "points_ledger"
+    - "payment_records"
+    - "media_assets"
+  min_fk_relationships: 5
+  has_title: true
+
+# NTK-10021: Multi-Day Scheduling State Machine
+# Note: state diagrams are classified as "other" by the enricher
+# since they don't match sequence, c4, erd, event-flow, or topology patterns
+NTK-10021-multiday-scheduling-state-machine:
+  classification: other
+  has_title: true
+  # State diagrams extract limited metadata through the enricher
+  # The primary value is testing that the enricher doesn't crash
+  # on non-standard diagram types and still extracts notes/ADRs
+  adr_references:
+    - "ADR-011"
+  min_notes: 2

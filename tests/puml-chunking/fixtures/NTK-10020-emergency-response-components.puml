@@ -1,0 +1,56 @@
+@startuml emergency-response-components
+' NovaTrek Adventures - Emergency Response Component Diagram
+' PUML Chunking Test: C4 Component diagram companion to NTK-10020
+' Tests c4-context classification in puml-enricher
+
+!include <c4/C4_Component>
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+title Emergency Response\nComponent Diagram\n<size:10>NTK-10020 | C4 Component Level</size>
+
+Container_Boundary(svc_check_in, "svc-check-in") {
+    Component(evac_controller, "Evacuation\nController", "Spring MVC", "Receives weather alerts\nand triggers evacuation")
+    Component(evac_engine, "Evacuation\nDecision Engine", "Java", "Evaluates severity and\nselects evacuation strategy")
+    Component(guest_locator, "Guest\nLocator", "Java", "Queries active check-ins\nand GPS positions")
+    Component(evac_coordinator, "Evacuation\nCoordinator", "Java", "Orchestrates multi-service\nevacuation saga")
+    Component(compensation_handler, "Compensation\nHandler", "Java", "Handles partial failures\nand saga rollbacks")
+    Component(evac_repo, "Evacuation\nRepository", "Spring Data JPA", "Persists evacuation\nrecords and status")
+}
+
+Container_Boundary(external_services, "External Services") {
+    Component(weather_svc, "svc-weather", "Spring Boot", "Weather monitoring\nand alerts")
+    Component(safety_svc, "svc-safety-\ncompliance", "Spring Boot", "Safety compliance\nand waiver status")
+    Component(location_svc, "svc-location-\nservices", "Spring Boot", "GPS tracking and\ngeofencing")
+    Component(guide_svc, "svc-guide-\nmanagement", "Spring Boot", "Guide assignment\nand heartbeats")
+    Component(transport_svc, "svc-transport-\nlogistics", "Spring Boot", "Vehicle dispatch\nand routing")
+    Component(notify_svc, "svc-notifications", "Spring Boot", "Multi-channel\nalert delivery")
+}
+
+ContainerDb(postgres, "PostgreSQL", "Relational DB", "Evacuation records,\naudit trail")
+ContainerQueue(kafka, "Kafka", "Event Streaming", "evacuation.initiated\nevacuation.completed\nevacuation.failed")
+
+' Internal relationships
+Rel(evac_controller, evac_engine, "Evaluates\nseverity")
+Rel(evac_engine, evac_coordinator, "Triggers\nevacuation")
+Rel(evac_coordinator, guest_locator, "Finds affected\nguests")
+Rel(evac_coordinator, compensation_handler, "On partial\nfailure")
+Rel(evac_coordinator, evac_repo, "Persists\nstatus")
+Rel(evac_repo, postgres, "JDBC")
+
+' External relationships
+Rel(weather_svc, evac_controller, "Weather\nalert webhook", "HTTPS")
+Rel(evac_coordinator, safety_svc, "Validate\nwaivers", "HTTPS")
+Rel(guest_locator, location_svc, "Query GPS\npositions", "HTTPS")
+Rel(evac_coordinator, guide_svc, "Reassign\nguides", "HTTPS")
+Rel(evac_coordinator, transport_svc, "Dispatch\nvehicles", "HTTPS")
+Rel(evac_coordinator, notify_svc, "Send\nalerts", "HTTPS")
+Rel(evac_coordinator, kafka, "Publish\nevents", "Kafka")
+
+Lay_D(evac_controller, evac_engine)
+Lay_D(evac_engine, evac_coordinator)
+Lay_R(evac_coordinator, compensation_handler)
+Lay_D(evac_coordinator, evac_repo)
+
+@enduml

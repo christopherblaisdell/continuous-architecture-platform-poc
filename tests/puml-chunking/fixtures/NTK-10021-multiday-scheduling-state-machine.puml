@@ -1,0 +1,110 @@
+@startuml multiday-scheduling-state-machine
+' NovaTrek Adventures - Multi-Day Schedule State Machine
+' PUML Chunking Test: State diagram (alternate PUML type for enricher testing)
+' Companion to NTK-10021
+
+!include ../../architecture/diagrams/theme.puml
+
+title Multi-Day Adventure Schedule\nState Machine\n<size:10>NTK-10021 | State Diagram Type</size>
+
+[*] --> Draft : createSchedule()
+
+state Draft {
+    [*] --> Incomplete
+    Incomplete --> DaysPlanned : addDay()
+    DaysPlanned --> DaysPlanned : addDay() / updateDay()
+    DaysPlanned --> ReadyForReview : allDaysPlanned()\n&& guidesAssigned()
+}
+
+Draft --> PendingApproval : submitForApproval()
+
+state PendingApproval {
+    [*] --> ManagerReview
+    ManagerReview --> SafetyReview : managerApproved()
+    ManagerReview --> Draft : managerRejected()\n[reason provided]
+    SafetyReview --> WeatherCheck : safetyApproved()
+    SafetyReview --> Draft : safetyRejected()\n[compliance issue]
+    WeatherCheck --> Approved : weatherClear()
+    WeatherCheck --> WeatherHold : weatherMarginal()
+
+    state WeatherHold {
+        [*] --> Monitoring
+        Monitoring --> Monitoring : checkWeather()\nevery 2 hours
+        Monitoring --> Approved : weatherImproved()
+        Monitoring --> Cancelled : weatherSevere()\n|| holdExpired(48h)
+    }
+}
+
+state Approved {
+    [*] --> Confirmed
+    Confirmed --> GearAllocated : allocateGear()
+    GearAllocated --> TransportScheduled : scheduleTransport()
+    TransportScheduled --> FullyProvisioned : allResourcesReady()
+}
+
+state Active {
+    [*] --> Day1
+    Day1 --> Day1Complete : completeDay1CheckIns()
+    Day1Complete --> Day2 : nextDay()
+    Day2 --> Day2Complete : completeDay2CheckIns()
+    Day2Complete --> Day3 : nextDay()
+    Day3 --> Day3Complete : completeDay3CheckIns()
+    Day3Complete --> AllDaysComplete : allDaysFinished()
+
+    state "Emergency Override" as Emergency {
+        [*] --> Evaluating
+        Evaluating --> PartialEvacuation : someTrailsAffected()
+        Evaluating --> FullEvacuation : allTrailsAffected()
+        PartialEvacuation --> Active : threatCleared()
+        FullEvacuation --> Cancelled : evacuationComplete()
+    }
+
+    Day1 --> Emergency : emergencyAlert()
+    Day2 --> Emergency : emergencyAlert()
+    Day3 --> Emergency : emergencyAlert()
+}
+
+Approved --> Active : startDate()
+Active --> Completed : allDaysComplete()\n&& allGuestsCheckedOut()
+Active --> Cancelled : emergencyCancel()\n|| weatherCancel()
+
+state Completed {
+    [*] --> GearReturned
+    GearReturned --> FeedbackCollected : collectFeedback()
+    FeedbackCollected --> AnalyticsLogged : logMetrics()
+    AnalyticsLogged --> [*]
+}
+
+state Cancelled {
+    [*] --> RefundProcessing
+    RefundProcessing --> GuestsNotified : processRefunds()
+    GuestsNotified --> ResourcesReleased : releaseResources()
+    ResourcesReleased --> [*]
+}
+
+Completed --> [*]
+Cancelled --> [*]
+
+note right of Draft
+  Optimistic locking (_rev field)
+  prevents concurrent edits.
+  See ADR-011.
+end note
+
+note right of Active
+  Guide rotation policy applies:
+  No guide works > 2 consecutive
+  days on high-difficulty trails.
+  Cache bitmap in Redis for
+  fast availability checks.
+end note
+
+note bottom of Cancelled
+  Cancellation triggers:
+  1. Emergency evacuation
+  2. Severe weather (72h forecast)
+  3. Guide unavailability (no backup)
+  4. Minimum guest threshold not met
+end note
+
+@enduml

@@ -1,0 +1,187 @@
+@startuml NTK-10022-realtime-tracking-pipeline
+' NovaTrek Adventures - Real-Time Adventure Tracking Dashboard Data Pipeline
+' PUML Chunking Test: 140+ lines, 10+ participants, par block,
+'   mixed participant types (db, queue, WebSocket, cache, external API),
+'   extensive notes with payload schemas
+
+!include ../../architecture/diagrams/theme.puml
+skinparam sequence {
+    ArrowColor #0891b2
+}
+
+title NovaTrek Adventures - Real-Time Tracking\nDashboard Data Pipeline\n<size:10>NTK-10022 | Parallel Block + Mixed Participant Types</size>
+
+' ============================================================
+' Participants (mixed types to confuse embeddings)
+' ============================================================
+actor "Ops Dashboard\n(Browser)" as dashboard
+participant "WebSocket\nGateway" as ws #E0F2FE
+participant "svc-adventure-\ntracking" as tracking [[/microservices/svc-adventure-tracking/]]
+participant "svc-location-\nservices" as location [[/microservices/svc-location-services/]]
+participant "svc-weather" as weather [[/microservices/svc-weather/]]
+participant "svc-trail-\nmanagement" as trails [[/microservices/svc-trail-management/]]
+participant "svc-guide-\nmanagement" as guides [[/microservices/svc-guide-management/]]
+participant "svc-safety-\ncompliance" as safety [[/microservices/svc-safety-compliance/]]
+participant "svc-analytics" as analytics [[/microservices/svc-analytics/]]
+participant "External Weather\nProvider API" as extweather #F3E8FF
+queue "Kafka" as kafka
+database "PostgreSQL" as db #FEF9C3
+database "Redis" as cache #FECDD3
+
+' ============================================================
+' == Dashboard Connection ==
+' ============================================================
+
+dashboard -> ws : WebSocket CONNECT\n(wss://ops.novatrek.example.com/ws\nAuth: Bearer {ops_token})
+activate ws #E0F2FE
+
+ws -> ws : validateToken(ops_token)\ncheckRole(OPERATIONS_MANAGER)
+
+alt Token valid and authorized
+    ws --> dashboard : 101 Switching Protocols\n(connection_id=WS-4829)
+else Unauthorized
+    ws --> dashboard : 401 Unauthorized\n(reason: insufficient_role)
+end
+
+' -- Load cached snapshot for immediate display --
+ws -> cache : GET dashboard:snapshot:latest
+activate cache #FECDD3
+cache --> ws : cached_snapshot\n(timestamp, guest_positions[],\nweather, trail_status[],\nguide_heartbeats[],\nactive_incidents[])
+deactivate cache
+
+ws --> dashboard : INITIAL_STATE message\n(full snapshot payload)
+
+' ============================================================
+' == Periodic Data Aggregation (every 30 seconds) ==
+' ============================================================
+
+loop every 30 seconds
+
+    group Data Aggregation Pipeline
+
+        tracking -> tracking : beginAggregationCycle(\n  cycle_id=AGG-{timestamp})
+
+        note right of tracking
+          Aggregation Cycle:
+          - Runs every 30 seconds
+          - Collects from 5 data sources in parallel
+          - Merges into unified dashboard state
+          - Pushes delta to connected WebSockets
+          - Caches full snapshot for new connections
+        end note
+
+        ' ============================================================
+        ' == Parallel Data Collection ==
+        ' ============================================================
+
+        par GPS Positions (from wristbands)
+
+            tracking -> location : GET /positions/active\n?region=all&since={last_cycle}
+            activate location #0891b2
+            location --> tracking : positions[\n  {wristband_id, guest_id,\n   lat, lng, altitude_m,\n   speed_kmh, heading_deg,\n   accuracy_m, timestamp_utc}\n]
+            deactivate location
+
+            note right of tracking
+              GPS Payload Schema:
+              - wristband_id: UUID (RFID tag)
+              - lat/lng: decimal degrees (WGS84)
+              - altitude_m: meters above sea level
+              - speed_kmh: 0 = stationary
+              - accuracy_m: <10 = excellent
+              - Positions older than 60s: mark STALE
+            end note
+
+        else Weather Updates
+
+            tracking -> weather : GET /current\n?regions=all
+            activate weather #64748b
+            weather -> extweather : GET /v2/conditions\n?lat={region_center}&lon={region_center}\n&units=imperial
+            activate extweather #F3E8FF
+            extweather --> weather : raw_conditions\n(temp, humidity, wind, precip,\nvisibility, uv_index)
+            deactivate extweather
+            weather --> tracking : weather_by_region[\n  {region, temp_f, wind_mph,\n   precip_pct, visibility_mi,\n   alert_level}\n]
+            deactivate weather
+
+        else Trail Conditions
+
+            tracking -> trails : GET /conditions/summary\n?status_changed_since={last_cycle}
+            activate trails #d97706
+            trails --> tracking : trail_updates[\n  {trail_id, status, hazards[],\n   guest_count_on_trail,\n   last_inspection_utc}\n]
+            deactivate trails
+
+        else Guide Heartbeats
+
+            tracking -> guides : GET /heartbeats/active
+            activate guides #4f46e5
+            guides --> tracking : heartbeats[\n  {guide_id, lat, lng,\n   battery_pct, signal_strength,\n   guest_count_in_group,\n   last_check_in_utc,\n   status: ON_TRAIL|RETURNING|AT_BASE}\n]
+            deactivate guides
+
+        else Safety Incidents
+
+            tracking -> safety : GET /incidents/active
+            activate safety #dc2626
+            safety --> tracking : active_incidents[\n  {incident_id, type, severity,\n   affected_trail_id,\n   guests_affected_count,\n   responder_eta_min,\n   status: OPEN|RESPONDING|CONTAINED}\n]
+            deactivate safety
+
+        end
+
+        ' ============================================================
+        ' == Data Merging and Metrics Computation ==
+        ' ============================================================
+
+        tracking -> tracking : mergeDataStreams(\n  positions, weather,\n  trails, heartbeats,\n  incidents)
+
+        note right of tracking
+          Computed Aggregate Metrics:
+          - total_guests_active: count of non-stale positions
+          - guests_per_trail: grouped by trail_id
+          - guides_en_route: status = RETURNING
+          - active_incidents: count by severity
+          - avg_group_speed_kmh: mean of speeds > 0
+          - stale_positions_count: timestamp > 60s old
+          - weather_alerts_active: alert_level > WATCH
+        end note
+
+        ' -- Stale data detection --
+        alt Any GPS position timestamp > 60 seconds old
+            tracking -> tracking : markStalePositions(\n  stale_wristband_ids[])
+            note right of tracking #FEF3C7
+              STALE position handling:
+              - Mark on dashboard with warning icon
+              - If stale > 5 min AND on high-difficulty
+                trail, trigger safety check
+              - Log to analytics for device health monitoring
+            end note
+
+            tracking -> analytics : POST /telemetry/stale-report\n(stale_devices[], durations_sec[])
+            activate analytics #64748b
+            analytics --> tracking : acknowledged
+            deactivate analytics
+        end
+
+        ' -- Cache updated snapshot --
+        tracking -> cache : SET dashboard:snapshot:latest\n(full_merged_state)\nEX 120
+        activate cache #FECDD3
+        cache --> tracking : OK
+        deactivate cache
+
+        ' -- Compute delta from previous cycle --
+        tracking -> tracking : computeDelta(\n  current_state, previous_state)
+
+        ' -- Push delta to all connected dashboards --
+        tracking -> kafka : publish dashboard.update\n(cycle_id, delta_payload,\nmetrics_summary)
+
+        kafka -> ws : consume dashboard.update
+        ws --> dashboard : DELTA_UPDATE message\n(changed_positions[],\nnew_incidents[],\nresolved_incidents[],\nupdated_metrics)
+
+        ' -- Persist metrics for historical analysis --
+        tracking -> db : INSERT INTO tracking_metrics\n(cycle_id, timestamp,\ntotal_guests, guests_per_trail,\nstale_count, incident_count,\navg_speed_kmh)
+        activate db #FEF9C3
+        db --> tracking : stored
+        deactivate db
+
+    end
+
+end
+
+@enduml

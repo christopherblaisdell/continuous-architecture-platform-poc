@@ -1,0 +1,67 @@
+@startuml realtime-pipeline-topology
+' NovaTrek Adventures - Real-Time Tracking Pipeline Topology
+' PUML Chunking Test: C4 Container diagram companion to NTK-10022
+' Tests c4-context classification in puml-enricher
+
+!include <c4/C4_Container>
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+AddRelTag("kafka", $lineStyle=DashedLine(), $lineColor="#7c3aed", $textColor="#7c3aed", $legendText="Kafka Events")
+AddRelTag("websocket", $lineStyle=DottedLine(), $lineColor="#0891b2", $textColor="#0891b2", $legendText="WebSocket")
+
+title Real-Time Adventure Tracking\nPipeline Topology\n<size:10>NTK-10022 | C4 Container Level</size>
+
+Person(ops_user, "Operations\nManager", "Monitors active\nadventures in real-time")
+
+System_Boundary(tracking_platform, "Tracking Platform") {
+    Container(ws_gateway, "WebSocket\nGateway", "Spring WebFlux", "Manages persistent\nconnections to dashboards")
+    Container(tracking_svc, "svc-adventure-\ntracking", "Java / Spring Boot", "Aggregates data from\n5 sources every 30s")
+    ContainerQueue(kafka, "Kafka", "Event Streaming", "dashboard.update\ntracking.stale-device")
+    ContainerDb(redis, "Redis", "In-Memory Cache", "Dashboard snapshots\nTTL: 120s")
+    ContainerDb(postgres, "PostgreSQL", "Relational DB", "Tracking metrics\nhistorical data")
+}
+
+System_Boundary(data_sources, "Data Source Services") {
+    Container(location_svc, "svc-location-\nservices", "Spring Boot", "GPS positions from\nwristband beacons")
+    Container(weather_svc, "svc-weather", "Spring Boot", "Regional weather\nconditions")
+    Container(trail_svc, "svc-trail-\nmanagement", "Spring Boot", "Trail conditions\nand hazards")
+    Container(guide_svc, "svc-guide-\nmanagement", "Spring Boot", "Guide heartbeats\nand locations")
+    Container(safety_svc, "svc-safety-\ncompliance", "Spring Boot", "Active safety\nincidents")
+}
+
+System_Ext(ext_weather, "External Weather\nProvider", "Third-party weather\nAPI (REST)")
+
+System_Boundary(downstream, "Downstream Consumers") {
+    Container(analytics_svc, "svc-analytics", "Spring Boot", "Stale device\ntelemetry reports")
+}
+
+' User connections
+Rel(ops_user, ws_gateway, "Views\ndashboard", "wss://", $tags="websocket")
+
+' WebSocket gateway
+Rel(ws_gateway, redis, "GET cached\nsnapshot", "Redis Protocol")
+Rel(kafka, ws_gateway, "Pushes\ndeltas", "Kafka", $tags="kafka")
+
+' Tracking aggregation
+Rel(tracking_svc, location_svc, "GET /positions/active", "HTTPS")
+Rel(tracking_svc, weather_svc, "GET /current", "HTTPS")
+Rel(tracking_svc, trail_svc, "GET /conditions/summary", "HTTPS")
+Rel(tracking_svc, guide_svc, "GET /heartbeats/active", "HTTPS")
+Rel(tracking_svc, safety_svc, "GET /incidents/active", "HTTPS")
+
+' External
+Rel(weather_svc, ext_weather, "GET /v2/conditions", "HTTPS")
+
+' Outputs
+Rel(tracking_svc, redis, "SET snapshot", "Redis Protocol")
+Rel(tracking_svc, kafka, "Publish\nupdates", "Kafka", $tags="kafka")
+Rel(tracking_svc, postgres, "INSERT\nmetrics", "JDBC")
+Rel(tracking_svc, analytics_svc, "POST stale\nreport", "HTTPS")
+
+Lay_D(ops_user, ws_gateway)
+Lay_D(ws_gateway, tracking_svc)
+Lay_D(tracking_svc, data_sources)
+
+@enduml
