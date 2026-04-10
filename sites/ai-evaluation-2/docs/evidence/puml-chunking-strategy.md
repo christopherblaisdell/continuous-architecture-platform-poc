@@ -66,7 +66,7 @@ A natural language query like "which services does svc-check-in call?" has low c
 
 Enterprise architecture teams use `!include` directives to standardize diagrams, particularly with the C4 model macro library:
 
-```plantuml
+```text
 !include https://raw.githubusercontent.com/.../C4_Component.puml
 Container(api, "API Gateway", "Spring Boot")
 Rel(api, db, "Reads from", "JDBC")
@@ -147,7 +147,7 @@ The highest-ranked non-MCP approach in both deep research rounds. A CI pipeline 
 
 Embedding natural-language comment blocks at the top of each PUML file improves the quality of Copilot's 60-line window retrieval:
 
-```plantuml
+```text
 ' @architecture-summary
 ' This sequence diagram illustrates the check-in orchestration process.
 ' Primary actors: MobileClient, WebFrontend.
@@ -269,7 +269,7 @@ svc-check-in depends on: svc-reservations (synchronous REST)
 ```markdown
 ## Raw PlantUML Source
 
-    ```plantuml
+    ```text
     @startuml
     participant MobileClient
     participant "svc-check-in" as checkin
