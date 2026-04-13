@@ -82,13 +82,13 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | [Cost Offset Analysis](evidence/cost-offset-hybrid-subsidy.md) | Financial case for 0x models subsidizing the Foundry investment | How much does Copilot's free model tier reduce the net cost of maintaining a custom model? |
 | [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | IDE client comparison for consuming a custom Foundry model | Which IDE client should consume the custom model — and what are the frozen customization risks? |
 | [Customization Extensibility and Governance](evidence/customization-extensibility-governance.md) | Inner source governance model for AI customization ownership and evolution | Who owns AI customizations, how do they evolve, and what happens if architects cannot control them? |
+| [Customization Portability: Option D + OpenSpec](evidence/customization-lock-in-foundry-vs-portable.md) | How Option D, living practice customization, and OpenSpec neutralize Foundry lock-in across four layers | What happens to Foundry customizations if you switch platforms — and how does Option D make the risk acceptable? |
 
 ### Option C (Foundry IQ Integration)
 
 | Page | Purpose | Key Question Answered |
 |------|---------|----------------------|
 | [What Does Foundry IQ Actually Require?](evidence/foundry-iq-comparison.md) | Operational requirements for a Foundry IQ-based agent | Is Foundry IQ a turnkey product or a build-it-yourself platform? |
-| [Customization Lock-In: Foundry vs Portable Standards](evidence/customization-lock-in-foundry-vs-portable.md) | Lock-in risk analysis for Foundry-native vs file-based customization, with OpenSpec as cross-platform remediation | What happens to Foundry customizations if you switch platforms? |
 
 ### Appendix
 

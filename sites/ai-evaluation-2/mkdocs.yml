@@ -73,7 +73,7 @@ nav:
     - Option D POC Validation: evidence/option-d-poc-validation.md
     - "Cost Offset — Free Tier Subsidy": evidence/cost-offset-hybrid-subsidy.md
     - "Customization Extensibility and Governance": evidence/customization-extensibility-governance.md
-    - "Customization Lock-In: Foundry vs Portable Standards": evidence/customization-lock-in-foundry-vs-portable.md
+    - "Customization Portability: Option D + OpenSpec": evidence/customization-lock-in-foundry-vs-portable.md
   - Reference:
     - Glossary: reference/glossary.md
     - Adversarial Validation: reference/adversarial-validation-copilot-vs-rag.md

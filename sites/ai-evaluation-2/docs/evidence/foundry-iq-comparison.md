@@ -186,3 +186,5 @@ The evaluation's position is not "Foundry IQ is bad." It is:
 For a file-type-by-file-type comparison of how Azure AI Search's chunking stacks up against Copilot's, see [File-Type Handling: A vs C](filetype-handling-a-vs-c.md).
 
 For how the Foundry model can be consumed inside Copilot via BYOK — making Foundry IQ simpler to deploy as a retrieval complement rather than a standalone platform — see [Option D — Hybrid Architecture](option-d-hybrid-architecture.md).
+
+For the inverse lock-in question — what happens to Foundry customizations if the team later needs to switch platforms, and how Option D + OpenSpec makes that risk acceptable — see [Customization Portability: Option D + OpenSpec](customization-lock-in-foundry-vs-portable.md).

@@ -228,4 +228,5 @@ See [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) for the p
 - [DD-04: Model Routing](../decisions/dd-04-model-routing.md) -- how requests route to different model providers
 - [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) -- phased deployment plan
 - [What Does Foundry IQ Actually Require?](foundry-iq-comparison.md) -- operational requirements for Option C standalone
+- [Customization Portability: Option D + OpenSpec](customization-lock-in-foundry-vs-portable.md) -- how Option D, living practice customization, and OpenSpec compose to neutralize Foundry lock-in across four layers
 - [Scoring Results](../framework/scoring-results.md) -- weighted scoring matrix
