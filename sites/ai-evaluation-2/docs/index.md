@@ -68,3 +68,54 @@ See [Customization Portability: Option D + OpenSpec](evidence/customization-lock
 | **How we scored** | [Evaluation Methodology](framework/evaluation-methodology.md) — 13-factor framework |
 | **All options and evidence** | [Options and Evidence Guide](framework/options-and-evidence-guide.md) — complete page index |
 | **The lock-in story** | [Customization Portability](evidence/customization-lock-in-foundry-vs-portable.md) — layer-by-layer analysis |
+
+---
+
+## Site Map
+
+```
+Solution Architecture Practice Comparative Evaluation of Agentic AI
+│
+├── AI Toolchain Evaluation (this page)
+│
+├── The Recommendation
+│   ├── Scoring Results
+│   ├── Option D — Hybrid Architecture
+│   ├── Option D POC Validation
+│   ├── Cost Offset — Free Tier Subsidy
+│   ├── Customization Portability: Option D + OpenSpec
+│   └── Copilot Rollout Roadmap
+│
+├── How We Got Here
+│   ├── Evaluation Methodology
+│   ├── Evaluation Approach
+│   ├── Options and Evidence Guide
+│   │
+│   ├── Toolchain Decisions
+│   │   ├── DD-01 Context and Configuration
+│   │   ├── DD-02 Billing Model
+│   │   ├── DD-03 AI Provider
+│   │   ├── DD-04 Model Routing
+│   │   ├── DD-05 Model Selection Autonomy
+│   │   └── DD-06 IDE Client Selection
+│   │
+│   ├── Comparative Evidence
+│   │   ├── Platform Landscape
+│   │   ├── Model Quality at Budget
+│   │   ├── Build vs Leverage
+│   │   ├── What Does Foundry IQ Actually Require?
+│   │   ├── Controlling What Copilot Sees
+│   │   ├── File-Type Handling: A vs C
+│   │   └── Architecture Is Not Just Coding
+│   │
+│   └── Customization and Governance
+│       ├── Customization Extensibility and Governance
+│       └── File-Type Chunking Strategy
+│
+└── Reference
+    ├── Glossary
+    ├── Technical Review: Claim Validation
+    ├── Fact-Check Report
+    ├── Embeddings Analysis
+    └── Foundry vs IDE Agents
+```
