@@ -33,7 +33,7 @@ Customizing directly in Azure AI Foundry or Foundry IQ creates a qualitatively d
 
 ### Contrast with Copilot Customization Lock-In
 
-The [existing analysis](foundry-iq-comparison.md#what-copilot-investment-could-become-a-dead-end) established that Copilot's lock-in risk is a reformatting cost — the knowledge survives, only file naming changes. The contrast with Foundry is stark:
+The [portability analysis](foundry-iq-comparison.md#what-would-be-lost-in-a-platform-switch) established that Copilot's lock-in risk is a reformatting cost — the knowledge survives, only file naming changes. The contrast with Foundry is stark:
 
 | Dimension | Copilot Lock-In | Foundry Lock-In |
 |-----------|----------------|-----------------|

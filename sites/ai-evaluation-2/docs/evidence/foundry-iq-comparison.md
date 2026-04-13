@@ -76,9 +76,9 @@ The conversation around Foundry IQ vs Copilot has conflated three separate thing
 | **Customizations** | Behavioral configuration that shapes how the AI agent works (instructions, skills, agent definitions) | Markdown files checked into the repo (`.instructions.md`, `SKILL.md`, `.agent.md`) | Not applicable — Foundry IQ does not provide agent customization | Content is portable (plain Markdown); format is converging on open standards ([SKILL.md](https://agentskills.io), AGENTS.md, MCP) |
 | **Retrieval** | The search infrastructure that finds relevant content and feeds it to the LLM | Automatic workspace indexing (zero config, per-workspace, per-client) | Knowledge bases with custom chunking, scoring profiles, agentic retrieval, MCP endpoint | Not portable between platforms — but indexes are derived from content, so switching means rebuilding the index, not losing data |
 
-### What Copilot Investment Could Become a Dead End?
+### What Would Be Lost in a Platform Switch?
 
-This is Troy's core concern, stated precisely: if the team invests in Copilot customizations and later needs to move, what is lost?
+A natural question for any AI toolchain investment: if the team commits to one platform's customization model and later needs to switch, what is lost? For Copilot, the answer is:
 
 | Investment | Dead-end risk | Why |
 |------------|--------------|-----|
