@@ -3,8 +3,9 @@
 
 # Controlling What Copilot Sees: The Context Injection Pipeline
 
-!!! abstract "TL;DR"
-    Copilot's context window is not a black box — it follows a deterministic 7-level priority hierarchy that architecture teams can influence through 4 declarative surfaces (instruction files, scoped rules, `#file` references, workspace indexing) and 3 MCP extensions (for artifact types that chunk poorly by default). This page maps the full pipeline and identifies 17 actionable optimizations.
+**TL;DR:** Copilot's context window is not a black box — it follows a deterministic 7-level priority hierarchy that architecture teams can influence through 4 declarative surfaces (instruction files, scoped rules, `#file` references, workspace indexing) and 3 MCP extensions (for artifact types that chunk poorly by default). This page maps the full pipeline and identifies 17 actionable optimizations.
+
+---
 
 ## Why This Matters
 

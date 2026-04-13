@@ -3,8 +3,7 @@
 
 # Cost Offset -- How Free Models Subsidize the Custom Model Investment
 
-!!! abstract "TL;DR"
-    Option D costs less than Option C alone. Copilot's 0x multiplier models (GPT-4.1, GPT-4o, GPT-5 mini, Raptor mini) handle routine work at zero cost — work that Option C routes through the custom Foundry model at per-token cost. BYOK requests do not consume Copilot premium request quotas. The net effect: an architect's custom model token consumption drops by 80%+ because only domain-specialized tasks touch it. The Copilot subscription is not an added expense — it is a cost reduction mechanism.
+**TL;DR:** Option D costs less than Option C alone. Copilot's 0x multiplier models (GPT-4.1, GPT-4o, GPT-5 mini, Raptor mini) handle routine work at zero cost — work that Option C routes through the custom Foundry model at per-token cost. BYOK requests do not consume Copilot premium request quotas. The net effect: an architect's custom model token consumption drops by 80%+ because only domain-specialized tasks touch it. The Copilot subscription is not an added expense — it is a cost reduction mechanism.
 
 ---
 

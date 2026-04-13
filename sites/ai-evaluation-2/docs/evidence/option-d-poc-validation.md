@@ -3,8 +3,7 @@
 
 # Option D POC: BYOK Endpoint Validation
 
-!!! abstract "TL;DR"
-    We deployed an Azure OpenAI endpoint via Bicep IaC in under 5 minutes, verified it responds to the exact API format GitHub Copilot BYOK expects, and confirmed tear-down is a single command. The Azure-side infrastructure for Option D is trivial. BYOK registration requires organization-level Copilot admin access (5-field form), which is a corporate admin action — not an engineering task.
+**TL;DR:** We deployed an Azure OpenAI endpoint via Bicep IaC in under 5 minutes, verified it responds to the exact API format GitHub Copilot BYOK expects, and confirmed tear-down is a single command. The Azure-side infrastructure for Option D is trivial. BYOK registration requires organization-level Copilot admin access (5-field form), which is a corporate admin action — not an engineering task.
 
 ---
 

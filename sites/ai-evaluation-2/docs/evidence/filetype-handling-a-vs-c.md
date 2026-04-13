@@ -2,8 +2,9 @@
 
 # File-Type Handling: Option A vs Option C
 
-!!! abstract "TL;DR"
-    Azure AI Search (Option C) wins on two file types — Markdown (heading-aware `oneToMany` parsing) and Figma JSON exports (`jsonArray` mode) — both achievable with configuration changes alone. But it loses on all five file types where architecture teams actually struggle: OpenAPI, AsyncAPI, PlantUML, and source code. For source code, Copilot is strictly superior (Tree-sitter AST vs plain text). For structured YAML and PlantUML, both platforms need custom workarounds — but Option A's workarounds cost hours while Option C's cost weeks plus ~$250/month in infrastructure.
+**TL;DR:** Azure AI Search (Option C) wins on two file types — Markdown (heading-aware `oneToMany` parsing) and Figma JSON exports (`jsonArray` mode) — both achievable with configuration changes alone. But it loses on all five file types where architecture teams actually struggle: OpenAPI, AsyncAPI, PlantUML, and source code. For source code, Copilot is strictly superior (Tree-sitter AST vs plain text). For structured YAML and PlantUML, both platforms need custom workarounds — but Option A's workarounds cost hours while Option C's cost weeks plus ~$250/month in infrastructure.
+
+---
 
 ## Why This Comparison Matters
 
