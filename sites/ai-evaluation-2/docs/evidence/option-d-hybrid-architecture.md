@@ -1,7 +1,7 @@
 <!-- CONFLUENCE-PUBLISH -->
 <!-- CONFLUENCE-URL: -->
 
-# Option D Hybrid Architecture -- Copilot Plus Custom Foundry Model via BYOK
+# Option D Hybrid Architecture: Copilot Plus Foundry via BYOK
 
 **TL;DR:** Option D combines Option A (GitHub Copilot as the development client) with Option C's investment (a custom fine-tuned model in Azure AI Foundry) by using GitHub Copilot's BYOK feature. Architects get frontier models for everyday work at zero incremental cost, and switch to the custom Foundry model when domain specialization adds value -- all in the same model picker, with no custom extension or separate UI.
 
