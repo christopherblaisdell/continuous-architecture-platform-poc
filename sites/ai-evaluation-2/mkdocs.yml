@@ -67,7 +67,6 @@ nav:
     - What Does Foundry IQ Actually Require?: evidence/foundry-iq-comparison.md
     - Controlling What Copilot Sees: evidence/context-injection-controls.md
     - "File-Type Handling: A vs C": evidence/filetype-handling-a-vs-c.md
-    - "The PlantUML Problem": evidence/puml-chunking-strategy.md
     - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
     - "Option D — Hybrid Architecture": evidence/option-d-hybrid-architecture.md
     - Option D POC Validation: evidence/option-d-poc-validation.md

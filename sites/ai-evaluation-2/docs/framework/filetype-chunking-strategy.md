@@ -64,6 +64,38 @@ This is the primary reference artifact. For any architecture file type, look up 
 
 ---
 
+## Deep Dive: Why PlantUML Breaks Every AI Platform
+
+PlantUML is the single hardest file type for AI-assisted architecture work. This is not a Copilot limitation — it affects every AI coding platform equally.
+
+### The Problem Is Structural
+
+**No Tree-sitter grammar exists.** Copilot, Cursor, Windsurf, and Claude Code all rely on Tree-sitter to parse source code into ASTs. For Java, Python, and 170+ languages, Tree-sitter identifies function boundaries and scope blocks, enabling semantic chunking. Two experimental PlantUML grammars exist (`lyndsysimon/tree-sitter-plantuml`, `Decodetalkers/tree_sitter_plantuml`), but both are abandoned. The Tree-sitter organization is not accepting new language submissions. Result: every AI platform treats `.puml` files as generic, unstructured text.
+
+**The 60-line sliding window isolates actors from interactions.** Without an AST, Copilot falls back to a `FixedWindowJaccardMatcher` — a 60-line sliding window. In a typical sequence diagram, participant declarations (the nouns) are on lines 1-20, while runtime interactions (the verbs) are on lines 70-150. A 60-line chunk physically separates the actors from what they do. The model receives interactions without knowing which services are involved.
+
+**Embedding models fail on symbolic syntax.** Embedding models are trained on natural language and structured code. PlantUML's symbolic operators (`-->`, `-[#red]>o`, `->>`, `activate`, `alt`) are noise in the embedding space. A natural language query like "which services does svc-check-in call?" has low cosine similarity against `svc_check_in -> svc_reservations : GET /reservations/{id}` — the literal tokens barely overlap.
+
+**`!include` directives are opaque.** C4 model diagrams use `!include` to import macro libraries that define `Container()`, `System()`, and `Rel()`. No AI platform resolves these references — the LLM sees undefined function calls with no semantic meaning. Azure AI Search has the same limitation: blob indexers process files in isolation with no file system context.
+
+### The Solution Is Always the Same
+
+Regardless of which AI platform is used, the fix is identical: **convert opaque PlantUML syntax into natural language text that embedding models can understand.** The specific mechanism varies (CI-generated companion Markdown, structured comments embedded in the PUML file, MCP server queries), but the principle is universal — you must add human-readable text that describes what the diagram contains.
+
+The most effective approaches, in order:
+
+1. **CI/CD companion Markdown generation** — A script parses `.puml` files and generates structured summaries (participants, API calls, dependencies) as `.summary.md` files that the AI indexes natively. This is the highest-impact automated approach.
+
+2. **Structured embedded comments** — Adding a natural-language comment block at the top of each PUML file (e.g., `' @architecture-summary / This diagram shows the check-in flow...`) improves 60-line window retrieval by placing searchable text adjacent to participant declarations.
+
+3. **MCP servers** — PlantUML MCP servers (Infobip, @brainstack) enable diagram generation and validation, complementing retrieval but not replacing it.
+
+4. **Scoped instructions** — Teaching the LLM how to interpret PUML syntax via `.instructions.md` files helps reasoning but cannot fix the underlying retrieval problem.
+
+PlantUML alone does not justify provisioning custom search infrastructure. The companion Markdown approach (zero infrastructure, CI/CD only) is sufficient for most teams. See the [Implementation Sequencing](#implementation-sequencing) for the phased plan.
+
+---
+
 ## Strategy 1: File Decomposition
 
 ### Principle
