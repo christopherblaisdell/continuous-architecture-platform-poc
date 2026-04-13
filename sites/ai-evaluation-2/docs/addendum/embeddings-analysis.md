@@ -1,3 +1,6 @@
+<!-- CONFLUENCE-PUBLISH -->
+<!-- CONFLUENCE-URL: -->
+
 # Self-Managed Embeddings vs Platform-Native Indexing
 
 Deep research analysis comparing custom RAG pipelines against IDE-native workspace indexing for enterprise architecture repositories.

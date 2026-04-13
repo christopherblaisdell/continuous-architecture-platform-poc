@@ -1,3 +1,6 @@
+<!-- CONFLUENCE-PUBLISH -->
+<!-- CONFLUENCE-URL: -->
+
 # Fact-Check and Verification Report
 
 Deep research verification of all factual claims, pricing matrices, competitive comparisons, and architectural assumptions in the AI Toolchain Evaluation site.
