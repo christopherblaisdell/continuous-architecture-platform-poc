@@ -3,11 +3,14 @@
 
 # AI Customization as a Living Practice: Extensibility, Governance, and Ownership
 
+!!! note "Context for This Analysis"
+    This page presents observations and analysis from the architecture practice pilot. The pilot team ran real architecture scenarios against a synthetic workspace, maintaining AI customizations throughout the evaluation. The findings below reflect what that experience revealed about customization extensibility and governance. The team presenting this evaluation does not own the toolchain decision — this analysis is offered as input for the decision-makers to weigh alongside other factors they may consider.
+
 ## The Core Premise: AI Customizations Are Never "Done"
 
 AI customizations — instruction files, custom agent definitions, skills, scoped rules — are not a deliverable with a completion date. They are **living artifacts** that grow and evolve continuously with the practice they serve. Every architecture decision record, every new service boundary, every revised data ownership rule, every new workflow convention creates a potential gap between what the AI knows and what the practice needs.
 
-This is not a defect. It is the nature of domain knowledge itself. Architecture practices are not static — they evolve through daily work, through solution designs, through lessons learned in production. The AI customization layer must evolve at the same pace or it becomes a liability rather than an asset.
+This is not a defect. It is the nature of domain knowledge itself. Architecture practices are not static — they evolve through daily work, through solution designs, through lessons learned in production. If the AI customization layer does not evolve at the same pace, it risks becoming a liability rather than an asset.
 
 The NovaTrek pilot provides direct evidence:
 
@@ -22,32 +25,32 @@ The NovaTrek pilot provides direct evidence:
 
 Every one of those updates represents a moment where the AI's behavior diverged from the practice's needs — and was corrected immediately by the practicing architect. In a system where that correction requires a retraining cycle, a ticket to another team, or a multi-week pipeline, those corrections either do not happen or happen too late to matter.
 
-## The Extensibility Requirement
+## Extensibility Considerations
 
-For AI customizations to function as living practice artifacts, the customization system must satisfy four requirements:
+For AI customizations to function as living practice artifacts, the pilot experience suggests the customization system benefits from four properties:
 
-### 1. Practitioners Must Be Able to Modify Customizations Directly
+### 1. Practitioners Can Modify Customizations Directly
 
 The people who use the AI daily are the people who discover its gaps. If they cannot modify the customization layer themselves — if they must request changes through a separate team, submit tickets, wait for retraining cycles — then the feedback loop that keeps customizations current is broken.
 
-This is not a theoretical concern. It is the central finding from the McKinsey research on developer productivity with generative AI: "While off-the-shelf generative AI-based tools know a lot about coding, they won't know the specific needs of a given project and organization. Such knowledge is vital... it will be up to software developers to provide these tools with the context." The same principle applies to architecture practices: domain context must flow from practitioners to the AI system without organizational barriers.
+This concern is supported by McKinsey's research on developer productivity with generative AI: "While off-the-shelf generative AI-based tools know a lot about coding, they won't know the specific needs of a given project and organization. Such knowledge is vital... it will be up to software developers to provide these tools with the context." The same principle applies to architecture practices: domain context must flow from practitioners to the AI system without organizational barriers.
 
-### 2. Changes Must Be Reviewable and Auditable
+### 2. Changes Are Reviewable and Auditable
 
-Extensibility without governance is chaos. When any practitioner can modify the AI's behavior, the practice needs mechanisms to ensure quality, consistency, and accountability. The governance mechanism must:
+Extensibility without governance creates risk. When any practitioner can modify the AI's behavior, the practice benefits from mechanisms that ensure quality, consistency, and accountability. Effective governance mechanisms would:
 
 - Make every change visible to the team (transparency)
 - Allow team members to review and challenge changes (peer review)
 - Record what changed, when, and why (auditability)
 - Enable rollback if a change degrades behavior (reversibility)
 
-### 3. New Practitioners Must Inherit the Full Customization Layer
+### 3. New Practitioners Inherit the Full Customization Layer
 
-When a new architect joins the practice, they should receive the entire accumulated customization — every convention, every workflow rule, every domain boundary — without configuration effort. The customization system must be distributable by default, not something that must be manually reconstructed per person.
+When a new architect joins the practice, ideally they would receive the entire accumulated customization — every convention, every workflow rule, every domain boundary — without configuration effort. A customization system that is distributable by default avoids the problem of manually reconstructing configuration per person.
 
-### 4. Customizations Must Compose Without Conflict
+### 4. Customizations Compose Without Conflict
 
-As the practice scales, multiple architects will contribute customizations across different domains. The system must support composition — global rules plus domain-specific overrides plus file-type-specific rules — without requiring a central coordinator to resolve conflicts manually.
+As the practice scales, multiple architects will likely contribute customizations across different domains. A system that supports composition — global rules plus domain-specific overrides plus file-type-specific rules — avoids the need for a central coordinator to resolve conflicts manually.
 
 ## The Non-Extensible Counterfactual: What Happens When Architects Cannot Control Their Own Customizations
 
@@ -65,7 +68,7 @@ Architect discovers gap → writes ticket describing gap → ML team interprets 
 
 Each step in this chain introduces latency and information loss. The architect who discovered the gap understands it precisely — they can describe the exact scenario, the exact wrong output, and the exact correct behavior. By the time this understanding passes through a ticket, is interpreted by someone who does not practice architecture, is translated into training data, and is embedded in model weights, precision is lost.
 
-This is not a process efficiency problem that better ticketing can solve. It is a **structural problem** — the knowledge holders (architects) are separated from the customization mechanism (model weights or platform configuration) by an organizational boundary that cannot be eliminated without collapsing the two teams into one.
+This is likely not a process efficiency problem that better ticketing can solve. It appears to be a **structural problem** — the knowledge holders (architects) are separated from the customization mechanism (model weights or platform configuration) by an organizational boundary that cannot be eliminated without collapsing the two teams into one.
 
 ### Consequence 2: The Decay Curve Accelerates
 
@@ -78,7 +81,7 @@ DD-06 documents the predictable decay curve of a custom fine-tuned model without
 | Months 7-12 | Stale | Retraining happens if budgeted, but training data curation is slow, ML team is context-switching. Retrained model fixes some gaps, introduces others |
 | Month 12+ | Abandoned | Architects no longer trust the custom model's domain knowledge. They either abandon it or add manual corrections that negate the productivity benefit |
 
-When the architecture practice has no direct control over the customization layer, this decay curve is the default trajectory. The only force that can counteract decay is continuous maintenance — and continuous maintenance requires that the maintainers understand the domain. An ML team that is organizationally separate from the architecture practice cannot sustain the domain understanding required to keep customizations current.
+When the architecture practice has no direct control over the customization layer, this decay curve is the default trajectory. The only force that can counteract decay is continuous maintenance — and continuous maintenance requires that the maintainers understand the domain. An ML team that is organizationally separate from the architecture practice may struggle to sustain the domain understanding required to keep customizations current.
 
 ### Consequence 3: Innovation Is Centrally Bottlenecked
 
@@ -102,7 +105,7 @@ This is a well-understood anti-pattern in software engineering. Conway's Law sta
 
 The InnerSource Commons documents this pattern through the Trusted Committer model: when cross-team contributions are required, projects must establish explicit mechanisms for recognizing contributors, formalizing their access, and maintaining the relationship between maintainers and contributors. Without these mechanisms, the organizational boundary becomes a wall that blocks the feedback loop required for living artifacts.
 
-The question is not whether customizations should be governed — they must be. The question is **where the governance boundary sits**: between the organization and the customization system (so practitioners govern directly via standard engineering workflows) or between the practitioners and a controlling team (so practitioners govern indirectly through tickets and requests).
+The question is likely not whether customizations should be governed — but rather **where the governance boundary sits**: between the organization and the customization system (so practitioners govern directly via standard engineering workflows) or between the practitioners and a controlling team (so practitioners govern indirectly through tickets and requests).
 
 ## Options Assessment
 
@@ -216,11 +219,11 @@ This model draws from three established practices:
 
 3. **Community of Practice model** (Wenger, 1998): Knowledge management through a community of practitioners who share a domain, a practice, and a set of shared resources. AI customization files become the shared resource that the community maintains together.
 
-## Recommendation: Option G (Hybrid Inner Source Model)
+## Suggested Direction: Option G (Hybrid Inner Source Model)
 
-**Option G is recommended** because it solves the organizational design problem that Options E and F each leave partially unresolved.
+Based on the pilot experience and industry patterns reviewed, **the analysis points toward Option G** as the approach most likely to address the organizational design problem that Options E and F each leave partially unresolved. The team presenting this evaluation recognizes that decision-makers may weigh additional factors — organizational constraints, existing team structures, strategic priorities — that this analysis does not fully account for.
 
-### Why Not Option E (Dedicated Customization Team)
+### Considerations Against Option E (Dedicated Customization Team)
 
 Option E creates an organizational boundary between domain experts and the customization mechanism. This boundary is the root cause of:
 
@@ -229,11 +232,11 @@ Option E creates an organizational boundary between domain experts and the custo
 - Innovation bottleneck (every customization idea requires a ticket)
 - Institutional knowledge fragmentation (practice conventions and AI behavior are maintained separately)
 
-These are not risks to mitigate — they are structural properties of the organizational design. No amount of process improvement can eliminate them while the boundary exists.
+These appear to be structural properties of the organizational design rather than risks that can be mitigated through process improvement alone.
 
 The strongest version of this argument comes from the pilot evidence itself: the NovaTrek `copilot-instructions.md` was updated dozens of times during the evaluation. If each update had required a ticket to a separate team, the pilot would have produced significantly fewer than 4 solution designs, 14 ADRs, and 139 diagrams — because the architect would have been blocked waiting for customization updates instead of producing architectural output.
 
-### Why Not Option F (Practice Owns Everything)
+### Considerations Against Option F (Practice Owns Everything)
 
 Option F correctly places behavioral customization in the hands of domain experts but ignores the reality that some AI capabilities require specialized skills the architecture practice does not have:
 
@@ -242,11 +245,11 @@ Option F correctly places behavioral customization in the hands of domain expert
 - Cost optimization across models requires usage analytics infrastructure
 - Compliance and audit controls require enterprise security integration
 
-Option F works perfectly for the declarative customization layer — and that is where the architecture practice should have full ownership. But it does not scale to the full AI stack.
+Option F works well for the declarative customization layer. However, it may not scale to the full AI stack without specialized support.
 
-### Why Option G
+### Why the Analysis Points Toward Option G
 
-Option G resolves the tension by establishing a clear separation of concerns:
+Option G attempts to resolve the tension by establishing a clear separation of concerns:
 
 | Layer | Owner | Artifacts | Governance |
 |-------|-------|-----------|------------|
@@ -256,19 +259,19 @@ Option G resolves the tension by establishing a clear separation of concerns:
 
 The behavioral customization layer — where domain knowledge matters most and where change velocity matters most — is fully controlled by the architecture practice. The infrastructure layer — where ML and platform engineering expertise matters most — is controlled by the team with those skills. Neither team blocks the other.
 
-### Defending the Recommendation
+### Supporting Evidence
 
-This recommendation is defensible on three grounds:
+This suggested direction is supported by three lines of evidence:
 
 **1. Empirical evidence from the pilot.** The NovaTrek pilot demonstrates that architect-maintained declarative customizations produce high-quality output. 4 solution designs, 14 ADRs, 139 diagrams, and a live documentation portal were produced under a customization layer that the practicing architect maintained directly. No separate customization team was involved. The customization layer grew organically from ~200 lines to 1,172 lines, with every addition responding to a real gap discovered in daily work.
 
 **2. Alignment with industry-validated patterns.** Option G draws from InnerSource (Trusted Committer model for distributed contribution governance), Infrastructure as Code (declarative configuration with version control), and Community of Practice (knowledge management through practitioner community). Each of these patterns has been validated at enterprise scale across hundreds of organizations documented by the InnerSource Commons, the DevOps Research and Assessment (DORA) program, and Wenger's community of practice research.
 
-**3. Structural analysis of the organizational design problem.** The recommendation follows directly from Conway's Law: placing behavioral customization ownership with the architecture practice ensures that the customization system mirrors the practice's communication structure and workflow cadence. Any other ownership model creates an organizational boundary that degrades change velocity, fragments institutional knowledge, and bottlenecks innovation.
+**3. Structural analysis of the organizational design problem.** Conway's Law suggests that placing behavioral customization ownership with the architecture practice would align the customization system with the practice's communication structure and workflow cadence. Other ownership models risk creating an organizational boundary that could degrade change velocity, fragment institutional knowledge, and bottleneck innovation.
 
 ### Implementation Prerequisites
 
-Option G requires that the selected AI platform support composable declarative customization — specifically:
+Option G would require that the selected AI platform support composable declarative customization. For reference, here is how GitHub Copilot (Option D) maps to these requirements:
 
 | Requirement | GitHub Copilot (Option D) |
 |-------------|--------------------------|
@@ -283,9 +286,9 @@ Option G requires that the selected AI platform support composable declarative c
 
 Option D (Copilot + BYOK) satisfies every prerequisite. Option G is designed to operate on top of Option D as the governance and ownership model for the customization layer.
 
-## Governance Roadmap
+## Suggested Governance Roadmap
 
-Building on the governance roadmap established in DD-05, the following phases are recommended for deploying Option G:
+Building on the governance roadmap established in DD-05, the following phases illustrate how Option G could be deployed incrementally:
 
 | Phase | Milestone | Activities | Success Criteria |
 |-------|-----------|------------|-----------------|
@@ -301,7 +304,7 @@ Building on the governance roadmap established in DD-05, the following phases ar
 | Decision Page | Relationship |
 |---------------|-------------|
 | [DD-05: Model Selection Autonomy](../decisions/dd-05-model-selection-autonomy.md) | DD-05 establishes guided freedom for model selection and introduces the declarative customization taxonomy. This page extends DD-05's governance roadmap with the inner source ownership model. |
-| [DD-06: IDE Client Selection](../decisions/dd-06-ide-client-selection.md) | DD-06 identifies the Frozen Customization Problem and the customization ownership question. This page provides the answer: the hybrid inner source model (Option G) that keeps behavioral customization in practitioner hands. |
-| [Option D — Hybrid Architecture](option-d-hybrid-architecture.md) | Option D defines the deployment topology (Copilot + BYOK). This page defines the governance topology (inner source + Trusted Committers). Together, they describe the complete model: what platform, what models, who customizes, and how changes flow. |
-| [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) | The rollout roadmap defines Phase 3 (customization setup) and Phase 4 (scaling). This page provides the governance framework that governs how customizations are managed at each phase. |
-| [Build vs Leverage](build-vs-leverage.md) | Build vs Leverage argues against building custom infrastructure when native capabilities exist. This page extends the argument: even the governance model should leverage existing engineering workflows (Git, PRs, code review) rather than building bespoke customization management processes. |
+| [DD-06: IDE Client Selection](../decisions/dd-06-ide-client-selection.md) | DD-06 identifies the Frozen Customization Problem and the customization ownership question. This page explores a potential answer: the hybrid inner source model (Option G) that would keep behavioral customization in practitioner hands. |
+| [Option D — Hybrid Architecture](option-d-hybrid-architecture.md) | Option D defines the deployment topology (Copilot + BYOK). This page explores a complementary governance topology (inner source + Trusted Committers). Together, they would describe the complete model: what platform, what models, who customizes, and how changes flow. |
+| [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) | The rollout roadmap defines Phase 3 (customization setup) and Phase 4 (scaling). This page suggests a governance framework for how customizations could be managed at each phase. |
+| [Build vs Leverage](build-vs-leverage.md) | Build vs Leverage argues against building custom infrastructure when native capabilities exist. This page extends the argument: even the governance model could leverage existing engineering workflows (Git, PRs, code review) rather than building bespoke customization management processes. |
