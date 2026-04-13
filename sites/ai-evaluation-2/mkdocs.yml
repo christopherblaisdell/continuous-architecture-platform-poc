@@ -75,8 +75,8 @@ nav:
     - "Customization Portability: Option D + OpenSpec": evidence/customization-lock-in-foundry-vs-portable.md
   - Reference:
     - Glossary: reference/glossary.md
-    - Adversarial Validation: reference/adversarial-validation-copilot-vs-rag.md
   - Addendum:
+    - "Technical Review: Claim Validation": reference/adversarial-validation-copilot-vs-rag.md
     - Fact-Check Report: addendum/fact-check-report.md
     - Embeddings Analysis: addendum/embeddings-analysis.md
     - "Foundry vs IDE Agents": addendum/azure-ai-foundry-vs-ide-agents.md
