@@ -7,6 +7,33 @@
 
 ---
 
+## Two Independent Cost Advantages
+
+Option D delivers two separate, compounding cost advantages over Option C. Each alone justifies the Copilot subscription; together they make the financial case decisive.
+
+### Advantage 1: Intent-Based Billing (208x Per-Session Savings)
+
+Copilot charges per **user prompt**, not per token. In a typical Agent Mode session, the architect types 4-6 prompts — but the agent autonomously executes dozens of tool calls, file reads, terminal commands, and sub-agent dispatches. All of that autonomous work is absorbed by GitHub's infrastructure and not billed.
+
+Under token-based billing (Option B or Option C), every token in every tool call is metered. A single architecture session using Claude Opus 4.6 through OpenRouter costs approximately $100 in tokens. The same session through Copilot costs $0.48 (4 prompts x 3x multiplier x $0.04).
+
+| Billing Model | Cost Per Session | Ratio |
+|--------------|-----------------|-------|
+| Token-based (OpenRouter/Foundry) | ~$100 | 208x |
+| Intent-based (Copilot) | $0.48 | 1x |
+
+This 208x difference was measured during the Phase 1 evaluation using identical scenarios on the same model (Claude Opus 4.6). The gap exists because intent-based billing decouples the architect's cost from the agent's token consumption — the more autonomous work the agent does, the greater the savings.
+
+See [DD-02: Billing Model](../decisions/dd-02-billing-model.md) for the full analysis.
+
+### Advantage 2: Free Model Tier (80%+ Routine Work at $0)
+
+Copilot's 0x multiplier models handle routine tasks — reformatting, boilerplate, simple Q&A — at zero cost. Option C routes all of this through the Foundry endpoint at per-token cost.
+
+These two advantages stack: intent-based billing makes **every** session cheaper, and free models make **routine** sessions completely free.
+
+---
+
 ## The Objection
 
 > *"Why would we pay for Copilot AND the custom model? That's two costs instead of one."*
