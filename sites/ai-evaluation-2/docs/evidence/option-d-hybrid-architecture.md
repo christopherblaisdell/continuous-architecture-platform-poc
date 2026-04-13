@@ -24,22 +24,12 @@ The key insight: Copilot is not just a model -- it is an **orchestration platfor
 
 ### Architecture
 
-```
-Architect (VS Code)
-    |
-    |  selects model from picker
-    v
-GitHub Copilot Client (VS Code extension)
-    |
-    |  orchestrates: tool calls, file reads,
-    |  instruction files, workspace context
-    |
-    +--- Built-in model route ---> GitHub-hosted Claude/GPT/Gemini
-    |                              (standard premium request billing)
-    |
-    +--- BYOK model route -------> Azure AI Foundry endpoint
-                                   (per-token via enterprise API key)
-```
+The architect selects a model from the picker in VS Code. The Copilot client orchestrates tool calls, file reads, instruction files, and workspace context, then routes the request to either a built-in model or the BYOK endpoint:
+
+| Route | Destination | Billing |
+|-------|------------|---------|
+| Built-in model | GitHub-hosted Claude, GPT, Gemini | Standard premium request billing |
+| BYOK model | Azure AI Foundry endpoint | Per-token via enterprise API key |
 
 ### Enterprise Admin Setup (Verified)
 
