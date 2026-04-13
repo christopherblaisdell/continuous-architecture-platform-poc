@@ -355,7 +355,7 @@ When the Foundry team has a domain-specialized model ready for architecture work
 
 | Step | Action | Owner | Effort |
 |------|--------|-------|--------|
-| 1 | Deploy fine-tuned model to Azure AI Foundry endpoint | Foundry team (Troy/Gabriel) | Already in progress |
+| 1 | Deploy fine-tuned model to Azure AI Foundry endpoint | Foundry team | Already in progress |
 | 2 | Register Foundry endpoint in GitHub Copilot admin settings (Enterprise/Business) | GitHub admin | ~15 minutes (one-time) |
 | 3 | Architects select custom model from model picker for domain-specialized tasks | Each architect | Zero — appears automatically |
 | 4 | Establish usage guidance: when to use custom model vs built-in Opus vs 0x models | Architecture practice lead | 1-2 hours (document norms) |

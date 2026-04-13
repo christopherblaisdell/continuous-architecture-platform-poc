@@ -25,7 +25,7 @@ Key capabilities (from [Microsoft's documentation](https://learn.microsoft.com/e
 ## Production Readiness
 
 !!! warning "Public Preview — No SLA"
-    As of April 2026, Foundry IQ is in **public preview** — and to his credit, Troy was upfront about this, noting the preview status when describing SharePoint access control synchronization.
+    As of April 2026, Foundry IQ is in **public preview** — and to their credit, the Foundry team was upfront about this, noting the preview status when describing SharePoint access control synchronization.
 
     Microsoft's documentation states: *"This preview is provided without a service-level agreement, and we don't recommend it for production workloads. Certain features might not be supported or might have constrained capabilities."*
 
@@ -100,11 +100,11 @@ The total dead-end risk is a **reformatting cost** — not a data loss or rebuil
 This is not a trivial limitation. It means:
 
 - **Architects would have a split workflow.** Copilot handles workspace-scoped generation (writing ADRs, analyzing specs, producing diagrams). Foundry IQ handles cross-repository retrieval ("which solutions touch step-up auth and PCI?"). These are separate systems with separate query experiences.
-- **Troy's "invest in knowledge once" promise has a gap.** Content indexed in Foundry IQ does not enhance Copilot's workspace context. Content indexed by Copilot is not searchable by Foundry IQ. Each system maintains its own retrieval layer over the same content.
+- **The "invest in knowledge once" promise has a gap.** Content indexed in Foundry IQ does not enhance Copilot's workspace context. Content indexed by Copilot is not searchable by Foundry IQ. Each system maintains its own retrieval layer over the same content.
 
 ### Can MCP Bridge the Gap?
 
-Troy's proposal emphasizes that Foundry IQ exposes an MCP endpoint — and since Copilot consumes MCP servers, this should bridge the interoperability gap. The research shows this is partially true:
+The Foundry team's proposal emphasizes that Foundry IQ exposes an MCP endpoint — and since Copilot consumes MCP servers, this should bridge the interoperability gap. The research shows this is partially true:
 
 **What works:**
 
@@ -129,7 +129,7 @@ NOTE: This auth gap is not Copilot-specific. The `ProjectManagedIdentity` creden
 
 ## The Undefined Workload Problem
 
-Troy's distinction between generation and retrieval workloads is valid — but it surfaces a more fundamental gap: **the team has not defined what retrieval workload it actually needs.**
+The distinction between generation and retrieval workloads is valid — but it surfaces a more fundamental gap: **the team has not defined what retrieval workload it actually needs.**
 
 The number "4,100+ docs" appears in the conversation as the scale of the cross-repository retrieval problem. But before investing in infrastructure to search 4,100 documents, three questions need answers:
 

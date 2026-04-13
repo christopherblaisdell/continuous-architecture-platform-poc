@@ -195,7 +195,7 @@ The steady cadence of announcements (SDK in January 2026, CLI GA in February 202
 
 ### What Is NOT a Risk
 
-- **Model availability in Foundry**: Troy's team is actively building this. The model will exist.
+- **Model availability in Foundry**: The Foundry team is actively building this. The model will exist.
 - **Copilot agent mode capability**: Verified -- sub-agents automatically inherit BYOK configuration, and the full agentic loop works with custom models.
 - **Instruction file and MCP support**: Verified -- both instruction files and MCP are consumed by BYOK models identically to built-in models.
 - **Premium request consumption**: Verified -- BYOK requests do not count against Copilot premium request quotas.
@@ -206,18 +206,18 @@ The steady cadence of announcements (SDK in January 2026, CLI GA in February 202
 
 This page deliberately frames the recommendation as **Option D (Hybrid)** rather than "Option A absorbs Option C" for three reasons:
 
-1. **Credit, not conflict**: Troy's Foundry investment is a valuable component of Option D, not a redundant effort that gets absorbed. The custom model is what makes Option D better than Option A alone.
+1. **Credit, not conflict**: The Foundry team's investment is a valuable component of Option D, not a redundant effort that gets absorbed. The custom model is what makes Option D better than Option A alone.
 
 2. **Complementary strengths**: Option A provides the orchestration platform and frontier models. Option C provides the domain-specialized model. Neither is complete without the other. Option D is genuinely new -- not A with C bolted on.
 
-3. **Shared ownership**: Option D is the team's recommendation, not one person's victory over another. Matt and Greg see collaboration. Troy and James see their work validated. Architecture practice gets the best available tooling.
+3. **Shared ownership**: Option D is the team's recommendation, not one group's victory over another. The architecture practice and the Foundry team both see their work validated. Everyone gets the best available tooling.
 
 ## Integration Path
 
 See [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) for the phased deployment plan. Option D adds a new phase after the initial Copilot rollout:
 
 1. **Phase 0-2**: Roll out Copilot with built-in models (immediate value)
-2. **Phase 3**: Troy's team completes Foundry model training and deployment
+2. **Phase 3**: The Foundry team completes model training and deployment
 3. **Phase 4**: Enterprise admin registers Foundry endpoint via BYOK
 4. **Phase 5**: Architecture practice tests BYOK model in agent mode, establishes guidance for when to use custom vs built-in models
 5. **Steady state**: Architects choose the right model per task from the unified picker

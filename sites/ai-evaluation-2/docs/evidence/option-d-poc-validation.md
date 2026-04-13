@@ -147,7 +147,7 @@ This POC validates the Azure-side of Option D:
 
 2. **Cost is negligible** — Pay-per-token with zero idle cost. The $39/month Copilot subscription provides unlimited 0x model access for routine tasks, and the custom model is only invoked (and billed) when an architect explicitly selects it.
 
-3. **Swapping models is parameterized** — When Troy's team has a fine-tuned model ready, changing the Bicep parameter from `gpt-4o` to the fine-tuned model name is the only infrastructure change needed. Same endpoint URL, same API key, same BYOK registration.
+3. **Swapping models is parameterized** — When the Foundry team has a fine-tuned model ready, changing the Bicep parameter from `gpt-4o` to the fine-tuned model name is the only infrastructure change needed. Same endpoint URL, same API key, same BYOK registration.
 
 4. **Registration is an admin action, not engineering** — The BYOK registration is a 5-field web form. No code, no pipeline, no deployment. An org admin does it once, and every architect gets the model in their picker immediately.
 

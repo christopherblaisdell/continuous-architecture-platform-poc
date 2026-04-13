@@ -244,7 +244,7 @@ This raises an unavoidable question: **who is responsible for the ongoing curati
 |----------------|---------------------|---------------------|
 | **Dedicated ML team** | Must hire or allocate engineers with fine-tuning expertise, MLOps skills, and model evaluation capabilities | The ML team does not practice architecture. They cannot judge whether training data is correct, whether model output quality is acceptable, or whether a domain rule has changed. They depend entirely on architects to tell them what to train — creating a bottleneck. |
 | **Architecture practice (current team)** | Architects maintain the model alongside their architecture work | Architects lack ML engineering skills. Fine-tuning workflows, training data curation, model evaluation, and deployment pipelines are not architecture competencies. |
-| **Hybrid (current approach)** | Troy + Gabriel build the model; architects provide domain knowledge | Knowledge transfer is asynchronous and lossy. Architects describe domain rules in tickets; the ML team interprets and encodes them. Misinterpretations are caught only after retraining and testing. |
+| **Hybrid (current approach)** | The ML team builds the model; architects provide domain knowledge | Knowledge transfer is asynchronous and lossy. Architects describe domain rules in tickets; the ML team interprets and encodes them. Misinterpretations are caught only after retraining and testing. |
 
 None of these models are self-sustaining. Each creates a dependency chain where the people who understand the domain (architects) are separated from the mechanism that encodes it (model weights).
 
