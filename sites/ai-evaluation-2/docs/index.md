@@ -3,114 +3,68 @@
 
 # AI Toolchain Evaluation
 
-## Purpose
+## Recommendation: Platform + Practice
 
-The Solution Architecture practice is adopting AI-assisted workflows for architecture analysis, solution design, and documentation. This evaluation compares four platform options to determine which best supports architecture work — balancing output quality, cost, operational complexity, and strategic fit.
+Deploy **GitHub Copilot** as the AI platform and integrate the Foundry team's custom model via BYOK — giving architects built-in frontier models, domain-specialized models, and declarative customization in a single tool, with zero custom infrastructure.
 
-### Options Under Evaluation
+![AI Toolchain Evaluation — Weighted Score Comparison](img/scoring-bar-chart.svg)
 
-- **Option A — GitHub Copilot**: SaaS platform with intent-based billing, native workspace indexing, and declarative customization via instruction files. Testable immediately with zero infrastructure. Customizations are portable Markdown; file naming conventions are platform-specific but converging on open standards.
-- **Option B — Roo Code + Kong AI Gateway**: Open-source IDE extension with token-based billing through a self-managed API gateway. Testable with moderate setup, requires API key provisioning and gateway configuration. Fully open-source; all configuration is portable.
-- **Option C — Bespoke Architecture Agent**: Custom-built agent on Azure AI Foundry. Requires weeks of engineering investment before testing can begin. Deep platform lock-in — customizations, knowledge pipelines, and integrations are Azure-specific; migration would mean rebuilding.
-- **Option D — Hybrid (A absorbs C)**: Deploy Copilot (Option A) as the platform, then integrate Option C's custom Foundry model as a BYOK endpoint within it. Architects get built-in models for routine work, frontier models for complex design, and the domain-specialized model for enterprise analysis — all in the same model picker, with no custom IDE infrastructure. Inherits Option A's customization portability; accepts infrastructure lock-in only where Foundry adds unique value.
+| Option | Score | Rank |
+|--------|-------|------|
+| **Option A — GitHub Copilot** | **4.84** | 1st |
+| **Option D — Hybrid (A+C via BYOK)** | **4.40** | 2nd |
+| Option B — Roo Code + Kong | 3.05 | 3rd |
+| Option C — Bespoke Agent | 1.95 | 4th |
 
-### Evaluation Principles
+Option D is recommended over Option A alone because it preserves the Foundry team's model investment. Copilot provides the platform; the custom model provides domain specialization. The 0.44-point gap between A and D reflects the small operational cost of maintaining one Azure endpoint — not a quality difference.
 
-This evaluation follows a phased approach: test reversible, low-cost options empirically before committing to irreversible, high-cost alternatives. Options A and B can be compared head-to-head using real architecture scenarios. Option C requires significant engineering investment before it can be tested — see [Evaluation Approach](framework/evaluation-approach.md) for why this shapes the evaluation sequence.
+---
 
-### A Cross-Cutting Concern: Platform Lock-In
+## Why This Wins
 
-Any AI toolchain investment creates some degree of vendor dependency. But the *kind* and *severity* of lock-in varies dramatically between options — and this difference may be worth considering early, before the organization commits engineering effort to a particular platform.
+![AI Toolchain Evaluation — Scoring Heat Map](img/scoring-heatmap.svg)
 
-AI toolchain investments can be decomposed into three layers, each with a different portability posture:
+The heatmap tells the story: Option A (Copilot) is green across every row. Option C (Bespoke Agent) shows four critical failures (red) — Time to Value, Operational Complexity, Vendor Lock-in, and Cost Predictability. Option D inherits A's strengths while adding the custom model capability.
 
-| Layer | What It Contains | Portability |
-|-------|-----------------|-------------|
-| **Content** | Architecture artifacts — ADRs, specs, diagrams, solution designs | Always portable (files in git) |
-| **Behavioral customization** | Instruction files, skills, agent definitions, domain rules | Portable when stored as Markdown files; locked in when embedded in platform configuration |
-| **Retrieval infrastructure** | Knowledge bases, search indexes, scoring profiles, embedding pipelines | Platform-specific by nature — switching means rebuilding, not losing data |
+Three factors drove the result:
 
-The options differ most sharply at the customization layer. Options A, B, and D store customizations as version-controlled Markdown files that architects own and can transfer between platforms. Option C embeds customizations into Azure AI Foundry's control plane — prompt templates, grounding configurations, and knowledge base bindings that have no portable representation outside Azure.
+- **$39/month vs months of engineering.** Copilot is a managed SaaS product. The bespoke agent requires building and maintaining a custom retrieval pipeline, knowledge base, and IDE integration. The architecture practice should be doing architecture, not platform engineering.
+- **Customizations stay portable.** Instruction files, skills, and agent definitions are version-controlled Markdown that architects own and can transfer between platforms. The bespoke agent embeds customizations in Azure Foundry's control plane — switching means rebuilding.
+- **Same-day value.** The evaluation pilot produced 4 solution designs, 14 ADRs, and 139 sequence diagrams using Copilot with declarative configuration. No infrastructure was provisioned. No engineering sprints were needed.
 
-This distinction matters because customizations are where practice-specific knowledge accumulates. If that knowledge is portable, the organization retains flexibility to adopt better tools as the market evolves. If it is locked into platform infrastructure, switching requires not just re-tooling but rebuilding.
+---
 
-The evaluation scores this concern as [EF-11: Vendor Lock-in Risk](framework/evaluation-methodology.md#ef-11-vendor-lock-in-risk-8) (8% weight). For the detailed layer-by-layer analysis and remediation architecture, see [Customization Portability: Option D + OpenSpec](evidence/customization-lock-in-foundry-vs-portable.md).
-
-### The Architecture Practice Pilot
-
-Rather than evaluating options theoretically, this evaluation is grounded in a working pilot. A solution architect configured GitHub Copilot (Option A) with declarative instruction files, scoped rules, and mock enterprise tool integrations — then executed real architecture scenarios against a synthetic 19-microservice domain. The pilot produced 4 complete solution designs, 14 architecture decision records, 139 generated sequence diagrams, and a live documentation portal. All configuration is version-controlled markdown — zero custom engineering, zero infrastructure. The pilot's outputs and configuration serve as the primary evidence base for this evaluation.
-
-### At a Glance
+## Factor Profile
 
 ![Factor Profile Comparison — radar chart showing each option's score across all 13 evaluation factors](img/scoring-radar.svg)
 
-Option A (blue) dominates the outer ring across nearly every factor. Option D (amber) tracks close behind, inheriting A's strengths with a small cost premium for the BYOK custom model. Option C (purple) collapses inward with four critical failures. The evaluation recommends **Option D (Hybrid)** — deploy Copilot as the platform and integrate the Foundry model via BYOK, preserving both investments. See [Scoring Results](framework/scoring-results.md) for the full breakdown and [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) for the BYOK integration analysis.
+Option A (blue) dominates the outer ring across nearly every factor. Option D (amber) tracks close behind. Option C (purple) collapses inward. See [Scoring Results](framework/scoring-results.md) for the full breakdown with sensitivity analysis.
 
-## Two-Layer Decision Hierarchy
+---
 
-The diagram below shows the evaluation structure. Layer 1 defines how the architecture practice works with AI. Layer 2 decomposes the toolchain selection into six independent decisions that compose into three discrete platform options — plus Option D, which is a hybrid composition of Options A and C.
+## Platform Lock-In: A Cross-Cutting Concern
 
-![Two-Layer Decision Hierarchy](img/two-layer-hierarchy.svg)
+Any AI toolchain investment creates vendor dependency. But the *kind* of lock-in varies:
 
-## Page Index
+| Layer | What It Contains | Portability |
+|-------|-----------------|-------------|
+| **Content** | Architecture artifacts — ADRs, specs, diagrams | Always portable (files in git) |
+| **Behavioral customization** | Instruction files, skills, agent definitions | Portable when Markdown; locked in when embedded in platform config |
+| **Retrieval infrastructure** | Knowledge bases, search indexes, embedding pipelines | Platform-specific — switching means rebuilding |
 
-### Evaluation Methodology
+Options A, B, and D store customizations as version-controlled Markdown. Option C embeds them in Azure Foundry's control plane. This matters because customizations are where practice-specific knowledge accumulates — if that knowledge is portable, the organization retains flexibility as the market evolves.
 
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [Scoring Results](framework/scoring-results.md) | Weighted scoring matrix with sensitivity analysis | **Which option wins and by how much?** |
-| [Evaluation Approach](framework/evaluation-approach.md) | Phased testing strategy and decision sequencing | Why test A and B before investing in C? |
-| [Evaluation Methodology](framework/evaluation-methodology.md) | 13-factor weighted scoring framework | How do we score and compare the options objectively? |
+See [Customization Portability: Option D + OpenSpec](evidence/customization-lock-in-foundry-vs-portable.md) for the detailed analysis.
 
-### Toolchain Decisions
+---
 
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [DD-01: Context and Configuration](decisions/dd-01-context-configuration.md) | How each option injects domain knowledge | Do we need custom RAG or does native configuration suffice? |
-| [DD-02: Billing Model](decisions/dd-02-billing-model.md) | Per-seat vs per-token vs hybrid billing | Which billing model supports sustained architecture work without perverse incentives? |
-| [DD-03: AI Provider](decisions/dd-03-ai-provider.md) | Provider selection across all options | Which vendor best combines output quality, workflow integration, and governance? |
-| [DD-04: Model Routing](decisions/dd-04-model-routing.md) | Model selection and routing strategy | Does model routing require custom infrastructure or is it built into the platform? |
-| [DD-05: Model Selection Autonomy](decisions/dd-05-model-selection-autonomy.md) | Architect control over model choice | Should architects choose their model, or should it be locked down by a central team? |
-| [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | Which IDE client consumes the custom Foundry model | If we build a custom model, which IDE client should consume it — and does that client preserve architect autonomy? |
+## Where to Go Next
 
-### Comparative Analysis (A, B, C)
-
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [File-Type Handling: A vs C](evidence/filetype-handling-a-vs-c.md) | Side-by-side comparison of how Options A and C handle each architecture file type | Does Azure AI Search chunk architecture files better than Copilot? |
-| [Build vs Leverage](evidence/build-vs-leverage.md) | Custom RAG vs native platform capabilities | When is building a custom pipeline justified vs leveraging what exists? |
-| [Model Quality at Budget](evidence/model-quality-at-budget.md) | Model tier analysis by price point | What model quality does each option actually deliver at its operating cost? |
-| [Platform Landscape](evidence/platform-landscape.md) | Five-platform head-to-head comparison | Why is GitHub Copilot the strongest choice among all AI coding platforms? |
-
-### Option A (GitHub Copilot)
-
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [File-Type Chunking Strategy](framework/filetype-chunking-strategy.md) | Per-file-type optimization plan for Copilot context delivery | How do we ensure each architecture artifact type is chunked and retrieved correctly? |
-| [Copilot Rollout Roadmap](framework/copilot-rollout-roadmap.md) | Practical deployment plan for the architecture team | How do we actually roll out Copilot and get architecture content into AI? |
-| [Architecture Is Not Just Coding](evidence/architecture-not-just-coding.md) | Evidence that AI coding platforms handle architecture work | Can general-purpose AI coding platforms do architecture, or do we need something bespoke? |
-| [Controlling What Copilot Sees](evidence/context-injection-controls.md) | Context injection pipeline — what controls exist and how to optimize | How does Copilot decide what enters the LLM's context window, and what can we control? |
-
-### Option D (Hybrid Architecture)
-
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) | BYOK integration analysis with feature compatibility and risk assessment | Can the Foundry model run inside Copilot via BYOK, and what are the limitations? |
-| [Option D POC: BYOK Endpoint Validation](evidence/option-d-poc-validation.md) | Live proof that Azure OpenAI deploys in minutes via Bicep IaC, scales to zero, and matches BYOK API format | Does the Azure-side infrastructure actually work, and how hard is it to set up? |
-| [Cost Offset Analysis](evidence/cost-offset-hybrid-subsidy.md) | Financial case for 0x models subsidizing the Foundry investment | How much does Copilot's free model tier reduce the net cost of maintaining a custom model? |
-| [DD-06: IDE Client Selection](decisions/dd-06-ide-client-selection.md) | IDE client comparison for consuming a custom Foundry model | Which IDE client should consume the custom model — and what are the frozen customization risks? |
-| [Customization Extensibility and Governance](evidence/customization-extensibility-governance.md) | Inner source governance model for AI customization ownership and evolution | Who owns AI customizations, how do they evolve, and what happens if architects cannot control them? |
-| [Customization Portability: Option D + OpenSpec](evidence/customization-lock-in-foundry-vs-portable.md) | How Option D, living practice customization, and OpenSpec neutralize Foundry lock-in across four layers | What happens to Foundry customizations if you switch platforms — and how does Option D make the risk acceptable? |
-
-### Option C (Foundry IQ Integration)
-
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [What Does Foundry IQ Actually Require?](evidence/foundry-iq-comparison.md) | Operational requirements for a Foundry IQ-based agent | Is Foundry IQ a turnkey product or a build-it-yourself platform? |
-
-### Appendix
-
-| Page | Purpose | Key Question Answered |
-|------|---------|----------------------|
-| [Deep Research Reports](research/index.md) | Raw deep research results across 8 research rounds | What did the AI find when researching specific technical questions? |
-| [AI Glossary](reference/glossary.md) | Terminology definitions for the evaluation | What do terms like "agentic retrieval" and "integrated vectorization" mean? |
+| Interest | Start Here |
+|----------|------------|
+| **The numbers** | [Scoring Results](framework/scoring-results.md) — full matrix with sensitivity analysis |
+| **The recommendation** | [Option D — Hybrid Architecture](evidence/option-d-hybrid-architecture.md) — how BYOK integration works |
+| **The rollout plan** | [Copilot Rollout Roadmap](framework/copilot-rollout-roadmap.md) — phased deployment |
+| **How we scored** | [Evaluation Methodology](framework/evaluation-methodology.md) — 13-factor framework |
+| **All options and evidence** | [Options and Evidence Guide](framework/options-and-evidence-guide.md) — complete page index |
+| **The lock-in story** | [Customization Portability](evidence/customization-lock-in-foundry-vs-portable.md) — layer-by-layer analysis |

@@ -8,7 +8,7 @@
 
 ## The Question
 
-Any AI toolchain investment creates vendor dependency. The [home page](../index.md#a-cross-cutting-concern-platform-lock-in) introduces this as a first-class organizational concern: the kind and severity of lock-in varies dramatically between options, and the difference is worth understanding before committing engineering effort.
+Any AI toolchain investment creates vendor dependency. The [home page](../index.md#platform-lock-in-a-cross-cutting-concern) introduces this as a first-class organizational concern: the kind and severity of lock-in varies dramatically between options, and the difference is worth understanding before committing engineering effort.
 
 This page asks the specific question: **What happens to customization investments made directly in Azure AI Foundry or Foundry IQ if the team later needs to switch platforms?**
 
