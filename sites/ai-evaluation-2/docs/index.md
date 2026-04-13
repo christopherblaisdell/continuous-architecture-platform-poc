@@ -7,7 +7,11 @@
 
 Deploy **GitHub Copilot** as the AI platform and integrate the Foundry team's custom model via BYOK — giving architects built-in frontier models, domain-specialized models, and declarative customization in a single tool, with zero custom infrastructure.
 
-![AI Toolchain Evaluation — Weighted Score Comparison](img/scoring-bar-chart.svg)
+### How Does Our Practice Work with AI?
+
+![Two-Layer Decision Hierarchy](img/two-layer-hierarchy.svg)
+
+**Layer 1 — Practice Strategy** asks which AI engagement model fits architecture work: use a managed platform, build a bespoke agent, or combine both. **Layer 2 — Toolchain Selection** decomposes the platform choice into six independent decisions (context injection, billing, provider, routing, model autonomy, IDE client) that compose into four options.
 
 | Option | Score | Rank |
 |--------|-------|------|
