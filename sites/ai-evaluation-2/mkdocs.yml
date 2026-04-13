@@ -72,6 +72,7 @@ nav:
     - "Option D — Hybrid Architecture": evidence/option-d-hybrid-architecture.md
     - Option D POC Validation: evidence/option-d-poc-validation.md
     - "Cost Offset — Free Tier Subsidy": evidence/cost-offset-hybrid-subsidy.md
+    - "Customization Extensibility and Governance": evidence/customization-extensibility-governance.md
   - Reference:
     - Glossary: reference/glossary.md
     - Adversarial Validation: reference/adversarial-validation-copilot-vs-rag.md
