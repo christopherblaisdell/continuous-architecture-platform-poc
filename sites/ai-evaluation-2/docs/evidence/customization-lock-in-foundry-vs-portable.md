@@ -8,9 +8,9 @@
 
 ## The Question
 
-The existing analysis asks: [What Copilot investment could become a dead end?](foundry-iq-comparison.md#what-copilot-investment-could-become-a-dead-end) The answer is reassuring — mostly a reformatting cost, not a data loss.
+Any AI toolchain investment creates vendor dependency. The [home page](../index.md#a-cross-cutting-concern-platform-lock-in) introduces this as a first-class organizational concern: the kind and severity of lock-in varies dramatically between options, and the difference is worth understanding before committing engineering effort.
 
-But the inverse question has not been asked: **What happens to customization investments made directly in Azure AI Foundry or Foundry IQ if the team later needs to switch platforms?**
+This page asks the specific question: **What happens to customization investments made directly in Azure AI Foundry or Foundry IQ if the team later needs to switch platforms?**
 
 The short answer: it depends on which layer the customization lives in. The longer answer — and the recommended architecture for making the risk acceptable — is what this page covers.
 
@@ -227,7 +227,7 @@ The combination of Option D (model portability) + living practice customization 
 
 ## Relationship to Other Pages
 
-- [What Does Foundry IQ Actually Require?](foundry-iq-comparison.md) — Covers the operational requirements and "buy vs build" framing. That page asks what Copilot investment could become a dead end; this page asks the inverse for Foundry and shows how Option D + OpenSpec makes the answer acceptable.
+- [What Does Foundry IQ Actually Require?](foundry-iq-comparison.md) — Covers the operational requirements and "buy vs build" framing. This page extends that analysis by examining the portability consequences of building on Foundry and showing how Option D + OpenSpec makes the lock-in risk acceptable.
 - [Customization Extensibility and Governance](customization-extensibility-governance.md) — Establishes that AI customizations are living artifacts requiring practitioner control. This page shows why that living practice model is also a lock-in remediation: customizations that architects maintain in portable files cannot be locked into any single platform.
 - [Option D — Hybrid Architecture](option-d-hybrid-architecture.md) — Defines the deployment topology (Copilot + BYOK). This page shows how Option D's multi-model picker eliminates model lock-in as a separate concern from customization lock-in.
 - [Build vs Leverage](build-vs-leverage.md) — Argues against building custom infrastructure when native capabilities exist. This page reinforces the pattern: leverage Foundry where it adds unique value (retrieval), keep everything else portable.
