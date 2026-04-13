@@ -106,10 +106,15 @@ The ability to move an investment from one platform to another. Three dimensions
 
 The cost and friction of switching platforms. Two forms are relevant:
 
-- **Platform lock-in** — proprietary customization formats that require rewriting when switching IDEs. Mitigated by open standards convergence (SKILL.md, AGENTS.md, MCP).
+- **Platform lock-in** — proprietary customization formats that require rewriting when switching IDEs. Mitigated by open standards convergence (SKILL.md, AGENTS.md, MCP) and by cross-platform frameworks like [OpenSpec](#openspec).
 - **Index lock-in** — a search index that is only accessible from one vendor's tools. Mitigated by MCP (which can expose any index to any client) and by the fact that indexes are derived from source content (which is portable).
+- **Infrastructure lock-in** — platform-specific configurations (knowledge base definitions, scoring profiles, RBAC rules, SDK integration code) that have no portable representation and must be rebuilt from scratch when switching platforms. This form of lock-in is qualitatively different from platform lock-in: platform lock-in is a reformatting cost, while infrastructure lock-in is a rebuild cost. See [Customization Lock-In: Foundry vs Portable Standards](../evidence/customization-lock-in-foundry-vs-portable.md).
 
 ## Platforms Referenced
+
+### OpenSpec
+
+An open-source framework (by [Fission AI](https://github.com/Fission-AI/OpenSpec), MIT license) for spec-driven development across AI coding assistants. OpenSpec maintains tool-agnostic specifications in an `openspec/` directory and generates native configuration files (skills, commands, instruction files) for 25+ AI tools — including Copilot, Cursor, Windsurf, Claude Code, Cline, RooCode, Kiro, and Amazon Q. Switching tools or supporting multiple tools simultaneously is handled by re-running `openspec init --tools`. OpenSpec addresses customization portability (the knowledge survives a platform switch) but does not address infrastructure lock-in (knowledge base configurations, scoring profiles, and RBAC still depend on the underlying platform). See [Customization Lock-In: Foundry vs Portable Standards](../evidence/customization-lock-in-foundry-vs-portable.md) for analysis.
 
 ### GitHub Copilot
 

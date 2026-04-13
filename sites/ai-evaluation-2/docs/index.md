@@ -88,6 +88,7 @@ The diagram below shows the evaluation structure. Layer 1 defines how the archit
 | Page | Purpose | Key Question Answered |
 |------|---------|----------------------|
 | [What Does Foundry IQ Actually Require?](evidence/foundry-iq-comparison.md) | Operational requirements for a Foundry IQ-based agent | Is Foundry IQ a turnkey product or a build-it-yourself platform? |
+| [Customization Lock-In: Foundry vs Portable Standards](evidence/customization-lock-in-foundry-vs-portable.md) | Lock-in risk analysis for Foundry-native vs file-based customization, with OpenSpec as cross-platform remediation | What happens to Foundry customizations if you switch platforms? |
 
 ### Appendix
 
