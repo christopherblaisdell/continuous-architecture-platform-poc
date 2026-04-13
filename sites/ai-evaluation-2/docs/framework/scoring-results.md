@@ -1,7 +1,7 @@
 <!-- CONFLUENCE-PUBLISH -->
-<!-- CONFLUENCE-URL: https://nbcu-ot.atlassian.net/wiki/spaces/UPA/pages/2614954009/Scoring+Results -->
+<!-- CONFLUENCE-URL: -->
 
-# Scoring Results
+# AI Toolchain Scoring Results
 
 ## Summary
 
