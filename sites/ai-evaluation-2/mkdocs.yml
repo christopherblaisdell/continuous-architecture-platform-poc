@@ -47,36 +47,37 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Framework:
+  - The Recommendation:
     - Scoring Results: framework/scoring-results.md
-    - Evaluation Approach: framework/evaluation-approach.md
-    - Evaluation Methodology: framework/evaluation-methodology.md
-    - Copilot Rollout Roadmap: framework/copilot-rollout-roadmap.md
-    - File-Type Chunking Strategy: framework/filetype-chunking-strategy.md
-    - Options and Evidence Guide: framework/options-and-evidence-guide.md
-  - Decisions:
-    - DD-01 Context and Configuration: decisions/dd-01-context-configuration.md
-    - DD-02 Billing Model: decisions/dd-02-billing-model.md
-    - DD-03 AI Provider: decisions/dd-03-ai-provider.md
-    - DD-04 Model Routing: decisions/dd-04-model-routing.md
-    - DD-05 Model Selection Autonomy: decisions/dd-05-model-selection-autonomy.md
-    - DD-06 IDE Client Selection: decisions/dd-06-ide-client-selection.md
-  - Evidence:
-    - Platform Landscape: evidence/platform-landscape.md
-    - Model Quality at Budget: evidence/model-quality-at-budget.md
-    - Build vs Leverage: evidence/build-vs-leverage.md
-    - What Does Foundry IQ Actually Require?: evidence/foundry-iq-comparison.md
-    - Controlling What Copilot Sees: evidence/context-injection-controls.md
-    - "File-Type Handling: A vs C": evidence/filetype-handling-a-vs-c.md
-    - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
     - "Option D — Hybrid Architecture": evidence/option-d-hybrid-architecture.md
     - Option D POC Validation: evidence/option-d-poc-validation.md
     - "Cost Offset — Free Tier Subsidy": evidence/cost-offset-hybrid-subsidy.md
-    - "Customization Extensibility and Governance": evidence/customization-extensibility-governance.md
     - "Customization Portability: Option D + OpenSpec": evidence/customization-lock-in-foundry-vs-portable.md
+    - Copilot Rollout Roadmap: framework/copilot-rollout-roadmap.md
+  - How We Got Here:
+    - Evaluation Methodology: framework/evaluation-methodology.md
+    - Evaluation Approach: framework/evaluation-approach.md
+    - Options and Evidence Guide: framework/options-and-evidence-guide.md
+    - Toolchain Decisions:
+      - DD-01 Context and Configuration: decisions/dd-01-context-configuration.md
+      - DD-02 Billing Model: decisions/dd-02-billing-model.md
+      - DD-03 AI Provider: decisions/dd-03-ai-provider.md
+      - DD-04 Model Routing: decisions/dd-04-model-routing.md
+      - DD-05 Model Selection Autonomy: decisions/dd-05-model-selection-autonomy.md
+      - DD-06 IDE Client Selection: decisions/dd-06-ide-client-selection.md
+    - Comparative Evidence:
+      - Platform Landscape: evidence/platform-landscape.md
+      - Model Quality at Budget: evidence/model-quality-at-budget.md
+      - Build vs Leverage: evidence/build-vs-leverage.md
+      - What Does Foundry IQ Actually Require?: evidence/foundry-iq-comparison.md
+      - Controlling What Copilot Sees: evidence/context-injection-controls.md
+      - "File-Type Handling: A vs C": evidence/filetype-handling-a-vs-c.md
+      - Architecture Is Not Just Coding: evidence/architecture-not-just-coding.md
+    - Customization and Governance:
+      - "Customization Extensibility and Governance": evidence/customization-extensibility-governance.md
+      - File-Type Chunking Strategy: framework/filetype-chunking-strategy.md
   - Reference:
     - Glossary: reference/glossary.md
-  - Addendum:
     - "Technical Review: Claim Validation": reference/adversarial-validation-copilot-vs-rag.md
     - Fact-Check Report: addendum/fact-check-report.md
     - Embeddings Analysis: addendum/embeddings-analysis.md
