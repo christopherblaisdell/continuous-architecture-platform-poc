@@ -9,14 +9,32 @@ The Solution Architecture practice is adopting AI-assisted workflows for archite
 
 ### Options Under Evaluation
 
-- **Option A — GitHub Copilot**: SaaS platform with intent-based billing, native workspace indexing, and declarative customization via instruction files. Testable immediately with zero infrastructure.
-- **Option B — Roo Code + Kong AI Gateway**: Open-source IDE extension with token-based billing through a self-managed API gateway. Testable with moderate setup, requires API key provisioning and gateway configuration.
-- **Option C — Bespoke Architecture Agent**: Custom-built agent on Azure AI Foundry. Requires weeks of engineering investment before testing can begin.
-- **Option D — Hybrid (A absorbs C)**: Deploy Copilot (Option A) as the platform, then integrate Option C's custom Foundry model as a BYOK endpoint within it. Architects get built-in models for routine work, frontier models for complex design, and the domain-specialized model for enterprise analysis — all in the same model picker, with no custom IDE infrastructure.
+- **Option A — GitHub Copilot**: SaaS platform with intent-based billing, native workspace indexing, and declarative customization via instruction files. Testable immediately with zero infrastructure. Customizations are portable Markdown; file naming conventions are platform-specific but converging on open standards.
+- **Option B — Roo Code + Kong AI Gateway**: Open-source IDE extension with token-based billing through a self-managed API gateway. Testable with moderate setup, requires API key provisioning and gateway configuration. Fully open-source; all configuration is portable.
+- **Option C — Bespoke Architecture Agent**: Custom-built agent on Azure AI Foundry. Requires weeks of engineering investment before testing can begin. Deep platform lock-in — customizations, knowledge pipelines, and integrations are Azure-specific; migration would mean rebuilding.
+- **Option D — Hybrid (A absorbs C)**: Deploy Copilot (Option A) as the platform, then integrate Option C's custom Foundry model as a BYOK endpoint within it. Architects get built-in models for routine work, frontier models for complex design, and the domain-specialized model for enterprise analysis — all in the same model picker, with no custom IDE infrastructure. Inherits Option A's customization portability; accepts infrastructure lock-in only where Foundry adds unique value.
 
 ### Evaluation Principles
 
 This evaluation follows a phased approach: test reversible, low-cost options empirically before committing to irreversible, high-cost alternatives. Options A and B can be compared head-to-head using real architecture scenarios. Option C requires significant engineering investment before it can be tested — see [Evaluation Approach](framework/evaluation-approach.md) for why this shapes the evaluation sequence.
+
+### A Cross-Cutting Concern: Platform Lock-In
+
+Any AI toolchain investment creates some degree of vendor dependency. But the *kind* and *severity* of lock-in varies dramatically between options — and this difference may be worth considering early, before the organization commits engineering effort to a particular platform.
+
+AI toolchain investments can be decomposed into three layers, each with a different portability posture:
+
+| Layer | What It Contains | Portability |
+|-------|-----------------|-------------|
+| **Content** | Architecture artifacts — ADRs, specs, diagrams, solution designs | Always portable (files in git) |
+| **Behavioral customization** | Instruction files, skills, agent definitions, domain rules | Portable when stored as Markdown files; locked in when embedded in platform configuration |
+| **Retrieval infrastructure** | Knowledge bases, search indexes, scoring profiles, embedding pipelines | Platform-specific by nature — switching means rebuilding, not losing data |
+
+The options differ most sharply at the customization layer. Options A, B, and D store customizations as version-controlled Markdown files that architects own and can transfer between platforms. Option C embeds customizations into Azure AI Foundry's control plane — prompt templates, grounding configurations, and knowledge base bindings that have no portable representation outside Azure.
+
+This distinction matters because customizations are where practice-specific knowledge accumulates. If that knowledge is portable, the organization retains flexibility to adopt better tools as the market evolves. If it is locked into platform infrastructure, switching requires not just re-tooling but rebuilding.
+
+The evaluation scores this concern as [EF-11: Vendor Lock-in Risk](framework/evaluation-methodology.md#ef-11-vendor-lock-in-risk-8) (8% weight). For the detailed layer-by-layer analysis and remediation architecture, see [Customization Portability: Option D + OpenSpec](evidence/customization-lock-in-foundry-vs-portable.md).
 
 ### The Architecture Practice Pilot
 
