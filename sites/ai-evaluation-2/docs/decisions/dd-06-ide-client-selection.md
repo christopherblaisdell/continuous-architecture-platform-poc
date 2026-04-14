@@ -287,6 +287,121 @@ Instruction files do not decay this way because **there is no separation between
 
 ---
 
+## Customization Distribution: Plugin Marketplace vs Git Repository
+
+The previous two sections establish that declarative customization (instruction files, skills, agent definitions) is superior to model fine-tuning — and that architects must own the customization lifecycle. This raises the next question: **how do architects actually receive and update the customization layer?**
+
+Two distribution models are available:
+
+1. **Git repository** — Architects clone a repo containing the customization files. Updates flow through pull requests and `git pull`.
+2. **Plugin marketplace** — The customization layer is packaged as a VS Code extension or Claude Code plugin and distributed through each platform's marketplace. Architects install and update via their IDE.
+
+This question was raised by Troy Martin (April 2026), who proposed that a plugin model would let the SA team own and distribute skills, modes, and commands independently of which AI client architects use. The following analysis evaluates both models.
+
+### What Can Plugin Marketplaces Actually Distribute?
+
+The feasibility of marketplace distribution depends entirely on what each platform's extension/plugin system can do. The capabilities differ significantly between VS Code (Copilot) and Claude Code.
+
+#### VS Code Extensions (for Copilot Customization)
+
+VS Code extensions support four AI-related contribution types:
+
+| Contribution Type | What It Does | Can It Replace Instruction Files? |
+|-------------------|-------------|----------------------------------|
+| **Chat Participant** | Registers an `@participant` handler with slash commands, embeds a system prompt, receives tool-calling requests | Partially — the system prompt replaces instructions, but creates a separate `@participant` UX path instead of working in native agent mode |
+| **Language Model Tool** | Contributes tools that agent mode auto-discovers via `package.json` | No — tools extend agent capability but do not carry behavioral instructions |
+| **MCP Server** | Bundles or connects to an MCP server as a tool provider | No — same as tools; extends capability, not behavioral rules |
+| **Custom Model Provider** | Registers a custom model endpoint in the model picker | No — this is the BYOK mechanism, not a customization mechanism |
+
+!!! warning "The Critical Limitation"
+    VS Code extensions **cannot inject `.instructions.md`, `.agent.md`, `.prompt.md`, or skill files** into Copilot's declarative file discovery system. These files must exist in the workspace filesystem — Copilot scans `.github/`, `.vscode/`, and the workspace root at startup. No extension API exists to programmatically register instruction files.
+
+This means a "customization marketplace plugin" for Copilot would have to package the practice's domain knowledge as a **Chat Participant** with an embedded system prompt — creating a parallel experience alongside native agent mode. Architects would need to address `@architecture-practice` (or similar) instead of simply working in Copilot's agent mode where instruction files are loaded automatically. This is strictly worse than the git repo approach, where instruction files are discovered and applied transparently.
+
+A VS Code extension *could* write instruction files to the workspace on activation. But this conflates distribution (the extension) with the customization mechanism (the files), adds a runtime dependency on the extension being installed and activated, and introduces version conflicts when the extension's bundled files diverge from files already in the workspace.
+
+#### Claude Code Plugins (for Claude Code Customization)
+
+Claude Code has a mature plugin system that directly addresses the distribution problem:
+
+| Capability | Support |
+|-----------|---------|
+| Bundle skills (`SKILL.md` files) | YES — plugins include a `skills/` directory with full skill definitions |
+| Bundle agents | YES — custom agent definitions in `agents/` directory |
+| Bundle hooks | YES — event handlers via `hooks/hooks.json` |
+| Bundle MCP servers | YES — via `.mcp.json` at plugin root |
+| Team marketplace configuration | YES — `extraKnownMarketplaces` in `.claude/settings.json` for team-wide distribution |
+| Managed deployment | YES — organization-wide via managed settings |
+| Auto-update | YES — marketplace plugins can auto-update on session start |
+| Scoped installation | YES — user, project, or local scope |
+
+Claude Code plugins can distribute the *exact same artifacts* that the git repo contains — skills, agents, hooks, MCP servers — through a marketplace with versioning, auto-updates, and team configuration. This is a complete distribution solution.
+
+**However, Claude Code was disqualified in DD-06** because it cannot consume the custom Foundry model. A superior plugin ecosystem does not overcome the fundamental inability to use the organization's custom model. The marketplace capability is real, but it solves distribution for a client the team cannot adopt for the primary use case.
+
+### Distribution Model Comparison
+
+| Dimension | Git Repository | VS Code Marketplace | Claude Code Marketplace |
+|-----------|---------------|-------------------|----------------------|
+| **Installation** | `git clone` or add as Git submodule | One-click install from marketplace | `/plugin install` from marketplace |
+| **Updates** | `git pull` or automated CI | Extension auto-update (VS Code manages) | Plugin auto-update (Claude Code manages) |
+| **What gets distributed** | Instruction files, skills, agents, prompts — exactly as authored | Chat Participant with embedded system prompt (NOT instruction files) | Skills, agents, hooks, MCP servers — exactly as authored |
+| **Customization UX** | Native — instruction files load transparently in agent mode | Parallel — must address a separate `@participant` | Native — plugins extend the standard skill/agent system |
+| **Architect contribution** | Edit file, submit PR, merge | Edit source repo, rebuild extension, publish new version | Edit source repo, rebuild plugin, publish new version |
+| **Change latency** | Minutes (push to main) | Hours to days (extension review + publish cycle) | Minutes to hours (marketplace update) |
+| **Peer review** | Standard Git PR workflow | Git PR on source, then separate publish step | Git PR on source, then separate publish step |
+| **Offline access** | Full — files are local after clone | Full — extension is installed locally | Full — plugin is installed locally |
+| **Works with selected client (Copilot)** | YES — this is how Copilot consumes customizations | DEGRADED — parallel UX, not native integration | NO — Claude Code cannot consume Foundry model |
+
+### Why Git Repository Wins for Copilot
+
+The git repository is not merely a "good enough" distribution model — it is the *architecturally correct* distribution model for Copilot customization, because **Copilot's customization mechanism IS file-based.**
+
+Copilot discovers instruction files by scanning the workspace filesystem at startup:
+
+- `.github/copilot-instructions.md` — global instructions
+- `.github/instructions/*.instructions.md` — per-file-type instructions with `applyTo` glob patterns
+- `.github/agents/*.agent.md` — custom agent definitions
+- `.vscode/skills/*.md` — skills
+
+These files must be *in the workspace*. There is no API to register them programmatically. The git repository is the natural container for these files because:
+
+1. **Cloning the repo IS installing the customization.** No separate install step.
+2. **`git pull` IS updating the customization.** No separate update mechanism.
+3. **The PR workflow IS the governance model.** No separate review process for customization changes.
+4. **The git log IS the changelog.** Every instruction file change is attributed, timestamped, and reversible.
+
+A marketplace plugin that wraps these files adds a layer of indirection with no benefit — and actively degrades the experience by either (a) creating a parallel Chat Participant UX or (b) copying files to the workspace that then conflict with files already managed by git.
+
+### The Hybrid Exception: MCP Servers and Tools
+
+One area where marketplace distribution *does* add value — even for Copilot — is the distribution of **MCP servers and Language Model Tools** that complement the instruction files.
+
+For example, the NovaTrek pilot uses mock JIRA, Elastic, and GitLab tools (Python scripts reading JSON files). These could be packaged as an MCP server distributed via marketplace:
+
+- The MCP server provides the *tools* (query JIRA, search logs, get MR details)
+- The instruction files provide the *behavioral rules* (when to use which tool, in what order, what to do with the results)
+
+This hybrid model preserves the git repository as the source of truth for behavioral customization while using the marketplace for tool distribution. But this is a narrow, complementary use case — not a replacement for git-based customization distribution.
+
+### Addressing Troy's Cross-Client Vision
+
+Troy's original insight — that customizations should be portable across AI clients — is sound. An architecture practice should not be locked into a single IDE client. But the mechanism for achieving this portability is **standardized file formats**, not marketplace distribution.
+
+The Open Agent Skills standard (which Claude Code skills follow) is one path toward this. If Copilot, Cursor, Claude Code, and other clients all discover and load `SKILL.md` files using the same format and frontmatter schema, the same skill file works everywhere — distributed by whatever mechanism each client prefers (git repo for Copilot, marketplace for Claude Code, `.cursorrules` for Cursor).
+
+The git repository is the universal distribution mechanism that works across all clients today. Every IDE client can consume files from a cloned repo. A marketplace plugin, by contrast, is client-specific — a VS Code extension does not help Claude Code users, and a Claude Code plugin does not help VS Code users.
+
+### Recommendation
+
+**Primary distribution: Git repository.** The customization layer lives in a source-controlled repository. Architects receive it by cloning the repo. Updates flow through PRs and `git pull`. This is the proven model from the NovaTrek pilot, and it aligns with how Copilot discovers and loads instruction files.
+
+**Future consideration: CI-built extension for tool distribution.** If the practice develops MCP servers, custom Language Model Tools, or other capabilities that benefit from marketplace distribution, a CI pipeline can auto-build a VS Code extension from the git repo on merge to main. The extension carries the tools; the instruction files remain in the repo.
+
+**Not recommended: Packaging instruction files as a marketplace plugin.** This creates a parallel, inferior UX for Copilot users and does not solve the cross-client portability problem (which is better solved by standardized file formats).
+
+---
+
 ## Decision Outcome
 
 **Selected: GitHub Copilot via BYOK.**
@@ -307,7 +422,7 @@ Instruction files do not decay this way because **there is no separation between
 
 2. **Full orchestration platform, not just a chat window.** Agent mode with 7+ built-in tools, sub-agents, persistent memory, MCP connections — all of which work with the BYOK model because context injection is client-side.
 
-3. **Composable declarative customization.** The 500+ line `copilot-instructions.md`, per-file instruction files, custom agents, and skills that power the NovaTrek pilot are not replicable in clients with single-rules-file support.
+3. **Composable declarative customization.** The 500+ line `copilot-instructions.md`, per-file instruction files, custom agents, and skills that power the NovaTrek pilot are not replicable in clients with single-rules-file support. And because Copilot's customization is file-based, the git repository IS the distribution mechanism — no separate marketplace plugin needed (see Customization Distribution analysis above).
 
 4. **Free frontier models for routine work.** The 0x multiplier models (GPT-4o, GPT-4.1, GPT-5 mini, Raptor mini) provide unlimited free usage for routine tasks. No other client offers this — Cursor, Windsurf, and Cline all consume from a request budget or per-token billing for every model.
 
@@ -333,6 +448,7 @@ Instruction files do not decay this way because **there is no separation between
 **Neutral:**
 
 - Cursor, Windsurf, and Cline remain valid for individual experimentation — this decision applies to the enterprise-recommended client for architecture practice deployment
+- Plugin marketplace distribution (proposed by Troy Martin) is not recommended for instruction file delivery because Copilot's customization model is inherently file-based. However, marketplace distribution may add value for complementary MCP servers or Language Model Tools in the future (see Customization Distribution section). Claude Code's plugin marketplace is technically superior for this purpose but is moot while Claude Code cannot consume the custom Foundry model.
 
 ---
 
