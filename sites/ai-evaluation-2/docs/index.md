@@ -123,3 +123,35 @@ Solution Architecture Practice Comparative Evaluation of Agentic AI
     ├── Embeddings Analysis
     └── Foundry vs IDE Agents
 ```
+
+---
+
+## Roadmap
+
+| Item | Status | Description |
+|------|--------|-------------|
+| Foundry IQ POC Documentation | TODO | Document the end-to-end POC: standing up Foundry IQ, injecting architecture content, integrating with GitHub Copilot Chat in VS Code. The POC is complete but not yet written up as a site page. |
+| Customization Distribution via Plugin Marketplace | TODO | Evaluate packaging the practice's customization layer (skills, instructions, agent definitions) as a VS Code extension and/or Claude Code extension distributed via each platform's plugin marketplace. Compare against git repo distribution. |
+
+---
+
+## Working Notes: Customization Distribution Discussion (April 2026)
+
+The following captures an active conversation about how to distribute and evolve the practice's AI customization layer.
+
+**Context:** A working POC has been completed that (1) stands up Foundry IQ, (2) configures it to chunk and inject architecture content, and (3) integrates it with GitHub Copilot Chat in VS Code. The question now is how to distribute the customization layer to architects and how it evolves over time.
+
+**Key positions:**
+
+- **Git repo + CI pipeline approach (demonstrated in POC):** Customizations live in a source-controlled GitHub repository. Architects inherit the full customization layer by cloning the repo. Changes go through pull requests. A CI pipeline validates and distributes updates. This approach treats customizations as living artifacts that evolve with the practice — architects can debug hallucinations, improve skills, and submit improvements through standard code review workflows.
+
+- **Plugin marketplace distribution (proposed by Troy Martin):** Package the customizations as a VS Code extension (or Claude Code extension) distributed via each platform's plugin marketplace. This would make installation a one-click operation and decouple the customization layer from any specific AI client. Troy's reasoning: a plugin model lets the SA team own and maintain skills, modes, and commands independently of whether architects use Copilot, Claude Code, Roo Code, or another client. The marketplace handles versioning and distribution.
+
+**Open questions:**
+
+1. Can VS Code / Copilot extensions bundle `.instructions.md`, `.prompt.md`, and skill files in a way that Copilot's agent mode discovers and loads them? Or does the extension API only support chat participants and tool providers?
+2. Does Claude Code's extension model support the same declarative customization files, or does it require a different packaging format?
+3. How would marketplace distribution interact with the git-based CI pipeline? Could an extension be auto-built from the git repo on each merge to main?
+4. What customization capabilities does Foundry IQ's retrieval layer provide that are distinct from the file-based customization layer? Should these be treated as separate concerns?
+
+**Next step:** POC one or two marketplace plugins against Foundry IQ to evaluate feasibility and compare distribution models.
