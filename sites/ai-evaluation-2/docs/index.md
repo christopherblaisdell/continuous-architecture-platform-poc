@@ -131,7 +131,7 @@ Solution Architecture Practice Comparative Evaluation of Agentic AI
 | Item | Status | Description |
 |------|--------|-------------|
 | Foundry IQ POC Documentation | TODO | Document the end-to-end POC: standing up Foundry IQ, injecting architecture content, integrating with GitHub Copilot Chat in VS Code. The POC is complete but not yet written up as a site page. |
-| Customization Distribution via Plugin Marketplace | TODO | Evaluate packaging the practice's customization layer (skills, instructions, agent definitions) as a VS Code extension and/or Claude Code extension distributed via each platform's plugin marketplace. Compare against git repo distribution. |
+| Customization Distribution via Plugin Marketplace | COMPLETE | Evaluated on 2026-04-14. Incorporated into [DD-06 IDE Client Selection](decisions/dd-06-ide-client-selection.md#customization-distribution-plugin-marketplace-vs-git-repository). Finding: git repo is the architecturally correct distribution mechanism for Copilot; marketplace plugins are a future option for MCP server/tool distribution only. |
 
 ---
 

@@ -215,6 +215,7 @@ See [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) for the p
 
 ## Related Pages
 
+- [DD-06: IDE Client Selection](../decisions/dd-06-ide-client-selection.md) -- why Copilot is the right client for consuming the custom Foundry model
 - [DD-05: Model Selection Autonomy](../decisions/dd-05-model-selection-autonomy.md) -- how architects choose models per task
 - [DD-04: Model Routing](../decisions/dd-04-model-routing.md) -- how requests route to different model providers
 - [Copilot Rollout Roadmap](../framework/copilot-rollout-roadmap.md) -- phased deployment plan

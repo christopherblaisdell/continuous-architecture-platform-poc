@@ -86,7 +86,7 @@ The phased evaluation strategy also determines the order in which toolchain deci
 | DD-05 Model Selection Autonomy | Phase 1 | Architect control over model choice is a governance decision resolved during initial adoption |
 | DD-06 IDE Client Selection | Phase 1 | Resolved by Option D — Copilot is the IDE client; custom Foundry model is consumed via BYOK, not a separate plugin |
 
-**The key insight:** DD-01 through DD-05 can be resolved with empirical evidence from Phase 1. DD-06 only becomes relevant if Phase 1 and Phase 2 fail. Resolving DD-01 through DD-05 first prevents premature commitment to bespoke engineering.
+**The key insight:** DD-01 through DD-06 can all be resolved with empirical evidence from Phase 1. DD-06 was resolved alongside Option D — Copilot is the IDE client, and the custom Foundry model is consumed via BYOK rather than a separate plugin. Resolving DD-01 through DD-05 first prevents premature commitment to bespoke engineering.
 
 ## What This Means for Option C
 

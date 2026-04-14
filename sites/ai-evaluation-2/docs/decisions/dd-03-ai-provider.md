@@ -8,7 +8,7 @@
 | **Status** | Under Evaluation |
 | **Date** | 2026-04-07 |
 | **Scope** | Which vendor and platform delivers AI-assisted architecture capabilities? |
-| **Feeds into** | DD-04 (Model Routing), EF-04 (Output Quality), EF-10 (Workflow Integration) |
+| **Feeds into** | DD-04 (Model Routing), DD-06 (IDE Client Selection), EF-04 (Output Quality), EF-10 (Workflow Integration) |
 
 ---
 
@@ -85,4 +85,5 @@ The competitive risks (Cursor's agent quality, Windsurf's SWE-1.5 model, Cline's
 - [Platform Landscape](../evidence/platform-landscape.md) — Five-platform head-to-head comparison across pricing, customization, governance, and organizational fit
 - [DD-01: Context and Configuration](dd-01-context-configuration.md) — How each option injects domain knowledge
 - [DD-02: Billing Model](dd-02-billing-model.md) — Why per-seat fixed billing favors architecture work
+- [DD-06: IDE Client Selection](dd-06-ide-client-selection.md) — Which IDE client consumes the custom Foundry model
 - [Architecture Is Not Just Coding](../evidence/architecture-not-just-coding.md) — Evidence that general-purpose AI coding platforms handle architecture work

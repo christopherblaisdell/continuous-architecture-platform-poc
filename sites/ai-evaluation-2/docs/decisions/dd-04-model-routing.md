@@ -87,6 +87,7 @@ Three factors make Copilot's opacity an acceptable trade-off rather than a disqu
 
 - [DD-03: AI Provider](dd-03-ai-provider.md) — Provider selection that determines model routing
 - [DD-05: Model Selection Autonomy](dd-05-model-selection-autonomy.md) — How guided freedom extends to BYOK models
+- [DD-06: IDE Client Selection](dd-06-ide-client-selection.md) — Which IDE client consumes the custom Foundry model
 - [Option D — Hybrid Architecture](../evidence/option-d-hybrid-architecture.md) — Full BYOK analysis including feature compatibility and risk assessment
 - [Model Quality at Budget](../evidence/model-quality-at-budget.md) — Why the model tier matters more than the routing mechanism
 - [Platform Landscape](../evidence/platform-landscape.md) — Multi-model flexibility comparison (EF-07) across five platforms

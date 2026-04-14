@@ -9,7 +9,7 @@
 | **Date** | 2026-04-07 |
 | **Scope** | Should architects control which AI model is used for their tasks, or should model selection be locked down by a central team? |
 | **Depends on** | DD-03 (AI Provider), DD-04 (Model Routing) |
-| **Feeds into** | Governance roadmap, adoption strategy |
+| **Feeds into** | DD-06 (IDE Client Selection), Governance roadmap, adoption strategy |
 
 ---
 
@@ -217,6 +217,7 @@ As the architecture AI practice scales from pilot to team-wide adoption, governa
 **See also:**
 
 - [DD-04: Model Routing](dd-04-model-routing.md) — How model routing works mechanically (complements this governance-level decision)
+- [DD-06: IDE Client Selection](dd-06-ide-client-selection.md) — Which IDE client consumes the custom Foundry model and how customization is distributed
 - [DD-02: Billing Model](dd-02-billing-model.md) — Why intent-based billing eliminates meter anxiety that would otherwise complicate model selection
 - [Scoring Results](../framework/scoring-results.md) — EF-07 (Multi-Model Flexibility) scores each option on model selection capabilities
 - [Model Quality at Budget](../evidence/model-quality-at-budget.md) — Why restricting architects to budget models degrades output quality
