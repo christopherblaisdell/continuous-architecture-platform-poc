@@ -412,9 +412,9 @@ All Phases 0-6 are COMPLETE. The following initiatives represent the next wave o
 
 ---
 
-#### OpenSpec AI Instruction Governance
+#### OpenSpec AI Instruction Governance (Top Priority — Active)
 
-**Status:** COMPLETE (2026-05-05) | **Companion:** [sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-instruction-governance-plan.md](../sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-instruction-governance-plan.md)
+**Status:** Active — Phases 10-11 Pending (2026-05-05) | **Companion:** [sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-instruction-governance-plan.md](../sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-instruction-governance-plan.md)
 
 Integrate OpenSpec as the mandatory change management gateway for all AI instruction files. No `.clinerules`, `.github/copilot-instructions.md`, or `.github/instructions/*.md` file is ever edited directly — every change goes through a structured proposal → spec → design → apply → archive cycle. Drift is prevented by prominent `DERIVED FILE — DO NOT EDIT DIRECTLY` headers at the top of each derived file.
 
@@ -440,8 +440,10 @@ Integrate OpenSpec as the mandatory change management gateway for all AI instruc
 | 7 | Create OpenSpec change template for AI instructions | COMPLETE |
 | 8 | Update `.ai-instructions/README.md` with workflow | COMPLETE |
 | 9 | ~~Wire hook install into `setup-ai-tools.sh`~~ | Dropped — header-only approach adopted |
-| 10 | End-to-end validation with a real change | COMPLETE |
-| 11 | Mark roadmap item complete | COMPLETE |
+| 10 | End-to-end validation with a real change | NOT STARTED |
+| 11 | Mark roadmap item complete | NOT STARTED |
+
+**Remaining work:** Phase 10 requires executing the full `/opsx:propose → /opsx:apply → /opsx:archive` cycle with a real AI instruction change. The `openspec/changes/archive/` directory is empty — no change has gone through the workflow yet. The validation script (`scripts/validate-ai-instructions.sh`) is still wrapped in a DEFERRED block and has not been activated. Phase 11 follows Phase 10.
 
 See [governance plan](../sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-instruction-governance-plan.md) for full phase details, exit criteria, and file change inventory.
 
@@ -470,7 +472,7 @@ See [ECC Incorporation Plan](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.m
 
 ---
 
-#### CALM — Automated Architecture Governance (Top Priority — Active)
+#### CALM — Automated Architecture Governance
 
 **Status:** Phase 0+1 Complete (2026-03-20) | **Companion:** [docs/CALM-INTEGRATION-PLAN.md](../docs/CALM-INTEGRATION-PLAN.md) | **Reminder:** [architecture/reminders/CALM-EVALUATION.md](../architecture/reminders/CALM-EVALUATION.md)
 
