@@ -34,9 +34,10 @@ All changes to AI customization rules MUST flow through OpenSpec:
 /opsx:propose  →  openspec/changes/<name>/  →  /opsx:apply  →  /opsx:archive
 ```
 
-The `scripts/sync-ai-customizations.sh` script propagates accepted changes from
-the canonical hub to all derived files atomically. It is always called as the
-final task in any AI customization change.
+After a change is accepted via OpenSpec, canonical files are edited and derived
+files are updated to reflect the change. Each derived file has a
+`DERIVED FILE — DO NOT EDIT DIRECTLY` header making the constraint visible to
+any editor or AI tool that opens the file.
 
 ---
 
@@ -54,12 +55,12 @@ The system SHALL prevent direct edits to derived AI customization files.
 - `.github/instructions/prompt-mirror.instructions.md`
 - `.github/instructions/plantuml-svg.instructions.md`
 
-**Enforcement mechanisms:**
+**Enforcement mechanism:**
 
-- Each derived file has a `DERIVED FILE — DO NOT EDIT DIRECTLY` header at the top.
-- `scripts/validate-ai-customizations.sh` checks for this header on every staged commit.
-- A git pre-commit hook (`.git/hooks/pre-commit`) blocks commits that stage a derived
-  file without the header, or that show the header was removed.
+- Each derived file has a `DERIVED FILE — DO NOT EDIT DIRECTLY` header at the top,
+  making the constraint visible to any editor or AI tool that opens the file.
+- `scripts/validate-ai-customizations.sh` can be run manually to confirm all headers
+  are present before committing.
 
 ---
 
@@ -72,8 +73,8 @@ file is modified.
 
 1. Run `/opsx:propose "description of change"` to open a change.
 2. Review and accept the generated `proposal.md`, `specs/`, `design.md`, and `tasks.md`.
-3. Run `/opsx:apply` to execute the tasks (which include editing canonical files and
-   running `scripts/sync-ai-customizations.sh`).
+3. Run `/opsx:apply` to execute the tasks (edit canonical files, then update all
+   derived files ensuring the DERIVED FILE header is preserved in each).
 4. Run `/opsx:archive` to close the change.
 
 **This spec (`openspec/specs/ai-customization-governance/spec.md`) MUST be
@@ -81,31 +82,14 @@ referenced in the design of every AI customization change.**
 
 ---
 
-### REQ-GOV-003: Sync Script Atomicity
-
-The sync script (`scripts/sync-ai-customizations.sh`) SHALL update ALL derived
-files in a single atomic operation each time it is run.
-
-**Requirements:**
-
-- The script reads from `.ai-customizations/` canonical sources only.
-- The script writes all derived files in a single pass.
-- The script runs `scripts/validate-ai-customizations.sh` as its final step.
-- The script exits non-zero if validation fails, leaving the working tree unchanged.
-- The script is idempotent: running it twice produces the same result.
-
----
-
-### REQ-GOV-004: Validation Must Pass Before Commit
+### REQ-GOV-003: Validation Must Pass Before Commit
 
 `scripts/validate-ai-customizations.sh` MUST pass (0 errors, 0 warnings) before
 any AI customization change is committed to git.
 
 **Triggered by:**
 
-- The git pre-commit hook (automatic, for any staged AI customization file).
-- The sync script (automatic, as its final step).
-- Manually at any time.
+- Manually, before committing any AI customization change.
 
 **Checks that must pass:**
 
@@ -128,10 +112,9 @@ WHEN they run /opsx:propose "add X rule to communication standards"
 THEN OpenSpec creates a change folder with proposal, specs, design, and tasks
 AND the design.md identifies which canonical file changes
     (.ai-customizations/universal/corporate-standards.md)
-AND the tasks.md includes a task to run scripts/sync-ai-customizations.sh
-    after the canonical file is edited
 AND the change is not applied until /opsx:apply is run
-AND after /opsx:apply, all 5 derived files reflect the new rule
+AND after /opsx:apply, all 5 derived files are updated to reflect the new rule
+    (with DERIVED FILE header preserved in each)
 AND validate-ai-customizations.sh passes
 ```
 
@@ -139,22 +122,10 @@ AND validate-ai-customizations.sh passes
 
 ```
 GIVEN a derived file was edited directly (bypassing OpenSpec)
-WHEN validate-ai-customizations.sh runs (pre-commit or manually)
+WHEN validate-ai-customizations.sh is run manually
 THEN the script reports a FAIL for the "DERIVED FILE" header check
-     (or for content divergence from the canonical source)
-AND the commit is blocked by the pre-commit hook
-AND the developer is directed to use /opsx:propose to make the change properly
-```
-
-### SCENARIO: Sync Script Runs After a Canonical Change
-
-```
-GIVEN a canonical file in .ai-customizations/ was updated via /opsx:apply
-WHEN scripts/sync-ai-customizations.sh is run
-THEN all 5 derived files are regenerated from canonical sources
-AND all 5 derived files have the DERIVED FILE header
-AND validate-ai-customizations.sh passes with 0 errors
-AND no manual edits to derived files are required
+AND the developer is directed to restore the header and use /opsx:propose
+    to make future changes properly
 ```
 
 ---
@@ -169,6 +140,5 @@ AND no manual edits to derived files are required
 | `.clinerules` | Derived — Roo Code | REQ-GOV-001 |
 | `.github/copilot-instructions.md` | Derived — GitHub Copilot | REQ-GOV-001 |
 | `.github/instructions/*.instructions.md` | Derived — Copilot scoped | REQ-GOV-001 |
-| `scripts/sync-ai-customizations.sh` | Sync script | REQ-GOV-003 |
-| `scripts/validate-ai-customizations.sh` | Validation script | REQ-GOV-004 |
+| `scripts/validate-ai-customizations.sh` | Validation script | REQ-GOV-003 |
 | `openspec/specs/ai-customization-governance/spec.md` | This spec | All |

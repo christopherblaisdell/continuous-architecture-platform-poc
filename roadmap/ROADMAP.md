@@ -410,6 +410,43 @@ Portal  Confluence
 
 All Phases 0-6 are COMPLETE. The following initiatives represent the next wave of work, consolidated from plan documents, reminders, and proposed enhancements across the repository. Each initiative has a detailed companion document linked below.
 
+---
+
+#### OpenSpec AI Customization Governance
+
+**Status:** COMPLETE (2026-05-05) | **Companion:** [sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-customization-governance-plan.md](../sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-customization-governance-plan.md)
+
+Integrate OpenSpec as the mandatory change management gateway for all AI customization files. No `.clinerules`, `.github/copilot-instructions.md`, or `.github/instructions/*.md` file is ever edited directly — every change goes through a structured proposal → spec → design → apply → archive cycle. Drift is prevented by prominent `DERIVED FILE — DO NOT EDIT DIRECTLY` headers at the top of each derived file.
+
+**Why this is #1:** The AI customization system is now the primary driver of AI agent quality. Direct edits cause drift between the canonical hub (`.ai-customizations/`) and derived tool-specific files. OpenSpec + visible headers make the constraint clear to any editor or AI tool.
+
+**Hub-and-spoke architecture:**
+
+| File Type | Location | Change Process |
+|-----------|----------|----------------|
+| Canonical (source of truth) | `.ai-customizations/**` | `/opsx:propose` → edit canonical → update derived |
+| Derived (never edit directly) | `.clinerules`, `.github/copilot-instructions.md`, `.github/instructions/*.md` | Header enforces constraint |
+
+**Implementation plan:**
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 1 | Install and initialize OpenSpec CLI | COMPLETE |
+| 2 | Define AI customization governance spec | COMPLETE |
+| 3 | Add DERIVED FILE headers to all derived files | COMPLETE |
+| 4 | ~~Create `scripts/sync-ai-customizations.sh`~~ | Dropped — header-only approach adopted |
+| 5 | Update validation script with new checks | COMPLETE |
+| 6 | ~~Add tracked pre-commit hook~~ | Dropped — header-only approach adopted |
+| 7 | Create OpenSpec change template for AI customizations | COMPLETE |
+| 8 | Update `.ai-customizations/README.md` with workflow | COMPLETE |
+| 9 | ~~Wire hook install into `setup-ai-tools.sh`~~ | Dropped — header-only approach adopted |
+| 10 | End-to-end validation with a real change | COMPLETE |
+| 11 | Mark roadmap item complete | COMPLETE |
+
+See [governance plan](../sites/ai-evaluation-2/docs/open-spec/plans/openspec-ai-customization-governance-plan.md) for full phase details, exit criteria, and file change inventory.
+
+---
+
 #### ECC Skills Incorporation — AI Workflow Enhancement (Medium Priority)
 
 **Status:** Proposed | **Companion:** [docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md](../docs/EVERYTHING-CLAUDE-CODE-INCORPORATION-PLAN.md)
