@@ -1,16 +1,16 @@
-# AI Customization Governance
+# AI Instruction Governance
 
 ## Overview
 
-This workspace manages AI customization rules for two AI tools: GitHub Copilot and
-Roo Code. The rules live in a canonical hub (`.ai-customizations/`) and are
+This workspace manages AI instruction rules for two AI tools: GitHub Copilot and
+Roo Code. The rules live in a canonical hub (`.ai-instructions/`) and are
 propagated to tool-specific derived files. This spec defines the governance model
 that ensures those files never drift and that every change is traceable.
 
 ### Hub-and-Spoke Architecture
 
 ```
-.ai-customizations/              ← CANONICAL HUB (source of truth)
+.ai-instructions/              ← CANONICAL HUB (source of truth)
 ├── core-instructions.md         ← base rules for ALL modes
 ├── universal/                   ← always-loaded standards (5 files)
 ├── methodologies/               ← workflows (8 files)
@@ -28,7 +28,7 @@ Derived files (assembled from canonical hub):
 
 ### Change Gateway
 
-All changes to AI customization rules MUST flow through OpenSpec:
+All changes to AI instruction rules MUST flow through OpenSpec:
 
 ```
 /opsx:propose  →  openspec/changes/<name>/  →  /opsx:apply  →  /opsx:archive
@@ -45,7 +45,7 @@ any editor or AI tool that opens the file.
 
 ### REQ-GOV-001: No Direct Edits to Derived Files
 
-The system SHALL prevent direct edits to derived AI customization files.
+The system SHALL prevent direct edits to derived AI instruction files.
 
 **Derived files (MUST NOT be edited directly):**
 
@@ -59,14 +59,14 @@ The system SHALL prevent direct edits to derived AI customization files.
 
 - Each derived file has a `DERIVED FILE — DO NOT EDIT DIRECTLY` header at the top,
   making the constraint visible to any editor or AI tool that opens the file.
-- `scripts/validate-ai-customizations.sh` can be run manually to confirm all headers
+- `scripts/validate-ai-instructions.sh` can be run manually to confirm all headers
   are present before committing.
 
 ---
 
 ### REQ-GOV-002: OpenSpec as Change Gateway
 
-All changes to AI customization rules MUST be proposed via OpenSpec before any
+All changes to AI instruction rules MUST be proposed via OpenSpec before any
 file is modified.
 
 **Process:**
@@ -77,19 +77,19 @@ file is modified.
    derived files ensuring the DERIVED FILE header is preserved in each).
 4. Run `/opsx:archive` to close the change.
 
-**This spec (`openspec/specs/ai-customization-governance/spec.md`) MUST be
-referenced in the design of every AI customization change.**
+**This spec (`openspec/specs/ai-instruction-governance/spec.md`) MUST be
+referenced in the design of every AI instruction change.**
 
 ---
 
 ### REQ-GOV-003: Validation Must Pass Before Commit
 
-`scripts/validate-ai-customizations.sh` MUST pass (0 errors, 0 warnings) before
-any AI customization change is committed to git.
+`scripts/validate-ai-instructions.sh` MUST pass (0 errors, 0 warnings) before
+any AI instruction change is committed to git.
 
 **Triggered by:**
 
-- Manually, before committing any AI customization change.
+- Manually, before committing any AI instruction change.
 
 **Checks that must pass:**
 
@@ -98,7 +98,7 @@ any AI customization change is committed to git.
 - Paired methodology files are in sync.
 - Key rules are present in both base files.
 - `openspec/config.yaml` exists (OpenSpec is initialized).
-- This governance spec exists (`openspec/specs/ai-customization-governance/spec.md`).
+- This governance spec exists (`openspec/specs/ai-instruction-governance/spec.md`).
 
 ---
 
@@ -111,18 +111,18 @@ GIVEN a developer wants to add a rule to corporate communication standards
 WHEN they run /opsx:propose "add X rule to communication standards"
 THEN OpenSpec creates a change folder with proposal, specs, design, and tasks
 AND the design.md identifies which canonical file changes
-    (.ai-customizations/universal/corporate-standards.md)
+    (.ai-instructions/universal/corporate-standards.md)
 AND the change is not applied until /opsx:apply is run
 AND after /opsx:apply, all 5 derived files are updated to reflect the new rule
     (with DERIVED FILE header preserved in each)
-AND validate-ai-customizations.sh passes
+AND validate-ai-instructions.sh passes
 ```
 
 ### SCENARIO: Drift Is Detected
 
 ```
 GIVEN a derived file was edited directly (bypassing OpenSpec)
-WHEN validate-ai-customizations.sh is run manually
+WHEN validate-ai-instructions.sh is run manually
 THEN the script reports a FAIL for the "DERIVED FILE" header check
 AND the developer is directed to restore the header and use /opsx:propose
     to make future changes properly
@@ -134,11 +134,11 @@ AND the developer is directed to restore the header and use /opsx:propose
 
 | File | Role | Governed By |
 |---|---|---|
-| `.ai-customizations/core-instructions.md` | Canonical base rules | REQ-GOV-002 |
-| `.ai-customizations/universal/` | Canonical universal standards | REQ-GOV-002 |
-| `.ai-customizations/methodologies/` | Canonical methodologies | REQ-GOV-002 |
+| `.ai-instructions/core-instructions.md` | Canonical base rules | REQ-GOV-002 |
+| `.ai-instructions/universal/` | Canonical universal standards | REQ-GOV-002 |
+| `.ai-instructions/methodologies/` | Canonical methodologies | REQ-GOV-002 |
 | `.clinerules` | Derived — Roo Code | REQ-GOV-001 |
 | `.github/copilot-instructions.md` | Derived — GitHub Copilot | REQ-GOV-001 |
 | `.github/instructions/*.instructions.md` | Derived — Copilot scoped | REQ-GOV-001 |
-| `scripts/validate-ai-customizations.sh` | Validation script | REQ-GOV-003 |
-| `openspec/specs/ai-customization-governance/spec.md` | This spec | All |
+| `scripts/validate-ai-instructions.sh` | Validation script | REQ-GOV-003 |
+| `openspec/specs/ai-instruction-governance/spec.md` | This spec | All |

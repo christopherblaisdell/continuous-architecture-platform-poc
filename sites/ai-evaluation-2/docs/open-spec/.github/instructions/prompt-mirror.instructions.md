@@ -4,17 +4,17 @@ applyTo: "**"
 
 <!-- ============================================================
      DERIVED FILE — DO NOT EDIT DIRECTLY
-     Canonical source: .ai-customizations/methodologies/prompt-mirror.md
+     Canonical source: .ai-instructions/methodologies/prompt-mirror.md
      To make changes: /opsx:propose "description of change"
-     Then run: scripts/sync-ai-customizations.sh
-     Validation: scripts/validate-ai-customizations.sh
-     Governance: openspec/specs/ai-customization-governance/spec.md
+     Then run: scripts/sync-ai-instructions.sh
+     Validation: scripts/validate-ai-instructions.sh
+     Governance: openspec/specs/ai-instruction-governance/spec.md
      ============================================================ -->
 
 # Prompt Mirror — Context Capture System
 
-<!-- PAIRED FILE: This content must stay in sync with .ai-customizations/methodologies/prompt-mirror.md -->
-<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-customizations.sh -->
+<!-- PAIRED FILE: This content must stay in sync with .ai-instructions/methodologies/prompt-mirror.md -->
+<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-instructions.sh -->
 
 **MANDATORY**: This instruction applies to EVERY interaction in this chat window. There are NO exceptions.
 

@@ -1,16 +1,16 @@
 <!-- CONFLUENCE-PUBLISH -->
 <!-- CONFLUENCE-URL: -->
 
-# AI Customization as a Living Practice: Extensibility, Governance, and Ownership
+# AI Instruction as a Living Practice: Extensibility, Governance, and Ownership
 
 !!! note "Context for This Analysis"
-    This page presents observations and analysis from the architecture practice pilot. The pilot team ran real architecture scenarios against a synthetic workspace, maintaining AI customizations throughout the evaluation. The findings below reflect what that experience revealed about customization extensibility and governance. The team presenting this evaluation does not own the toolchain decision — this analysis is offered as input for the decision-makers to weigh alongside other factors they may consider.
+    This page presents observations and analysis from the architecture practice pilot. The pilot team ran real architecture scenarios against a synthetic workspace, maintaining AI instructions throughout the evaluation. The findings below reflect what that experience revealed about customization extensibility and governance. The team presenting this evaluation does not own the toolchain decision — this analysis is offered as input for the decision-makers to weigh alongside other factors they may consider.
 
-## The Core Premise: AI Customizations Are Never "Done"
+## The Core Premise: AI Instructions Are Never "Done"
 
-AI customizations — instruction files, custom agent definitions, skills, scoped rules — are not a deliverable with a completion date. They are **living artifacts** that grow and evolve continuously with the practice they serve. Every architecture decision record, every new service boundary, every revised data ownership rule, every new workflow convention creates a potential gap between what the AI knows and what the practice needs.
+AI instructions — instruction files, custom agent definitions, skills, scoped rules — are not a deliverable with a completion date. They are **living artifacts** that grow and evolve continuously with the practice they serve. Every architecture decision record, every new service boundary, every revised data ownership rule, every new workflow convention creates a potential gap between what the AI knows and what the practice needs.
 
-This is not a defect. It is the nature of domain knowledge itself. Architecture practices are not static — they evolve through daily work, through solution designs, through lessons learned in production. If the AI customization layer does not evolve at the same pace, it risks becoming a liability rather than an asset.
+This is not a defect. It is the nature of domain knowledge itself. Architecture practices are not static — they evolve through daily work, through solution designs, through lessons learned in production. If the AI instruction layer does not evolve at the same pace, it risks becoming a liability rather than an asset.
 
 The NovaTrek pilot provides direct evidence:
 
@@ -27,7 +27,7 @@ Every one of those updates represents a moment where the AI's behavior diverged 
 
 ## Extensibility Considerations
 
-For AI customizations to function as living practice artifacts, the pilot experience suggests the customization system benefits from four properties:
+For AI instructions to function as living practice artifacts, the pilot experience suggests the customization system benefits from four properties:
 
 ### 1. Practitioners Can Modify Customizations Directly
 
@@ -54,7 +54,7 @@ As the practice scales, multiple architects will likely contribute customization
 
 ## The Non-Extensible Counterfactual: What Happens When Architects Cannot Control Their Own Customizations
 
-This section examines the concrete consequences of deploying AI customizations through a system that the architecture practice cannot directly modify — for example, a custom fine-tuned model managed by a separate ML engineering team, or a bespoke agent platform maintained by a different organizational unit.
+This section examines the concrete consequences of deploying AI instructions through a system that the architecture practice cannot directly modify — for example, a custom fine-tuned model managed by a separate ML engineering team, or a bespoke agent platform maintained by a different organizational unit.
 
 ### Consequence 1: The Knowledge Gap Bottleneck
 
@@ -109,9 +109,9 @@ The question is likely not whether customizations should be governed — but rat
 
 ## Options Assessment
 
-### Option E: Dedicated AI Customization Team (Separate from Architecture Practice)
+### Option E: Dedicated AI Instruction Team (Separate from Architecture Practice)
 
-A specialized team (e.g., an ML engineering group, an AI platform team, or a center of excellence) owns all AI customization artifacts. Architects submit requirements; the customization team implements them.
+A specialized team (e.g., an ML engineering group, an AI platform team, or a center of excellence) owns all AI instruction artifacts. Architects submit requirements; the customization team implements them.
 
 **How it works:**
 
@@ -134,11 +134,11 @@ A specialized team (e.g., an ML engineering group, an AI platform team, or a cen
 - **The customization team becomes a single point of failure.** If they are understaffed, reprioritized, or reorganized, the architecture practice's AI effectiveness degrades with no recourse.
 - **Institutional knowledge is fragmented.** The architecture practice's conventions exist in one place (architects' heads, practice documents); the AI's customizations exist in another place (model weights, platform config). No single artifact captures both — and they inevitably drift apart.
 
-**Industry precedent:** This model is analogous to the "shared services" or "center of excellence" pattern that has been widely studied in enterprise IT. Research from Gartner, Forrester, and McKinsey consistently finds that centralized shared services teams struggle to maintain domain relevance when they are organizationally separated from the business units they serve. The same structural problem applies to AI customization.
+**Industry precedent:** This model is analogous to the "shared services" or "center of excellence" pattern that has been widely studied in enterprise IT. Research from Gartner, Forrester, and McKinsey consistently finds that centralized shared services teams struggle to maintain domain relevance when they are organizationally separated from the business units they serve. The same structural problem applies to AI instruction.
 
 ### Option F: Architecture Practice Owns All Customizations (No Specialized Team)
 
-The architecture practice directly maintains all AI customization artifacts. No separate team is involved.
+The architecture practice directly maintains all AI instruction artifacts. No separate team is involved.
 
 **How it works:**
 
@@ -213,11 +213,11 @@ Option D defines the deployment topology: Copilot as the platform, BYOK for the 
 
 This model draws from three established practices:
 
-1. **InnerSource Trusted Committer pattern** (InnerSource Commons): Practitioners who demonstrate consistent contribution quality are granted merge authority, formalizing their role in community governance. Applied to AI customization, this means senior architects who contribute the most effective instruction files become the reviewers and approvers for the customization layer.
+1. **InnerSource Trusted Committer pattern** (InnerSource Commons): Practitioners who demonstrate consistent contribution quality are granted merge authority, formalizing their role in community governance. Applied to AI instruction, this means senior architects who contribute the most effective instruction files become the reviewers and approvers for the customization layer.
 
-2. **Infrastructure as Code (IaC) governance** (DevOps): Infrastructure teams provide the platform; application teams define their infrastructure declaratively in version-controlled files (Terraform, Bicep, CloudFormation). Applied to AI customization, the platform team provides the AI platform; the architecture practice defines its behavioral customization declaratively in version-controlled instruction files.
+2. **Infrastructure as Code (IaC) governance** (DevOps): Infrastructure teams provide the platform; application teams define their infrastructure declaratively in version-controlled files (Terraform, Bicep, CloudFormation). Applied to AI instruction, the platform team provides the AI platform; the architecture practice defines its behavioral customization declaratively in version-controlled instruction files.
 
-3. **Community of Practice model** (Wenger, 1998): Knowledge management through a community of practitioners who share a domain, a practice, and a set of shared resources. AI customization files become the shared resource that the community maintains together.
+3. **Community of Practice model** (Wenger, 1998): Knowledge management through a community of practitioners who share a domain, a practice, and a set of shared resources. AI instruction files become the shared resource that the community maintains together.
 
 ## Suggested Direction: Option G (Hybrid Inner Source Model)
 

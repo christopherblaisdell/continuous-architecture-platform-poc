@@ -1,6 +1,6 @@
-name: ai-customization-change
+name: ai-instruction-change
 version: 1
-description: AI customization change workflow — enforces governance (REQ-GOV-001 through REQ-GOV-004). Proposal includes canonical/derived file inventory and governance checklist. Tasks enforce sync script + validation before commit.
+description: AI instruction change workflow — enforces governance (REQ-GOV-001 through REQ-GOV-004). Proposal includes canonical/derived file inventory and governance checklist. Tasks enforce sync script + validation before commit.
 artifacts:
   - id: proposal
     generates: proposal.md

@@ -1,17 +1,17 @@
-# OpenSpec AI Customization Governance — Integration Plan
+# OpenSpec AI Instruction Governance — Integration Plan
 
 ## Objective
 
-Integrate OpenSpec as the mandatory change management gateway for all AI customization
+Integrate OpenSpec as the mandatory change management gateway for all AI instruction
 files in this workspace. After this plan is fully executed:
 
-- **No AI customization file is ever edited directly** — not `.clinerules`, not
+- **No AI instruction file is ever edited directly** — not `.clinerules`, not
   `.github/copilot-instructions.md`, not any `.github/instructions/*.md`, not any
-  `.ai-customizations/` canonical file.
+  `.ai-instructions/` canonical file.
 - **Every change goes through an OpenSpec change proposal** — proposal, spec,
   design, and task list are created before any file is touched.
 - **A sync script propagates accepted changes** from the canonical hub
-  (`.ai-customizations/`) to all derived/tool-specific files atomically.
+  (`.ai-instructions/`) to all derived/tool-specific files atomically.
 - **Validation and git hooks enforce** the "no direct edit" rule so drift is
   structurally impossible, not just a convention.
 
@@ -22,7 +22,7 @@ files in this workspace. After this plan is fully executed:
 ### Canonical Hub (source of truth)
 
 ```
-.ai-customizations/
+.ai-instructions/
 ├── core-instructions.md          ← base rules for ALL modes
 ├── universal/                    ← always-loaded standards (5 files)
 ├── methodologies/                ← workflows (8 files, some with paired files)
@@ -35,22 +35,22 @@ files in this workspace. After this plan is fully executed:
 
 | Derived File | Source |
 |---|---|
-| `.clinerules` | Summarized from `.ai-customizations/core-instructions.md` + `universal/` |
-| `.github/copilot-instructions.md` | Summarized from `.ai-customizations/core-instructions.md` + `universal/` |
-| `.github/instructions/prompt-me.instructions.md` | Paired with `.ai-customizations/methodologies/guided-plan-execution.md` |
-| `.github/instructions/prompt-mirror.instructions.md` | Paired with `.ai-customizations/methodologies/prompt-mirror.md` |
+| `.clinerules` | Summarized from `.ai-instructions/core-instructions.md` + `universal/` |
+| `.github/copilot-instructions.md` | Summarized from `.ai-instructions/core-instructions.md` + `universal/` |
+| `.github/instructions/prompt-me.instructions.md` | Paired with `.ai-instructions/methodologies/guided-plan-execution.md` |
+| `.github/instructions/prompt-mirror.instructions.md` | Paired with `.ai-instructions/methodologies/prompt-mirror.md` |
 | `.github/instructions/plantuml-svg.instructions.md` | Scoped instruction, currently standalone |
 
 ### Existing Validation Infrastructure
 
-- `scripts/validate-ai-customizations.sh` — checks file existence, YAML frontmatter,
+- `scripts/validate-ai-instructions.sh` — checks file existence, YAML frontmatter,
   paired file sync, and key rule presence.
 - `<!-- PAIRED FILE -->` comments in paired methodology files reference this script.
 
 ### Gap
 
 There is no workflow enforcement. Any developer (or AI agent) can open
-`.clinerules` and edit it directly. The `validate-ai-customizations.sh` script
+`.clinerules` and edit it directly. The `validate-ai-instructions.sh` script
 detects drift after the fact, but nothing prevents the direct edit from happening.
 OpenSpec fills this gap by making every change go through a structured proposal
 cycle before touching any file.
@@ -74,11 +74,11 @@ openspec/changes/<change-name>/
        │
        ▼
 /opsx:apply  (AI executes tasks.md)
-       │  Every task that touches AI customizations calls:
-       │  scripts/sync-ai-customizations.sh
+       │  Every task that touches AI instructions calls:
+       │  scripts/sync-ai-instructions.sh
        │
        ▼
-Canonical files updated (.ai-customizations/)
+Canonical files updated (.ai-instructions/)
 Derived files regenerated atomically
 Validation script passes
        │
@@ -97,17 +97,17 @@ Change archived. No drift. One audit trail.
 |---|---|---|
 | OpenSpec CLI install | `npm install -g @fission-ai/openspec@latest` | LOW |
 | `openspec init` | New `openspec/` directory + injected agent guidance | LOW |
-| `openspec/specs/ai-customization-governance/spec.md` | New governance spec | MEDIUM |
+| `openspec/specs/ai-instruction-governance/spec.md` | New governance spec | MEDIUM |
 | `.clinerules` | Add "DERIVED FILE — DO NOT EDIT DIRECTLY" header block | LOW |
 | `.github/copilot-instructions.md` | Add "DERIVED FILE — DO NOT EDIT DIRECTLY" header block | LOW |
 | `.github/instructions/prompt-me.instructions.md` | Add "DERIVED FILE" header | LOW |
 | `.github/instructions/prompt-mirror.instructions.md` | Add "DERIVED FILE" header | LOW |
 | `.github/instructions/plantuml-svg.instructions.md` | Add "DERIVED FILE" header | LOW |
-| `scripts/sync-ai-customizations.sh` | New script: assembles derived files from canonical sources | HIGH |
-| `scripts/validate-ai-customizations.sh` | Add check: derived files have "DO NOT EDIT" header | MEDIUM |
+| `scripts/sync-ai-instructions.sh` | New script: assembles derived files from canonical sources | HIGH |
+| `scripts/validate-ai-instructions.sh` | Add check: derived files have "DO NOT EDIT" header | MEDIUM |
 | `.git/hooks/pre-commit` | New hook: warns when derived files are edited without sync script | MEDIUM |
-| `.ai-customizations/README.md` | Add "How to make changes" section referencing OpenSpec | MEDIUM |
-| OpenSpec change template | `openspec/schemas/ai-customization-change/` custom template | MEDIUM |
+| `.ai-instructions/README.md` | Add "How to make changes" section referencing OpenSpec | MEDIUM |
+| OpenSpec change template | `openspec/schemas/ai-instruction-change/` custom template | MEDIUM |
 
 **Total components**: 13
 **Breakdown**: 6 LOW, 4 MEDIUM, 1 HIGH
@@ -148,53 +148,53 @@ openspec/
 
 It also injects a reference into `.github/copilot-instructions.md` (or a
 `.github/instructions/` file). Review what is injected and decide whether to
-accept it as-is or relocate it to `.ai-customizations/` as a canonical instruction.
+accept it as-is or relocate it to `.ai-instructions/` as a canonical instruction.
 
 1.3 Run `git status` and review all new/modified files before committing.
 
-1.4 Update `scripts/validate-ai-customizations.sh` to check that `openspec/AGENTS.md`
+1.4 Update `scripts/validate-ai-instructions.sh` to check that `openspec/AGENTS.md`
 exists (confirming OpenSpec is initialized).
 
 **Exit criterion**: `openspec --version` succeeds; `openspec/` directory exists in
-workspace; `validate-ai-customizations.sh` passes.
+workspace; `validate-ai-instructions.sh` passes.
 
 ---
 
 ### Phase 2 — Define the Governance Spec
 
-**Goal**: The authoritative spec that describes how AI customizations are managed
+**Goal**: The authoritative spec that describes how AI instructions are managed
 lives in OpenSpec. All future changes reference this spec.
 
 #### Files to Create
 
-**`openspec/specs/ai-customization-governance/spec.md`**
+**`openspec/specs/ai-instruction-governance/spec.md`**
 
 Content structure:
 
 ```
-# AI Customization Governance
+# AI Instruction Governance
 
 ## Overview
-The workspace AI customization system uses a canonical hub (.ai-customizations/)
+The workspace AI instruction system uses a canonical hub (.ai-instructions/)
 and derived tool-specific files. This spec defines the governance model.
 
 ## Requirements
 
 ### REQ-GOV-001: No Direct Edits to Derived Files
-The system SHALL prevent direct edits to derived AI customization files.
+The system SHALL prevent direct edits to derived AI instruction files.
 Derived files: .clinerules, .github/copilot-instructions.md,
                .github/instructions/*.md
 
 ### REQ-GOV-002: OpenSpec as Change Gateway
-All changes to AI customization rules MUST be proposed via OpenSpec
+All changes to AI instruction rules MUST be proposed via OpenSpec
 (/opsx:propose) before any file is modified.
 
 ### REQ-GOV-003: Sync Script Atomicity
-The sync script (scripts/sync-ai-customizations.sh) SHALL update all
+The sync script (scripts/sync-ai-instructions.sh) SHALL update all
 derived files in a single atomic operation after a canonical change is applied.
 
 ### REQ-GOV-004: Validation Must Pass Before Commit
-The validate-ai-customizations.sh script MUST pass before any AI
+The validate-ai-instructions.sh script MUST pass before any AI
 customization change is committed.
 
 ## Scenarios
@@ -203,13 +203,13 @@ customization change is committed.
 GIVEN a developer wants to add a rule to corporate communication standards
 WHEN they run /opsx:propose "add X rule to communication standards"
 THEN OpenSpec creates a change folder with proposal, specs, design, and tasks
-AND the design.md identifies which canonical file changes (.ai-customizations/universal/corporate-standards.md)
-AND the tasks.md includes a task to run scripts/sync-ai-customizations.sh after the edit
+AND the design.md identifies which canonical file changes (.ai-instructions/universal/corporate-standards.md)
+AND the tasks.md includes a task to run scripts/sync-ai-instructions.sh after the edit
 AND the change is not applied until /opsx:apply is run
 
 ### SCENARIO: Drift is detected
 GIVEN a derived file was edited directly (bypassing OpenSpec)
-WHEN validate-ai-customizations.sh runs (pre-commit or CI)
+WHEN validate-ai-instructions.sh runs (pre-commit or CI)
 THEN the script reports a FAIL for the "DO NOT EDIT DIRECTLY" header
 AND the commit is blocked by the pre-commit hook
 ```
@@ -231,10 +231,10 @@ Add to the **top** of each derived file (before any existing content):
 ```
 <!-- ============================================================
      DERIVED FILE — DO NOT EDIT DIRECTLY
-     Canonical source: .ai-customizations/<path>
+     Canonical source: .ai-instructions/<path>
      To make changes: /opsx:propose "description of change"
-     Then run: scripts/sync-ai-customizations.sh
-     Validation: scripts/validate-ai-customizations.sh
+     Then run: scripts/sync-ai-instructions.sh
+     Validation: scripts/validate-ai-instructions.sh
      ============================================================ -->
 ```
 
@@ -242,19 +242,19 @@ For `.clinerules` (no HTML comments — use a markdown comment at top):
 
 ```
 [//]: # (DERIVED FILE — DO NOT EDIT DIRECTLY)
-[//]: # (Canonical source: .ai-customizations/core-instructions.md + universal/)
-[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-customizations.sh)
+[//]: # (Canonical source: .ai-instructions/core-instructions.md + universal/)
+[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-instructions.sh)
 ```
 
 #### Files to Update
 
 | File | Canonical Source |
 |---|---|
-| `.clinerules` | `.ai-customizations/core-instructions.md` + `universal/` |
-| `.github/copilot-instructions.md` | `.ai-customizations/core-instructions.md` + `universal/` |
-| `.github/instructions/prompt-me.instructions.md` | `.ai-customizations/methodologies/guided-plan-execution.md` |
-| `.github/instructions/prompt-mirror.instructions.md` | `.ai-customizations/methodologies/prompt-mirror.md` |
-| `.github/instructions/plantuml-svg.instructions.md` | `.ai-customizations/` (to be designated) |
+| `.clinerules` | `.ai-instructions/core-instructions.md` + `universal/` |
+| `.github/copilot-instructions.md` | `.ai-instructions/core-instructions.md` + `universal/` |
+| `.github/instructions/prompt-me.instructions.md` | `.ai-instructions/methodologies/guided-plan-execution.md` |
+| `.github/instructions/prompt-mirror.instructions.md` | `.ai-instructions/methodologies/prompt-mirror.md` |
+| `.github/instructions/plantuml-svg.instructions.md` | `.ai-instructions/` (to be designated) |
 
 **Exit criterion**: All 5 derived files have the header; `grep -r "DERIVED FILE" .github/instructions .clinerules .github/copilot-instructions.md` returns 5 matches.
 
@@ -263,38 +263,38 @@ For `.clinerules` (no HTML comments — use a markdown comment at top):
 ### Phase 4 — Create the Sync Script
 
 **Goal**: A single script assembles all derived files from their canonical sources.
-This is what OpenSpec tasks call as the final step of any AI customization change.
+This is what OpenSpec tasks call as the final step of any AI instruction change.
 
-#### File: `scripts/sync-ai-customizations.sh`
+#### File: `scripts/sync-ai-instructions.sh`
 
 The script performs:
 
 1. **Assemble `.clinerules`**:
    - Header block (DERIVED FILE warning)
-   - Content of `.ai-customizations/core-instructions.md`
+   - Content of `.ai-instructions/core-instructions.md`
    - Summary references to `universal/` files (same content currently in `.clinerules`)
 
 2. **Assemble `.github/copilot-instructions.md`**:
    - Header block
-   - Content of `.ai-customizations/core-instructions.md` (the shared base)
+   - Content of `.ai-instructions/core-instructions.md` (the shared base)
    - Architecture source locations section
    - Commit policy
-   - AI Customization Awareness section
+   - AI Instruction Awareness section
 
 3. **Sync paired methodology files**:
-   - Copy `.ai-customizations/methodologies/guided-plan-execution.md` body into
+   - Copy `.ai-instructions/methodologies/guided-plan-execution.md` body into
      `.github/instructions/prompt-me.instructions.md` (preserving YAML frontmatter)
-   - Copy `.ai-customizations/methodologies/prompt-mirror.md` body into
+   - Copy `.ai-instructions/methodologies/prompt-mirror.md` body into
      `.github/instructions/prompt-mirror.instructions.md` (preserving YAML frontmatter)
 
-4. **Run `scripts/validate-ai-customizations.sh`** as a final check. Exit non-zero
+4. **Run `scripts/validate-ai-instructions.sh`** as a final check. Exit non-zero
    if validation fails.
 
 ```bash
 #!/bin/bash
-# scripts/sync-ai-customizations.sh
-# Assembles all derived AI customization files from canonical sources.
-# Called by OpenSpec tasks after any change to .ai-customizations/.
+# scripts/sync-ai-instructions.sh
+# Assembles all derived AI instruction files from canonical sources.
+# Called by OpenSpec tasks after any change to .ai-instructions/.
 # DO NOT call directly — use /opsx:propose to initiate a change.
 
 set -euo pipefail
@@ -303,19 +303,19 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 # ... (full implementation as a phase 4 task)
 
 echo "Running validation..."
-"$REPO_ROOT/scripts/validate-ai-customizations.sh"
+"$REPO_ROOT/scripts/validate-ai-instructions.sh"
 echo "Sync complete."
 ```
 
-**Exit criterion**: Running `scripts/sync-ai-customizations.sh` produces identical
-content to the current derived files (no change on first run); `validate-ai-customizations.sh`
+**Exit criterion**: Running `scripts/sync-ai-instructions.sh` produces identical
+content to the current derived files (no change on first run); `validate-ai-instructions.sh`
 passes after the sync.
 
 ---
 
 ### Phase 5 — Update the Validation Script
 
-**Goal**: `validate-ai-customizations.sh` enforces the "DERIVED FILE" invariant so
+**Goal**: `validate-ai-instructions.sh` enforces the "DERIVED FILE" invariant so
 drift is detected immediately.
 
 #### New Checks to Add
@@ -357,14 +357,14 @@ fi
 **Check 5C**: The governance spec exists.
 
 ```bash
-if [ -f "$REPO_ROOT/openspec/specs/ai-customization-governance/spec.md" ]; then
-    pass "AI customization governance spec exists"
+if [ -f "$REPO_ROOT/openspec/specs/ai-instruction-governance/spec.md" ]; then
+    pass "AI instruction governance spec exists"
 else
-    fail "openspec/specs/ai-customization-governance/spec.md missing"
+    fail "openspec/specs/ai-instruction-governance/spec.md missing"
 fi
 ```
 
-**Exit criterion**: `validate-ai-customizations.sh` passes with the new checks present.
+**Exit criterion**: `validate-ai-instructions.sh` passes with the new checks present.
 
 ---
 
@@ -380,12 +380,12 @@ The hook:
 2. If any derived file is staged AND the sync script has not been run in this
    session (detected by a `.sync-lock` temp file or by checking whether the
    staged content has the DERIVED FILE header), it emits a warning and exits 1.
-3. Always runs `validate-ai-customizations.sh` before allowing the commit.
+3. Always runs `validate-ai-instructions.sh` before allowing the commit.
 
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
-# Prevents direct edits to derived AI customization files.
+# Prevents direct edits to derived AI instruction files.
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
@@ -405,7 +405,7 @@ for f in "${DERIVED_FILES[@]}"; do
             echo "[ERROR] $f is staged but is MISSING the DERIVED FILE header."
             echo "        Do not edit derived files directly."
             echo "        Use: /opsx:propose 'description of change'"
-            echo "        Then run: scripts/sync-ai-customizations.sh"
+            echo "        Then run: scripts/sync-ai-instructions.sh"
             blocked=1
         fi
     fi
@@ -415,10 +415,10 @@ if [ "$blocked" -eq 1 ]; then
     exit 1
 fi
 
-# Always run validation before committing AI customization changes
-if git diff --cached --name-only | grep -qE '\.ai-customizations/|\.clinerules|copilot-instructions|\.instructions\.md'; then
-    echo "AI customization files staged — running validation..."
-    "$REPO_ROOT/scripts/validate-ai-customizations.sh"
+# Always run validation before committing AI instruction changes
+if git diff --cached --name-only | grep -qE '\.ai-instructions/|\.clinerules|copilot-instructions|\.instructions\.md'; then
+    echo "AI instruction files staged — running validation..."
+    "$REPO_ROOT/scripts/validate-ai-instructions.sh"
 fi
 
 exit 0
@@ -432,14 +432,14 @@ the DERIVED FILE header is blocked. A clean sync-then-commit succeeds.
 
 ---
 
-### Phase 7 — Create OpenSpec Change Template for AI Customizations
+### Phase 7 — Create OpenSpec Change Template for AI Instructions
 
-**Goal**: When a developer runs `/opsx:propose "change X in AI customizations"`, a
+**Goal**: When a developer runs `/opsx:propose "change X in AI instructions"`, a
 specialized template is used that pre-populates the correct artifacts for AI
 customization changes specifically — including identifying canonical vs. derived
 files and always including the sync script task.
 
-#### File: `openspec/schemas/ai-customization-change/template.md`
+#### File: `openspec/schemas/ai-instruction-change/template.md`
 
 This is a community schema / custom template that OpenSpec uses when the change
 description contains "customization", "instruction", "mode", "rule", "standard",
@@ -454,11 +454,11 @@ Template structure:
 <!-- What rule, standard, or methodology is changing and why -->
 
 ## Affected Canonical Files
-<!-- List the .ai-customizations/ files that need to change -->
-- [ ] .ai-customizations/...
+<!-- List the .ai-instructions/ files that need to change -->
+- [ ] .ai-instructions/...
 
 ## Affected Derived Files (do not edit directly)
-<!-- These are updated by scripts/sync-ai-customizations.sh -->
+<!-- These are updated by scripts/sync-ai-instructions.sh -->
 - .clinerules
 - .github/copilot-instructions.md
 - .github/instructions/...
@@ -467,25 +467,25 @@ Template structure:
 <!-- Why this change is needed, what problem it solves -->
 
 ## Related Specs
-<!-- openspec/specs/ai-customization-governance/spec.md -->
+<!-- openspec/specs/ai-instruction-governance/spec.md -->
 ```
 
 ```markdown
 # Tasks: {{change-name}}
 
-- [ ] 1. Edit canonical file(s) in .ai-customizations/ as specified in design.md
-- [ ] 2. Run `scripts/sync-ai-customizations.sh` to propagate changes to derived files
-- [ ] 3. Run `scripts/validate-ai-customizations.sh` — confirm all checks pass
+- [ ] 1. Edit canonical file(s) in .ai-instructions/ as specified in design.md
+- [ ] 2. Run `scripts/sync-ai-instructions.sh` to propagate changes to derived files
+- [ ] 3. Run `scripts/validate-ai-instructions.sh` — confirm all checks pass
 - [ ] 4. Stage all changed files (canonical + derived)
 - [ ] 5. Commit with message: `feat(ai-customizations): {{change-name}}`
 ```
 
-**Exit criterion**: A test `/opsx:propose` for an AI customization change produces
+**Exit criterion**: A test `/opsx:propose` for an AI instruction change produces
 a tasks.md that includes the sync script step.
 
 ---
 
-### Phase 8 — Update `.ai-customizations/README.md`
+### Phase 8 — Update `.ai-instructions/README.md`
 
 **Goal**: The README becomes the primary "how to make changes" document and
 explicitly directs developers and AI agents to use OpenSpec.
@@ -498,7 +498,7 @@ System Overview section:
 ```markdown
 ## How to Make Changes
 
-**All changes to AI customizations go through OpenSpec — never directly.**
+**All changes to AI instructions go through OpenSpec — never directly.**
 
 ### Workflow
 
@@ -510,9 +510,9 @@ System Overview section:
 
 3. **Apply**: Run `/opsx:apply`
    The AI executes `tasks.md`. The final task always runs
-   `scripts/sync-ai-customizations.sh`, which updates all derived files atomically.
+   `scripts/sync-ai-instructions.sh`, which updates all derived files atomically.
 
-4. **Validate**: `scripts/validate-ai-customizations.sh` runs automatically.
+4. **Validate**: `scripts/validate-ai-instructions.sh` runs automatically.
    All checks must pass before the commit is made.
 
 5. **Archive**: Run `/opsx:archive` to move the change to the archive.
@@ -521,7 +521,7 @@ System Overview section:
 
 | Canonical (edit via OpenSpec) | Derived (updated by sync script) |
 |---|---|
-| `.ai-customizations/**` | `.clinerules` |
+| `.ai-instructions/**` | `.clinerules` |
 | | `.github/copilot-instructions.md` |
 | | `.github/instructions/prompt-me.instructions.md` |
 | | `.github/instructions/prompt-mirror.instructions.md` |
@@ -530,7 +530,7 @@ System Overview section:
 ### Why OpenSpec
 
 The previous system relied on manual conventions (`<!-- PAIRED FILE -->` comments,
-`validate-ai-customizations.sh` drift detection). Drift still happened because
+`validate-ai-instructions.sh` drift detection). Drift still happened because
 nothing prevented direct edits. OpenSpec makes the change proposal step
 structurally mandatory — you can't apply a change without first creating the
 artifacts that describe what changed and why.
@@ -546,7 +546,7 @@ canonical/derived table and the 5-step OpenSpec workflow.
 **Goal**: `scripts/setup-ai-tools.sh` (the one-time machine setup script) also
 installs the pre-commit hook, so new developers get enforcement automatically.
 
-#### Change to `scripts/setup-ai-tools.sh` (or `.ai-customizations/setup-ai-tools.sh`)
+#### Change to `scripts/setup-ai-tools.sh` (or `.ai-instructions/setup-ai-tools.sh`)
 
 Add:
 
@@ -580,7 +580,7 @@ customization change through OpenSpec.
 
 #### Test Change
 
-Add a new rule to `.ai-customizations/universal/corporate-standards.md`:
+Add a new rule to `.ai-instructions/universal/corporate-standards.md`:
 
 ```
 - Never use "leverage" as a verb — use "use" or "apply"
@@ -592,10 +592,10 @@ Add a new rule to `.ai-customizations/universal/corporate-standards.md`:
 2. Review generated `openspec/changes/add-no-leverage-verb-rule/`
 3. Verify `design.md` correctly identifies `universal/corporate-standards.md` as
    the canonical file
-4. Verify `tasks.md` includes `scripts/sync-ai-customizations.sh` as a task
+4. Verify `tasks.md` includes `scripts/sync-ai-instructions.sh` as a task
 5. `/opsx:apply` — confirm the AI edits the canonical file and runs sync
 6. Confirm `.clinerules` and `.github/copilot-instructions.md` are updated
-7. `scripts/validate-ai-customizations.sh` passes
+7. `scripts/validate-ai-instructions.sh` passes
 8. Attempt to commit a direct edit to `.clinerules` — confirm the hook blocks it
 9. `/opsx:archive`
 
@@ -617,9 +617,9 @@ Update `ai-platform-selection/roadmap/ROADMAP.md`:
 **Status**: Complete
 
 **What was integrated**:
-OpenSpec is now the mandatory change management gateway for all AI customization
-files. See `openspec/specs/ai-customization-governance/spec.md` for the governance
-spec and `.ai-customizations/README.md` for the "How to Make Changes" workflow.
+OpenSpec is now the mandatory change management gateway for all AI instruction
+files. See `openspec/specs/ai-instruction-governance/spec.md` for the governance
+spec and `.ai-instructions/README.md` for the "How to Make Changes" workflow.
 ```
 
 ---
@@ -637,7 +637,7 @@ Phase 4  → Create Sync Script
 Phase 5  → Update Validation Script
 Phase 6  → Add Pre-Commit Hook (source file)
 Phase 7  → Create OpenSpec Change Template
-Phase 8  → Update .ai-customizations/README.md
+Phase 8  → Update .ai-instructions/README.md
 Phase 9  → Install Hook via setup-ai-tools.sh
 Phase 10 → End-to-End Validation with Real Change
 Phase 11 → Update Roadmap
@@ -653,18 +653,18 @@ All other phases are sequential.
 | File | Action | Phase |
 |---|---|---|
 | `openspec/` (directory) | Created by `openspec init` | 1 |
-| `openspec/specs/ai-customization-governance/spec.md` | New | 2 |
+| `openspec/specs/ai-instruction-governance/spec.md` | New | 2 |
 | `.clinerules` | Add DERIVED FILE header | 3 |
 | `.github/copilot-instructions.md` | Add DERIVED FILE header | 3 |
 | `.github/instructions/prompt-me.instructions.md` | Add DERIVED FILE header | 3 |
 | `.github/instructions/prompt-mirror.instructions.md` | Add DERIVED FILE header | 3 |
 | `.github/instructions/plantuml-svg.instructions.md` | Add DERIVED FILE header | 3 |
-| `scripts/sync-ai-customizations.sh` | New | 4 |
-| `scripts/validate-ai-customizations.sh` | Add 3 new checks | 5 |
+| `scripts/sync-ai-instructions.sh` | New | 4 |
+| `scripts/validate-ai-instructions.sh` | Add 3 new checks | 5 |
 | `.git-hooks/pre-commit` | New (tracked) | 6 |
-| `openspec/schemas/ai-customization-change/template.md` | New | 7 |
-| `.ai-customizations/README.md` | Add "How to Make Changes" section | 8 |
-| `.ai-customizations/setup-ai-tools.sh` | Add hook install step | 9 |
+| `openspec/schemas/ai-instruction-change/template.md` | New | 7 |
+| `.ai-instructions/README.md` | Add "How to Make Changes" section | 8 |
+| `.ai-instructions/setup-ai-tools.sh` | Add hook install step | 9 |
 | `ai-platform-selection/roadmap/ROADMAP.md` | Update status | 11 |
 
 **Total**: 15 files (3 new directories, 5 new files, 7 modified files)
@@ -673,7 +673,7 @@ All other phases are sequential.
 
 ## Non-Goals
 
-- This plan does not refactor or consolidate the content of existing AI customization
+- This plan does not refactor or consolidate the content of existing AI instruction
   files — only the change process changes.
 - This plan does not migrate historical changes retroactively into OpenSpec. Only
   future changes go through the new workflow.

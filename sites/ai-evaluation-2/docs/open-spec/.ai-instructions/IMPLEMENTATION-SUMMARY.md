@@ -1,11 +1,11 @@
-# AI Customizations Implementation Summary
+# AI Instructions Implementation Summary
 
 ## What Has Been Created
 
-This implementation provides a comprehensive AI customization framework for Roo following enterprise standards from your previous workspace. Here's what has been implemented:
+This implementation provides a comprehensive AI instruction framework for Roo following enterprise standards from your previous workspace. Here's what has been implemented:
 
 ### 1. Core Structure ✅
-- **Base directory**: `.ai-customizations/`
+- **Base directory**: `.ai-instructions/`
 - **Core instructions**: Foundational rules for all modes
 - **Searchable index**: Quick reference for all customizations
 - **Global configuration guide**: How to deploy globally
@@ -64,12 +64,12 @@ This implementation provides a comprehensive AI customization framework for Roo 
 ### Option 2: Project-Specific
 
 1. Update your project's `.roomodes` file
-2. Add `customInstructions` that reference `.ai-customizations/`
+2. Add `customInstructions` that reference `.ai-instructions/`
 3. See `GLOBAL-CONFIGURATION.md` for examples
 
 ### Option 3: Shared Customizations
 
-1. Move `.ai-customizations/` to a shared location
+1. Move `.ai-instructions/` to a shared location
 2. Create symlinks in each project
 3. Maintains single source of truth
 
@@ -101,7 +101,7 @@ This implementation provides a comprehensive AI customization framework for Roo 
 
 1. **Check Structure**:
    ```bash
-   ls -la .ai-customizations/
+   ls -la .ai-instructions/
    ```
 
 2. **Verify Content**:
@@ -133,7 +133,7 @@ This implementation provides a comprehensive AI customization framework for Roo 
 
 ## Success Metrics
 
-Your AI customizations are successful when:
+Your AI instructions are successful when:
 - ✅ All modes follow professional standards
 - ✅ No emojis appear in any output
 - ✅ Effort estimates use component/endpoint complexity, not dollars or sprints
@@ -151,4 +151,4 @@ Your AI customizations are successful when:
 
 ---
 
-This implementation brings your comprehensive AI customization system to Roo, ensuring consistent, professional, enterprise-grade AI assistance across all modes and projects.
+This implementation brings your comprehensive AI instruction system to Roo, ensuring consistent, professional, enterprise-grade AI assistance across all modes and projects.

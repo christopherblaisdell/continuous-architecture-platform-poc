@@ -1,9 +1,9 @@
-# New Workspace Setup Guide — AI Customization System
+# New Workspace Setup Guide — AI Instruction System
 
-This guide walks through reproducing the full AI customization governance system
+This guide walks through reproducing the full AI instruction governance system
 in a new workspace from scratch. Follow the steps in order.
 
-Reference: `docs/ai-customization-system-inventory.md` for the full file inventory.
+Reference: `docs/ai-instruction-system-inventory.md` for the full file inventory.
 
 ---
 
@@ -31,13 +31,13 @@ openspec --version
 
 ## Step 2 — Copy the Canonical Hub
 
-Copy the entire `.ai-customizations/` directory into the new workspace. This is the
+Copy the entire `.ai-instructions/` directory into the new workspace. This is the
 full canonical source — all rules live here.
 
 Key files that must be present:
 
 ```
-.ai-customizations/
+.ai-instructions/
 ├── README.md
 ├── core-instructions.md
 ├── modes.yaml
@@ -54,7 +54,7 @@ Key files that must be present:
 is hardcoded to the old workspace path. Update it to the new workspace path:
 
 ```bash
-SOURCE_DIR="/path/to/new-workspace/.ai-customizations"
+SOURCE_DIR="/path/to/new-workspace/.ai-instructions"
 ```
 
 ---
@@ -117,13 +117,13 @@ Copy the full content from this workspace's `openspec/config.yaml`.
 ## Step 6 — Copy the Governance Spec
 
 ```
-openspec/specs/ai-customization-governance/spec.md
+openspec/specs/ai-instruction-governance/spec.md
 ```
 
 Create the directory if needed:
 
 ```bash
-mkdir -p openspec/specs/ai-customization-governance
+mkdir -p openspec/specs/ai-instruction-governance
 ```
 
 ---
@@ -133,7 +133,7 @@ mkdir -p openspec/specs/ai-customization-governance
 Either copy the schema directory directly:
 
 ```
-openspec/schemas/ai-customization-change/
+openspec/schemas/ai-instruction-change/
 ├── schema.yaml
 └── templates/
     ├── proposal.md
@@ -145,13 +145,13 @@ openspec/schemas/ai-customization-change/
 Or recreate it by forking and then replacing the template files:
 
 ```bash
-openspec schema fork spec-driven ai-customization-change
+openspec schema fork spec-driven ai-instruction-change
 # Then replace templates/proposal.md and templates/tasks.md with the customized versions
 ```
 
 The two customized templates are the critical files. Copy them from:
-- `openspec/schemas/ai-customization-change/templates/proposal.md`
-- `openspec/schemas/ai-customization-change/templates/tasks.md`
+- `openspec/schemas/ai-instruction-change/templates/proposal.md`
+- `openspec/schemas/ai-instruction-change/templates/tasks.md`
 
 ---
 
@@ -159,14 +159,14 @@ The two customized templates are the critical files. Copy them from:
 
 ```bash
 mkdir -p scripts
-cp scripts/validate-ai-customizations.sh /path/to/new-workspace/scripts/
-chmod +x /path/to/new-workspace/scripts/validate-ai-customizations.sh
+cp scripts/validate-ai-instructions.sh /path/to/new-workspace/scripts/
+chmod +x /path/to/new-workspace/scripts/validate-ai-instructions.sh
 ```
 
 Run it to verify everything is in order:
 
 ```bash
-scripts/validate-ai-customizations.sh
+scripts/validate-ai-instructions.sh
 # Expected: Errors: 0, Warnings: 0
 ```
 
@@ -190,16 +190,16 @@ Or create it manually — full content:
 echo "REMINDER: Ensure you're not committing any credentials, keys, or passwords."
 echo ""
 
-# Check if AI customization files are staged — if so, run validation
+# Check if AI instruction files are staged — if so, run validation
 AI_FILES_STAGED=$(git diff --cached --name-only | grep -E '^\.(ai-customizations|github|clinerules|roomodes)' || true)
 if [ -n "$AI_FILES_STAGED" ]; then
-    SCRIPT="$(git rev-parse --show-toplevel)/scripts/validate-ai-customizations.sh"
+    SCRIPT="$(git rev-parse --show-toplevel)/scripts/validate-ai-instructions.sh"
     if [ -x "$SCRIPT" ]; then
-        echo "AI customization files staged — running drift validation..."
+        echo "AI instruction files staged — running drift validation..."
         echo ""
         if ! "$SCRIPT"; then
             echo ""
-            echo "Commit blocked: AI customization drift detected. Fix the errors above."
+            echo "Commit blocked: AI instruction drift detected. Fix the errors above."
             echo "To bypass (not recommended): git commit --no-verify"
             exit 1
         fi
@@ -219,9 +219,9 @@ then explicitly allow tracked directories). If the new workspace uses a similar
 approach, add these entries:
 
 ```gitignore
-# Allow AI customizations
-!.ai-customizations/
-!.ai-customizations/**
+# Allow AI instructions
+!.ai-instructions/
+!.ai-instructions/**
 
 # Allow derived AI files
 !.clinerules
@@ -245,13 +245,13 @@ This symlinks the canonical hub into Roo Code's global config and links
 user prompts into VS Code:
 
 ```bash
-chmod +x .ai-customizations/setup-ai-tools.sh
-./.ai-customizations/setup-ai-tools.sh
+chmod +x .ai-instructions/setup-ai-tools.sh
+./.ai-instructions/setup-ai-tools.sh
 ```
 
 After this:
-- `~/.config/roo/ai-customizations` → `<workspace>/.ai-customizations/`
-- `~/.config/roo/modes.yaml` → `<workspace>/.ai-customizations/modes.yaml`
+- `~/.config/roo/ai-customizations` → `<workspace>/.ai-instructions/`
+- `~/.config/roo/modes.yaml` → `<workspace>/.ai-instructions/modes.yaml`
 - VS Code user prompts symlinked from `user-prompts/`
 
 **Note:** Update `SOURCE_DIR` in `setup-ai-tools.sh` to the new workspace path first (see Step 2).
@@ -261,7 +261,7 @@ After this:
 ## Step 12 — Final Validation
 
 ```bash
-scripts/validate-ai-customizations.sh
+scripts/validate-ai-instructions.sh
 ```
 
 Expected output:
@@ -281,7 +281,7 @@ These items were skipped in the original implementation and remain as future wor
 
 | Item | Why Skipped | Priority |
 |---|---|---|
-| `scripts/sync-ai-customizations.sh` | High effort — requires scripting per-file assembly logic | High — needed before team rollout |
+| `scripts/sync-ai-instructions.sh` | High effort — requires scripting per-file assembly logic | High — needed before team rollout |
 | Tracked pre-commit hook (`.git-hooks/pre-commit` + `core.hooksPath`) | Low value for single-developer workspace | Medium — needed for team rollout |
 | Phase 10 end-to-end test | No suitable test change available at time of implementation | Low |
 | Phase 11 roadmap update | Minor bookkeeping | Low |
@@ -298,22 +298,22 @@ Add the appropriate header:
 For `.clinerules`:
 ```
 [//]: # (DERIVED FILE — DO NOT EDIT DIRECTLY)
-[//]: # (Canonical source: .ai-customizations/core-instructions.md + .ai-customizations/universal/)
-[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-customizations.sh)
-[//]: # (Validation: scripts/validate-ai-customizations.sh)
-[//]: # (Governance: openspec/specs/ai-customization-governance/spec.md)
+[//]: # (Canonical source: .ai-instructions/core-instructions.md + .ai-instructions/universal/)
+[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-instructions.sh)
+[//]: # (Validation: scripts/validate-ai-instructions.sh)
+[//]: # (Governance: openspec/specs/ai-instruction-governance/spec.md)
 ```
 
 For `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`:
 ```
 <!-- ============================================================
      DERIVED FILE — DO NOT EDIT DIRECTLY
-     Canonical source: .ai-customizations/core-instructions.md
-                       .ai-customizations/universal/
+     Canonical source: .ai-instructions/core-instructions.md
+                       .ai-instructions/universal/
      To make changes: /opsx:propose "description of change"
-     Then run: scripts/sync-ai-customizations.sh
-     Validation: scripts/validate-ai-customizations.sh
-     Governance: openspec/specs/ai-customization-governance/spec.md
+     Then run: scripts/sync-ai-instructions.sh
+     Validation: scripts/validate-ai-instructions.sh
+     Governance: openspec/specs/ai-instruction-governance/spec.md
      ============================================================ -->
 ```
 
@@ -334,33 +334,33 @@ strip_html_blocks='BEGIN{skip=0} /^<!-- ===/{ skip=1 } skip && /-->$/{ skip=0; n
 
 Run `openspec init` in the workspace root.
 
-### `[FAIL] AI customization governance spec exists`
+### `[FAIL] AI instruction governance spec exists`
 
 Create the directory and copy the spec:
 ```bash
-mkdir -p openspec/specs/ai-customization-governance
-# Copy openspec/specs/ai-customization-governance/spec.md from this workspace
+mkdir -p openspec/specs/ai-instruction-governance
+# Copy openspec/specs/ai-instruction-governance/spec.md from this workspace
 ```
 
 ---
 
 ## Change Workflow (Once Set Up)
 
-All changes to AI customization rules go through OpenSpec:
+All changes to AI instruction rules go through OpenSpec:
 
 ```bash
 # 1. Propose
-/opsx:propose --schema ai-customization-change "description of change"
+/opsx:propose --schema ai-instruction-change "description of change"
 
 # 2. Review proposal.md, update design.md
 # 3. Apply
 /opsx:apply
 
 # 4. Verify
-scripts/validate-ai-customizations.sh
+scripts/validate-ai-instructions.sh
 
 # 5. Archive
 /opsx:archive
 ```
 
-Reference: `.ai-customizations/README.md` — "How to Make Changes" section.
+Reference: `.ai-instructions/README.md` — "How to Make Changes" section.

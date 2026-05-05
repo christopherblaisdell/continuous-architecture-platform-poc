@@ -4,17 +4,17 @@ applyTo: "**"
 
 <!-- ============================================================
      DERIVED FILE — DO NOT EDIT DIRECTLY
-     Canonical source: .ai-customizations/methodologies/guided-plan-execution.md
+     Canonical source: .ai-instructions/methodologies/guided-plan-execution.md
      To make changes: /opsx:propose "description of change"
-     Then run: scripts/sync-ai-customizations.sh
-     Validation: scripts/validate-ai-customizations.sh
-     Governance: openspec/specs/ai-customization-governance/spec.md
+     Then run: scripts/sync-ai-instructions.sh
+     Validation: scripts/validate-ai-instructions.sh
+     Governance: openspec/specs/ai-instruction-governance/spec.md
      ============================================================ -->
 
 # Guided Plan Execution — Interactive Decision Loop
 
-<!-- PAIRED FILE: This content must stay in sync with .ai-customizations/methodologies/guided-plan-execution.md -->
-<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-customizations.sh -->
+<!-- PAIRED FILE: This content must stay in sync with .ai-instructions/methodologies/guided-plan-execution.md -->
+<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-instructions.sh -->
 
 **Triggers**: User says "prompt me", "execute this plan", or "let's work through this step by step"
 

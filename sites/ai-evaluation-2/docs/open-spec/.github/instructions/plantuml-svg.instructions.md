@@ -4,11 +4,11 @@ applyTo: "**/*.puml,**/*.svg,**/generate-review-svgs.py"
 
 <!-- ============================================================
      DERIVED FILE — DO NOT EDIT DIRECTLY
-     Canonical source: .ai-customizations/methodologies/plantuml-svg-workflow.md
+     Canonical source: .ai-instructions/methodologies/plantuml-svg-workflow.md
      To make changes: /opsx:propose "description of change"
-     Then run: scripts/sync-ai-customizations.sh
-     Validation: scripts/validate-ai-customizations.sh
-     Governance: openspec/specs/ai-customization-governance/spec.md
+     Then run: scripts/sync-ai-instructions.sh
+     Validation: scripts/validate-ai-instructions.sh
+     Governance: openspec/specs/ai-instruction-governance/spec.md
      ============================================================ -->
 
 # PlantUML SVG Generation Rules

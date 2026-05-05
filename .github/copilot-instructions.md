@@ -558,7 +558,7 @@ The NovaTrek Architecture Portal is a MkDocs Material site deployed to Azure Sta
 | Site | URL | Deploy Token |
 |------|-----|--------------|
 | Portal (primary) | `https://architecture.novatrek.cc` | `6fc5e62f8594941f108fcd3721dbf65135eb17cce39bb6a9f9905bab73fb4d3604-14c7af52-ae80-4684-8db0-719829c14c8500f0731083b8ce0f` |
-| AI Customization | `https://ai.customization.novatrek.cc` | `46398dbe9a7fd655d91db4368067b68d780ea34d0550ecb352a5ea6a3524b90302-25ff66c5-164f-42c7-b482-b80bae3d52d100f08060cb3ec30f` |
+| AI Instruction | `https://ai.customization.novatrek.cc` | `46398dbe9a7fd655d91db4368067b68d780ea34d0550ecb352a5ea6a3524b90302-25ff66c5-164f-42c7-b482-b80bae3d52d100f08060cb3ec30f` |
 | Docs site | `https://victorious-mud-06704740f.4.azurestaticapps.net` | `91924f1a91d99cefaaaa12b01684c854c9b4d1a49ef3ae4d2dd1ac1ddb24738a04-de4c54e1-f90d-4b5d-b7aa-dac46842447300f283206704740f` |
 
 ### Build and Deploy Workflow
@@ -593,7 +593,7 @@ Some docs are published to multiple sites. A manifest-driven sync system handles
 
 **Check for drift** (useful in CI): `python3 sites/sync-sites.py --check` (exits 1 if any target is out of sync)
 
-### AI Customization Mini-Site
+### AI Instruction Mini-Site
 
 A standalone 3-page site at `sites/ai-customization/` publishing the Copilot vs OpenSpec comparison and reference guides.
 

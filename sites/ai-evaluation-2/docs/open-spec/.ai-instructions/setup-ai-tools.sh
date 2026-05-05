@@ -5,10 +5,10 @@
 # =============================================================================
 #
 # This script configures Roo Code and VS Code to use
-# the source-controlled AI customizations from this repository.
+# the source-controlled AI instructions from this repository.
 #
 # What it does:
-#   1. Roo Code:   Symlinks .ai-customizations/ → ~/.config/roo/ai-customizations
+#   1. Roo Code:   Symlinks .ai-instructions/ → ~/.config/roo/ai-customizations
 #                  Creates modes.yaml if missing
 #   2. VS Code:    Symlinks user-prompts/*.prompt.md (and *.agent.md, *.instructions.md)
 #                  → ~/Library/Application Support/Code/User/prompts/
@@ -18,8 +18,8 @@
 # repo are immediately reflected everywhere — no drift, no duplication.
 #
 # Usage:
-#   chmod +x .ai-customizations/setup-ai-tools.sh
-#   ./.ai-customizations/setup-ai-tools.sh
+#   chmod +x .ai-instructions/setup-ai-tools.sh
+#   ./.ai-instructions/setup-ai-tools.sh
 #
 # =============================================================================
 
@@ -27,10 +27,10 @@ set -euo pipefail
 
 # --- Configuration -----------------------------------------------------------
 
-# TODO: Update SOURCE_DIR to the absolute path of .ai-customizations/ in this workspace
+# TODO: Update SOURCE_DIR to the absolute path of .ai-instructions/ in this workspace
 # before running this script. Example:
-#   SOURCE_DIR="/path/to/your-new-workspace/.ai-customizations"
-SOURCE_DIR="/Users/christopherblaisdell/Documents/continuous-architecture-platform-poc-2/sites/ai-evaluation-2/docs/open-spec/.ai-customizations"
+#   SOURCE_DIR="/path/to/your-new-workspace/.ai-instructions"
+SOURCE_DIR="/Users/christopherblaisdell/Documents/continuous-architecture-platform-poc-2/sites/ai-evaluation-2/docs/open-spec/.ai-instructions"
 ROO_CONFIG_DIR="$HOME/.config/roo"
 MODES_YAML="$ROO_CONFIG_DIR/modes.yaml"
 VSCODE_PROMPTS_DIR="$HOME/Library/Application Support/Code/User/prompts"
@@ -90,7 +90,7 @@ if [ -f "$MODES_SOURCE" ]; then
     create_symlink "$MODES_SOURCE" "$MODES_YAML" "modes.yaml -> Roo config"
 else
     echo "  [WARN] modes.yaml not found at $MODES_SOURCE"
-    echo "         Create .ai-customizations/modes.yaml and re-run"
+    echo "         Create .ai-instructions/modes.yaml and re-run"
 fi
 
 # Verify setup
@@ -166,7 +166,7 @@ echo ""
 echo "🚀 Next steps:"
 echo "   1. Restart VS Code"
 echo "   2. Open any project and use Roo"
-echo "   3. The AI customizations will be automatically loaded"
+echo "   3. The AI instructions will be automatically loaded"
 echo ""
 echo "💡 To update customizations:"
 echo "   1. Edit files in: $SOURCE_DIR"

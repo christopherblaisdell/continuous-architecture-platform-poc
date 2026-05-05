@@ -8,7 +8,7 @@
 - [Macro Summary (Three Pages)](#macro-summary-three-pages)
 - [Individual Stakeholder Feedback Analysis](#individual-stakeholder-feedback-analysis)
 - [Integration of AI with Continuous Integration and Documentation Pipelines](#integration-of-ai-with-continuous-integration-and-documentation-pipelines)
-- [GitOps Governance for AI Customizations via Pull Requests](#gitops-governance-for-ai-customizations-via-pull-requests)
+- [GitOps Governance for AI Instructions via Pull Requests](#gitops-governance-for-ai-customizations-via-pull-requests)
 - [Balancing Mandatory Shared Context with Personal Workflow Customizations](#balancing-mandatory-shared-context-with-personal-workflow-customizations)
 - [Confluence Integration and Enterprise Knowledge Retrieval](#confluence-integration-and-enterprise-knowledge-retrieval)
 - [Advanced Vectorization and Chunking of PlantUML Artifacts](#advanced-vectorization-and-chunking-of-plantuml-artifacts)
@@ -108,7 +108,7 @@ Assessment: Correct and strategically important. Deterministic pipeline governan
 
 ### Feedback 2: Shared solution + PR-driven skills/instructions evolution
 
-Assessment: Correct. GitOps for AI customizations is a strong governance model and reduces need for a separate central AI admin application.
+Assessment: Correct. GitOps for AI instructions is a strong governance model and reduces need for a separate central AI admin application.
 
 ### Feedback 3: Mandatory shared customizations + personal workflow customizations
 
@@ -147,7 +147,7 @@ By integrating the local embedded agent with the continuous integration output, 
 
 ---
 
-## GitOps Governance for AI Customizations via Pull Requests
+## GitOps Governance for AI Instructions via Pull Requests
 
 A central challenge in deploying autonomous coding agents at an enterprise scale is ensuring that the models consistently adhere to proprietary coding standards, architectural patterns, and security mandates. The traditional approach to this challenge involved configuring system prompts within a centralized administrative portal, separate from the actual codebase. This disconnect often leads to prompt drift, where the instructions given to the AI fail to keep pace with the rapidly evolving architecture of the software.
 

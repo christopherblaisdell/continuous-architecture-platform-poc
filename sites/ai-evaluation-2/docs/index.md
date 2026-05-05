@@ -137,7 +137,7 @@ Solution Architecture Practice Comparative Evaluation of Agentic AI
 
 ## Working Notes: Customization Distribution Discussion (April 2026)
 
-The following captures an active conversation about how to distribute and evolve the practice's AI customization layer.
+The following captures an active conversation about how to distribute and evolve the practice's AI instruction layer.
 
 **Context:** A working POC has been completed that (1) stands up Foundry IQ, (2) configures it to chunk and inject architecture content, and (3) integrates it with GitHub Copilot Chat in VS Code. The question now is how to distribute the customization layer to architects and how it evolves over time.
 

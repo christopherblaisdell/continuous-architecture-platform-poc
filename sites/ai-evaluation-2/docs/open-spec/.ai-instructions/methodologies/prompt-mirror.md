@@ -1,7 +1,7 @@
 # Prompt Mirror — Context Capture System
 
 <!-- PAIRED FILE: This content must stay in sync with .github/instructions/prompt-mirror.instructions.md -->
-<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-customizations.sh -->
+<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-instructions.sh -->
 
 **Applicable Modes**: All modes
 **Instruction File**: `.github/instructions/prompt-mirror.instructions.md` (applyTo: `**`)

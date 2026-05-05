@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # =============================================================================
-# AI Customization Validation Script
+# AI Instruction Validation Script
 # =============================================================================
 #
-# Checks that AI customizations are in sync and properly
+# Checks that AI instructions are in sync and properly
 # configured. Run manually or via pre-commit hook.
 #
 # Usage:
-#   scripts/validate-ai-customizations.sh
+#   scripts/validate-ai-instructions.sh
 #
 # Exit codes:
 #   0 — all checks passed
@@ -23,10 +23,10 @@
 # To activate it:
 #   1. Verify all expected files exist at the paths checked below
 #      (some paths reference files relative to repo root, not open-spec/)
-#   2. Run the script from the workspace root: scripts/validate-ai-customizations.sh
+#   2. Run the script from the workspace root: scripts/validate-ai-instructions.sh
 #   3. Uncomment the block below and remove this notice
 # =============================================================================
-echo "[DEFERRED] validate-ai-customizations.sh has not been activated in this workspace yet."
+echo "[DEFERRED] validate-ai-instructions.sh has not been activated in this workspace yet."
 echo "See the comment at the top of this file for activation steps."
 exit 0
 
@@ -53,13 +53,13 @@ echo ""
 required_files=(
     ".github/copilot-instructions.md"
     ".clinerules"
-    ".ai-customizations/core-instructions.md"
-    ".ai-customizations/modes.yaml"
-    ".ai-customizations/setup-ai-tools.sh"
+    ".ai-instructions/core-instructions.md"
+    ".ai-instructions/modes.yaml"
+    ".ai-instructions/setup-ai-tools.sh"
     ".github/instructions/prompt-me.instructions.md"
-    ".ai-customizations/methodologies/guided-plan-execution.md"
+    ".ai-instructions/methodologies/guided-plan-execution.md"
     ".github/instructions/prompt-mirror.instructions.md"
-    ".ai-customizations/methodologies/prompt-mirror.md"
+    ".ai-instructions/methodologies/prompt-mirror.md"
     "prompt-mirror/README.md"
 )
 
@@ -100,7 +100,7 @@ echo ""
 # prompt-me.instructions.md <-> guided-plan-execution.md
 # Strip YAML frontmatter and PAIRED FILE comments, then compare core content
 primary_prompt="$REPO_ROOT/.github/instructions/prompt-me.instructions.md"
-roo_prompt="$REPO_ROOT/.ai-customizations/methodologies/guided-plan-execution.md"
+roo_prompt="$REPO_ROOT/.ai-instructions/methodologies/guided-plan-execution.md"
 
 if [ -f "$primary_prompt" ] && [ -f "$roo_prompt" ]; then
     # Extract body content (skip frontmatter, multi-line HTML blocks, single-line comments, and mode-specific lines)
@@ -113,7 +113,7 @@ if [ -f "$primary_prompt" ] && [ -f "$roo_prompt" ]; then
         pass "prompt-me.instructions.md and guided-plan-execution.md are in sync"
     else
         fail "prompt-me.instructions.md and guided-plan-execution.md have DRIFTED"
-        echo "       Run: diff <(sed '1,/^---$/d' .github/instructions/prompt-me.instructions.md) .ai-customizations/methodologies/guided-plan-execution.md"
+        echo "       Run: diff <(sed '1,/^---$/d' .github/instructions/prompt-me.instructions.md) .ai-instructions/methodologies/guided-plan-execution.md"
     fi
 else
     fail "Cannot compare paired files — one or both missing"
@@ -121,7 +121,7 @@ fi
 
 # prompt-mirror.instructions.md <-> prompt-mirror.md
 primary_mirror="$REPO_ROOT/.github/instructions/prompt-mirror.instructions.md"
-roo_mirror="$REPO_ROOT/.ai-customizations/methodologies/prompt-mirror.md"
+roo_mirror="$REPO_ROOT/.ai-instructions/methodologies/prompt-mirror.md"
 
 if [ -f "$primary_mirror" ] && [ -f "$roo_mirror" ]; then
     # Both files should contain the key PAIRED FILE comment
@@ -273,10 +273,10 @@ else
     fail ".github/prompts/opsx-propose.prompt.md missing — run: openspec init"
 fi
 
-if [ -f "$REPO_ROOT/openspec/specs/ai-customization-governance/spec.md" ]; then
-    pass "AI customization governance spec exists"
+if [ -f "$REPO_ROOT/openspec/specs/ai-instruction-governance/spec.md" ]; then
+    pass "AI instruction governance spec exists"
 else
-    fail "openspec/specs/ai-customization-governance/spec.md missing"
+    fail "openspec/specs/ai-instruction-governance/spec.md missing"
 fi
 
 # --- Summary ------------------------------------------------------------------

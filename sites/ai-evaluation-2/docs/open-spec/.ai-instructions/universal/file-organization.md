@@ -39,7 +39,7 @@ All modes MUST follow these file organization standards to maintain consistency,
 ### Project Root Organization
 ```
 project-root/
-├── .ai-customizations/          # AI customization configs
+├── .ai-instructions/          # AI instruction configs
 ├── documentation/               # All documentation
 │   ├── architecture/           # Architecture docs
 │   ├── api/                    # API documentation
@@ -104,7 +104,7 @@ Examples:
 ## Special Directories
 
 ### Hidden Directories
-- `.ai-customizations/` - AI configuration
+- `.ai-instructions/` - AI configuration
 - `.github/` - GitHub specific files
 - `.vscode/` - VS Code settings
 - `.idea/` - IDE settings

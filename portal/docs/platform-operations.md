@@ -69,7 +69,7 @@ All workflows live in [`.github/workflows/`](https://github.com/christopherblais
 | Site | Custom Domain | Azure Resource | Purpose |
 |------|--------------|----------------|---------||
 | Architecture Portal | [architecture.novatrek.cc](https://architecture.novatrek.cc) | `swa-cap-portal-prod` | MkDocs Material — architecture knowledge base (primary) |
-| AI Customization | [ai.customization.novatrek.cc](https://ai.customization.novatrek.cc) | `swa-cap-ai-customization` | MkDocs Material — AI workflow customization reference (Copilot vs OpenSpec) |
+| AI Instruction | [ai.customization.novatrek.cc](https://ai.customization.novatrek.cc) | `swa-cap-ai-customization` | MkDocs Material — AI workflow customization reference (Copilot vs OpenSpec) |
 | Presentation Site | [presentation.novatrek.cc](https://presentation.novatrek.cc) | `swa-cap-docs-prod` | MkDocs Material — executive briefing slides |
 | Confluence Mirror | [novatrek.atlassian.net/wiki](https://novatrek.atlassian.net/wiki) (space: `ARCH`) | N/A | Read-only mirror of portal content |
 
@@ -112,7 +112,7 @@ Code push (portal/**)
 
 ### Multi-Site Content Sync
 
-Some documentation pages are published to multiple sites (e.g., the AI workflow customization guides appear on both the Architecture Portal and the standalone AI Customization site). A manifest-driven sync system keeps these in sync.
+Some documentation pages are published to multiple sites (e.g., the AI workflow customization guides appear on both the Architecture Portal and the standalone AI Instruction site). A manifest-driven sync system keeps these in sync.
 
 **Source of truth**: `docs/` directory (uppercase filenames, author-edited)
 
@@ -139,7 +139,7 @@ python3 sites/sync-sites.py --check
 
 **Currently shared pages**:
 
-| Source | Portal | AI Customization |
+| Source | Portal | AI Instruction |
 |--------|--------|------------------|
 | `docs/COPILOT-VS-OPENSPEC-COMPARISON.md` | `copilot-vs-openspec-comparison.md` | `index.md` |
 | `docs/GITHUB-COPILOT-CUSTOMIZATION-GUIDE.md` | `github-copilot-customization-guide.md` | `github-copilot-customization-guide.md` |
@@ -204,6 +204,6 @@ Weekend            → Dev environment fully stopped
 | GitHub Repository | [continuous-architecture-platform-poc](https://github.com/christopherblaisdell/continuous-architecture-platform-poc) |
 | All Workflows | [Actions tab](https://github.com/christopherblaisdell/continuous-architecture-platform-poc/actions) |
 | Architecture Portal | [architecture.novatrek.cc](https://architecture.novatrek.cc) |
-| AI Customization Site | [ai.customization.novatrek.cc](https://ai.customization.novatrek.cc) |
+| AI Instruction Site | [ai.customization.novatrek.cc](https://ai.customization.novatrek.cc) |
 | Presentation Site | [presentation.novatrek.cc](https://presentation.novatrek.cc) |
 | Confluence Mirror | [novatrek.atlassian.net/wiki](https://novatrek.atlassian.net/wiki) |

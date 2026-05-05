@@ -1,4 +1,4 @@
-# AI Customizations Index
+# AI Instructions Index
 
 This searchable index helps you quickly find specific standards, methodologies, and customizations.
 

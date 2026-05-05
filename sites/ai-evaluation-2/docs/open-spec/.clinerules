@@ -1,14 +1,14 @@
 [//]: # (DERIVED FILE — DO NOT EDIT DIRECTLY)
-[//]: # (Canonical source: .ai-customizations/core-instructions.md + .ai-customizations/universal/)
-[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-customizations.sh)
-[//]: # (Validation: scripts/validate-ai-customizations.sh)
+[//]: # (Canonical source: .ai-instructions/core-instructions.md + .ai-instructions/universal/)
+[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-instructions.sh)
+[//]: # (Validation: scripts/validate-ai-instructions.sh)
 [//]: # (Governance: openspec/specs/ai-customization-governance/spec.md)
 
 # UDX Enterprise Standards — Base Instructions
 
 These standards apply to ALL interactions. They are non-negotiable.
 
-Canonical source: `.ai-customizations/` (hub-and-spoke system). If you need deeper detail on any standard, read the relevant file in that directory.
+Canonical source: `.ai-instructions/` (hub-and-spoke system). If you need deeper detail on any standard, read the relevant file in that directory.
 
 ## Communication
 
@@ -74,7 +74,7 @@ Always commit, push, and publish after completing work. Never leave uncommitted 
 ## AI Customization Awareness
 
 This workspace uses a hub-and-spoke AI customization system:
-- **Hub**: `.ai-customizations/` — canonical standards, methodologies, mode customizations
+- **Hub**: `.ai-instructions/` — canonical standards, methodologies, mode customizations
 - **Instruction files**: `.github/copilot-instructions.md` and `.github/instructions/` — auto-loaded scoped rules
 - **Roo rules**: `.clinerules` (this file) — auto-loaded for Roo Code
 

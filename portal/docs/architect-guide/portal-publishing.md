@@ -114,7 +114,7 @@ npx swa deploy site --deployment-token "<token>" --env production
 | Site | URL | Purpose |
 |------|-----|---------|
 | Portal (primary) | `https://architecture.novatrek.cc` | Main architecture portal |
-| AI Customization | `https://ai.customization.novatrek.cc` | Copilot vs OpenSpec comparison |
+| AI Instruction | `https://ai.customization.novatrek.cc` | Copilot vs OpenSpec comparison |
 | Docs | `https://victorious-mud-06704740f.4.azurestaticapps.net` | Documentation site |
 
 ---

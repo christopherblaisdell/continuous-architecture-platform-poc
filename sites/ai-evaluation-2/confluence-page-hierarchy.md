@@ -28,7 +28,7 @@ Solution Architecture Practice — Comparative Evaluation of Agentic AI  (index.
 │   ├── GitHub Copilot Rollout Roadmap  (framework/copilot-rollout-roadmap.md)
 │   ├── Architecture Is Not Just Coding — But the Tools Are the Same  (evidence/architecture-not-just-coding.md)
 │   └── Controlling What Copilot Sees: The Context Injection Pipeline  (evidence/context-injection-controls.md)
-│   └── AI Customization as a Living Practice: Extensibility, Governance, and Ownership  (evidence/customization-extensibility-governance.md)
+│   └── AI Instruction as a Living Practice: Extensibility, Governance, and Ownership  (evidence/customization-extensibility-governance.md)
 ├── Option C (Foundry IQ Integration)
 │   └── What Does Foundry IQ Actually Require?  (evidence/foundry-iq-comparison.md)
 └── Appendix

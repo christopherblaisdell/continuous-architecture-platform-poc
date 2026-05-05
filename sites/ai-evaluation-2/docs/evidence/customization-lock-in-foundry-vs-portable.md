@@ -84,7 +84,7 @@ The key principle from DD-05: **model selection is an architect decision, not an
 
 ### How Living Practice Customization Prevents Knowledge Lock-In
 
-The [customization extensibility analysis](customization-extensibility-governance.md) establishes that AI customizations are living artifacts that evolve continuously with the practice. The recommended governance model (Option G — Hybrid Inner Source) keeps all behavioral customization in the hands of the architecture practice:
+The [customization extensibility analysis](customization-extensibility-governance.md) establishes that AI instructions are living artifacts that evolve continuously with the practice. The recommended governance model (Option G — Hybrid Inner Source) keeps all behavioral customization in the hands of the architecture practice:
 
 | Property | How It Prevents Lock-In |
 |----------|------------------------|
@@ -228,7 +228,7 @@ The combination of Option D (model portability) + living practice customization 
 ## Relationship to Other Pages
 
 - [What Does Foundry IQ Actually Require?](foundry-iq-comparison.md) — Covers the operational requirements and "buy vs build" framing. This page extends that analysis by examining the portability consequences of building on Foundry and showing how Option D + OpenSpec makes the lock-in risk acceptable.
-- [Customization Extensibility and Governance](customization-extensibility-governance.md) — Establishes that AI customizations are living artifacts requiring practitioner control. This page shows why that living practice model is also a lock-in remediation: customizations that architects maintain in portable files cannot be locked into any single platform.
+- [Customization Extensibility and Governance](customization-extensibility-governance.md) — Establishes that AI instructions are living artifacts requiring practitioner control. This page shows why that living practice model is also a lock-in remediation: customizations that architects maintain in portable files cannot be locked into any single platform.
 - [Option D — Hybrid Architecture](option-d-hybrid-architecture.md) — Defines the deployment topology (Copilot + BYOK). This page shows how Option D's multi-model picker eliminates model lock-in as a separate concern from customization lock-in.
 - [Build vs Leverage](build-vs-leverage.md) — Argues against building custom infrastructure when native capabilities exist. This page reinforces the pattern: leverage Foundry where it adds unique value (retrieval), keep everything else portable.
 - [DD-05: Model Selection Autonomy](../decisions/dd-05-model-selection-autonomy.md) — Establishes that model selection is an architect decision. This page shows how that autonomy also serves as a lock-in prevention mechanism.

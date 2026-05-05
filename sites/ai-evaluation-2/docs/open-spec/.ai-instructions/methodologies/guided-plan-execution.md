@@ -1,7 +1,7 @@
 # Guided Plan Execution — Interactive Decision Loop
 
 <!-- PAIRED FILE: This content must stay in sync with .github/instructions/prompt-me.instructions.md -->
-<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-customizations.sh -->
+<!-- If you edit this file, update the paired file to match. Run: scripts/validate-ai-instructions.sh -->
 
 **Applicable Modes**: All modes executing a structured change plan
 

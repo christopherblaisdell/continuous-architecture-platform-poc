@@ -1,4 +1,4 @@
-# AI Customizations Validation Report
+# AI Instructions Validation Report
 
 **Date**: 2026-02-27
 **Status**: ✅ COMPLETE
@@ -6,7 +6,7 @@
 ## Implementation Checklist
 
 ### ✅ Core Structure
-- [x] `.ai-customizations/` directory created
+- [x] `.ai-instructions/` directory created
 - [x] `README.md` - System overview
 - [x] `core-instructions.md` - Base instructions
 - [x] `INDEX.md` - Searchable index
@@ -122,7 +122,7 @@ To verify the implementation works:
 
 ## Summary
 
-The AI customization system has been successfully implemented following your enterprise standards. The system provides:
+The AI instruction system has been successfully implemented following your enterprise standards. The system provides:
 
 - **34 documentation files** covering all aspects
 - **7 mode-specific customizations** plus universal standards
@@ -136,4 +136,4 @@ The implementation follows your hub-and-spoke documentation pattern, incorporate
 
 ---
 
-*This validation report confirms successful implementation of the Roo AI Customization Integration Plan.*
+*This validation report confirms successful implementation of the Roo AI Instruction Integration Plan.*

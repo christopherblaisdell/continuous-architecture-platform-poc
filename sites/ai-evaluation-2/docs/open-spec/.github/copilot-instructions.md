@@ -1,18 +1,18 @@
 <!-- ============================================================
      DERIVED FILE — DO NOT EDIT DIRECTLY
-     Canonical source: .ai-customizations/core-instructions.md
-                       .ai-customizations/universal/
+     Canonical source: .ai-instructions/core-instructions.md
+                       .ai-instructions/universal/
      To make changes: /opsx:propose "description of change"
-     Then run: scripts/sync-ai-customizations.sh
-     Validation: scripts/validate-ai-customizations.sh
-     Governance: openspec/specs/ai-customization-governance/spec.md
+     Then run: scripts/sync-ai-instructions.sh
+     Validation: scripts/validate-ai-instructions.sh
+     Governance: openspec/specs/ai-instruction-governance/spec.md
      ============================================================ -->
 
 # UDX Enterprise Standards — Base Instructions
 
 These standards apply to ALL interactions. They are non-negotiable.
 
-Canonical source: `.ai-customizations/` (hub-and-spoke system). If you need deeper detail on any standard, read the relevant file in that directory.
+Canonical source: `.ai-instructions/` (hub-and-spoke system). If you need deeper detail on any standard, read the relevant file in that directory.
 
 ## Communication
 
@@ -84,11 +84,11 @@ NEVER post a PR review, PR comment, issue comment, or any feedback to a shared e
 - All changes must be testable
 - Document test approaches in solution designs
 
-## AI Customization Awareness
+## AI Instruction Awareness
 
-This workspace uses a hub-and-spoke AI customization system:
-- **Hub**: `.ai-customizations/` — canonical standards, methodologies, mode customizations
+This workspace uses a hub-and-spoke AI instruction system:
+- **Hub**: `.ai-instructions/` — canonical standards, methodologies, mode customizations
 - **Instruction files**: `.github/instructions/` — auto-loaded scoped rules
 - **Roo rules**: `.clinerules` or `.roo/rules/` — auto-loaded for Roo Code
 
-When editing any AI customization file, check if the same content exists in the other tool's format to prevent drift.
+When editing any AI instruction file, check if the same content exists in the other tool's format to prevent drift.

@@ -154,4 +154,4 @@ Copilot supports a layered customization system:
 | Reusable prompts | On-demand slash commands | `.prompt.md` |
 | Custom agents | Specialized agent behaviors | Agent definitions |
 
-The NovaTrek workspace uses a 700+ line `copilot-instructions.md` that encodes the full domain model, architecture standards, mock tool usage patterns, and solution design workflow. See the [AI Customization site](https://ai.customization.novatrek.cc) for detailed customization guidance.
+The NovaTrek workspace uses a 700+ line `copilot-instructions.md` that encodes the full domain model, architecture standards, mock tool usage patterns, and solution design workflow. See the [AI Instruction site](https://ai.customization.novatrek.cc) for detailed customization guidance.

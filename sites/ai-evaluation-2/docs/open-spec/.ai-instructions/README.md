@@ -1,6 +1,6 @@
-# AI Customizations Hub
+# AI Instructions Hub
 
-This directory is the canonical source of truth for AI customizations used by **Roo Code** and other AI tools. The system uses a hub-and-spoke documentation pattern to maintain consistency across all AI modes while allowing mode-specific customizations.
+This directory is the canonical source of truth for AI instructions used by **Roo Code** and other AI tools. The system uses a hub-and-spoke documentation pattern to maintain consistency across all AI modes while allowing mode-specific customizations.
 
 ## System Overview
 
@@ -12,7 +12,7 @@ This directory is the canonical source of truth for AI customizations used by **
 ### Directory Structure
 
 ```
-.ai-customizations/
+.ai-instructions/
 ├── README.md                     # This file - system overview
 ├── core-instructions.md          # Base instructions for ALL modes
 ├── INDEX.md                      # Searchable index of all customizations
@@ -132,16 +132,16 @@ Roo provides intelligence and guidance, VSFlow provides execution.
 
 ## How to Make Changes
 
-**All changes to AI customizations go through OpenSpec — never by editing derived files directly.**
+**All changes to AI instructions go through OpenSpec — never by editing derived files directly.**
 
-Files in this directory (`.ai-customizations/`) are the canonical source. Five derived files are
+Files in this directory (`.ai-instructions/`) are the canonical source. Five derived files are
 assembled from them. Editing derived files directly causes drift and will fail pre-commit validation.
 
 ### Canonical vs. Derived Files
 
 | Canonical — edit via OpenSpec | Derived — updated by sync script only |
 |---|---|
-| `.ai-customizations/**` | `.clinerules` |
+| `.ai-instructions/**` | `.clinerules` |
 | | `.github/copilot-instructions.md` |
 | | `.github/instructions/prompt-me.instructions.md` |
 | | `.github/instructions/prompt-mirror.instructions.md` |
@@ -150,39 +150,39 @@ assembled from them. Editing derived files directly causes drift and will fail p
 ### Workflow
 
 1. **Propose** — Run `/opsx:propose "description of what you want to change"`
-   Use the `ai-customization-change` schema: `/opsx:propose --schema ai-customization-change "..."`
+   Use the `ai-instruction-change` schema: `/opsx:propose --schema ai-instruction-change "..."`
    OpenSpec creates `openspec/changes/<name>/` with proposal, specs, design, tasks.
 
 2. **Review** — Review `proposal.md` and update `design.md` to identify which canonical files change.
 
 3. **Apply** — Run `/opsx:apply`
    The AI executes `tasks.md`. The final task always runs
-   `scripts/sync-ai-customizations.sh`, which updates all derived files atomically.
+   `scripts/sync-ai-instructions.sh`, which updates all derived files atomically.
 
-4. **Validate** — `scripts/validate-ai-customizations.sh` runs automatically (or manually).
+4. **Validate** — `scripts/validate-ai-instructions.sh` runs automatically (or manually).
    All checks must pass before committing.
 
 5. **Archive** — Run `/opsx:archive` to move the change to the archive.
 
 ### Governance
 
-This system is governed by `openspec/specs/ai-customization-governance/spec.md`.
+This system is governed by `openspec/specs/ai-instruction-governance/spec.md`.
 Requirements REQ-GOV-001 through REQ-GOV-004 define the enforcement rules.
 
 ## Maintenance
 
 ### Adding New Standards
 1. Determine if universal or mode-specific
-2. Create appropriately named file in `.ai-customizations/`
+2. Create appropriately named file in `.ai-instructions/`
 3. Update relevant mode customization files
 4. Update this README's matrix
-5. Propose the change via `/opsx:propose --schema ai-customization-change "..."`
+5. Propose the change via `/opsx:propose --schema ai-instruction-change "..."`
 
 ### Updating Existing Standards
-1. Propose the change via `/opsx:propose --schema ai-customization-change "..."`
-2. Edit the canonical file(s) in `.ai-customizations/` as directed by `design.md`
-3. Run `scripts/sync-ai-customizations.sh` to propagate changes
-4. Validate with `scripts/validate-ai-customizations.sh` — Errors must be 0
+1. Propose the change via `/opsx:propose --schema ai-instruction-change "..."`
+2. Edit the canonical file(s) in `.ai-instructions/` as directed by `design.md`
+3. Run `scripts/sync-ai-instructions.sh` to propagate changes
+4. Validate with `scripts/validate-ai-instructions.sh` — Errors must be 0
 
 ## Key Prohibitions
 
@@ -199,7 +199,7 @@ Requirements REQ-GOV-001 through REQ-GOV-004 define the enforcement rules.
 
 ## Support
 
-For questions or issues with AI customizations:
+For questions or issues with AI instructions:
 1. Check mode-specific documentation first
 2. Review universal standards
 3. Consult project overrides if applicable
@@ -218,16 +218,16 @@ Each customization has one canonical source and is delivered to each tool via it
 
 ### Paired Files
 
-Files that must stay in sync (validated by `scripts/validate-ai-customizations.sh`):
+Files that must stay in sync (validated by `scripts/validate-ai-instructions.sh`):
 
 | File A | File B | Why |
 |---|---|---|
 | `.github/copilot-instructions.md` | `.clinerules` | Same universal standards, different auto-load paths |
-| `.github/instructions/prompt-me.instructions.md` | `.ai-customizations/methodologies/guided-plan-execution.md` | Same workflow, different auto-load paths |
+| `.github/instructions/prompt-me.instructions.md` | `.ai-instructions/methodologies/guided-plan-execution.md` | Same workflow, different auto-load paths |
 
 ### Drift Prevention
 
-- **Pre-commit hook**: Automatically runs `scripts/validate-ai-customizations.sh` when any AI customization file is staged
+- **Pre-commit hook**: Automatically runs `scripts/validate-ai-instructions.sh` when any AI instruction file is staged
 - **Paired file headers**: Each paired file has a comment linking to its counterpart
 - **Validation checks**: File existence, frontmatter validity, content sync, key rule presence, symlink health
 

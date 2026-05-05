@@ -1,12 +1,12 @@
 # Global AI Tools Configuration Guide
 
-This guide explains how to configure **Roo Code and VS Code** to use the source-controlled AI customizations from this repository. A single setup script handles everything.
+This guide explains how to configure **Roo Code and VS Code** to use the source-controlled AI instructions from this repository. A single setup script handles everything.
 
 ## Quick Start
 
 ```bash
-chmod +x .ai-customizations/setup-ai-tools.sh
-./.ai-customizations/setup-ai-tools.sh
+chmod +x .ai-instructions/setup-ai-tools.sh
+./.ai-instructions/setup-ai-tools.sh
 ```
 
 This one command sets up both tools. Run it once per machine.
@@ -15,18 +15,18 @@ This one command sets up both tools. Run it once per machine.
 
 ### 1. Roo Code
 - Creates `~/.config/roo/` if it doesn't exist
-- Symlinks `.ai-customizations/` to `~/.config/roo/ai-customizations`
+- Symlinks `.ai-instructions/` to `~/.config/roo/ai-customizations`
 - Creates `~/.config/roo/modes.yaml` with global mode definitions (if missing)
 
 ### 2. VS Code
 - Creates `~/Library/Application Support/Code/User/prompts/` if it doesn't exist
-- Symlinks each file in `.ai-customizations/user-prompts/` into that directory
+- Symlinks each file in `.ai-instructions/user-prompts/` into that directory
 - Supports `.prompt.md`, `.agent.md`, and `.instructions.md` files
 
 ## Architecture
 
 ```
-This Repository (.ai-customizations/)
+This Repository (.ai-instructions/)
 ├── universal/                    # Standards loaded by ALL modes
 ├── methodologies/                # Workflow docs (4-phase, JIRA extraction, etc.)
 ├── standards/                    # Domain-specific standards
@@ -42,9 +42,9 @@ This Repository (.ai-customizations/)
 ```
 Source (this repo)                              Target (user-level config)
 ─────────────────                               ──────────────────────────
-.ai-customizations/                          →  ~/.config/roo/ai-customizations
-.ai-customizations/user-prompts/*.prompt.md  →  ~/Library/Application Support/Code/User/prompts/
-.ai-customizations/user-prompts/*.agent.md   →  ~/Library/Application Support/Code/User/prompts/
+.ai-instructions/                          →  ~/.config/roo/ai-customizations
+.ai-instructions/user-prompts/*.prompt.md  →  ~/Library/Application Support/Code/User/prompts/
+.ai-instructions/user-prompts/*.agent.md   →  ~/Library/Application Support/Code/User/prompts/
 ```
 
 ### Shared Scripts
@@ -70,7 +70,7 @@ Both the VS Code prompt (`jira-extract.prompt.md`) and the Roo methodology
 ## Adding New Customizations
 
 ### New VS Code prompt or agent
-1. Create the file in `.ai-customizations/user-prompts/` (e.g., `my-task.prompt.md`)
+1. Create the file in `.ai-instructions/user-prompts/` (e.g., `my-task.prompt.md`)
 2. Re-run `setup-ai-tools.sh` to create the symlink
 3. Commit and push
 
@@ -95,7 +95,7 @@ For each project where you want to ensure the same customizations are used, crea
 
 ```bash
 # From any project directory
-ln -s /Users/christopherblaisdell/Documents/cwb-roo-workspace-3/.ai-customizations .ai-customizations
+ln -s /Users/christopherblaisdell/Documents/cwb-roo-workspace-3/.ai-instructions .ai-instructions
 ```
 
 ## Benefits
@@ -114,7 +114,7 @@ Run the setup script — it includes built-in verification. Or manually:
 ```bash
 # Check Roo symlink
 ls -la ~/.config/roo/ai-customizations
-# Should show: ai-customizations -> /Users/christopherblaisdell/Documents/cwb-roo-workspace-3/.ai-customizations
+# Should show: ai-customizations -> /Users/christopherblaisdell/Documents/cwb-roo-workspace-3/.ai-instructions
 
 # Check VS Code prompts
 ls -la ~/Library/Application\ Support/Code/User/prompts/
@@ -139,13 +139,13 @@ python3 /Users/christopherblaisdell/Documents/cwb-roo-workspace-3/scripts/jira/w
 1. **Make changes** in the source repository:
    ```bash
    cd /Users/christopherblaisdell/Documents/cwb-roo-workspace-3
-   # Edit files in .ai-customizations/
+   # Edit files in .ai-instructions/
    ```
 
 2. **Commit changes**:
    ```bash
-   git add .ai-customizations/
-   git commit -m "Update AI customization standards"
+   git add .ai-instructions/
+   git commit -m "Update AI instruction standards"
    ```
 
 3. **Changes are immediately available** to all Roo instances (no restart required)
@@ -158,7 +158,7 @@ Since this is your single source of truth:
 2. **Consider remote backup** (if security permits):
    ```bash
    # Create encrypted backup
-   tar -czf - .ai-customizations | openssl enc -aes-256-cbc -out ai-customizations-backup.tar.gz.enc
+   tar -czf - .ai-instructions | openssl enc -aes-256-cbc -out ai-customizations-backup.tar.gz.enc
    ```
 
 ---

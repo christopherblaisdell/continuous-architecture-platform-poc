@@ -22,8 +22,8 @@
 !.github/**
 
 # Allow AI customizations
-!.ai-customizations/
-!.ai-customizations/**
+!.ai-instructions/
+!.ai-instructions/**
 
 # Allow documentation
 !documentation/

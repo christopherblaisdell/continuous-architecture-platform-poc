@@ -1,4 +1,4 @@
-# Global modes configuration using symlinked AI customizations
+# Global modes configuration using symlinked AI instructions
 globalModes:
   - slug: solution-architect
     name: "Solution Architect"
