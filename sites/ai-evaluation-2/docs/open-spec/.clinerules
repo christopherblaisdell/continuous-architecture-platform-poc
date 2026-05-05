@@ -1,0 +1,81 @@
+[//]: # (DERIVED FILE — DO NOT EDIT DIRECTLY)
+[//]: # (Canonical source: .ai-customizations/core-instructions.md + .ai-customizations/universal/)
+[//]: # (To make changes: /opsx:propose "description" then run scripts/sync-ai-customizations.sh)
+[//]: # (Validation: scripts/validate-ai-customizations.sh)
+[//]: # (Governance: openspec/specs/ai-customization-governance/spec.md)
+
+# UDX Enterprise Standards — Base Instructions
+
+These standards apply to ALL interactions. They are non-negotiable.
+
+Canonical source: `.ai-customizations/` (hub-and-spoke system). If you need deeper detail on any standard, read the relevant file in that directory.
+
+## Communication
+
+- NO EMOJIS — never, for any reason
+- No casual greetings ("Great!", "Sure!", "Certainly!", "Okay!")
+- No conversational endings ("Is there anything else I can help with?")
+- Be technical and direct — get to the point
+- Professional tone — formal without being stilted
+- Evidence-based — support claims with data or references
+- Use active voice, concise sentences, objective language
+
+## Estimation
+
+- NEVER use dollar values, hourly costs, FTE rates, or monetary budgets
+- NEVER use sprint counts, T-shirt sizes, or story points as top-level sizing
+- ALWAYS express complexity as a table of affected components and endpoints with per-item complexity (LOW, MEDIUM, HIGH)
+- Include a summary line: total components, total changes, breakdown by complexity level
+- Include confidence level and assumptions with estimates
+
+## Markdown Formatting
+
+- No special characters or punctuation in headers (no `!`, `?`, emojis)
+- Maximum header depth: 4 levels (`####`)
+- Title Case for headers
+- One blank line before and after headers
+- Use `code` formatting for technical terms, commands, file names
+
+## File Organization
+
+- File names: `lowercase-hyphenated-descriptive-name.extension`
+- Directory names: `lowercase-hyphenated/`
+- No camelCase, underscores, or spaces in file/directory names
+- ISO 8601 dates (`YYYY-MM-DD`) for time-sensitive documents
+- Organize under standard directories: `documentation/`, `plans/`, `scripts/`, `templates/`
+
+## Security
+
+- Security-first mindset: assume breach, defense in depth, least privilege, zero trust
+- For every solution, consider: what data is accessed, who can access it, how access is controlled, what happens if compromised
+- Never hard-code credentials
+- Validate all inputs
+- Consider OWASP Top 10
+- Document security considerations in solution designs
+
+## Architecture Source Locations
+
+- **OpenAPI / Swagger specs**: `external-repos/architecture/udx-architecture-artifacts/services/`
+- **PlantUML diagrams**: `external-repos/architecture/udx-architecture-artifacts/diagrams/`
+- **AsyncAPI event specs**: `external-repos/architecture/udx-architecture-artifacts/events/`
+- If a claim contradicts an OpenAPI spec, the spec wins
+
+## Commit and Push Policy
+
+Always commit, push, and publish after completing work. Never leave uncommitted work for the user to commit. Use conventional commit messages.
+
+## Testing
+
+- Follow BDD/TDD when applicable
+- Target 80%+ test coverage for new code
+- All changes must be testable
+- Document test approaches in solution designs
+
+## AI Customization Awareness
+
+This workspace uses a hub-and-spoke AI customization system:
+- **Hub**: `.ai-customizations/` — canonical standards, methodologies, mode customizations
+- **Instruction files**: `.github/copilot-instructions.md` and `.github/instructions/` — auto-loaded scoped rules
+- **Roo rules**: `.clinerules` (this file) — auto-loaded for Roo Code
+
+When editing any AI customization file, check if the same content exists in the other tool's format to prevent drift.

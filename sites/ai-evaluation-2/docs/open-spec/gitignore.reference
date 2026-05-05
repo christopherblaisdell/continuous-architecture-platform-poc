@@ -1,0 +1,74 @@
+# Ignore all files by default to prevent accidental commits
+*
+
+# Explicitly track only what you need
+# Example: !important-file.txt
+# Example: !docs/
+
+# Allow security configuration files
+!.gitignore
+!LOCAL-ONLY-REPO.md
+!roo-customization-guide.md
+!roo-ai-customization-integration-plan.md
+!.roomodes
+!.clinerules
+
+# Allow templates
+!templates/
+!templates/**
+
+# Allow GitHub instruction files
+!.github/
+!.github/**
+
+# Allow AI customizations
+!.ai-customizations/
+!.ai-customizations/**
+
+# Allow documentation
+!documentation/
+!documentation/**
+
+# Allow plans
+!plans/
+!plans/**
+
+# Allow docs (work items, JIRA tickets)
+!docs/
+!docs/**
+
+# Allow 2026 goals
+!2026-goals/
+!2026-goals/**
+
+# Allow scripts
+!scripts/
+!scripts/**
+
+# Allow AI platform selection package
+!ai-platform-selection/
+!ai-platform-selection/**
+
+# Allow OpenSpec (spec-driven change management)
+!openspec/
+!openspec/**
+
+# Allow prompt mirror (context capture)
+!prompt-mirror/
+!prompt-mirror/**
+
+# Security: Ignore sensitive files
+*.key
+*.pem
+*.cert
+*.password
+*.secret
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# External repositories (managed separately)
+external-repos/

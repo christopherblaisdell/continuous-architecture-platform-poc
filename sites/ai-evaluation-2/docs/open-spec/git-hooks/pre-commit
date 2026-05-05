@@ -1,0 +1,42 @@
+#!/bin/sh
+# =============================================================================
+# DEFERRED — not yet activated in this workspace.
+#
+# This file was copied from cwb-roo-workspace-3 for reference.
+# To activate it:
+#   1. Copy this file to .git/hooks/pre-commit in the target workspace
+#   2. Run: chmod +x .git/hooks/pre-commit
+#   3. Ensure scripts/validate-ai-customizations.sh is activated first
+#   4. Remove this notice and the early exit below
+# =============================================================================
+echo "[DEFERRED] pre-commit hook has not been activated in this workspace yet."
+exit 0
+
+: <<'DEFERRED'
+
+# Pre-commit hook to remind about sensitive content
+
+echo "REMINDER: Ensure you're not committing any credentials, keys, or passwords."
+echo ""
+
+# Check if AI customization files are staged — if so, run validation
+AI_FILES_STAGED=$(git diff --cached --name-only | grep -E '^\.(ai-customizations|github|clinerules|roomodes)' || true)
+if [ -n "$AI_FILES_STAGED" ]; then
+    SCRIPT="$(git rev-parse --show-toplevel)/scripts/validate-ai-customizations.sh"
+    if [ -x "$SCRIPT" ]; then
+        echo "AI customization files staged — running drift validation..."
+        echo ""
+        if ! "$SCRIPT"; then
+            echo ""
+            echo "Commit blocked: AI customization drift detected. Fix the errors above."
+            echo "To bypass (not recommended): git commit --no-verify"
+            exit 1
+        fi
+        echo ""
+    fi
+fi
+
+# Continue with the commit
+exit 0
+
+DEFERRED

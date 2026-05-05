@@ -1,0 +1,13 @@
+# Project-Specific Overrides
+
+This directory is for project-specific customizations that override or extend the global AI customization standards.
+
+Place any project-specific customization files here. They will be loaded after the global standards, allowing you to:
+- Override specific behaviors for this project
+- Add project-specific requirements
+- Maintain local standards that don't apply globally
+
+Example files you might add:
+- `project-standards.md` - Project-specific standards
+- `local-templates.md` - Project-specific templates
+- `custom-workflows.md` - Project-specific workflows
