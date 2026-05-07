@@ -56,6 +56,64 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) | Deep research prompt — what does an AI-native architecture practice look like |
 | [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md) | Blank file for that response |
 
+## Exporting to a Corporate Instance
+
+The blueprint in this folder is designed to travel. Once it has been validated and refined against the synthetic NovaTrek exemplar, it is exported to a real corporate workspace (the **Instance**) where it is instantiated against actual systems.
+
+### What the export produces
+
+| Category | Files | What to do in the Instance |
+|----------|-------|---------------------------|
+| **Pure blueprint** | README.md, EVERYTHING-AS-CODE-FRAMEWORK.md, TRANSFORMATION-PLAN.md, AI-INSTRUCTIONS-AS-CODE.md, deep research prompts | Use as-is. No Instance-specific edits needed. |
+| **Exemplar template** | CURRENT-STATE-ASSESSMENT.md | Keep the structure; replace all NovaTrek findings with real workspace findings. |
+| **Excluded** | SYNTHETIC-EXEMPLAR-BACKLOG.md, blank response placeholders | Not exported. These are NovaTrek carry-over only. |
+
+### How to export
+
+A shell script automates the copy. Run it from this synthetic workspace, pointing at the root of the corporate workspace:
+
+```bash
+# Dry run — verify what will be copied without writing anything
+./docs/everything-as-code/export-blueprint.sh \
+  --target /path/to/corporate/workspace \
+  --dry-run
+
+# Live export
+./docs/everything-as-code/export-blueprint.sh \
+  --target /path/to/corporate/workspace
+```
+
+The script copies all blueprint files to `<target>/docs/everything-as-code/` and prints a numbered next-steps checklist.
+
+### Manual export (alternative)
+
+If the corporate workspace cannot be reached from the same machine, copy these files manually:
+
+```
+docs/everything-as-code/README.md
+docs/everything-as-code/EVERYTHING-AS-CODE-FRAMEWORK.md
+docs/everything-as-code/TRANSFORMATION-PLAN.md
+docs/everything-as-code/AI-INSTRUCTIONS-AS-CODE.md
+docs/everything-as-code/CURRENT-STATE-ASSESSMENT.md          ← replace content; keep structure
+docs/everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md
+docs/everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md
+docs/everything-as-code/standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md
+```
+
+Do **not** copy `SYNTHETIC-EXEMPLAR-BACKLOG.md` — it contains NovaTrek-specific deferred items that have no meaning in any other workspace.
+
+### Post-export checklist
+
+After placing the files in the corporate workspace:
+
+- [ ] Complete the Bootstrap pillar selection exercise in TRANSFORMATION-PLAN.md (mark each of the 35 pillars In Scope / Out of Scope / Future)
+- [ ] Replace CURRENT-STATE-ASSESSMENT.md with a real assessment of the corporate workspace
+- [ ] Author the adoption ADR in the corporate `decisions/` folder; declare which pillars are in Wave 1 scope
+- [ ] Commit `docs/everything-as-code/` to version control in the corporate workspace
+- [ ] Add the EaC transformation track to the corporate roadmap
+
+---
+
 ## Quick Answer to "What is this called?"
 
 The umbrella term is **Everything as Code** (EaC). The transformation toward it has several emerging names:
