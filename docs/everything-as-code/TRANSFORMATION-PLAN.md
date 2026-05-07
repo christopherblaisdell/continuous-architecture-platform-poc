@@ -1,6 +1,10 @@
-# Transformation Plan — Everything as Code
+# Adoption Plan Template — Everything as Code (Blueprint)
 
-This is a phased plan to bring this workspace from its current state (Level 6, with Level 7 in flight) to **Level 9 — AI-Native EaC**. Each phase has concrete tasks, exit criteria, and dependencies.
+> **BLUEPRINT — TEMPLATE.** This is a portable, target-agnostic adoption plan template. It is **not** a plan executed against this synthetic workspace. It is exported to a corporate **EaC Adoption Instance** workspace, where each phase is tailored to the actual systems, tickets, services, and architecture practice in scope.
+>
+> The phase structure, exit criteria, dependency ordering, and critical-path logic are the durable contributions of this template. Specific paths, file lists (e.g., the 15 metadata YAMLs), and tool selections are illustrative — drawn from the synthetic exemplar — and MUST be re-derived during instance tailoring.
+
+This is a phased plan template to bring an architecture practice from a baseline state to **Level 9 — AI-Native EaC**. Each phase has concrete tasks, exit criteria, and dependencies.
 
 The plan is designed to be executed incrementally — each phase delivers value independently and does not require the next phase to begin.
 
@@ -15,21 +19,24 @@ The plan is designed to be executed incrementally — each phase delivers value 
 
 ---
 
-## Phase 0 — Establish the EaC Charter (1 sprint)
+## Phase 0 — Instance Bootstrap and EaC Charter (1 sprint)
 
-**Goal**: Make EaC an explicit organizational commitment.
+**Goal**: In the corporate instance workspace, make EaC an explicit organizational commitment and import the blueprint.
 
 ### Tasks
 
-- [ ] Review and ratify [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) with stakeholders
-- [ ] Author **ADR-015 — Adopt Everything as Code as the Architecture Practice Standard** in `decisions/`
-- [ ] Add an EaC compliance section to `.github/copilot-instructions.md` referencing this folder
-- [ ] Create a `policies/` folder placeholder with a README pointing to Pillar 13 plan
-- [ ] Update `roadmap/ROADMAP.md` to add an "Everything as Code Transformation" track
+- [ ] Import this blueprint into the corporate workspace as `docs/everything-as-code/`
+- [ ] Conduct a real corporate **current-state assessment** by tailoring the synthetic exemplar template (replace findings, keep structure)
+- [ ] Review and ratify the framework with corporate stakeholders
+- [ ] Author an **"Adopt Everything as Code"** ADR in the corporate decisions log (next available ADR number)
+- [ ] Add an EaC compliance section to the corporate AI instruction hub
+- [ ] Create a `policies/` folder placeholder pointing to Pillar 13
+- [ ] Add an "Everything as Code Transformation" track to the corporate roadmap
 
 ### Exit criteria
 
-- ADR-015 merged
+- Adoption ADR merged in the corporate workspace
+- Real corporate current-state assessment completed
 - Roadmap reflects EaC as a top-level track
 
 ---
@@ -131,25 +138,23 @@ JSON Schemas turn YAML into a typed contract. AI agents stop hallucinating field
 
 ## Phase 5 — Activate AI Instructions Governance (1 sprint)
 
-**Goal**: Complete OpenSpec governance loop; AI instructions are fully as-code with active validation.
+**Goal**: Complete the OpenSpec governance loop; AI instructions are fully as-code with active validation.
 
-### Tasks (resumes from prior session work)
+### Tasks
 
-- [ ] Fix two issues in `scripts/validate-ai-instructions.sh`:
-  - Remove `prompt-mirror/README.md` from required files list
-  - Update or remove the global symlink check (`~/.config/roo/ai-customizations`)
-- [ ] Remove the DEFERRED block from the script
-- [ ] Run script; fix any remaining failures
-- [ ] Add the script to a `validate-ai-instructions.yml` GitHub Actions workflow
+- [ ] Implement and activate an AI instructions validation script for the canonical hub (verifying all required derived files exist and match expected structure)
+- [ ] Wire the script to a CI workflow that runs on every PR touching the canonical hub or derived instruction files
 - [ ] Run the first real OpenSpec change cycle (`/opsx:propose → /opsx:apply → /opsx:archive`) with a test rule
-- [ ] Document the workflow in [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md)
-- [ ] Evaluate adding Cursor `.mdc` and Windsurf `.windsurfrules` as derived targets
+- [ ] Document the governance workflow in the AI Instructions as Code pillar document
+- [ ] Evaluate and wire additional derived targets (Cursor `.mdc`, Windsurf `.windsurfrules`, Continue.dev) as applicable
 
 ### Exit criteria
 
 - Validation script active and CI-enforced
 - At least one OpenSpec change cycle completed end-to-end
 - Hub-and-spoke architecture documented
+
+> **Synthetic exemplar carry-over**: The NovaTrek exemplar workspace has specific pre-existing deferred work to complete in this phase. See [SYNTHETIC-EXEMPLAR-BACKLOG.md](SYNTHETIC-EXEMPLAR-BACKLOG.md).
 
 ---
 
@@ -338,5 +343,6 @@ These items can be done immediately without waiting for any phase:
 - [ ] Add `actionlint` to PR CI
 - [ ] Add `markdownlint` to PR CI
 - [ ] Add `mkdocs build --strict` to PR CI (catches broken internal links)
-- [ ] Author the missing JSON Schema for `capability-changelog.yaml` (highest leverage, single file)
-- [ ] Move the AI instructions validation script issues into specific GitHub issues for Phase 5
+- [ ] Author the JSON Schema for the highest-leverage single metadata file first (e.g., the capability changelog or equivalent)
+
+> **Synthetic exemplar carry-over**: For workspace-specific deferred items (e.g., the AI instructions validation script fixes), see [SYNTHETIC-EXEMPLAR-BACKLOG.md](SYNTHETIC-EXEMPLAR-BACKLOG.md).

@@ -1,4 +1,6 @@
-# Everything as Code — Framework
+# Everything as Code — Framework (Blueprint)
+
+> **BLUEPRINT DOCUMENT.** This is the portable framework definition. It is target-agnostic and intended for export to a corporate **EaC Adoption Instance** workspace. All examples in this document use the synthetic NovaTrek Adventures workspace as the exemplar. See the [README](README.md) for the Blueprint vs Instance distinction.
 
 ## 1. Definition
 
@@ -61,11 +63,11 @@ Adopting EaC across an organization or practice is referred to as:
 | **Continuous Architecture adoption** | When the practice frames it (Erder, Pureur, Woods) |
 | **Codify-Validate-Generate (CVG) loop** | The operational pattern at the core of EaC |
 
-For our practice, this workspace's transformation is best named:
+The transformation this blueprint describes is best named:
 
 > **AI-Native Continuous Architecture via Everything as Code**
 
-…which reads as: a **continuous architecture practice** (the "what"), enabled by **everything as code** (the "how"), targeted at **AI-native** workflows (the "why").
+…which reads as: a **continuous architecture practice** (the "what"), enabled by **everything as code** (the "how"), targeted at **AI-native** workflows (the "why"). This blueprint is the pattern; the corporate instance is the realization.
 
 ## 4. The Pillars
 
@@ -254,7 +256,7 @@ A practical maturity model for an architecture practice's EaC adoption:
 | **8** | **Policy as Code** | Architectural rules enforced by OPA, ArchUnit, custom linters in CI | Drift impossible without policy bypass |
 | **9** | **AI-Native EaC** | Every artifact AI-readable; AI proposes changes via PR; generators are deterministic | Architecture practice operates at AI speed |
 
-This workspace today is at approximately **Level 6**, with strong elements of Level 7 in progress and a clear path toward Levels 8-9.
+The synthetic exemplar workspace where this blueprint is being authored sits at approximately **Level 6**, with strong elements of Level 7 in flight — that score validates the model but is not a corporate fact. The actual maturity of any real practice MUST be re-assessed inside the corporate instance workspace using the assessment template.
 
 ## 6. The Codify-Validate-Generate (CVG) Loop
 

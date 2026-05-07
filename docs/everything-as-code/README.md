@@ -1,6 +1,17 @@
-# Everything as Code (EaC)
+# Everything as Code (EaC) — Adoption Blueprint
 
-This folder contains the framework, transformation plan, and supporting research for adopting an **Everything as Code** (EaC) practice for the Continuous Architecture Platform.
+> **BLUEPRINT — NOT AN INSTANCE.** This folder contains a portable, target-agnostic **EaC Adoption Blueprint**. It is authored and refined inside this synthetic workspace (NovaTrek Adventures), where every artifact is fictional. The blueprint is not executed here. It is exported to a separate corporate **EaC Adoption Instance** workspace where it is instantiated against real infrastructure, real tickets, real source code, and the real architecture practice.
+>
+> **Two artifacts, two roles:**
+>
+> | Artifact | Lives in | Purpose |
+> |----------|----------|---------|
+> | **Blueprint** (this folder) | Synthetic workspace | Pattern definition, refined safely against fictional data |
+> | **Instance** (future) | Corporate workspace | The blueprint applied to actual systems |
+>
+> All references to specific paths, services, file counts, or maturity scores in this folder describe the **synthetic exemplar** used to validate the blueprint — they are illustrative, not corporate facts.
+
+This folder contains the framework, the synthetic exemplar that validates it, the adoption plan template, and the supporting research for adopting an **Everything as Code** (EaC) practice.
 
 ## What is "Everything as Code"?
 
@@ -37,8 +48,8 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | Document | Purpose |
 |----------|---------|
 | [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) | The full framework — definitions, pillars, naming, industry terms, maturity model |
-| [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md) | What is already as-code in this workspace; what is not |
-| [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) | Phased plan to bring everything to EaC, with concrete tasks |
+| [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md) | **Synthetic exemplar assessment** — demonstrates the assessment template applied to the fictional NovaTrek workspace; serves as the worked example to copy when assessing a real corporate workspace |
+| [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
 | [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) | Treating AI instructions as a first-class EaC pillar — platform-agnostic via OpenSpec |
 | [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md) | Deep research prompt — formal naming, frameworks, maturity models, industry adoption |
 | [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md) | Blank file to paste the deep research response into |

@@ -1,5 +1,27 @@
 # Architecture Instructions for Continuous Architecture Platform
 
+## EaC Blueprint — CRITICAL WORKSPACE CONSTRAINT
+
+**The `docs/everything-as-code/` folder contains a portable BLUEPRINT. It is NOT an execution plan for this workspace.**
+
+This workspace is 100% synthetic. The entire NovaTrek Adventures domain — services, tickets, architecture decisions, source code, logs — is fictional. Nothing here is corporate data or a corporate system.
+
+The EaC Blueprint housed in `docs/everything-as-code/` is a **pattern being refined against synthetic data**. It will be exported to a separate real corporate workspace (the **Instance**) where it is executed for real. It is never executed here.
+
+| Role | Workspace | Contains |
+|------|-----------|---------|
+| **Blueprint** | This synthetic workspace | Portable pattern, exemplar assessments, plan templates |
+| **Instance** | Future corporate workspace | Real systems, real execution of the blueprint |
+
+**When working in `docs/everything-as-code/`:**
+
+- DO: Refine framework definitions, improve templates, validate patterns against synthetic data, improve the adoption plan structure
+- DO NOT: Propose executing blueprint phases against this workspace (e.g., "run Phase 1 schemas now", "apply Phase 5 governance to this repo")
+- DO NOT: Conflate NovaTrek-specific synthetic artifacts (service names, ticket IDs, file paths) with the portable pattern
+- All NovaTrek-specific carry-over tasks live in `docs/everything-as-code/SYNTHETIC-EXEMPLAR-BACKLOG.md`, not in the blueprint documents
+
+---
+
 ## Data Isolation — READ FIRST
 
 **This workspace contains ZERO corporate data.** Everything is synthetic.
