@@ -69,7 +69,7 @@ The blueprint in this folder is designed to travel. Once it has been validated a
 |----------|-------|---------------------------|
 | **Pure blueprint** | README.md, EVERYTHING-AS-CODE-FRAMEWORK.md, TRANSFORMATION-PLAN.md, AI-INSTRUCTIONS-AS-CODE.md, DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md, DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md, standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md | Use as-is. No Instance-specific edits needed. |
 | **Exemplar template** | CURRENT-STATE-ASSESSMENT.md | Keep the structure; replace all NovaTrek findings with real workspace findings. |
-| **Excluded** | SYNTHETIC-EXEMPLAR-BACKLOG.md, blank response placeholders | Not exported. These are NovaTrek carry-over only. |
+| **Excluded** | SYNTHETIC-EXEMPLAR-BACKLOG.md, DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md, DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md | Not exported. NovaTrek carry-over and response placeholder files only. |
 
 ### How to export
 
