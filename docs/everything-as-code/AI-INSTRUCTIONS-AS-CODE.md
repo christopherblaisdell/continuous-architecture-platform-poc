@@ -250,6 +250,7 @@ Tracked in [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) Phase 5 (immediate) 
 
 ## References
 
+- [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) — governance annex: single source of truth ownership, conflict detection, baseline access, conflict resolution procedure
 - OpenSpec — https://github.com/Fission-AI/OpenSpec
 - Anthropic Constitutional AI — https://arxiv.org/abs/2212.08073
 - Instruction Hierarchy paper (OpenAI) — https://arxiv.org/abs/2404.13208

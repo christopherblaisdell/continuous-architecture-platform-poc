@@ -51,6 +51,7 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md) | **Synthetic exemplar assessment** — demonstrates the assessment template applied to the fictional NovaTrek workspace; serves as the worked example to copy when assessing a real corporate workspace |
 | [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
 | [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) | Treating AI instructions as a first-class EaC pillar — platform-agnostic via OpenSpec |
+| [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) | Pillar 11 governance annex — single source of truth, conflict detection, baseline access; extends AI-INSTRUCTIONS-AS-CODE.md |
 | [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md) | Deep research prompt — formal naming, frameworks, maturity models, industry adoption |
 | [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
 | [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) | Deep research prompt — what does an AI-native architecture practice look like |
@@ -67,7 +68,7 @@ The blueprint in this folder is designed to travel. Once it has been validated a
 
 | Category | Files | What to do in the Instance |
 |----------|-------|---------------------------|
-| **Pure blueprint** | README.md, EVERYTHING-AS-CODE-FRAMEWORK.md, TRANSFORMATION-PLAN.md, AI-INSTRUCTIONS-AS-CODE.md, DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md, DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md, standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md | Use as-is. No Instance-specific edits needed. |
+| **Pure blueprint** | README.md, EVERYTHING-AS-CODE-FRAMEWORK.md, TRANSFORMATION-PLAN.md, AI-INSTRUCTIONS-AS-CODE.md, AI-INSTRUCTION-GOVERNANCE.md, DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md, DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md, standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md | Use as-is. No Instance-specific edits needed. |
 | **Exemplar template** | CURRENT-STATE-ASSESSMENT.md | Keep the structure; replace all NovaTrek findings with real workspace findings. |
 | **Excluded** | SYNTHETIC-EXEMPLAR-BACKLOG.md, DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md, DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md | Not exported. NovaTrek carry-over and response placeholder files only. |
 
