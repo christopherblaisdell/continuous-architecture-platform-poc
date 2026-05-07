@@ -106,6 +106,7 @@ Do **not** copy `SYNTHETIC-EXEMPLAR-BACKLOG.md` — it contains NovaTrek-specifi
 
 After placing the files in the corporate workspace:
 
+- [ ] Record the imported blueprint version in the Instance README (see the Blueprint Version table at the bottom of this file — copy and update it, replacing `Blueprint` with `Instance imported` and noting the date)
 - [ ] Complete the Bootstrap pillar selection exercise in TRANSFORMATION-PLAN.md (mark each of the 35 pillars In Scope / Out of Scope / Future)
 - [ ] Replace CURRENT-STATE-ASSESSMENT.md with a real assessment of the corporate workspace
 - [ ] Author the adoption ADR in the corporate `decisions/` folder; declare which pillars are in Wave 1 scope

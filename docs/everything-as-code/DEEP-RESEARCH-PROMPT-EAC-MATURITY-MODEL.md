@@ -1,5 +1,7 @@
 # Deep Research Prompt: Everything as Code (EaC) — Maturity Models, Standards, and Industry Adoption
 
+> **BLUEPRINT DOCUMENT.** This file is part of the portable EaC Blueprint and is exported to corporate Instance workspaces. It is target-agnostic — it contains no NovaTrek-specific content. An Instance team can re-run this prompt against a fresh deep-research session to get current industry data.
+
 **Usage**: This is a deep research prompt suitable for an AI deep-research session (e.g., Claude/GPT/Gemini deep research mode). The expected output should be pasted into [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md).
 
 ---

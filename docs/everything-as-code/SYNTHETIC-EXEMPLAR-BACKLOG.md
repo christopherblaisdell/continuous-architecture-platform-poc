@@ -10,7 +10,7 @@
 
 ## Phase 5 Carry-Over — AI Instructions Governance
 
-These tasks complete the Pillar 14 work deferred in a prior session against this synthetic workspace.
+These tasks complete the Pillar 11 (AI Instructions as Code) work deferred in a prior session against this synthetic workspace.
 
 - [ ] Fix `scripts/validate-ai-instructions.sh`:
   - [ ] Remove `prompt-mirror/README.md` from the required files list

@@ -1,5 +1,7 @@
 # Standardized Taxonomy of AI Instructions: Frameworks, Architectures, and Governance
 
+> **BLUEPRINT DOCUMENT.** This file is part of the portable EaC Blueprint and is exported to corporate Instance workspaces. It is a deep-research response supporting Pillar 11 (AI Instructions as Code) — it is target-agnostic and contains no NovaTrek-specific content.
+
 ## Executive Summary: The Three-Layer Framework for AI Governance
 
 As large language models transition from chat interfaces into autonomous, agentic software engineering systems, the industry is grappling with how to govern machine behavior. Currently, AI platforms aggregate constraints, project contexts, and procedural rules into monolithic, platform-specific markdown files (e.g., `.cursorrules`, `.clinerules`). This lack of standardization leads to "context drift," unpredictable execution, and severe security vulnerabilities.
