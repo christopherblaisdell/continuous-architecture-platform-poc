@@ -129,3 +129,22 @@ The umbrella term is **Everything as Code** (EaC). The transformation toward it 
 | **Spec-Driven Development** | Adjacent term (OpenSpec, AWS Kiro) for AI-assisted authoring of specs as code |
 
 There is no single ISO/IEEE-blessed term yet. See the deep research prompt for an investigation into formal standardization status.
+
+---
+
+## Blueprint Version
+
+| Field | Value |
+|-------|-------|
+| **Blueprint version** | 2026.05 |
+| **Pillar count** | 35 |
+| **Maturity model levels** | 0–9 |
+| **Last updated** | 2026-05-07 |
+
+When you export this blueprint to a corporate Instance workspace, record the version you exported in the Instance's `docs/everything-as-code/README.md`. This allows the Instance team to track when the pattern was imported and whether a newer version of the blueprint is available.
+
+A version bump is warranted when:
+- The pillar count changes
+- The maturity model levels change
+- The export script categories change (files added to or removed from the blueprint)
+- The canonical pillar names or numbers change

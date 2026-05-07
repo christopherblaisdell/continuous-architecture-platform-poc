@@ -1,8 +1,8 @@
 # AI Instructions as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 14. The patterns (three-layer model, hub-and-spoke, OpenSpec governance, RFC 2119 authoring) are the durable contributions. The "Operational Status" table near the end describes the **synthetic exemplar** in this workspace and is illustrative only — when the blueprint is exported to a corporate instance, that table is replaced with the real corporate status.
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 11. The patterns (three-layer model, hub-and-spoke, OpenSpec governance, RFC 2119 authoring) are the durable contributions. The "Operational Status" table near the end describes the **synthetic exemplar** in this workspace and is illustrative only — when the blueprint is exported to a corporate instance, that table is replaced with the real corporate status.
 
-**Status**: This is Pillar 14 of the Everything as Code framework — see [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar 11 of the Everything as Code framework — see [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ## Why AI Instructions Belong in EaC
 

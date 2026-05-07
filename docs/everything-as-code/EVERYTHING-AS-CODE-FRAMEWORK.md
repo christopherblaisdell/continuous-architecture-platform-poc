@@ -413,15 +413,29 @@ A practical maturity model for an architecture practice's EaC adoption:
 | **0** | **Documents** | Word docs, slide decks, Visio, screenshots, wiki pages | No git history, no diffs, no AI accessibility |
 | **1** | **Wikified** | Migrated to a wiki (Confluence, SharePoint) | Searchable, but not version-controlled or machine-parseable |
 | **2** | **Docs as Code** | Markdown in git, rendered via static site | Reviewable diffs; partial AI accessibility |
-| **3** | **Diagrams as Code** | Diagrams in PlantUML/Mermaid; wireframes in Excalidraw JSON | Visual artifacts now diffable |
-| **4** | **Metadata as Code** | Capabilities, actors, applications, services in YAML with schemas | Structured data; AI can reason over it |
-| **5** | **Generators in CI** | Portal pages, diagrams, and reports generated from YAML/specs by CI | Single source of truth enforced |
-| **6** | **Governance as Code** | Change proposals (OpenSpec), ADRs, capability changelog enforced by CI | Every change reviewed and traceable |
-| **7** | **AI Instructions as Code** | Hub-and-spoke AI instructions; platform-agnostic via OpenSpec | AI behavior itself is reviewable |
-| **8** | **Policy as Code** | Architectural rules enforced by OPA, ArchUnit, custom linters in CI | Drift impossible without policy bypass |
-| **9** | **AI-Native EaC** | Every artifact AI-readable; AI proposes changes via PR; generators are deterministic | Architecture practice operates at AI speed |
+| **3** | **Diagrams as Code** | Diagrams in PlantUML/Mermaid; wireframes in Excalidraw JSON; sequence diagrams CI-generated | Visual artifacts diffable; architecture diagrams version-controlled |
+| **4** | **Metadata as Code** | Capabilities, actors, applications, services, data models, event schemas, and tickets in YAML with schemas | Structured data; AI can reason over it; schemas enforce shape |
+| **5** | **Generators in CI** | Portal pages, diagrams, reports, and derived artifacts generated from YAML/specs by CI | Single source of truth enforced; manual edits to generated files fail CI |
+| **6** | **Governance as Code** | ADRs, capability changelog, and change proposals enforced by CI | Every architectural change is reviewed and traceable |
+| **7** | **AI Instructions as Code** | Hub-and-spoke AI instructions; platform-agnostic via canonical source | AI behavior itself is reviewable, diffable, and governed |
+| **8** | **Policy as Code** | Architectural rules, security policies, and compliance controls enforced by OPA, ArchUnit, or custom linters in CI | Drift impossible without explicit policy bypass |
+| **9** | **AI-Native EaC** | Every artifact AI-readable; AI proposes changes via PR; generators are deterministic and AI-invoking | Architecture practice operates at AI speed |
 
-The synthetic exemplar workspace where this blueprint is being authored sits at approximately **Level 6**, with strong elements of Level 7 in flight — that score validates the model but is not a corporate fact. The actual maturity of any real practice MUST be re-assessed inside the corporate instance workspace using the assessment template.
+The maturity levels describe organizational milestones, not per-pillar completion gates. An organization reaches Level N when the majority of relevant pillars in that level's category are producing validated, CI-enforced artifacts. Individual pillars can sit at different levels; the overall practice maturity is the mode or median across the active pillars.
+
+**Pillar groups by maturity level:**
+
+| Level | Pillar groups typically active |
+|-------|-------------------------------|
+| 2–3 | Pillars 5 (Architecture Artifacts), 12 (Wireframes), 13 (Documentation) |
+| 4 | Pillars 3, 4, 6, 8 (core metadata — actors, apps, capabilities, tickets); Pillars 16, 19 (data models, event schemas) |
+| 5 | Pillars 1, 2, 7 (IaC, Pipeline, Decisions) reaching generator-in-CI state; Pillars 24, 25 (Observability, SLOs) |
+| 6 | Pillars 7, 14 (Decisions, Governance) with CI-enforced change records |
+| 7 | Pillar 11 (AI Instructions as Code) with hub-and-spoke governance active |
+| 8 | Pillars 10, 20, 21, 22 (Policy, Security, Compliance, Secrets Management) |
+| 9 | All 35 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
+
+To assess where a real practice sits today, use the assessment template in [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md).
 
 ## 6. The Codify-Validate-Generate (CVG) Loop
 
