@@ -393,6 +393,8 @@ This template brings an architecture practice from a baseline state to **Level 9
 - Validation script active in CI; hub-and-spoke architecture documented
 - At least one complete change cycle archived
 
+> **See also**: [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — full deep dive on the three-layer model, hub-and-spoke architecture, and OpenSpec governance pattern.
+
 ---
 
 ## Pillar 12 — Wireframes as Code (UIaC)

@@ -493,3 +493,4 @@ Initial seed references:
 - The arc42 template — https://arc42.org/
 - C4 Model — https://c4model.com/
 - Continuous Architecture in Practice (Erder, Pureur, Woods) — Addison-Wesley, 2021
+- Standardized taxonomy of AI instructions and OpenSpec governance model (workspace deep research) — [standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md)
