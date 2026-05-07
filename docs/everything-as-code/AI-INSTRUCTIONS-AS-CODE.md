@@ -27,7 +27,7 @@ AI behavior governance breaks into three distinct layers. AI Instructions as Cod
 
 | Layer | Concern | Examples |
 |-------|---------|----------|
-| **Layer 1 — Behavioral Specification** | What the agent does, how it reasons, what constraints it obeys | `.github/copilot-instructions.md`, `.clinerules`, `.cursor/rules/*.mdc`, `.windsurfrules`, OpenSpec specs |
+| **Layer 1 — Behavioral Specification** | What the agent does, how it reasons, what constraints it obeys | `.github/copilot-instructions.md`, `.clinerules`, `.cursor/rules/*.mdc`, `.windsurfrules`, OpenSpec specs, deployed agent system prompts (`agents/<name>/system-prompt.md`) |
 | **Layer 2 — Change Governance** | How Layer 1 artifacts are proposed, reviewed, versioned | OpenSpec, ADRs, hub-and-spoke replication |
 | **Layer 3 — Runtime Integration** | How context and capability are delivered to the agent at inference time | MCP, RAG, vector stores, tool registries |
 
@@ -35,7 +35,11 @@ EaC governs Layer 1 and Layer 2. Layer 3 is a runtime concern (it has its own as
 
 ## The Portability Problem
 
-Every AI tool has its own instruction format:
+AI instructions reach agents via two distinct surfaces, each with its own format fragmentation problem.
+
+### IDE Coding Assistants
+
+Every IDE AI tool has its own instruction file format:
 
 | Tool | Primary file | Routing mechanism |
 |------|--------------|-------------------|
@@ -46,7 +50,20 @@ Every AI tool has its own instruction format:
 | Continue.dev | `config.yaml` | Explicit Models / Rules / Prompts / MCP sections |
 | Aider | `.aider.conf.yml` + convention files | Convention-based |
 
-If you author your behavioral rules separately for each tool, you have:
+### Deployed Agent Platforms
+
+Deployed agents — chatbots, workflow agents, API-accessible assistants — consume behavioral instructions as system prompts set via SDK or API at deployment time, not as files read from a workspace:
+
+| Platform | Instruction mechanism | EaC pattern |
+|----------|-----------------------|-------------|
+| Azure AI Foundry (Agent Service) | `instructions` field set via Azure AI Projects SDK | Store as `agents/<name>/system-prompt.md` in git; CI deploys via SDK |
+| OpenAI Assistants API | `instructions` field on the Assistant object | Store as file in git; CI deploys via OpenAI SDK |
+| Amazon Bedrock Agents | Instruction field in agent resource config | Store as file in git; deploy via CloudFormation / CDK |
+| Google Vertex AI Agents | System instruction in agent config | Store as file in git; deploy via Terraform / gcloud |
+
+**The key distinction:** IDE assistants read files from the workspace; deployed agents are configured via API. The EaC answer for deployed agents is to store the system prompt as a versioned text file and deploy it via CI/CD using the platform SDK — the same principle as infrastructure manifests.
+
+If you author your behavioral rules separately for each tool and each surface, you have:
 
 - N copies of the same intent
 - N opportunities for drift
@@ -70,22 +87,24 @@ The pattern this workspace adopts:
 │         workflows.md                            │
 │       skills/                                   │
 │         <skill>/SKILL.md                        │
-└─────────────────────┬───────────────────────────┘
-                      │ replicated to
-                      ▼
-┌─────────────────────────────────────────────────┐
-│   DERIVED FILES (each has DERIVED FILE header)  │
-│                                                 │
-│   .clinerules                          (Roo)    │
-│   .github/copilot-instructions.md      (Copilot)│
-│   .github/instructions/                         │
-│     prompt-me.instructions.md          (Copilot)│
-│     prompt-mirror.instructions.md      (Copilot)│
-│     plantuml-svg.instructions.md       (Copilot)│
-│                                                 │
-│   (future) .cursor/rules/*.mdc         (Cursor) │
-│   (future) .windsurfrules              (Windsurf)│
-└─────────────────────────────────────────────────┘
+└──────────────────────┬──────────────────────────┘
+                       │ CI assembles into:
+           ┌───────────┴────────────┐
+           ▼                        ▼
+┌──────────────────────┐  ┌─────────────────────────┐
+│ IDE ASSISTANT FILES  │  │ DEPLOYED AGENT CONFIGS   │
+│ (DERIVED FILE header)│  │ (DERIVED FILE header)    │
+│                      │  │                          │
+│ .clinerules   (Roo)  │  │ agents/<name>/           │
+│ .github/copilot-     │  │   system-prompt.md       │
+│   instructions.md    │  │   config.yaml            │
+│   (Copilot)          │  │                          │
+│ .github/instructions/│  │ Deployed to:             │
+│   *.md (Copilot)     │  │   Azure AI Foundry       │
+│                      │  │   OpenAI Assistants      │
+│ (future) Cursor      │  │   Bedrock / Vertex AI    │
+│ (future) Windsurf    │  │                          │
+└──────────────────────┘  └─────────────────────────┘
 ```
 
 Every derived file MUST start with a `DERIVED FILE` header that:
@@ -94,6 +113,68 @@ Every derived file MUST start with a `DERIVED FILE` header that:
 2. Names the canonical source it was derived from
 3. Forbids direct edits
 4. Points contributors to the OpenSpec change workflow
+
+## Deployed Agents as a Second Derivation Target
+
+The hub-and-spoke pattern applies equally to deployed agents. The hub contains the behavioral definition once; CI assembles it into platform-specific forms for both IDE assistant files and deployed agent configs.
+
+**Scenario: one behavioral definition, two surfaces**
+
+You want a Solution Architect AI that knows its persona, its skills (C4 diagrams, ADRs, impact assessments), and its constraints — accessible both in VS Code (as a Copilot customization) and as a standalone Azure AI Foundry chatbot.
+
+Without the hub, you write the persona and skills twice. Drift occurs within weeks. There is no single PR to review when "the agent's behavior" changes.
+
+With the hub:
+- `universal/personas.md` — authoritative persona definition, RFC 2119 language, no platform-specific syntax
+- `skills/sequence-diagrams/SKILL.md` — skill definition
+- CI assembles these into `.github/copilot-instructions.md` (VS Code surface) **and** `agents/solution-architect/system-prompt.md` (Foundry surface)
+- The Foundry config is committed to git and deployed by CI — never set by hand in the portal
+
+**Azure AI Foundry agent config (EaC form):**
+
+```yaml
+# agents/solution-architect/config.yaml
+# DERIVED FILE — assembled from hub by CI. Do not edit directly.
+# Source: universal/personas.md + skills/
+# Governance: openspec/specs/ai-instruction-governance/
+name: solution-architect
+description: Solution Architect AI assistant
+model: gpt-4o
+system_prompt_file: agents/solution-architect/system-prompt.md
+tools:
+  - type: file_search
+    file_search:
+      vector_store_ids: ["${ARCH_DOCS_VECTOR_STORE_ID}"]
+```
+
+**CI deployment step (Azure AI Projects SDK):**
+
+```python
+# scripts/deploy-foundry-agent.py
+from azure.ai.projects import AIProjectClient
+from azure.identity import DefaultAzureCredential
+import os
+
+client = AIProjectClient.from_connection_string(
+    conn_str=os.environ["AZURE_AI_FOUNDRY_CONNECTION_STRING"],
+    credential=DefaultAzureCredential()
+)
+
+with open("agents/solution-architect/system-prompt.md") as f:
+    system_prompt = f.read()
+
+agent = client.agents.create_agent(
+    model="gpt-4o",
+    name="solution-architect",
+    instructions=system_prompt,
+)
+```
+
+This makes the Foundry agent's behavioral definition version-controlled, reviewable, and governed by the same OpenSpec change workflow as every other AI instruction.
+
+**The key rule:** A deployed agent whose system prompt lives only in the cloud portal has the same problem as a VM whose configuration was applied by hand — it works until it doesn't, and no one knows why it changed.
+
+**Scope boundary:** The Foundry agent's *tools* (file search, code interpreter, MCP servers, vector store IDs) are Layer 3 (Runtime Integration) and are configured separately via the platform SDK or Bicep. The `config.yaml` above intentionally separates the behavioral spec (`system_prompt_file`) from the runtime tool config so each can evolve independently.
 
 ## Governance via OpenSpec
 
