@@ -31,10 +31,11 @@ This template brings an architecture practice from a baseline state to **Level 9
 - [ ] Add an EaC compliance section to the corporate AI instruction hub
 - [ ] Add an "Everything as Code Transformation" track to the corporate roadmap
 - [ ] Identify a pilot pillar to demonstrate value within the first sprint
+- [ ] Complete a **pillar selection exercise**: review all 35 pillars in this document; mark each as **In Scope**, **Out of Scope**, or **Future**; record the decision in the adoption ADR
 
 ### Exit criteria
 
-- Adoption ADR merged
+- Adoption ADR merged, including a pillar selection record (in scope / out of scope / future for all 35 pillars)
 - Real current-state assessment completed
 - Roadmap reflects EaC as a top-level track
 - Pilot pillar identified
@@ -528,17 +529,715 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
+<!-- THEME: Data Layer — Pillars 16–19 -->
+
+## Pillar 16 — Data Models as Code
+
+**What it means**: Entity schemas, data dictionaries, and entity-relationship definitions are declared in version-controlled text files. The database schema is derived from the declaration — never the other way around.
+
+### Artifact types
+
+- Database schema definition files (SQL DDL, YAML entity specs, dbt models, Avro/Protobuf schemas for shared structures)
+- Entity-relationship diagrams generated from schema declarations
+- Data dictionary YAML: human-readable descriptions of every table, column, and constraint
+- JSON Schema or Avro/Protobuf schemas for data structures shared across services
+
+### Adoption steps
+
+- [ ] Inventory all databases and data stores; identify which have no version-controlled schema declaration
+- [ ] Select a schema declaration format appropriate to the data platform (SQL DDL, Liquibase changelogs, dbt sources, YAML entity specs)
+- [ ] Declare the current schema for the highest-churn data store first; commit to version control
+- [ ] Add a data dictionary YAML with descriptions for every table and column; wire a generator to produce documentation from it
+- [ ] Wire CI to validate schema declarations are syntactically correct and match a known format
+- [ ] Establish the convention: any PR that changes a data store must update the schema declaration; no undeclared schema changes
+
+### CI integration
+
+- Schema syntax validation on every PR touching schema files
+- `schemadiff` or equivalent to detect undeclared divergence between the declared schema and applied migrations
+- Data dictionary completeness check: every column must have a description
+
+### Exit criteria
+
+- Every data store has a version-controlled schema declaration
+- Data dictionary published and generated from schema files
+- CI blocks PRs that introduce undeclared schema changes
+
+---
+
+## Pillar 17 — Database Migrations as Code
+
+**What it means**: Every schema change — adding a column, dropping a table, adding an index, changing a data type — is expressed as a numbered, version-controlled migration file applied in a deterministic sequence. No undeclared schema change ever reaches a database.
+
+### Artifact types
+
+- Migration files: numbered, timestamped SQL or DSL migration scripts (one per change)
+- Rollback scripts: corresponding undo operations where applicable
+- Migration state table: applied migration log maintained by the migration tool
+- CI workflow: migrations validated and applied against an ephemeral test database on every PR
+
+### Adoption steps
+
+- [ ] Select a migration tool appropriate to the data platform (Liquibase, Flyway, Alembic, golang-migrate, Atlas)
+- [ ] Initialize the migration tool against the current schema; generate a baseline migration capturing current state
+- [ ] Establish the convention: any database change requires a new migration file in the same PR as the application code change
+- [ ] Wire CI to run migrations against an ephemeral test database on every PR; confirm the schema matches expectations after migration
+- [ ] Document the rollback process; mark migrations that cannot be safely rolled back with an explicit comment
+- [ ] Wire a drift check: the migration tool's applied state must match the declared migrations on every build
+
+### CI integration
+
+- Migration tool validates all migration files for syntax on every PR
+- Test database provisioned, migrations applied, schema validated, database torn down — on every PR touching migration files
+- Drift check: migration tool state must match declared migrations
+
+### Exit criteria
+
+- Zero schema changes applied without a corresponding migration file in version control
+- CI applies migrations to a test database on every PR
+- Rollback procedure documented for all migration files
+
+---
+
+## Pillar 18 — Data Contracts as Code
+
+**What it means**: Producers of data (event publishers, API providers, data pipeline outputs) explicitly declare their guarantees to consumers in a machine-readable, version-controlled contract. Consumers validate against the contract in CI. Breaking changes require a contract version bump and consumer notification.
+
+### Artifact types
+
+- Data contract YAML files (one per producer–consumer pair or per published dataset): schema, SLA, ownership, version, and changelog
+- Consumer registration: which teams consume which contract and at which version
+- Breaking change policy: declared in the contract or in a governing ADR
+- CI validation: consumer tests run against the contract schema on every PR
+
+### Adoption steps
+
+- [ ] Identify the highest-risk producer-consumer data flows (those where a past breaking change caused an incident)
+- [ ] Select a data contract format (Data Contract Specification — Bitol, OpenDataMesh, or custom YAML with JSON Schema)
+- [ ] Author the first data contract for the highest-risk flow: declare producer, schema, SLA, version, and consumer list
+- [ ] Wire a CI check: consumer integration tests run against the declared contract schema on every PR
+- [ ] Establish a breaking change policy ADR: what constitutes a breaking change, how consumers are notified, how versions are bumped
+- [ ] Expand to all high-risk flows incrementally; low-risk flows follow as capacity allows
+
+### CI integration
+
+- Contract schema validation on every PR touching contract files
+- Consumer integration tests run against the contract on every PR
+- Breaking change detector: flag additions/removals of required fields, type changes, and enum changes
+
+### Exit criteria
+
+- All high-risk producer-consumer flows have a declared, version-controlled data contract
+- CI runs consumer tests against the contract on every PR
+- Breaking change policy documented in an ADR
+
+---
+
+## Pillar 19 — Event Schemas as Code
+
+**What it means**: Every event published to an event bus or message broker — its structure, semantics, producer, and registered consumers — is declared in a version-controlled AsyncAPI spec or schema registry definition. No event topic exists without a machine-readable declaration.
+
+### Artifact types
+
+- AsyncAPI spec YAML files: one per event domain or per producer service
+- Schema registry definitions (Avro, Protobuf, JSON Schema) for event payloads
+- Event catalog: generated registry of all events, their producers, consumers, and versions
+- Consumer registration: which services subscribe to which events
+
+### Adoption steps
+
+- [ ] Inventory all events currently published across all event buses and message brokers
+- [ ] Select a schema format for event payloads (Avro for Kafka, JSON Schema for simpler brokers, Protobuf for cross-language high-performance needs)
+- [ ] Author AsyncAPI specs for the highest-volume or highest-risk event streams first
+- [ ] Wire AsyncAPI validator to CI; wire a schema registry sync step if a registry is in use
+- [ ] Generate an event catalog page for the documentation portal from the AsyncAPI specs
+- [ ] Establish the convention: no new event topic created without a corresponding AsyncAPI spec in the same PR
+
+### CI integration
+
+- `asyncapi validate` on every PR touching AsyncAPI specs
+- Schema registry diff: proposed payload schema changes flagged as breaking or non-breaking
+- Drift check: generated event catalog must match AsyncAPI sources
+
+### Exit criteria
+
+- Every event stream has a version-controlled AsyncAPI spec
+- Schema validation enforced in CI on every PR
+- Event catalog published and generated from specs
+
+---
+
+<!-- THEME: Security and Compliance — Pillars 20–23 -->
+
+## Pillar 20 — Security as Code
+
+**What it means**: Threat models, security scan configurations, RBAC/IAM policies, network security rules, and security testing rule sets are all declared in version-controlled files — reviewed, tested, and enforced automatically. Security is embedded in the development workflow, not bolted on at release.
+
+### Artifact types
+
+- Threat model files (OWASP Threat Dragon JSON, YAML-based STRIDE models)
+- Static analysis configs (Semgrep rulesets, SonarQube config, CodeQL query sets)
+- SAST/DAST pipeline steps declared in pipeline YAML
+- IAM / RBAC policy files (AWS IAM JSON, Azure RBAC Bicep, Kubernetes RBAC YAML)
+- Network security group and firewall rules declared in IaC
+
+### Adoption steps
+
+- [ ] Author a threat model for the highest-risk service or data flow; commit as a structured file
+- [ ] Select a SAST tool appropriate to the language stack; commit the ruleset configuration to version control
+- [ ] Wire SAST scanning to CI as a required check on every PR; configure fail thresholds
+- [ ] Declare all IAM / RBAC policies in IaC (not in cloud consoles); review all policy changes via PR
+- [ ] Add a dependency vulnerability scan (Dependabot, Snyk, OWASP Dependency-Check) to CI; configure fail thresholds
+- [ ] Establish a security ADR for every significant access control decision
+
+### CI integration
+
+- SAST scan on every PR (Semgrep / CodeQL / SonarQube)
+- Dependency vulnerability scan on every PR
+- IaC security scan (Checkov, Trivy, TFSec) on every PR touching infrastructure files
+- Threat model lint: basic structural validation of threat model files
+
+### Exit criteria
+
+- Threat model exists for every high-risk service
+- SAST and dependency scanning enforced in CI with defined fail thresholds
+- All IAM/RBAC policies declared in version-controlled IaC
+
+---
+
+## Pillar 21 — Compliance as Code
+
+**What it means**: Regulatory and internal compliance requirements (GDPR, SOC2, HIPAA, PCI-DSS, ISO 27001, internal security baselines) are expressed as machine-verifiable rules. Audit evidence is generated automatically from CI/CD results, not assembled manually ahead of an audit.
+
+### Artifact types
+
+- Compliance control YAML: mapping of regulatory controls to declared technical controls
+- OPA / Conftest rules implementing compliance checks as code
+- Audit evidence manifests: CI-generated records of which controls passed on which commit
+- Compliance posture report: generated summary of pass/fail per control framework
+
+### Adoption steps
+
+- [ ] Identify the compliance framework(s) most relevant to the Instance (SOC2, GDPR, PCI, ISO 27001, internal)
+- [ ] Map the highest-priority controls to verifiable technical assertions (e.g., "all data at rest encrypted" → check IaC encryption flags)
+- [ ] Implement the first 5 controls as OPA / Conftest rules; wire to CI
+- [ ] Wire CI to generate an audit evidence manifest on every merge to main: commit hash, timestamp, passing controls, failing controls
+- [ ] Store evidence manifests in a durable, immutable location (S3 versioned bucket, Azure Blob immutable tier)
+- [ ] Expand controls incrementally; target 80% coverage of the highest-priority framework before expanding to a second
+
+### CI integration
+
+- `conftest test` with compliance ruleset on every PR
+- Audit evidence manifest generated and stored on every merge to main
+- Compliance posture report published in the documentation portal on a schedule
+
+### Exit criteria
+
+- At least one compliance framework partially covered by machine-verifiable rules
+- Audit evidence generated automatically from CI; not assembled manually
+- Compliance posture report published and kept current
+
+---
+
+## Pillar 22 — Secrets Management as Code
+
+**What it means**: Every secret, certificate, and API key used by the system is registered, rotated, and access-controlled via a secrets manager whose configuration is itself version-controlled. No secret ever appears in source code, environment variable files, or CI/CD configuration in plaintext.
+
+### Artifact types
+
+- Vault policy files / Key Vault access policy Bicep / AWS Secrets Manager policy JSON
+- Secret rotation schedule declarations
+- Certificate management configuration (cert-manager manifests, Azure Key Vault certificate policies)
+- Secret reference declarations: code references secret names, never secret values
+
+### Adoption steps
+
+- [ ] Inventory all secrets currently in use; identify any hardcoded in source or CI/CD config
+- [ ] Select a secrets manager appropriate to the platform (HashiCorp Vault, Azure Key Vault, AWS Secrets Manager, GCP Secret Manager)
+- [ ] Migrate all secrets to the secrets manager; remove all plaintext values from every repository
+- [ ] Declare access policies (who and what can read which secret) in version-controlled IaC
+- [ ] Wire a secret scanning step to CI (truffleHog, git-secrets, GitHub secret scanning) that fails on any committed secret value
+- [ ] Declare rotation schedules for all secrets; wire automated rotation where the platform supports it
+
+### CI integration
+
+- Secret scanning on every PR (fails on any plaintext credential or key)
+- IaC policy check: no secret values in Terraform/Bicep variable files
+- Certificate expiry check: scheduled CI alerts N days before expiry
+
+### Exit criteria
+
+- Zero plaintext secrets in source code, CI config, or container images
+- All access policies declared in version-controlled IaC
+- Secret scanning enforced in CI on every PR
+
+---
+
+## Pillar 23 — SBOM as Code
+
+**What it means**: A Software Bill of Materials — the complete inventory of every third-party library, framework, and transitive dependency in every deployable artifact — is generated automatically as part of every build, stored in a standard format, and version-controlled alongside the release artifact.
+
+### Artifact types
+
+- CycloneDX or SPDX SBOM documents (one per deployable artifact, per release)
+- Dependency lock files committed to version control (`package-lock.json`, `poetry.lock`, `go.sum`, `pom.xml` with locked versions)
+- Vulnerability report: known CVEs in current dependencies, generated from the SBOM
+- License inventory: third-party licenses declared and reviewed for policy compliance
+
+### Adoption steps
+
+- [ ] Commit all dependency lock files to version control across all services (no floating versions in production artifacts)
+- [ ] Select an SBOM generation tool (Syft, cdxgen, `cyclonedx-npm`, `jake`)
+- [ ] Wire SBOM generation to the CI build step; store the SBOM alongside the release artifact
+- [ ] Wire a vulnerability scan against the SBOM on every build (Grype, Trivy, OSV-Scanner); configure fail thresholds by severity
+- [ ] Wire a license compliance check: flag any dependency whose license is not on the approved list
+- [ ] Publish a current SBOM for every deployed service in the documentation portal
+
+### CI integration
+
+- SBOM generated on every build
+- Vulnerability scan against SBOM on every build; fails on CVEs above the defined severity threshold
+- License compliance check on every PR that modifies dependency files
+
+### Exit criteria
+
+- SBOM generated for every deployable artifact on every build
+- Vulnerability scanning automated in CI with defined fail thresholds
+- All dependency lock files committed to version control
+
+---
+
+<!-- THEME: Observability and Reliability — Pillars 24–26 -->
+
+## Pillar 24 — Observability as Code
+
+**What it means**: Dashboards, alert rules, log queries, tracing configurations, and synthetic monitors are all declared in version-controlled files — reviewed, tested, and deployed via CI/CD, not configured interactively in an observability tool's GUI.
+
+### Artifact types
+
+- Dashboard definitions (Grafana dashboard JSON/YAML, Datadog dashboard Terraform, Azure Workbooks JSON)
+- Alert rule declarations (Prometheus alerting rules YAML, Azure Monitor alert Bicep, Datadog Terraform)
+- Log query files (KQL, PromQL, LogQL saved as named queries in version control)
+- Synthetic monitor definitions (Playwright-based uptime checks, Datadog Synthetics Terraform)
+- SLO tracking dashboards linked to Pillar 25 SLO declarations
+
+### Adoption steps
+
+- [ ] Inventory all active dashboards and alerts; identify which exist only in a tool GUI
+- [ ] Select an observability-as-code tool appropriate to the stack (Grafana Grizzly, Terraform providers for Datadog/New Relic, Azure Monitor Bicep)
+- [ ] Export the three most critical dashboards to their version-controlled format; commit and wire to CI deployment
+- [ ] Declare all production alert rules in version-controlled format; retire GUI-only alerts
+- [ ] Wire CI to validate alert rule syntax and deploy dashboard/alert changes on merge to main
+- [ ] Link dashboards to the services they monitor in the service registry (Pillar 4)
+
+### CI integration
+
+- Alert rule syntax validation on every PR
+- Dashboard schema validation on every PR
+- Drift check: deployed dashboards must match declared source on a schedule
+
+### Exit criteria
+
+- All production dashboards and alert rules declared in version control
+- CI deploys observability configuration changes on merge to main
+- Zero active alerts exist only in a GUI with no corresponding version-controlled declaration
+
+---
+
+## Pillar 25 — SLO / SLI as Code
+
+**What it means**: Service Level Objectives and the Service Level Indicators they measure are declared in a standard, machine-readable format per service — linked to the service registry, tracked automatically, and reported without manual data assembly.
+
+### Artifact types
+
+- SLO definition files (OpenSLO YAML, Sloth YAML, or custom YAML with JSON Schema)
+- SLI calculation rules: how each indicator is computed from raw metrics
+- Error budget tracking declarations: automated error budget burn rate rules
+- SLO compliance report: generated per service, per period
+
+### Adoption steps
+
+- [ ] Identify the three most critical services; define one SLO per service (availability or latency to start)
+- [ ] Select an SLO declaration format (OpenSLO is the open standard; Sloth generates Prometheus recording rules from it)
+- [ ] Declare each SLO as a YAML file linked to the service in the service registry
+- [ ] Wire SLI calculation to the metrics stack (Prometheus recording rules, Azure Monitor KQL, Datadog SLO API)
+- [ ] Wire error budget tracking to the observability dashboards from Pillar 24
+- [ ] Expand SLO coverage incrementally; every service in the registry should have at least one SLO
+
+### CI integration
+
+- OpenSLO / Sloth schema validation on every PR touching SLO files
+- SLI calculation rule dry-run on every PR
+- Drift check: SLOs declared in files must match SLOs registered in the observability platform
+
+### Exit criteria
+
+- Every service in the service registry has at least one declared SLO
+- Error budget tracking automated; no manual data assembly required for SLO reports
+- SLO compliance report published on a defined cadence
+
+---
+
+## Pillar 26 — Feature Flags as Code
+
+**What it means**: Feature toggle definitions, targeting rules, and rollout percentages are declared in version-controlled configuration files — not set interactively in a feature flag platform's GUI. Changes to flag behavior flow through PR review, with the same change governance as any other code change.
+
+### Artifact types
+
+- Feature flag definition files (YAML or JSON declaring flag name, type, default, variants, and targeting rules)
+- Targeting rule declarations: which user segment or environment sees which variant
+- Flag lifecycle policy: when flags are created, when they must be cleaned up (stale flag = tech debt)
+- OpenFeature provider config if using the OpenFeature standard
+
+### Adoption steps
+
+- [ ] Select a feature flag platform with a config-as-code mode (LaunchDarkly config export, Unleash YAML, OpenFeature + Flagd, or a custom YAML-backed solution)
+- [ ] Declare all currently active flags in version-controlled YAML; wire sync to the flag platform
+- [ ] Establish a flag lifecycle policy: maximum flag age, cleanup PR requirement before closing a feature
+- [ ] Wire CI to validate flag definition syntax on every PR
+- [ ] Link flags to the capabilities they gate (reference Pillar 6); a flag without a capability reference is incomplete
+- [ ] Wire a stale flag linter: flags older than the lifecycle policy's maximum age fail CI until cleaned up or explicitly renewed
+
+### CI integration
+
+- Flag definition syntax validation on every PR
+- Stale flag check: flags beyond lifecycle age trigger a CI warning or failure
+- Platform sync: flag definitions pushed to the feature flag platform on merge to main
+
+### Exit criteria
+
+- All active feature flags declared in version control
+- Flag lifecycle policy documented and enforced in CI
+- Stale flag linter active
+
+---
+
+<!-- THEME: Deployment and Release — Pillars 27–29 -->
+
+## Pillar 27 — Release Strategies as Code
+
+**What it means**: How a new version of a service is released to production — canary percentages, blue/green cutover rules, A/B test split weights, rollback triggers, and traffic shifting schedules — is declared in version-controlled deployment configuration, not configured interactively in a deployment tool.
+
+### Artifact types
+
+- Progressive delivery configuration (Argo Rollouts Rollout YAML, Flagger Canary YAML)
+- Traffic routing rules (Istio VirtualService, Nginx Ingress config, AWS ALB listener rules)
+- Rollback trigger thresholds (error rate, latency percentile, custom metric)
+- Release strategy ADR: why a given strategy was chosen for a given service class
+
+### Adoption steps
+
+- [ ] Classify services by release risk: high-traffic/safety-critical, standard production, or internal tooling — each class warrants a different default strategy
+- [ ] Select a progressive delivery tool appropriate to the deployment platform (Argo Rollouts for Kubernetes, deployment slots for PaaS, CodeDeploy for VM-based services)
+- [ ] Declare the release strategy for the highest-risk service first; commit as a versioned deployment config
+- [ ] Define rollback triggers: metric thresholds that automatically pause or roll back a canary
+- [ ] Author a release strategy ADR for each service class; link from the service registry entry
+- [ ] Expand to all production services; lowest-risk internal services may use a simple rolling update declaration
+
+### CI integration
+
+- Release strategy config schema validation on every PR
+- Rollback threshold smoke test: validate that referenced metrics exist in the observability stack
+
+### Exit criteria
+
+- Every production service has a declared release strategy in version control
+- Rollback triggers declared and linked to observable metrics
+- Release strategy ADRs in the decisions log for all service classes
+
+---
+
+## Pillar 28 — Environment Definitions as Code
+
+**What it means**: The full catalog of environments — development, staging, production, feature branches, performance test — including what is deployed in each, which version, and the promotion path between them, is declared in version-controlled manifests.
+
+### Artifact types
+
+- Environment catalog YAML: one entry per environment declaring name, tier, purpose, and services deployed
+- Promotion path declaration: from dev to staging to production, with gate criteria
+- GitOps application declarations (Argo CD Application / ApplicationSet YAML, Flux HelmRelease)
+- Environment-specific configuration overlays (Kustomize overlays, Helm values files per environment)
+
+### Adoption steps
+
+- [ ] List all environments currently in use; identify any that exist only in a deployment tool GUI without a version-controlled declaration
+- [ ] Commit an environment catalog YAML; declare each environment's purpose and promotion criteria
+- [ ] Adopt a GitOps tool (Argo CD, Flux) or equivalent; declare what runs in each environment as YAML committed to version control
+- [ ] Use Kustomize / Helm values overlays for environment-specific configuration; never modify shared base configs per environment manually
+- [ ] Declare promotion gates: which checks must pass before a release advances from one environment to the next
+- [ ] Wire CI to validate environment declarations and overlay syntax on every PR
+
+### CI integration
+
+- Kustomize / Helm values validation on every PR
+- GitOps app declaration schema validation on every PR
+- Environment drift check: what is declared must match what is deployed (reconciled by the GitOps tool)
+
+### Exit criteria
+
+- Every environment catalogued in version-controlled declarations
+- Promotion path and gates declared; no implicit "just push to prod" paths
+- GitOps reconciliation active; deployment drift is detected and alerts
+
+---
+
+## Pillar 29 — Service Mesh Configuration as Code
+
+**What it means**: Traffic management policies, retry budgets, circuit breaker thresholds, mutual TLS settings, and observability sidecar configurations for the service mesh are all declared in version-controlled manifest files — reviewed and deployed via CI/CD, not configured interactively in a mesh control plane.
+
+### Artifact types
+
+- Virtual service and destination rule declarations (Istio, Linkerd ServiceProfiles, AWS App Mesh)
+- mTLS policy declarations
+- Retry and circuit breaker configuration files
+- Traffic routing rules (weighted routing for canary, header-based routing for A/B tests)
+
+### Adoption steps
+
+- [ ] Identify the service mesh in use (Istio, Linkerd, Consul Connect, AWS App Mesh, Dapr)
+- [ ] Export current mesh configuration to version-controlled YAML; commit as the starting baseline
+- [ ] Establish the convention: all mesh configuration changes flow through PR review — no direct `kubectl apply` or control plane GUI changes
+- [ ] Author a mesh configuration ADR covering the chosen policies for retries, timeouts, and circuit breakers per service class
+- [ ] Wire CI to validate mesh config YAML syntax and run a dry-apply before merge
+
+### CI integration
+
+- Mesh config schema validation on every PR
+- Dry-apply / diff against current cluster state on every PR
+- Drift check: deployed mesh config must match declared source
+
+### Exit criteria
+
+- All mesh configuration committed to version control
+- No mesh configuration changes applied outside of PR-reviewed version-controlled declarations
+- Mesh configuration ADR in the decisions log
+
+---
+
+<!-- THEME: People and Organization — Pillars 30–32 -->
+
+## Pillar 30 — Team Topology as Code
+
+**What it means**: The organizational structure of teams, their interaction modes (collaboration, X-as-a-service, facilitating), their service ownership, and their platform or enabling capabilities are declared in a version-controlled YAML registry — making the organizational architecture as legible and evolvable as the technical architecture.
+
+### Artifact types
+
+- Team registry YAML: name, type (stream-aligned, platform, enabling, complicated-subsystem), members, services owned, communication channels
+- Interaction mode declarations: which teams interact with which other teams, in which mode
+- Generated organizational topology diagram
+- Service ownership index: derived from the team registry — for any service, which team owns it
+
+### Adoption steps
+
+- [ ] Enumerate all teams in the engineering organization; classify each by Team Topologies type
+- [ ] Create a team registry YAML with entries for each team; include service ownership references to the service registry (Pillar 4)
+- [ ] Declare interaction modes between teams; note where modes are aspirational vs current
+- [ ] Wire a generator to produce an organizational topology diagram and a service ownership index
+- [ ] Add CI validation: every service in the service registry must have an owning team in the team registry
+- [ ] Review the topology quarterly; update the registry as teams change; track topology evolution in git history
+
+### CI integration
+
+- Team registry JSON Schema validation on every PR
+- Referential integrity: every service registry entry must reference a valid team ID
+- Generated topology diagram drift check
+
+### Exit criteria
+
+- All teams declared; every service has a declared owning team
+- Organizational topology diagram generated and published in the portal
+- Service ownership index generated and cross-linked from service pages
+
+---
+
+## Pillar 31 — Onboarding as Code
+
+**What it means**: The process of bringing a new developer onto the team — from first repository access to shipping a first PR — is documented as executable, version-controlled steps, not as tribal knowledge passed person-to-person or as a wiki page that drifts from reality.
+
+### Artifact types
+
+- Onboarding checklist Markdown with explicit, testable steps and expected outputs
+- Dev container definition (`devcontainer.json`) or environment setup script that runs without manual intervention
+- New-joiner first-PR template: a scripted first contribution that exercises the full development workflow
+- Onboarding smoke test script: runs on a clean environment to verify the guide is not broken
+
+### Adoption steps
+
+- [ ] Interview three recent new joiners; document every step they had to take that was not in any guide
+- [ ] Author the onboarding guide as Markdown with explicit commands and expected outputs; commit to `docs/onboarding/`
+- [ ] Author or adopt a dev container definition that provisions the full local development environment automatically
+- [ ] Wire a new-joiner smoke test script: run it on a fresh machine; if it fails, the onboarding guide is broken — fix both
+- [ ] Review and update the onboarding guide on every major platform or toolchain change
+
+### CI integration
+
+- `markdownlint` on onboarding documentation
+- Dev container build validation: `devcontainer build` runs in CI to confirm the image still builds
+- Onboarding smoke test runs on a schedule against a clean environment
+
+### Exit criteria
+
+- A new developer can provision their local environment by running a single command
+- Onboarding guide reviewed and validated within the last 60 days
+- Dev container definition passes CI build on every PR
+
+---
+
+## Pillar 32 — Developer Experience as Code
+
+**What it means**: The local development toolchain — IDE settings, recommended extensions, code formatter configs, linter configs, pre-commit hooks, and local service runner scripts — is declared in version-controlled files shared across the team, so every developer works with a consistent, reproducible environment.
+
+### Artifact types
+
+- `.editorconfig` — universal IDE whitespace and encoding settings
+- `.devcontainer/devcontainer.json` — full local dev environment as a container definition
+- Formatter configs (`.prettierrc`, `pyproject.toml [tool.ruff]`, `google-java-format` settings)
+- Pre-commit hook config (`.pre-commit-config.yaml`) — runs linters and formatters before every commit
+- VS Code workspace settings and recommended extensions (`.vscode/settings.json`, `.vscode/extensions.json`)
+- Local runner scripts (Docker Compose, Tilt, Skaffold) for spinning up all service dependencies locally
+
+### Adoption steps
+
+- [ ] Commit `.editorconfig` establishing universal whitespace and encoding rules
+- [ ] Commit formatter configs for all languages in the codebase; wire to pre-commit hooks
+- [ ] Commit `.vscode/extensions.json` with the extensions every developer should have; add `.vscode/settings.json` for shared IDE settings
+- [ ] Commit a `.pre-commit-config.yaml` with at minimum: format check, lint, secret scan, trailing whitespace check
+- [ ] Wire CI to run the same checks as pre-commit hooks — "works on my machine" cannot reach CI
+- [ ] Document in the onboarding guide (Pillar 31): the pre-commit hooks are not optional; a PR that bypasses them will fail CI
+
+### CI integration
+
+- Same linters and formatters that run in pre-commit hooks also run in CI; no divergence permitted
+- Dev container build validation (see Pillar 31)
+- Extension recommendation drift check: `.vscode/extensions.json` kept in sync with any tool added to the workflow
+
+### Exit criteria
+
+- `.editorconfig`, formatter configs, and pre-commit hooks committed and documented
+- CI runs the same checks as local pre-commit hooks
+- Every developer uses the declared dev container or has an equivalent locally verified setup
+
+---
+
+<!-- THEME: Knowledge and Language — Pillars 33–35 -->
+
+## Pillar 33 — Architecture Principles as Code
+
+**What it means**: The standing architectural principles of the practice — the heuristics and constraints that inform every design decision below the level of a specific ADR — are declared in a version-controlled list with rationale, enforcement status, and links to the ADRs and policy rules that give them teeth.
+
+### Artifact types
+
+- Principles YAML: each entry declares name, statement, rationale, enforcement status (aspirational / policy-enforced / ADR-mandated), and links to governing ADRs and policy rules
+- Generated principles page in the documentation portal
+- Policy rules implementing machine-verifiable principles (reference Pillar 10)
+
+### Adoption steps
+
+- [ ] Facilitate a principles workshop: gather the 10–15 principles that the architecture practice's senior practitioners apply most often
+- [ ] Declare each principle in a YAML file with: statement, rationale, and enforcement status
+- [ ] For each principle with enforcement status "policy-enforced": verify a corresponding policy rule exists (or create one); link the rule from the principle entry
+- [ ] For each principle with enforcement status "ADR-mandated": verify a corresponding ADR exists; link it from the principle entry
+- [ ] Wire a generator to produce a principles page in the documentation portal
+- [ ] Review the principles annually; add, retire, or promote principles through a PR review process
+
+### CI integration
+
+- Principles YAML schema validation on every PR
+- Referential integrity: ADR references in principles must resolve to existing ADR files
+- Policy rule references must resolve to existing rule files
+
+### Exit criteria
+
+- All standing architectural principles declared in version control with rationale
+- Machine-enforceable principles linked to active policy rules
+- Principles page generated and published in the portal
+
+---
+
+## Pillar 34 — Ubiquitous Language as Code
+
+**What it means**: The domain vocabulary of the organization — bounded context terms, entity names, event names, capability names, and their precise definitions — is declared in a version-controlled glossary. Every code artifact, spec, and document uses terms from this glossary. The glossary is the single source of truth for naming.
+
+### Artifact types
+
+- Domain glossary YAML: each entry declares term, bounded context, definition, synonyms (for search), deprecated aliases, and links to the artifacts that use the term
+- Generated searchable glossary page in the documentation portal
+- Optional naming linter: checks that new code artifacts (table names, event names, API paths) use only glossary-registered terms
+
+### Adoption steps
+
+- [ ] Start with the 30–50 most-used domain terms; avoid attempting to define all terms at once
+- [ ] For each term: declare its definition in plain language, the bounded context it belongs to, and at least one artifact that uses it
+- [ ] Wire a generator to produce a searchable glossary page in the documentation portal
+- [ ] Establish the convention: new API field names, event names, and table names that introduce a new domain term require a glossary PR in the same batch
+- [ ] Optionally wire a naming linter: new entity or event names not found in the glossary trigger a CI warning
+- [ ] Review the glossary on each significant domain expansion; terms that fall out of use are deprecated, not deleted (history matters)
+
+### CI integration
+
+- Glossary YAML schema validation on every PR
+- Optional naming linter: new symbols in API specs and event schemas cross-checked against glossary
+- Drift check: generated glossary page must match source YAML
+
+### Exit criteria
+
+- The top 50 domain terms declared with definitions and bounded context assignments
+- Generated glossary page published and searchable in the portal
+- Convention established: new domain terms added to the glossary alongside the code that introduces them
+
+---
+
+## Pillar 35 — Coding Standards as Code
+
+**What it means**: The formatting, style, and quality rules that govern all source code in the practice are declared in version-controlled configuration files — not enforced inconsistently by individual reviewer preference. Linters run automatically in CI; violations block merge.
+
+### Artifact types
+
+- Language-specific linter configuration files (`.eslintrc`, `pyproject.toml [tool.ruff]`, `checkstyle.xml`, `golangci-lint.yaml`, `.rubocop.yml`)
+- Formatter configuration files (`.prettierrc`, `google-java-format` settings, `black` config)
+- `.editorconfig` (shared with Pillar 32; referenced here for completeness)
+- Coding standards ADR: rationale for non-default rule choices
+- Linter suppression policy: when and how `# noqa` / `@SuppressWarnings` / `// eslint-disable` are permitted
+
+### Adoption steps
+
+- [ ] Inventory all language stacks in the codebase; select a linter and formatter for each
+- [ ] Commit the linter configuration files; wire to CI as required checks on every PR
+- [ ] Commit the formatter configuration; wire a formatting check to CI (format check only — not auto-fix; auto-fix belongs in pre-commit hooks)
+- [ ] Author a coding standards ADR documenting the non-default rule choices and their rationale
+- [ ] Document the suppression policy: suppression annotations must include a reason comment and a tracking reference
+- [ ] Enforce the suppression policy in CI (e.g., a lint rule that requires a comment on every suppression)
+
+### CI integration
+
+- Linter runs on every PR; failures block merge
+- Formatter check (not auto-fix) runs on every PR
+- Suppression annotation audit: suppression without a reason comment fails CI
+
+### Exit criteria
+
+- Linter and formatter configured, committed, and enforced in CI for all language stacks
+- Coding standards ADR in the decisions log
+- Suppression policy documented and enforced
+
+---
+
 ## Sequencing Guide
 
-Pillar adoption is independent but not isolated — some pillars unlock others. The table below shows recommended sequencing for a practice starting from near zero.
+Pillar adoption is independent but not isolated — some pillars unlock others. The table below shows recommended sequencing for a practice adopting all 35 pillars from near zero. **Teams should select only the pillars marked In Scope during the Bootstrap pillar selection exercise and sequence those pillars, not all 35.**
 
 | Wave | Pillars | Rationale |
 |------|---------|-----------|
-| **Wave 1 — Foundation** | Applications as Code (4), Architecture Artifacts as Code (5) | Establishes the registry of what exists and the canonical diagram sources. Everything else references these. |
-| **Wave 2 — Governance** | Decisions as Code (7), Capabilities as Code (6), Actors as Code (3) | Governance and capability model unlock linkability in all later pillars. |
-| **Wave 3 — Validation** | Policy as Code (10), Tests as Code (9), Pipeline as Code (2) | Validation pillars are most effective once there is a declared architecture to validate against. |
-| **Wave 4 — AI + Docs** | AI Instructions as Code (11), Documentation as Code (13), Tickets as Code (8) | AI instructions require a stable architecture definition to reference. Docs as Code should consolidate outputs from all prior waves. |
-| **Wave 5 — Automation** | Governance as Code (14), Wireframes as Code (12), Operational Runbooks as Code (15), Infrastructure as Code (1) | These pillars benefit from the CI patterns established in earlier waves and can proceed in parallel. |
+| **Wave 1 — Foundation** | Infrastructure as Code (1), Applications as Code (4), Architecture Artifacts as Code (5), Data Models as Code (16) | Establishes the registry of what exists, canonical diagram sources, IaC baseline, and the entity schema layer. Everything else references these. |
+| **Wave 2 — Governance + Language** | Decisions as Code (7), Capabilities as Code (6), Actors as Code (3), Architecture Principles as Code (33), Ubiquitous Language as Code (34) | Governance, capability model, and shared vocabulary unlock linkability and consistency in all later pillars. |
+| **Wave 3 — Data** | Database Migrations as Code (17), Event Schemas as Code (19), Coding Standards as Code (35) | Schema evolution and event contracts build on the data model foundation. Coding standards establish baseline quality before validation pillars apply them. |
+| **Wave 4 — Security + Compliance** | Security as Code (20), Compliance as Code (21), Secrets Management as Code (22), SBOM as Code (23) | Security and compliance pillars depend on having declared services (Wave 1) and governance (Wave 2) before they can define what to protect and what to audit. |
+| **Wave 5 — Validation** | Policy as Code (10), Tests as Code (9), Pipeline as Code (2), Data Contracts as Code (18) | Validation pillars are most effective once there is a declared architecture, data model, and security baseline to validate against. |
+| **Wave 6 — Reliability** | Observability as Code (24), SLO / SLI as Code (25), Feature Flags as Code (26) | Observability requires deployed services. SLOs require observability. Feature flags require a service registry to link to. |
+| **Wave 7 — Delivery** | Release Strategies as Code (27), Environment Definitions as Code (28), Service Mesh Configuration as Code (29) | Progressive delivery and environment governance build on the CI/CD pipeline established in Wave 5. |
+| **Wave 8 — AI + Docs + Tickets** | AI Instructions as Code (11), Documentation as Code (13), Tickets as Code (8) | AI instructions require a stable architecture definition. Docs as Code consolidates outputs from all prior waves. Ticket linkage closes the traceability loop. |
+| **Wave 9 — Organization + DX** | Team Topology as Code (30), Onboarding as Code (31), Developer Experience as Code (32) | Organizational and developer experience pillars are most valuable once the technical pillars have stabilized — the toolchain they document is no longer changing rapidly. |
+| **Wave 10 — Capstone** | Governance as Code (14), Wireframes as Code (12), Operational Runbooks as Code (15) | These pillars benefit from the full CI pattern library established in earlier waves and can proceed in parallel once a team has capacity. |
 
 **Critical-path minimum**: Pillars 4 (Applications) and 5 (Architecture Artifacts) are prerequisites for almost everything. Begin there.
 
@@ -548,6 +1247,8 @@ Pillar adoption is independent but not isolated — some pillars unlock others. 
 - [ ] Add `actionlint` (or pipeline linter) to PR CI
 - [ ] Add `mkdocs build --strict` (or equivalent) to PR CI
 - [ ] Add `# yaml-language-server: $schema=...` header to any YAML that already has a schema
+- [ ] Commit `.editorconfig` to every repository
+- [ ] Add secret scanning to CI (truffleHog, GitHub secret scanning)
 - [ ] Back-fill the single most consequential undocumented decision as an ADR
 
 > **Synthetic exemplar carry-over**: For workspace-specific deferred items that apply only to the synthetic NovaTrek exemplar workspace, see [SYNTHETIC-EXEMPLAR-BACKLOG.md](SYNTHETIC-EXEMPLAR-BACKLOG.md).
