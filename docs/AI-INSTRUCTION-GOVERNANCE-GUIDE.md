@@ -6,6 +6,41 @@
 
 ---
 
+## Two Ways Instructions Reach an AI
+
+Before anything else, it helps to understand that there are two fundamentally different ways to give an AI model its instructions — and they work completely differently.
+
+**Way 1 — Workspace files read by a VS Code plugin**
+
+Tools like Roo Code, GitHub Copilot, and Cursor read Markdown files from your repository at the start of each session. The instructions live as `.md` files checked into git (e.g. `.clinerules`, `.github/copilot-instructions.md`). The VS Code plugin picks them up automatically. The model only sees these instructions while you are working inside VS Code — they are scoped to your coding assistant session.
+
+**Way 2 — System prompt injected directly into Azure AI Foundry by CI**
+
+An Azure AI Foundry agent has a system prompt field that is set when the agent is deployed. This is done via the Azure AI Projects SDK — typically by a CI/CD pipeline that reads a Markdown file from git and calls the Foundry API to set it. The model always has these instructions applied, regardless of what tool the user is using. This is how you give instructions to a deployed chatbot or workflow agent that lives outside VS Code.
+
+```
+  VS Code session                    Azure AI Foundry agent
+  ┌────────────────────────┐         ┌────────────────────────────┐
+  │  Roo Code / Copilot /  │         │  Deployed agent            │
+  │  Cursor plugin reads   │         │  (chatbot, workflow agent) │
+  │  .clinerules           │         │                            │
+  │  copilot-instructions  │         │  System prompt set once    │
+  │  .cursor/rules/*.mdc   │         │  at deployment time via    │
+  │                        │         │  Azure AI Projects SDK     │
+  │  Scoped to VS Code     │         │                            │
+  │  session only          │         │  Always active regardless  │
+  └────────────────────────┘         │  of what tool is used      │
+                                     └────────────────────────────┘
+         ↑                                        ↑
+  Instructions come from             Instructions come from
+  files in the git repo              CI/CD calling the Foundry API
+  (the plugin reads them)            (with content from a git file)
+```
+
+The governance challenge is that these two surfaces are powered by different mechanisms — yet they often need to express the same behavioral rules. If you write the rules separately for each, they drift. If you update one, the other falls out of date.
+
+---
+
 ## The Problem in Plain Language
 
 An AI agent's behavior is determined by its instructions — the system prompt, persona definition, skill descriptions, and constraint rules that tell the model who it is and how it should behave.
@@ -14,9 +49,9 @@ Once you move beyond a single AI tool in a single context, those instructions ne
 
 | Surface | How instructions are consumed |
 |---------|------------------------------|
-| IDE coding assistants (GitHub Copilot, Cursor, Windsurf, Roo Code) | Files in the repository, read at session start |
-| Deployed chatbots (Azure AI Foundry, OpenAI Assistants) | System prompt set via API or portal at deployment time |
-| Workflow agents (Bedrock Agents, Vertex AI) | Instruction field in the agent resource config |
+| IDE coding assistants (Roo Code, GitHub Copilot, Cursor, Windsurf) | Markdown files in the repository, read by the VS Code plugin at session start |
+| Azure AI Foundry agents | System prompt injected by CI via the Azure AI Projects SDK at deployment time |
+| Other deployed agents (OpenAI Assistants, Bedrock, Vertex AI) | Instruction field set via the platform's API at deployment time |
 
 If you write the instructions separately for each surface, you have:
 
