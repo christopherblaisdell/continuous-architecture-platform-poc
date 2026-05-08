@@ -15,7 +15,7 @@ This document assesses where the synthetic exemplar workspace stands on the EaC 
 
 ## Pillar-by-Pillar Assessment
 
-> This assessment uses the canonical 35-pillar numbering from [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md). Pillars not represented in this synthetic exemplar workspace are marked NOT IN SCOPE — a full Instance assessment covers all 35 pillars.
+> This assessment uses the canonical 34-pillar numbering from [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md). Pillars not represented in this synthetic exemplar workspace are marked NOT IN SCOPE — a full Instance assessment covers all 34 pillars.
 
 ### Pillar 1 — Infrastructure as Code
 

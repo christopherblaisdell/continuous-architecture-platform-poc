@@ -8,7 +8,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ## Scope — Not Everything Applies
 
-This template describes a comprehensive target state across 35 pillars. **No Instance should adopt all of them.** The first act of every Instance is a deliberate selection exercise: review each pillar, decide whether it is **In Scope**, **Out of Scope**, or **Deferred**, and record that decision in an ADR. Pillars marked Out of Scope are not failures — they are explicit choices based on team size, organizational context, and business priorities.
+This template describes a comprehensive target state across 34 pillars. **No Instance should adopt all of them.** The first act of every Instance is a deliberate selection exercise: review each pillar, decide whether it is **In Scope**, **Out of Scope**, or **Deferred**, and record that decision in an ADR. Pillars marked Out of Scope are not failures — they are explicit choices based on team size, organizational context, and business priorities.
 
 The Sequencing Guide later in this document is a suggestion for dependency-aware ordering. It is not a mandate. Adapt the sequence, skip pillars that do not apply, and revisit the selection periodically as the practice matures.
 
@@ -40,11 +40,11 @@ The Sequencing Guide later in this document is a suggestion for dependency-aware
 - [ ] Add an EaC compliance section to the corporate AI instruction hub
 - [ ] Add an "Everything as Code Transformation" track to the corporate roadmap
 - [ ] Identify a pilot pillar to demonstrate value within the first sprint
-- [ ] Complete a **pillar selection exercise**: review all 35 pillars in this document; mark each as **In Scope**, **Out of Scope**, or **Future**; record the decision in the adoption ADR
+- [ ] Complete a **pillar selection exercise**: review all 34 pillars in this document; mark each as **In Scope**, **Out of Scope**, or **Future**; record the decision in the adoption ADR
 
 ### Exit criteria
 
-- Adoption ADR merged, including a pillar selection record (in scope / out of scope / future for all 35 pillars)
+- Adoption ADR merged, including a pillar selection record (in scope / out of scope / future for all 34 pillars)
 - Real current-state assessment completed
 - Roadmap reflects EaC as a top-level track
 - Pilot pillar identified
@@ -1242,7 +1242,7 @@ The Sequencing Guide later in this document is a suggestion for dependency-aware
 
 ## Sequencing Guide
 
-Pillar adoption is independent but not isolated — some pillars unlock others. The table below shows recommended sequencing for a practice adopting all 35 pillars from near zero. **Teams should select only the pillars marked In Scope during the Bootstrap pillar selection exercise and sequence those pillars, not all 36.**
+Pillar adoption is independent but not isolated — some pillars unlock others. The table below shows recommended sequencing for a practice adopting all 34 pillars from near zero. **Teams should select only the pillars marked In Scope during the Bootstrap pillar selection exercise and sequence those pillars, not all 34.**
 
 | Wave | Pillars | Rationale |
 |------|---------|-----------|

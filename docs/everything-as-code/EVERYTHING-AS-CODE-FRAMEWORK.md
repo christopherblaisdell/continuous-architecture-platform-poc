@@ -2,7 +2,7 @@
 
 > **BLUEPRINT DOCUMENT.** This is the portable framework definition. It is target-agnostic and intended for export to a corporate **EaC Adoption Instance** workspace. All examples in this document use the synthetic NovaTrek Adventures workspace as the exemplar. See the [README](README.md) for the Blueprint vs Instance distinction.
 
-## 1. Definition
+## A. Definition
 
 **Everything as Code (EaC)** is the practice of expressing every artifact required to design, build, run, govern, and evolve a software system as a **declarative, version-controlled, machine-readable, human-readable text file** living in source control alongside the application.
 
@@ -21,7 +21,7 @@ The defining properties of an EaC artifact:
 
 If an artifact lacks any of these, it is **not** "as code" — it is a document, a screenshot, or a database record.
 
-## 2. The Industry Name
+## B. The Industry Name
 
 The umbrella term is **Everything as Code (EaC)**. It generalizes a family of related "X as Code" disciplines:
 
@@ -50,7 +50,7 @@ Adjacent and synonymous terms used in industry:
 - **Spec-Driven Development (SDD)** — emphasizing that specifications precede implementation (AWS Kiro, OpenSpec, Spec-Kit)
 - **Single Source of Truth (SSoT) architecture** — the goal that EaC enables
 
-## 3. The Transformation Has a Name Too
+## C. The Transformation Has a Name Too
 
 Adopting EaC across an organization or practice is referred to as:
 
@@ -70,9 +70,9 @@ The transformation this blueprint describes is best named:
 
 …which reads as: a **continuous architecture practice** (the "what"), enabled by **everything as code** (the "how"), targeted at **AI-native** workflows (the "why"). This blueprint is the pattern; the corporate instance is the realization.
 
-## 4. The Pillars
+## D. The Pillars
 
-Every EaC implementation is organized around pillars — one per discipline. The full adoption guide for each pillar (artifact types, adoption steps, CI integration, exit criteria) lives in [Transformation Plan](TRANSFORMATION-PLAN.md). This section is the reference catalog: purpose, format, and AI fit for all 35 pillars.
+Every EaC implementation is organized around pillars — one per discipline. The full adoption guide for each pillar (artifact types, adoption steps, CI integration, exit criteria) lives in [Transformation Plan](TRANSFORMATION-PLAN.md). This section is the reference catalog: purpose, format, and AI fit for all 34 pillars.
 
 ### Pillar 1 — Infrastructure as Code (IaC)
 
@@ -406,7 +406,7 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Validator** | JSON Schema; referential integrity checks to ADR files and the application/service registry |
 | **AI fit** | Excellent — AI can match patterns to proposed designs, flag anti-patterns during PR review, and suggest approved alternatives |
 
-## 5. Maturity Model — From Documents to AI-Native EaC
+## E. Maturity Model — From Documents to AI-Native EaC
 
 A practical maturity model for an architecture practice's EaC adoption:
 
@@ -435,11 +435,11 @@ The maturity levels describe organizational milestones, not per-pillar completio
 | 6 | Pillars 7, 14, 36 (Decisions, Governance, Patterns and Anti-patterns) with CI-enforced change records |
 | 7 | Pillar 11 (AI Instructions as Code) with hub-and-spoke governance active |
 | 8 | Pillars 10, 20, 21, 22 (Policy, Security, Compliance, Secrets Management) |
-| 9 | All 35 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
+| 9 | All 34 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
 
 To assess where a real practice sits today, use the assessment template in [Current State Assessment](CURRENT-STATE-ASSESSMENT.md).
 
-## 6. The Codify-Validate-Generate (CVG) Loop
+## F. The Codify-Validate-Generate (CVG) Loop
 
 Every EaC pillar implements the same operational loop:
 
@@ -461,7 +461,7 @@ Every EaC pillar implements the same operational loop:
 
 The CVG loop is the operational core of EaC. Every pillar must implement it end-to-end before that pillar can be considered "as code."
 
-## 7. Anti-Patterns That Prevent True EaC
+## G. Anti-Patterns That Prevent True EaC
 
 | Anti-pattern | Why it breaks EaC |
 |--------------|-------------------|
@@ -477,7 +477,7 @@ The CVG loop is the operational core of EaC. Every pillar must implement it end-
 
 > The table above catalogs EaC adoption anti-patterns — the organizational and tooling failures that prevent true "as code" status. For a version-controlled catalog of domain-level architectural patterns and anti-patterns in your system design (Saga, CQRS, Shared Database, Distributed Monolith, etc.), see **Pillar 36 — Patterns and Anti-patterns as Code**.
 
-## 8. Key References
+## H. Key References
 
 This section will be populated by the deep research response. See [Deep Research Prompt — EaC Maturity Model](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md).
 

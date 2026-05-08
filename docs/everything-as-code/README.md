@@ -67,7 +67,7 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 
 **Not every pillar applies to every organization, team, or moment in time.**
 
-This blueprint describes a comprehensive target state — 35 pillars across infrastructure, governance, data, delivery, observability, AI, and organizational design. No organization should attempt to adopt all of them at once, and most will deliberately exclude some pillars permanently based on their context, scale, or priorities.
+This blueprint describes a comprehensive target state — 34 pillars across infrastructure, governance, data, delivery, observability, AI, and organizational design. No organization should attempt to adopt all of them at once, and most will deliberately exclude some pillars permanently based on their context, scale, or priorities.
 
 The first act of every Instance is a **deliberate selection exercise**:
 
@@ -132,7 +132,7 @@ Do **not** copy `SYNTHETIC-EXEMPLAR-BACKLOG.md` — it contains NovaTrek-specifi
 After placing the files in the corporate workspace:
 
 - [ ] Record the imported blueprint version in the Instance README (see the Blueprint Version table at the bottom of this file — copy and update it, replacing `Blueprint` with `Instance imported` and noting the date)
-- [ ] Complete the Bootstrap pillar selection exercise in TRANSFORMATION-PLAN.md (mark each of the 35 pillars In Scope / Out of Scope / Future)
+- [ ] Complete the Bootstrap pillar selection exercise in TRANSFORMATION-PLAN.md (mark each of the 34 pillars In Scope / Out of Scope / Future)
 - [ ] Replace CURRENT-STATE-ASSESSMENT.md with a real assessment of the corporate workspace
 - [ ] Author the adoption ADR in the corporate `decisions/` folder; declare which pillars are in Wave 1 scope
 - [ ] Commit `docs/everything-as-code/` to version control in the corporate workspace
