@@ -37,7 +37,7 @@ The umbrella term is **Everything as Code (EaC)**. It generalizes a family of re
 | Security as Code | SecaC | Emerging (TFSec, Checkov, Snyk IaC) |
 | Compliance as Code | CompaC | Emerging (Conftest, Open Compliance) |
 | Tests as Code | TaC | Always — but feature files (Gherkin) push this to specification level |
-| AI Instructions as Code | AIaC | Brand new (~2024-2026) — platform-specific instruction files (e.g., `copilot-instructions.md`, `.clinerules`), governed via a structured change workflow (e.g., OpenSpec) |
+| AI Instructions as Code | AIaC | Brand new (~2024-2026) — platform-specific instruction files (e.g., `copilot-instructions.md`, `.clinerules`, Azure AI Foundry agent instructions), governed via a structured change workflow (e.g., OpenSpec) |
 | Wireframes as Code | UIaC | Niche (Excalidraw JSON, Penpot, Mermaid) |
 | Governance as Code | GaC | Emerging — change proposals, ADRs, capability changelogs |
 | Patterns and Anti-patterns as Code | PaAC | Emerging — version-controlled YAML catalogs linking named patterns and anti-patterns to the decisions and services where they apply |
