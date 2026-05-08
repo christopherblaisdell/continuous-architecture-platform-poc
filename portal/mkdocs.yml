@@ -305,3 +305,15 @@ nav:
         - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
         - Evaluation Plan: research/OPENSPEC-EVALUATION-PLAN.md
         - Deep Research Prompt: research/DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md
+    - Initiatives:
+      - everything-as-code/index.md
+      - Everything as Code:
+        - EaC Framework: everything-as-code/EVERYTHING-AS-CODE-FRAMEWORK.md
+        - Transformation Plan: everything-as-code/TRANSFORMATION-PLAN.md
+        - Current State Assessment: everything-as-code/CURRENT-STATE-ASSESSMENT.md
+        - AI Instructions as Code: everything-as-code/AI-INSTRUCTIONS-AS-CODE.md
+        - AI Instruction Governance: everything-as-code/AI-INSTRUCTION-GOVERNANCE.md
+        - Deep Research:
+          - EaC Maturity Model Prompt: everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md
+          - AI-Native Architecture Prompt: everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md
+          - AI Instructions Taxonomy: everything-as-code/standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md

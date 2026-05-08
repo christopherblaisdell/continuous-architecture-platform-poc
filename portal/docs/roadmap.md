@@ -443,7 +443,8 @@ See [CALM Integration Plan](../docs/CALM-INTEGRATION-PLAN.md) for the full phase
 #### Priority: HIGH
 
 | Initiative | Status | Companion Document | Summary |
-|-----------|--------|-------------------|---------|
+|-----------|--------|-------------------|------|
+| **Azure Sites Authentication and Authorization** | **Backlog** | [docs/AZURE-AD-AUTH-PLAN.md](../docs/AZURE-AD-AUTH-PLAN.md) | Secure all Azure Static Web Apps (architecture portal, docs site, AI customization site) with Entra ID (Azure AD) authentication. Only authenticated users should access the portals. Includes role-based access control, SSO, and CI pipeline integration for token-gated deployments. |
 | Portal Cross-Linking | Proposed | [docs/MISSING-LINKS-IMPLEMENTATION-PLAN.md](../docs/MISSING-LINKS-IMPLEMENTATION-PLAN.md) | Add ~120 missing hyperlinks across 15 hand-authored portal pages — service names to microservice pages, ADR references to decision pages, file paths to GitHub source, script names to GitHub source. Analysis: [docs/MISSING-LINKS-ANALYSIS.md](../docs/MISSING-LINKS-ANALYSIS.md) |
 | Test Methodology and Practice | Proposed | [TEST-METHODOLOGY-ROADMAP.md](TEST-METHODOLOGY-ROADMAP.md) | Comprehensive TDD/BDD practice, coverage standards (80% line, 70% branch, 60% mutation), contract testing for cross-service boundaries, automated regression gates in CI |
 | Fix Deploy Failures | Backlog | [architecture/reminders/FIX-DEPLOY-FAILURES.md](../architecture/reminders/FIX-DEPLOY-FAILURES.md) | Audit and fix recurring CI/CD pipeline failures — flaky tests, misconfigured secrets, Bicep errors, SWA deploy issues, PlantUML timeouts. Prerequisite for reliable incremental delivery |
