@@ -55,36 +55,6 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [Transformation Plan](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
 | [Synthetic Exemplar Backlog](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
 
-Pillar-specific deep dives are listed separately in the [Pillar Deep Dives](#pillar-deep-dives) section below.
-
-## Pillar Deep Dives
-
-Not every pillar warrants a standalone deep-dive document. The selection criterion is:
-
-> **A pillar gets a deep dive when no canonical external reference exists.** For well-established disciplines — Infrastructure as Code, Pipeline as Code, Policy as Code — Terraform, GitHub Actions, and Open Policy Agent documentation are better references than anything written here. For novel or emerging pillars where "search the web" returns nothing authoritative, a deep dive fills the gap.
-
-This keeps the blueprint lean. Readers of Pillar 1 (IaC) are better served by the Terraform documentation than by a rehash of it here. Readers of Pillar 6 (Capabilities as Code) have nowhere else to go — so a deep dive earns its place.
-
-### Written
-
-| Pillar | Document |
-|--------|---------|
-| 11 — AI Instructions as Code | [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — platform-agnostic portability, governance model, OpenSpec workflow |
-| 11 — AI Instruction Governance (annex) | [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) — single source of truth, conflict detection, baseline access |
-
-### Planned
-
-These pillars have no authoritative external reference. Deep dives are authored on demand — typically when an Instance reaches that pillar in its adoption sequence and finds the checklist steps insufficient.
-
-| Pillar | Why a deep dive is warranted |
-|--------|------------------------------|
-| 3 — Actors as Code | No tooling or standard exists; the YAML actor catalog pattern has no external specification to reference |
-| 6 — Capabilities as Code | No tooling, no standard, no industry literature; the L1/L2/L3 capability-as-YAML-with-changelog pattern is defined only here |
-| 14 — Governance as Code | ADRs are documented (MADR), but structured ADR-YAML with capability changelogs and machine-enforced change proposals is not |
-| 30 — Team Topology as Code | Team Topologies (Skelton & Pais) defines the concepts; YAML codification of team topology for version control and AI consumption is not documented anywhere |
-| 33 — Architecture Principles as Code | Adjacent to DDD and quality models, but no canonical reference for version-controlled principle registries linked to ADRs |
-| 34 — Ubiquitous Language as Code | Adjacent to DDD glossaries, but no canonical reference for machine-readable ubiquitous language registries |
-| 36 — Patterns and Anti-patterns as Code | No canonical reference; the YAML catalog linking named patterns to decisions and services is defined only in this framework |
 
 ---
 
