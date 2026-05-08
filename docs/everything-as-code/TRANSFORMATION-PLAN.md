@@ -393,7 +393,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 - Validation script active in CI; hub-and-spoke architecture documented
 - At least one complete change cycle archived
 
-> **See also**: [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — full deep dive on the three-layer model, hub-and-spoke architecture, and OpenSpec governance pattern.
+> **See also**: [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) — full deep dive on the three-layer model, hub-and-spoke architecture, and OpenSpec governance pattern.
 
 ---
 
@@ -1290,4 +1290,4 @@ Pillar adoption is independent but not isolated — some pillars unlock others. 
 - [ ] Add secret scanning to CI (truffleHog, GitHub secret scanning)
 - [ ] Back-fill the single most consequential undocumented decision as an ADR
 
-> **Synthetic exemplar carry-over**: For workspace-specific deferred items that apply only to the synthetic NovaTrek exemplar workspace, see [SYNTHETIC-EXEMPLAR-BACKLOG.md](SYNTHETIC-EXEMPLAR-BACKLOG.md).
+> **Synthetic exemplar carry-over**: For workspace-specific deferred items that apply only to the synthetic NovaTrek exemplar workspace, see [Synthetic Exemplar Backlog](SYNTHETIC-EXEMPLAR-BACKLOG.md).

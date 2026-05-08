@@ -72,7 +72,7 @@ The transformation this blueprint describes is best named:
 
 ## 4. The Pillars
 
-Every EaC implementation is organized around pillars — one per discipline. The full adoption guide for each pillar (artifact types, adoption steps, CI integration, exit criteria) lives in [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md). This section is the reference catalog: purpose, format, and AI fit for all 35 pillars.
+Every EaC implementation is organized around pillars — one per discipline. The full adoption guide for each pillar (artifact types, adoption steps, CI integration, exit criteria) lives in [Transformation Plan](TRANSFORMATION-PLAN.md). This section is the reference catalog: purpose, format, and AI fit for all 35 pillars.
 
 ### Pillar 1 — Infrastructure as Code (IaC)
 
@@ -176,7 +176,7 @@ Every EaC implementation is organized around pillars — one per discipline. The
 | **Validator** | Instruction file linter, hub-spoke drift check |
 | **AI fit** | Mandatory — this is the AI's own behavioral contract |
 
-See [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
+See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 
 ### Pillar 12 — Wireframes as Code (UIaC)
 
@@ -446,7 +446,7 @@ The maturity levels describe organizational milestones, not per-pillar completio
 | 8 | Pillars 10, 20, 21, 22 (Policy, Security, Compliance, Secrets Management) |
 | 9 | All 35 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
 
-To assess where a real practice sits today, use the assessment template in [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md).
+To assess where a real practice sits today, use the assessment template in [Current State Assessment](CURRENT-STATE-ASSESSMENT.md).
 
 ## 6. The Codify-Validate-Generate (CVG) Loop
 
@@ -488,7 +488,7 @@ The CVG loop is the operational core of EaC. Every pillar must implement it end-
 
 ## 8. Key References
 
-This section will be populated by the deep research response. See [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md).
+This section will be populated by the deep research response. See [Deep Research Prompt — EaC Maturity Model](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md).
 
 Initial seed references:
 
@@ -506,4 +506,4 @@ Initial seed references:
 - The arc42 template — https://arc42.org/
 - C4 Model — https://c4model.com/
 - Continuous Architecture in Practice (Erder, Pureur, Woods) — Addison-Wesley, 2021
-- Standardized taxonomy of AI instructions and OpenSpec governance model (workspace deep research) — [standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md)
+- Standardized taxonomy of AI instructions and OpenSpec governance model (workspace deep research) — [Deep Research Response — AI Instructions Taxonomy](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md)

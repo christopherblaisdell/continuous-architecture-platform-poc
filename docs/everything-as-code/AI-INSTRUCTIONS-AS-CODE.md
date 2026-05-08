@@ -2,7 +2,7 @@
 
 > **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 11. The patterns (three-layer model, hub-and-spoke, OpenSpec governance, RFC 2119 authoring) are the durable contributions. The "Operational Status" table near the end describes the **synthetic exemplar** in this workspace and is illustrative only — when the blueprint is exported to a corporate instance, that table is replaced with the real corporate status.
 
-**Status**: This is Pillar 11 of the Everything as Code framework — see [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar 11 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ## Why AI Instructions Belong in EaC
 
@@ -203,7 +203,7 @@ OpenSpec governs the *process* of changing AI instructions. It does **not**:
 - Provide a portable Layer 1 schema (the industry has not standardized one)
 - Replace runtime context delivery (Layer 3, MCP/RAG)
 
-True portability requires a **Layer 1 schema standard** — a typed, declarative format for behavioral instructions that any compliant AI tool could parse natively. That standard does not yet exist. See [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) for an investigation into emerging candidates.
+True portability requires a **Layer 1 schema standard** — a typed, declarative format for behavioral instructions that any compliant AI tool could parse natively. That standard does not yet exist. See [Deep Research Prompt — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) for an investigation into emerging candidates.
 
 ## Three Tiers of Portability (today vs. future)
 
@@ -240,17 +240,17 @@ Based on Constitutional AI, the Instruction Hierarchy paper, and OpenSpec govern
 | Derived files | LIVE — 5 derived files with DERIVED FILE headers |
 | OpenSpec init | COMPLETE — `.roo/` and `.github/prompts/` generated |
 | Governance spec | LIVE — `openspec/specs/ai-instruction-governance/spec.md` (REQ-GOV-001 through 003) |
-| Validation script | DEFERRED — see Phase 5 of the [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) |
+| Validation script | DEFERRED — see Phase 5 of the [Transformation Plan](TRANSFORMATION-PLAN.md) |
 | First end-to-end change cycle | NOT YET RUN — `openspec/changes/archive/` is empty |
 | Cursor + Windsurf as derived targets | NOT YET ADDED |
 
 ## Forward Plan
 
-Tracked in [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) Phase 5 (immediate) and Phase 11 (vendor-agnostic expansion).
+Tracked in [Transformation Plan](TRANSFORMATION-PLAN.md) Phase 5 (immediate) and Phase 11 (vendor-agnostic expansion).
 
 ## References
 
-- [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) — governance annex: single source of truth ownership, conflict detection, baseline access, conflict resolution procedure
+- [AI Instruction Governance](AI-INSTRUCTION-GOVERNANCE.md) — governance annex: single source of truth ownership, conflict detection, baseline access, conflict resolution procedure
 - OpenSpec — https://github.com/Fission-AI/OpenSpec
 - Anthropic Constitutional AI — https://arxiv.org/abs/2212.08073
 - Instruction Hierarchy paper (OpenAI) — https://arxiv.org/abs/2404.13208

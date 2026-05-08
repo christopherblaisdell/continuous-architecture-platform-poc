@@ -2,7 +2,7 @@
 
 > **BLUEPRINT — SYNTHETIC EXEMPLAR.** This document is **not** a corporate current-state assessment. It is a worked example demonstrating *how* the assessment template is applied, using the synthetic NovaTrek Adventures workspace as the subject. All scores, file counts, and gaps below describe the fictional workspace. When the blueprint is exported to a corporate **EaC Adoption Instance**, this document is replaced — pillar by pillar — with the real assessment of the actual practice. The structure, pillar list, scoring rubric, and gap-table format are the durable parts; the findings are not.
 
-This document assesses where the synthetic exemplar workspace stands on the EaC maturity model, pillar by pillar. It is the worked example that informs [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md).
+This document assesses where the synthetic exemplar workspace stands on the EaC maturity model, pillar by pillar. It is the worked example that informs [Transformation Plan](TRANSFORMATION-PLAN.md).
 
 ## Summary
 

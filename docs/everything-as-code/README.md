@@ -50,18 +50,18 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 
 | Document | Purpose |
 |----------|---------|
-| [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) | The full framework — definitions, pillars, naming, industry terms, maturity model |
-| [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md) | **Synthetic exemplar assessment** — demonstrates the assessment template applied to the fictional NovaTrek workspace; serves as the worked example to copy when assessing a real corporate workspace |
-| [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
-| [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) | Treating AI instructions as a first-class EaC pillar — platform-agnostic via OpenSpec |
-| [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) | Pillar 11 governance annex — single source of truth, conflict detection, baseline access; extends AI-INSTRUCTIONS-AS-CODE.md |
-| [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md) | Deep research prompt — formal naming, frameworks, maturity models, industry adoption |
-| [DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
-| [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) | Deep research prompt — what does an AI-native architecture practice look like |
-| [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
-| [standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md) | Deep research response — standardized taxonomy of AI instructions formats and OpenSpec governance model; supports Pillar 11 (AI Instructions as Code) |
-| [SYNTHETIC-EXEMPLAR-BACKLOG.md](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
-| [export-blueprint.sh](export-blueprint.sh) | Shell script to copy the blueprint to a corporate Instance workspace; not exported (it runs from this workspace) |
+| [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md) | The full framework — definitions, pillars, naming, industry terms, maturity model |
+| [Current State Assessment](CURRENT-STATE-ASSESSMENT.md) | **Synthetic exemplar assessment** — demonstrates the assessment template applied to the fictional NovaTrek workspace; serves as the worked example to copy when assessing a real corporate workspace |
+| [Transformation Plan](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
+| [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) | Treating AI instructions as a first-class EaC pillar — platform-agnostic via OpenSpec |
+| [AI Instruction Governance](AI-INSTRUCTION-GOVERNANCE.md) | Pillar 11 governance annex — single source of truth, conflict detection, baseline access; extends the AI Instructions as Code document |
+| [Deep Research Prompt — EaC Maturity Model](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md) | Deep research prompt — formal naming, frameworks, maturity models, industry adoption |
+| [Deep Research Response — EaC Maturity Model](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
+| [Deep Research Prompt — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) | Deep research prompt — what does an AI-native architecture practice look like |
+| [Deep Research Response — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
+| [Deep Research Response — AI Instructions Taxonomy](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md) | Deep research response — standardized taxonomy of AI instructions formats and OpenSpec governance model; supports Pillar 11 (AI Instructions as Code) |
+| [Synthetic Exemplar Backlog](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
+| [Export Blueprint Script](export-blueprint.sh) | Shell script to copy the blueprint to a corporate Instance workspace; not exported (it runs from this workspace) |
 
 ## Exporting to a Corporate Instance
 

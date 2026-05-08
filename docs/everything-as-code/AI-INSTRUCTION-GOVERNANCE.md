@@ -1,12 +1,12 @@
 # AI Instruction Governance — Source of Truth, Conflict Resolution, and Baseline Access (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This document defines the governance pattern for AI instructions across all derivation targets — IDE coding assistants and deployed agents. It is target-agnostic and intended for export to a corporate **EaC Adoption Instance** workspace. See [README.md](README.md) for the Blueprint vs Instance distinction. See [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) for the hub-and-spoke architecture this document extends.
+> **BLUEPRINT DOCUMENT.** This document defines the governance pattern for AI instructions across all derivation targets — IDE coding assistants and deployed agents. It is target-agnostic and intended for export to a corporate **EaC Adoption Instance** workspace. See [Blueprint Overview](README.md) for the Blueprint vs Instance distinction. See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the hub-and-spoke architecture this document extends.
 
-**Status**: Pillar 11 governance annex — see [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: Pillar 11 governance annex — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ## Overview
 
-The hub-and-spoke architecture defined in [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) establishes that a canonical hub in git is the single source of truth for AI behavioral instructions, with derived files assembled by CI/CD for each target platform. This governance annex addresses three problems that arise once that pattern is in production:
+The hub-and-spoke architecture defined in [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) establishes that a canonical hub in git is the single source of truth for AI behavioral instructions, with derived files assembled by CI/CD for each target platform. This governance annex addresses three problems that arise once that pattern is in production:
 
 1. **Source of truth fragmentation** — the hub is canonical, but the deployed agent's system prompt is also visible and editable in the cloud portal. Without explicit governance, the canonical source and the deployed artifact drift. Someone edits the portal. Nobody notices. The next CI run overwrites it. Or it doesn't, and now two versions of the instructions exist with no audit trail.
 
@@ -449,9 +449,9 @@ Before declaring AI instruction governance operational:
 
 ## References
 
-- [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — hub-and-spoke architecture, derivation chain, OpenSpec governance
-- [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) — Pillar 11 definition and maturity model
-- [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) — Pillar 11 adoption phases
+- [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) — hub-and-spoke architecture, derivation chain, OpenSpec governance
+- [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md) — Pillar 11 definition and maturity model
+- [Transformation Plan](TRANSFORMATION-PLAN.md) — Pillar 11 adoption phases
 - OpenSpec — https://github.com/Fission-AI/OpenSpec
 - Azure AI Foundry Agent Service — https://learn.microsoft.com/en-us/azure/ai-studio/
 - Anthropic Constitutional AI — https://arxiv.org/abs/2212.08073

@@ -4,7 +4,7 @@
 >
 > This file tracks carry-over tasks and deferred work specific to the **NovaTrek Adventures synthetic exemplar workspace**. These items are not part of the portable EaC Blueprint. They are the housekeeping work needed to keep this synthetic workspace valid as a proof-of-concept for the blueprint it validates.
 >
-> Corporate **EaC Adoption Instance** workspaces do NOT inherit this file. They inherit only the clean blueprint documents: [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md), [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md), [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md), and the assessment template in [CURRENT-STATE-ASSESSMENT.md](CURRENT-STATE-ASSESSMENT.md).
+> Corporate **EaC Adoption Instance** workspaces do NOT inherit this file. They inherit only the clean blueprint documents: [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md), [Transformation Plan](TRANSFORMATION-PLAN.md), [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md), and the assessment template in [Current State Assessment](CURRENT-STATE-ASSESSMENT.md).
 
 ---
 
