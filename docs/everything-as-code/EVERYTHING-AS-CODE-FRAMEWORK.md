@@ -101,6 +101,8 @@ Every EaC implementation is organized around pillars — one per discipline. The
 | **Generator** | Portal page generator |
 | **AI fit** | Excellent — used by AI to populate diagrams, ADRs, and user stories |
 
+See [Actors as Code](ACTORS-AS-CODE.md) for the deep dive.
+
 ### Pillar 4 — Applications as Code
 
 | | |
@@ -128,6 +130,8 @@ Every EaC implementation is organized around pillars — one per discipline. The
 | **Format** | YAML with JSON Schema |
 | **Generator** | Capability page generator, capability changelog generator |
 | **AI fit** | Excellent — capability changelog drives AI traceability across solutions |
+
+See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 
 ### Pillar 7 — Decisions as Code (ADRs)
 
@@ -196,6 +200,8 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Format** | YAML (changelogs), Markdown (change proposals), OPA/Conftest (gate rules) |
 | **Generator** | Capability changelog generator, change proposal portal pages |
 | **AI fit** | Excellent — AI can author and review change proposals against declared governance rules |
+
+See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 
 ### Pillar 15 — Operational Runbooks as Code
 
@@ -349,6 +355,8 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Validator** | Referential integrity: every service must have an owning team |
 | **AI fit** | Excellent — team registries are structured YAML; AI can reason over ownership and interaction patterns |
 
+See [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) for the deep dive.
+
 ### Pillar 31 — Onboarding as Code
 
 | | |
@@ -377,6 +385,8 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Validator** | Principles YAML schema; referential integrity to ADR and policy files |
 | **AI fit** | Excellent — principles are structured facts AI can check decisions against |
 
+See [Architecture Principles as Code](ARCHITECTURE-PRINCIPLES-AS-CODE.md) for the deep dive.
+
 ### Pillar 34 — Ubiquitous Language as Code
 
 | | |
@@ -386,6 +396,8 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Generator** | Searchable glossary page in the documentation portal |
 | **Validator** | YAML schema; optional naming linter for API/event/entity names |
 | **AI fit** | Excellent — AI can use the glossary to enforce naming consistency and generate correctly-named artifacts |
+
+See [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) for the deep dive.
 
 ### Pillar 35 — Coding Standards as Code
 
@@ -405,6 +417,8 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Generator** | Patterns catalog page in the documentation portal |
 | **Validator** | JSON Schema; referential integrity checks to ADR files and the application/service registry |
 | **AI fit** | Excellent — AI can match patterns to proposed designs, flag anti-patterns during PR review, and suggest approved alternatives |
+
+See [Patterns and Anti-patterns as Code](PATTERNS-AS-CODE.md) for the deep dive.
 
 ## E. Maturity Model — From Documents to AI-Native EaC
 
