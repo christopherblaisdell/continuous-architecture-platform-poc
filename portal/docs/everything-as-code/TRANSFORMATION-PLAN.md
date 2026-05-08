@@ -80,7 +80,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ### Artifact types
 
-- GitHub Actions workflows, GitLab CI pipelines, Jenkinsfiles, Tekton pipeline definitions
+- CI/CD pipeline declarations (e.g., GitHub Actions workflows, GitLab CI pipelines, Jenkinsfiles, Tekton pipeline definitions)
 - Reusable composite actions or pipeline templates
 - Environment promotion rules
 
@@ -412,7 +412,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 - [ ] Identify all active UI/UX wireframes; locate which exist only in a design tool cloud with no version-controlled source
 - [ ] Select an open-format wireframing tool whose files are plain text (fully diffable JSON)
-- [ ] Export all active wireframes to the open format; commit to `architecture/wireframes/{app}/`
+- [ ] Export all active wireframes to the open format; commit to a `wireframes/` directory in version control (e.g., `architecture/wireframes/{app}/`)
 - [ ] Wire a CI step to generate SVG and HTML from the source files and publish to the documentation portal
 - [ ] Establish the naming convention: kebab-case, feature-descriptive names; no version numbers in filenames (git history provides that)
 - [ ] Establish the workflow: wireframes precede API contract changes — design the flow first, then define integration points
@@ -442,7 +442,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ### Adoption steps
 
-- [ ] Select a static site generator appropriate to your practice (MkDocs Material is recommended for architecture portals)
+- [ ] Select a static site generator appropriate to your practice (e.g., MkDocs Material, Docusaurus, or Sphinx)
 - [ ] Author a `portal/docs/` structure mirroring your architecture practice sections
 - [ ] Identify which pages are currently hand-maintained but should be generated from YAML (service catalog, capability map, ADR index)
 - [ ] Wire generators for each such page type; add drift checks to CI
@@ -504,7 +504,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ### Artifact types
 
-- Markdown runbooks under `docs/operations/` with explicit command blocks and expected outputs
+- Markdown runbooks in a dedicated version-controlled folder (e.g., `docs/operations/`) with explicit command blocks and expected outputs
 - Executable scripts or GitHub Actions / Tekton tasks for automation candidates
 - On-call playbooks linked from monitoring alerts
 - Runbook index page (generated)
@@ -513,7 +513,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 - [ ] Inventory all operational procedures; classify each as "in version control" or "in a wiki or undocumented"
 - [ ] For each procedure not in version control: author a Markdown runbook with explicit commands and expected outputs
-- [ ] For high-frequency procedures (daily deployments, common rollbacks): convert to executable scripts or CI/CD workflow steps
+- [ ] For high-frequency procedures (daily deployments, common rollbacks): convert to executable scripts or CI/CD workflow steps (e.g., GitHub Actions workflows, Tekton tasks)
 - [ ] Link each runbook from the relevant service page in the documentation portal
 - [ ] Add `markdownlint` and spell check to CI for the operations folder
 - [ ] Establish a review cadence: runbooks are reviewed and updated at minimum on each major release
@@ -1066,7 +1066,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 ### Adoption steps
 
 - [ ] Interview three recent new joiners; document every step they had to take that was not in any guide
-- [ ] Author the onboarding guide as Markdown with explicit commands and expected outputs; commit to `docs/onboarding/`
+- [ ] Author the onboarding guide as Markdown with explicit commands and expected outputs; commit to a dedicated onboarding folder in version control (e.g., `docs/onboarding/`)
 - [ ] Author or adopt a dev container definition that provisions the full local development environment automatically
 - [ ] Wire a new-joiner smoke test script: run it on a fresh machine; if it fails, the onboarding guide is broken — fix both
 - [ ] Review and update the onboarding guide on every major platform or toolchain change
@@ -1095,14 +1095,14 @@ This template brings an architecture practice from a baseline state to **Level 9
 - `.devcontainer/devcontainer.json` — full local dev environment as a container definition
 - Formatter configs (`.prettierrc`, `pyproject.toml [tool.ruff]`, `google-java-format` settings)
 - Pre-commit hook config (`.pre-commit-config.yaml`) — runs linters and formatters before every commit
-- VS Code workspace settings and recommended extensions (`.vscode/settings.json`, `.vscode/extensions.json`)
-- Local runner scripts (Docker Compose, Tilt, Skaffold) for spinning up all service dependencies locally
+- IDE workspace settings and recommended extensions (e.g., `.vscode/settings.json` and `.vscode/extensions.json` for VS Code)
+- Local runner scripts (e.g., Docker Compose, Tilt, Skaffold) for spinning up all service dependencies locally
 
 ### Adoption steps
 
 - [ ] Commit `.editorconfig` establishing universal whitespace and encoding rules
 - [ ] Commit formatter configs for all languages in the codebase; wire to pre-commit hooks
-- [ ] Commit `.vscode/extensions.json` with the extensions every developer should have; add `.vscode/settings.json` for shared IDE settings
+- [ ] Commit IDE workspace settings and recommended extensions to version control (e.g., `.vscode/extensions.json` and `.vscode/settings.json` for VS Code users)
 - [ ] Commit a `.pre-commit-config.yaml` with at minimum: format check, lint, secret scan, trailing whitespace check
 - [ ] Wire CI to run the same checks as pre-commit hooks — "works on my machine" cannot reach CI
 - [ ] Document in the onboarding guide (Pillar 31): the pre-commit hooks are not optional; a PR that bypasses them will fail CI

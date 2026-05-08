@@ -37,7 +37,7 @@ The umbrella term is **Everything as Code (EaC)**. It generalizes a family of re
 | Security as Code | SecaC | Emerging (TFSec, Checkov, Snyk IaC) |
 | Compliance as Code | CompaC | Emerging (Conftest, Open Compliance) |
 | Tests as Code | TaC | Always — but feature files (Gherkin) push this to specification level |
-| AI Instructions as Code | AIaC | Brand new (~2024-2026) — `copilot-instructions.md`, OpenSpec, `.clinerules` |
+| AI Instructions as Code | AIaC | Brand new (~2024-2026) — platform-specific instruction files (e.g., `copilot-instructions.md`, `.clinerules`), governed via a structured change workflow (e.g., OpenSpec) |
 | Wireframes as Code | UIaC | Niche (Excalidraw JSON, Penpot, Mermaid) |
 | Governance as Code | GaC | Emerging — change proposals, ADRs, capability changelogs |
 
@@ -452,10 +452,10 @@ Every EaC pillar implements the same operational loop:
 
 | Stage | What happens | Tool |
 |-------|--------------|------|
-| **Codify** | Author edits the declarative source file | VS Code, AI agent, OpenSpec proposal |
+| **Codify** | Author edits the declarative source file | any text editor or AI-assisted authoring tool (e.g., VS Code, AI agents, a structured change proposal) |
 | **Validate** | Schema validation, lint, contract checks | JSON Schema, OPA, custom validators |
-| **Generate** | Derived artifacts (HTML, SVG, code, docs) produced from source | MkDocs, PlantUML, codegen scripts |
-| **Publish** | Generated outputs deployed to production targets | Azure Static Web Apps, Confluence mirror |
+| **Generate** | Derived artifacts (HTML, SVG, code, docs) produced from source | static site generators, diagram renderers, and codegen scripts (e.g., MkDocs, PlantUML) |
+| **Publish** | Generated outputs deployed to production targets | static hosting, documentation portals, or wiki mirrors (e.g., GitHub Pages, Azure Static Web Apps, Confluence) |
 
 The CVG loop is the operational core of EaC. Every pillar must implement it end-to-end before that pillar can be considered "as code."
 

@@ -27,7 +27,7 @@ It is the generalization of:
 - **Policy as Code** — OPA/Rego, Sentinel, Conftest
 - **Architecture as Code (AaC)** — C4 DSL, ADRs, capability YAML, actor YAML
 - **Tests as Code** — BDD feature files, contract tests
-- **AI Instructions as Code** — `copilot-instructions.md`, `.clinerules`, OpenSpec specs
+- **AI Instructions as Code** — platform-specific instruction files (e.g., `copilot-instructions.md` for GitHub Copilot, `.clinerules` for Roo Code), governed via a structured change workflow (e.g., OpenSpec)
 - **UI Wireframes as Code** — Excalidraw JSON, Mermaid diagrams
 - **Governance as Code** — change proposals, ADRs, capability changelogs
 
