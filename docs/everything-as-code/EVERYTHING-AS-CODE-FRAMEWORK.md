@@ -139,15 +139,6 @@ Every EaC implementation is organized around pillars — one per discipline. The
 | **Validator** | MADR section validator |
 | **AI fit** | Excellent — MADR has consistent sections AI can populate and parse |
 
-### Pillar 8 — Tickets as Code
-
-| | |
-|---|---|
-| **Purpose** | Express work items and requirements in version-controlled YAML; link to capabilities and services |
-| **Format** | YAML with JSON Schema |
-| **Generator** | Ticket page generator |
-| **AI fit** | Excellent — replaces opaque ticket tracker queries; enables AI traceability |
-
 ### Pillar 9 — Tests as Code
 
 | | |

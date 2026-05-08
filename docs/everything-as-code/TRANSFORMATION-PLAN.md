@@ -6,6 +6,14 @@
 
 This template brings an architecture practice from a baseline state to **Level 9 — AI-Native EaC** by addressing each discipline ("pillar") in turn. Pillar adoption is independent — teams may adopt them in any order that fits their practice. The [Sequencing Guide](#sequencing-guide) at the end of this document suggests a dependency-aware order.
 
+## Scope — Not Everything Applies
+
+This template describes a comprehensive target state across 35 pillars. **No Instance should adopt all of them.** The first act of every Instance is a deliberate selection exercise: review each pillar, decide whether it is **In Scope**, **Out of Scope**, or **Deferred**, and record that decision in an ADR. Pillars marked Out of Scope are not failures — they are explicit choices based on team size, organizational context, and business priorities.
+
+The Sequencing Guide later in this document is a suggestion for dependency-aware ordering. It is not a mandate. Adapt the sequence, skip pillars that do not apply, and revisit the selection periodically as the practice matures.
+
+---
+
 ## Guiding Principles
 
 1. **No artifact left behind** — every deliverable in the architecture practice has an as-code home
@@ -15,6 +23,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 5. **AI is a first-class author** — every artifact must be readable and editable by an AI agent
 6. **Open formats always** — canonical sources use open, text-based standards; derived formats are generated, never hand-edited
 7. **Portability over convenience** — choose formats that survive tool changes; avoid vendor lock-in in canonical sources
+8. **Right-sized, not complete** — a practice that executes five well-chosen pillars consistently delivers more value than one that partially adopts all 35
 
 ---
 
@@ -260,36 +269,6 @@ This template brings an architecture practice from a baseline state to **Level 9
 - All significant active architectural constraints are recorded as ADRs
 - MADR validator enforced in CI; missing required sections block merge
 - ADR index page generated and published
-
----
-
-## Pillar 8 — Tickets as Code
-
-**What it means**: The work that shapes the architecture — feature tickets, architecture investigations, solution designs — is tracked in a version-controlled YAML registry linked to the capability model, so the connection between delivered work and architectural capability is machine-readable.
-
-### Artifact types
-
-- Ticket registry YAML: each entry declares ID, title, status, owning service(s), and planned or realized capability impacts
-- JSON Schema validating the registry
-- Generated ticket pages in the documentation portal
-
-### Adoption steps
-
-- [ ] Define the fields your ticket registry must carry (at minimum: ID, title, status, affected services, capability references)
-- [ ] Author the registry YAML and JSON Schema; seed with current active work
-- [ ] Establish a convention: new solution designs add a registry entry before work begins
-- [ ] Wire a generator to produce ticket pages and cross-link them from capability and service pages
-- [ ] Wire CI validation: capability IDs referenced in tickets must exist in the capability hierarchy
-
-### CI integration
-
-- JSON Schema validation on every PR touching the ticket registry
-- Referential integrity check: capability IDs in tickets exist in capabilities YAML
-
-### Exit criteria
-
-- Active tickets registered; schema-validated in CI
-- Generated ticket pages published and cross-linked from capability and service pages
 
 ---
 
@@ -1274,7 +1253,7 @@ Pillar adoption is independent but not isolated — some pillars unlock others. 
 | **Wave 5 — Validation** | Policy as Code (10), Tests as Code (9), Pipeline as Code (2), Data Contracts as Code (18) | Validation pillars are most effective once there is a declared architecture, data model, and security baseline to validate against. |
 | **Wave 6 — Reliability** | Observability as Code (24), SLO / SLI as Code (25), Feature Flags as Code (26) | Observability requires deployed services. SLOs require observability. Feature flags require a service registry to link to. |
 | **Wave 7 — Delivery** | Release Strategies as Code (27), Environment Definitions as Code (28), Service Mesh Configuration as Code (29) | Progressive delivery and environment governance build on the CI/CD pipeline established in Wave 5. |
-| **Wave 8 — AI + Docs + Tickets** | AI Instructions as Code (11), Documentation as Code (13), Tickets as Code (8) | AI instructions require a stable architecture definition. Docs as Code consolidates outputs from all prior waves. Ticket linkage closes the traceability loop. |
+| **Wave 8 — AI + Docs** | AI Instructions as Code (11), Documentation as Code (13) | AI instructions require a stable architecture definition. Docs as Code consolidates outputs from all prior waves. |
 | **Wave 9 — Organization + DX** | Team Topology as Code (30), Onboarding as Code (31), Developer Experience as Code (32) | Organizational and developer experience pillars are most valuable once the technical pillars have stabilized — the toolchain they document is no longer changing rapidly. |
 | **Wave 10 — Capstone** | Governance as Code (14), Wireframes as Code (12), Operational Runbooks as Code (15) | These pillars benefit from the full CI pattern library established in earlier waves and can proceed in parallel once a team has capacity. |
 

@@ -63,6 +63,24 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [Synthetic Exemplar Backlog](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
 | [Export Blueprint Script](export-blueprint.sh) | Shell script to copy the blueprint to a corporate Instance workspace; not exported (it runs from this workspace) |
 
+## Applying This Blueprint
+
+**Not every pillar applies to every organization, team, or moment in time.**
+
+This blueprint describes a comprehensive target state — 35 pillars across infrastructure, governance, data, delivery, observability, AI, and organizational design. No organization should attempt to adopt all of them at once, and most will deliberately exclude some pillars permanently based on their context, scale, or priorities.
+
+The first act of every Instance is a **deliberate selection exercise**:
+
+1. **Read the framework.** Understand what each pillar delivers and what it costs to adopt.
+2. **Assess your current state.** Use the [Current State Assessment](CURRENT-STATE-ASSESSMENT.md) template to map your actual baseline.
+3. **Choose your scope.** For every pillar, make a conscious decision: **In Scope**, **Out of Scope**, or **Defer**. Record this decision in an ADR.
+4. **Sequence your rollout.** Use the [Transformation Plan](TRANSFORMATION-PLAN.md) Sequencing Guide as a starting point, then adapt it to your dependencies, team capacity, and business priorities.
+5. **Revisit periodically.** A pillar that was out of scope at adoption time may become relevant later. The selection exercise is not a one-time gate — it is a recurring architectural decision.
+
+> The goal is a *right-sized* EaC practice, not a complete one. A small team that ships high-quality artifacts for five well-chosen pillars delivers more value than an organization that partially adopts all 35.
+
+---
+
 ## Exporting to a Corporate Instance
 
 The blueprint in this folder is designed to travel. Once it has been validated and refined against the synthetic NovaTrek exemplar, it is exported to a real corporate workspace (the **Instance**) where it is instantiated against actual systems.

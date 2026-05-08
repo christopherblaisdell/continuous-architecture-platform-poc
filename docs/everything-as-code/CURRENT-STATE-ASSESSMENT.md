@@ -97,17 +97,6 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | Custom validator asserting MADR sections (Status, Date, Context, Decision Drivers, Considered Options, Decision Outcome, Consequences) are present |
 | **Maturity** | Level 4 |
 
-### Pillar 8 — Tickets as Code
-
-| | |
-|---|---|
-| **Status** | LIVE |
-| **File** | `architecture/metadata/tickets.yaml` |
-| **Generator** | `portal/scripts/generate-ticket-pages.py` |
-| **Validator** | NONE |
-| **Gap** | JSON Schema; ensure capability mappings derive from changelog (not duplicated in tickets.yaml) |
-| **Maturity** | Level 5 |
-
 ### Pillar 9 — Tests as Code
 
 | | |
