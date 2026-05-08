@@ -8,7 +8,7 @@
 
 ## Prompt
 
-I am leading the modernization of an enterprise software architecture practice. We have committed to **Everything as Code** as our foundation. The next question is: when AI agents are co-authors of every artifact, what does the architecture practice look like? Produce a comprehensive research document on **AI-Native Architecture Practice** — what it is, who is defining it, what tools instantiate it, and what an enterprise should do today (mid-2026) to adopt it.
+An enterprise software architecture practice has committed to **Everything as Code** as its foundation. The next question is: when AI agents are co-authors of every artifact, what does the architecture practice look like? Produce a comprehensive research document on **AI-Native Architecture Practice** — what it is, who is defining it, what tools instantiate it, and what an enterprise should do today (mid-2026) to adopt it.
 
 Include inline hyperlinks to authoritative primary sources for every factual claim — academic papers (DOI/arXiv), official documentation, vendor announcements, conference talks. Rich linking is mandatory.
 

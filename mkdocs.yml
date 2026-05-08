@@ -66,6 +66,12 @@ plugins:
         - "phase-1-ai-tool-cost-comparison/workspace/work-items/**"
         - "phase-1-ai-tool-cost-comparison/outputs/**"
         - "phase-1-ai-tool-cost-comparison/scripts/**"
+        - "everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md"
+        - "everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md"
+        - "everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md"
+        - "everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md"
+        - "everything-as-code/standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md"
+        - "everything-as-code/export-blueprint.sh"
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true

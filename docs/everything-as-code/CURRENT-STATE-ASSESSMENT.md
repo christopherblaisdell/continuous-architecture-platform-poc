@@ -221,7 +221,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | 34 — Ubiquitous Language as Code | NOT IN SCOPE | |
 | 35 — Coding Standards as Code | NOT IN SCOPE | |
 
-> A real corporate Instance assessment fills in all 35 rows with actual status, files, gaps, and maturity scores. "NOT IN SCOPE" here means the synthetic NovaTrek workspace is an architecture practice simulation — it does not represent a full production delivery organization.
+> A real corporate Instance assessment fills in all 34 rows with actual status, files, gaps, and maturity scores. "NOT IN SCOPE" here means the synthetic NovaTrek workspace is an architecture practice simulation — it does not represent a full production delivery organization.
 
 ## Cross-Cutting Gaps
 

@@ -8,7 +8,7 @@
 
 ## Prompt
 
-I am leading the architecture practice transformation for an enterprise software platform. Our goal is to make every architectural artifact — diagrams, capabilities, ADRs, wireframes, AI instructions, policies, runbooks — declarative, version-controlled, machine-readable, and human-readable. This is the philosophy commonly called **"Everything as Code" (EaC)**, a generalization of Infrastructure as Code, Diagrams as Code, Documentation as Code, Policy as Code, and adjacent disciplines.
+An enterprise software architecture practice is undertaking a transformation to make every architectural artifact — diagrams, capabilities, ADRs, wireframes, AI instructions, policies, runbooks — declarative, version-controlled, machine-readable, and human-readable. This is the philosophy commonly called **"Everything as Code" (EaC)**, a generalization of Infrastructure as Code, Diagrams as Code, Documentation as Code, Policy as Code, and adjacent disciplines.
 
 Produce a comprehensive research document covering everything below. Include inline hyperlinks to authoritative primary sources for every factual claim — academic papers (DOI/arXiv), official documentation, vendor docs, conference talks, ThoughtWorks Technology Radar entries, IEEE / ISO / OASIS / W3C / IETF specifications and working drafts. The deliverable must be useful as the authoritative internal reference informing our adoption strategy.
 
@@ -140,7 +140,7 @@ Identify and summarize 5+ public case studies of large enterprises that have ado
 
 For each: scope of EaC adoption, tools used, lessons learned, links to public talks or blogs.
 
-### Section 11 — Recommendations for Our Practice
+### Section 11 — Recommendations for Adoption
 
 Given everything above, produce concrete recommendations for an enterprise architecture practice in 2026:
 

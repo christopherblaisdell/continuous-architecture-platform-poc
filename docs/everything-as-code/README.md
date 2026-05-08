@@ -53,15 +53,40 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md) | The full framework — definitions, pillars, naming, industry terms, maturity model |
 | [Current State Assessment](CURRENT-STATE-ASSESSMENT.md) | **Synthetic exemplar assessment** — demonstrates the assessment template applied to the fictional NovaTrek workspace; serves as the worked example to copy when assessing a real corporate workspace |
 | [Transformation Plan](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
-| [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) | Treating AI instructions as a first-class EaC pillar — platform-agnostic via OpenSpec |
-| [AI Instruction Governance](AI-INSTRUCTION-GOVERNANCE.md) | Pillar 11 governance annex — single source of truth, conflict detection, baseline access; extends the AI Instructions as Code document |
-| [Deep Research Prompt — EaC Maturity Model](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md) | Deep research prompt — formal naming, frameworks, maturity models, industry adoption |
-| [Deep Research Response — EaC Maturity Model](DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
-| [Deep Research Prompt — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) | Deep research prompt — what does an AI-native architecture practice look like |
-| [Deep Research Response — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
-| [Deep Research Response — AI Instructions Taxonomy](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md) | Deep research response — standardized taxonomy of AI instructions formats and OpenSpec governance model; supports Pillar 11 (AI Instructions as Code) |
 | [Synthetic Exemplar Backlog](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
-| [Export Blueprint Script](export-blueprint.sh) | Shell script to copy the blueprint to a corporate Instance workspace; not exported (it runs from this workspace) |
+
+Pillar-specific deep dives are listed separately in the [Pillar Deep Dives](#pillar-deep-dives) section below.
+
+## Pillar Deep Dives
+
+Not every pillar warrants a standalone deep-dive document. The selection criterion is:
+
+> **A pillar gets a deep dive when no canonical external reference exists.** For well-established disciplines — Infrastructure as Code, Pipeline as Code, Policy as Code — Terraform, GitHub Actions, and Open Policy Agent documentation are better references than anything written here. For novel or emerging pillars where "search the web" returns nothing authoritative, a deep dive fills the gap.
+
+This keeps the blueprint lean. Readers of Pillar 1 (IaC) are better served by the Terraform documentation than by a rehash of it here. Readers of Pillar 6 (Capabilities as Code) have nowhere else to go — so a deep dive earns its place.
+
+### Written
+
+| Pillar | Document |
+|--------|---------|
+| 11 — AI Instructions as Code | [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — platform-agnostic portability, governance model, OpenSpec workflow |
+| 11 — AI Instruction Governance (annex) | [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) — single source of truth, conflict detection, baseline access |
+
+### Planned
+
+These pillars have no authoritative external reference. Deep dives are authored on demand — typically when an Instance reaches that pillar in its adoption sequence and finds the checklist steps insufficient.
+
+| Pillar | Why a deep dive is warranted |
+|--------|------------------------------|
+| 3 — Actors as Code | No tooling or standard exists; the YAML actor catalog pattern has no external specification to reference |
+| 6 — Capabilities as Code | No tooling, no standard, no industry literature; the L1/L2/L3 capability-as-YAML-with-changelog pattern is defined only here |
+| 14 — Governance as Code | ADRs are documented (MADR), but structured ADR-YAML with capability changelogs and machine-enforced change proposals is not |
+| 30 — Team Topology as Code | Team Topologies (Skelton & Pais) defines the concepts; YAML codification of team topology for version control and AI consumption is not documented anywhere |
+| 33 — Architecture Principles as Code | Adjacent to DDD and quality models, but no canonical reference for version-controlled principle registries linked to ADRs |
+| 34 — Ubiquitous Language as Code | Adjacent to DDD glossaries, but no canonical reference for machine-readable ubiquitous language registries |
+| 36 — Patterns and Anti-patterns as Code | No canonical reference; the YAML catalog linking named patterns to decisions and services is defined only in this framework |
+
+---
 
 ## Applying This Blueprint
 
@@ -77,7 +102,7 @@ The first act of every Instance is a **deliberate selection exercise**:
 4. **Sequence your rollout.** Use the [Transformation Plan](TRANSFORMATION-PLAN.md) Sequencing Guide as a starting point, then adapt it to your dependencies, team capacity, and business priorities.
 5. **Revisit periodically.** A pillar that was out of scope at adoption time may become relevant later. The selection exercise is not a one-time gate — it is a recurring architectural decision.
 
-> The goal is a *right-sized* EaC practice, not a complete one. A small team that ships high-quality artifacts for five well-chosen pillars delivers more value than an organization that partially adopts all 35.
+> The goal is a *right-sized* EaC practice, not a complete one. A small team that ships high-quality artifacts for five well-chosen pillars delivers more value than an organization that partially adopts all 34.
 
 ---
 

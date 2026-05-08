@@ -23,7 +23,7 @@ The Sequencing Guide later in this document is a suggestion for dependency-aware
 5. **AI is a first-class author** — every artifact must be readable and editable by an AI agent
 6. **Open formats always** — canonical sources use open, text-based standards; derived formats are generated, never hand-edited
 7. **Portability over convenience** — choose formats that survive tool changes; avoid vendor lock-in in canonical sources
-8. **Right-sized, not complete** — a practice that executes five well-chosen pillars consistently delivers more value than one that partially adopts all 35
+8. **Right-sized, not complete** — a practice that executes five well-chosen pillars consistently delivers more value than one that partially adopts all 34
 
 ---
 
