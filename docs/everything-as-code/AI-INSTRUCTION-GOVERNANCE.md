@@ -62,16 +62,18 @@ These are not edge cases. They are the predictable failure modes of any AI instr
                                     └───────────────────────────────────┘
 ```
 
-### The portal-edit trap
+### Portal edits vs. hub-based changes
 
-Cloud platforms expose the deployed agent's system prompt in a web UI. It is possible to edit it directly — and it feels fast and productive. This is the principal governance failure path:
+Cloud platforms expose the deployed agent's system prompt in a web UI. It is possible to edit it directly. There are two valid positions on whether to allow this, and they suit different teams at different maturity levels.
 
-- The portal edit is NOT version-controlled
-- The portal edit is NOT reviewed or approved
-- The portal edit is overwritten on the next CI deployment (or silently persists if CI is not re-run)
-- Nobody else knows it happened
+| Approach | How it works | Trade-offs |
+|---|---|---|
+| **Portal edits allowed** | Behavioral changes are made directly in the cloud platform UI | Fast and low-friction; no tooling required; changes are immediate — but there is no version history, no review record, no rollback path, and no audit trail. If CI re-deploys, the edit is silently overwritten. Works for solo practitioners or early-stage teams where speed matters more than traceability. |
+| **Hub-based changes only** | The portal field is treated as a read-only deployment artifact; all changes flow through the canonical hub via a governed change workflow | Full version history, peer review, rollback, and audit trail for every behavioral change. Requires CI infrastructure and team discipline. Suited to teams where AI agent behavior is a shared, governed asset. |
 
-**Rule**: The deployed agent's system prompt visible in the portal is a read-only audit artifact. It MUST NOT be the change mechanism. All behavioral changes flow through the canonical hub via the OpenSpec change workflow.
+**Recommendation — hub-based changes**: Once an AI agent's behavior materially affects your team's work or your users' experience, portal edits become a liability. A change no one reviewed, no one can trace, and no one can roll back is the same governance problem that EaC solves for infrastructure and configuration. The hub-based approach applies the same discipline to agent behavior.
+
+If your team is not yet ready for full hub-based governance, a practical middle path is: allow portal edits during initial development, but commit each working state back to the hub before sharing the agent with others. This preserves the feedback loop without requiring full CI infrastructure from day one.
 
 ### Ownership table
 
