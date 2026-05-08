@@ -1224,14 +1224,51 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
+## Pillar 36 — Patterns and Anti-patterns as Code
+
+**What it means**: Approved architectural patterns and known anti-patterns are cataloged in a version-controlled YAML registry. Each entry is named, categorized, and linked to the ADRs that established or rejected it and to the services where it is currently applied. This registry gives AI agents and human reviewers a shared vocabulary — removing ambiguity from design reviews and enabling consistent pattern reuse across teams.
+
+### Artifact types
+
+- Pattern catalog YAML: one entry per pattern or anti-pattern, declaring name, type (`pattern` or `anti-pattern`), category, problem statement, solution or remediation, positive and negative consequences, ADR references, and the services or systems where it is applied
+- JSON Schema validating the catalog
+- Generated patterns catalog page in the documentation portal
+
+### Adoption steps
+
+- [ ] Identify the 5-10 most consequential patterns currently in use across your architecture (e.g., Saga, Strangler Fig, CQRS, Outbox Pattern, API Gateway)
+- [ ] Identify the 5-10 most commonly observed anti-patterns that have caused production issues or architectural debt (e.g., Shared Database, Distributed Monolith, Hardcoded Classification, Shadow Records)
+- [ ] Create a `patterns.yaml` (or equivalent) in a dedicated version-controlled location with one entry per pattern and one per anti-pattern; agree on a consistent schema before writing the first entry
+- [ ] Author a JSON Schema for the catalog; add a `$schema` header to the YAML; wire schema validation to CI
+- [ ] Link each pattern entry to the ADR(s) where that pattern was adopted; link each anti-pattern entry to the ADR(s) where it was explicitly rejected or superseded
+- [ ] Link each entry to the services or systems where the pattern is currently applied
+- [ ] Wire a generator to produce a patterns catalog page in the documentation portal
+- [ ] Establish the convention: any PR that introduces a new pattern or identifies a new anti-pattern adds a catalog entry, with a corresponding ADR if the pattern is new to the practice
+
+### CI integration
+
+- JSON Schema validation on every PR touching the pattern catalog
+- Referential integrity: every ADR reference in the catalog must resolve to an existing ADR file
+- Referential integrity: every service or system reference must resolve to an entry in the application registry (Pillar 4)
+- Portal catalog page generator runs on every build; drift between the catalog and the generated page fails CI
+
+### Exit criteria
+
+- All actively applied patterns declared and linked to ADRs and services
+- All known anti-patterns documented with the approved alternative pattern referenced
+- Schema-validated in CI
+- Generated patterns catalog page published in the portal
+
+---
+
 ## Sequencing Guide
 
-Pillar adoption is independent but not isolated — some pillars unlock others. The table below shows recommended sequencing for a practice adopting all 35 pillars from near zero. **Teams should select only the pillars marked In Scope during the Bootstrap pillar selection exercise and sequence those pillars, not all 35.**
+Pillar adoption is independent but not isolated — some pillars unlock others. The table below shows recommended sequencing for a practice adopting all 35 pillars from near zero. **Teams should select only the pillars marked In Scope during the Bootstrap pillar selection exercise and sequence those pillars, not all 36.**
 
 | Wave | Pillars | Rationale |
 |------|---------|-----------|
 | **Wave 1 — Foundation** | Infrastructure as Code (1), Applications as Code (4), Architecture Artifacts as Code (5), Data Models as Code (16) | Establishes the registry of what exists, canonical diagram sources, IaC baseline, and the entity schema layer. Everything else references these. |
-| **Wave 2 — Governance + Language** | Decisions as Code (7), Capabilities as Code (6), Actors as Code (3), Architecture Principles as Code (33), Ubiquitous Language as Code (34) | Governance, capability model, and shared vocabulary unlock linkability and consistency in all later pillars. |
+| **Wave 2 — Governance + Language** | Decisions as Code (7), Capabilities as Code (6), Actors as Code (3), Architecture Principles as Code (33), Ubiquitous Language as Code (34), Patterns and Anti-patterns as Code (36) | Governance, capability model, shared vocabulary, and pattern catalog unlock linkability and consistency in all later pillars. |
 | **Wave 3 — Data** | Database Migrations as Code (17), Event Schemas as Code (19), Coding Standards as Code (35) | Schema evolution and event contracts build on the data model foundation. Coding standards establish baseline quality before validation pillars apply them. |
 | **Wave 4 — Security + Compliance** | Security as Code (20), Compliance as Code (21), Secrets Management as Code (22), SBOM as Code (23) | Security and compliance pillars depend on having declared services (Wave 1) and governance (Wave 2) before they can define what to protect and what to audit. |
 | **Wave 5 — Validation** | Policy as Code (10), Tests as Code (9), Pipeline as Code (2), Data Contracts as Code (18) | Validation pillars are most effective once there is a declared architecture, data model, and security baseline to validate against. |

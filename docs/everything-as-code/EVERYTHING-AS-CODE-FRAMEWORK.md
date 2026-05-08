@@ -40,6 +40,7 @@ The umbrella term is **Everything as Code (EaC)**. It generalizes a family of re
 | AI Instructions as Code | AIaC | Brand new (~2024-2026) — platform-specific instruction files (e.g., `copilot-instructions.md`, `.clinerules`), governed via a structured change workflow (e.g., OpenSpec) |
 | Wireframes as Code | UIaC | Niche (Excalidraw JSON, Penpot, Mermaid) |
 | Governance as Code | GaC | Emerging — change proposals, ADRs, capability changelogs |
+| Patterns and Anti-patterns as Code | PaAC | Emerging — version-controlled YAML catalogs linking named patterns and anti-patterns to the decisions and services where they apply |
 
 Adjacent and synonymous terms used in industry:
 
@@ -404,6 +405,16 @@ See [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Validator** | Linter runs in CI; formatter check in CI; suppression annotation audit |
 | **AI fit** | Excellent — linter configs are structured; AI can propose rule changes and auto-fix violations |
 
+### Pillar 36 — Patterns and Anti-patterns as Code
+
+| | |
+|---|---|
+| **Purpose** | Catalog approved architectural patterns and identified anti-patterns in a version-controlled, linkable registry; give AI agents and human reviewers a shared vocabulary of approved solutions and known pitfalls |
+| **Format** | YAML catalog (per entry: name, type, category, problem statement, solution or remediation, consequences, ADR references, service/system links, status); optional Markdown narrative per pattern |
+| **Generator** | Patterns catalog page in the documentation portal |
+| **Validator** | JSON Schema; referential integrity checks to ADR files and the application/service registry |
+| **AI fit** | Excellent — AI can match patterns to proposed designs, flag anti-patterns during PR review, and suggest approved alternatives |
+
 ## 5. Maturity Model — From Documents to AI-Native EaC
 
 A practical maturity model for an architecture practice's EaC adoption:
@@ -430,7 +441,7 @@ The maturity levels describe organizational milestones, not per-pillar completio
 | 2–3 | Pillars 5 (Architecture Artifacts), 12 (Wireframes), 13 (Documentation) |
 | 4 | Pillars 3, 4, 6, 8 (core metadata — actors, apps, capabilities, tickets); Pillars 16, 19 (data models, event schemas) |
 | 5 | Pillars 1, 2, 7 (IaC, Pipeline, Decisions) reaching generator-in-CI state; Pillars 24, 25 (Observability, SLOs) |
-| 6 | Pillars 7, 14 (Decisions, Governance) with CI-enforced change records |
+| 6 | Pillars 7, 14, 36 (Decisions, Governance, Patterns and Anti-patterns) with CI-enforced change records |
 | 7 | Pillar 11 (AI Instructions as Code) with hub-and-spoke governance active |
 | 8 | Pillars 10, 20, 21, 22 (Policy, Security, Compliance, Secrets Management) |
 | 9 | All 35 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
@@ -472,6 +483,8 @@ The CVG loop is the operational core of EaC. Every pillar must implement it end-
 | ADRs that exist only in pull-request descriptions | Not searchable, not linked, not surfaced |
 | Tickets in JIRA without YAML mirror | AI cannot reason without API access; opaque to git |
 | AI instructions edited per tool, no canonical source | Drift across Copilot, Roo, Cursor; impossible to govern |
+
+> The table above catalogs EaC adoption anti-patterns — the organizational and tooling failures that prevent true "as code" status. For a version-controlled catalog of domain-level architectural patterns and anti-patterns in your system design (Saga, CQRS, Shared Database, Distributed Monolith, etc.), see **Pillar 36 — Patterns and Anti-patterns as Code**.
 
 ## 8. Key References
 

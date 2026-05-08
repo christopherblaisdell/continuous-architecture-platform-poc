@@ -25,11 +25,14 @@ It is the generalization of:
 - **Documentation as Code (Docs as Code)** — Markdown + static site generators
 - **Diagrams as Code** — PlantUML, Mermaid, Structurizr DSL
 - **Policy as Code** — OPA/Rego, Sentinel, Conftest
-- **Architecture as Code (AaC)** — C4 DSL, ADRs, capability YAML, actor YAML
+- **Architecture as Code (AaC)** — system structure and runtime flows expressed as diagrams and specs (e.g., C4-PlantUML, Structurizr DSL, OpenAPI, AsyncAPI)
+- **Actors as Code** — every human role, external system, and persona declared in a version-controlled registry (e.g., YAML actor catalog with JSON Schema)
+- **Capabilities as Code** — L1/L2/L3 business capability hierarchy in YAML with a changelog that links every solution and change to the capabilities it affects
 - **Tests as Code** — BDD feature files, contract tests
 - **AI Instructions as Code** — platform-specific instruction files (e.g., `copilot-instructions.md` for GitHub Copilot, `.clinerules` for Roo Code), governed via a structured change workflow (e.g., OpenSpec)
 - **UI Wireframes as Code** — Excalidraw JSON, Mermaid diagrams
 - **Governance as Code** — change proposals, ADRs, capability changelogs
+- **Patterns and Anti-patterns as Code** — a version-controlled YAML catalog of approved architectural patterns and identified anti-patterns, linked to the decisions and services where they apply (e.g., Saga, CQRS, Strangler Fig; anti-patterns like Shared Database, Distributed Monolith)
 
 ## Why now?
 
