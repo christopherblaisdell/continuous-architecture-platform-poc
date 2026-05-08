@@ -176,11 +176,25 @@ This makes the Foundry agent's behavioral definition version-controlled, reviewa
 
 **Scope boundary:** The Foundry agent's *tools* (file search, code interpreter, MCP servers, vector store IDs) are Layer 3 (Runtime Integration) and are configured separately via the platform SDK or Bicep. The `config.yaml` above intentionally separates the behavioral spec (`system_prompt_file`) from the runtime tool config so each can evolve independently.
 
-## Governance via OpenSpec
+## Layer 2 — Change Governance
 
-Layer 2 — change governance — is implemented in this workspace via [OpenSpec](https://github.com/Fission-AI/OpenSpec).
+Layer 2 governs how Layer 1 artifacts are proposed, reviewed, applied, and archived. Any implementation must satisfy four requirements:
 
-The change workflow:
+1. **Propose** — changes are described before they are made (a proposal artifact, not just a PR description)
+2. **Review** — the proposal is reviewed and approved before execution
+3. **Apply** — the change is executed against the canonical hub and all derived files
+4. **Archive** — completed changes become immutable audit records
+
+There are two ways to implement this:
+
+| Approach | Description | Trade-offs |
+|---|---|---|
+| **Roll your own** | Define a PR convention — folder structure, review checklist, archive location — specific to your team | Full control; requires discipline to maintain consistently; no tooling enforcement |
+| **[OpenSpec](https://github.com/Fission-AI/OpenSpec)** | Purpose-built change governance framework for AI instructions — structured change folders, slash commands, agent-executable workflows | Enforced structure; audit archive built in; designed specifically for this use case |
+
+**Recommendation — OpenSpec**: It is the only purpose-built tool for this pattern. Rolling your own achieves the same outcome but requires inventing and maintaining a convention that OpenSpec already provides. Use your own convention only if your organization has a strong reason to avoid a third-party dependency.
+
+### The OpenSpec change workflow
 
 1. **`/opsx:propose`** — agent or human creates a change folder under `openspec/changes/<change-name>/` with `proposal.md`, `spec.md` (delta), `design.md`, `tasks.md`
 2. **Review** — PR review focuses on the proposal artifacts before any code changes
