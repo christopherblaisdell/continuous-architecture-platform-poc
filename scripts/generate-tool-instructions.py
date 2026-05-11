@@ -3,6 +3,7 @@
 generate-tool-instructions.py
 Distributes canonical AI instruction content from .github/ source files to
 per-tool native formats for Cursor, RooCode, Windsurf, Claude Code, and Gemini CLI.
+Also distributes skill files from .openspec/skills/ to each tool's native skills directory.
 
 Usage:
   python3 scripts/generate-tool-instructions.py            # write all files
@@ -139,6 +140,28 @@ SINGLE_FILE_TARGETS = {
     "gemini": "GEMINI.md",
 }
 
+# ---------------------------------------------------------------------------
+# Skills manifest
+# Canonical source: .openspec/skills/<name>/SKILL.md
+# Distributed to each tool's native skills directory.
+# ---------------------------------------------------------------------------
+
+SKILLS = [
+    "openspec-propose",
+    "openspec-apply-change",
+    "openspec-archive-change",
+    "openspec-explore",
+]
+
+SKILLS_TARGETS = {
+    "copilot":  ".github/skills",
+    "cursor":   ".cursor/skills",
+    "roocode":  ".roo/skills",
+    "windsurf": ".windsurf/skills",
+    "claude":   ".claude/skills",
+    "gemini":   ".gemini/skills",
+}
+
 SINGLE_FILE_HEADER = """\
 # NovaTrek Architecture Platform — AI Instructions
 
@@ -261,15 +284,32 @@ def generate_single_file(
     return write_or_check(ROOT / output_path, output, dry_run, check)
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+def generate_skills(
+    tool_filter: Optional[str], dry_run: bool, check: bool
+) -> list:
+    """Distribute SKILL.md files from .openspec/skills/ to each tool's native skills directory."""
+    results = []
+    for tool, target_dir in SKILLS_TARGETS.items():
+        # When a tool filter is set, only process the matching tool.
+        # copilot always runs (it has no dedicated --tool option).
+        if tool_filter and tool != "copilot" and tool != tool_filter:
+            continue
+        for skill_name in SKILLS:
+            src = ROOT / ".openspec" / "skills" / skill_name / "SKILL.md"
+            dst = ROOT / target_dir / skill_name / "SKILL.md"
+            if not src.exists():
+                print(f"ERROR: skill source not found: {src}", file=sys.stderr)
+                sys.exit(1)
+            content = src.read_text(encoding="utf-8")
+            results.append(write_or_check(dst, content, dry_run, check))
+    return results
+
 
 def main():
     parser = argparse.ArgumentParser(description="Generate per-tool instruction files from canonical sources.")
     parser.add_argument("--dry-run", action="store_true", help="Print what would be written without writing")
     parser.add_argument("--check", action="store_true", help="Exit 1 if any file is out of sync")
-    parser.add_argument("--tool", choices=["cursor", "roocode", "windsurf", "claude", "gemini"], help="Generate for one tool only")
+    parser.add_argument("--tool", choices=["cursor", "roocode", "windsurf", "claude", "gemini", "copilot"], help="Generate for one tool only")
     args = parser.parse_args()
 
     dry_run = args.dry_run
@@ -312,6 +352,9 @@ def main():
             MANIFEST, dry_run, check
         )
         all_changed.append(result)
+
+    print("Skills (.openspec/skills/ -> tool native directories)")
+    all_changed += generate_skills(tool_filter, dry_run, check)
 
     if check and any(all_changed):
         print("\nERROR: Tool instruction files are out of sync.")
