@@ -449,7 +449,7 @@ Before declaring AI instruction governance operational:
 
 ## References
 
-- [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — hub-and-spoke architecture, derivation chain, OpenSpec governance
+- [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — hub-and-spoke architecture, derivation chain, OpenSpec change governance and multi-tool workflow delivery
 - [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) — Pillar 11 definition and maturity model
 - [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) — Pillar 11 adoption phases
 - OpenSpec — https://github.com/Fission-AI/OpenSpec

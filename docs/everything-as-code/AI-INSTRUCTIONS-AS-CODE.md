@@ -190,9 +190,9 @@ There are two ways to implement this:
 | Approach | Description | Trade-offs |
 |---|---|---|
 | **Roll your own** | Define a PR convention — folder structure, review checklist, archive location — specific to your team | Full control; requires discipline to maintain consistently; no tooling enforcement |
-| **[OpenSpec](https://github.com/Fission-AI/OpenSpec)** | Purpose-built change governance framework for AI instructions — structured change folders, slash commands, agent-executable workflows | Enforced structure; audit archive built in; designed specifically for this use case |
+| **[OpenSpec](https://github.com/Fission-AI/OpenSpec)** | Purpose-built change governance framework for AI instructions — structured change folders, slash commands, agent-executable workflows. Additionally, `openspec init` generates skill files and command files in each tool's native directory (`.github/skills/`, `.roo/skills/`, `.cursor/skills/`, `.windsurf/skills/`, etc.) for 25+ tools, making OpenSpec's own workflows portable across tools without per-tool configuration. | Enforced structure; audit archive built in; multi-tool workflow delivery via `openspec init`; designed specifically for this use case |
 
-**Recommendation — OpenSpec**: It is the only purpose-built tool for this pattern. Rolling your own achieves the same outcome but requires inventing and maintaining a convention that OpenSpec already provides. Use your own convention only if your organization has a strong reason to avoid a third-party dependency.
+**Recommendation — OpenSpec**: It is the only purpose-built tool for this pattern and provides two distinct capabilities: (1) **change governance** — structured proposal, review, apply, and archive workflows for changes to AI instructions; and (2) **multi-tool workflow delivery** — `openspec init` generates OpenSpec's workflow mechanics as skill files and command files in each tool's native directory so the same change cycle works identically across 25+ tools without reconfiguration. Rolling your own achieves change governance but loses multi-tool delivery. Use your own convention only if your organization has a strong reason to avoid a third-party dependency.
 
 ### The OpenSpec change workflow
 
@@ -209,25 +209,44 @@ There are two ways to implement this:
 
 This is the same Codify-Validate-Generate (CVG) loop that every EaC pillar implements.
 
-## What OpenSpec Does NOT Do
+## What OpenSpec Does and Does Not Do
 
-OpenSpec governs the *process* of changing AI instructions. It does **not**:
+OpenSpec has two distinct capabilities that operate at different levels and are frequently conflated.
 
-- Unify the schemas of the derived files (each tool still has its own format)
+**What OpenSpec DOES provide**
+
+| Capability | Mechanism |
+|-----------|----------|
+| Change governance | Structured proposal/apply/archive workflow for any change to AI instructions |
+| Multi-tool workflow delivery | `openspec init` generates skill files and command files in each tool's native directory for 25+ tools |
+| Slash command portability | `/opsx:propose`, `/opsx:apply`, `/opsx:archive` work identically in all tools after `openspec init` |
+| Audit archive | Completed changes archived as immutable records |
+
+The multi-tool delivery is precise in scope: OpenSpec generates files that teach each tool how to run **OpenSpec's own workflows**. When you run `/opsx:propose` in Cursor, Roo Code, Copilot, or Windsurf, OpenSpec handles it the same way. Same workflow, any tool.
+
+**What OpenSpec does NOT provide**
+
+OpenSpec does not carry **your content** across tools. It does **not**:
+
+- Assemble your domain rules, corporate standards, or architectural conventions into each tool's instruction files
+- Unify the schemas of derived content files (each tool still has its own format for behavioral instructions)
 - Provide a portable Layer 1 schema (the industry has not standardized one)
 - Replace runtime context delivery (Layer 3, MCP/RAG)
 
-True portability requires a **Layer 1 schema standard** — a typed, declarative format for behavioral instructions that any compliant AI tool could parse natively. That standard does not yet exist. See [Deep Research Prompt — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) for an investigation into emerging candidates.
+Content portability — distributing your domain rules from a single canonical hub into `.github/copilot-instructions.md`, `.clinerules`, `.cursor/rules/*.mdc`, and `.windsurfrules` — is the hub-and-spoke pattern's job. OpenSpec and hub-and-spoke are complementary, not overlapping: OpenSpec governs how changes are made to the hub; hub-and-spoke CI assembly distributes hub content to each tool's native files.
+
+True **schema portability** requires a **Layer 1 schema standard** — a formal typed format that any compliant AI tool natively parses. That standard does not yet exist. See [Deep Research Prompt — AI-Native Architecture](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md) for an investigation into emerging candidates.
 
 ## Three Tiers of Portability (today vs. future)
 
 | Tier | Description | Achievable today? |
 |------|-------------|-------------------|
 | **Semantic portability** | Write rules in platform-agnostic language (RFC 2119, structured sections, no tool-specific syntax) so they can be copied across tools with minimal adaptation | YES — adopt now |
-| **Structural portability** | Hub-and-spoke architecture with canonical source driving platform-specific derived files | YES — implemented in this workspace via OpenSpec |
+| **Structural portability** | Hub-and-spoke architecture with canonical source driving platform-specific content into derived files | YES — implemented via hub-and-spoke CI assembly; OpenSpec governs the change process but does not perform the assembly |
+| **Workflow portability** | The same change governance workflows (propose, apply, archive) run identically across 25+ AI tools without per-tool configuration | YES — provided by OpenSpec: `openspec init` generates skill and command files in each tool's native directory |
 | **Schema portability** | Instructions conform to a formal typed schema that any compliant tool natively parses | NO — requires industry standard (W3C / OASIS / IETF) |
 
-We are at structural portability today. Schema portability is a future state pending standardization.
+We are at structural and workflow portability today. Schema portability is a future state pending standardization.
 
 ## Recommended Practices for Authoring AI Instructions
 
@@ -252,7 +271,7 @@ Based on Constitutional AI, the Instruction Hierarchy paper, and OpenSpec govern
 |---|---|
 | Canonical hub | LIVE — `sites/ai-evaluation-2/docs/open-spec/.ai-instructions/` |
 | Derived files | LIVE — 5 derived files with DERIVED FILE headers |
-| OpenSpec init | COMPLETE — `.roo/` and `.github/prompts/` generated |
+| OpenSpec init | COMPLETE — `.roo/` and `.github/prompts/` generated (OpenSpec workflow skill files and command files; these deliver the `/opsx:*` slash commands to each tool — they are not content derivation files) |
 | Governance spec | LIVE — `openspec/specs/ai-instruction-governance/spec.md` (REQ-GOV-001 through 003) |
 | Validation script | DEFERRED — see Phase 5 of the [Transformation Plan](TRANSFORMATION-PLAN.md) |
 | First end-to-end change cycle | NOT YET RUN — `openspec/changes/archive/` is empty |

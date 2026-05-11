@@ -143,6 +143,16 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 | **Validator** | MADR section validator |
 | **AI fit** | Excellent — MADR has consistent sections AI can populate and parse |
 
+### Pillar 8 — Architecture Backlog as Code
+
+| | |
+|---|---|
+| **Purpose** | Express architecture work items in version-controlled YAML; link requirements to capabilities, services, and decisions for end-to-end traceability |
+| **Format** | YAML with JSON Schema |
+| **Generator** | Ticket page generator, capability traceability maps |
+| **Validator** | JSON Schema, required-field lint, dangling-reference check |
+| **AI fit** | Excellent — structured backlog items give AI the context to trace requirements to fulfilling design decisions |
+
 ### Pillar 9 — Tests as Code
 
 | | |
@@ -167,7 +177,7 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 |---|---|
 | **Purpose** | Define AI agent behavior, personas, constraints, and skills declaratively, platform-agnostically |
 | **Format** | Markdown + YAML frontmatter; canonical hub replicated to per-platform derived files |
-| **Generator** | Hub-and-spoke replication; OpenSpec governance |
+| **Generator** | Hub-and-spoke CI assembly (content portability); OpenSpec (change governance + multi-tool workflow delivery to 25+ tools) |
 | **Validator** | Instruction file linter, hub-spoke drift check |
 | **AI fit** | Mandatory — this is the AI's own behavioral contract |
 
@@ -419,6 +429,26 @@ See [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) for the deep d
 | **AI fit** | Excellent — AI can match patterns to proposed designs, flag anti-patterns during PR review, and suggest approved alternatives |
 
 See [Patterns and Anti-patterns as Code](PATTERNS-AS-CODE.md) for the deep dive.
+
+### Pillar 37 — Risk Register as Code
+
+| | |
+|---|---|
+| **Purpose** | Maintain a versioned, queryable registry of identified architectural risks across the portfolio; link each risk to the capabilities, services, and decisions it threatens |
+| **Format** | YAML catalog (per entry: id, title, probability, impact, owner, mitigation, residual-risk, linked-capabilities, linked-decisions, status) |
+| **Generator** | Risk dashboard page in the documentation portal; open-risk summary injected into solution design templates |
+| **Validator** | JSON Schema; referential integrity checks to capabilities.yaml and ADR files; CI warning on unmitigated high-impact risks |
+| **AI fit** | Excellent — AI can surface relevant open risks when assessing a new solution and flag when a proposed design increases residual risk on an existing entry |
+
+### Pillar 38 — Service Catalog as Code
+
+| | |
+|---|---|
+| **Purpose** | Maintain a unified, versioned registry of every service with its domain, owner team, API spec reference, dependencies, data stores, SLO bindings, tech stack, and deprecation status — the single structured entry point for AI reasoning about any service |
+| **Format** | YAML (per-service `catalog-info.yaml` records or a unified `service-catalog.yaml`); compatible with Backstage catalog format |
+| **Generator** | Service index page in the documentation portal; dependency graph diagrams; ownership matrix |
+| **Validator** | JSON Schema; referential integrity checks to teams.yaml, capabilities.yaml, OpenAPI specs, and SLO definitions; orphan detection (services with no owner or no spec) |
+| **AI fit** | Excellent — consolidates cross-pillar service context into a single record; eliminates the need for AI to cross-reference multiple metadata files to answer ownership or dependency questions |
 
 ## E. Maturity Model — From Documents to AI-Native EaC
 
