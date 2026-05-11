@@ -4,7 +4,7 @@ Copy everything below the line and paste it into your AI chat window. It will in
 
 ---
 
-I want you to create an on-demand instruction file that activates whenever I say "prompt me." The file should be placed in the correct location for your AI instruction system (e.g., `.github/instructions/prompt-me.instructions.md` for VS Code Copilot, or the equivalent for whatever tool you are).
+I want you to create an on-demand instruction file that activates whenever I say "prompt me." The file should be placed in the correct location for your AI instruction system (e.g., `.github/instructions/prompt-me.instructions.md` for VS Code, `.cursor/rules/prompt-me.mdc` for Cursor, or the equivalent location for whatever tool you are using).
 
 Here is the exact behavior I want formalized into that file:
 

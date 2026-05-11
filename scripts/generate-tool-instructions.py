@@ -38,7 +38,7 @@ ROOT = Path(__file__).parent.parent
 
 MANIFEST = [
     {
-        "source": ".openspec/instructions/copilot-instructions.md",
+        "source": ".openspec/instructions/core-instructions.md",
         "section_title": "Core Architecture Instructions",
         "path_scope": None,
         "cursor": {
@@ -158,7 +158,7 @@ SINGLE_FILE_TARGETS = {
 
 COPILOT_COPIES = [
     # Root instruction file
-    (".openspec/instructions/copilot-instructions.md",  ".github/copilot-instructions.md"),
+    (".openspec/instructions/core-instructions.md",  ".github/copilot-instructions.md"),
     # Per-file instruction files (preserve frontmatter for applyTo discovery)
     (".openspec/instructions/github-urls.instructions.md",  ".github/instructions/github-urls.instructions.md"),
     (".openspec/instructions/prompt-me.instructions.md",    ".github/instructions/prompt-me.instructions.md"),
