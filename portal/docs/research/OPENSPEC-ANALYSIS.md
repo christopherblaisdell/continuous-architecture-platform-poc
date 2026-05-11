@@ -3,8 +3,6 @@
 **Date**: 2026-03-17
 **Status**: Not Recommended
 
-> **Note added**: A subsequent investigation (see [AI Instructions as Code](../everything-as-code/AI-INSTRUCTIONS-AS-CODE.md)) clarified the precise scope of OpenSpec's portability claim. The "multi-tool portability" row in the table below refers to **workflow portability** — `openspec init` generates skill files and command files for OpenSpec's own workflows (propose, apply, archive) in each tool's native directory. This is distinct from **content portability** (distributing your domain rules and architectural conventions across tools), which OpenSpec does not provide. Content portability is the hub-and-spoke pattern's responsibility. The Not Recommended conclusion for this workspace's architecture governance use case remains unchanged.
-
 ---
 
 ## What Is OpenSpec?
