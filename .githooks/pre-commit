@@ -1,0 +1,12 @@
+#!/bin/bash
+# Pre-commit hook: verify tool instruction files are in sync with canonical sources.
+# Install: git config core.hooksPath .githooks
+
+python3 scripts/generate-tool-instructions.py --check
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "ERROR: Tool instruction files are out of sync with canonical sources."
+  echo "Run:   python3 scripts/generate-tool-instructions.py"
+  echo "Then:  git add -A && git commit"
+  exit 1
+fi

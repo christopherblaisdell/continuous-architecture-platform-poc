@@ -1,0 +1,31 @@
+name: Validate Tool Instructions
+
+on:
+  pull_request:
+    paths:
+      - ".github/copilot-instructions.md"
+      - ".github/instructions/*.instructions.md"
+      - "architecture/.instructions.md"
+      - "architecture/solutions/.instructions.md"
+      - "architecture/specs/.instructions.md"
+      - "scripts/generate-tool-instructions.py"
+      - ".cursor/rules/**"
+      - ".roo/rules/**"
+      - ".windsurfrules"
+      - "CLAUDE.md"
+      - "GEMINI.md"
+
+jobs:
+  validate:
+    name: Check instruction files are in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check tool instruction files are up to date
+        run: python3 scripts/generate-tool-instructions.py --check
