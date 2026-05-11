@@ -1,7 +1,7 @@
 # NovaTrek Architecture Platform — AI Instructions
 
 This file is auto-generated. Do not edit manually.
-Source: .github/copilot-instructions.md and .github/instructions/*.instructions.md
+Source: .openspec/ (single source of truth)
 Regenerate: python3 scripts/generate-tool-instructions.py
 
 

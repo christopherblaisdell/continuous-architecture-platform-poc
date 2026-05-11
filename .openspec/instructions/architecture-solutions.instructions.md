@@ -1,0 +1,72 @@
+# Solution Design Instructions
+
+When working in this directory, follow the architecture review process below for every solution design.
+
+## Prior-Art Discovery (Always Do First)
+
+Before creating or modifying a solution design:
+
+1. **Check capability history**: Run `python3 scripts/ticket-client.py --list --capability CAP-X.Y` for each capability the ticket touches
+2. **Review existing solutions**: Scan `architecture/solutions/_NTK-*/3.solution/c.capabilities/capabilities.md` for overlapping capability changes
+3. **Check the changelog**: Read `architecture/metadata/capability-changelog.yaml` for L3 capabilities that may conflict or overlap
+4. **Search ADRs**: Read relevant ADRs in `decisions/` that constrain the design space
+5. **Document findings**: Reference prior solutions in the master document under "Prior Art" or "Related Solutions"
+
+Do not skip prior-art discovery. Duplicate or conflicting capability changes break the architecture model.
+
+## Architecture Review Checklist
+
+Verify every solution design against these criteria before finalizing:
+
+- [ ] All data sourced from mock tools or workspace files (no fabrication)
+- [ ] Every affected service identified with specific API/schema changes
+- [ ] MADR ADRs created for decisions that cross service boundaries or change data semantics
+- [ ] At minimum 2 genuine options considered in each ADR (not straw-man alternatives)
+- [ ] Impact assessments focus on WHAT changes (not HOW to implement)
+- [ ] User stories written from user perspective without technical implementation details
+- [ ] ISO 25010 quality attributes assessed (at minimum: reliability, maintainability, compatibility)
+- [ ] Cross-service data ownership boundaries respected
+- [ ] Backward compatibility addressed for all API contract changes
+- [ ] Error handling and fallback paths defined for new integration points
+
+## Trade-Off Documentation
+
+For every architectural decision, document:
+
+- **Pros**: Concrete benefits tied to decision drivers
+- **Cons**: Honest drawbacks — do not minimize or omit
+- **Alternatives**: At least one genuine alternative with fair analysis
+- **Decision**: Final choice with rationale tied back to decision drivers
+
+## Solution Decomposition
+
+Break solutions into these layers, keeping content strictly separated:
+
+| Layer | Contains | Does NOT Contain |
+|-------|----------|-----------------|
+| Requirements (`1.requirements/`) | Ticket report, business context | Technical solutions |
+| Analysis (`2.analysis/`) | Plain-language explanation for non-technical stakeholders | Jargon, code, API details |
+| Assumptions (`3.solution/a.assumptions/`) | What is assumed true but not verified | Decisions (assumptions inform decisions) |
+| Capabilities (`3.solution/c.capabilities/`) | Descriptive summary referencing capability-changelog.yaml | Duplicate capability data |
+| Decisions (`3.solution/d.decisions/`) | MADR-formatted ADRs with options analysis | Implementation code |
+| Guidance (`3.solution/g.guidance/`) | HOW to implement — code patterns, migration steps | Business justification |
+| Impacts (`3.solution/i.impacts/`) | WHAT changes — API contracts, data models, integration points | Implementation code, timelines |
+| Risks (`3.solution/r.risks/`) | Risk register with likelihood and mitigation | Solved problems |
+| User Stories (`3.solution/u.user.stories/`) | WHO benefits and WHY — acceptance criteria | Technical implementation details |
+
+## Anti-Pattern Detection
+
+Flag these patterns in any solution design:
+
+- **Shared Database**: Multiple services reading/writing the same tables — use API-mediated access
+- **Entity Replacement**: PUT overwriting fields owned by other services — use PATCH with field-level ownership
+- **Missing Concurrency Control**: No optimistic locking on mutable entities — add `_rev` or `@Version`
+- **Shadow Guest Records**: Services maintaining their own guest identity — delegate to svc-guest-profiles
+- **Unsafe Defaults**: Unknown inputs defaulting to lowest safety level — default to Pattern 3 (Full Service)
+- **Hardcoded Classification**: Business rules in code constants — use configuration-driven approach
+
+## Capability Rollup
+
+Every solution MUST update `architecture/metadata/capability-changelog.yaml` with affected capabilities. The capabilities document in this directory (`3.solution/c.capabilities/capabilities.md`) is descriptive only — it references the changelog as the single source of truth.
+
+After modifying capability data, run `bash portal/scripts/generate-all.sh` to regenerate portal pages.

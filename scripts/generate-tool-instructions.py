@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 """
 generate-tool-instructions.py
-Distributes canonical AI instruction content from .github/ source files to
-per-tool native formats for Cursor, RooCode, Windsurf, Claude Code, and Gemini CLI.
-Also distributes skill files from .openspec/skills/ to each tool's native skills directory.
+Distributes canonical AI instruction content from .openspec/ to all tool-native
+formats. .openspec/ is the single source of truth; every other location is a
+generated output.
+
+Outputs:
+  .github/               GitHub Copilot (instructions, prompts, agents, skills)
+  .cursor/rules/         Cursor MDC rules
+  .roo/rules/            RooCode rules
+  .windsurfrules         Windsurf single-file
+  CLAUDE.md              Claude Code single-file
+  GEMINI.md              Gemini CLI single-file
+  architecture/          Path-scoped .instructions.md files (Copilot discovery)
+  <all tools>/skills/    Skill files from .openspec/skills/
 
 Usage:
   python3 scripts/generate-tool-instructions.py            # write all files
@@ -28,7 +38,7 @@ ROOT = Path(__file__).parent.parent
 
 MANIFEST = [
     {
-        "source": ".github/copilot-instructions.md",
+        "source": ".openspec/instructions/copilot-instructions.md",
         "section_title": "Core Architecture Instructions",
         "path_scope": None,
         "cursor": {
@@ -45,7 +55,7 @@ MANIFEST = [
         "gemini_section": "Core Architecture Instructions",
     },
     {
-        "source": ".github/instructions/github-urls.instructions.md",
+        "source": ".openspec/instructions/github-urls.instructions.md",
         "section_title": "GitHub URL Formatting Rules",
         "path_scope": None,
         "cursor": {
@@ -62,7 +72,7 @@ MANIFEST = [
         "gemini_section": "GitHub URL Formatting Rules",
     },
     {
-        "source": ".github/instructions/prompt-me.instructions.md",
+        "source": ".openspec/instructions/prompt-me.instructions.md",
         "section_title": "Prompt Me — Interactive Decision Loop",
         "path_scope": None,
         "cursor": {
@@ -79,7 +89,7 @@ MANIFEST = [
         "gemini_section": "Prompt Me — Interactive Decision Loop",
     },
     {
-        "source": "architecture/.instructions.md",
+        "source": ".openspec/instructions/architecture.instructions.md",
         "section_title": "Path-Scoped: architecture/** — Security Context",
         "path_scope": "architecture/**",
         "path_scope_note": "These rules apply when working in the `architecture/` directory.",
@@ -97,7 +107,7 @@ MANIFEST = [
         "gemini_section": "Path-Scoped: architecture/** — Security Context",
     },
     {
-        "source": "architecture/solutions/.instructions.md",
+        "source": ".openspec/instructions/architecture-solutions.instructions.md",
         "section_title": "Path-Scoped: architecture/solutions/** — Solution Design",
         "path_scope": "architecture/solutions/**",
         "path_scope_note": "These rules apply when working in `architecture/solutions/`.",
@@ -115,7 +125,7 @@ MANIFEST = [
         "gemini_section": "Path-Scoped: architecture/solutions/** — Solution Design",
     },
     {
-        "source": "architecture/specs/.instructions.md",
+        "source": ".openspec/instructions/architecture-specs.instructions.md",
         "section_title": "Path-Scoped: architecture/specs/** — OpenAPI Rules",
         "path_scope": "architecture/specs/**",
         "path_scope_note": "These rules apply when working in `architecture/specs/`.",
@@ -139,6 +149,37 @@ SINGLE_FILE_TARGETS = {
     "claude": "CLAUDE.md",
     "gemini": "GEMINI.md",
 }
+
+# ---------------------------------------------------------------------------
+# Copilot direct-copy manifest
+# Files copied verbatim from .openspec/ to GitHub Copilot native locations.
+# Key: source path (relative to ROOT), Value: destination path (relative to ROOT)
+# ---------------------------------------------------------------------------
+
+COPILOT_COPIES = [
+    # Root instruction file
+    (".openspec/instructions/copilot-instructions.md",  ".github/copilot-instructions.md"),
+    # Per-file instruction files (preserve frontmatter for applyTo discovery)
+    (".openspec/instructions/github-urls.instructions.md",  ".github/instructions/github-urls.instructions.md"),
+    (".openspec/instructions/prompt-me.instructions.md",    ".github/instructions/prompt-me.instructions.md"),
+    (".openspec/instructions/prompt-me-copyable.md",        ".github/instructions/prompt-me-copyable.md"),
+    # Path-scoped instruction files — written to their path locations for Copilot discovery
+    (".openspec/instructions/architecture.instructions.md",           "architecture/.instructions.md"),
+    (".openspec/instructions/architecture-solutions.instructions.md", "architecture/solutions/.instructions.md"),
+    (".openspec/instructions/architecture-specs.instructions.md",     "architecture/specs/.instructions.md"),
+    # Prompts (slash commands)
+    (".openspec/prompts/architecture-review.prompt.md",   ".github/prompts/architecture-review.prompt.md"),
+    (".openspec/prompts/deep-research.prompt.md",         ".github/prompts/deep-research.prompt.md"),
+    (".openspec/prompts/investigation.prompt.md",         ".github/prompts/investigation.prompt.md"),
+    (".openspec/prompts/opsx-apply.prompt.md",            ".github/prompts/opsx-apply.prompt.md"),
+    (".openspec/prompts/opsx-archive.prompt.md",          ".github/prompts/opsx-archive.prompt.md"),
+    (".openspec/prompts/opsx-explore.prompt.md",          ".github/prompts/opsx-explore.prompt.md"),
+    (".openspec/prompts/opsx-propose.prompt.md",          ".github/prompts/opsx-propose.prompt.md"),
+    (".openspec/prompts/security-review.prompt.md",       ".github/prompts/security-review.prompt.md"),
+    (".openspec/prompts/solution-verification.prompt.md", ".github/prompts/solution-verification.prompt.md"),
+    # Agents
+    (".openspec/agents/novatrek-solution-architect.agent.md", ".github/agents/novatrek-solution-architect.agent.md"),
+]
 
 # ---------------------------------------------------------------------------
 # Skills manifest
@@ -166,7 +207,7 @@ SINGLE_FILE_HEADER = """\
 # NovaTrek Architecture Platform — AI Instructions
 
 This file is auto-generated. Do not edit manually.
-Source: .github/copilot-instructions.md and .github/instructions/*.instructions.md
+Source: .openspec/ (single source of truth)
 Regenerate: python3 scripts/generate-tool-instructions.py
 
 """
@@ -284,6 +325,20 @@ def generate_single_file(
     return write_or_check(ROOT / output_path, output, dry_run, check)
 
 
+def generate_copilot(dry_run: bool, check: bool) -> list:
+    """Copy files verbatim from .openspec/ to GitHub Copilot native locations."""
+    results = []
+    for src_rel, dst_rel in COPILOT_COPIES:
+        src = ROOT / src_rel
+        dst = ROOT / dst_rel
+        if not src.exists():
+            print(f"ERROR: source not found: {src}", file=sys.stderr)
+            sys.exit(1)
+        content = src.read_text(encoding="utf-8")
+        results.append(write_or_check(dst, content, dry_run, check))
+    return results
+
+
 def generate_skills(
     tool_filter: Optional[str], dry_run: bool, check: bool
 ) -> list:
@@ -320,6 +375,10 @@ def main():
         print("Dry run — no files will be written.\n")
 
     all_changed: list[bool] = []
+
+    if not tool_filter or tool_filter == "copilot":
+        print("GitHub Copilot (.github/ — instructions, prompts, agents)")
+        all_changed += generate_copilot(dry_run, check)
 
     if not tool_filter or tool_filter == "cursor":
         print("Cursor (.cursor/rules/*.mdc)")
