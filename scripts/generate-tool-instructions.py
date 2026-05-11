@@ -15,6 +15,8 @@ Outputs:
   .foundry/              Azure AI Foundry (system-prompt.md, agent.yaml, agent-metadata.yaml, prompts/)
   architecture/          Path-scoped .instructions.md files (Copilot discovery)
   <all tools>/skills/    Skill files from .openspec/skills/
+  <all tools>/commands/  Prompt commands from .openspec/prompts/
+  <all tools>/agents/    Agent definitions from .openspec/agents/
 
 Usage:
   python3 scripts/generate-tool-instructions.py            # write all files
@@ -205,6 +207,25 @@ SKILLS_TARGETS = {
     "gemini":   ".gemini/skills",
 }
 
+# Copilot is handled via COPILOT_COPIES; Foundry via generate_foundry.
+# Claude and Gemini use a subfolder for opsx-* prompts (matching existing convention).
+PROMPTS_TARGETS = {
+    "cursor":   (".cursor/commands",    "cursor"),
+    "roocode":  (".roo/commands",       "roocode"),
+    "windsurf": (".windsurf/workflows", "windsurf"),
+    "claude":   (".claude/commands",    "claude"),
+    "gemini":   (".gemini/commands",    "gemini"),
+}
+
+# Copilot is handled via COPILOT_COPIES; Foundry via generate_foundry.
+AGENTS_TARGETS = {
+    "cursor":   (".cursor/agents",   "cursor"),
+    "roocode":  (".roo/agents",      "roocode"),
+    "windsurf": (".windsurf/agents", "windsurf"),
+    "claude":   (".claude/agents",   "claude"),
+    "gemini":   (".gemini/agents",   "gemini"),
+}
+
 FOUNDRY_DIR = ".foundry"
 
 SINGLE_FILE_HEADER = """\
@@ -275,6 +296,32 @@ def write_or_check(path: Path, content: str, dry_run: bool, check: bool) -> bool
     status = "wrote" if changed else "unchanged"
     print(f"  [{status}] {path.relative_to(ROOT)}")
     return changed
+
+
+def _fm_get(content: str, key: str, default: str = "") -> str:
+    """Extract a single string value from YAML frontmatter."""
+    match = _FRONTMATTER_RE.match(content)
+    if not match:
+        return default
+    for line in match.group(0).splitlines():
+        if line.startswith(key + ":"):
+            return line[len(key) + 1:].strip().strip('"\'')
+    return default
+
+
+def filename_to_human_name(stem: str) -> str:
+    """Convert a kebab-case filename stem to a human-readable title."""
+    parts = stem.split("-")
+    if parts[0].lower() == "opsx":
+        return "OPSX: " + " ".join(p.title() for p in parts[1:])
+    return " ".join(p.title() for p in parts)
+
+
+def _prompt_dest(base_dir: str, stem: str, ext: str, use_subfolder: bool) -> Path:
+    """Compute destination path for a prompt file."""
+    if use_subfolder and stem.startswith("opsx-"):
+        return ROOT / base_dir / "opsx" / f"{stem[len('opsx-'):]}{ext}"
+    return ROOT / base_dir / f"{stem}{ext}"
 
 
 # ---------------------------------------------------------------------------
@@ -361,6 +408,87 @@ def generate_skills(
                 sys.exit(1)
             content = src.read_text(encoding="utf-8")
             results.append(write_or_check(dst, content, dry_run, check))
+    return results
+
+
+def generate_prompts(tool_filter: Optional[str], dry_run: bool, check: bool) -> list:
+    """Distribute .openspec/prompts/*.prompt.md to each tool's native commands directory."""
+    results = []
+    prompts_src = ROOT / ".openspec" / "prompts"
+    for prompt_file in sorted(prompts_src.glob("*.prompt.md")):
+        stem = prompt_file.name[: -len(".prompt.md")]
+        raw = prompt_file.read_text(encoding="utf-8")
+        description = _fm_get(raw, "description")
+        name = _fm_get(raw, "name") or filename_to_human_name(stem)
+        body = strip_frontmatter(raw)
+
+        for tool, (tool_dir, fmt) in PROMPTS_TARGETS.items():
+            if tool_filter and tool_filter != tool:
+                continue
+            if fmt == "gemini":
+                dest = _prompt_dest(tool_dir, stem, ".toml", use_subfolder=True)
+                desc_esc = description.replace('"', '\\"')
+                content = f'description = "{desc_esc}"\n\nprompt = """\n{body}"""\n'
+            elif fmt == "cursor":
+                dest = _prompt_dest(tool_dir, stem, ".md", use_subfolder=False)
+                content = (
+                    f"---\nname: /{stem}\nid: {stem}\n"
+                    f"category: Workflow\ndescription: {description}\n---\n\n{body}"
+                )
+            elif fmt == "roocode":
+                dest = _prompt_dest(tool_dir, stem, ".md", use_subfolder=False)
+                content = f"# {name}\n\n{description}\n\n{body}"
+            elif fmt == "windsurf":
+                dest = _prompt_dest(tool_dir, stem, ".md", use_subfolder=False)
+                content = (
+                    f'---\nname: "{name}"\ndescription: {description}\n'
+                    f"category: Workflow\ntags: [workflow]\n---\n\n{body}"
+                )
+            else:  # claude
+                dest = _prompt_dest(tool_dir, stem, ".md", use_subfolder=True)
+                content = (
+                    f'---\nname: "{name}"\ndescription: {description}\n'
+                    f"category: Workflow\ntags: [workflow]\n---\n\n{body}"
+                )
+            results.append(write_or_check(dest, content, dry_run, check))
+    return results
+
+
+def generate_agents(tool_filter: Optional[str], dry_run: bool, check: bool) -> list:
+    """Distribute .openspec/agents/*.agent.md to each tool's native agents directory."""
+    results = []
+    agents_src = ROOT / ".openspec" / "agents"
+    for agent_file in sorted(agents_src.glob("*.agent.md")):
+        stem = agent_file.name[: -len(".agent.md")]
+        raw = agent_file.read_text(encoding="utf-8")
+        name = _fm_get(raw, "name") or filename_to_human_name(stem)
+        description = _fm_get(raw, "description")
+        body = strip_frontmatter(raw)
+
+        for tool, (tool_dir, fmt) in AGENTS_TARGETS.items():
+            if tool_filter and tool_filter != tool:
+                continue
+            if fmt == "gemini":
+                dest = ROOT / tool_dir / f"{stem}.toml"
+                desc_esc = description.replace('"', '\\"')
+                content = f'description = "{desc_esc}"\n\nprompt = """\n{body}"""\n'
+            elif fmt == "cursor":
+                dest = ROOT / tool_dir / f"{stem}.md"
+                content = (
+                    f'---\ndescription: "{description}"\nalwaysApply: false\n---\n\n{body}'
+                )
+            elif fmt == "roocode":
+                dest = ROOT / tool_dir / f"{stem}.md"
+                content = f"# {name}\n\n{body}"
+            elif fmt == "windsurf":
+                dest = ROOT / tool_dir / f"{stem}.md"
+                content = (
+                    f'---\nname: "{name}"\ndescription: "{description}"\n---\n\n{body}'
+                )
+            else:  # claude — copy verbatim; .openspec agent format is Claude-native
+                dest = ROOT / tool_dir / f"{stem}.md"
+                content = raw
+            results.append(write_or_check(dest, content, dry_run, check))
     return results
 
 
@@ -503,6 +631,14 @@ def main():
     if not tool_filter or tool_filter == "foundry":
         print("Azure AI Foundry (.foundry/ — system-prompt.md, agent.yaml, agent-metadata.yaml, prompts/)")
         all_changed += generate_foundry(dry_run, check)
+
+    if not tool_filter or tool_filter in PROMPTS_TARGETS:
+        print("Prompts (.openspec/prompts/ -> tool native commands directories)")
+        all_changed += generate_prompts(tool_filter, dry_run, check)
+
+    if not tool_filter or tool_filter in AGENTS_TARGETS:
+        print("Agents (.openspec/agents/ -> tool native agents directories)")
+        all_changed += generate_agents(tool_filter, dry_run, check)
 
     print("Skills (.openspec/skills/ -> tool native directories)")
     all_changed += generate_skills(tool_filter, dry_run, check)
