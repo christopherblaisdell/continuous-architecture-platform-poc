@@ -1,0 +1,14 @@
+# Auto-generated stub by scripts/generate-tool-instructions.py
+# Fill in environment-specific values before deploying.
+# See: ai-platform-selection/guides/AZURE-AI-FOUNDRY-CUSTOMIZATION-GUIDE.md
+
+defaultEnvironment: dev
+environments:
+  dev:
+    projectEndpoint: ""  # set to your Foundry project endpoint
+    agentName: novatrek-solution-architect-dev
+    azureContainerRegistry: ""  # set to your ACR registry
+  prod:
+    projectEndpoint: ""  # set to your Foundry project endpoint
+    agentName: novatrek-solution-architect-prod
+    azureContainerRegistry: ""  # set to your ACR registry
