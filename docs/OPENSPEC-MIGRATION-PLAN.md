@@ -46,7 +46,7 @@ OpenSpec installs its own workflow mechanics (`/opsx:propose`, `/opsx:apply`, `/
 
 | Tool | Generated File Location |
 |------|------------------------|
-| GitHub Copilot | `.github/skills/openspec-*/SKILL.md` + `.github/prompts/opsx-*.prompt.md` |
+| GitHub Copilot | `.openspec/skills/openspec-*/SKILL.md` + `.github/prompts/opsx-*.prompt.md` |
 | Cursor | `.cursor/skills/` + `.cursor/commands/` |
 | RooCode | `.roo/skills/` + `.roo/commands/` |
 | Windsurf | `.windsurf/skills/` + `.windsurf/commands/` |
@@ -62,7 +62,7 @@ OpenSpec installs its own workflow mechanics (`/opsx:propose`, `/opsx:apply`, `/
 
 ### Conflict Risk: GitHub Copilot
 
-OpenSpec generates files under `.github/skills/` and `.github/prompts/`. This workspace already has `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`. These are different paths — no direct conflict expected — but the generated prompt files must be reviewed to confirm they do not contradict or duplicate the existing instructions.
+OpenSpec generates files under `.github/prompts/`. This workspace moved the generated skill files to `.openspec/skills/` — the prompt slash commands remain in `.github/prompts/` (required for Copilot slash command discovery). This workspace already has `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`. These are different paths — no direct conflict expected — but the generated prompt files must be reviewed to confirm they do not contradict or duplicate the existing instructions.
 
 ---
 
