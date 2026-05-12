@@ -151,6 +151,7 @@ The `.openspec/` files you copied contain NovaTrek Adventures content (a synthet
 | `prompts/opsx-apply.prompt.md` | KEEP | Generic; copy verbatim |
 | `prompts/opsx-explore.prompt.md` | KEEP | Generic; copy verbatim |
 | `prompts/opsx-archive.prompt.md` | KEEP | Generic; copy verbatim |
+| `prompts/bootstrap-instance.prompt.md` | KEEP | Generic bootstrap workflow; copy verbatim |
 | `skills/openspec-propose/SKILL.md` | KEEP | Generic; copy verbatim |
 | `skills/openspec-apply-change/SKILL.md` | KEEP | Generic; copy verbatim |
 | `skills/openspec-archive-change/SKILL.md` | KEEP | Generic; copy verbatim |
@@ -605,7 +606,7 @@ git push
 
 ## Appendix A: .openspec/ File Inventory
 
-All 21 source files and their roles:
+All 22 source files and their roles:
 
 ### instructions/ (7 files)
 
@@ -619,7 +620,7 @@ All 21 source files and their roles:
 | `architecture-solutions.instructions.md` | Path-scoped: solutions directory | REPLACE | All tools |
 | `architecture-specs.instructions.md` | Path-scoped: API contracts directory | REPLACE | All tools |
 
-### prompts/ (9 files)
+### prompts/ (10 files)
 
 | File | Role | Classification | Distributed To |
 |------|------|---------------|----------------|
@@ -632,6 +633,7 @@ All 21 source files and their roles:
 | `architecture-review.prompt.md` | Domain-specific architecture review | CUSTOMIZE | All tools |
 | `security-review.prompt.md` | Domain-specific security review | CUSTOMIZE | All tools |
 | `solution-verification.prompt.md` | Domain-specific solution verification | CUSTOMIZE | All tools |
+| `bootstrap-instance.prompt.md` | Generic OpenSpec bootstrap workflow | KEEP | All tools |
 
 ### agents/ (1 file)
 
