@@ -168,6 +168,12 @@ def main():
                 results[cat].append((page_url, href, target))
             else:
                 if fragment and fs.endswith(".html"):
+                    # Skip fragment validation for Swagger UI pages — anchors
+                    # are injected by JavaScript at runtime and are not present
+                    # in the static HTML. The file-exists check above is sufficient.
+                    rel_fs = os.path.relpath(fs, root).replace(os.sep, "/")
+                    if rel_fs.startswith("services/api/"):
+                        continue
                     if fs not in anchor_cache:
                         anchor_cache[fs] = extract_anchors(fs)
                     if fragment not in anchor_cache[fs]:
