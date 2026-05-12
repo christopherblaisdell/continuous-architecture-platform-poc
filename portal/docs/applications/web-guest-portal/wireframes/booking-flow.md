@@ -23,7 +23,7 @@ This wireframe represents the user interface for the web guest portal applicatio
 
 ### Related Services
 
-- Relevant microservices that power this screen can be found in the [Microservice Pages](../../microservices/)
+- Relevant microservices that power this screen can be found in the [Microservice Pages](/microservices/)
 
 ### Design Rationale
 

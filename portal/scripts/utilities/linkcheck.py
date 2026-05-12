@@ -105,6 +105,43 @@ def extract_anchors(html_path):
     return ids | names
 
 
+# Repo-relative path prefixes that are never built into the portal site.
+# Links resolving to these paths are expected to be absent from portal/site/
+# and are excluded from the missing_a count.
+_NON_PORTAL_PREFIXES = (
+    "/docs/",
+    "/portal/",
+    "/phases/",
+    "/architecture/",
+    "/source-code/",
+    "/.ai-instructions/",
+    "/tickets/",
+)
+
+# Source-file extensions that are never served as HTML pages.
+_NON_PORTAL_EXTENSIONS = (".md", ".yaml", ".yml", ".sh", ".java", ".py")
+
+
+def _is_repo_only_target(target: str) -> bool:
+    """Return True when *target* is a known non-portal repo path.
+
+    These are targets that reference workspace files never published to the
+    portal (planning docs, source code, YAML specs, shell scripts). The
+    linkchecker would otherwise flag them as missing_a; they are excluded
+    because the appropriate fix is in the source authoring, not the portal
+    build, and they do not represent broken portal navigation for users.
+    """
+    # Non-portal repo-directory prefixes (no portal URL equivalent)
+    for prefix in _NON_PORTAL_PREFIXES:
+        if target.startswith(prefix):
+            return True
+    # Source-file extensions (not served as HTML)
+    for ext in _NON_PORTAL_EXTENSIONS:
+        if target.endswith(ext):
+            return True
+    return False
+
+
 def main():
     args = sys.argv[1:]
     if not args or args[0].startswith("-"):
@@ -164,6 +201,11 @@ def main():
                 continue
             fs = target_to_fs(target, root)
             if fs is None:
+                # Skip targets that are known repo-only paths or source files
+                # not published to the portal.  These produce expected 404s
+                # that are not actionable broken-link errors for portal users.
+                if kind == "a" and _is_repo_only_target(target):
+                    continue
                 cat = f"missing_{kind}"
                 results[cat].append((page_url, href, target))
             else:

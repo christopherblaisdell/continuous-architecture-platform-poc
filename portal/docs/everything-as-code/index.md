@@ -58,7 +58,7 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md](DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE-RESPONSE.md) | Response placeholder — paste deep research results here; not exported to Instance workspaces |
 | [standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md](standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md) | Deep research response — standardized taxonomy of AI instructions formats and OpenSpec governance model; supports Pillar 11 (AI Instructions as Code) |
 | [SYNTHETIC-EXEMPLAR-BACKLOG.md](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
-| [export-blueprint.sh](export-blueprint.sh) | Shell script to copy the blueprint to a corporate Instance workspace; not exported (it runs from this workspace) |
+| `export-blueprint.sh` | Shell script to copy the blueprint to a corporate Instance workspace; not exported (it runs from this workspace) |
 
 ## Exporting to a Corporate Instance
 
