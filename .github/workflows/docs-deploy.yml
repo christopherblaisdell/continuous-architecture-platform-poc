@@ -83,12 +83,37 @@ jobs:
           retention-days: 1
 
   # -------------------------------------------------------------------------
+  # Link check — zero broken links required before deploy
+  # -------------------------------------------------------------------------
+  link-check:
+    runs-on: ubuntu-latest
+    name: Link Check
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-site
+          path: portal/site/
+
+      - name: Run link check
+        run: python3 portal/scripts/utilities/linkcheck.py portal/site/ --strict
+
+  # -------------------------------------------------------------------------
   # Deploy to Azure Static Web Apps
   # -------------------------------------------------------------------------
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Azure
-    needs: build
+    needs: [build, link-check]
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     environment:
       name: ${{ github.event_name == 'push' && 'production' || 'staging' }}

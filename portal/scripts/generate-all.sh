@@ -155,6 +155,12 @@ if [[ "${CONFLUENCE:-}" == "1" || "${1:-}" == "--confluence" ]]; then
   python3 "$SCRIPT_DIR/confluence-prepare.py"
 fi
 
+# ------------------------------------------------------------------
+# Step 12: Link check (zero-tolerance — fails the build on any broken link)
+# ------------------------------------------------------------------
+echo ""
+echo "[12/12] Running link check..."
+python3 "$SCRIPT_DIR/utilities/linkcheck.py" "$PORTAL_DIR/site/" --strict
 echo ""
 echo "============================================================"
 echo "Build complete!"
