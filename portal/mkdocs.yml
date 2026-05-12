@@ -112,99 +112,100 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Architect's Guide:
+  - Architecture:
     - architect-guide/index.md
-    - Getting Started:
-      - Your Role: architect-guide/your-role.md
-      - Domain Model: architect-guide/domain-model.md
-      - Quick Reference: architect-guide/quick-reference.md
-    - Workflows:
-      - Solution Design Workflow: architect-guide/solution-design-workflow.md
-      - Architecture Decisions: architect-guide/decisions.md
-      - API Contracts: architect-guide/api-contracts.md
-      - Diagrams and Wireframes: architect-guide/diagrams-and-wireframes.md
-      - Testing Guide: architect-guide/testing-guide.md
-      - Portal Publishing: architect-guide/portal-publishing.md
-    - Architecture Reference:
-      - Business Capabilities: capabilities/index.md
-      - System Topology:
-        - topology/index.md
-        - System Map: topology/system-map.md
-        - Dependency Matrix: topology/dependency-matrix.md
-        - Domain Views: topology/domain-views.md
-      - CALM Topology: calm.md
-      - Actor Catalog: actors/index.md
-    - Deep Dives:
-      - Metadata and Artifacts: architect-guide/metadata-and-artifacts.md
-      - AI-Assisted Workflow: architect-guide/ai-assisted-workflow.md
-      - Anti-Patterns: architect-guide/anti-patterns.md
-  - Domains:
-    - domains/index.md
-    - Operations: domains/operations.md
-    - Guest Identity: domains/guest-identity.md
-    - Booking: domains/booking.md
-    - Product Catalog: domains/product-catalog.md
-    - Safety: domains/safety.md
-    - Logistics: domains/logistics.md
-    - Guide Management: domains/guide-management.md
-    - External: domains/external.md
-    - Support: domains/support.md
-  - Services:
-    - Microservices:
-      - microservices/index.md
-      - Service Catalog: services/index.md
-      - svc-analytics: microservices/svc-analytics.md
-      - svc-check-in: microservices/svc-check-in.md
-      - svc-emergency-response: microservices/svc-emergency-response.md
-      - svc-gear-inventory: microservices/svc-gear-inventory.md
-      - svc-guest-profiles: microservices/svc-guest-profiles.md
-      - svc-guide-management: microservices/svc-guide-management.md
-      - svc-inventory-procurement: microservices/svc-inventory-procurement.md
-      - svc-location-services: microservices/svc-location-services.md
-      - svc-loyalty-rewards: microservices/svc-loyalty-rewards.md
-      - svc-media-gallery: microservices/svc-media-gallery.md
-      - svc-notifications: microservices/svc-notifications.md
-      - svc-partner-integrations: microservices/svc-partner-integrations.md
-      - svc-payments: microservices/svc-payments.md
-      - svc-reservations: microservices/svc-reservations.md
-      - svc-safety-compliance: microservices/svc-safety-compliance.md
-      - svc-scheduling-orchestrator: microservices/svc-scheduling-orchestrator.md
-      - svc-trail-management: microservices/svc-trail-management.md
-      - svc-transport-logistics: microservices/svc-transport-logistics.md
-      - svc-trip-catalog: microservices/svc-trip-catalog.md
-      - svc-weather: microservices/svc-weather.md
-      - svc-reviews: microservices/svc-reviews.md
-      - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
-    - Applications:
-      - applications/index.md
-      - web-guest-portal:
-        - applications/web-guest-portal.md
-        - Wireframes:
-          - Trip Browser: applications/web-guest-portal/wireframes/trip-browser.md
-          - Booking Flow: applications/web-guest-portal/wireframes/booking-flow.md
-          - Guest Profile: applications/web-guest-portal/wireframes/guest-profile.md
-          - Reservation Management: applications/web-guest-portal/wireframes/reservation-management.md
-          - Loyalty Dashboard: applications/web-guest-portal/wireframes/loyalty-dashboard.md
-          - Waiver Signing: applications/web-guest-portal/wireframes/waiver-signing.md
-          - Trip Gallery: applications/web-guest-portal/wireframes/trip-gallery.md
-          - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
-      - web-ops-dashboard:
-        - applications/web-ops-dashboard.md
-        - Wireframes:
-          - Daily Schedule Board: applications/web-ops-dashboard/wireframes/daily-schedule-board.md
-          - Check-In Station: applications/web-ops-dashboard/wireframes/check-in-station.md
-          - Guide Assignment: applications/web-ops-dashboard/wireframes/guide-assignment.md
-          - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
-          - Safety Incident Board: applications/web-ops-dashboard/wireframes/safety-incident-board.md
-          - Inventory Management: applications/web-ops-dashboard/wireframes/inventory-management.md
-          - Transport Dispatch: applications/web-ops-dashboard/wireframes/transport-dispatch.md
-          - Analytics Dashboard: applications/web-ops-dashboard/wireframes/analytics-dashboard.md
-          - Partner Bookings: applications/web-ops-dashboard/wireframes/partner-bookings.md
-      - app-guest-mobile:
-        - applications/app-guest-mobile.md
-        - Wireframes:
-          - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
-    - Event Catalog: events/index.md
+    - Architect's Guide:
+      - Getting Started:
+        - Your Role: architect-guide/your-role.md
+        - Domain Model: architect-guide/domain-model.md
+        - Quick Reference: architect-guide/quick-reference.md
+      - Workflows:
+        - Solution Design Workflow: architect-guide/solution-design-workflow.md
+        - Architecture Decisions: architect-guide/decisions.md
+        - API Contracts: architect-guide/api-contracts.md
+        - Diagrams and Wireframes: architect-guide/diagrams-and-wireframes.md
+        - Testing Guide: architect-guide/testing-guide.md
+        - Portal Publishing: architect-guide/portal-publishing.md
+      - Architecture Reference:
+        - Business Capabilities: capabilities/index.md
+        - System Topology:
+          - topology/index.md
+          - System Map: topology/system-map.md
+          - Dependency Matrix: topology/dependency-matrix.md
+          - Domain Views: topology/domain-views.md
+        - CALM Topology: calm.md
+        - Actor Catalog: actors/index.md
+      - Deep Dives:
+        - Metadata and Artifacts: architect-guide/metadata-and-artifacts.md
+        - AI-Assisted Workflow: architect-guide/ai-assisted-workflow.md
+        - Anti-Patterns: architect-guide/anti-patterns.md
+    - Domains:
+      - domains/index.md
+      - Operations: domains/operations.md
+      - Guest Identity: domains/guest-identity.md
+      - Booking: domains/booking.md
+      - Product Catalog: domains/product-catalog.md
+      - Safety: domains/safety.md
+      - Logistics: domains/logistics.md
+      - Guide Management: domains/guide-management.md
+      - External: domains/external.md
+      - Support: domains/support.md
+    - Services:
+      - Microservices:
+        - microservices/index.md
+        - Service Catalog: services/index.md
+        - svc-analytics: microservices/svc-analytics.md
+        - svc-check-in: microservices/svc-check-in.md
+        - svc-emergency-response: microservices/svc-emergency-response.md
+        - svc-gear-inventory: microservices/svc-gear-inventory.md
+        - svc-guest-profiles: microservices/svc-guest-profiles.md
+        - svc-guide-management: microservices/svc-guide-management.md
+        - svc-inventory-procurement: microservices/svc-inventory-procurement.md
+        - svc-location-services: microservices/svc-location-services.md
+        - svc-loyalty-rewards: microservices/svc-loyalty-rewards.md
+        - svc-media-gallery: microservices/svc-media-gallery.md
+        - svc-notifications: microservices/svc-notifications.md
+        - svc-partner-integrations: microservices/svc-partner-integrations.md
+        - svc-payments: microservices/svc-payments.md
+        - svc-reservations: microservices/svc-reservations.md
+        - svc-safety-compliance: microservices/svc-safety-compliance.md
+        - svc-scheduling-orchestrator: microservices/svc-scheduling-orchestrator.md
+        - svc-trail-management: microservices/svc-trail-management.md
+        - svc-transport-logistics: microservices/svc-transport-logistics.md
+        - svc-trip-catalog: microservices/svc-trip-catalog.md
+        - svc-weather: microservices/svc-weather.md
+        - svc-reviews: microservices/svc-reviews.md
+        - svc-wildlife-tracking: microservices/svc-wildlife-tracking.md
+      - Applications:
+        - applications/index.md
+        - web-guest-portal:
+          - applications/web-guest-portal.md
+          - Wireframes:
+            - Trip Browser: applications/web-guest-portal/wireframes/trip-browser.md
+            - Booking Flow: applications/web-guest-portal/wireframes/booking-flow.md
+            - Guest Profile: applications/web-guest-portal/wireframes/guest-profile.md
+            - Reservation Management: applications/web-guest-portal/wireframes/reservation-management.md
+            - Loyalty Dashboard: applications/web-guest-portal/wireframes/loyalty-dashboard.md
+            - Waiver Signing: applications/web-guest-portal/wireframes/waiver-signing.md
+            - Trip Gallery: applications/web-guest-portal/wireframes/trip-gallery.md
+            - Check-in Confirmation: applications/web-guest-portal/wireframes/check-in-confirmation.md
+        - web-ops-dashboard:
+          - applications/web-ops-dashboard.md
+          - Wireframes:
+            - Daily Schedule Board: applications/web-ops-dashboard/wireframes/daily-schedule-board.md
+            - Check-In Station: applications/web-ops-dashboard/wireframes/check-in-station.md
+            - Guide Assignment: applications/web-ops-dashboard/wireframes/guide-assignment.md
+            - Live Tracking: applications/web-ops-dashboard/wireframes/live-tracking.md
+            - Safety Incident Board: applications/web-ops-dashboard/wireframes/safety-incident-board.md
+            - Inventory Management: applications/web-ops-dashboard/wireframes/inventory-management.md
+            - Transport Dispatch: applications/web-ops-dashboard/wireframes/transport-dispatch.md
+            - Analytics Dashboard: applications/web-ops-dashboard/wireframes/analytics-dashboard.md
+            - Partner Bookings: applications/web-ops-dashboard/wireframes/partner-bookings.md
+        - app-guest-mobile:
+          - applications/app-guest-mobile.md
+          - Wireframes:
+            - Adventure Selection: applications/app-guest-mobile/wireframes/adventure-selection.md
+      - Event Catalog: events/index.md
   - Solutions:
     - solutions/index.md
     - Solution Designs:
@@ -225,95 +226,96 @@ nav:
       - NTK-10007: tickets/NTK-10007.md
       - NTK-10008: tickets/NTK-10008.md
       - NTK-10009: tickets/NTK-10009.md
-  - Standards:
-    - standards/index.md
-    - arc42 Template:
-      - standards/arc42/index.md
-      - Master Document: standards/arc42/00_arc42-template.md
-      - 01 Introduction and Goals: standards/arc42/01_introduction_and_goals.md
-      - 02 Architecture Constraints: standards/arc42/02_architecture_constraints.md
-      - 03 Context and Scope: standards/arc42/03_context_and_scope.md
-      - 04 Solution Strategy: standards/arc42/04_solution_strategy.md
-      - 05 Building Block View: standards/arc42/05_building_block_view.md
-      - 06 Runtime View: standards/arc42/06_runtime_view.md
-      - 07 Deployment View: standards/arc42/07_deployment_view.md
-      - 08 Cross-cutting Concepts: standards/arc42/08_concepts.md
-      - 09 Architecture Decisions: standards/arc42/09_architecture_decisions.md
-      - 10 Quality Requirements: standards/arc42/10_quality_requirements.md
-      - 11 Risks and Technical Debt: standards/arc42/11_risks_and_technical_debt.md
-      - 12 Glossary: standards/arc42/12_glossary.md
-    - C4 Model:
-      - standards/c4-model/index.md
-      - Notation Guide: standards/c4-model/c4-notation-guide.md
-      - C4-PlantUML Guide: standards/c4-model/c4-plantuml-guide.md
-      - Diagram Checklist: standards/c4-model/c4-diagram-checklist.md
-    - MADR:
-      - standards/madr/index.md
-      - Full Template: standards/madr/adr-template.md
-      - Short Template: standards/madr/adr-template-short.md
-      - "Example: Use MADR": standards/madr/0000-use-madr.md
-      - "Example: Technology Selection": standards/madr/0001-example-technology-selection.md
-    - ADR Templates:
-      - standards/adr-templates/index.md
-      - Nygard Template: standards/adr-templates/nygard-template.md
-      - Alexandrian Template: standards/adr-templates/alexandrian-template.md
-      - Tyree-Akerman Template: standards/adr-templates/tyree-akerman-template.md
-    - OpenAPI Contracts: standards/openapi-contracts/index.md
-    - Metadata Registry: standards/metadata-registry/index.md
-    - Quality Model:
-      - standards/quality-model/index.md
-      - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
-  - Operations:
-    - operations/index.md
-    - Platform Infrastructure:
-      - Platform Operations: platform-operations.md
-      - Technology Stack: technologies.md
-      - Database Change Workflow: database-change-workflow.md
-      - Platform Roadmap: roadmap.md
-    - Architecture Governance:
-      - Artifact Registry: artifact-registry.md
-      - Decision Log:
-        - decisions/README.md
-        - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
-        - ADR-002 Documentation Publishing: decisions/ADR-002-documentation-publishing-platform.md
-        - ADR-003 Nullable Elevation Fields: decisions/ADR-003-nullable-elevation-fields.md
-        - ADR-004 Config-Driven Classification: decisions/ADR-004-configuration-driven-classification.md
-        - ADR-005 Pattern 3 Default Fallback: decisions/ADR-005-pattern3-default-fallback.md
-        - ADR-006 Orchestrator Pattern: decisions/ADR-006-orchestrator-pattern-checkin.md
-        - ADR-007 Four-Field Verification: decisions/ADR-007-four-field-identity-verification.md
-        - ADR-008 Temporary Guest Profile: decisions/ADR-008-temporary-guest-profile.md
-        - ADR-009 Session-Scoped Kiosk: decisions/ADR-009-session-scoped-kiosk-access.md
-        - ADR-010 PATCH Semantics: decisions/ADR-010-patch-semantics-schedule-updates.md
-        - ADR-011 Optimistic Locking: decisions/ADR-011-optimistic-locking-daily-schedule.md
-        - ADR-012 TDD/BDD Hybrid: decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md
-        - ADR-013 Contract Testing: decisions/ADR-013-spring-cloud-contract-testing.md
-        - ADR-014 Event-Driven Tracking: decisions/ADR-014-event-driven-tracking-session-initiation.md
-    - Security Model:
-      - security/index.md
-      - Security Comparison: security/security-comparison.md
-      - Pipeline Security Gates: security/pipeline-security-gates.md
-      - Headers and Attack Surface: security/headers-and-attack-surface.md
-      - Access Control and Audit: security/access-control-and-audit.md
-      - Data Protection: security/data-protection.md
-      - Security Research Prompt: security/research-prompt.md
-      - Research Results: security/research-prompt-response.md
-    - AI Workflow:
-      - Copilot vs OpenSpec Comparison: copilot-vs-openspec-comparison.md
-      - GitHub Copilot Customization: github-copilot-customization-guide.md
-      - OpenSpec Customization: openspec-customization-guide.md
-      - OpenSpec Research:
-        - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
-        - Evaluation Plan: research/OPENSPEC-EVALUATION-PLAN.md
-        - Deep Research Prompt: research/DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md
-    - Initiatives:
-      - everything-as-code/index.md
-      - Everything as Code:
-        - EaC Framework: everything-as-code/EVERYTHING-AS-CODE-FRAMEWORK.md
-        - Transformation Plan: everything-as-code/TRANSFORMATION-PLAN.md
-        - Current State Assessment: everything-as-code/CURRENT-STATE-ASSESSMENT.md
-        - AI Instructions as Code: everything-as-code/AI-INSTRUCTIONS-AS-CODE.md
-        - AI Instruction Governance: everything-as-code/AI-INSTRUCTION-GOVERNANCE.md
-        - Deep Research:
-          - EaC Maturity Model Prompt: everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md
-          - AI-Native Architecture Prompt: everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md
-          - AI Instructions Taxonomy: everything-as-code/standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md
+  - "Standards & Governance":
+    - Standards:
+      - standards/index.md
+      - arc42 Template:
+        - standards/arc42/index.md
+        - Master Document: standards/arc42/00_arc42-template.md
+        - 01 Introduction and Goals: standards/arc42/01_introduction_and_goals.md
+        - 02 Architecture Constraints: standards/arc42/02_architecture_constraints.md
+        - 03 Context and Scope: standards/arc42/03_context_and_scope.md
+        - 04 Solution Strategy: standards/arc42/04_solution_strategy.md
+        - 05 Building Block View: standards/arc42/05_building_block_view.md
+        - 06 Runtime View: standards/arc42/06_runtime_view.md
+        - 07 Deployment View: standards/arc42/07_deployment_view.md
+        - 08 Cross-cutting Concepts: standards/arc42/08_concepts.md
+        - 09 Architecture Decisions: standards/arc42/09_architecture_decisions.md
+        - 10 Quality Requirements: standards/arc42/10_quality_requirements.md
+        - 11 Risks and Technical Debt: standards/arc42/11_risks_and_technical_debt.md
+        - 12 Glossary: standards/arc42/12_glossary.md
+      - C4 Model:
+        - standards/c4-model/index.md
+        - Notation Guide: standards/c4-model/c4-notation-guide.md
+        - C4-PlantUML Guide: standards/c4-model/c4-plantuml-guide.md
+        - Diagram Checklist: standards/c4-model/c4-diagram-checklist.md
+      - MADR:
+        - standards/madr/index.md
+        - Full Template: standards/madr/adr-template.md
+        - Short Template: standards/madr/adr-template-short.md
+        - "Example: Use MADR": standards/madr/0000-use-madr.md
+        - "Example: Technology Selection": standards/madr/0001-example-technology-selection.md
+      - ADR Templates:
+        - standards/adr-templates/index.md
+        - Nygard Template: standards/adr-templates/nygard-template.md
+        - Alexandrian Template: standards/adr-templates/alexandrian-template.md
+        - Tyree-Akerman Template: standards/adr-templates/tyree-akerman-template.md
+      - OpenAPI Contracts: standards/openapi-contracts/index.md
+      - Metadata Registry: standards/metadata-registry/index.md
+      - Quality Model:
+        - standards/quality-model/index.md
+        - ISO 25010 Quality Tree: standards/quality-model/iso-25010-quality-tree.md
+    - Governance:
+      - operations/index.md
+      - Platform Infrastructure:
+        - Platform Operations: platform-operations.md
+        - Technology Stack: technologies.md
+        - Database Change Workflow: database-change-workflow.md
+        - Platform Roadmap: roadmap.md
+      - Architecture Governance:
+        - Artifact Registry: artifact-registry.md
+        - Decision Log:
+          - decisions/README.md
+          - ADR-001 AI Toolchain Selection: decisions/ADR-001-ai-toolchain-selection.md
+          - ADR-002 Documentation Publishing: decisions/ADR-002-documentation-publishing-platform.md
+          - ADR-003 Nullable Elevation Fields: decisions/ADR-003-nullable-elevation-fields.md
+          - ADR-004 Config-Driven Classification: decisions/ADR-004-configuration-driven-classification.md
+          - ADR-005 Pattern 3 Default Fallback: decisions/ADR-005-pattern3-default-fallback.md
+          - ADR-006 Orchestrator Pattern: decisions/ADR-006-orchestrator-pattern-checkin.md
+          - ADR-007 Four-Field Verification: decisions/ADR-007-four-field-identity-verification.md
+          - ADR-008 Temporary Guest Profile: decisions/ADR-008-temporary-guest-profile.md
+          - ADR-009 Session-Scoped Kiosk: decisions/ADR-009-session-scoped-kiosk-access.md
+          - ADR-010 PATCH Semantics: decisions/ADR-010-patch-semantics-schedule-updates.md
+          - ADR-011 Optimistic Locking: decisions/ADR-011-optimistic-locking-daily-schedule.md
+          - ADR-012 TDD/BDD Hybrid: decisions/ADR-012-test-methodology-tdd-bdd-hybrid.md
+          - ADR-013 Contract Testing: decisions/ADR-013-spring-cloud-contract-testing.md
+          - ADR-014 Event-Driven Tracking: decisions/ADR-014-event-driven-tracking-session-initiation.md
+      - Security Model:
+        - security/index.md
+        - Security Comparison: security/security-comparison.md
+        - Pipeline Security Gates: security/pipeline-security-gates.md
+        - Headers and Attack Surface: security/headers-and-attack-surface.md
+        - Access Control and Audit: security/access-control-and-audit.md
+        - Data Protection: security/data-protection.md
+        - Security Research Prompt: security/research-prompt.md
+        - Research Results: security/research-prompt-response.md
+      - AI Workflow:
+        - Copilot vs OpenSpec Comparison: copilot-vs-openspec-comparison.md
+        - GitHub Copilot Customization: github-copilot-customization-guide.md
+        - OpenSpec Customization: openspec-customization-guide.md
+        - OpenSpec Research:
+          - Analysis and Decision: research/OPENSPEC-ANALYSIS.md
+          - Evaluation Plan: research/OPENSPEC-EVALUATION-PLAN.md
+          - Deep Research Prompt: research/DEEP-RESEARCH-PROMPT-OPENSPEC-EVALUATION.md
+      - Initiatives:
+        - everything-as-code/index.md
+        - Everything as Code:
+          - EaC Framework: everything-as-code/EVERYTHING-AS-CODE-FRAMEWORK.md
+          - Transformation Plan: everything-as-code/TRANSFORMATION-PLAN.md
+          - Current State Assessment: everything-as-code/CURRENT-STATE-ASSESSMENT.md
+          - AI Instructions as Code: everything-as-code/AI-INSTRUCTIONS-AS-CODE.md
+          - AI Instruction Governance: everything-as-code/AI-INSTRUCTION-GOVERNANCE.md
+          - Deep Research:
+            - EaC Maturity Model Prompt: everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md
+            - AI-Native Architecture Prompt: everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md
+            - AI Instructions Taxonomy: everything-as-code/standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md
