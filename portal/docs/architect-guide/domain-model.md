@@ -16,15 +16,15 @@ The platform is decomposed into 9 bounded contexts, each owning a set of microse
 
 | Domain | Services | Team | Responsibility |
 |--------|----------|------|----------------|
-| **[Operations](../domains/operations.md)** | [svc-check-in](../microservices/svc-check-in/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | NovaTrek Operations | Day-of-adventure workflows, schedule management |
-| **[Guest Identity](../domains/guest-identity.md)** | [svc-guest-profiles](../microservices/svc-guest-profiles/) | Guest Experience | Guest identity resolution, profile management |
-| **[Booking](../domains/booking.md)** | [svc-reservations](../microservices/svc-reservations/) | Booking Platform | Reservation lifecycle |
-| **[Product Catalog](../domains/product-catalog.md)** | [svc-trip-catalog](../microservices/svc-trip-catalog/), [svc-trail-management](../microservices/svc-trail-management/) | Product | Adventure products and trail data |
-| **[Safety](../domains/safety.md)** | [svc-safety-compliance](../microservices/svc-safety-compliance/) | Safety and Compliance | Waivers, safety certifications, compliance |
-| **[Logistics](../domains/logistics.md)** | [svc-transport-logistics](../microservices/svc-transport-logistics/), [svc-gear-inventory](../microservices/svc-gear-inventory/) | Logistics | Transport coordination, gear tracking |
-| **[Guide Management](../domains/guide-management.md)** | [svc-guide-management](../microservices/svc-guide-management/) | Guide Operations | Guide assignments, certifications, preferences |
-| **[External](../domains/external.md)** | [svc-partner-integrations](../microservices/svc-partner-integrations/) | Integration | Third-party booking channels, external systems |
-| **[Support](../domains/support.md)** | [svc-notifications](../microservices/svc-notifications/), [svc-payments](../microservices/svc-payments/), [svc-loyalty-rewards](../microservices/svc-loyalty-rewards/), [svc-media-gallery](../microservices/svc-media-gallery/), [svc-analytics](../microservices/svc-analytics/), [svc-weather](../microservices/svc-weather/), [svc-location-services](../microservices/svc-location-services/), [svc-inventory-procurement](../microservices/svc-inventory-procurement/) | Various | Cross-cutting platform services |
+| **[Operations](../domains/operations.md)** | [svc-check-in](../../microservices/svc-check-in/), [svc-scheduling-orchestrator](../../microservices/svc-scheduling-orchestrator/) | NovaTrek Operations | Day-of-adventure workflows, schedule management |
+| **[Guest Identity](../domains/guest-identity.md)** | [svc-guest-profiles](../../microservices/svc-guest-profiles/) | Guest Experience | Guest identity resolution, profile management |
+| **[Booking](../domains/booking.md)** | [svc-reservations](../../microservices/svc-reservations/) | Booking Platform | Reservation lifecycle |
+| **[Product Catalog](../domains/product-catalog.md)** | [svc-trip-catalog](../../microservices/svc-trip-catalog/), [svc-trail-management](../../microservices/svc-trail-management/) | Product | Adventure products and trail data |
+| **[Safety](../domains/safety.md)** | [svc-safety-compliance](../../microservices/svc-safety-compliance/) | Safety and Compliance | Waivers, safety certifications, compliance |
+| **[Logistics](../domains/logistics.md)** | [svc-transport-logistics](../../microservices/svc-transport-logistics/), [svc-gear-inventory](../../microservices/svc-gear-inventory/) | Logistics | Transport coordination, gear tracking |
+| **[Guide Management](../domains/guide-management.md)** | [svc-guide-management](../../microservices/svc-guide-management/) | Guide Operations | Guide assignments, certifications, preferences |
+| **[External](../domains/external.md)** | [svc-partner-integrations](../../microservices/svc-partner-integrations/) | Integration | Third-party booking channels, external systems |
+| **[Support](../domains/support.md)** | [svc-notifications](../../microservices/svc-notifications/), [svc-payments](../../microservices/svc-payments/), [svc-loyalty-rewards](../../microservices/svc-loyalty-rewards/), [svc-media-gallery](../../microservices/svc-media-gallery/), [svc-analytics](../../microservices/svc-analytics/), [svc-weather](../../microservices/svc-weather/), [svc-location-services](../../microservices/svc-location-services/), [svc-inventory-procurement](../../microservices/svc-inventory-procurement/) | Various | Cross-cutting platform services |
 
 ---
 
@@ -36,9 +36,9 @@ These rules are non-negotiable. Every solution design must respect them.
 2. **Cross-domain communication** MUST go through published API endpoints — never direct database access
 3. **Each service owns its data exclusively** — no shared databases between services
 4. **Event-driven integration** is preferred between domains; synchronous REST within a domain is acceptable
-5. **[svc-check-in](../microservices/svc-check-in/)** is the designated orchestrator for all day-of-adventure workflows
-6. **[svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/)** owns the schedule lifecycle — other services MUST NOT mutate schedule data directly
-7. **Guest identity resolution** always flows through [svc-guest-profiles](../microservices/svc-guest-profiles/) — services MUST NOT maintain shadow guest records
+5. **[svc-check-in](../../microservices/svc-check-in/)** is the designated orchestrator for all day-of-adventure workflows
+6. **[svc-scheduling-orchestrator](../../microservices/svc-scheduling-orchestrator/)** owns the schedule lifecycle — other services MUST NOT mutate schedule data directly
+7. **Guest identity resolution** always flows through [svc-guest-profiles](../../microservices/svc-guest-profiles/) — services MUST NOT maintain shadow guest records
 
 ---
 
@@ -48,14 +48,14 @@ Every data entity has exactly one owning service. Other services access it read-
 
 | Data Entity | Owning Service | Read Access |
 |-------------|---------------|-------------|
-| Check-in records | [svc-check-in](../microservices/svc-check-in/) | [svc-analytics](../microservices/svc-analytics/), [svc-notifications](../microservices/svc-notifications/) |
-| Guest profiles | [svc-guest-profiles](../microservices/svc-guest-profiles/) | All services (read-only via API) |
-| Reservations | [svc-reservations](../microservices/svc-reservations/) | [svc-check-in](../microservices/svc-check-in/), [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) |
-| Daily schedules | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) | [svc-guide-management](../microservices/svc-guide-management/) (read), [svc-check-in](../microservices/svc-check-in/) (read) |
-| Guide preferences | [svc-guide-management](../microservices/svc-guide-management/) | [svc-scheduling-orchestrator](../microservices/svc-scheduling-orchestrator/) (read-only) |
-| Trail data | [svc-trail-management](../microservices/svc-trail-management/) | [svc-trip-catalog](../microservices/svc-trip-catalog/), [svc-safety-compliance](../microservices/svc-safety-compliance/) |
-| Adventure catalog | [svc-trip-catalog](../microservices/svc-trip-catalog/) | [svc-check-in](../microservices/svc-check-in/), [svc-reservations](../microservices/svc-reservations/) |
-| Waivers | [svc-safety-compliance](../microservices/svc-safety-compliance/) | [svc-check-in](../microservices/svc-check-in/) (read-only for validation) |
+| Check-in records | [svc-check-in](../../microservices/svc-check-in/) | [svc-analytics](../../microservices/svc-analytics/), [svc-notifications](../../microservices/svc-notifications/) |
+| Guest profiles | [svc-guest-profiles](../../microservices/svc-guest-profiles/) | All services (read-only via API) |
+| Reservations | [svc-reservations](../../microservices/svc-reservations/) | [svc-check-in](../../microservices/svc-check-in/), [svc-scheduling-orchestrator](../../microservices/svc-scheduling-orchestrator/) |
+| Daily schedules | [svc-scheduling-orchestrator](../../microservices/svc-scheduling-orchestrator/) | [svc-guide-management](../../microservices/svc-guide-management/) (read), [svc-check-in](../../microservices/svc-check-in/) (read) |
+| Guide preferences | [svc-guide-management](../../microservices/svc-guide-management/) | [svc-scheduling-orchestrator](../../microservices/svc-scheduling-orchestrator/) (read-only) |
+| Trail data | [svc-trail-management](../../microservices/svc-trail-management/) | [svc-trip-catalog](../../microservices/svc-trip-catalog/), [svc-safety-compliance](../../microservices/svc-safety-compliance/) |
+| Adventure catalog | [svc-trip-catalog](../../microservices/svc-trip-catalog/) | [svc-check-in](../../microservices/svc-check-in/), [svc-reservations](../../microservices/svc-reservations/) |
+| Waivers | [svc-safety-compliance](../../microservices/svc-safety-compliance/) | [svc-check-in](../../microservices/svc-check-in/) (read-only for validation) |
 
 When designing a solution, always verify data ownership boundaries. If your design requires Service A to write data owned by Service B, you have a boundary violation that needs to be resolved — typically through an API call to Service B or an event-driven pattern.
 
@@ -100,7 +100,7 @@ See the [Event Catalog](../events/index.md) for the full list of domain events, 
 
 ### Orchestration vs. Choreography
 
-- **[svc-check-in](../microservices/svc-check-in/)** uses the **orchestrator pattern** for day-of-adventure workflows — it coordinates the sequence of calls to guest profiles, reservations, safety compliance, and gear inventory ([ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md))
+- **[svc-check-in](../../microservices/svc-check-in/)** uses the **orchestrator pattern** for day-of-adventure workflows — it coordinates the sequence of calls to guest profiles, reservations, safety compliance, and gear inventory ([ADR-006](../decisions/ADR-006-orchestrator-pattern-checkin.md))
 - **Cross-domain** integration uses **choreography** via Kafka events — no central coordinator; each domain reacts to events independently
 
 ---
