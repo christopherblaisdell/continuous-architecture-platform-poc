@@ -192,6 +192,11 @@ def main():
                 continue
             if t == "fragment":
                 if fragment:
+                    # Skip MkDocs-generated footnote backref anchors (fnref:N).
+                    # These are created by the footnotes extension and are valid
+                    # at runtime but do not appear as id= attributes in the HTML.
+                    if re.match(r"^fnref:\d+$", fragment):
+                        continue
                     if hp not in anchor_cache:
                         anchor_cache[hp] = extract_anchors(hp)
                     if fragment not in anchor_cache[hp]:

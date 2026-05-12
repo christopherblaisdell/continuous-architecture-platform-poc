@@ -193,7 +193,7 @@ Override evaluation occurs BEFORE category classification. If a booking source h
 
 ## 11. Source Code Analysis
 
-Analysis of the current `AdventureCategoryClassifier.java` reveals several critical gaps that this solution addresses:
+Analysis of the current [`AdventureCategoryClassifier.java`](../../source-code/svc-check-in/src/main/java/com/novatrek/checkin/service/AdventureCategoryClassifier.java) reveals several critical gaps that this solution addresses:
 
 ### Current Code Issues
 
@@ -211,7 +211,7 @@ The current default to Pattern 1 for unknown categories means that a guest booke
 
 ### Data Model Readiness
 
-The `CheckInRecord.java` entity already has `adventureCategory` (line 40) and `uiPattern` (line 43) fields, confirming partial readiness for the classification feature. The remaining work is replacing the hardcoded classifier with the config-driven `ClassificationService`.
+The [`CheckInRecord.java`](../../source-code/svc-check-in/src/main/java/com/novatrek/checkin/model/CheckInRecord.java) entity already has `adventureCategory` (line 40) and `uiPattern` (line 43) fields, confirming partial readiness for the classification feature. The remaining work is replacing the hardcoded classifier with the config-driven `ClassificationService`.
 
 ## 12. Service Interaction Changes
 

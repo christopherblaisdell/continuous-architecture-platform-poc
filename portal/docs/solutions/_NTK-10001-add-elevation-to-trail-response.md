@@ -28,7 +28,7 @@ description: "Solution design for NTK-10001"
 
 - [Requirements](#problem-statement)
 - Analysis
-- [Decisions](#architecture-decisions)
+- Decisions
 - Impact Assessments (1)
 - User Stories
 - [Capability Mapping](#affected-capabilities)

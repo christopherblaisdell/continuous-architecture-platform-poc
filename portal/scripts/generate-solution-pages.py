@@ -322,9 +322,12 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
         """Find the best matching heading anchor for a section label."""
         base = re.sub(r" \(\d+\)", "", section_label)
         # Special case: these are headings we generate ourselves, not in master doc
+        # Decisions anchor only exists when the changelog has decisions entries for this ticket.
         generated_anchors = {
             "Capability Mapping": "affected-capabilities",
-            "Decisions": "architecture-decisions",
+            **({
+                "Decisions": "architecture-decisions",
+            } if decisions else {}),
         }
         if base in generated_anchors:
             return generated_anchors[base]
@@ -372,8 +375,9 @@ def generate_solution_page(meta, tickets_data, changelog_decisions, cap_names, a
     # Fix broken relative links from solution source directory structure.
     # These reference sub-folders that don't exist in the portal output.
     # Convert to italic labels since the sub-documents aren't published.
+    # Matches both .md file links and directory links (e.g. 3.solution/i.impacts/)
     content = re.sub(
-        r"\[([^\]]+)\]\([^)]*(?:investigations|decisions|impacts|risks|assumptions|guidance|user-stories|simple\.explanation|ticket\.report)\.md\)",
+        r"\[([^\]]+)\]\([^)]*(?:investigations|decisions|impacts|risks|assumptions|guidance|user-stories|simple\.explanation|ticket\.report)(?:\.md|/[^)]*)\.?\)",
         r"*\1*",
         content,
     )

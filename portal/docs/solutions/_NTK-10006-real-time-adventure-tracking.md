@@ -222,7 +222,7 @@ See *3.solution/r.risks/risks.md* for detailed risk register.
 
 ## 7. Impacts
 
-See impact assessments in `3.solution/i.impacts/`:
+See impact assessments in *3.solution/i.impacts/*:
 
 | Service | Change Summary |
 |---------|---------------|

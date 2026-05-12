@@ -23,7 +23,7 @@
 
 **Component Diagram**:
 
-![Component Architecture](3.solution/00.component.diagram.svg)
+*Embed component diagram here: `3.solution/00.component.diagram.svg`*
 
 **Figure 1**: [Brief description of the component diagram - what it shows and key integration points]. *Source: `architecture/solutions/_TICKET-ID-slug/3.solution/00.component.diagram.puml`*
 
@@ -63,7 +63,7 @@ The endpoint logic adds [brief description of what's being added/modified]:
 
 **[Workflow Name]**:
 
-![Workflow Diagram](3.solution/01b.[component].[workflow].sequence.diagram.target.svg)
+*Embed sequence diagram here: `3.solution/01b.[component].[workflow].sequence.diagram.target.svg`*
 
 **Figure 1**: [Caption describing workflow]. Light green groups indicate changes. *Source: `architecture/solutions/_TICKET-ID-slug/3.solution/i.impacts/impact.N/[sequence].puml`*
 
@@ -101,7 +101,7 @@ The endpoint logic adds [brief description of what's being added/modified]:
 
 **[Workflow Name]**:
 
-![Workflow Diagram](3.solution/02b.[component].[workflow].sequence.diagram.target.svg)
+*Embed sequence diagram here: `3.solution/02b.[component].[workflow].sequence.diagram.target.svg`*
 
 **Figure 2**: [Caption describing workflow]. Light green groups indicate changes.
 
