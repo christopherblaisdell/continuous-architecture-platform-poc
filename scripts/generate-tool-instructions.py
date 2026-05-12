@@ -181,6 +181,7 @@ COPILOT_COPIES = [
     (".openspec/prompts/opsx-propose.prompt.md",          ".github/prompts/opsx-propose.prompt.md"),
     (".openspec/prompts/security-review.prompt.md",       ".github/prompts/security-review.prompt.md"),
     (".openspec/prompts/solution-verification.prompt.md", ".github/prompts/solution-verification.prompt.md"),
+    (".openspec/prompts/bootstrap-instance.prompt.md",    ".github/prompts/bootstrap-instance.prompt.md"),
     # Agents
     (".openspec/agents/novatrek-solution-architect.agent.md", ".github/agents/novatrek-solution-architect.agent.md"),
 ]
