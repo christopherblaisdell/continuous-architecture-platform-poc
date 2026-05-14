@@ -1,12 +1,12 @@
 # Architecture Principles as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 33 — Architecture Principles
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar AH — Architecture Principles
 > as Code. It describes a pattern applicable to any software architecture practice. References to
 > NovaTrek Adventures services and files are synthetic exemplar data used to validate the pattern,
 > not corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for
 > details.
 
-**Status**: This is Pillar 33 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar AH of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -65,7 +65,7 @@ enforcement gap visible:
 |--------|---------|----------------------|
 | `aspirational` | The practice agrees with this principle but enforces compliance through reviewer discipline alone | None (PR review only) |
 | `adr-mandated` | A specific ADR records a decision that implements this principle. The ADR is the primary enforcement artifact. | ADR reference; reviewer required to cite the ADR on violations |
-| `policy-enforced` | A CI policy rule (Pillar 10) automatically verifies this principle on every PR | Rego/Conftest policy rule; violations block merge |
+| `policy-enforced` | A CI policy rule (Pillar J) automatically verifies this principle on every PR | Rego/Conftest policy rule; violations block merge |
 | `deprecated` | The principle is retired. It is preserved for historical context. | None |
 
 The enforcement status reveals which principles are genuinely binding and which are aspirational.
@@ -481,7 +481,7 @@ Principles are high-authority artifacts. Changes to the principles registry requ
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 33 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar AH has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -496,18 +496,18 @@ Principles are high-authority artifacts. Changes to the principles registry requ
 The NovaTrek workspace has 14 ADRs that each contain an implicit principle statement in their
 "Decision Outcome" section. The backlog item is to extract these implicit principles into an
 explicit `principles.yaml` registry, assign enforcement statuses, and wire CI validation. This is a
-Wave 2 adoption item that will be completed alongside Decisions as Code (Pillar 7) infrastructure
+Wave 2 adoption item that will be completed alongside Decisions as Code (Pillar G) infrastructure
 improvements.
 
 ---
 
 ## Forward Plan
 
-Pillar 33 adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
-Capabilities as Code (Pillar 6), Decisions as Code (Pillar 7), and Ubiquitous Language as Code
-(Pillar 34). Wave 2 establishes the governance and language infrastructure that all later pillars
+Pillar AH adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
+Capabilities as Code (Pillar F), Decisions as Code (Pillar G), and Ubiquitous Language as Code
+(Pillar AI). Wave 2 establishes the governance and language infrastructure that all later pillars
 depend on. See
-[Transformation Plan — Pillar 33](TRANSFORMATION-PLAN.md#pillar-33--architecture-principles-as-code)
+[Transformation Plan — Pillar AH](TRANSFORMATION-PLAN.md#pillar-ah--architecture-principles-as-code)
 for the sequenced adoption checklist.
 
 ---
@@ -518,5 +518,5 @@ for the sequenced adoption checklist.
 - TOGAF 10 — Part II: Architecture Development Method, Section 3.3: Architecture Principles
 - Gregor Hohpe, *The Architect Elevator* (2020) — Chapters on standing architecture principles vs. tactical decisions
 - RFC 2119 — Key words for use in RFCs to indicate requirement levels (MUST, SHOULD, MAY)
-- NovaTrek EaC Framework: [Pillar 33 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 33 adoption steps](TRANSFORMATION-PLAN.md#pillar-33--architecture-principles-as-code)
+- NovaTrek EaC Framework: [Pillar AH definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar AH adoption steps](TRANSFORMATION-PLAN.md#pillar-ah--architecture-principles-as-code)

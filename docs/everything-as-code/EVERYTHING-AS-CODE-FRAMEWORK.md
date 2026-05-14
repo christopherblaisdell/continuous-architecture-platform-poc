@@ -72,9 +72,9 @@ The transformation this blueprint describes is best named:
 
 ## D. The Pillars
 
-Every EaC implementation is organized around pillars — one per discipline. The full adoption guide for each pillar (artifact types, adoption steps, CI integration, exit criteria) lives in [Transformation Plan](TRANSFORMATION-PLAN.md). This section is the reference catalog: purpose, format, and AI fit for all 34 pillars.
+Every EaC implementation is organized around pillars — one per discipline. The full adoption guide for each pillar (artifact types, adoption steps, CI integration, exit criteria) lives in [Transformation Plan](TRANSFORMATION-PLAN.md). This section is the reference catalog: purpose, format, and AI fit for all 39 pillars.
 
-### Pillar 1 — Infrastructure as Code (IaC)
+### Pillar A — Infrastructure as Code (IaC)
 
 | | |
 |---|---|
@@ -83,7 +83,7 @@ Every EaC implementation is organized around pillars — one per discipline. The
 | **Validator** | `terraform validate`, `tflint`, `checkov`, `tfsec`, `bicep build` |
 | **AI fit** | Excellent — AI agents can read, modify, and propose changes against schemas |
 
-### Pillar 2 — Pipeline as Code (PaC)
+### Pillar B — Pipeline as Code (PaC)
 
 | | |
 |---|---|
@@ -92,7 +92,7 @@ Every EaC implementation is organized around pillars — one per discipline. The
 | **Validator** | `actionlint`, `gitlab-ci-lint`, `yamllint` |
 | **AI fit** | Excellent |
 
-### Pillar 3 — Actors as Code
+### Pillar C — Actors as Code
 
 | | |
 |---|---|
@@ -103,7 +103,7 @@ Every EaC implementation is organized around pillars — one per discipline. The
 
 See [Actors as Code](ACTORS-AS-CODE.md) for the deep dive.
 
-### Pillar 4 — Applications as Code
+### Pillar D — Applications as Code
 
 | | |
 |---|---|
@@ -112,7 +112,7 @@ See [Actors as Code](ACTORS-AS-CODE.md) for the deep dive.
 | **Generator** | Portal page generator |
 | **AI fit** | Excellent — service registry is the anchor for all other pillars |
 
-### Pillar 5 — Architecture Artifacts as Code
+### Pillar E — Architecture Artifacts as Code
 
 | | |
 |---|---|
@@ -122,7 +122,7 @@ See [Actors as Code](ACTORS-AS-CODE.md) for the deep dive.
 | **Validator** | DSL syntax validators; `asyncapi validate`; OpenAPI linters |
 | **AI fit** | Excellent — text-based DSLs diff cleanly; AI can propose and update diagrams |
 
-### Pillar 6 — Capabilities as Code
+### Pillar F — Capabilities as Code
 
 | | |
 |---|---|
@@ -133,7 +133,7 @@ See [Actors as Code](ACTORS-AS-CODE.md) for the deep dive.
 
 See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 
-### Pillar 7 — Decisions as Code (ADRs)
+### Pillar G — Decisions as Code (ADRs)
 
 | | |
 |---|---|
@@ -143,7 +143,7 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 | **Validator** | MADR section validator |
 | **AI fit** | Excellent — MADR has consistent sections AI can populate and parse |
 
-### Pillar 8 — Architecture Backlog as Code
+### Pillar H — Architecture Backlog as Code
 
 | | |
 |---|---|
@@ -153,7 +153,7 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 | **Validator** | JSON Schema, required-field lint, dangling-reference check |
 | **AI fit** | Excellent — structured backlog items give AI the context to trace requirements to fulfilling design decisions |
 
-### Pillar 9 — Tests as Code
+### Pillar I — Tests as Code
 
 | | |
 |---|---|
@@ -162,7 +162,7 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 | **Generator** | Cucumber, Behave, SpecFlow, Pact Broker |
 | **AI fit** | Excellent — Gherkin is the natural-language-meets-structured format AI excels at |
 
-### Pillar 10 — Policy as Code
+### Pillar J — Policy as Code
 
 | | |
 |---|---|
@@ -171,7 +171,7 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 | **Validator** | `conftest test`, `opa eval`, ArchUnit test suite |
 | **AI fit** | Excellent — policy rules are themselves declarative text |
 
-### Pillar 11 — AI Instructions as Code (AIaC)
+### Pillar K — AI Instructions as Code (AIaC)
 
 | | |
 |---|---|
@@ -183,7 +183,7 @@ See [Capabilities as Code](CAPABILITIES-AS-CODE.md) for the deep dive.
 
 See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 
-### Pillar 12 — Wireframes as Code (UIaC)
+### Pillar L — Wireframes as Code (UIaC)
 
 | | |
 |---|---|
@@ -193,7 +193,7 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Validator** | JSON schema validation |
 | **AI fit** | Good — JSON is parseable; Figma is not as-code (proprietary binary state) |
 
-### Pillar 13 — Documentation as Code (Docs as Code)
+### Pillar M — Documentation as Code (Docs as Code)
 
 | | |
 |---|---|
@@ -202,7 +202,19 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 | **Generator** | `mkdocs build`, deployed via CI to static hosting |
 | **AI fit** | Excellent |
 
-### Pillar 14 — Governance as Code
+### Pillar N — Presentations as Code (PrC)
+
+| | |
+|---|---|
+| **Purpose** | Author architecture presentation decks in versioned Markdown; render via CI into organization-branded slide decks |
+| **Format** | Markdown (slide source), YAML (presentation manifest), static site generator + slide theme (renderer) |
+| **Generator** | Slide renderer in CI; outputs HTML/PDF decks from Markdown source |
+| **AI fit** | Excellent — AI can read, query, and propose updates to slide decks; architectural intent expressed in slides becomes AI-addressable |
+| **vs. Pillar M** | Docs as Code (M) targets reference audiences; Presentations as Code (N) targets decision audiences — different structure, different rendering, different governance |
+
+See [Presentations as Code](PRESENTATIONS-AS-CODE.md) for the deep dive.
+
+### Pillar O — Governance as Code
 
 | | |
 |---|---|
@@ -213,7 +225,7 @@ See [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) for the deep dive.
 
 See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 
-### Pillar 15 — Operational Runbooks as Code
+### Pillar P — Operational Runbooks as Code
 
 | | |
 |---|---|
@@ -222,7 +234,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Generator** | Runbook index generator for the documentation portal |
 | **AI fit** | Good — Markdown runbooks are readable; fully executable runbooks (Ansible, Runbooks.io) are excellent |
 
-### Pillar 16 — Data Models as Code
+### Pillar Q — Data Models as Code
 
 | | |
 |---|---|
@@ -232,7 +244,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Schema lint, schemadiff |
 | **AI fit** | Excellent — structured schema formats are AI-readable and diffable |
 
-### Pillar 17 — Database Migrations as Code
+### Pillar R — Database Migrations as Code
 
 | | |
 |---|---|
@@ -242,7 +254,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Migration tool dry-run against a test database |
 | **AI fit** | Excellent — migration files are short, structured, and diffs are precise |
 
-### Pillar 18 — Data Contracts as Code
+### Pillar S — Data Contracts as Code
 
 | | |
 |---|---|
@@ -251,7 +263,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Contract schema validator, consumer integration tests |
 | **AI fit** | Excellent — structured YAML contracts are AI-parseable; AI can detect breaking changes |
 
-### Pillar 19 — Event Schemas as Code
+### Pillar T — Event Schemas as Code
 
 | | |
 |---|---|
@@ -261,7 +273,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | `asyncapi validate`, schema registry diff |
 | **AI fit** | Excellent |
 
-### Pillar 20 — Security as Code
+### Pillar U — Security as Code
 
 | | |
 |---|---|
@@ -270,7 +282,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | SAST scan, IaC security scan (Checkov, Trivy, TFSec), dependency scan |
 | **AI fit** | Excellent — policy rules and threat models are structured and diffable |
 
-### Pillar 21 — Compliance as Code
+### Pillar V — Compliance as Code
 
 | | |
 |---|---|
@@ -280,7 +292,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | `conftest test` with compliance ruleset |
 | **AI fit** | Excellent — control mappings and evidence manifests are structured YAML |
 
-### Pillar 22 — Secrets Management as Code
+### Pillar W — Secrets Management as Code
 
 | | |
 |---|---|
@@ -289,7 +301,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Secret scanning (truffleHog, git-secrets), IaC policy check |
 | **AI fit** | Good — policy declarations are readable; secret values must never appear in files |
 
-### Pillar 23 — SBOM as Code
+### Pillar X — SBOM as Code
 
 | | |
 |---|---|
@@ -299,7 +311,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Grype, Trivy, OSV-Scanner (vulnerability scan against SBOM); license compliance check |
 | **AI fit** | Good — SBOM documents are structured; AI can reason over dependency trees |
 
-### Pillar 24 — Observability as Code
+### Pillar Y — Observability as Code
 
 | | |
 |---|---|
@@ -309,7 +321,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Alert rule syntax validation, dashboard schema validation |
 | **AI fit** | Excellent — alert rules and dashboard JSON are AI-readable and generatable |
 
-### Pillar 25 — SLO / SLI as Code
+### Pillar Z — SLO / SLI as Code
 
 | | |
 |---|---|
@@ -319,7 +331,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | OpenSLO schema validation, SLI calculation dry-run |
 | **AI fit** | Excellent — OpenSLO is a structured, machine-readable standard |
 
-### Pillar 26 — Feature Flags as Code
+### Pillar AA — Feature Flags as Code
 
 | | |
 |---|---|
@@ -328,7 +340,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Flag definition syntax validation, stale flag linter |
 | **AI fit** | Excellent — flag definitions are concise structured YAML |
 
-### Pillar 27 — Release Strategies as Code
+### Pillar AB — Release Strategies as Code
 
 | | |
 |---|---|
@@ -337,7 +349,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Config schema validation, rollback trigger metric resolution check |
 | **AI fit** | Excellent — deployment strategy YAML is structured and diffable |
 
-### Pillar 28 — Environment Definitions as Code
+### Pillar AC — Environment Definitions as Code
 
 | | |
 |---|---|
@@ -346,7 +358,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Kustomize / Helm values validation, GitOps app declaration schema check |
 | **AI fit** | Excellent |
 
-### Pillar 29 — Service Mesh Configuration as Code
+### Pillar AD — Service Mesh Configuration as Code
 
 | | |
 |---|---|
@@ -355,7 +367,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 | **Validator** | Mesh config schema validation, dry-apply diff |
 | **AI fit** | Excellent — mesh config YAML is structured and the impact of changes is analysable |
 
-### Pillar 30 — Team Topology as Code
+### Pillar AE — Team Topology as Code
 
 | | |
 |---|---|
@@ -367,7 +379,7 @@ See [Governance as Code](GOVERNANCE-AS-CODE.md) for the deep dive.
 
 See [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) for the deep dive.
 
-### Pillar 31 — Onboarding as Code
+### Pillar AF — Onboarding as Code
 
 | | |
 |---|---|
@@ -376,7 +388,7 @@ See [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) for the deep dive.
 | **Validator** | Dev container build validation; onboarding smoke test on a schedule |
 | **AI fit** | Good — Markdown onboarding guides are AI-readable; AI can assist in executing steps |
 
-### Pillar 32 — Developer Experience as Code
+### Pillar AG — Developer Experience as Code
 
 | | |
 |---|---|
@@ -385,7 +397,7 @@ See [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) for the deep dive.
 | **Validator** | Pre-commit hooks, CI linter parity check |
 | **AI fit** | Excellent — config files are structured and AI can suggest improvements |
 
-### Pillar 33 — Architecture Principles as Code
+### Pillar AH — Architecture Principles as Code
 
 | | |
 |---|---|
@@ -397,7 +409,7 @@ See [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) for the deep dive.
 
 See [Architecture Principles as Code](ARCHITECTURE-PRINCIPLES-AS-CODE.md) for the deep dive.
 
-### Pillar 34 — Ubiquitous Language as Code
+### Pillar AI — Ubiquitous Language as Code
 
 | | |
 |---|---|
@@ -409,7 +421,7 @@ See [Architecture Principles as Code](ARCHITECTURE-PRINCIPLES-AS-CODE.md) for th
 
 See [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) for the deep dive.
 
-### Pillar 35 — Coding Standards as Code
+### Pillar AJ — Coding Standards as Code
 
 | | |
 |---|---|
@@ -418,7 +430,7 @@ See [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) for the deep d
 | **Validator** | Linter runs in CI; formatter check in CI; suppression annotation audit |
 | **AI fit** | Excellent — linter configs are structured; AI can propose rule changes and auto-fix violations |
 
-### Pillar 36 — Patterns and Anti-patterns as Code
+### Pillar AK — Patterns and Anti-patterns as Code
 
 | | |
 |---|---|
@@ -430,7 +442,7 @@ See [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) for the deep d
 
 See [Patterns and Anti-patterns as Code](PATTERNS-AS-CODE.md) for the deep dive.
 
-### Pillar 37 — Risk Register as Code
+### Pillar AL — Risk Register as Code
 
 | | |
 |---|---|
@@ -440,7 +452,7 @@ See [Patterns and Anti-patterns as Code](PATTERNS-AS-CODE.md) for the deep dive.
 | **Validator** | JSON Schema; referential integrity checks to capabilities.yaml and ADR files; CI warning on unmitigated high-impact risks |
 | **AI fit** | Excellent — AI can surface relevant open risks when assessing a new solution and flag when a proposed design increases residual risk on an existing entry |
 
-### Pillar 38 — Service Catalog as Code
+### Pillar AM — Service Catalog as Code
 
 | | |
 |---|---|
@@ -473,13 +485,13 @@ The maturity levels describe organizational milestones, not per-pillar completio
 
 | Level | Pillar groups typically active |
 |-------|-------------------------------|
-| 2–3 | Pillars 5 (Architecture Artifacts), 12 (Wireframes), 13 (Documentation) |
-| 4 | Pillars 3, 4, 6, 8 (core metadata — actors, apps, capabilities, tickets); Pillars 16, 19 (data models, event schemas) |
-| 5 | Pillars 1, 2, 7 (IaC, Pipeline, Decisions) reaching generator-in-CI state; Pillars 24, 25 (Observability, SLOs) |
-| 6 | Pillars 7, 14, 36 (Decisions, Governance, Patterns and Anti-patterns) with CI-enforced change records |
-| 7 | Pillar 11 (AI Instructions as Code) with hub-and-spoke governance active |
-| 8 | Pillars 10, 20, 21, 22 (Policy, Security, Compliance, Secrets Management) |
-| 9 | All 34 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
+| 2–3 | Pillars E (Architecture Artifacts), L (Wireframes), M (Documentation), N (Presentations) |
+| 4 | Pillars C, D, F, H (core metadata — actors, apps, capabilities, tickets); Pillars Q, T (data models, event schemas) |
+| 5 | Pillars A, B, G (IaC, Pipeline, Decisions) reaching generator-in-CI state; Pillars Y, Z (Observability, SLOs) |
+| 6 | Pillars G, O, AK (Decisions, Governance, Patterns and Anti-patterns) with CI-enforced change records |
+| 7 | Pillar K (AI Instructions as Code) with hub-and-spoke governance active |
+| 8 | Pillars J, U, V, W (Policy, Security, Compliance, Secrets Management) |
+| 9 | All 39 pillars active; AI-driven proposal cycle closes the CVG loop autonomously |
 
 To assess where a real practice sits today, use the assessment template in [Current State Assessment](CURRENT-STATE-ASSESSMENT.md).
 
@@ -519,7 +531,7 @@ The CVG loop is the operational core of EaC. Every pillar must implement it end-
 | Tickets in JIRA without YAML mirror | AI cannot reason without API access; opaque to git |
 | AI instructions edited per tool, no canonical source | Drift across Copilot, Roo, Cursor; impossible to govern |
 
-> The table above catalogs EaC adoption anti-patterns — the organizational and tooling failures that prevent true "as code" status. For a version-controlled catalog of domain-level architectural patterns and anti-patterns in your system design (Saga, CQRS, Shared Database, Distributed Monolith, etc.), see **Pillar 36 — Patterns and Anti-patterns as Code**.
+> The table above catalogs EaC adoption anti-patterns — the organizational and tooling failures that prevent true "as code" status. For a version-controlled catalog of domain-level architectural patterns and anti-patterns in your system design (Saga, CQRS, Shared Database, Distributed Monolith, etc.), see **Pillar AK — Patterns and Anti-patterns as Code**.
 
 ## H. Key References
 

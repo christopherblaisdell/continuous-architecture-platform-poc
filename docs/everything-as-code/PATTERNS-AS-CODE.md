@@ -1,12 +1,12 @@
 # Patterns and Anti-patterns as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 36 — Patterns and
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar AK — Patterns and
 > Anti-patterns as Code. It describes a pattern applicable to any software architecture practice.
 > References to NovaTrek Adventures services and files are synthetic exemplar data used to validate
 > the pattern, not corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status)
 > for details.
 
-**Status**: This is Pillar 36 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar AK of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -687,7 +687,7 @@ decisions. Changes require careful governance:
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 36 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar AK has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -709,11 +709,11 @@ implicit knowledge into the formal patterns registry.
 
 ## Forward Plan
 
-Pillar 36 adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
-Architecture Principles as Code (Pillar 33), Ubiquitous Language as Code (Pillar 34), and Actors
-as Code (Pillar 3). Wave 2 establishes the governance and domain knowledge infrastructure that AI
+Pillar AK adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
+Architecture Principles as Code (Pillar AH), Ubiquitous Language as Code (Pillar AI), and Actors
+as Code (Pillar C). Wave 2 establishes the governance and domain knowledge infrastructure that AI
 agents need to produce consistent, context-aware architecture artifacts. See
-[Transformation Plan — Pillar 36](TRANSFORMATION-PLAN.md#pillar-36--patterns-and-anti-patterns-as-code)
+[Transformation Plan — Pillar AK](TRANSFORMATION-PLAN.md#pillar-ak--patterns-and-anti-patterns-as-code)
 for the sequenced adoption checklist.
 
 ---
@@ -725,5 +725,5 @@ for the sequenced adoption checklist.
 - Martin Fowler, *Patterns of Enterprise Application Architecture* (2002)
 - Chris Richardson, *Microservices Patterns* (2018) — the primary reference for Saga, Transactional Outbox, and related distributed systems patterns
 - Sam Newman, *Building Microservices* (2021, 2nd ed.) — Chapter 4: Microservice Communication Styles
-- NovaTrek EaC Framework: [Pillar 36 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 36 adoption steps](TRANSFORMATION-PLAN.md#pillar-36--patterns-and-anti-patterns-as-code)
+- NovaTrek EaC Framework: [Pillar AK definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar AK adoption steps](TRANSFORMATION-PLAN.md#pillar-ak--patterns-and-anti-patterns-as-code)

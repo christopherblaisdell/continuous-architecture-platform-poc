@@ -1,11 +1,11 @@
 # Governance as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 14 — Governance as Code. It
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar O — Governance as Code. It
 > describes a pattern applicable to any software architecture practice. References to NovaTrek
 > Adventures services and files are synthetic exemplar data used to validate the pattern, not
 > corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for details.
 
-**Status**: This is Pillar 14 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar O of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -36,15 +36,15 @@ by the same mechanism as human-authored changes.
 
 ## The Critical Distinction: Governance vs Policy
 
-Pillar 14 (Governance as Code) is frequently confused with Pillar 10 (Policy as Code). They are
+Pillar O (Governance as Code) is frequently confused with Pillar J (Policy as Code). They are
 related but distinct:
 
-**Policy as Code** (Pillar 10) asks: *"Does this artifact's content conform to our rules?"*
+**Policy as Code** (Pillar J) asks: *"Does this artifact's content conform to our rules?"*
 - Mechanism: OPA Rego rules, Conftest policies
 - Example: "Every OpenAPI spec must have a contact field" — a content rule
 - Enforcement: Static analysis of file content on every PR
 
-**Governance as Code** (Pillar 14) asks: *"Was the process for making this change followed?"*
+**Governance as Code** (Pillar O) asks: *"Was the process for making this change followed?"*
 - Mechanism: Structured proposal artifacts, archived approval records, proposal-completeness checks
 - Example: "Any change to an API spec must include a backward-compatibility assessment artifact
   signed by the owning team" — a process rule
@@ -164,7 +164,7 @@ metadata:
 | `name` | Yes | Human-readable name of the governance spec. |
 | `version` | Yes | Semantic version of this spec. Changes to a governance spec increment this version. |
 | `governed_artifacts` | Yes | List of path patterns that identify which files are under this governance spec. |
-| `ownership.owner_team` | Yes | The team ID (from the team registry, Pillar 30) that owns governance of these artifacts. |
+| `ownership.owner_team` | Yes | The team ID (from the team registry, Pillar AE) that owns governance of these artifacts. |
 | `ownership.approvers` | Yes | Who must approve a change proposal. May include multiple roles with minimum counts. |
 | `change_workflow.proposal_template` | Yes | Path to the Markdown template that change proposals must follow. |
 | `change_workflow.required_sections` | Yes | Identifiers for the sections a proposal must contain. The gate rule verifies their presence. |
@@ -241,7 +241,7 @@ proposed, who approved it, and why.
 
 ## Gate Rules
 
-Gate rules are OPA Rego policies (Pillar 10 mechanism) that verify governance artifacts exist and
+Gate rules are OPA Rego policies (Pillar J mechanism) that verify governance artifacts exist and
 are complete before a governed artifact can be merged:
 
 ```rego
@@ -272,8 +272,8 @@ proposal_exists_for_pr(pr_number) if {
 ```
 
 The gate rule composition:
-- Policy as Code (Pillar 10) enforces *what* can exist (valid content)
-- Governance as Code (Pillar 14) enforces *how* changes arrive (required process artifacts)
+- Policy as Code (Pillar J) enforces *what* can exist (valid content)
+- Governance as Code (Pillar O) enforces *how* changes arrive (required process artifacts)
 
 Both must pass before a PR can be merged.
 
@@ -285,7 +285,7 @@ Governance specs are themselves governed artifacts. Any change to a governance s
 required section, changing who must approve, adjusting the review SLA — MUST go through a
 change proposal process.
 
-This is Pillar 14's self-referential property: the governance spec for governance specs is
+This is Pillar O's self-referential property: the governance spec for governance specs is
 `governance/specs/governance-specs.yaml`. It is typically the most restrictive spec in the
 registry: any change requires the architecture practice lead and at least one senior architect.
 
@@ -372,7 +372,7 @@ The governance model for Governance as Code is self-referential by design. There
    the template for their artifact class. Reviewed by the approvers declared in the governing spec.
 
 3. **The meta-governance ADR**: The decision record that established the entire governance-as-code
-   approach. Changing this ADR requires the same process as any other ADR (Pillar 7), with the
+   approach. Changing this ADR requires the same process as any other ADR (Pillar G), with the
    additional requirement that the architecture practice lead is an explicit approver.
 
 ---
@@ -406,7 +406,7 @@ The governance model for Governance as Code is self-referential by design. There
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 14 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar O has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -430,11 +430,11 @@ Wave 10 adoption.
 
 ## Forward Plan
 
-Pillar 14 adoption for NovaTrek is planned in **Wave 10** of the Transformation Plan, as a capstone
+Pillar O adoption for NovaTrek is planned in **Wave 10** of the Transformation Plan, as a capstone
 pillar. It benefits from the full CI pattern library established in earlier waves — particularly
-Policy as Code (Pillar 10) for gate rule execution and Decisions as Code (Pillar 7) for governing
+Policy as Code (Pillar J) for gate rule execution and Decisions as Code (Pillar G) for governing
 ADR authoring. See
-[Transformation Plan — Pillar 14](TRANSFORMATION-PLAN.md#pillar-14--governance-as-code) for the
+[Transformation Plan — Pillar O](TRANSFORMATION-PLAN.md#pillar-o--governance-as-code) for the
 sequenced adoption checklist.
 
 ---
@@ -446,5 +446,5 @@ sequenced adoption checklist.
 - GitOps principles (Weaveworks, 2017) — the foundation for treating operations as code, including governance operations
 - ITIL 4 Change Enablement practice — the ITSM antecedent that Governance as Code replaces with machine-verifiable process
 - NovaTrek AI Instruction Governance: [AI-INSTRUCTION-GOVERNANCE.md](AI-INSTRUCTION-GOVERNANCE.md) (early informal implementation)
-- NovaTrek EaC Framework: [Pillar 14 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 14 adoption steps](TRANSFORMATION-PLAN.md#pillar-14--governance-as-code)
+- NovaTrek EaC Framework: [Pillar O definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar O adoption steps](TRANSFORMATION-PLAN.md#pillar-o--governance-as-code)

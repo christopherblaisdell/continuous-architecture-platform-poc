@@ -42,7 +42,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 1 — Infrastructure as Code (IaC)
+## Pillar A — Infrastructure as Code (IaC)
 
 **What it means**: Every cloud resource, network rule, and environment configuration is declared in text files that are version-controlled, reviewed via PR, and applied automatically.
 
@@ -74,7 +74,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 2 — Pipeline as Code (PaC)
+## Pillar B — Pipeline as Code (PaC)
 
 **What it means**: Every build, test, release, and deployment workflow is declared in version-controlled YAML or DSL files, not configured through a GUI.
 
@@ -103,7 +103,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 3 — Actors as Code
+## Pillar C — Actors as Code
 
 **What it means**: Every human role, team, external system, and persona that interacts with your architecture is declared in a version-controlled YAML registry.
 
@@ -133,7 +133,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 4 — Applications as Code
+## Pillar D — Applications as Code
 
 **What it means**: Every application, service, and deployable unit in your portfolio is declared in a version-controlled registry that is the authoritative source for names, owners, repositories, and deployment targets.
 
@@ -164,7 +164,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 5 — Architecture Artifacts as Code
+## Pillar E — Architecture Artifacts as Code
 
 **What it means**: Every architecture diagram — C4 context, container, component, sequence, event flow, deployment — is produced from a declarative source file, not drawn manually in a diagramming tool and exported as an image.
 
@@ -199,7 +199,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 6 — Capabilities as Code
+## Pillar F — Capabilities as Code
 
 **What it means**: The capability model of the architecture practice — the business capabilities the systems enable — is declared in a version-controlled YAML hierarchy with a JSON Schema, and a changelog records how capabilities evolve over time.
 
@@ -231,7 +231,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 7 — Decisions as Code (ADRs)
+## Pillar G — Decisions as Code (ADRs)
 
 **What it means**: Every architecture decision — tool selection, pattern choice, data ownership boundary, API contract convention — is recorded in a version-controlled Markdown file using a standard template (MADR), reviewable via PR, and linked from the artifacts it governs.
 
@@ -263,7 +263,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 8 — Tickets as Code
+## Pillar H — Tickets as Code
 
 **What it means**: The work that shapes the architecture — feature tickets, architecture investigations, solution designs — is tracked in a version-controlled YAML registry linked to the capability model, so the connection between delivered work and architectural capability is machine-readable.
 
@@ -293,7 +293,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 9 — Tests as Code
+## Pillar I — Tests as Code
 
 **What it means**: Behavioral expectations for every service and capability are expressed in declarative specification files (Gherkin feature files, contract specs) that are executable in CI, not just documentation.
 
@@ -327,7 +327,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 10 — Policy as Code
+## Pillar J — Policy as Code
 
 **What it means**: Architectural governance rules — "every service must have an OpenAPI spec", "no cross-domain direct database access", "every ADR referenced in the changelog must exist" — are expressed as machine-readable policy files enforced automatically in CI, not enforced by reviewer vigilance alone.
 
@@ -360,7 +360,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 11 — AI Instructions as Code (AIaC)
+## Pillar K — AI Instructions as Code (AIaC)
 
 **What it means**: The behavioral instructions that govern how AI agents operate in your development environment — what they know, how they respond, what they are forbidden from doing — are declared in version-controlled text files, reviewed via PR, and propagated to every supported AI tool from a single canonical hub.
 
@@ -397,7 +397,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 12 — Wireframes as Code (UIaC)
+## Pillar L — Wireframes as Code (UIaC)
 
 **What it means**: UI/UX wireframes and mockups are stored as structured JSON files (Excalidraw, Penpot, or equivalent) in version control, not as exported images in a design tool cloud. Changes are reviewable as diffs; images are generated by CI.
 
@@ -429,7 +429,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 13 — Documentation as Code (Docs as Code)
+## Pillar M — Documentation as Code (Docs as Code)
 
 **What it means**: All architecture documentation — service pages, capability pages, decision records, solution designs, runbooks — is authored in Markdown (or equivalent plain text), version-controlled, reviewed via PR, and published by a CI/CD pipeline. No documentation lives only in a wiki or a PDF.
 
@@ -465,7 +465,57 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 14 — Governance as Code
+## Pillar N — Presentations as Code (PrC)
+
+**What it means**: Architecture presentation decks — HLD walkthroughs, ADR summaries, strategy
+briefings, and review board submissions — are authored as Markdown slide source files, registered
+via a YAML manifest, and rendered to HTML or PDF by CI. No architecturally significant
+presentation exists only as a binary file in a slide authoring tool.
+
+### Artifact types
+
+- `presentations/{id}/manifest.yaml` — metadata, delivery status, cross-references to ADRs,
+  capabilities, and tickets
+- `presentations/{id}/slides.md` — Markdown slide source with `---` separators and speaker notes
+- `presentations/themes/` — versioned rendering themes applied by CI
+- `presentations/archive/` — rendered output for all delivered presentations (permanent record)
+- Portal presentations index page (generated)
+
+### Adoption steps
+
+- [ ] Identify architecturally significant presentations currently in graphical tools (HLD decks,
+  review board submissions, onboarding briefings)
+- [ ] Select or configure a Markdown slide renderer (e.g., Marp, Slidev) as the rendering tool in CI
+- [ ] Define at least one rendering theme for architecture presentations; version it in
+  `presentations/themes/`
+- [ ] Convert at least one existing presentation to Markdown slide format and register it with a
+  `manifest.yaml`
+- [ ] Wire CI to render presentations on every change to `presentations/`
+- [ ] Add cross-reference validation: ADR IDs, capability IDs, and ticket IDs in manifests must
+  resolve to existing files
+- [ ] Define the delivery lifecycle: draft → review → delivered → archived; wire the archive step
+  to CI
+- [ ] Govern theme changes: any change to a rendering theme requires a PR reviewed by the
+  architecture practice lead
+
+### CI integration
+
+- Manifest schema validation on every PR touching `presentations/`
+- Cross-reference integrity check: all ADR, capability, and ticket ID references in manifests resolve
+- Slide render on every PR (changed presentations only)
+- Archive copy triggered on merge to main when `status: delivered`
+
+### Exit criteria
+
+- At least one architecturally significant presentation registered with a manifest and rendered
+  via CI
+- Cross-reference validation wired in CI
+- Delivered presentations archived with rendered output as a permanent record
+- No architecturally significant presentation exists only in a binary slide tool
+
+---
+
+## Pillar O — Governance as Code
 
 **What it means**: The change governance workflow itself — how proposals are submitted, reviewed, approved, and archived — is declared in structured files and executed via tooling, not via informal Slack threads or undocumented review customs.
 
@@ -498,7 +548,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 15 — Operational Runbooks as Code
+## Pillar P — Operational Runbooks as Code
 
 **What it means**: Every operational procedure — deployment steps, rollback procedures, on-call playbooks, incident response guides — is expressed as version-controlled Markdown with explicit commands and expected outputs, or as executable scripts/workflows. No procedures exist only in a wiki or in someone's head.
 
@@ -533,7 +583,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 <!-- THEME: Data Layer — Pillars 16–19 -->
 
-## Pillar 16 — Data Models as Code
+## Pillar Q — Data Models as Code
 
 **What it means**: Entity schemas, data dictionaries, and entity-relationship definitions are declared in version-controlled text files. The database schema is derived from the declaration — never the other way around.
 
@@ -567,7 +617,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 17 — Database Migrations as Code
+## Pillar R — Database Migrations as Code
 
 **What it means**: Every schema change — adding a column, dropping a table, adding an index, changing a data type — is expressed as a numbered, version-controlled migration file applied in a deterministic sequence. No undeclared schema change ever reaches a database.
 
@@ -601,7 +651,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 18 — Data Contracts as Code
+## Pillar S — Data Contracts as Code
 
 **What it means**: Producers of data (event publishers, API providers, data pipeline outputs) explicitly declare their guarantees to consumers in a machine-readable, version-controlled contract. Consumers validate against the contract in CI. Breaking changes require a contract version bump and consumer notification.
 
@@ -635,7 +685,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 19 — Event Schemas as Code
+## Pillar T — Event Schemas as Code
 
 **What it means**: Every event published to an event bus or message broker — its structure, semantics, producer, and registered consumers — is declared in a version-controlled AsyncAPI spec or schema registry definition. No event topic exists without a machine-readable declaration.
 
@@ -671,7 +721,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 <!-- THEME: Security and Compliance — Pillars 20–23 -->
 
-## Pillar 20 — Security as Code
+## Pillar U — Security as Code
 
 **What it means**: Threat models, security scan configurations, RBAC/IAM policies, network security rules, and security testing rule sets are all declared in version-controlled files — reviewed, tested, and enforced automatically. Security is embedded in the development workflow, not bolted on at release.
 
@@ -707,7 +757,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 21 — Compliance as Code
+## Pillar V — Compliance as Code
 
 **What it means**: Regulatory and internal compliance requirements (GDPR, SOC2, HIPAA, PCI-DSS, ISO 27001, internal security baselines) are expressed as machine-verifiable rules. Audit evidence is generated automatically from CI/CD results, not assembled manually ahead of an audit.
 
@@ -741,7 +791,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 22 — Secrets Management as Code
+## Pillar W — Secrets Management as Code
 
 **What it means**: Every secret, certificate, and API key used by the system is registered, rotated, and access-controlled via a secrets manager whose configuration is itself version-controlled. No secret ever appears in source code, environment variable files, or CI/CD configuration in plaintext.
 
@@ -775,7 +825,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 23 — SBOM as Code
+## Pillar X — SBOM as Code
 
 **What it means**: A Software Bill of Materials — the complete inventory of every third-party library, framework, and transitive dependency in every deployable artifact — is generated automatically as part of every build, stored in a standard format, and version-controlled alongside the release artifact.
 
@@ -811,7 +861,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 <!-- THEME: Observability and Reliability — Pillars 24–26 -->
 
-## Pillar 24 — Observability as Code
+## Pillar Y — Observability as Code
 
 **What it means**: Dashboards, alert rules, log queries, tracing configurations, and synthetic monitors are all declared in version-controlled files — reviewed, tested, and deployed via CI/CD, not configured interactively in an observability tool's GUI.
 
@@ -821,7 +871,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 - Alert rule declarations (Prometheus alerting rules YAML, Azure Monitor alert Bicep, Datadog Terraform)
 - Log query files (KQL, PromQL, LogQL saved as named queries in version control)
 - Synthetic monitor definitions (Playwright-based uptime checks, Datadog Synthetics Terraform)
-- SLO tracking dashboards linked to Pillar 25 SLO declarations
+- SLO tracking dashboards linked to Pillar Z SLO declarations
 
 ### Adoption steps
 
@@ -830,7 +880,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 - [ ] Export the three most critical dashboards to their version-controlled format; commit and wire to CI deployment
 - [ ] Declare all production alert rules in version-controlled format; retire GUI-only alerts
 - [ ] Wire CI to validate alert rule syntax and deploy dashboard/alert changes on merge to main
-- [ ] Link dashboards to the services they monitor in the service registry (Pillar 4)
+- [ ] Link dashboards to the services they monitor in the service registry (Pillar D)
 
 ### CI integration
 
@@ -846,7 +896,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 25 — SLO / SLI as Code
+## Pillar Z — SLO / SLI as Code
 
 **What it means**: Service Level Objectives and the Service Level Indicators they measure are declared in a standard, machine-readable format per service — linked to the service registry, tracked automatically, and reported without manual data assembly.
 
@@ -863,7 +913,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 - [ ] Select an SLO declaration format (OpenSLO is the open standard; Sloth generates Prometheus recording rules from it)
 - [ ] Declare each SLO as a YAML file linked to the service in the service registry
 - [ ] Wire SLI calculation to the metrics stack (Prometheus recording rules, Azure Monitor KQL, Datadog SLO API)
-- [ ] Wire error budget tracking to the observability dashboards from Pillar 24
+- [ ] Wire error budget tracking to the observability dashboards from Pillar Y
 - [ ] Expand SLO coverage incrementally; every service in the registry should have at least one SLO
 
 ### CI integration
@@ -880,7 +930,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 26 — Feature Flags as Code
+## Pillar AA — Feature Flags as Code
 
 **What it means**: Feature toggle definitions, targeting rules, and rollout percentages are declared in version-controlled configuration files — not set interactively in a feature flag platform's GUI. Changes to flag behavior flow through PR review, with the same change governance as any other code change.
 
@@ -897,7 +947,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 - [ ] Declare all currently active flags in version-controlled YAML; wire sync to the flag platform
 - [ ] Establish a flag lifecycle policy: maximum flag age, cleanup PR requirement before closing a feature
 - [ ] Wire CI to validate flag definition syntax on every PR
-- [ ] Link flags to the capabilities they gate (reference Pillar 6); a flag without a capability reference is incomplete
+- [ ] Link flags to the capabilities they gate (reference Pillar F); a flag without a capability reference is incomplete
 - [ ] Wire a stale flag linter: flags older than the lifecycle policy's maximum age fail CI until cleaned up or explicitly renewed
 
 ### CI integration
@@ -916,7 +966,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 <!-- THEME: Deployment and Release — Pillars 27–29 -->
 
-## Pillar 27 — Release Strategies as Code
+## Pillar AB — Release Strategies as Code
 
 **What it means**: How a new version of a service is released to production — canary percentages, blue/green cutover rules, A/B test split weights, rollback triggers, and traffic shifting schedules — is declared in version-controlled deployment configuration, not configured interactively in a deployment tool.
 
@@ -949,7 +999,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 28 — Environment Definitions as Code
+## Pillar AC — Environment Definitions as Code
 
 **What it means**: The full catalog of environments — development, staging, production, feature branches, performance test — including what is deployed in each, which version, and the promotion path between them, is declared in version-controlled manifests.
 
@@ -983,7 +1033,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 29 — Service Mesh Configuration as Code
+## Pillar AD — Service Mesh Configuration as Code
 
 **What it means**: Traffic management policies, retry budgets, circuit breaker thresholds, mutual TLS settings, and observability sidecar configurations for the service mesh are all declared in version-controlled manifest files — reviewed and deployed via CI/CD, not configured interactively in a mesh control plane.
 
@@ -1018,7 +1068,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 <!-- THEME: People and Organization — Pillars 30–32 -->
 
-## Pillar 30 — Team Topology as Code
+## Pillar AE — Team Topology as Code
 
 **What it means**: The organizational structure of teams, their interaction modes (collaboration, X-as-a-service, facilitating), their service ownership, and their platform or enabling capabilities are declared in a version-controlled YAML registry — making the organizational architecture as legible and evolvable as the technical architecture.
 
@@ -1032,7 +1082,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 ### Adoption steps
 
 - [ ] Enumerate all teams in the engineering organization; classify each by Team Topologies type
-- [ ] Create a team registry YAML with entries for each team; include service ownership references to the service registry (Pillar 4)
+- [ ] Create a team registry YAML with entries for each team; include service ownership references to the service registry (Pillar D)
 - [ ] Declare interaction modes between teams; note where modes are aspirational vs current
 - [ ] Wire a generator to produce an organizational topology diagram and a service ownership index
 - [ ] Add CI validation: every service in the service registry must have an owning team in the team registry
@@ -1052,7 +1102,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 31 — Onboarding as Code
+## Pillar AF — Onboarding as Code
 
 **What it means**: The process of bringing a new developer onto the team — from first repository access to shipping a first PR — is documented as executable, version-controlled steps, not as tribal knowledge passed person-to-person or as a wiki page that drifts from reality.
 
@@ -1085,7 +1135,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 32 — Developer Experience as Code
+## Pillar AG — Developer Experience as Code
 
 **What it means**: The local development toolchain — IDE settings, recommended extensions, code formatter configs, linter configs, pre-commit hooks, and local service runner scripts — is declared in version-controlled files shared across the team, so every developer works with a consistent, reproducible environment.
 
@@ -1105,12 +1155,12 @@ This template brings an architecture practice from a baseline state to **Level 9
 - [ ] Commit IDE workspace settings and recommended extensions to version control (e.g., `.vscode/extensions.json` and `.vscode/settings.json` for VS Code users)
 - [ ] Commit a `.pre-commit-config.yaml` with at minimum: format check, lint, secret scan, trailing whitespace check
 - [ ] Wire CI to run the same checks as pre-commit hooks — "works on my machine" cannot reach CI
-- [ ] Document in the onboarding guide (Pillar 31): the pre-commit hooks are not optional; a PR that bypasses them will fail CI
+- [ ] Document in the onboarding guide (Pillar AF): the pre-commit hooks are not optional; a PR that bypasses them will fail CI
 
 ### CI integration
 
 - Same linters and formatters that run in pre-commit hooks also run in CI; no divergence permitted
-- Dev container build validation (see Pillar 31)
+- Dev container build validation (see Pillar AF)
 - Extension recommendation drift check: `.vscode/extensions.json` kept in sync with any tool added to the workflow
 
 ### Exit criteria
@@ -1123,7 +1173,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 <!-- THEME: Knowledge and Language — Pillars 33–35 -->
 
-## Pillar 33 — Architecture Principles as Code
+## Pillar AH — Architecture Principles as Code
 
 **What it means**: The standing architectural principles of the practice — the heuristics and constraints that inform every design decision below the level of a specific ADR — are declared in a version-controlled list with rationale, enforcement status, and links to the ADRs and policy rules that give them teeth.
 
@@ -1131,7 +1181,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 - Principles YAML: each entry declares name, statement, rationale, enforcement status (aspirational / policy-enforced / ADR-mandated), and links to governing ADRs and policy rules
 - Generated principles page in the documentation portal
-- Policy rules implementing machine-verifiable principles (reference Pillar 10)
+- Policy rules implementing machine-verifiable principles (reference Pillar J)
 
 ### Adoption steps
 
@@ -1156,7 +1206,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 34 — Ubiquitous Language as Code
+## Pillar AI — Ubiquitous Language as Code
 
 **What it means**: The domain vocabulary of the organization — bounded context terms, entity names, event names, capability names, and their precise definitions — is declared in a version-controlled glossary. Every code artifact, spec, and document uses terms from this glossary. The glossary is the single source of truth for naming.
 
@@ -1189,7 +1239,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 ---
 
-## Pillar 35 — Coding Standards as Code
+## Pillar AJ — Coding Standards as Code
 
 **What it means**: The formatting, style, and quality rules that govern all source code in the practice are declared in version-controlled configuration files — not enforced inconsistently by individual reviewer preference. Linters run automatically in CI; violations block merge.
 
@@ -1197,7 +1247,7 @@ This template brings an architecture practice from a baseline state to **Level 9
 
 - Language-specific linter configuration files (`.eslintrc`, `pyproject.toml [tool.ruff]`, `checkstyle.xml`, `golangci-lint.yaml`, `.rubocop.yml`)
 - Formatter configuration files (`.prettierrc`, `google-java-format` settings, `black` config)
-- `.editorconfig` (shared with Pillar 32; referenced here for completeness)
+- `.editorconfig` (shared with Pillar AG; referenced here for completeness)
 - Coding standards ADR: rationale for non-default rule choices
 - Linter suppression policy: when and how `# noqa` / `@SuppressWarnings` / `// eslint-disable` are permitted
 

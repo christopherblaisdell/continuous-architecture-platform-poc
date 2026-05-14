@@ -55,6 +55,25 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 | [Transformation Plan](TRANSFORMATION-PLAN.md) | **Adoption plan template** — phased blueprint to be tailored and instantiated in the corporate workspace |
 | [Synthetic Exemplar Backlog](SYNTHETIC-EXEMPLAR-BACKLOG.md) | **NovaTrek carry-over only** — deferred tasks specific to this synthetic workspace; not exported to Instance workspaces |
 
+### Pillar Deep-Dive Pages
+
+Extended blueprint documents for individual pillars. Each deep-dive page covers the pillar's
+canonical artifact schema, maturity stages (L1–L5), anti-patterns, AI fit, and synthetic exemplar
+status.
+
+| Document | Pillar |
+|----------|--------|
+| [Actors as Code](ACTORS-AS-CODE.md) | Pillar C — Actors as Code |
+| [AI Instructions as Code](AI-INSTRUCTIONS-AS-CODE.md) | Pillar M — AI Instructions as Code |
+| [AI Instruction Governance](AI-INSTRUCTION-GOVERNANCE.md) | Governance pattern for AI instruction files |
+| [Architecture Principles as Code](ARCHITECTURE-PRINCIPLES-AS-CODE.md) | Pillar H — Architecture Principles as Code |
+| [Capabilities as Code](CAPABILITIES-AS-CODE.md) | Pillar D — Capabilities as Code |
+| [Governance as Code](GOVERNANCE-AS-CODE.md) | Pillar O — Governance as Code |
+| [Patterns as Code](PATTERNS-AS-CODE.md) | Pillar P — Patterns as Code |
+| [Presentations as Code](PRESENTATIONS-AS-CODE.md) | Pillar N — Presentations as Code |
+| [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) | Pillar Q — Team Topology as Code |
+| [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) | Pillar R — Ubiquitous Language as Code |
+
 
 ---
 
@@ -62,7 +81,7 @@ EaC is the prerequisite for **AI-assisted continuous architecture** — the prac
 
 **Not every pillar applies to every organization, team, or moment in time.**
 
-This blueprint describes a comprehensive target state — 34 pillars across infrastructure, governance, data, delivery, observability, AI, and organizational design. No organization should attempt to adopt all of them at once, and most will deliberately exclude some pillars permanently based on their context, scale, or priorities.
+This blueprint describes a comprehensive target state — 39 pillars across infrastructure, governance, data, delivery, observability, AI, and organizational design. No organization should attempt to adopt all of them at once, and most will deliberately exclude some pillars permanently based on their context, scale, or priorities.
 
 The first act of every Instance is a **deliberate selection exercise**:
 
@@ -127,7 +146,7 @@ Do **not** copy `SYNTHETIC-EXEMPLAR-BACKLOG.md` — it contains NovaTrek-specifi
 After placing the files in the corporate workspace:
 
 - [ ] Record the imported blueprint version in the Instance README (see the Blueprint Version table at the bottom of this file — copy and update it, replacing `Blueprint` with `Instance imported` and noting the date)
-- [ ] Complete the Bootstrap pillar selection exercise in TRANSFORMATION-PLAN.md (mark each of the 34 pillars In Scope / Out of Scope / Future)
+- [ ] Complete the Bootstrap pillar selection exercise in TRANSFORMATION-PLAN.md (mark each of the 39 pillars In Scope / Out of Scope / Future)
 - [ ] Replace CURRENT-STATE-ASSESSMENT.md with a real assessment of the corporate workspace
 - [ ] Author the adoption ADR in the corporate `decisions/` folder; declare which pillars are in Wave 1 scope
 - [ ] Commit `docs/everything-as-code/` to version control in the corporate workspace

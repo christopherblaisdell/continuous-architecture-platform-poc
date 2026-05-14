@@ -15,9 +15,9 @@ This document assesses where the synthetic exemplar workspace stands on the EaC 
 
 ## Pillar-by-Pillar Assessment
 
-> This assessment uses the canonical 34-pillar numbering from [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md). Pillars not represented in this synthetic exemplar workspace are marked NOT IN SCOPE — a full Instance assessment covers all 34 pillars.
+> This assessment uses the canonical 34-pillar numbering from [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md). Pillars not represented in this synthetic exemplar workspace are marked NOT IN SCOPE — a full Instance assessment covers all 39 pillars.
 
-### Pillar 1 — Infrastructure as Code
+### Pillar A — Infrastructure as Code
 
 | | |
 |---|---|
@@ -28,7 +28,7 @@ This document assesses where the synthetic exemplar workspace stands on the EaC 
 | **Gap** | Add Bicep lint + `checkov` / `psrule` to CI on every PR touching `infra/` |
 | **Maturity** | Level 5 (generators in CI partially) |
 
-### Pillar 2 — Pipeline as Code
+### Pillar B — Pipeline as Code
 
 | | |
 |---|---|
@@ -39,7 +39,7 @@ This document assesses where the synthetic exemplar workspace stands on the EaC 
 | **Gap** | Add `actionlint` to a PR-level workflow; add JSON Schema for `pipeline-registry.yaml` |
 | **Maturity** | Level 5 |
 
-### Pillar 3 — Actors as Code
+### Pillar C — Actors as Code
 
 | | |
 |---|---|
@@ -50,7 +50,7 @@ This document assesses where the synthetic exemplar workspace stands on the EaC 
 | **Gap** | Author `architecture/schemas/actors.schema.json`; validate in CI |
 | **Maturity** | Level 4 |
 
-### Pillar 4 — Applications as Code
+### Pillar D — Applications as Code
 
 | | |
 |---|---|
@@ -60,7 +60,7 @@ This document assesses where the synthetic exemplar workspace stands on the EaC 
 | **Gap** | JSON Schema; consolidate `app-titles.yaml` into `applications.yaml` if titles are derivable |
 | **Maturity** | Level 4 |
 
-### Pillar 5 — Architecture Artifacts as Code
+### Pillar E — Architecture Artifacts as Code
 
 Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, domain definitions, CALM topology, and solution design architecture artifacts.
 
@@ -76,7 +76,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap (CALM)** | CALM validator not in CI |
 | **Maturity** | Level 6 for sequence diagrams; Level 4 for C4; Level 4 for OpenAPI; Level 3 for CALM |
 
-### Pillar 6 — Capabilities as Code
+### Pillar F — Capabilities as Code
 
 | | |
 |---|---|
@@ -87,7 +87,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | Formalize JSON Schema for both files; document the L1/L2/L3 model in this folder |
 | **Maturity** | Level 6 |
 
-### Pillar 7 — Decisions as Code (ADRs)
+### Pillar G — Decisions as Code (ADRs)
 
 | | |
 |---|---|
@@ -97,7 +97,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | Custom validator asserting MADR sections (Status, Date, Context, Decision Drivers, Considered Options, Decision Outcome, Consequences) are present |
 | **Maturity** | Level 4 |
 
-### Pillar 9 — Tests as Code
+### Pillar I — Tests as Code
 
 | | |
 |---|---|
@@ -107,7 +107,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | Most "tests" today are documentation; BDD feature files need to be wired to executable runners for the synthetic NovaTrek services |
 | **Maturity** | Level 3 |
 
-### Pillar 10 — Policy as Code
+### Pillar J — Policy as Code
 
 | | |
 |---|---|
@@ -116,7 +116,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Recommendation** | Start with Conftest + Rego rules: "every service MUST have an OpenAPI spec", "every YAML in `architecture/metadata/` MUST validate against its schema" |
 | **Maturity** | Level 0 |
 
-### Pillar 11 — AI Instructions as Code (AIaC)
+### Pillar K — AI Instructions as Code (AIaC)
 
 | | |
 |---|---|
@@ -126,7 +126,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | Activate validation script; complete OpenSpec Phase 10 (first real propose→apply→archive cycle); evaluate Cursor and Windsurf as additional derived targets |
 | **Maturity** | Level 6; pushing toward Level 7 |
 
-### Pillar 12 — Wireframes as Code (UIaC)
+### Pillar L — Wireframes as Code (UIaC)
 
 | | |
 |---|---|
@@ -137,7 +137,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | No JSON Schema for Excalidraw files; CI generation not validated against a wireframe inventory |
 | **Maturity** | Level 5 |
 
-### Pillar 13 — Documentation as Code (Docs as Code)
+### Pillar M — Documentation as Code (Docs as Code)
 
 | | |
 |---|---|
@@ -147,7 +147,7 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Validator** | `mkdocs build --strict`, link checker, Confluence drift check |
 | **Maturity** | Level 7 |
 
-### Pillar 14 — Governance as Code
+### Pillar O — Governance as Code
 
 | | |
 |---|---|
@@ -158,14 +158,14 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Gap** | Formal OpenSpec change proposal workflow (propose→review→apply→archive) not yet enforced in CI; solution folder structure is conventional, not schema-validated |
 | **Maturity** | Level 6 |
 
-### Pillar 15 — Operational Runbooks as Code
+### Pillar P — Operational Runbooks as Code
 
 | | |
 |---|---|
 | **Status** | NOT IN SCOPE |
 | **Note** | NovaTrek Adventures is an architecture practice simulation, not a production operations environment. A real Instance assessment covers runbook as-code adoption. |
 
-### Pillar 16 — Data Models as Code
+### Pillar Q — Data Models as Code
 
 | | |
 |---|---|
@@ -175,21 +175,21 @@ Covers C4 diagrams, sequence diagrams, OpenAPI specs, cross-service call maps, d
 | **Recommendation** | Add `architecture/metadata/schemas/{service}.schema.yaml` for entity type declarations per service; use as the seed for a real Instance's schema-as-code adoption |
 | **Maturity** | Level 2 (catalog exists; no schema declarations) |
 
-### Pillar 17 — Database Migrations as Code
+### Pillar R — Database Migrations as Code
 
 | | |
 |---|---|
 | **Status** | NOT IN SCOPE |
 | **Note** | Synthetic workspace has no live databases. A real Instance assessment covers Liquibase, Flyway, Atlas, or Alembic migration file adoption. |
 
-### Pillar 18 — Data Contracts as Code
+### Pillar S — Data Contracts as Code
 
 | | |
 |---|---|
 | **Status** | NOT IN SCOPE |
 | **Note** | OpenAPI specs in `architecture/specs/` partially fulfill contract obligations between services, but no formal Data Contract Specification (Bitol/OpenDataMesh) files exist. A real Instance should formalize inter-service contracts here. |
 
-### Pillar 19 — Event Schemas as Code
+### Pillar T — Event Schemas as Code
 
 | | |
 |---|---|

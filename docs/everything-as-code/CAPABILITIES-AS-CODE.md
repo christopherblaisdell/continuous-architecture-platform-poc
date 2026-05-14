@@ -1,11 +1,11 @@
 # Capabilities as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 6 — Capabilities as Code. It
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar F — Capabilities as Code. It
 > describes a pattern applicable to any software architecture practice. References to NovaTrek
 > Adventures services and files are synthetic exemplar data used to validate the pattern, not
 > corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for details.
 
-**Status**: This is Pillar 6 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar F of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -202,7 +202,7 @@ capabilities:
 
 ## The Capability Changelog Schema
 
-The capability changelog is the second half of Pillar 6. It is the journal of architectural
+The capability changelog is the second half of Pillar F. It is the journal of architectural
 growth — a record of which capabilities changed, when, in which solution, and what new L3
 capabilities emerged from the work.
 
@@ -357,7 +357,7 @@ Generated to `portal/docs/capabilities/{cap-id}.md`. Each L2 capability page ren
 - All L3 capabilities delivered to date (from the changelog)
 - Timeline of changes (by ticket and date)
 - Linked ADRs governing this capability
-- Coverage indicator: does the capability have corresponding test feature files? (cross-reference to Pillar 9)
+- Coverage indicator: does the capability have corresponding test feature files? (cross-reference to Pillar I)
 
 ### 2. Capability summary table
 
@@ -461,7 +461,7 @@ has organizational implications beyond the architecture practice.
 Capability changelog entries are authored as part of solution design PRs. They are reviewed as part
 of the solution design review, not as a separate process.
 
-L3 capability names SHOULD be chosen from the domain ubiquitous language (Pillar 34). An L3
+L3 capability names SHOULD be chosen from the domain ubiquitous language (Pillar AI). An L3
 capability named "RFID Wristband Identity Verification" uses terms that must be consistent with
 how those terms are defined in the glossary — and if the terms are not yet in the glossary, the
 solution PR that introduces them should add glossary entries alongside the changelog entry.
@@ -486,7 +486,7 @@ solution PR that introduces them should add glossary entries alongside the chang
    `capabilities` or `decisions` fields from ticket YAML entries that correspond to delivered work.
 
 5. **Link L3 capabilities to test feature files.** An L3 capability without a corresponding
-   Gherkin feature file (Pillar 9) is a capability delivered without a behavioral specification.
+   Gherkin feature file (Pillar I) is a capability delivered without a behavioral specification.
    The coverage gap report should surface this.
 
 6. **Use the capability ID as the cross-reference key, not the name.** Capability names will be
@@ -497,7 +497,7 @@ solution PR that introduces them should add glossary entries alongside the chang
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 6 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar F has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -521,14 +521,14 @@ check not yet wired). Both are Wave 2 backlog items.
 
 ## Forward Plan
 
-Pillar 6 adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
-Decisions as Code (Pillar 7) and Actors as Code (Pillar 3). See
-[Transformation Plan — Pillar 6](TRANSFORMATION-PLAN.md#pillar-6--capabilities-as-code) for the
+Pillar F adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
+Decisions as Code (Pillar G) and Actors as Code (Pillar C). See
+[Transformation Plan — Pillar F](TRANSFORMATION-PLAN.md#pillar-f--capabilities-as-code) for the
 sequenced adoption checklist.
 
-Key adoption prerequisite: Applications as Code (Pillar 4) SHOULD be complete before the capability
+Key adoption prerequisite: Applications as Code (Pillar D) SHOULD be complete before the capability
 changelog is used in production, because changelog entries reference service names that must resolve
-against the application registry. The hierarchy itself can be authored independently of Pillar 4.
+against the application registry. The hierarchy itself can be authored independently of Pillar D.
 
 ---
 
@@ -538,5 +538,5 @@ against the application registry. The hierarchy itself can be authored independe
 - TOGAF 10, Architecture Content Framework — Architecture Building Blocks (ABBs) as a related concept
 - Wardley Mapping (Simon Wardley) — an alternative capability-evolution representation, useful for strategic planning alongside this registry-based model
 - Eric Evans, *Domain-Driven Design* (2003) — Chapter 15: Distillation (core domain vs. supporting subdomain)
-- NovaTrek EaC Framework: [Pillar 6 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 6 adoption steps](TRANSFORMATION-PLAN.md#pillar-6--capabilities-as-code)
+- NovaTrek EaC Framework: [Pillar F definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar F adoption steps](TRANSFORMATION-PLAN.md#pillar-f--capabilities-as-code)

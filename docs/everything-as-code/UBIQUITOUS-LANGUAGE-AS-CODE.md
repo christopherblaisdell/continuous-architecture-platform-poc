@@ -1,12 +1,12 @@
 # Ubiquitous Language as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 34 — Ubiquitous Language as
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar AI — Ubiquitous Language as
 > Code. It describes a pattern applicable to any software architecture practice. References to
 > NovaTrek Adventures services and files are synthetic exemplar data used to validate the pattern,
 > not corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for
 > details.
 
-**Status**: This is Pillar 34 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar AI of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -510,7 +510,7 @@ Governance rules for the glossary:
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 34 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar AI has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -531,10 +531,10 @@ primary motivation for Wave 2 Ubiquitous Language adoption.
 
 ## Forward Plan
 
-Pillar 34 adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
-Architecture Principles as Code (Pillar 33) and Capabilities as Code (Pillar 6). Wave 2 establishes
+Pillar AI adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
+Architecture Principles as Code (Pillar AH) and Capabilities as Code (Pillar F). Wave 2 establishes
 the vocabulary and governance infrastructure that make all later pillars interpretable by AI agents.
-See [Transformation Plan — Pillar 34](TRANSFORMATION-PLAN.md#pillar-34--ubiquitous-language-as-code)
+See [Transformation Plan — Pillar AI](TRANSFORMATION-PLAN.md#pillar-ai--ubiquitous-language-as-code)
 for the sequenced adoption checklist.
 
 ---
@@ -545,5 +545,5 @@ for the sequenced adoption checklist.
 - Eric Evans and Martin Fowler, *Domain Driven Design Reference* (2015) — Context Maps and Bounded Context vocabulary
 - Vaughn Vernon, *Implementing Domain-Driven Design* (2013) — Chapter 2: Domains, Subdomains, and Bounded Contexts
 - Sam Newman, *Building Microservices* (2021, 2nd ed.) — Chapter 2: How to Model Services (bounded context as the primary driver of service boundaries)
-- NovaTrek EaC Framework: [Pillar 34 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 34 adoption steps](TRANSFORMATION-PLAN.md#pillar-34--ubiquitous-language-as-code)
+- NovaTrek EaC Framework: [Pillar AI definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar AI adoption steps](TRANSFORMATION-PLAN.md#pillar-ai--ubiquitous-language-as-code)

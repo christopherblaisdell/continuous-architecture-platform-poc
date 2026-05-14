@@ -1,11 +1,11 @@
 # Actors as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 3 — Actors as Code. It describes
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar C — Actors as Code. It describes
 > a pattern applicable to any software architecture practice. References to NovaTrek Adventures
 > services and files are synthetic exemplar data used to validate the pattern, not corporate
 > information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for details.
 
-**Status**: This is Pillar 3 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar C of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -66,7 +66,7 @@ system behavior. The taxonomy is deliberately broad:
 | `automated_agent` | An internal or external system operating without direct human involvement | `SoftwareSystem` |
 | `iot_device` | A physical device emitting events into the system | `SoftwareSystem` |
 
-The `team` type is distinct from the Team Registry (Pillar 30). Actors describe who the *users and
+The `team` type is distinct from the Team Registry (Pillar AE). Actors describe who the *users and
 integrators* of the architecture are. The team registry describes who *builds and owns* it. A
 `Platform Engineering Team` is both an actor (it integrates with developer tooling APIs) and a team
 in the organizational topology.
@@ -430,7 +430,7 @@ following additional constraints:
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 3 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar C has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -451,12 +451,12 @@ actor references in favor of registry-keyed IDs.
 
 ## Forward Plan
 
-Pillar 3 adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
-Capabilities as Code (Pillar 6) and Decisions as Code (Pillar 7). See
-[Transformation Plan — Pillar 3](TRANSFORMATION-PLAN.md#pillar-3--actors-as-code) for the
+Pillar C adoption for NovaTrek is planned in **Wave 2** of the Transformation Plan, alongside
+Capabilities as Code (Pillar F) and Decisions as Code (Pillar G). See
+[Transformation Plan — Pillar C](TRANSFORMATION-PLAN.md#pillar-c--actors-as-code) for the
 sequenced adoption checklist.
 
-Key adoption prerequisite: Applications as Code (Pillar 4) SHOULD be complete before Actors as
+Key adoption prerequisite: Applications as Code (Pillar D) SHOULD be complete before Actors as
 Code, because the actor `integrations` field references service names from the application registry.
 Authoring actors without a stable service registry produces dangling references.
 
@@ -467,5 +467,5 @@ Authoring actors without a stable service registry produces dangling references.
 - Simon Brown, *C4 model for software architecture* — https://c4model.com (Person and SoftwareSystem elements)
 - Eric Evans, *Domain-Driven Design* (2003) — Chapter 2: Communication and the Use of Language (bounded contexts)
 - TOGAF 10 — Part IV: Architecture Content Framework, Catalog: Actor/Role
-- NovaTrek EaC Framework: [Pillar 3 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 3 adoption steps](TRANSFORMATION-PLAN.md#pillar-3--actors-as-code)
+- NovaTrek EaC Framework: [Pillar C definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar C adoption steps](TRANSFORMATION-PLAN.md#pillar-c--actors-as-code)

@@ -1,11 +1,11 @@
 # Team Topology as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar 30 — Team Topology as Code.
+> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar AE — Team Topology as Code.
 > It describes a pattern applicable to any software architecture practice. References to NovaTrek
 > Adventures teams and services are synthetic exemplar data used to validate the pattern, not
 > corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for details.
 
-**Status**: This is Pillar 30 of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: This is Pillar AE of the Everything as Code framework — see [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ---
 
@@ -401,7 +401,7 @@ and communication channel links.
 | Rule | Description |
 |------|-------------|
 | Schema validation | All required fields present; type and mode values from allowed enums; IDs match prefix patterns |
-| Service ownership referential integrity | Every service ID in `services_owned` must exist in the service registry (Pillar 4) |
+| Service ownership referential integrity | Every service ID in `services_owned` must exist in the service registry (Pillar D) |
 | Interaction team referential integrity | `from_team` and `to_team` IDs must exist in the teams list |
 | Orphaned service check | Every service in the service registry must appear in at least one team's `services_owned` list |
 | Enabling team dissolution date | Enabling teams without an `expected_dissolution` date trigger a warning |
@@ -488,7 +488,7 @@ Specific rules:
 
 ## Synthetic Exemplar Status
 
-> The status below describes how Pillar 30 has been implemented in the NovaTrek Adventures
+> The status below describes how Pillar AE has been implemented in the NovaTrek Adventures
 > synthetic exemplar workspace. NovaTrek data is entirely fictional — no corporate systems are
 > represented.
 
@@ -511,13 +511,13 @@ The domain grouping in the microservice page generator (`DOMAINS` dict in
 
 ## Forward Plan
 
-Pillar 30 adoption for NovaTrek is planned in **Wave 9** of the Transformation Plan, alongside
-Onboarding as Code (Pillar 31) and Developer Experience as Code (Pillar 32). Wave 9 pillars are
+Pillar AE adoption for NovaTrek is planned in **Wave 9** of the Transformation Plan, alongside
+Onboarding as Code (Pillar AF) and Developer Experience as Code (Pillar AG). Wave 9 pillars are
 most valuable once the technical pillars have stabilized. See
-[Transformation Plan — Pillar 30](TRANSFORMATION-PLAN.md#pillar-30--team-topology-as-code) for the
+[Transformation Plan — Pillar AE](TRANSFORMATION-PLAN.md#pillar-ae--team-topology-as-code) for the
 sequenced adoption checklist.
 
-Key adoption prerequisite: Applications as Code (Pillar 4) MUST be complete before the team
+Key adoption prerequisite: Applications as Code (Pillar D) MUST be complete before the team
 registry can enforce ownership, because the service references in `services_owned` must resolve
 against the service registry.
 
@@ -529,5 +529,5 @@ against the service registry.
 - Mel Conway, *How Do Committees Invent?* (1968) — the original statement of Conway's Law
 - Spotify Backstage catalog-info.yaml specification — https://backstage.io/docs/features/software-catalog/descriptor-format
 - Ruth Malan, *Conway's Law* (2008) — extended commentary on the organizational architecture relationship
-- NovaTrek EaC Framework: [Pillar 30 definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
-- NovaTrek Transformation Plan: [Pillar 30 adoption steps](TRANSFORMATION-PLAN.md#pillar-30--team-topology-as-code)
+- NovaTrek EaC Framework: [Pillar AE definition](EVERYTHING-AS-CODE-FRAMEWORK.md)
+- NovaTrek Transformation Plan: [Pillar AE adoption steps](TRANSFORMATION-PLAN.md#pillar-ae--team-topology-as-code)

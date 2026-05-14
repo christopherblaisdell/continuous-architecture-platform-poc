@@ -2,7 +2,7 @@
 
 > **BLUEPRINT DOCUMENT.** This document defines the governance pattern for AI instructions across all derivation targets — IDE coding assistants and deployed agents. It is target-agnostic and intended for export to a corporate **EaC Adoption Instance** workspace. See [README.md](README.md) for the Blueprint vs Instance distinction. See [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) for the hub-and-spoke architecture this document extends.
 
-**Status**: Pillar 11 governance annex — see [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md).
+**Status**: Pillar K governance annex — see [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md).
 
 ## Overview
 
@@ -450,8 +450,8 @@ Before declaring AI instruction governance operational:
 ## References
 
 - [AI-INSTRUCTIONS-AS-CODE.md](AI-INSTRUCTIONS-AS-CODE.md) — hub-and-spoke architecture, derivation chain, OpenSpec change governance and multi-tool workflow delivery
-- [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) — Pillar 11 definition and maturity model
-- [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) — Pillar 11 adoption phases
+- [EVERYTHING-AS-CODE-FRAMEWORK.md](EVERYTHING-AS-CODE-FRAMEWORK.md) — Pillar K definition and maturity model
+- [TRANSFORMATION-PLAN.md](TRANSFORMATION-PLAN.md) — Pillar K adoption phases
 - OpenSpec — https://github.com/Fission-AI/OpenSpec
 - Azure AI Foundry Agent Service — https://learn.microsoft.com/en-us/azure/ai-studio/
 - Anthropic Constitutional AI — https://arxiv.org/abs/2212.08073
