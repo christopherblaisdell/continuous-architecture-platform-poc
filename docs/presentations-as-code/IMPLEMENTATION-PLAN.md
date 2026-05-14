@@ -1,5 +1,12 @@
 # Presentations as Code — Implementation Plan
 
+> **BLUEPRINT — NOT AN INSTANCE.** This document is part of the EaC blueprint — a portable
+> pattern designed for export to a real corporate workspace (the Instance). All NovaTrek
+> Adventures content (services, tickets, ADRs, architecture decisions) is **fully synthetic
+> exemplar data** created solely to validate the pattern. No corporate data, real systems,
+> or organisation-specific tool choices are represented here. Organisation-specific current-
+> state context belongs in the Instance, not in this blueprint.
+
 > **Status:** Draft — v1.0 — 2026-05-14
 >
 > **Scope:** This document is the technical implementation plan for Presentations as Code (Pillar N).

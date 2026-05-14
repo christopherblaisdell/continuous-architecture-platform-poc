@@ -1,10 +1,12 @@
 # Presentations as Code — A First-Class EaC Pillar (Blueprint)
 
-> **BLUEPRINT DOCUMENT.** This is the portable definition of Pillar N — Presentations as Code
-> (PrC). It describes a pattern applicable to any software architecture practice. References to
-> NovaTrek Adventures services and files are synthetic exemplar data used to validate the pattern,
-> not corporate information. See [Synthetic Exemplar Status](#synthetic-exemplar-status) for
-> details.
+> **BLUEPRINT — NOT AN INSTANCE.** This document is part of the EaC blueprint — a portable
+> pattern designed for export to a real corporate workspace (the Instance). All NovaTrek
+> Adventures content (services, tickets, ADRs, architecture decisions) is **fully synthetic
+> exemplar data** created solely to validate the pattern. No corporate data, real systems,
+> or organisation-specific tool choices are represented here. Organisation-specific current-
+> state context belongs in the Instance, not in this blueprint.
+> See [Synthetic Exemplar Status](#synthetic-exemplar-status) for details.
 
 **Status**: This is Pillar N of the Everything as Code framework — see
 [EaC Framework](EVERYTHING-AS-CODE-FRAMEWORK.md).
