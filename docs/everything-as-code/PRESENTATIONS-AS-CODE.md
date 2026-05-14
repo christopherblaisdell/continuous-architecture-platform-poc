@@ -425,7 +425,7 @@ did the Q3 architecture briefing say about the data model?" is answerable from t
 
 | Anti-Pattern | Description | Recommended Alternative |
 |-------------|-------------|------------------------|
-| Binary slide files in git | Committing `.pptx`, `.key`, or `.odp` files — no meaningful diff, no AI readability | Author slides as Markdown; render via CI |
+| Binary slide files in git | Committing binary or proprietary slide files — no meaningful diff, no AI readability | Author slides as Markdown; render via CI |
 | Screenshot diagrams | Embedding a screenshot of a WYSIWYG diagram rather than a PlantUML or Mermaid code block | Replace with a fenced code block; CI renders the diagram at build time |
 | Unconstrained slide themes | Each presentation uses a different visual style, breaking organizational identity and making the rendering pipeline unpredictable | Define a versioned theme catalog; enforce via CI |
 | Stale delivered presentations | A delivered, archived presentation is edited in-place to reflect current architecture rather than being superseded | Create a new presentation version; mark the old one `archived` |
