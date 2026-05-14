@@ -74,6 +74,15 @@ status.
 | [Team Topology as Code](TEAM-TOPOLOGY-AS-CODE.md) | Pillar Q — Team Topology as Code |
 | [Ubiquitous Language as Code](UBIQUITOUS-LANGUAGE-AS-CODE.md) | Pillar R — Ubiquitous Language as Code |
 
+### Extended Pillar Documentation
+
+For pillars where the scope warrants a dedicated subdirectory outside `docs/everything-as-code/`:
+
+| Document | Pillar | Purpose |
+|----------|--------|---------|
+| [Presentations as Code — Capability Definition](../presentations-as-code/CAPABILITY-DEFINITION.md) | Pillar N | Requirements and vision reference — what the capability is, who it serves, and why it exists |
+| [Presentations as Code — Implementation Plan](../presentations-as-code/IMPLEMENTATION-PLAN.md) | Pillar N | Technical implementation plan across 4 waves |
+
 
 ---
 
@@ -137,6 +146,8 @@ docs/everything-as-code/CURRENT-STATE-ASSESSMENT.md          ← replace content
 docs/everything-as-code/DEEP-RESEARCH-PROMPT-EAC-MATURITY-MODEL.md
 docs/everything-as-code/DEEP-RESEARCH-PROMPT-AI-NATIVE-ARCHITECTURE.md
 docs/everything-as-code/standardized.taxonomy.of.ai.instructions.etc.deep.research.response.md
+docs/presentations-as-code/CAPABILITY-DEFINITION.md
+docs/presentations-as-code/IMPLEMENTATION-PLAN.md        ← replace NovaTrek examples with real org context; keep structure
 ```
 
 Do **not** copy `SYNTHETIC-EXEMPLAR-BACKLOG.md` — it contains NovaTrek-specific deferred items that have no meaning in any other workspace.
