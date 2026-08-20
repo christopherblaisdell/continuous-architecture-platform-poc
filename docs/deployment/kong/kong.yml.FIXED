@@ -1,0 +1,133 @@
+# Kong Configuration Fix: Context Window Guard Plugin
+# File: config/kong/kong.yml (UPDATED)
+# Purpose: Add pre-request token validation to prevent context overflow errors
+#
+# Installation Steps:
+# 1. Copy context-window-guard.lua to Kong plugins directory
+# 2. Add plugin to kong.yml (see anthropic-chat service below)
+# 3. Restart Kong: docker-compose restart kong
+# 4. Verify: curl -s http://localhost:8001/plugins | jq '.data[] | select(.name=="context-window-guard")'
+#
+# Result:
+# - Requests oversized for the model get HTTP 413 (Payload Too Large) BEFORE hitting Anthropic
+# - Error message is clear: "Request tokens (XXX) exceed context window limit (200000)"
+# - Roo Code can now properly classify this as a permanent error (not transient)
+# - No more infinite retry loops
+
+_format_version: "3.0"
+
+services:
+  # ===== LLM Inference: Anthropic (FIXED with context window guard) =====
+  - name: anthropic-chat
+    url: https://api.anthropic.com/v1
+    routes:
+      - name: chat-route
+        paths:
+          - /ai/chat
+        strip_path: true
+    plugins:
+      # NEW: Pre-request context window validation
+      # This catches oversized requests BEFORE they hit Anthropic
+      # Prevents: "context_length_exceeded" errors → infinite retry loops
+      - name: context-window-guard
+        config:
+          context_window_limit: 200000  # Claude Opus/Sonnet: 200K tokens
+          warning_threshold: 80  # Warn at 80% capacity (160K tokens)
+          model_name: "claude-sonnet-4-20250514"  # For logging/tracking
+
+      # EXISTING: AI proxy (routes to Anthropic)
+      - name: ai-proxy
+        config:
+          route_type: llm/v1/chat
+          auth:
+            header_name: x-api-key
+            header_value: "${ANTHROPIC_API_KEY}"
+          model:
+            provider: anthropic
+            name: claude-sonnet-4-20250514
+
+      # EXISTING: Rate limiting (unchanged)
+      - name: rate-limiting
+        config:
+          minute: 100
+          policy: local
+
+      # EXISTING: System prompt injection (unchanged)
+      - name: ai-prompt-decorator
+        config:
+          prepend:
+            - role: system
+              content: >
+                You have access to a workspace vector search tool via MCP.
+                When investigating architecture questions, query the vector
+                database before reading files directly. The workspace contains
+                19 microservice OpenAPI specs, 11 ADRs, event schemas, and
+                solution designs for the NovaTrek Adventures platform.
+
+  # ===== Embedding Provider: OpenAI (unchanged) =====
+  - name: openai-embeddings
+    url: https://api.openai.com/v1
+    routes:
+      - name: embeddings-route
+        paths:
+          - /ai/embeddings
+        strip_path: true
+    plugins:
+      - name: ai-proxy
+        config:
+          route_type: llm/v1/embeddings
+          auth:
+            header_name: Authorization
+            header_value: "Bearer ${OPENAI_API_KEY}"
+          model:
+            provider: openai
+            name: text-embedding-3-small
+      - name: rate-limiting
+        config:
+          minute: 500
+          policy: local
+      - name: ai-prompt-decorator
+        config:
+          prepend:
+            - role: system
+              content: >
+                You are indexing an architecture workspace for the NovaTrek
+                Adventures platform. Embeddings are used for semantic search
+                over OpenAPI specs, ADRs, solution designs, and service metadata.
+
+  # ===== Embedding Provider: Ollama (local fallback, unchanged) =====
+  - name: ollama-embeddings
+    url: http://host.docker.internal:11434/v1
+    routes:
+      - name: embeddings-local-route
+        paths:
+          - /ai/embeddings/local
+        strip_path: true
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 1000
+          policy: local
+
+  # ===== LLM Inference: OpenAI (unchanged) =====
+  - name: openai-chat
+    url: https://api.openai.com/v1
+    routes:
+      - name: openai-chat-route
+        paths:
+          - /ai/chat/openai
+        strip_path: true
+    plugins:
+      - name: ai-proxy
+        config:
+          route_type: llm/v1/chat
+          auth:
+            header_name: Authorization
+            header_value: "Bearer ${OPENAI_API_KEY}"
+          model:
+            provider: openai
+            name: gpt-4o
+      - name: rate-limiting
+        config:
+          minute: 100
+          policy: local
